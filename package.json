@@ -13,6 +13,9 @@
   "engines": {
     "node": ">=0.11.13"
   },
+  "scripts":{
+    "postinstall": "node_modules/bower/bin/bower install"
+  },
   "engineStrict": true,
   "os": [
     "darwin",
