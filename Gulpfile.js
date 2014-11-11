@@ -6,6 +6,8 @@ var gulp = require('gulp'),
 // load gulp tasks from ./tasks
 var dummy = requiredir('./tasks');
 
+gulp.task('watch', ['less:watch']);
+
 gulp.task('dev', ['less'], function(done){
 
   // todo
