@@ -24,4 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
   end
 
+  # On every vagrant up
+  config.vm.provision :shell, privileged: false, run: "always", path: "start.sh"
+
 end

@@ -1,20 +1,42 @@
-/**
- * Created by rj on 11/11/14.
- */
 
-var serve = require('koa-static'),
-    koa = require('koa'),
-    app = koa();
+var koa     = require('koa'),
+    send    = require('koa-send'),
+    fs      = require('fs'),
+    config  = require('../config.paths.js'),
+    servers = {
+      dev: koa(),
+      prod: koa()
+    };
 
-// $ GET /package.json
-app.use(serve('.'));
+var serve = function(root, fallback){
 
-// $ GET /hello.txt
-app.use(serve('test/fixtures'));
+  return function *(next){
+    var stat;
+    try{
+      stat = fs.statSync(root+this.path);
+      if( stat.isDirectory() ){
+        throw new Error("Won't serve directory");
+      }
+      yield send(this, root+this.path);
+    } catch (e) {
+      //console.error(e);
+      console.log('falling back for: ' + this.path);
+      yield send(this, fallback);
+    }
 
-// or use absolute paths
-app.use(serve(__dirname + '/test/fixtures'));
+  };
+};
 
-app.listen(3000);
+servers.dev.use(serve(config.dev, config.server.fallback.dev));
+servers.prod.use(serve(config.prod, config.server.fallback.prod));
 
-console.log('listening on port 3000');
+module.exports = {
+  get dev(){
+    servers.dev.listen(config.server.ports.dev);
+    return servers.dev;
+  },
+  get prod(){
+    servers.dev.listen(config.server.ports.prod);
+    return servers.prod;
+  }
+};
