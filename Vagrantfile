@@ -13,12 +13,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network "forwarded_port", guest: 5115, host: 5115
   config.vm.network "forwarded_port", guest: 5116, host: 5116
+  config.vm.network "forwarded_port", guest: 35729, host: 35729
 
-  config.vm.provision :shell, inline: 'apt-get install -y git', privileged: true
+  config.vm.provision :shell, inline: 'apt-get update', privileged: true
+  config.vm.provision :shell, inline: 'apt-get install -y build-essential libssl-dev git', privileged: true
+
   config.vm.provision :shell, path: "provision.sh", privileged: false
 
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--name", "Local Node Server"]
+    vb.customize ["modifyvm", :id, "--name", "Eardish Client Dev Env"]
     vb.customize ["modifyvm", :id, "--memory", "2048"]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
