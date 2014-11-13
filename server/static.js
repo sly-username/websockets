@@ -3,10 +3,8 @@ var koa     = require('koa'),
     send    = require('koa-send'),
     fs      = require('fs'),
     config  = require('../config.paths.js'),
-    servers = {
-      dev: koa(),
-      prod: koa()
-    };
+    dev     = koa(),
+    prod    = koa();
 
 var serve = function(root, fallback){
 
@@ -27,16 +25,16 @@ var serve = function(root, fallback){
   };
 };
 
-servers.dev.use(serve(config.dev, config.server.fallback.dev));
-servers.prod.use(serve(config.prod, config.server.fallback.prod));
+dev.use(serve(config.dev, config.server.fallback.dev));
+prod.use(serve(config.prod, config.server.fallback.prod));
 
 module.exports = {
   get dev(){
-    servers.dev.listen(config.server.ports.dev);
-    return servers.dev;
+    dev.listen(config.server.ports.dev);
+    return dev;
   },
   get prod(){
-    servers.dev.listen(config.server.ports.prod);
-    return servers.prod;
+    prod.listen(config.server.ports.prod);
+    return prod;
   }
 };
