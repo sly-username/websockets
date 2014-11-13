@@ -14,7 +14,7 @@
     "node": ">=0.11.13"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower -f install",
+    "postinstall": "./node_modules/bower/bin/bower install",
     "test": "./node_modules/karma/bin/karma run",
     "start": "npm run-script gulp dev",
     "dev": "npm run-script gulp dev",
