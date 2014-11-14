@@ -13,7 +13,13 @@ nvm install 0.11
 # install set 0.11 as default for system in nvm
 nvm alias default 0.11
 
+# add some stuff to .profile
+echo "" >> ~/.profile
+echo "# Added during provision" >> ~/.profile
+echo "source ~/clientapp/helpers.sh" >> ~/.profile
+
 # install gulp, bower, karma globally
+# TODO Remove?
 #npm install -g gulp bower karma-cli less traceur npm-check-updates
 
 if [ ! -d "~/clientapp/node_modules" ]; then
