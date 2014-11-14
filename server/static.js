@@ -1,8 +1,8 @@
 
-var koa     = require('koa'),
-    send    = require('koa-send'),
-    fs      = require('fs'),
-    config  = require('../config.paths.js'),
+var koa     = require("koa"),
+    send    = require("koa-send"),
+    fs      = require("fs"),
+    config  = require("../config.paths.js"),
     dev     = koa(),
     prod    = koa();
 
@@ -18,7 +18,7 @@ var serve = function(root, fallback){
       yield send(this, root+this.path);
     } catch (e) {
       //console.error(e);
-      console.log('falling back for: ' + this.path);
+      console.log("falling back for: " + this.path);
       yield send(this, fallback);
     }
 

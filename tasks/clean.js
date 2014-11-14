@@ -1,7 +1,7 @@
 
-var gulp    = require('gulp'),
-    rimraf  = require('rimraf'),
-    config  = require('../config.paths.js');
+var gulp    = require("gulp"),
+    rimraf  = require("rimraf"),
+    config  = require("../config.paths.js");
 
 
 var clean = function(path){
@@ -12,6 +12,6 @@ var clean = function(path){
   };
 };
 
-gulp.task('clean:dev', clean(config.dev));
-gulp.task('clean:prod', clean(config.prod));
-gulp.task('clean', ['clean:dev', 'clean:prod']);
+gulp.task("clean:dev", clean(config.dev));
+gulp.task("clean:prod", clean(config.prod));
+gulp.task("clean", ["clean:dev", "clean:prod"]);
