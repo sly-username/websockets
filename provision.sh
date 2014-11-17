@@ -22,6 +22,22 @@ echo "source ~/clientapp/helpers.sh" >> ~/.profile
 # TODO Remove?
 #npm install -g gulp bower karma-cli less traceur npm-check-updates
 
+# Create clientapp for prosperty
+if [ ! -d "/home/vagrant/clientapp" ]; then
+  mkdir /home/vagrant/clientapp
+fi
+
+# Create logs folder if needed
+if [ ! -d "/home/vagrant/clientapp/logs" ]; then
+  mkdir /home/vagrant/clientapp/logs
+fi
+
+# Create logs/gulp folder if needed
+if [ ! -d "/home/vagrant/clientapp/logs/gulp" ]; then
+  mkdir /home/vagrant/clientapp/logs/gulp
+fi
+
+# Set up node_modules if not already set up
 if [ ! -d "~/clientapp/node_modules" ]; then
   echo "npm install deps for clientapp"
   cd ~/clientapp/
