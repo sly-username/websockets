@@ -8,10 +8,26 @@
   <script src="vendor/polymer/polymer.js"></script>
 
   <link rel="stylesheet" href="styles/normalize.css"/>
-
+  <link rel="import" href="components/ui/on-off/on-off.html"/>
 </head>
 <body unresolved>
+<on-off on-text="on" off-text="off" checked="false"></on-off>
+<script>
 
+  var toggle = document.querySelector("on-off");
+
+  toggle.addEventListener("toggle", function () {
+    console.log("toggle");
+  });
+
+  toggle.addEventListener("on", function () {
+    console.log("on");
+  });
+  toggle.addEventListener("off", function () {
+    console.log("off");
+  });
+
+</script>
 <script>
   (function(){
     window.addEventListener("load", function(){

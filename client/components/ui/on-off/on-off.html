@@ -1,0 +1,47 @@
+<polymer-element name="on-off" attributes="on-text off-text checked disabled">
+  <template>
+    <link rel="stylesheet" href="on-off.css">
+
+    <div id="checkbox-toggle" class="checkbox-toggle">
+      <input id="checkbox" type="checkbox">
+      <span class="checkbox-knob"></span>
+      <span class="checkbox-labels"></span>
+      <span class="checkbox-bg"></span>
+    </div>
+  </template>
+  <script>
+    Polymer('on-off',{
+      ready:function () {
+        var labels = this.shadowRoot.querySelector(".checkbox-labels");
+        labels.setAttribute("on-text", this["on-text"]);
+        labels.setAttribute("off-text", this["off-text"]);
+
+        var checkedBox = this.shadowRoot.getElementById("checkbox");
+        console.log(checkBox);
+//        if(checked){
+//          checkedBox.checked = true;
+//        } else {
+//          checkedBox.checked = false;
+//        }
+
+      },
+      attached:function(){
+        var self= this, toggle = self.shadowRoot.querySelector("input[type='checkbox']");
+
+        toggle.addEventListener("change", function() {
+
+          self.fire('toggle', {msg:'toggle'});
+          if(toggle.checked) {
+            self.fire('on', {msg:'on'});
+          } else {
+            self.fire('off', {msg:'off'});
+          };
+
+        });
+
+      }
+
+
+    });
+  </script>
+</polymer-element>
