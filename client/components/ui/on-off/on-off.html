@@ -12,17 +12,28 @@
   <script>
     Polymer('on-off',{
       ready:function () {
+        //on-text off-text
         var labels = this.shadowRoot.querySelector(".checkbox-labels");
         labels.setAttribute("on-text", this["on-text"]);
         labels.setAttribute("off-text", this["off-text"]);
 
         var checkedBox = this.shadowRoot.getElementById("checkbox");
-        console.log(checkBox);
-//        if(checked){
-//          checkedBox.checked = true;
-//        } else {
-//          checkedBox.checked = false;
-//        }
+
+        //checked
+        if(this.hasAttribute("checked")){
+          checkedBox.checked = true;
+        } else {
+          checkedBox.checked = false;
+        }
+
+        //disabled
+        var disableToggle = this.shadowRoot.getElementById("checkbox-toggle");
+
+        if(this.hasAttribute("disabled")){
+          disableToggle.setAttribute("disabled","disabled");
+        } else {
+          disableToggle.removeAttribute("disabled");
+        }
 
       },
       attached:function(){
