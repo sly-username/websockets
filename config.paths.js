@@ -51,7 +51,8 @@ paths.server = {
   fallback: {
     dev: paths.dev + "/index.html",
     prod: paths.prod + "/index.html"
-  }
+  },
+  watch: paths.dev
 };
 
 
