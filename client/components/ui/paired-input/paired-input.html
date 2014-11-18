@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<polymer-element name="paired-input" attributes="type placeholder pattern valid confirm">
 
-</body>
-</html>
+    <template>
+        <input id="primaryBox" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
+        <input id="confirmBox" type="{{type}}" placeholder="confirm {{placeholder}}" />
+    </template>
+    <script>
+        Polymer("paired-input", {
+            attached: function () {
+                this.primaryBox = this.shadowRoot.querySelector("#primaryBox");
+                this.confirmBox = this.shadowRoot.querySelector("#confirmBox");
+                this.addEventListener('blur', this.blurConfirm);
+            },
+            blurConfirm: function () {
+                if (this.isValid) {
+                    alert("Passwords match!");
+                } else {
+                    alert("Please try again");
+                }
+            },
+            get isValid () {
+                console.log(this.primaryBox.value.match());
+                return /*this.primaryBox.value.match() && */this.confirmBox.value === this.primaryBox.value;
+            }
+        });
+    </script>
+
+</polymer-element>
