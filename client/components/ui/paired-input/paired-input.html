@@ -1,28 +1,56 @@
-<polymer-element name="paired-input" attributes="type placeholder pattern valid confirm">
+<polymer-element name="paired-input" attributes="type placeholder pattern required disabled single-line">
 
-    <template>
-        <input id="primaryBox" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
-        <input id="confirmBox" type="{{type}}" placeholder="confirm {{placeholder}}" />
-    </template>
-    <script>
-        Polymer("paired-input", {
-            attached: function () {
-                this.primaryBox = this.shadowRoot.querySelector("#primaryBox");
-                this.confirmBox = this.shadowRoot.querySelector("#confirmBox");
-                this.addEventListener('blur', this.blurConfirm);
-            },
-            blurConfirm: function () {
-                if (this.isValid) {
-                    alert("Passwords match!");
-                } else {
-                    alert("Please try again");
-                }
-            },
-            get isValid () {
-                console.log(this.primaryBox.value.match());
-                return /*this.primaryBox.value.match() && */this.confirmBox.value === this.primaryBox.value;
-            }
-        });
-    </script>
+  <template>
+    <link rel="stylesheet" href="paired-input.css">
+    <input id="primaryBox" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
+    <input id="confirmBox" type="{{type}}" placeholder="Confirm {{placeholder}}" />
+    <div id="error"></div>
+  </template>
+  <script>
+    Polymer("paired-input", {
+      ready: function () {
+        this.primaryBox = this.shadowRoot.querySelector("#primaryBox");
+        this.confirmBox = this.shadowRoot.querySelector("#confirmBox");
+        var arr = ["disabled", "required", "single-line"], i;
+
+        for( i=0 ; i<arr.length ; i++ ) {
+          if(this.hasAttribute(arr[i])){
+            this.primaryBox.setAttribute(arr[i], arr[i]);
+            this.confirmBox.setAttribute(arr[i], arr[i]);
+          }
+        }
+
+        if (this.primaryBox.hasAttribute("single-line")) {
+          this.primaryBox.style.display = "inline";
+          this.confirmBox.style.display = "inline";
+        }
+
+        if (/text|password|email/.test(this.attributes.type.value)) {
+          return;
+        } else {
+          this.setAttribute("type", "text");
+          this.setAttribute("placeholder", "text");
+        }
+      },
+      attached: function () {
+        this.addEventListener('keyup', this.keyConfirm);
+      },
+      keyConfirm: function () {
+        var error = this.shadowRoot.querySelector("#error");
+        error.innerHTML = this.isValid && this.primaryBox != "" && this.confirmBox != "'" ? "fields are valid" : "fields are not valid";
+      },
+      get isValid () {
+        var patternConfirm = new RegExp(this.attributes.pattern.value);
+        return this.primaryBox.value.match(patternConfirm) && this.confirmBox.value === this.primaryBox.value;
+      },
+      get val () {
+        return [this.primaryBox.value, this.confirmBox.value];
+      },
+      set val (val){
+        this.primaryBox.value = this.confirmBox.value = val;
+        return true;
+      }
+    });
+  </script>
 
 </polymer-element>
