@@ -1,4 +1,10 @@
 
+@import "colors.vars.less";
+@import "test.mixin.less";
+
 h2{
-  color: orange;
+//  color: orange;
+//  background-color: black;
+  color: lighten(orange, 10%);
+  .cool(@fontColor);
 }
