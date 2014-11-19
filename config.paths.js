@@ -16,16 +16,12 @@ paths.vendor = {
   dev: paths.dev + "/vendor",
   prod: paths.prod + "/vendor",
   src: [
-    "/platform/platform.js",
-    "/platform/platform.js.map",
-    "/polymer/polymer.js",
-    "/polymer/polymer.js.map"
+    "/webcomponentsjs/webcomponents.js",
+    "/polymer/polymer.js"
   ].map(function(s){ return paths.bower+s; }),
   min: [
-    "/platform/platform.js",
-    "/platform/platform.js.map",
-    "/polymer/polymer.js",
-    "/polymer/polymer.js.map"
+   "/webcomponentsjs/webcomponents.min.js",
+   "/polymer/polymer.min.js"
   ].map(function(s){ return paths.bower+s; })
 };
 
