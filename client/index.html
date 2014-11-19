@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="styles/reset.css"/>
 
   <!-- UI WebComponents -->
-
+  <link rel="import" href="components/ui/on-off/on-off.html"/>
 
   <!-- Eardish WebComponents -->
   <link rel="import" href="components/ed/test-lr-elem/ed-lr.html"/>
@@ -24,6 +24,25 @@
 <body unresolved>
 
 <paired-input type="email" placeholder="email"></paired-input>
+
+<on-off on-text="on" off-text="off" checked disabled></on-off>
+
+<script>
+
+  var toggle = document.querySelector("on-off");
+
+  toggle.addEventListener("toggle", function () {
+    console.log("toggle");
+  });
+
+  toggle.addEventListener("on", function () {
+    console.log("on");
+  });
+  toggle.addEventListener("off", function () {
+    console.log("off");
+  });
+
+</script>
 
 <script>
   (function(){
