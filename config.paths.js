@@ -37,9 +37,10 @@ paths.less = {
     dev: paths.dev,
     prod: paths.prod
   },
-  include: ["/**/*.vars.less", "/**/*.mixin.less"].map(function(s){return paths.client + s; })
+  includePaths: [ './client/styles/' ],
+  skip: ["/**/*.vars.less", "/**/*.mixin.less"].map(function(s){return paths.client + s; })
 };
-paths.less.compile = paths.less.include.map(function(s){return "!"+s; }).concat(paths.less.src);
+paths.less.compile = paths.less.skip.map(function(s){return "!"+s; }).concat(paths.less.src);
 
 
 /* SERVER PATHS */
@@ -51,7 +52,8 @@ paths.server = {
   fallback: {
     dev: paths.dev + "/index.html",
     prod: paths.prod + "/index.html"
-  }
+  },
+  watch: paths.dev
 };
 
 

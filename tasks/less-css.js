@@ -12,19 +12,9 @@ var gulp      = require("gulp"),
 var lessOptions = {
   "no-ie-compat": true,
   "compress":     false,
-  //"include-paths": []
-  //"include-paths": config.less.include.join(":")
+  "paths": config.less.includePaths
 };
 
-/*
-config.less.include.forEach(function(p){
-  var files = glob.sync(p);
-  lessOptions["include-paths"] = lessOptions["include-paths"].concat(files);
-});
-*/
-
-//lessOptions["include-paths"] = lessOptions["include-paths"].join(process.platform.test(/win/) ? ";" : ":");
-//gutil.log(lessOptions["include-paths"]);
 
 var myLess = function(){
   return through.obj(function(file, enc, cb){
@@ -73,7 +63,7 @@ gulp.task("less:dev", function(){
 
 });
 
-gulp.task("less:watch", function(){
+gulp.task("less:watch", function(done){
 
   // regular watch included less, recompile all
   gulp.watch(config.less.include, ["less"]);
@@ -85,5 +75,7 @@ gulp.task("less:watch", function(){
     .pipe(plumber())
     .pipe(myLess())
     .pipe(gulp.dest(config.less.out.dev));
+
+  done();
 
 });

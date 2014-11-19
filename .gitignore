@@ -16,6 +16,9 @@ lib-cov
 # Build Folder
 build/**
 
+# dotenv
+.env
+
 # Users Environment Variables
 .lock-wscript
 .DS_Store
