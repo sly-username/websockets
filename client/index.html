@@ -8,6 +8,8 @@
   <script src="vendor/platform/platform.js"></script>
   <script src="vendor/polymer/polymer.js"></script>
 
+  <link rel="import" href="components/ui/paired-input/paired-input.html">
+
   <!-- Global Styles -->
 
   <link rel="stylesheet" href="styles/reset.css"/>
@@ -21,6 +23,7 @@
 </head>
 <body unresolved>
 
+<paired-input type="email" placeholder="email"></paired-input>
 
 <on-off on-text="on" off-text="off" checked disabled></on-off>
 
@@ -40,6 +43,7 @@
   });
 
 </script>
+
 <script>
   (function(){
     window.addEventListener("load", function(){
@@ -64,6 +68,8 @@
     }, 200);
   }
 </script>
+
+
 
 </body>
 </html>
