@@ -10,9 +10,12 @@ dotenv.load();
 // load gulp tasks from ./tasks
 var dummy = requiredir("./tasks");
 
-//gulp.task("watch", ["less:watch"]);
+/* Watch task? */
+gulp.task("watch", ["less:watch"]);
 
-/* MAGIC TASK */
+
+
+/* MAGIC "START" TASK */
 gulp.task("start", function(done){
   var myEnv = process.env.GULP_ENVIRONMENT;
 
@@ -30,6 +33,7 @@ gulp.task("start", function(done){
     run( "default", done );
   }
 });
+
 
 
 /* DEVELOPMENT BUILD TASK */
@@ -51,11 +55,14 @@ gulp.task("dev", function(done){
 });
 
 
+
 /* PRODUCTION BUILD TASK */
 gulp.task("build:prod", function(done){
   gutil.log("TODO THIS TASK");
   done();
 });
+
+
 
 /* MAIN PRODUCTION TASK */
 gulp.task("prod", function(done){
