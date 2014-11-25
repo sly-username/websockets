@@ -4,7 +4,6 @@
 
 var gulp        = require("gulp"),
     gutil       = require("gulp-util"),
-    watch       = require("gulp-watch"),
     config      = require("../config.paths.js"),
     livereload  = require("livereload"),
     servers     = require("../server/static.js");
@@ -12,7 +11,7 @@ var gulp        = require("gulp"),
 
 gulp.task("server:dev", function(){
 
-  servers.dev; // starts koa server
+  servers.startDev(); // starts koa server
 
   // livereload
   var lrserver = livereload.createServer({
@@ -30,7 +29,7 @@ gulp.task("server:dev", function(){
 
 gulp.task("server:prod", function(){
 
-  servers.prod; // starts koa server
+  servers.startProd(); // starts koa server
   gutil.log("prod server started on " + config.server.ports.prod);
 
 });

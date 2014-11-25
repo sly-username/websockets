@@ -5,16 +5,18 @@
   <link rel="shortcut icon" href="assets/favicon.ico"/>
 
   <!-- Scripts -->
-  <script src="vendor/webcomponentsjs/webcomponents.js"></script>
-  <script src="vendor/polymer/polymer.js"></script>
+  <script src="vendor/webcomponents.js"></script>
+  <script src="vendor/polymer.js"></script>
+  <!-- script src="vendor/traceur-runtime.js"></script -->
 
-  <link rel="import" href="components/ui/paired-input/paired-input.html">
+  <!-- TODO REMOVE, JUST FOR TESTING -->
+  <!-- link rel="import" href="components/ed/es6-elm/es6-elm.html"/ -->
 
   <!-- Global Styles -->
-
   <link rel="stylesheet" href="styles/reset.css"/>
 
   <!-- UI WebComponents -->
+  <link rel="import" href="components/ui/paired-input/paired-input.html"/>
   <link rel="import" href="components/ui/on-off/on-off.html"/>
 
   <!-- Eardish WebComponents -->
@@ -23,10 +25,13 @@
 </head>
 <body unresolved>
 
+<!-- testing es6 import
+<es6-elm my-name="Ryan"></es6-elm> -->
+
 <paired-input type="email" placeholder="email"></paired-input>
 
-<on-off on-text="on" off-text="off" checked disabled></on-off>
 
+<on-off on-text="on" off-text="off" checked disabled></on-off>
 <script>
 
   var toggle = document.querySelector("on-off");

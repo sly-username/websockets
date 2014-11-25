@@ -19,7 +19,7 @@ gulp.task("watch", ["less:watch"]);
 gulp.task("start", function(done){
   var myEnv = process.env.GULP_ENVIRONMENT;
 
-  gutil.log('running task for env: ' + myEnv);
+  gutil.log("running task for env: " + myEnv);
 
   if ( myEnv === "DEVELOPMENT" ) {
     run( "dev", done );
@@ -27,7 +27,7 @@ gulp.task("start", function(done){
     run( "prod", done );
   } else if ( myEnv === "QA" ){
     // do QA task ?
-    gutil.log('Task has not been created yet');
+    gutil.log("Task has not been created yet");
     done();
   } else {
     run( "default", done );
