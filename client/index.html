@@ -2,69 +2,35 @@
 <html lang="en">
 <head>
   <base href="/" />
-  <link rel="shortcut icon" href="assets/favicon.ico"/>
+  <link rel="shortcut icon" href="assets/favicon.ico" />
 
   <!-- Scripts -->
   <script src="vendor/webcomponents.js"></script>
   <script src="vendor/polymer.js"></script>
-  <!-- script src="vendor/traceur-runtime.js"></script -->
-
-  <!-- TODO REMOVE, JUST FOR TESTING -->
-  <!-- link rel="import" href="components/ed/es6-elm/es6-elm.html"/ -->
 
   <!-- Global Styles -->
-  <link rel="stylesheet" href="styles/reset.css"/>
+  <link rel="stylesheet" href="styles/reset.css" />
 
   <!-- UI WebComponents -->
-  <link rel="import" href="components/ui/paired-input/paired-input.html"/>
-  <link rel="import" href="components/ui/on-off/on-off.html"/>
+  <link rel="import" href="components/ui/ui-components.html" />
 
   <!-- Eardish WebComponents -->
-  <link rel="import" href="components/ed/test-lr-elem/ed-lr.html"/>
+  <link rel="import" href="components/ed/ed-components.html" />
 
 </head>
 <body unresolved>
 
-<!-- testing es6 import
-<es6-elm my-name="Ryan"></es6-elm> -->
-
 <paired-input type="email" placeholder="email"></paired-input>
 
-
-<on-off on-text="on" off-text="off" checked disabled></on-off>
-<script>
-
-  var toggle = document.querySelector("on-off");
-
-  toggle.addEventListener("toggle", function () {
-    console.log("toggle");
-  });
-
-  toggle.addEventListener("on", function () {
-    console.log("on");
-  });
-  toggle.addEventListener("off", function () {
-    console.log("off");
-  });
-
-</script>
-
-<script>
-  (function(){
-    window.addEventListener("load", function(){
-      console.log("done.");
-      document.body.removeAttribute("unresolved");
-    });
-  })();
-</script>
+<on-off on-text="Yes" off-text="No" checked></on-off>
 
 <script id="reload-tag" type="text/javascript">
   if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
     document.write(
-        '<script src="http://'
-        + (location.host || "localhost").split(":")[0]
-        + ':35729/livereload.js"></'
-        + "script>"
+        "<script src=\"http://" +
+        (location.host || "localhost").split(":")[0] +
+        ":35729/livereload.js\"></" +
+        "script>"
     );
   } else {
     var here = document.getElementById("reload-tag");
@@ -73,8 +39,6 @@
     }, 200);
   }
 </script>
-
-
 
 </body>
 </html>

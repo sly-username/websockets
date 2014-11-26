@@ -40,3 +40,8 @@ start-gulp ()
   fi
   proc-gulp
 }
+
+restart-gulp ()
+{
+  kill-gulp ; start-gulp
+}

@@ -1,27 +1,33 @@
 * {
-  box-sizing:border-box;
+  box-sizing: border-box;
 }
-.checkbox-toggle {
-  height:20px;
-  position:relative;
-  width:77px;
+
+.toggle {
+  height: 20px;
+  position: relative;
+  width: 77px;
   input {
-    cursor:pointer;
-    height:20px;
-    left:0;
-    opacity:0;
-    position:absolute;
-    top:0;
-    width:75px;
-    z-index:6;
+    position: absolute;
+    width: 75px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 6;
+    &:checked{
+      & ~ .knob {
+        left:40px;
+      }
+      & ~ .background {
+        background:#8bc300;
+      }
+    }
   }
-  input:checked ~ .checkbox-knob {
-    left:40px;
+  span{
+
   }
-  input:checked ~ .checkbox-bg {
-    background:#8bc300;
-  }
-  .checkbox-knob {
+  .knob {
     background:#cfd4d8;
     border:2px solid #e8e8e8;
     border-radius:8px;
@@ -35,7 +41,7 @@
     width:34px;
     z-index:4;
   }
-  .checkbox-labels {
+  .labels {
     color:#ffffff;
     font-family:Helvetica, Arial, sans-serif;
     font-weight:bold;
@@ -45,18 +51,18 @@
     top:8px;
     width:100%;
     z-index:2;
+    &:before {
+      content:attr(data-on-text);
+      left:10px;
+      position:absolute;
+    }
+    &:after {
+      content:attr(data-off-text);
+      left:40px;
+      position:absolute;
+    }
   }
-  .checkbox-labels:before {
-    content:attr(on-text);
-    left:10px;
-    position:absolute;
-  }
-  .checkbox-labels:after {
-    content:attr(off-text);
-    left:40px;
-    position:absolute;
-  }
-  .checkbox-bg {
+  .background {
     background:#c41230;
     border-radius:8px;
     box-shadow:inset 0 2px 5px 0 rgba(0,0,0,0.2);
