@@ -15,7 +15,7 @@ var lessOptions = {
   "paths": config.less.includePaths
 };
 
-
+/* jshint -W071 */
 var myLess = function(){
   return through.obj(function(file, enc, done){
 
