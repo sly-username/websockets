@@ -17,19 +17,18 @@
     },
     set onText(value){
       this.attributes["on-text"].value = value;
-      return this._onText = value;
+      return (this._onText = value);
     },
     get offText(){
       return this._offText;
     },
     set offText(value){
       this.attributes["off-text"].value = value;
-      return this._offText = value;
+      return (this._offText = value);
     },
     ready: function () {
       //on-text off-text
-      var labels = this.shadowRoot.querySelector(".labels"),
-          checkedBox = this.shadowRoot.getElementById("checkbox");
+      var checkedBox = this.shadowRoot.getElementById("checkbox");
 
       this.onText  = this.attributes["on-text"].value;
       this.offText = this.attributes["off-text"].value;

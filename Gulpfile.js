@@ -8,7 +8,7 @@ var gulp        = require("gulp"),
 dotenv.load();
 
 // load gulp tasks from ./tasks
-var dummy = requiredir("./tasks");
+var dummy = requiredir("./tasks"); // jshint ignore:line
 
 /* Watch task? */
 gulp.task("watch", ["less:watch"]);
