@@ -17,21 +17,26 @@ gulp.task("watch", ["less:watch"]);
 
 /* MAGIC "START" TASK */
 gulp.task("start", function(done){
-  var myEnv = process.env.GULP_ENVIRONMENT;
 
-  gutil.log("running task for env: " + myEnv);
+  gutil.log("running task for env: " + process.env.GULP_ENVIRONMENT);
 
-  if ( myEnv === "DEVELOPMENT" ) {
-    run( "dev", done );
-  } else if ( myEnv === "PRODUCTION" ) {
-    run( "prod", done );
-  } else if ( myEnv === "QA" ){
-    // do QA task ?
-    gutil.log("Task has not been created yet");
-    done();
-  } else {
-    run( "default", done );
+  switch ( process.env.GULP_ENVIRONMENT ) {
+    case "DEVELOPMENT":
+      run( "dev", done );
+      break;
+    case "PRODUCTION":
+      run( "prod", done );
+      break;
+    case "QA":
+      // do QA task ?
+      gutil.log("Task has not been created yet");
+      done();
+      break;
+    default:
+      run( "default", done );
+      break;
   }
+
 });
 
 

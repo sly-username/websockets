@@ -8,19 +8,18 @@ var gulp        = require("gulp"),
     livereload  = require("livereload"),
     servers     = require("../server/static.js");
 
+var livereloadOptions = {
+  port: 35729, // default livereload port
+  applyJSLive: false,
+  applyCSSLive: false
+  //exts: [ "html", "js", "css" ]
+};
 
 gulp.task("server:dev", function(){
 
   servers.startDev(); // starts koa server
 
-  // livereload
-  var lrserver = livereload.createServer({
-    port: 35729, // default livereload port
-    applyJSLive: false,
-    applyCSSLive: false
-    //exts: [ 'html', 'js', 'css' ]
-  });
-
+  var lrserver = livereload.createServer(livereloadOptions);
   lrserver.watch(config.server.watch);
 
   gutil.log("dev server started on " + config.server.ports.dev);
