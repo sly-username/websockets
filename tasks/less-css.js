@@ -17,10 +17,10 @@ var lessOptions = {
 
 
 var myLess = function(){
-  return through.obj(function(file, enc, cb){
+  return through.obj(function(file, enc, done){
 
     if( file.isNull() ){
-      return cb(null, file);
+      return done(null, file);
     }
 
     var str = file.contents.toString("utf8");
@@ -31,24 +31,24 @@ var myLess = function(){
 
     less.render(str, opts)
       .then(
-      function(css){
-        file.contents = new Buffer(css.css);
-        file.path = gutil.replaceExtension(file.path, ".css");
+        function(css){
+          file.contents = new Buffer(css.css);
+          file.path = gutil.replaceExtension(file.path, ".css");
 
-        if( file.sourceMap ){
-          // TODO: add source map stuff
+          if( file.sourceMap ){
+            // TODO: add source map stuff
+          }
+
+          done(null, file);
+        },
+        function(err){
+          err.lineNumber = err.line;
+          err.fileName = err.filename;
+          err.message = err.message + " in file " + err.fileName + " line #" + err.lineNumber;
+
+          done(new gutil.PluginError("my-less", err));
         }
-
-        cb(null, file);
-      },
-      function(err){
-        err.lineNumber = err.line;
-        err.fileName = err.filename;
-        err.message = err.message + " in file " + err.fileName + " line #" + err.lineNumber;
-
-        cb(new gutil.PluginError("my-less", err));
-      }
-    );
+      );
 
   });
 };
