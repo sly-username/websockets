@@ -45,7 +45,12 @@ gulp.task("start", function(done){
 gulp.task("build:dev", function(done){
   run(
     "clean:dev",
-    ["less:dev", "symlink:dev", "vendor:dev"],
+    [
+      "less:dev",
+      "symlink:dev",
+      "vendor:dev",
+      "traceur:dev"
+    ],
     done
   );
 });
@@ -54,7 +59,8 @@ gulp.task("build:dev", function(done){
 gulp.task("dev", function(done){
   run(
     "build:dev",
-    ["server:dev", "less:watch"],
+    "server:dev",
+    ["less:watch", "traceur:watch"],
     done
   );
 });
