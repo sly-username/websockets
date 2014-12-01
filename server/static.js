@@ -6,6 +6,7 @@ var koa     = require("koa"),
     dev     = koa(),
     prod    = koa();
 
+/* jshint -W071 */
 var serve = function(root, fallback){
 
   return function *(next){

@@ -1,45 +1,14 @@
 <polymer-element name="on-off" attributes="on-text off-text checked disabled">
   <template>
-    <link rel="stylesheet" href="on-off.css">
+    <link rel="stylesheet" href="./on-off.css">
 
-    <div id="checkbox-toggle" class="checkbox-toggle">
-      <input id="checkbox" type="checkbox">
-      <span class="checkbox-knob"></span>
-      <span class="checkbox-labels"></span>
-      <span class="checkbox-bg"></span>
+    <div id="toggle" class="toggle">
+      <input id="checkbox" type="checkbox" />
+      <span class="knob"></span>
+      <span class="labels" data-on-text="{{_onText}}" data-off-text="{{_offText}}"></span>
+      <span class="background"></span>
     </div>
 
   </template>
-  <script>
-    Polymer('on-off',{
-      ready:function () {
-        //on-text off-text
-        var labels = this.shadowRoot.querySelector(".checkbox-labels");
-        labels.setAttribute("on-text", this["on-text"]);
-        labels.setAttribute("off-text", this["off-text"]);
-        //checked
-        var checkedBox = this.shadowRoot.getElementById("checkbox");
-        var checked = this.hasAttribute("checked") ? checkedBox.setAttribute("checked", "checked") : checkedBox.removeAttribute("checked");
-
-        //disabled
-        var disableToggle = this.shadowRoot.getElementById("checkbox");
-        var cancelToggle = this.hasAttribute("disabled") ? disableToggle.setAttribute("disabled","disabled") :  disableToggle.removeAttribute("disabled");
-
-      },
-      attached:function(){
-        var self= this, toggle = self.shadowRoot.querySelector("input[type='checkbox']");
-
-        toggle.addEventListener("change", function() {
-          var state = toggle.checked ? "on" : "off";
-
-          self.fire('toggle', {msg:'toggle'});
-          self.fire(state, {msg:state});
-
-        });
-
-      }
-
-
-    });
-  </script>
+  <script src="./on-off.js"></script>
 </polymer-element>

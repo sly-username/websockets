@@ -6,51 +6,6 @@
     <input id="confirmBox" type="{{type}}" placeholder="Confirm {{placeholder}}" />
     <div id="error"></div>
   </template>
-  <script>
-    Polymer("paired-input", {
-      ready: function () {
-        this.primaryBox = this.shadowRoot.querySelector("#primaryBox");
-        this.confirmBox = this.shadowRoot.querySelector("#confirmBox");
-        var arr = ["disabled", "required", "single-line"], i;
-
-        for( i=0 ; i<arr.length ; i++ ) {
-          if(this.hasAttribute(arr[i])){
-            this.primaryBox.setAttribute(arr[i], arr[i]);
-            this.confirmBox.setAttribute(arr[i], arr[i]);
-          }
-        }
-
-        if (this.primaryBox.hasAttribute("single-line")) {
-          this.primaryBox.style.display = "inline";
-          this.confirmBox.style.display = "inline";
-        }
-
-        if (/text|password|email/.test(this.attributes.type.value)) {
-          return;
-        } else {
-          this.setAttribute("type", "text");
-          this.setAttribute("placeholder", "text");
-        }
-      },
-      attached: function () {
-        this.addEventListener('keyup', this.keyConfirm);
-      },
-      keyConfirm: function () {
-        var error = this.shadowRoot.querySelector("#error");
-        error.innerHTML = this.isValid && this.primaryBox != "" && this.confirmBox != "'" ? "fields are valid" : "fields are not valid";
-      },
-      get isValid () {
-        var patternConfirm = new RegExp(this.attributes.pattern.value);
-        return this.primaryBox.value.match(patternConfirm) && this.confirmBox.value === this.primaryBox.value;
-      },
-      get val () {
-        return [this.primaryBox.value, this.confirmBox.value];
-      },
-      set val (val){
-        this.primaryBox.value = this.confirmBox.value = val;
-        return true;
-      }
-    });
-  </script>
+  <script src="./paired-input.js"></script>
 
 </polymer-element>

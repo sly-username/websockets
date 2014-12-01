@@ -1,4 +1,3 @@
-
 var gulp        = require("gulp"),
     gutil       = require("gulp-util"),
     run         = require("run-sequence"),
@@ -8,6 +7,7 @@ var gulp        = require("gulp"),
 dotenv.load();
 
 // load gulp tasks from ./tasks
+/* jshint -W098 */
 var dummy = requiredir("./tasks");
 
 /* Watch task? */
