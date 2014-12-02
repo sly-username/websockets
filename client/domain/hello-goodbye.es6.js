@@ -3,9 +3,9 @@
  */
 
 
-export var hello = (name) => { alert("hello" + name); return name; };
+export var hello = (name) => { alert("Hello " + name); return name; };
 
-export var goodbye = (name) => { console.log("goodbye" + name); return; };
+export var goodbye = (name) => { console.log("Goodbye " + name); return; };
 
 
 export default { hello, goodbye };

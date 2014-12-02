@@ -6,104 +6,57 @@
 var gulp      = require("gulp"),
     gutil     = require("gulp-util"),
     through   = require("through2"),
-    exec      = require("child_process").exec,
-    config    = require("../config.paths.js");
-    //traceur   = require("traceur");
+    config    = require("../config.paths.js"),
+    traceur   = require("traceur");
 
 gulp.task("traceur:watch", function(done){
-  gulp.watch(config.traceur.watch,  ["traceur:dev"]);
+  gulp.watch(config.traceur.src,  ["traceur:dev"]);
+  done();
 });
 
 
 // Compiler Options
 var options = {
-  modules: "register",
+  modules: "instantiate",
   experimental: true
 };
 
-
-var buildDir = config.traceur.bin + " --dir " + config.client + " " + config.dev + " --modules=register";
-console.log(buildDir);
-
-// not yet
-var buildCommand = function(file){
-
-  var command = [
-    config.traceur.bin,
-    "--experimental",
-    file.path
-  ].join(" ");
-
-  return command;
-};
-
-var compile = function(ots){
-  /*
-  exec(buildDir, function(err, stdout, stderr){
-    gutil.log("done compiling: " + stdout);
-    gutil.log("error: " + stderr);
-    done(err);
-  });
-  */
-
-  return through.obj(function(file, enc, done){
-    var command = buildCommand(file);
-    gutil.log(command);
-
-    exec(command, function(err, stdout, stderr){
-      if( err ){
-        gutil.log("stderr: " + stderr);
-        done(err);
-      }
-
-      gutil.log('stdout: ' + stdout);
-      //file.contents = stdout;
-      //file.path = file.path.relace(config.client,  config.dev);
-      //this.push(file);
-      done(null);
-
-    });
-
-  });
-
-};
-
 // Traceur compile in a stream!
-/* Traceur node api suckszors :(
+/* Traceur node api is working for now! */
 var compileES6 = function(opts){
   return through.obj(function(file, enc, done){
-    var es5, es6;
+    var es5, es6, moduleName, newPath;
 
     if( file.isNull() ){
       this.push(file);
       return done();
     }
 
+    moduleName = file.path.replace(config.client+"/", "");
+    newPath = file.path; //file.path.replace(/\.es6\.js$/, ".js");
+
+    opts.moduleName = moduleName;
     es6 = file.contents.toString("utf8");
-    //es5 = traceur.compile(es6, opts);
+    es5 = traceur.compile(es6, opts);
+    file.contents = new Buffer(es5);
+    file.path = newPath;
 
-    //file.contents = new Buffer(es5);
-    file.path = file.path.replace(/\.es6\.js$/, ".js");
-
-    gutil.log(" -- Path: " + file.path);
-    gutil.log(" ------ ES6 ------\n");
-    gutil.log(es6);
-    gutil.log(" ------ ES5 ------\n");
-    gutil.log(es5);
+    gutil.log(
+      "Compiling: " + file.path +
+      " To: " + newPath +
+      " With name: " + moduleName
+    );
 
     this.push(file);
     done();
   });
 };
-*/
 
 /*** dev task **/
-gulp.task("traceur:dev", function(done){
+gulp.task("traceur:dev", function(){
 
-
-  //compile(done);
   return gulp.src(config.traceur.src)
-    .pipe(compile(options))
+    .pipe(compileES6(options))
     .pipe(gulp.dest(config.traceur.out.dev));
 
 });

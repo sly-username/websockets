@@ -10,6 +10,8 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.1"
+    "polymer": "Polymer/polymer#~0.5.1",
+    "es6-module-loader": "=0.10.0",
+    "system.js": "=0.10.2"
   }
 }

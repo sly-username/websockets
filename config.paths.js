@@ -19,7 +19,13 @@ paths.vendor = {
   src: [
       // Stuff in bower_components
       "/webcomponentsjs/webcomponents.js",
-      "/polymer/polymer.js"
+      "/polymer/polymer.js",
+      "/system.js/dist/system.js",
+      //"/system.js/dist/system.src.js",
+      "/system.js/dist/system.js.map",
+      "/es6-module-loader/dist/es6-module-loader.js",
+      //"/es6-module-loader/dist/es6-module-loader.src.js",
+      "/es6-module-loader/dist/es6-module-loader.js.map"
     ].map( function(s){ return paths.bowerComponents + s; }
     ).concat([
       // Stuff in node_modules
@@ -28,7 +34,11 @@ paths.vendor = {
   min: [
       // Stuff in bower_components
       "/webcomponentsjs/webcomponents.min.js",
-      "/polymer/polymer.min.js"
+      "/polymer/polymer.min.js",
+      "/system.js/dist/system.js",
+      "/system.js/dist/system.js.map",
+      "/es6-module-loader/dist/es6-module-loader.js",
+      "/es6-module-loader/dist/es6-module-loader.js.map"
     ].map( function(s){ return paths.bowerComponents + s; }
     ).concat([
       // Stuff in node_modules
