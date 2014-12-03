@@ -2,7 +2,7 @@
  * Created by rj on 11/24/14.
  */
 
-import helloGoodbye from "domain/hello-goodbye.es6";
+import helloGoodbye from "./hello-goodbye.es6";
 
 helloGoodbye.hello("ES6");
 

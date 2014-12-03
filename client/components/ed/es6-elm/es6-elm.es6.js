@@ -2,18 +2,19 @@
  * Created by rj on 12/2/14.
  */
 
-import hello from "domain/main.es6";
+(function( Polymer ){
+  console.log("execute es6-elm.es6");
 
-console.log("execute es6-elm.es6");
-
-window.Polymer("es6-elm", {
-  attached(){
-    console.log("attached called");
-    var self = this;
-    this.addEventListener("click", evt => {
-      hello(self.getAttribute("my-name"));
-    });
-  }
-});
-
+  window.Polymer("es6-elm", {
+    attached(){
+      console.log("attached called");
+      var self = this;
+      System.import("domain/main.es6").then( hello => {
+        self.addEventListener("click", evt => {
+          hello.default(self.getAttribute("my-name"));
+        });
+      });
+    }
+  });
+})( window.Polymer );
 

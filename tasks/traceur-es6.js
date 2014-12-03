@@ -18,29 +18,37 @@ var options = {
 };
 
 // Traceur compile in a stream!
-/* Traceur node api is working for now! */
+/* Traceur node api is working! ...for now... */
 var compileES6 = function(opts){
   return through.obj(function(file, enc, done){
-    var es5, es6, moduleName, newPath;
+    var es6,
+        oldPath = file.path;
 
     if( file.isNull() ){
       this.push(file);
       return done();
     }
 
-    moduleName = file.path.replace(config.client+"/", "").replace(/\.js$/, "");
-    newPath = file.path; //file.path.replace(/\.es6\.js$/, ".js");
+    // set module name
+    opts.moduleName = oldPath.replace(config.client+"/", "").replace(/\.js$/, "");
 
-    opts.moduleName = moduleName;
+    // if in components folder, set to script mode
+    if( (new RegExp("^" + config.client + "/components")).test(oldPath) ){
+      opts.script = true;
+    }
+
+    // Get ES6 File Content
     es6 = file.contents.toString("utf8");
-    es5 = traceur.compile(es6, opts);
-    file.contents = new Buffer(es5);
-    file.path = newPath;
 
+    // Update File Object
+    file.contents = new Buffer( traceur.compile(es6, opts) );
+    file.path = oldPath; //oldPath.replace(/\.es6\.js$/, ".js"); TODO: Do we remove the .es6 postfix?
+
+    // Log work
     gutil.log(
-      "Compiling: " + file.path +
-      " To: " + newPath +
-      " With name: " + moduleName
+      "\n\tCompiling: " + oldPath +
+      //"\n\tTo: " + file.path +
+      "\n\tNamed: " + opts.moduleName
     );
 
     this.push(file);
