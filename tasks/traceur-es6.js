@@ -5,14 +5,10 @@
 
 var gulp      = require("gulp"),
     gutil     = require("gulp-util"),
+    watch     = require("gulp-watch"),
     through   = require("through2"),
     config    = require("../config.paths.js"),
     traceur   = require("traceur");
-
-gulp.task("traceur:watch", function(done){
-  gulp.watch(config.traceur.src,  ["traceur:dev"]);
-  done();
-});
 
 
 // Compiler Options
@@ -32,7 +28,7 @@ var compileES6 = function(opts){
       return done();
     }
 
-    moduleName = file.path.replace(config.client+"/", "");
+    moduleName = file.path.replace(config.client+"/", "").replace(/\.js$/, "");
     newPath = file.path; //file.path.replace(/\.es6\.js$/, ".js");
 
     opts.moduleName = moduleName;
@@ -61,6 +57,17 @@ gulp.task("traceur:dev", function(){
 
 });
 
+
+/*** watch task ***/
+gulp.task("traceur:watch", function(done){
+  //gulp.watch(config.traceur.src,  ["traceur:dev"]);
+
+  watch(config.traceur.src)
+    .pipe(compileES6(options))
+    .pipe(gulp.dest(config.traceur.out.dev));
+
+  done();
+});
 
 // TODO prod task
 

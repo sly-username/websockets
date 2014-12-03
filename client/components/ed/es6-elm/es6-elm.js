@@ -3,7 +3,7 @@
   Polymer("es6-elm", {
     attached: function(){
       // Using the promise based "System.import"
-      System.import("domain/main.es6.js").then(function(main){
+      System.import("domain/main.es6").then(function(main){
         main = main.default;
         this.addEventListener("click", function(evt){
           var name = this.getAttribute("my-name");
