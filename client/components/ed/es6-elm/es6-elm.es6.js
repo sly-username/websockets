@@ -3,17 +3,13 @@
  */
 
 (function( Polymer ){
-  console.log("execute es6-elm.es6");
-
   window.Polymer("es6-elm", {
     attached(){
-      console.log("attached called");
-      var self = this;
-      System.import("domain/main.es6").then( hello => {
-        self.addEventListener("click", evt => {
+      System.import("domain/main.es6").then((hello => {
+        self.addEventListener("click", (() => {
           hello.default(self.getAttribute("my-name"));
-        });
-      });
+        }).bind(this));
+      }).bind(this));
     }
   });
 })( window.Polymer );

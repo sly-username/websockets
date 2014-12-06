@@ -22,16 +22,11 @@
   <link rel="import" href="components/ed/ed-components.html" />
 
 
-  <!-- TODO REMOVE FOR TESTING -->
+  <!-- TODO TESTING COMPONENTS -->
   <link rel="import" href="components/ed/es6-elm/es6-elm.html"/>
-  <!-- TODO END REMOVE FOR TESTING -->
-
+  <!-- TODO END TESTING COMPONENTS -->
 </head>
 <body>
-
-<!-- TODO REMOVE FOR TESTING -->
-<es6-elm my-name="Ryan"></es6-elm>
-<!-- TODO END REMOVE FOR TESTING -->
 
 <paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>
 
@@ -45,12 +40,13 @@
         ":35729/livereload.js\"></" +
         "script>"
     );
-  } else {
-    var here = document.getElementById("reload-tag");
-    setTimeout(function(){
-      document.body.removeChild(here);
-    }, 200);
   }
+
+  // Remove this script tag
+  var here = document.getElementById("reload-tag");
+  setTimeout(function(){
+    document.body.removeChild(here);
+  }, 200);
 </script>
 
 </body>
