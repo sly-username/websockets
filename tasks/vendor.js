@@ -27,7 +27,7 @@ var rewriteExt = function(pattern, replace){
     pattern = new RegExp(pattern);
   }
   return through.obj(function (file, enc, done) {
-    if ( !file.isNull() && pattern.test(file.path) ) {
+    if ( file.path && pattern.test(file.path) ) {
       file.path = file.path.replace(pattern, replace);
     }
 

@@ -1,12 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
   <base href="/" />
   <link rel="shortcut icon" href="assets/favicon.ico" />
 
   <!-- Scripts -->
   <script src="vendor/webcomponents.js"></script>
   <script src="vendor/polymer.js"></script>
+  <script src="vendor/traceur-runtime.js"></script>
+  <script src="vendor/es6-module-loader.js"></script>
+  <script src="vendor/system.js"></script>
 
   <!-- Global Styles -->
   <link rel="stylesheet" href="styles/reset.css" />
@@ -17,8 +21,12 @@
   <!-- Eardish WebComponents -->
   <link rel="import" href="components/ed/ed-components.html" />
 
+
+  <!-- TODO TESTING COMPONENTS -->
+  <link rel="import" href="components/ed/es6-elm/es6-elm.html"/>
+  <!-- TODO END TESTING COMPONENTS -->
 </head>
-<body unresolved>
+<body>
 
 <paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>
 
@@ -32,12 +40,13 @@
         ":35729/livereload.js\"></" +
         "script>"
     );
-  } else {
-    var here = document.getElementById("reload-tag");
-    setTimeout(function(){
-      document.body.removeChild(here);
-    }, 200);
   }
+
+  // Remove this script tag
+  var here = document.getElementById("reload-tag");
+  setTimeout(function(){
+    document.body.removeChild(here);
+  }, 200);
 </script>
 
 </body>
