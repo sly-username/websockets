@@ -36,7 +36,7 @@ var myLess = function(){
           file.path = gutil.replaceExtension(file.path, ".css");
 
           if( file.sourceMap ){
-            // TODO: add source map stuff
+            // TODO: add source map stuff?
           }
 
           done(null, file);
