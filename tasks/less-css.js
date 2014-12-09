@@ -56,11 +56,9 @@ var myLess = function(){
 gulp.task("less", ["less:dev"]);
 
 gulp.task("less:dev", function(){
-
   return gulp.src(config.less.compile)
     .pipe(myLess())
     .pipe(gulp.dest(config.less.out.dev));
-
 });
 
 gulp.task("less:watch", function(done){
@@ -69,9 +67,7 @@ gulp.task("less:watch", function(done){
   gulp.watch(config.less.include, ["less"]);
 
   // watch all non-include and compile per file
-  watch(config.less.compile, {
-    name: "LESS"
-  })
+  watch(config.less.compile, { name: "LESS" })
     .pipe(plumber())
     .pipe(myLess())
     .pipe(gulp.dest(config.less.out.dev));

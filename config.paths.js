@@ -65,6 +65,13 @@ paths.less.compile = paths.less.skip.map(function(s){ return "!"+s; }).concat(pa
 //paths.less.compile = paths.less.skip.map( s => "!" + s ).concat(paths.less.src);
 
 
+/*** ***/
+paths.jscs = {
+  rc: paths.root + "/.jscsrc",
+  src: paths.client + "/**/*.js"
+};
+
+
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
   bin: paths.nodeModules + "/.bin/traceur",
