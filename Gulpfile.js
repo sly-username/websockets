@@ -33,14 +33,23 @@ gulp.task( "start", function( done ) {
   }
 });
 
-/* TODO Watch task? */
-gulp.task( "watch", [ "less:watch" ]);
+/* TODO Need a watch task? */
+gulp.task( "watch", function( done ) {
+  run(
+    [
+      "less:watch",
+//      "jscs:watch", // not working currently
+      "traceur:watch"
+    ],
+    done
+  );
+});
 
 /*** DEVELOPMENT BUILD TASK ***/
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-    "jscs:all",
+//    "jscs:client",
     [
       "less:dev",
       "symlink:dev",
@@ -58,7 +67,7 @@ gulp.task( "dev", function( done ) {
     "server:dev",
     [
       "less:watch",
-      "jscs:watch",
+//      "jscs:watch",
       "traceur:watch"
     ],
     done
@@ -76,4 +85,8 @@ gulp.task( "prod", function( done ) {
   run( "build:prod", done );
 });
 
-gulp.task( "default", [ "build:dev", "build:prod" ]);
+/*** BUILD ALL THE THINGS ***/
+gulp.task( "build", [ "build:dev", "build:prod" ]);
+
+/*** GULP DEFAULT IS START ***/
+gulp.task( "default", [ "start" ]);
