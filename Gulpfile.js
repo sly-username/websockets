@@ -1,24 +1,19 @@
-var gulp        = require("gulp"),
-    gutil       = require("gulp-util"),
-    run         = require("run-sequence"),
-    requiredir  = require("requiredir"),
-    dotenv      = require("dotenv");
+var gulp      = require( "gulp" ),
+  gutil       = require( "gulp-util" ),
+  run         = require( "run-sequence" ),
+  requiredir  = require( "requiredir" ),
+  dotenv      = require( "dotenv" ),
+  dummy;
 
 dotenv.load();
 
 // load gulp tasks from ./tasks
 /* jshint -W098 */
-var dummy = requiredir("./tasks");
+dummy = requiredir( "./tasks" );
 
-/* Watch task? */
-gulp.task("watch", ["less:watch"]);
-
-
-
-/* MAGIC "START" TASK */
-gulp.task("start", function(done){
-
-  gutil.log("running task for env: " + process.env.GULP_ENVIRONMENT);
+/*** MAGIC "START" TASK ***/
+gulp.task( "start", function( done ) {
+  gutil.log( "running task for env: " + process.env.GULP_ENVIRONMENT );
 
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
@@ -29,22 +24,23 @@ gulp.task("start", function(done){
       break;
     case "QA":
       // do QA task ?
-      gutil.log("Task has not been created yet");
+      gutil.log( "Task has not been created yet" );
       done();
       break;
     default:
       run( "default", done );
       break;
   }
-
 });
 
+/* TODO Watch task? */
+gulp.task( "watch", [ "less:watch" ]);
 
-
-/* DEVELOPMENT BUILD TASK */
-gulp.task("build:dev", function(done){
+/*** DEVELOPMENT BUILD TASK ***/
+gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
+    "jscs:all",
     [
       "less:dev",
       "symlink:dev",
@@ -55,31 +51,29 @@ gulp.task("build:dev", function(done){
   );
 });
 
-/* MAIN DEVELOPMENT TASK */
-gulp.task("dev", function(done){
+/*** MAIN DEVELOPMENT TASK ***/
+gulp.task( "dev", function( done ) {
   run(
     "build:dev",
     "server:dev",
-    ["less:watch", "traceur:watch"],
+    [
+      "less:watch",
+      "jscs:watch",
+      "traceur:watch"
+    ],
     done
   );
 });
 
-
-
-/* PRODUCTION BUILD TASK */
-gulp.task("build:prod", function(done){
-  gutil.log("TODO THIS TASK");
+/*** PRODUCTION BUILD TASK ***/
+gulp.task( "build:prod", function( done ) {
+  gutil.log( "TODO THIS TASK" );
   done();
 });
 
-
-
-/* MAIN PRODUCTION TASK */
-gulp.task("prod", function(done){
+/*** MAIN PRODUCTION TASK ***/
+gulp.task( "prod", function( done ) {
   run( "build:prod", done );
 });
 
-
-gulp.task("default", ["build:dev", "build:prod"]);
-
+gulp.task( "default", [ "build:dev", "build:prod" ]);

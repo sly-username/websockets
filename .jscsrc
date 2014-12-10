@@ -7,7 +7,7 @@
     "build/**",
     "logs/**"
   ],
-  //"maxErrors": 100, // defaults to Infinity
+  "maxErrors": 100, // defaults to Infinity
   "esnext": true,
   //"errorFilter": "path/to/filter/func.js", // see: https://github.com/jscs-dev/node-jscs/wiki/Error-Filters
 
@@ -23,7 +23,7 @@
   ],
   "safeContextKeyword": "self",
   "disallowNewlineBeforeBlockStatements": true,
-  "requireLineBreakAfterVariableAssignment": true,
+//  "requireLineBreakAfterVariableAssignment": true, // unsupported?
   "requireOperatorBeforeLineBreak": true,
   "disallowOperatorBeforeLineBreak": [ "." ],
   "requireParenthesesAroundIIFE": true,
@@ -76,7 +76,6 @@
     "catch",
     "return",
     "typeof",
-    "function",
     "with"
   ],
   "requirePaddingNewlinesBeforeKeywords": [
@@ -87,8 +86,7 @@
     "switch",
     "try",
     "with",
-    "return",
-    "function"
+    "return"
   ],
   "disallowPaddingNewlinesBeforeKeywords": [
     "else",
@@ -100,9 +98,10 @@
   "requireSpacesInsideParentheses": {
     "all": true,
     "except": [
-      "(", ")",
+//      "(", ")",
       "{", "}",
-      "[", "]"
+      "[", "]",
+      "/"
     ]
   },
   "requireLineFeedAtFileEnd": true,
@@ -110,8 +109,8 @@
   "disallowSpaceAfterPrefixUnaryOperators": true,
   "disallowSpaceBeforePostfixUnaryOperators": true,
   "disallowSpaceBeforeBinaryOperators": [
-    ",",
-    ":"
+    ","
+//    ":"
   ],
   "requireSpaceAfterBinaryOperators": true,
   "requireSpaceBeforeBinaryOperators": [
@@ -153,7 +152,7 @@
   "disallowDanglingUnderscores": true,
   "disallowSpacesInCallExpression": true,
   "validateParameterSeparator": ", ",
-  "requireSpaceBetweenArguments": true,
+//  "requireSpaceBetweenArguments": true, // unsupported?
   "requireAnonymousFunctions": true,
   "disallowFunctionDeclarations": true,
   "requireSpacesInAnonymousFunctionExpression": {

@@ -1,45 +1,44 @@
-
-var koa     = require("koa"),
-    send    = require("koa-send"),
-    fs      = require("fs"),
-    config  = require("../config.paths.js"),
-    dev     = koa(),
-    prod    = koa();
+var koa   = require( "koa" ),
+  send    = require( "koa-send" ),
+  fs      = require( "fs" ),
+  config  = require( "../config.paths.js" ),
+  dev     = koa(),
+  prod    = koa(),
+  serve;
 
 /* jshint -W071 */
-var serve = function(root, fallback){
-
-  return function *(next){
+serve = function( root, fallback ) {
+  return function* ( next ) {
     var stat;
-    try{
-      stat = fs.statSync(root+this.path);
-      if( stat.isDirectory() ){
-        throw new Error("Won't serve directory");
-      }
-      yield send(this, root+this.path);
-    } catch (e) {
-      //console.error(e);
-      console.log("falling back for: " + this.path);
-      yield send(this, fallback);
-    }
 
+    try {
+      stat = fs.statSync( root + this.path );
+
+      if ( stat.isDirectory() ) {
+        throw new Error( "Won't serve directory" );
+      }
+      yield send( this, root + this.path );
+    } catch ( e ) {
+      console.log( "falling back for: " + this.path );
+      yield send( this, fallback );
+    }
   };
 };
 
-dev.use(serve(config.dev, config.server.fallback.dev));
-prod.use(serve(config.prod, config.server.fallback.prod));
+dev.use( serve( config.dev, config.server.fallback.dev ) );
+prod.use( serve( config.prod, config.server.fallback.prod ) );
 
 module.exports = {
-  startDev: function(){
-    return dev.listen(config.server.ports.dev);
+  startDev: function() {
+    return dev.listen( config.server.ports.dev );
   },
-  get dev(){
+  get dev() {
     return dev;
   },
-  startProd: function(){
-    return prod.listen(config.server.ports.prod);
+  startProd: function() {
+    return prod.listen( config.server.ports.prod );
   },
-  get prod(){
+  get prod() {
     return prod;
   }
 };
