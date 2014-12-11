@@ -67,7 +67,7 @@ gulp.task( "dev", function( done ) {
     "server:dev",
     [
       "less:watch",
-      "jscs:watch",
+      "jscs:watch", // doesn't work, but also doesn't break anything
       "traceur:watch"
     ],
     done
