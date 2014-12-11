@@ -49,7 +49,7 @@ gulp.task( "watch", function( done ) {
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-//    "jscs:client",
+    "jscs:client", // todo also run other jscs tasks?
     [
       "less:dev",
       "symlink:dev",
@@ -67,7 +67,7 @@ gulp.task( "dev", function( done ) {
     "server:dev",
     [
       "less:watch",
-//      "jscs:watch",
+      "jscs:watch",
       "traceur:watch"
     ],
     done

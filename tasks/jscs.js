@@ -3,33 +3,53 @@ var gulp  = require( "gulp" ),
   gutil   = require( "gulp-util" ),
   config  = require( "../config.paths.js" ),
   watch   = require( "gulp-watch" ),
-  plumber = require( "gulp-plumber" ),
   jscs    = require( "gulp-jscs" ),
+  through = require( "through2" ),
   options,
   runForPathWithOptions,
   watchPathWithOptionsAndName,
-  registerTaskPair;
+  registerTaskPair,
+  logJSCSErrors,
+  hackPipeErrorPatch;
 
 // Options
 options = {
   configPath: config.jscs.rc
 };
 
+// Apparently putting something after jscs makes it work fine.
+// Will need to keep an eye out for changes to gulp-jscs, looks
+//   like there a ticket to enable better error reporting.
+hackPipeErrorPatch = function() {
+  return through.obj( function( file, encoding, done ) {
+    done();
+  });
+};
+
+// this is to log the stuffs
+logJSCSErrors = function( error ) {
+  gutil.log( error.message );
+//  jscs().end();
+};
+
 // maximum code reuse!
 runForPathWithOptions = function( path, opts ) {
   return gulp.src( path )
-    .pipe( plumber() )
-    .pipe( jscs( opts ) );
+    .pipe( jscs( opts ) )
+    .on( "error", logJSCSErrors )
+    .pipe( hackPipeErrorPatch() );
 };
 
+// jscs:disable requirePaddingNewLinesInObjects
 watchPathWithOptionsAndName = function( path, opts, name ) {
   name = name || "JSCS";
-  // jscs:disable requirePaddingNewLinesInObjects
+
   watch( path, { name: name } )
-  // jscs:enable
-    .pipe( plumber() )
-    .pipe( jscs( opts ) );
+    .pipe( jscs( opts ) )
+    .on( "error", logJSCSErrors )
+    .pipe( hackPipeErrorPatch() );
 };
+// jscs:enable
 
 registerTaskPair = function( appendToName, path, opts ) {
   gulp.task( "jscs:" + appendToName, function() {
@@ -46,64 +66,6 @@ Object.keys( config.jscs )
   .forEach( function( property ) {
     registerTaskPair( property, config.jscs[property], options );
   });
-
-/*
-// THE LONG WAY
-
-// jscs client files
-gulp.task( "jscs:client", function() {
-  return runForPathWithOptions( config.jscs.client, options );
-});
-gulp.task( "jscs:watch:client", function( done ) {
-  watchPathWithOptionsAndName( config.jscs.client, options, "JSCS-Client" );
-  done();
-});
-
-// jscs tasks files
-gulp.task( "jscs:tasks", function() {
-  return runForPathWithOptions( config.jscs.tasks, options );
-});
-gulp.task( "jscs:watch:tasks", function( done ) {
-  watchPathWithOptionsAndName( config.jscs.tasks, options, "JSCS-Tasks" );
-  done();
-});
-
-// jscs test files
-gulp.task( "jscs:tests", function() {
-  return runForPathWithOptions( config.jscs.tests, options );
-});
-gulp.task( "jscs:watch:tests", function( done ) {
-  watchPathWithOptionsAndName( config.jscs.tests, options, "JSCS-Tests" );
-  done();
-});
-
-// jscs server files
-gulp.task( "jscs:server", function() {
-  return runForPathWithOptions( config.jscs.server, options );
-});
-gulp.task( "jscs:watch:server", function( done ) {
-  watchPathWithOptionsAndName( config.jscs.server, options, "JSCS-Server" );
-  done();
-});
-
-// jscs just the root
-gulp.task( "jscs:root", function() {
-  return runForPathWithOptions( config.jscs.root, options );
-});
-gulp.task( "jscs:watch:root", function( done ) {
-  watchPathWithOptionsAndName( config.jscs.root, options, "JSCS-Root" );
-  done();
-});
-
-// jscs all the files
-gulp.task( "jscs:all", function() {
-  return runForPathWithOptions( config.jscs.all, options );
-});
-gulp.task( "jscs:watch:all", function( done ) {
-  watchPathWithOptionsAndName( config.jscs.all, options, "JSCS-All" );
-  done();
-});
-*/
 
 // jscs aliased to jscs:all
 gulp.task( "jscs", [ "jscs:all" ]);
