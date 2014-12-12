@@ -4,18 +4,53 @@
   background: #555;
   border-radius: 25px;
   padding: 10px;
+  box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
   & span {
     display: block;
-    height:  100%;
-    background-color: red;
-    border-radius: 20px;
+    height: 100%;
+    border-radius: 20px 8px 8px 20px;
+    background-color: rgb(194, 51, 31);
+    position: relative;
+    overflow: hidden;
     text-align: center;
+    float: left;
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background-image:
+      linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, .2) 25%,
+          transparent 25%,
+          transparent 50%,
+          rgba(255, 255, 255, .2) 50%,
+          rgba(255, 255, 255, .2) 75%,
+          transparent 75%,
+          transparent
+      );
+      z-index: 1;
+      background-size: 50px 50px;
+      border-radius: 20px 8px 8px 20px;
+      overflow: hidden;
+    }
   }
 }
-#progress-value::before {
+
+
+#progress-display::before {
   content:attr(data-pbVal);
 }
 
-#bar {
+#inner-bar {
 }
 
+#current-text::before {
+  float: left;
+  content:attr(data-progress-value);
+}
+
+#max-text::before {
+  float: right;
+  content:attr(data-progress-max);
+}

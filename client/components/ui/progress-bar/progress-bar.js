@@ -6,7 +6,7 @@
       return this._progressValue;
     },
     set progressValue( value ) {
-      this.attributes[" value "].value = value;
+      this.attributes.value.value = value;
 
       return ( this._progressValue = value );
     },
@@ -14,8 +14,8 @@
       return this._progressMax;
     },
     set progressMax( value ) {
-      if ( this.attributes[" max "] ) {
-        this.attributes[ " max " ].value = value;
+      if ( this.attributes.max ) {
+        this.attributes.max.value = value;
 
         return ( this._progressMax = value );
       } else {
@@ -29,14 +29,13 @@
       return ( this._pbVal = value );
     },
     ready: function() {
-      if ( parseInt( this.attributes[ " value " ].value ) < 100 ) {
-        this.progressValue = parseInt( this.attributes[ " value " ].value );
-      } else {
-        alert( "IT'S OVER NINE THOUSAND!!!" );
-      }
+      var innerBar = this.shadowRoot.getElementById( "inner-bar" );
+      var progressDisplay = this.shadowRoot.getElementById( "progress-display" );
+      // value and max
+      this.progressValue = parseInt( this.attributes.value.value );
 
-      if ( this.attributes[ " max " ] ) {
-        this.progressMax = parseInt( this.attributes[ " max " ].value ) && typeof parseInt( this.attributes[ " max " ].value ) == "number" ? parseInt( this.attributes[ " max " ].value ) : 100;
+      if ( this.attributes.max ) {
+        this.progressMax = parseInt( this.attributes.max.value ) && typeof parseInt( this.attributes.max.value ) == "number" ? parseInt( this.attributes.max.value ) : 100;
       } else {
         this.progressMax = 100;
       }
@@ -47,7 +46,20 @@
         alert( " Value is larger than Max " );
       }
 
-      this.shadowRoot.getElementById( " bar " ).style.width = this._pbVal + " % " ;
+      innerBar.style.width = this._pbVal + "%" ;
+
+      //show and hide value
+
+      //copyAttributes(this, checkedBox, ["checked", "disabled"]);
+      //var copyAttributes = function (this, progressDisplay, attrs) {
+      //  attrs.forEach(function (attr) {
+      //    if ( this.hasAttribute(attr) ) {
+      //      progressDisplay.setAttribute(attr, this.getAttribute(attr));
+      //    } else {
+      //      progressDisplay.removeAttribute(attr);
+      //    }
+      //  });
+      //};
     }
   });
 })( window.Polymer );

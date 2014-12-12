@@ -3,9 +3,11 @@
     <link rel="stylesheet" href="./progress-bar.css">
 
     <div class="container">
-      <span id="bar"></span>
+      <span id="inner-bar"></span>
+      <div id="progress-display" data-pbVal="{{_pbVal}}" style="">%</div>
     </div>
-    <div id="progress-value" data-pbVal="{{_pbVal}}" data-max="{{_progressMax}}">%</div>
+    <div id="current-text" data-progress-value="{{_progressValue}}"></div>
+    <div id="max-text" data-progress-max="{{_progressMax}}"></div>
 
   </template>
   <script src="./progress-bar.js"></script>
