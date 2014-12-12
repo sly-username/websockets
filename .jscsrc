@@ -149,7 +149,7 @@
     "!=",
     "!=="
   ],
-  "disallowDanglingUnderscores": true,
+//  "disallowDanglingUnderscores": true,
   "disallowSpacesInCallExpression": true,
   "validateParameterSeparator": ", ",
 //  "requireSpaceBetweenArguments": true, // unsupported?
