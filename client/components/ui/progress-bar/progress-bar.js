@@ -1,20 +1,20 @@
-(function( Polymer ) {
+( function( Polymer ) {
   "use strict";
 
-  Polymer("progress-bar", {
-    get progressValue(){
+  Polymer( "progress-bar", {
+    get progressValue() {
       return this._progressValue;
     },
-    set progressValue(value){
-      this.attributes["value"].value = value;
-      return (this._progressValue = value);
+    set progressValue( value ) {
+      this.attributes[" value "].value = value;
+      return ( this._progressValue = value );
     },
-    get progressMax(){
+    get progressMax() {
       return this._progressMax;
     },
-    set progressMax(value){
-      if( this.attributes["max"] ) {
-        this.attributes["max"].value = value;
+    set progressMax( value ) {
+      if( this.attributes[" max "] ) {
+        this.attributes[ "max" ].value = value;
         return (this._progressMax = value);
       } else {
         return (this._progressMax = 100);
@@ -23,8 +23,8 @@
     get pbVal(){
       return this._pbVal;
     },
-    set pbVal(value){
-      return (this._pbVal = value);
+    set pbVal( value ){
+      return ( this._pbVal = value );
     },
     ready: function () {
       if( parseInt(this.attributes["value"].value) < 100) {
