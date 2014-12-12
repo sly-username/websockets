@@ -1,0 +1,12 @@
+<polymer-element name="progress-bar" attributes="progress-value max animation direction show-value">
+  <template>
+    <link rel="stylesheet" href="./progress-bar.css">
+
+    <div class="container">
+      <span id="bar"></span>
+    </div>
+    <div id="progress-value" data-value="{{_progressValue}}">%</div>
+
+  </template>
+  <script src="./progress-bar.js"></script>
+</polymer-element>
