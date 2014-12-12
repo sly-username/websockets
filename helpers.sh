@@ -10,7 +10,7 @@ ED_MODULES_BIN="$ED_MODULES_PATH/.bin"
 # Add Node Moduels Bin to Path
 PATH="$PATH:$ED_MODULES_BIN"
 
-# Alias gulp so that it uses harmony
+# Alias gulp so that it uses harmony (only works in vagrant not through ssh -c command)
 alias gulp="node --harmony $ED_MODULES_PATH/gulp/bin/gulp.js"
 
 export PATH

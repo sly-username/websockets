@@ -1,16 +1,22 @@
-
+/***
+ * This file contains paths for all the different files in the codebase.
+ * Everything is absolute path'd starting from the __dirname of this file, which should
+ * be at the root of the project directory
+ */
+// jscs:disable maximumLineLength
 var paths = {
   root:             __dirname,
   client:           __dirname + "/client",
   tests:            __dirname + "/tests",
   build:            __dirname + "/build",
+  tasks:            __dirname + "/tasks",
+  server:           __dirname + "/server",
   bowerComponents:  __dirname + "/bower_components",
   nodeModules:      __dirname + "/node_modules"
 };
 
 paths.dev = paths.build + "/www";
 paths.prod = paths.build + "/prod";
-
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
@@ -21,16 +27,16 @@ paths.vendor = {
       "/webcomponentsjs/webcomponents.js",
       "/polymer/polymer.js",
       "/system.js/dist/system.js",
-      //"/system.js/dist/system.src.js",
+//      "/system.js/dist/system.src.js",
       "/system.js/dist/system.js.map",
       "/es6-module-loader/dist/es6-module-loader.js",
-      //"/es6-module-loader/dist/es6-module-loader.src.js",
+//      "/es6-module-loader/dist/es6-module-loader.src.js",
       "/es6-module-loader/dist/es6-module-loader.js.map"
-    ].map( function(s){ return paths.bowerComponents + s; }
+    ].map( function( s ) { return paths.bowerComponents + s; }
     ).concat([
       // Stuff in node_modules
       "/traceur/bin/traceur-runtime.js"
-    ].map( function(s){ return paths.nodeModules + s; } )),
+    ].map( function( s ) { return paths.nodeModules + s; } ) ),
   min: [
       // Stuff in bower_components
       "/webcomponentsjs/webcomponents.min.js",
@@ -39,13 +45,12 @@ paths.vendor = {
       "/system.js/dist/system.js.map",
       "/es6-module-loader/dist/es6-module-loader.js",
       "/es6-module-loader/dist/es6-module-loader.js.map"
-    ].map( function(s){ return paths.bowerComponents + s; }
+    ].map( function( s ) { return paths.bowerComponents + s; }
     ).concat([
       // Stuff in node_modules
       "/traceur/bin/traceur-runtime.js"
-    ].map( function(s){ return paths.nodeModules + s; } ))
+    ].map( function( s ) { return paths.nodeModules + s; } ) )
 };
-
 
 /*** SYMLINK ***/
 paths.symlink = {
@@ -60,8 +65,7 @@ paths.symlink = {
   ]
 };
 
-
-/*** LESS PATHS ***/
+/*** LESS ***/
 paths.less = {
   src:  paths.client + "/**/*.less",
   out:  {
@@ -69,11 +73,21 @@ paths.less = {
     prod: paths.prod
   },
   includePaths: [ "./client/styles/" ],
-  skip: ["/**/*.vars.less", "/**/*.mixin.less"].map(function(s){ return paths.client + s; }) // (s => paths.client + s)
+  skip: [ "/**/*.vars.less", "/**/*.mixin.less" ].map( function( s ) { return paths.client + s; }) // (s => paths.client + s)
 };
-paths.less.compile = paths.less.skip.map(function(s){ return "!"+s; }).concat(paths.less.src);
-//paths.less.compile = paths.less.skip.map( s => "!" + s ).concat(paths.less.src);
+paths.less.compile = paths.less.skip.map( function( s ) { return "!" + s; }).concat( paths.less.src );
+// paths.less.compile = paths.less.skip.map( s => "!" + s ).concat(paths.less.src);
 
+/*** JSCS ***/
+paths.jscs = {
+  rc: paths.root + "/.jscsrc",
+  all: paths.root + "/**/*.js",
+  client: paths.client + "/**/*.js",
+  tasks: paths.tasks + "/**/*.js",
+  tests: paths.tests + "/**/*.js",
+  server: paths.server + "/**/*.js",
+  root: paths.root + "/*.js"
+};
 
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
@@ -84,7 +98,6 @@ paths.traceur = {
     prod: paths.prod
   }
 };
-
 
 /*** SERVER PATHS ***/
 paths.server = {
@@ -98,7 +111,6 @@ paths.server = {
   },
   watch: paths.dev
 };
-
 
 /*** TODO COPY (FOR PROD) ***/
 
