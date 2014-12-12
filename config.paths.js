@@ -1,9 +1,11 @@
+/*eslint strict:0*/
+// jscs:disable maximumLineLength
 /***
  * This file contains paths for all the different files in the codebase.
  * Everything is absolute path'd starting from the __dirname of this file, which should
  * be at the root of the project directory
- */
-// jscs:disable maximumLineLength
+ ***/
+
 var paths = {
   root:             __dirname,
   client:           __dirname + "/client",
@@ -67,8 +69,8 @@ paths.symlink = {
 
 /*** LESS ***/
 paths.less = {
-  src:  paths.client + "/**/*.less",
-  out:  {
+  src: paths.client + "/**/*.less",
+  out: {
     dev: paths.dev,
     prod: paths.prod
   },
@@ -86,7 +88,7 @@ paths.jscs = {
   tasks: paths.tasks + "/**/*.js",
   tests: paths.tests + "/**/*.js",
   server: paths.server + "/**/*.js",
-  root: paths.root + "/*.js"
+  root: [ "/*.js", "/.eslintrc", "/.jscsrc" ].map( function( s ) { return paths.root + s; })
 };
 
 /*** Traceur ES6 --> ES5 ***/
