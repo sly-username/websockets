@@ -1,12 +1,12 @@
-
-var gulp    = require( "gulp" ),
-  gutil     = require( "gulp-util" ),
-  watch     = require( "gulp-watch" ),
-  plumber   = require( "gulp-plumber" ),
-  through   = require( "through2" ),
-  config    = require( "../config.paths.js" ),
-  defaults  = require( "lodash" ).defaults,
-  less      = require( "less" ),
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  watch = require( "gulp-watch" ),
+  plumber = require( "gulp-plumber" ),
+  through = require( "through2" ),
+  config = require( "../config.paths.js" ),
+  defaults = require( "lodash" ).defaults,
+  less = require( "less" ),
   lessOptions, myLess;
 
 // Options

@@ -1,9 +1,9 @@
-
-var gulp  = require( "gulp" ),
-  path    = require( "path" ),
+"use strict";
+var gulp = require( "gulp" ),
+  path = require( "path" ),
   through = require( "through2" ),
   symlink = require( "gulp-symlink" ),
-  config  = require( "../config.paths.js" ),
+  config = require( "../config.paths.js" ),
   join, rewriteExt;
 
 // Joins folder name with path basename, will also change .min.js to .js

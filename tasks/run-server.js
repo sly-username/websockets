@@ -1,12 +1,9 @@
-/**
- * Created by rj on 11/11/14.
- */
-
-var gulp      = require( "gulp" ),
-  gutil       = require( "gulp-util" ),
-  config      = require( "../config.paths.js" ),
-  livereload  = require( "livereload" ),
-  servers     = require( "../server/static.js" ),
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  config = require( "../config.paths.js" ),
+  livereload = require( "livereload" ),
+  servers = require( "../server/static.js" ),
   livereloadOptions;
 
 // Options

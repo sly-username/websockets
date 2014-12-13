@@ -1,13 +1,16 @@
-var gulp      = require( "gulp" ),
-  gutil       = require( "gulp-util" ),
-  run         = require( "run-sequence" ),
-  requiredir  = require( "requiredir" ),
-  dotenv      = require( "dotenv" ),
+/*eslint no-process-env:0, valid-jsdoc:0*/
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  run = require( "run-sequence" ),
+  requiredir = require( "requiredir" ),
+  dotenv = require( "dotenv" ),
   dummy;
 
 dotenv.load();
 
 // load gulp tasks from ./tasks
+/*eslint no-unused-vars:0*/
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
 

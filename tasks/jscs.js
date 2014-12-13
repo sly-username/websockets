@@ -1,9 +1,9 @@
-
-var gulp  = require( "gulp" ),
-  gutil   = require( "gulp-util" ),
-  config  = require( "../config.paths.js" ),
-  watch   = require( "gulp-watch" ),
-  jscs    = require( "gulp-jscs" ),
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  config = require( "../config.paths.js" ),
+  watch = require( "gulp-watch" ),
+  jscs = require( "gulp-jscs" ),
   through = require( "through2" ),
   options,
   runForPathWithOptions,

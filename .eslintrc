@@ -9,7 +9,7 @@
   "rules": {
     // 0 is off
     // 1 is warning
-    // 2 is error (stops execution)
+    // 2 is error (stops execution? for sure returns a 1 exit code)
     // Possible Errors
     "no-comma-dangle": 1,
     "no-cond-assign": [ 1, "except-parens" ],
@@ -36,8 +36,70 @@
     "no-unreachable": 2,
     "use-isnan": 2,
     "valid-jsdoc": 1,
-    "valid-typeof": 2
+    "valid-typeof": 2,
     // Best Practices
-    // TODO
+    "block-scoped-var": 2,
+    "complexity": [ 1, 7 ],
+    "consistent-return": 1,
+    "curly": [ 2, "all" ],
+    "default-case": 1,
+    "dot-notation": 2,
+    "eqeqeq": [ 2, "allow-null" ],
+    "guard-for-in": 1,
+    "no-alert": 1,
+    "no-caller": 2,
+    "no-div-regex": 1,
+    "no-else-return": 1,
+    "no-empty-label": 1,
+    "no-eq-null": 0,
+    "no-eval": 2,
+    "no-extend-native": 1,
+    "no-extra-bind": 1,
+    "no-fallthrough": 1,
+    "no-floating-decimal": 0,
+    "no-implied-eval": 2,
+    "no-iterator": 1,
+    "no-labels": 0,
+    "no-lone-blocks": 2,
+    "no-loop-func": 2,
+    "no-multi-spaces": 2,
+    "no-multi-str": 2,
+    "no-native-reassign": 2,
+    "no-new": 1,
+    "no-new-func": 2,
+    "no-new-wrappers": 2,
+    "no-octal": 2,
+    "no-octal-escape": 2,
+    "no-process-env": 2,
+    "no-proto": 2,
+    "no-redeclare": 2,
+    "no-return-assign": 1,
+    "no-script-url": 2,
+    "no-self-compare": 2,
+    "no-sequences": 2,
+    "no-unused-expressions": 2,
+    "no-void": 2,
+    "no-warning-comments": [
+      0, // off for now
+      {
+        "terms": [ "todo", "fixme", "maybe" ],
+        "location": "anywhere"
+      }
+    ],
+    "no-with": 2,
+    "radix": 2,
+    "vars-on-top": 2,
+    "wrap-iife": [ 2, "inside" ],
+    "yoda": "never",
+    // Strict Mode
+    "global-strict": [ 0, "never" ],
+    "no-extra-strict": 2,
+    "strict": 2,
+    // TODO Variables
+
+    // TODO NodeJS
+    "no-mixed-requires": [ 0, true ],
+    // Stylistic Issues
+    "wrap-regex": 1
   }
 }
