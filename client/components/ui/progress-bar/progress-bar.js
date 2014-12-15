@@ -2,6 +2,8 @@
   "use strict";
 
   Polymer( "progress-bar", {
+
+    /*** PROPERTIES ***/
     // current value
     get progressValue() {
       return this._progressValue;
@@ -40,12 +42,20 @@
     set pbVal( value ) {
       return ( this._pbVal = value );
     },
+    /*** END PROPERTIES ***/
+    /*** LIFECYCLE ***/
     ready: function() {
       var innerBar = this.shadowRoot.getElementById( "inner-bar" );
-      // value and max
+
+      // value
       this.progressValue = parseInt( this.attributes.value.value );
 
-      // checks if attribute is an integer
+      // text display
+      this.currentText = this.shadowRoot.getElementById( "current-text" );
+      this.maxText = this.shadowRoot.getElementById( "max-text" );
+      this.progressDisplay = this.shadowRoot.getElementById( "progress-display" );
+
+      // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
         this.progressMax = parseInt( this.attributes.max.value ) && typeof parseInt( this.attributes.max.value ) == "number" ? parseInt( this.attributes.max.value ) : 100;
       } else {
@@ -57,12 +67,29 @@
       } else {
         alert( " Value is larger than Max " );
       }
-
       innerBar.style.width = this._pbVal + "%" ;
-      // show and hide value
-      //this.showValue = this.attributes["show-value"].value;
-      console.log( this.attributes["show-value"] );
 
+      // if show
+      if ( this.hasAttribute( "show-value" ) ) {
+        this.showValue = this.attributes["show-value"].value;
+
+        if ( this._showValue === "true" ) {
+          this.currentText.style.display = "block";
+          this.maxText.style.display = "block";
+          this.progressDisplay.style.display = "block";
+        } else {
+          this.currentText.style.display = "none";
+          this.maxText.style.display = "none";
+          this.progressDisplay.style.display = "none";
+        }
+      } else {
+        this.currentText.style.display = "block";
+        this.maxText.style.display = "block";
+        this.progressDisplay.style.display = "block";
+      }
     }
+    /*** END LIFECYCLE ***/
+    /*** FUNCTIONS ***/
+    /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
