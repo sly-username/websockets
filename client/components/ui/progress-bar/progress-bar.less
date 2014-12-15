@@ -38,20 +38,31 @@
   }
 }
 
-
-#progress-display::before {
+.progress-display::before {
   content:attr(data-pbVal);
 }
 
-#inner-bar {
+#flipBar {
+  float: right;
+  transform:rotate(180deg);
+  -ms-transform:rotate(180deg); /* IE 9 */
+  -moz-transform:rotate(180deg); /* Firefox */
+  -webkit-transform:rotate(180deg); /* Safari and Chrome */
+  -o-transform:rotate(180deg); /* Opera */
+}
+#flipTextRight {
+  float: right;
+}
+#flipTextLeft {
+  float: left;
 }
 
-#current-text::before {
+.current-text::before {
   float: left;
   content:attr(data-progress-value);
 }
 
-#max-text::before {
+.max-text::before {
   float: right;
   content:attr(data-progress-max);
 }

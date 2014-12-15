@@ -42,18 +42,27 @@
     set pbVal( value ) {
       return ( this._pbVal = value );
     },
+    // bar directions
+    get barDirection() {
+      return this._barDirection;
+    },
+    set barDirection( value ) {
+      this.attributes.direction.value = value;
+
+      return ( this._barDirection = value );
+    },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      var innerBar = this.shadowRoot.getElementById( "inner-bar" );
+      this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[0];
 
       // value
       this.progressValue = parseInt( this.attributes.value.value );
 
       // text display
-      this.currentText = this.shadowRoot.getElementById( "current-text" );
-      this.maxText = this.shadowRoot.getElementById( "max-text" );
-      this.progressDisplay = this.shadowRoot.getElementById( "progress-display" );
+      this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[0];
+      this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[0];
+      this.progressDisplay = this.shadowRoot.getElementsByClassName( "progress-display" )[0];
 
       // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
@@ -67,12 +76,13 @@
       } else {
         alert( " Value is larger than Max " );
       }
-      innerBar.style.width = this._pbVal + "%" ;
+      this.innerBar.style.width = this._pbVal + "%" ;
 
-      // if show
+      // showValue if show-value exists
+      // todo better optimize showValue code
       if ( this.hasAttribute( "show-value" ) ) {
         this.showValue = this.attributes["show-value"].value;
-
+      // if show-value is true of false
         if ( this._showValue === "true" ) {
           this.currentText.style.display = "block";
           this.maxText.style.display = "block";
@@ -87,7 +97,20 @@
         this.maxText.style.display = "block";
         this.progressDisplay.style.display = "block";
       }
+
+      // bar directions
+      if ( this.hasAttribute( "direction" ) ) {
+        this.barDirection = this.attributes.direction.value;
+
+        if ( this.barDirection === "RTL" ) {
+          this.innerBar.id = "flipBar";
+          this.currentText.id = "flipTextRight";
+          this.progressDisplay.id = "flipTextRight";
+          this.maxText.id = "flipTextLeft";
+        }
+      }
     }
+
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
     /*** END FUNCTIONS ***/
