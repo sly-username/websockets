@@ -2,6 +2,7 @@
   "use strict";
 
   Polymer( "progress-bar", {
+    // current value
     get progressValue() {
       return this._progressValue;
     },
@@ -10,6 +11,7 @@
 
       return ( this._progressValue = value );
     },
+    // max value
     get progressMax() {
       return this._progressMax;
     },
@@ -22,6 +24,16 @@
         return ( this._progressMax = 100 );
       }
     },
+    // show value
+    get showValue() {
+      return this._showValue;
+    },
+    set showValue( value ) {
+      this.attributes["show-value"].value = value;
+
+      return ( this._showValue = value );
+    },
+    // percentage
     get pbVal() {
       return this._pbVal;
     },
@@ -30,16 +42,16 @@
     },
     ready: function() {
       var innerBar = this.shadowRoot.getElementById( "inner-bar" );
-      var progressDisplay = this.shadowRoot.getElementById( "progress-display" );
       // value and max
       this.progressValue = parseInt( this.attributes.value.value );
 
+      // checks if attribute is an integer
       if ( this.attributes.max ) {
         this.progressMax = parseInt( this.attributes.max.value ) && typeof parseInt( this.attributes.max.value ) == "number" ? parseInt( this.attributes.max.value ) : 100;
       } else {
         this.progressMax = 100;
       }
-
+      // percentage conversion
       if ( this.progressValue < this.progressMax ) {
         this.pbVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
       } else {
@@ -47,19 +59,10 @@
       }
 
       innerBar.style.width = this._pbVal + "%" ;
+      // show and hide value
+      //this.showValue = this.attributes["show-value"].value;
+      console.log( this.attributes["show-value"] );
 
-      //show and hide value
-
-      //copyAttributes(this, checkedBox, ["checked", "disabled"]);
-      //var copyAttributes = function (this, progressDisplay, attrs) {
-      //  attrs.forEach(function (attr) {
-      //    if ( this.hasAttribute(attr) ) {
-      //      progressDisplay.setAttribute(attr, this.getAttribute(attr));
-      //    } else {
-      //      progressDisplay.removeAttribute(attr);
-      //    }
-      //  });
-      //};
     }
   });
 })( window.Polymer );
