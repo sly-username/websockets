@@ -4,7 +4,7 @@
   Polymer( "progress-bar", {
 
     /*** PROPERTIES ***/
-    //todo refactor for setAttribute
+    // todo refactor for setAttribute
     // current value
     get progressValue() {
       return this._progressValue;
@@ -81,7 +81,7 @@
         this.progressMax = 100;
       }
       // percentage conversion
-      if ( this.progressValue < this.progressMax ) {
+      if ( parseInt( this.progressValue ) < parseInt( this.progressMax ) ) {
         this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
       } else {
         alert( " Value is larger than Max " );
@@ -130,10 +130,72 @@
           this.innerBar.classList.add( "addPulseAnimation" );
         }
       }
-    }
+    },
 
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
+    // todo refactor attribute changed
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      switch ( attrName ) {
+        case "value":
+          this.progressValue = newVal;
+
+          if ( parseInt( this.progressValue ) < parseInt( this.progressMax ) ) {
+            this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
+          } else {
+            alert( " Value is larger than Max " );
+          }
+          this.innerBar.style.width = this._progressBarVal + "%" ;
+          break;
+        case "max":
+          this.progressMax = newVal;
+
+          if ( parseInt( this.progressValue ) < parseInt( this.progressMax ) ) {
+            this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
+          } else {
+            alert( " Value is larger than Max " );
+          }
+          this.innerBar.style.width = this._progressBarVal + "%" ;
+          break;
+        case "animation":
+          this.barAnimate = newVal;
+
+          if ( this.barAnimate === "bars" ) {
+            this.innerBar.classList.remove( "addPulseAnimation" );
+            this.innerBar.classList.add( "addBarAnimation" );
+          } else if ( this.barAnimate === "pulse" ) {
+            this.innerBar.classList.remove( "addBarAnimation" );
+            this.innerBar.classList.add( "addPulseAnimation" );
+          }
+          break;
+        case "direction":
+          this.barDirection = newVal;
+
+          if ( this.barDirection === "RTL" ) {
+            this.innerBar.id = "flipBar";
+            this.currentText.id = "flipTextRight";
+            this.progressDisplay.id = "flipTextRight";
+            this.maxText.id = "flipTextLeft";
+          }
+          break;
+        case "show-value":
+          this.showValue = newVal;
+
+          if ( this._showValue === "true" ) {
+            this.currentText.style.display = "block";
+            this.maxText.style.display = "block";
+            this.progressDisplay.style.display = "block";
+          } else {
+            this.currentText.style.display = "none";
+            this.maxText.style.display = "none";
+            this.progressDisplay.style.display = "none";
+          }
+          break;
+        default:
+          // do nothing
+          break;
+      }
+    }
     /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
