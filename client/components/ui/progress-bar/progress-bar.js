@@ -4,13 +4,12 @@
   Polymer( "progress-bar", {
 
     /*** PROPERTIES ***/
-    // todo refactor for setAttribute
     // current value
     get progressValue() {
       return this._progressValue;
     },
     set progressValue( value ) {
-      this.attributes.value.value = value;
+      this.setAttribute( "value", value );
 
       return ( this._progressValue = value );
     },
@@ -19,9 +18,9 @@
       return this._progressMax;
     },
     set progressMax( value ) {
-      if ( this.attributes.max ) {
-        this.attributes.max.value = value;
+      this.setAttribute( "max", value );
 
+      if ( value !== undefined ) {
         return ( this._progressMax = value );
       } else {
         return ( this._progressMax = 100 );
@@ -32,7 +31,7 @@
       return this._showValue;
     },
     set showValue( value ) {
-      this.attributes["show-value"].value = value;
+      this.setAttribute( "show-value", value );
 
       return ( this._showValue = value );
     },
@@ -48,7 +47,7 @@
       return this._barDirection;
     },
     set barDirection( value ) {
-      this.attributes.direction.value = value;
+      this.setAttribute( "direction", value );
 
       return ( this._barDirection = value );
     },
@@ -57,13 +56,14 @@
       return this._barAnimate;
     },
     set barAnimate( value ) {
-      this.attributes.animation.value = value;
+      this.setAttribute( "animation", value );
 
       return ( this._barAnimate = value );
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
+      console.log(this);
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[0];
 
       // value
