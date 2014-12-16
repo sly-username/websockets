@@ -1,9 +1,10 @@
-var koa   = require( "koa" ),
-  send    = require( "koa-send" ),
-  fs      = require( "fs" ),
-  config  = require( "../config.paths.js" ),
-  dev     = koa(),
-  prod    = koa(),
+"use strict";
+var koa = require( "koa" ),
+  send = require( "koa-send" ),
+  fs = require( "fs" ),
+  config = require( "../config.paths.js" ),
+  dev = koa(),
+  prod = koa(),
   serve;
 
 /* jshint -W071 */

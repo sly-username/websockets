@@ -1,4 +1,5 @@
-/*eslint strict:0*/
+/*global __dirname*/
+/*eslint strict:0, key-spacing:0*/
 // jscs:disable maximumLineLength
 /***
  * This file contains paths for all the different files in the codebase.
@@ -6,95 +7,99 @@
  * be at the root of the project directory
  ***/
 
-var paths = {
-  root:             __dirname,
-  client:           __dirname + "/client",
-  tests:            __dirname + "/tests",
-  build:            __dirname + "/build",
-  tasks:            __dirname + "/tasks",
-  server:           __dirname + "/server",
-  bowerComponents:  __dirname + "/bower_components",
-  nodeModules:      __dirname + "/node_modules"
-};
+var join = require( "path" ).join,
+  paths = {
+    root:             __dirname,
+    client:           join( __dirname, "client" ),
+    tests:            join( __dirname, "tests" ),
+    build:            join( __dirname, "build" ),
+    tasks:            join( __dirname, "tasks" ),
+    server:           join( __dirname, "server" ),
+    bowerComponents:  join( __dirname, "bower_components" ),
+    nodeModules:      join( __dirname, "node_modules" )
+  };
 
-paths.dev = paths.build + "/www";
-paths.prod = paths.build + "/prod";
+paths.dev = join( paths.build, "www" );
+paths.prod = join( paths.build, "prod" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
-  dev: paths.dev + "/vendor",
-  prod: paths.prod + "/vendor",
+  dev: join( paths.dev, "vendor" ),
+  prod: join( paths.prod, "vendor" ),
   src: [
       // Stuff in bower_components
-      "/webcomponentsjs/webcomponents.js",
-      "/polymer/polymer.js",
-      "/system.js/dist/system.js",
-//      "/system.js/dist/system.src.js",
-      "/system.js/dist/system.js.map",
-      "/es6-module-loader/dist/es6-module-loader.js",
-//      "/es6-module-loader/dist/es6-module-loader.src.js",
-      "/es6-module-loader/dist/es6-module-loader.js.map"
-    ].map( function( s ) { return paths.bowerComponents + s; }
+      join( "webcomponentsjs", "webcomponents.js" ),
+      join( "polymer", "polymer.js" ),
+      join( "system.js", "dist", "system.js" ),
+//      join( "system.js", "dist", "system.src.js" ),
+      join( "system.js", "dist", "system.js.map" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
+//      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+    ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
-      "/traceur/bin/traceur-runtime.js"
-    ].map( function( s ) { return paths.nodeModules + s; } ) ),
+      join( "traceur", "bin", "traceur-runtime.js" )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
   min: [
       // Stuff in bower_components
-      "/webcomponentsjs/webcomponents.min.js",
-      "/polymer/polymer.min.js",
-      "/system.js/dist/system.js",
-      "/system.js/dist/system.js.map",
-      "/es6-module-loader/dist/es6-module-loader.js",
-      "/es6-module-loader/dist/es6-module-loader.js.map"
-    ].map( function( s ) { return paths.bowerComponents + s; }
+      join( "webcomponentsjs", "webcomponents.min.js" ),
+      join( "polymer", "polymer.min.js" ),
+      join( "system.js", "dist", "system.js" ),
+      join( "system.js", "dist", "system.js.map" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+    ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
-      "/traceur/bin/traceur-runtime.js"
-    ].map( function( s ) { return paths.nodeModules + s; } ) )
+      join( "traceur", "bin", "traceur-runtime.js" )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) )
 };
 
 /*** SYMLINK ***/
 paths.symlink = {
   src: [
     // don't link these
-    "!**/*.less",     // less
-    "!**/*.md",       // markdown
-    "!**/*.es6.js",   // es6 js
+    // less, markdown, es6 js,
+    join( "!**", "*.less" ),
+    join( "!**", "*.md" ),
+    join( "!**", "*.es6.js" ),
 
-    // link these
-    paths.client + "/**/*.*"
+    // link these (everything else)
+    join( paths.client, "**", "*.*" )
   ]
 };
 
 /*** LESS ***/
 paths.less = {
-  src: paths.client + "/**/*.less",
+  src: join( paths.client, "**", "*.less" ),
   out: {
     dev: paths.dev,
     prod: paths.prod
   },
-  includePaths: [ "./client/styles/" ],
-  skip: [ "/**/*.vars.less", "/**/*.mixin.less" ].map( function( s ) { return paths.client + s; }) // (s => paths.client + s)
+  // todo double check in windows if '/' gets changed to '\'
+  includePaths: [ join( "client", "styles", "/" ) ],
+  included: [ join( "**", "*.vars.less" ), join( "**", "*.mixin.less" ) ].map( function( s ) { return join( paths.client, s ); })
+  // when es6 mode: (s => join( paths.client, s ) )
 };
-paths.less.compile = paths.less.skip.map( function( s ) { return "!" + s; }).concat( paths.less.src );
-// paths.less.compile = paths.less.skip.map( s => "!" + s ).concat(paths.less.src);
+paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
+// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat(paths.less.src);
 
 /*** JSCS ***/
 paths.jscs = {
-  rc: paths.root + "/.jscsrc",
-  all: paths.root + "/**/*.js",
-  client: paths.client + "/**/*.js",
-  tasks: paths.tasks + "/**/*.js",
-  tests: paths.tests + "/**/*.js",
-  server: paths.server + "/**/*.js",
-  root: [ "/*.js", "/.eslintrc", "/.jscsrc" ].map( function( s ) { return paths.root + s; })
+  rc:     join( paths.root, ".jscsrc" ),
+  all:    join( paths.root, "**", "*.js" ),
+  client: join( paths.client, "**", "*.js" ),
+  tasks:  join( paths.tasks, "**", "*.js" ),
+  tests:  join( paths.tests, "**", "*.js" ),
+  server: join( paths.server, "**", "*.js" ),
+  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); })
 };
 
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
-  bin: paths.nodeModules + "/.bin/traceur",
-  src: paths.client + "/**/*.es6.js",
+  bin: join( paths.nodeModules, ".bin", "traceur" ),
+  src: join( paths.client, "**", "*.es6.js" ),
   out: {
     dev: paths.dev,
     prod: paths.prod
@@ -108,8 +113,8 @@ paths.server = {
     prod: 5116
   },
   fallback: {
-    dev: paths.dev + "/index.html",
-    prod: paths.prod + "/index.html"
+    dev: join( paths.dev, "index.html" ),
+    prod: join( paths.prod, "index.html" )
   },
   watch: paths.dev
 };

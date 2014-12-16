@@ -37,7 +37,7 @@ myLess = function() {
 
           if ( file.sourceMap ) {
             // TODO: add source map stuff?
-            gutil.log( "LESS Souce mapping not implemented" );
+            gutil.log( "LESS Source mapping not implemented" );
           }
 
           done( null, file );
@@ -63,7 +63,7 @@ gulp.task( "less:dev", function() {
 
 gulp.task( "less:watch", function( done ) {
   // regular watch included less, recompile all
-  gulp.watch( config.less.include, [ "less" ]);
+  gulp.watch( config.less.included, [ "less" ]);
 
   // watch all non-include and compile per file
   // jscs:disable requirePaddingNewLinesInObjects
