@@ -4,26 +4,17 @@
   Polymer( "progress-bar", {
 
     /*** PROPERTIES ***/
-    // current value
-    get progressValue() {
-      return this._progressValue;
-    },
-    set progressValue( value ) {
-      this.setAttribute( "value", value );
-
-      return ( this._progressValue = value );
-    },
     // max value
-    get progressMax() {
-      return this._progressMax;
+    get max() {
+      return this._max;
     },
-    set progressMax( value ) {
+    set max( value ) {
       this.setAttribute( "max", value );
 
       if ( value !== undefined ) {
-        return ( this._progressMax = value );
+        return ( this._max = value );
       } else {
-        return ( this._progressMax = 100 );
+        return ( this._max = 100 );
       }
     },
     // show value
@@ -42,32 +33,13 @@
     set progressBarVal( value ) {
       return ( this._progressBarVal = value );
     },
-    // bar directions
-    get barDirection() {
-      return this._barDirection;
-    },
-    set barDirection( value ) {
-      this.setAttribute( "direction", value );
-
-      return ( this._barDirection = value );
-    },
-    // animation
-    get barAnimate() {
-      return this._barAnimate;
-    },
-    set barAnimate( value ) {
-      this.setAttribute( "animation", value );
-
-      return ( this._barAnimate = value );
-    },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      console.log(this);
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[0];
 
       // value
-      this.progressValue = parseInt( this.attributes.value.value );
+      this.value = parseInt( this.attributes.value.value );
 
       // text display
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[0];
@@ -76,13 +48,13 @@
 
       // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
-        this.progressMax = parseInt( this.attributes.max.value ) && typeof parseInt( this.attributes.max.value ) == "number" ? parseInt( this.attributes.max.value ) : 100;
+        this.max = parseInt( this.attributes.max.value ) && typeof parseInt( this.attributes.max.value ) == "number" ? parseInt( this.attributes.max.value ) : 100;
       } else {
-        this.progressMax = 100;
+        this.max = 100;
       }
       // percentage conversion
-      if ( parseInt( this.progressValue ) < parseInt( this.progressMax ) ) {
-        this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
+      if ( parseInt( this.value ) < parseInt( this.max ) ) {
+        this.progressBarVal = Math.round( ( this.value * 100 ) / ( this.max ) );
       } else {
         alert( " Value is larger than Max " );
       }
@@ -93,7 +65,7 @@
       if ( this.hasAttribute( "show-value" ) ) {
         this.showValue = this.attributes["show-value"].value;
       // if show-value is true of false
-        if ( this._showValue === "true" ) {
+        if ( this.showValue === "true" ) {
           this.currentText.style.display = "block";
           this.maxText.style.display = "block";
           this.progressDisplay.style.display = "block";
@@ -110,9 +82,9 @@
 
       // bar directions
       if ( this.hasAttribute( "direction" ) ) {
-        this.barDirection = this.attributes.direction.value;
+        this.direction = this.attributes.direction.value;
 
-        if ( this.barDirection === "RTL" ) {
+        if ( this.direction === "RTL" ) {
           this.innerBar.id = "flipBar";
           this.currentText.id = "flipTextRight";
           this.progressDisplay.id = "flipTextRight";
@@ -122,64 +94,100 @@
 
       // animation
       if ( this.hasAttribute( "animation" ) ) {
-        this.barAnimate = this.attributes.animation.value;
+        this.animation = this.attributes.animation.value;
 
-        if ( this.barAnimate === "bars" ) {
+        if ( this.animation === "bars" ) {
           this.innerBar.classList.add( "addBarAnimation" );
-        } else if ( this.barAnimate === "pulse" ) {
+        } else if ( this.animation === "pulse" ) {
           this.innerBar.classList.add( "addPulseAnimation" );
         }
       }
     },
-
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
-    // todo refactor attribute changed
+
+    valueChanged: function( oldVal, newVal ) {
+      if ( !isNaN( newVal ) ) {
+        this.value = newVal;
+        this.setAttribute( "value", newVal );
+
+        if ( parseInt( this.value ) <= parseInt( this.max ) ) {
+          this.progressBarVal = Math.round( ( this.value * 100 ) / ( this.max ) );
+        } else {
+          alert( " Value is larger than Max " );
+        }
+        this.innerBar.style.width = this._progressBarVal + "%";
+      } else {
+        alert( "that isn't a number" );
+        this.setAttribute( "value", 0 );
+        this.setAttribute( "max", 100 );
+      }
+    },
+    maxChanged: function( oldVal, newVal ) {
+      if ( !isNaN( newVal ) ) {
+        this.max = newVal;
+        this.setAttribute( "max", newVal );
+
+        if ( parseInt( this.value ) <= parseInt( this.max ) ) {
+          this.progressBarVal = Math.round( ( this.value * 100 ) / ( this.max ) );
+        } else {
+          alert( " Value is larger than Max " );
+        }
+        this.innerBar.style.width = this._progressBarVal + "%";
+      } else {
+        alert( "that isn't a number" );
+        this.setAttribute( "value", 0 );
+        this.setAttribute( "max", 100 );
+      }
+    },
+
+    directionChanged: function( oldVal, newVal ) {
+      this.innerBar.removeAttribute( "id" );
+      this.currentText.removeAttribute( "id" );
+      this.progressDisplay.removeAttribute( "id" );
+      this.maxText.removeAttribute( "id" );
+      this.direction = newVal;
+      this.setAttribute( "direction", newVal );
+
+      if ( this.direction === "RTL" ) {
+        this.innerBar.id = "flipBar";
+        this.currentText.id = "flipTextRight";
+        this.progressDisplay.id = "flipTextRight";
+        this.maxText.id = "flipTextLeft";
+      }
+    },
+    animationChanged: function( oldVal, newVal ) {
+      this.animation = newVal;
+      this.setAttribute( "animation", newVal );
+
+      if ( this.animation === "bars" ) {
+        this.innerBar.classList.remove( "addPulseAnimation" );
+        this.innerBar.classList.add( "addBarAnimation" );
+      } else if ( this.animation === "pulse" ) {
+        this.innerBar.classList.remove( "addBarAnimation" );
+        this.innerBar.classList.add( "addPulseAnimation" );
+      }
+    },
+    _showValueChanged: function( oldVal, newVal ) {
+      this._showValue = newVal;
+      this.setAttribute( "show-value", newVal );
+
+      if ( this._showValue === "true" ) {
+        this.currentText.style.display = "block";
+        this.maxText.style.display = "block";
+        this.progressDisplay.style.display = "block";
+      } else {
+        this.currentText.style.display = "none";
+        this.maxText.style.display = "none";
+        this.progressDisplay.style.display = "none";
+      }
+    },
+
+    // todo refactor attribute change to valueChange
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
-        case "value":
-          this.progressValue = newVal;
-
-          if ( parseInt( this.progressValue ) < parseInt( this.progressMax ) ) {
-            this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
-          } else {
-            alert( " Value is larger than Max " );
-          }
-          this.innerBar.style.width = this._progressBarVal + "%" ;
-          break;
-        case "max":
-          this.progressMax = newVal;
-
-          if ( parseInt( this.progressValue ) < parseInt( this.progressMax ) ) {
-            this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
-          } else {
-            alert( " Value is larger than Max " );
-          }
-          this.innerBar.style.width = this._progressBarVal + "%" ;
-          break;
-        case "animation":
-          this.barAnimate = newVal;
-
-          if ( this.barAnimate === "bars" ) {
-            this.innerBar.classList.remove( "addPulseAnimation" );
-            this.innerBar.classList.add( "addBarAnimation" );
-          } else if ( this.barAnimate === "pulse" ) {
-            this.innerBar.classList.remove( "addBarAnimation" );
-            this.innerBar.classList.add( "addPulseAnimation" );
-          }
-          break;
-        case "direction":
-          this.barDirection = newVal;
-
-          if ( this.barDirection === "RTL" ) {
-            this.innerBar.id = "flipBar";
-            this.currentText.id = "flipTextRight";
-            this.progressDisplay.id = "flipTextRight";
-            this.maxText.id = "flipTextLeft";
-          }
-          break;
         case "show-value":
-          this.showValue = newVal;
+          this._showValue = newVal;
 
           if ( this._showValue === "true" ) {
             this.currentText.style.display = "block";
