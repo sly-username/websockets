@@ -4,6 +4,7 @@
   Polymer( "progress-bar", {
 
     /*** PROPERTIES ***/
+    //todo refactor for setAttribute
     // current value
     get progressValue() {
       return this._progressValue;
@@ -36,11 +37,11 @@
       return ( this._showValue = value );
     },
     // percentage
-    get pbVal() {
-      return this._pbVal;
+    get progressBarVal() {
+      return this._progressBarVal;
     },
-    set pbVal( value ) {
-      return ( this._pbVal = value );
+    set progressBarVal( value ) {
+      return ( this._progressBarVal = value );
     },
     // bar directions
     get barDirection() {
@@ -50,6 +51,15 @@
       this.attributes.direction.value = value;
 
       return ( this._barDirection = value );
+    },
+    // animation
+    get barAnimate() {
+      return this._barAnimate;
+    },
+    set barAnimate( value ) {
+      this.attributes.animation.value = value;
+
+      return ( this._barAnimate = value );
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -72,14 +82,14 @@
       }
       // percentage conversion
       if ( this.progressValue < this.progressMax ) {
-        this.pbVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
+        this.progressBarVal = Math.round( ( this.progressValue * 100 ) / ( this.progressMax ) );
       } else {
         alert( " Value is larger than Max " );
       }
-      this.innerBar.style.width = this._pbVal + "%" ;
+      this.innerBar.style.width = this._progressBarVal + "%" ;
 
       // showValue if show-value exists
-      // todo better optimize showValue code
+      // todo refactor showValue code
       if ( this.hasAttribute( "show-value" ) ) {
         this.showValue = this.attributes["show-value"].value;
       // if show-value is true of false
@@ -107,6 +117,17 @@
           this.currentText.id = "flipTextRight";
           this.progressDisplay.id = "flipTextRight";
           this.maxText.id = "flipTextLeft";
+        }
+      }
+
+      // animation
+      if ( this.hasAttribute( "animation" ) ) {
+        this.barAnimate = this.attributes.animation.value;
+
+        if ( this.barAnimate === "bars" ) {
+          this.innerBar.classList.add( "addBarAnimation" );
+        } else if ( this.barAnimate === "pulse" ) {
+          this.innerBar.classList.add( "addPulseAnimation" );
         }
       }
     }

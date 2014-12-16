@@ -18,29 +18,27 @@
       content: "";
       position: absolute;
       top: 0; left: 0; bottom: 0; right: 0;
-      background-image:
-      linear-gradient(
-          -45deg,
-          rgba(255, 255, 255, .2) 25%,
-          transparent 25%,
-          transparent 50%,
-          rgba(255, 255, 255, .2) 50%,
-          rgba(255, 255, 255, .2) 75%,
-          transparent 75%,
-          transparent
-      );
       z-index: 1;
-      background-size: 50px 50px;
       border-radius: 20px 8px 8px 20px;
       overflow: hidden;
-      -webkit-animation: spin 2s linear infinite;
     }
   }
 }
 
 .progress-display::before {
-  content:attr(data-pbVal);
+  content:attr(data-progress-bar-val);
 }
+.current-text::before {
+  float: left;
+  content:attr(data-progress-value);
+}
+
+.max-text::before {
+  float: right;
+  content:attr(data-progress-max);
+}
+
+/* Flips Bar */
 
 #flipBar {
   float: right;
@@ -57,12 +55,93 @@
   float: left;
 }
 
-.current-text::before {
-  float: left;
-  content:attr(data-progress-value);
+/* Spinning Bar Animation */
+
+.addBarAnimation:after {
+  animation: spin 2s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  background-image:
+  linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, .2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, .2) 50%,
+      rgba(255, 255, 255, .2) 75%,
+      transparent 75%,
+      transparent
+  );
+  background-size: 50px 50px;
 }
 
-.max-text::before {
-  float: right;
-  content:attr(data-progress-max);
+@-webkit-keyframes spin {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
 }
+@-moz-keyframes spin {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+@keyframes spin {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+/* Pulsing Animation */
+
+.addPulseAnimation:after {
+  animation: pulse 2s ease-out infinite;
+  -webkit-animation: pulse 2s ease-out infinite;
+  -moz-animation: pulse 2s ease-out infinite;
+  background-image: linear-gradient(135deg, red, #ffc6d0);
+  background-size: 1000px 2000px;
+ }
+
+@-webkit-keyframes pulse {
+
+  100% {
+    background-position: 0% center, left center, right center;
+  }
+
+  0% {
+    background-position: 150% center, left center, right center;
+  }
+
+}
+
+@-moz-keyframes pulse {
+
+  100% {
+    background-position: 0% center, left center, right center;
+  }
+
+  0% {
+    background-position: 150% center, left center, right center;
+  }
+
+}
+@keyframes pulse {
+
+  100% {
+    background-position: 0% center, left center, right center;
+  }
+
+  0% {
+    background-position: 150% center, left center, right center;
+  }
+
+}
+
