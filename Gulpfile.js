@@ -36,12 +36,13 @@ gulp.task( "start", function( done ) {
   }
 });
 
-/* TODO Need a watch task? */
+/* TODO Do we need a watch task? */
 gulp.task( "watch", function( done ) {
   run(
     [
       "less:watch",
-//      "jscs:watch", // not working currently
+      "jscs:watch",
+      "lint:watch",
       "traceur:watch"
     ],
     done
@@ -52,8 +53,8 @@ gulp.task( "watch", function( done ) {
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-    // TODO also run other jscs tasks?
     "jscs:client",
+    "lint:client",
     [
       "less:dev",
       "symlink:dev",
@@ -70,9 +71,10 @@ gulp.task( "dev", function( done ) {
     "build:dev",
     "server:dev",
     [
+      // todo make specific 'watch:dev' tasks?
       "less:watch",
-      // jscs:watch doesn't work currently, but also doesn't break anything
       "jscs:watch",
+      "lint:watch",
       "traceur:watch"
     ],
     done

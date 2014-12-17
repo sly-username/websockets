@@ -109,7 +109,8 @@ paths.jscs = {
   tasks:  paths.scripts.tasks,
   tests:  paths.scripts.tests,
   server: paths.scripts.server,
-  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); })
+  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); }),
+  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
 };
 
 /*** ESLINT ***/
@@ -120,7 +121,8 @@ paths.eslint = {
   tasks:  paths.scripts.tasks,
   tests:  paths.scripts.tests,
   server: paths.scripts.server,
-  root: join( paths.root, "*.js" )
+  root: join( paths.root, "*.js" ),
+  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
 };
 
 /*** Traceur ES6 --> ES5 ***/
