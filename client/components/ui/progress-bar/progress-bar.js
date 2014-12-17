@@ -145,7 +145,6 @@
       }
     },
 
-    // todo refactor attribute change to valueChange
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "show-value":
