@@ -90,20 +90,17 @@
     /*** FUNCTIONS ***/
 
     valueChanged: function( oldVal, newVal ) {
-      this.value = newVal;
-      this.setAttribute( "value", newVal );
+      this.updateRange( "value", newVal );
+    },
+    maxChanged: function( oldVal, newVal ) {
+      this.updateRange( "max", newVal );
+    },
+    updateRange: function( property, newVal ) {
+      this[property] = newVal;
+      this.setAttribute( property, newVal );
 
       if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {
         this.valuePercentage = Math.round( ( this.value * 100 ) /  this.max  );
-      }
-      this.innerBar.style.width = this._valuePercentage + "%";
-    },
-    maxChanged: function( oldVal, newVal ) {
-      this.max = newVal;
-      this.setAttribute( "max", newVal );
-
-      if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {
-        this.valuePercentage = Math.round( ( this.value * 100 ) / this.max );
       }
       this.innerBar.style.width = this._valuePercentage + "%";
     },
