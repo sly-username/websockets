@@ -56,6 +56,8 @@ paths.vendor = {
     ].map( function( s ) { return join( paths.nodeModules, s ); } ) )
 };
 
+/*** TODO COPY (FOR PROD) ***/
+
 /*** SYMLINK ***/
 paths.symlink = {
   src: [
@@ -85,15 +87,40 @@ paths.less = {
 paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
 // paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat(paths.less.src);
 
-/*** JSCS ***/
-paths.jscs = {
-  rc:     join( paths.root, ".jscsrc" ),
+/*** Paths to JavaScript Files ***/
+paths.scripts = {
+  // todo add proper ignore for node_modules and bower_components
   all:    join( paths.root, "**", "*.js" ),
   client: join( paths.client, "**", "*.js" ),
   tasks:  join( paths.tasks, "**", "*.js" ),
   tests:  join( paths.tests, "**", "*.js" ),
   server: join( paths.server, "**", "*.js" ),
+  es6: {
+    all: join( paths.root, "**", "*.es6.js" ),
+    client: join( paths.client, "**", "*.es6.js" )
+  }
+};
+
+/*** JSCS ***/
+paths.jscs = {
+  rc:     join( paths.root, ".jscsrc" ),
+  all:    paths.scripts.all,
+  client: paths.scripts.client,
+  tasks:  paths.scripts.tasks,
+  tests:  paths.scripts.tests,
+  server: paths.scripts.server,
   root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); })
+};
+
+/*** ESLINT ***/
+paths.eslint = {
+  rc:     join( paths.root, ".eslintrc" ),
+  all:    paths.scripts.all,
+  client: paths.scripts.client,
+  tasks:  paths.scripts.tasks,
+  tests:  paths.scripts.tests,
+  server: paths.scripts.server,
+  root: join( paths.root, "*.js" )
 };
 
 /*** Traceur ES6 --> ES5 ***/
@@ -118,8 +145,6 @@ paths.server = {
   },
   watch: paths.dev
 };
-
-/*** TODO COPY (FOR PROD) ***/
 
 /*** TODO ***/
 

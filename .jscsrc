@@ -86,6 +86,7 @@
     "switch",
     "try",
     "with",
+    // todo remove return?
     "return"
   ],
   "disallowPaddingNewlinesBeforeKeywords": [
