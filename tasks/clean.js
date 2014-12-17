@@ -1,7 +1,7 @@
-
-var gulp  = require( "gulp" ),
-  rimraf  = require( "rimraf" ),
-  config  = require( "../config.paths.js" ),
+"use strict";
+var gulp = require( "gulp" ),
+  rimraf = require( "rimraf" ),
+  config = require( "../config.paths.js" ),
   clean;
 
 // rm -rf path

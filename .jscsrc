@@ -85,8 +85,9 @@
     "if",
     "switch",
     "try",
-    "with",
-    "return"
+    "with"
+    // todo remove return?
+//    "return"
   ],
   "disallowPaddingNewlinesBeforeKeywords": [
     "else",

@@ -1,10 +1,7 @@
-/**
- * Created by rj on 11/11/14.
- */
-
-var gulp    = require( "gulp" ),
+"use strict";
+var gulp = require( "gulp" ),
     symlink = require( "gulp-symlink" ),
-    config  = require( "../config.paths.js" );
+    config = require( "../config.paths.js" );
 
 // symlink files that don't need to be compiled into the build/www folder
 gulp.task( "symlink:dev", function() {

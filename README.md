@@ -1,18 +1,16 @@
-Eardish Client Application
+# Eardish Client Application #
+![Dependency Tracking](https://david-dm.org/eardish/clientapp.png?style=flat)
+![Dev Dependency Tracking](https://david-dm.org/eardish/clientapp#info=devDependencies)
 
-Current folder structure
+## [Folder Structure](https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#folder-structure) ##
+See Wiki Page: https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#folder-structure
 
-ignorable:
-node_modules
-bower_components
+For Client see: https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#client-application-folder-structure
 
-client -- where client app js and less and WCs go
-  components -- WCs folder
-  styles -- global level styles
-  views -- composite views
-  // more to come
+**Ignorable:**
 
+* node_modules
+* bower_components
 
-server -- dev server files
-
-tasks -- gulp tasks
+server/ -- dev server files
+tasks/ -- gulp tasks

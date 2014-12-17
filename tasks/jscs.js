@@ -1,9 +1,9 @@
-
-var gulp  = require( "gulp" ),
-  gutil   = require( "gulp-util" ),
-  config  = require( "../config.paths.js" ),
-  watch   = require( "gulp-watch" ),
-  jscs    = require( "gulp-jscs" ),
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  config = require( "../config.paths.js" ),
+  watch = require( "gulp-watch" ),
+  jscs = require( "gulp-jscs" ),
   through = require( "through2" ),
   options,
   runForPathWithOptions,
@@ -29,7 +29,6 @@ hackPipeErrorPatch = function() {
 // this is to log the stuffs
 logJSCSErrors = function( error ) {
   gutil.log( error.message );
-//  jscs().end();
 };
 
 // maximum code reuse!
@@ -44,10 +43,12 @@ runForPathWithOptions = function( path, opts ) {
 watchPathWithOptionsAndName = function( path, opts, name ) {
   name = name || "JSCS";
 
-  watch( path, { name: name } )
-    .pipe( jscs( opts ) )
-    .on( "error", logJSCSErrors )
-    .pipe( hackPipeErrorPatch() );
+  return watch( path, { name: name }, function( file ) {
+    return file
+      .pipe( jscs( opts ) )
+      .on( "error", logJSCSErrors )
+      .pipe( hackPipeErrorPatch() );
+  });
 };
 // jscs:enable
 
@@ -61,11 +62,12 @@ registerTaskPair = function( appendToName, path, opts ) {
   });
 };
 
-Object.keys( config.jscs )
-  .filter( function( prop ) { return prop !== "rc"; } )
-  .forEach( function( property ) {
+// Iterate over taskNames to generate tasks at given prop name
+config.jscs.taskNames.forEach( function( property ) {
+  if ( config.jscs[property] ) {
     registerTaskPair( property, config.jscs[property], options );
-  });
+  }
+});
 
 // jscs aliased to jscs:all
 gulp.task( "jscs", [ "jscs:all" ]);
