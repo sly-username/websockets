@@ -27,7 +27,11 @@
 </head>
 <body>
 
-<progress-bar value="33" max="52" show-value="true" animation="bars" direction="LTR"></progress-bar>
+<progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
+
+<paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>
+
+<on-off on-text="Yes" off-text="No" checked></on-off>
 
 <script id="reload-tag" type="text/javascript">
   if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
@@ -37,7 +41,7 @@
         ":35729/livereload.js\"></" +
         "script>"
     );
-  }
+  }8
 
   // Remove this script tag
   var here = document.getElementById("reload-tag");

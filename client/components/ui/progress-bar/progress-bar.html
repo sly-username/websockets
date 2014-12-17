@@ -2,12 +2,16 @@
   <template>
     <link rel="stylesheet" href="./progress-bar.css">
 
-    <div class="container">
-      <span class="inner-bar"></span>
-      <div class="progress-display" data-progress-bar-val="{{_progressBarVal}}" style="">%</div>
-    </div>
-    <div class="current-text" data-progress-value="{{value}}"></div>
-    <div class="max-text" data-progress-max="{{max}}"></div>
+      <div class="container">
+        <span class="inner-bar inner-float"></span>
+        <div class="progress-numbers">
+          <div class="progress-display">{{_valuePercentage}}%</div>
+        </div>
+      </div>
+      <div class="progress-numbers">
+        <div class="current-text">{{value}}</div>
+        <div class="max-text">{{max}}</div>
+      </div>
 
   </template>
   <script src="./progress-bar.js"></script>

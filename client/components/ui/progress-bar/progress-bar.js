@@ -4,19 +4,6 @@
   Polymer( "progress-bar", {
 
     /*** PROPERTIES ***/
-    // max value
-    get max() {
-      return this._max;
-    },
-    set max( value ) {
-      this.setAttribute( "max", value );
-
-      if ( value !== undefined ) {
-        return ( this._max = value );
-      } else {
-        return ( this._max = 100 );
-      }
-    },
     // show value
     get showValue() {
       return this._showValue;
@@ -27,11 +14,11 @@
       return ( this._showValue = value );
     },
     // percentage
-    get progressBarVal() {
-      return this._progressBarVal;
+    get valuePercentage() {
+      return this._valuePercentage;
     },
-    set progressBarVal( value ) {
-      return ( this._progressBarVal = value );
+    set valuePercentage( value ) {
+      return ( this._valuePercentage = value );
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -39,45 +26,39 @@
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[0];
 
       // value
-      this.value = parseInt( this.attributes.value.value );
+      this.value = parseInt( this.attributes.value.value, 10 );
 
       // text display
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[0];
       this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[0];
       this.progressDisplay = this.shadowRoot.getElementsByClassName( "progress-display" )[0];
+      this.progressNumbers = this.shadowRoot.getElementsByClassName( "progress-numbers" );
 
       // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
-        this.max = parseInt( this.attributes.max.value ) && typeof parseInt( this.attributes.max.value ) == "number" ? parseInt( this.attributes.max.value ) : 100;
+        this.max = parseInt( this.attributes.max.value, 10 ) && typeof parseInt( this.attributes.max.value, 10 ) == "number" ? parseInt( this.attributes.max.value ) : 100;
       } else {
         this.max = 100;
       }
       // percentage conversion
-      if ( parseInt( this.value ) < parseInt( this.max ) ) {
-        this.progressBarVal = Math.round( ( this.value * 100 ) / ( this.max ) );
-      } else {
-        alert( " Value is larger than Max " );
+      if ( parseInt( this.value, 10 ) < parseInt( this.max, 10 ) ) {
+        this.valuePercentage = Math.round( ( this.value * 100 ) / this.max );
       }
-      this.innerBar.style.width = this._progressBarVal + "%" ;
+      this.innerBar.style.width = this._valuePercentage + "%" ;
 
-      // showValue if show-value exists
-      // todo refactor showValue code
-      if ( this.hasAttribute( "show-value" ) ) {
-        this.showValue = this.attributes["show-value"].value;
-      // if show-value is true of false
-        if ( this.showValue === "true" ) {
-          this.currentText.style.display = "block";
-          this.maxText.style.display = "block";
-          this.progressDisplay.style.display = "block";
+      // showValue
+      for ( var i = 0; i < this.progressNumbers.length; i++ ) {
+        if ( this.hasAttribute( "show-value" ) ) {
+          this.showValue = this.attributes["show-value"].value;
+          // if show-value is true or false
+          if ( this.showValue === "true" ) {
+            this.progressNumbers[i].classList.add( "visibility" );
+          } else {
+            this.progressNumbers[i].classList.add( "no-visibility" );
+          }
         } else {
-          this.currentText.style.display = "none";
-          this.maxText.style.display = "none";
-          this.progressDisplay.style.display = "none";
+          this.progressNumbers[i].classList.add( "visibility" );
         }
-      } else {
-        this.currentText.style.display = "block";
-        this.maxText.style.display = "block";
-        this.progressDisplay.style.display = "block";
       }
 
       // bar directions
@@ -85,10 +66,12 @@
         this.direction = this.attributes.direction.value;
 
         if ( this.direction === "RTL" ) {
-          this.innerBar.id = "flipBar";
-          this.currentText.id = "flipTextRight";
-          this.progressDisplay.id = "flipTextRight";
-          this.maxText.id = "flipTextLeft";
+          this.innerBar.classList.remove( "inner-float" );
+          this.innerBar.classList.add( "flipBar" );
+          this.currentText.classList.add( "flipTextRight" );
+          this.progressDisplay.classList.add( "flipTextRight" );
+          this.maxText.classList.remove( "max-text" );
+          this.maxText.classList.add( "flipTextLeft" );
         }
       }
 
@@ -97,9 +80,9 @@
         this.animation = this.attributes.animation.value;
 
         if ( this.animation === "bars" ) {
-          this.innerBar.classList.add( "addBarAnimation" );
+          this.innerBar.classList.add( "bar-animation" );
         } else if ( this.animation === "pulse" ) {
-          this.innerBar.classList.add( "addPulseAnimation" );
+          this.innerBar.classList.add( "pulse-animation" );
         }
       }
     },
@@ -107,53 +90,46 @@
     /*** FUNCTIONS ***/
 
     valueChanged: function( oldVal, newVal ) {
-      if ( !isNaN( newVal ) ) {
-        this.value = newVal;
-        this.setAttribute( "value", newVal );
+      this.value = newVal;
+      this.setAttribute( "value", newVal );
 
-        if ( parseInt( this.value ) <= parseInt( this.max ) ) {
-          this.progressBarVal = Math.round( ( this.value * 100 ) / ( this.max ) );
-        } else {
-          alert( " Value is larger than Max " );
-        }
-        this.innerBar.style.width = this._progressBarVal + "%";
-      } else {
-        alert( "that isn't a number" );
-        this.setAttribute( "value", 0 );
-        this.setAttribute( "max", 100 );
+      if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {
+        this.valuePercentage = Math.round( ( this.value * 100 ) /  this.max  );
       }
+      this.innerBar.style.width = this._valuePercentage + "%";
     },
     maxChanged: function( oldVal, newVal ) {
-      if ( !isNaN( newVal ) ) {
-        this.max = newVal;
-        this.setAttribute( "max", newVal );
+      this.max = newVal;
+      this.setAttribute( "max", newVal );
 
-        if ( parseInt( this.value ) <= parseInt( this.max ) ) {
-          this.progressBarVal = Math.round( ( this.value * 100 ) / ( this.max ) );
-        } else {
-          alert( " Value is larger than Max " );
-        }
-        this.innerBar.style.width = this._progressBarVal + "%";
-      } else {
-        alert( "that isn't a number" );
-        this.setAttribute( "value", 0 );
-        this.setAttribute( "max", 100 );
+      if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {
+        this.valuePercentage = Math.round( ( this.value * 100 ) / this.max );
       }
+      this.innerBar.style.width = this._valuePercentage + "%";
     },
 
     directionChanged: function( oldVal, newVal ) {
-      this.innerBar.removeAttribute( "id" );
-      this.currentText.removeAttribute( "id" );
-      this.progressDisplay.removeAttribute( "id" );
-      this.maxText.removeAttribute( "id" );
       this.direction = newVal;
       this.setAttribute( "direction", newVal );
 
-      if ( this.direction === "RTL" ) {
-        this.innerBar.id = "flipBar";
-        this.currentText.id = "flipTextRight";
-        this.progressDisplay.id = "flipTextRight";
-        this.maxText.id = "flipTextLeft";
+      if ( this.hasAttribute( "direction" ) ) {
+        this.direction = this.attributes.direction.value;
+
+        if ( this.direction === "RTL" ) {
+          this.innerBar.classList.remove( "inner-float" );
+          this.maxText.classList.remove( "max-text" );
+          this.innerBar.classList.add( "flipBar" );
+          this.currentText.classList.add( "flipTextRight" );
+          this.progressDisplay.classList.add( "flipTextRight" );
+          this.maxText.classList.add( "flipTextLeft" );
+        } else if ( this.direction === "LTR" ) {
+          this.innerBar.classList.add( "inner-float" );
+          this.maxText.classList.add( "max-text" );
+          this.innerBar.classList.remove( "flipBar" );
+          this.currentText.classList.remove( "flipTextRight" );
+          this.progressDisplay.classList.remove( "flipTextRight" );
+          this.maxText.classList.remove( "flipTextLeft" );
+        }
       }
     },
     animationChanged: function( oldVal, newVal ) {
@@ -161,25 +137,11 @@
       this.setAttribute( "animation", newVal );
 
       if ( this.animation === "bars" ) {
-        this.innerBar.classList.remove( "addPulseAnimation" );
-        this.innerBar.classList.add( "addBarAnimation" );
+        this.innerBar.classList.remove( "pulse-animation" );
+        this.innerBar.classList.add( "bar-animation" );
       } else if ( this.animation === "pulse" ) {
-        this.innerBar.classList.remove( "addBarAnimation" );
-        this.innerBar.classList.add( "addPulseAnimation" );
-      }
-    },
-    _showValueChanged: function( oldVal, newVal ) {
-      this._showValue = newVal;
-      this.setAttribute( "show-value", newVal );
-
-      if ( this._showValue === "true" ) {
-        this.currentText.style.display = "block";
-        this.maxText.style.display = "block";
-        this.progressDisplay.style.display = "block";
-      } else {
-        this.currentText.style.display = "none";
-        this.maxText.style.display = "none";
-        this.progressDisplay.style.display = "none";
+        this.innerBar.classList.remove( "bar-animation" );
+        this.innerBar.classList.add( "pulse-animation" );
       }
     },
 
@@ -187,16 +149,23 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "show-value":
-          this._showValue = newVal;
+          this.showValue = newVal;
 
-          if ( this._showValue === "true" ) {
-            this.currentText.style.display = "block";
-            this.maxText.style.display = "block";
-            this.progressDisplay.style.display = "block";
-          } else {
-            this.currentText.style.display = "none";
-            this.maxText.style.display = "none";
-            this.progressDisplay.style.display = "none";
+          for ( var i = 0; i < this.progressNumbers.length; i++ ) {
+            if ( this.hasAttribute( "show-value" ) ) {
+              this.showValue = this.attributes["show-value"].value;
+              // if show-value is true or false
+              if ( this.showValue === "true" ) {
+                this.progressNumbers[i].classList.remove( "no-visibility" );
+                this.progressNumbers[i].classList.add( "visibility" );
+              } else {
+                this.progressNumbers[i].classList.remove( "visibility" );
+                this.progressNumbers[i].classList.add( "no-visibility" );
+              }
+            } else {
+              this.progressNumbers[i].classList.remove( "no-visibility" );
+              this.progressNumbers[i].classList.add( "visibility" );
+            }
           }
           break;
         default:

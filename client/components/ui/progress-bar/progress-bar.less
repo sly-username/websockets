@@ -12,28 +12,24 @@
     position: relative;
     overflow: hidden;
     text-align: center;
-    float: left;
+    background-color: rgb(194, 51, 31);
   }
 }
-.inner-bar {
-  background-color: rgb(194, 51, 31);
-}
-.progress-display::before {
-  content:attr(data-progress-bar-val);
-}
-.current-text::before {
+.inner-float {
   float: left;
-  content:attr(data-progress-value);
 }
 
-.max-text::before {
+.current-text {
+  float: left;
+}
+
+.max-text {
   float: right;
-  content:attr(data-progress-max);
 }
 
 /* Flips Bar */
 
-#flipBar {
+.flipBar {
   float: right;
   transform:rotate(180deg);
   -ms-transform:rotate(180deg); /* IE 9 */
@@ -41,16 +37,16 @@
   -webkit-transform:rotate(180deg); /* Safari and Chrome */
   -o-transform:rotate(180deg); /* Opera */
 }
-#flipTextRight {
+.flipTextRight {
   float: right;
 }
-#flipTextLeft {
+.flipTextLeft {
   float: left;
 }
 
 /* Spinning Bar Animation */
 
-.addBarAnimation {
+.bar-animation {
   animation: spin 2s linear infinite;
   -webkit-animation: spin 2s linear infinite;
   -moz-animation: spin 2s linear infinite;
@@ -101,7 +97,7 @@
 
 /* Pulsing Animation */
 
-.addPulseAnimation {
+.pulse-animation {
   animation: pulse 2s ease-out infinite;
   -webkit-animation: pulse 2s ease-out infinite;
   -moz-animation: pulse 2s ease-out infinite;
@@ -150,3 +146,10 @@
 
 }
 
+.no-visibility {
+  visibility: hidden;
+}
+
+.visibility {
+  visibility: visible;
+}
