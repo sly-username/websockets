@@ -1,11 +1,9 @@
-/**
- * Created by rj on 11/24/14.
- */
-var gulp  = require( "gulp" ),
-  gutil   = require( "gulp-util" ),
-  watch   = require( "gulp-watch" ),
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  watch = require( "gulp-watch" ),
   through = require( "through2" ),
-  config  = require( "../config.paths.js" ),
+  config = require( "../config.paths.js" ),
   traceur = require( "traceur" ),
   options, compileES6;
 
@@ -59,14 +57,14 @@ compileES6 = function( opts ) {
   });
 };
 
-/*** dev task **/
+/* dev task */
 gulp.task( "traceur:dev", function() {
   return gulp.src( config.traceur.src )
     .pipe( compileES6( options ) )
     .pipe( gulp.dest( config.traceur.out.dev ) );
 });
 
-/*** watch task ***/
+/* watch task */
 gulp.task( "traceur:watch", function( done ) {
 //  gulp.watch( config.traceur.src,  [ "traceur:dev" ]);
 

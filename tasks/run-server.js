@@ -1,17 +1,15 @@
-/**
- * Created by rj on 11/11/14.
- */
-
-var gulp      = require( "gulp" ),
-  gutil       = require( "gulp-util" ),
-  config      = require( "../config.paths.js" ),
-  livereload  = require( "livereload" ),
-  servers     = require( "../server/static.js" ),
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  config = require( "../config.paths.js" ),
+  livereload = require( "livereload" ),
+  servers = require( "../server/static.js" ),
   livereloadOptions;
 
 // Options
 livereloadOptions = {
-  port: 35729, // default live reload port
+  // default live reload port is 35729
+  port: 35729,
   applyJSLive: false,
   applyCSSLive: false
 //  exts: [ "html", "js", "css" ]
@@ -21,7 +19,8 @@ livereloadOptions = {
 gulp.task( "server:dev", function( done ) {
   var lrserver = livereload.createServer( livereloadOptions );
 
-  servers.startDev(); // starts koa server
+  // starts koa server
+  servers.startDev();
   lrserver.watch( config.server.watch );
 
   gutil.log( "dev server started on " + config.server.ports.dev );
@@ -30,7 +29,8 @@ gulp.task( "server:dev", function( done ) {
 
 // Start prod server
 gulp.task( "server:prod", function( done ) {
-  servers.startProd(); // starts koa server
+  // starts koa server
+  servers.startProd();
   gutil.log( "prod server started on " + config.server.ports.prod );
   done();
 });

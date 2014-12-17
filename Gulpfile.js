@@ -1,13 +1,16 @@
-var gulp      = require( "gulp" ),
-  gutil       = require( "gulp-util" ),
-  run         = require( "run-sequence" ),
-  requiredir  = require( "requiredir" ),
-  dotenv      = require( "dotenv" ),
+/*eslint no-process-env:0, valid-jsdoc:0*/
+"use strict";
+var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
+  run = require( "run-sequence" ),
+  requiredir = require( "requiredir" ),
+  dotenv = require( "dotenv" ),
   dummy;
 
 dotenv.load();
 
 // load gulp tasks from ./tasks
+/*eslint no-unused-vars:0*/
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
 
@@ -33,12 +36,13 @@ gulp.task( "start", function( done ) {
   }
 });
 
-/* TODO Need a watch task? */
+/* TODO Do we need a watch task? */
 gulp.task( "watch", function( done ) {
   run(
     [
       "less:watch",
-//      "jscs:watch", // not working currently
+      "jscs:watch",
+      "lint:watch",
       "traceur:watch"
     ],
     done
@@ -49,7 +53,8 @@ gulp.task( "watch", function( done ) {
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-    "jscs:client", // todo also run other jscs tasks?
+    "jscs:client",
+    "lint:client",
     [
       "less:dev",
       "symlink:dev",
@@ -66,8 +71,10 @@ gulp.task( "dev", function( done ) {
     "build:dev",
     "server:dev",
     [
+      // todo make specific 'watch:dev' tasks?
       "less:watch",
-      "jscs:watch", // doesn't work, but also doesn't break anything
+      "jscs:watch",
+      "lint:watch",
       "traceur:watch"
     ],
     done
