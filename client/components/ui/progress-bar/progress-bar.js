@@ -32,11 +32,10 @@
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[0];
       this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[0];
       this.progressDisplay = this.shadowRoot.getElementsByClassName( "progress-display" )[0];
-      this.progressNumbers = this.shadowRoot.getElementsByClassName( "progress-numbers" );
 
       // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
-        this.max = parseInt( this.attributes.max.value, 10 ) && typeof parseInt( this.attributes.max.value, 10 ) == "number" ? parseInt( this.attributes.max.value ) : 100;
+        this.max = parseInt( this.attributes.max.value, 10 ) && typeof parseInt( this.attributes.max.value, 10 ) === "number" ? parseInt( this.attributes.max.value, 10 ) : 100;
       } else {
         this.max = 100;
       }
@@ -44,46 +43,15 @@
       if ( parseInt( this.value, 10 ) < parseInt( this.max, 10 ) ) {
         this.valuePercentage = Math.round( ( this.value * 100 ) / this.max );
       }
-      this.innerBar.style.width = this._valuePercentage + "%" ;
-
+      this.innerBar.style.width = this._valuePercentage + "%";
       // showValue
-      for ( var i = 0; i < this.progressNumbers.length; i++ ) {
-        if ( this.hasAttribute( "show-value" ) ) {
-          this.showValue = this.attributes["show-value"].value;
-          // if show-value is true or false
-          if ( this.showValue === "true" ) {
-            this.progressNumbers[i].classList.add( "visibility" );
-          } else {
-            this.progressNumbers[i].classList.add( "no-visibility" );
-          }
-        } else {
-          this.progressNumbers[i].classList.add( "visibility" );
-        }
-      }
-
-      // bar directions
-      if ( this.hasAttribute( "direction" ) ) {
-        this.direction = this.attributes.direction.value;
-
-        if ( this.direction === "RTL" ) {
-          this.innerBar.classList.remove( "inner-float" );
-          this.innerBar.classList.add( "flipBar" );
-          this.currentText.classList.add( "flipTextRight" );
-          this.progressDisplay.classList.add( "flipTextRight" );
-          this.maxText.classList.remove( "max-text" );
-          this.maxText.classList.add( "flipTextLeft" );
-        }
+      if ( this.hasAttribute( "show-value" ) ) {
+        this.showValue = this.attributes["show-value"].value;
       }
 
       // animation
       if ( this.hasAttribute( "animation" ) ) {
         this.animation = this.attributes.animation.value;
-
-        if ( this.animation === "bars" ) {
-          this.innerBar.classList.add( "bar-animation" );
-        } else if ( this.animation === "pulse" ) {
-          this.innerBar.classList.add( "pulse-animation" );
-        }
       }
     },
     /*** END LIFECYCLE ***/
@@ -100,7 +68,7 @@
       this.setAttribute( property, newVal );
 
       if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {
-        this.valuePercentage = Math.round( ( this.value * 100 ) /  this.max  );
+        this.valuePercentage = Math.round( ( this.value * 100 ) / this.max  );
       }
       this.innerBar.style.width = this._valuePercentage + "%";
     },
@@ -111,58 +79,17 @@
 
       if ( this.hasAttribute( "direction" ) ) {
         this.direction = this.attributes.direction.value;
-
-        if ( this.direction === "RTL" ) {
-          this.innerBar.classList.remove( "inner-float" );
-          this.maxText.classList.remove( "max-text" );
-          this.innerBar.classList.add( "flipBar" );
-          this.currentText.classList.add( "flipTextRight" );
-          this.progressDisplay.classList.add( "flipTextRight" );
-          this.maxText.classList.add( "flipTextLeft" );
-        } else if ( this.direction === "LTR" ) {
-          this.innerBar.classList.add( "inner-float" );
-          this.maxText.classList.add( "max-text" );
-          this.innerBar.classList.remove( "flipBar" );
-          this.currentText.classList.remove( "flipTextRight" );
-          this.progressDisplay.classList.remove( "flipTextRight" );
-          this.maxText.classList.remove( "flipTextLeft" );
-        }
       }
     },
     animationChanged: function( oldVal, newVal ) {
       this.animation = newVal;
       this.setAttribute( "animation", newVal );
-
-      if ( this.animation === "bars" ) {
-        this.innerBar.classList.remove( "pulse-animation" );
-        this.innerBar.classList.add( "bar-animation" );
-      } else if ( this.animation === "pulse" ) {
-        this.innerBar.classList.remove( "bar-animation" );
-        this.innerBar.classList.add( "pulse-animation" );
-      }
     },
 
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "show-value":
-          this.showValue = newVal;
-
-          for ( var i = 0; i < this.progressNumbers.length; i++ ) {
-            if ( this.hasAttribute( "show-value" ) ) {
-              this.showValue = this.attributes["show-value"].value;
-              // if show-value is true or false
-              if ( this.showValue === "true" ) {
-                this.progressNumbers[i].classList.remove( "no-visibility" );
-                this.progressNumbers[i].classList.add( "visibility" );
-              } else {
-                this.progressNumbers[i].classList.remove( "visibility" );
-                this.progressNumbers[i].classList.add( "no-visibility" );
-              }
-            } else {
-              this.progressNumbers[i].classList.remove( "no-visibility" );
-              this.progressNumbers[i].classList.add( "visibility" );
-            }
-          }
+          this._showValue = newVal;
           break;
         default:
           // do nothing

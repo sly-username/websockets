@@ -15,59 +15,77 @@
     background-color: rgb(194, 51, 31);
   }
 }
-.inner-float {
-  float: left;
-}
-
-.current-text {
-  float: left;
-}
-
-.max-text {
-  float: right;
-}
 
 /* Flips Bar */
 
-.flipBar {
-  float: right;
-  transform:rotate(180deg);
-  -ms-transform:rotate(180deg); /* IE 9 */
-  -moz-transform:rotate(180deg); /* Firefox */
-  -webkit-transform:rotate(180deg); /* Safari and Chrome */
-  -o-transform:rotate(180deg); /* Opera */
+:host([direction='RTL']){
+  .current-text {
+    float: right;
+  }
+  .inner-bar {
+    float: right;
+    transform:rotate(180deg);
+    -ms-transform:rotate(180deg); /* IE 9 */
+    -moz-transform:rotate(180deg); /* Firefox */
+    -webkit-transform:rotate(180deg); /* Safari and Chrome */
+    -o-transform:rotate(180deg); /* Opera */
+  }
+  .max-text{
+    float:left;
+  }
+  .progress-display {
+    float: right;
+  }
 }
-.flipTextRight {
-  float: right;
-}
-.flipTextLeft {
-  float: left;
+
+:host([direction='LTR']){
+  .current-text {
+    float: left;
+  }
+  .max-text{
+    float: right;
+  }
+  .progress-display {
+    float:left;
+  }
+  .inner-bar {
+    float: left;
+  }
 }
 
 /* Spinning Bar Animation */
 
-.bar-animation {
-  animation: spin 2s linear infinite;
-  -webkit-animation: spin 2s linear infinite;
-  -moz-animation: spin 2s linear infinite;
-  background-image:
-  linear-gradient(
-      -45deg,
-      rgba(255, 255, 255, .2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, .2) 50%,
-      rgba(255, 255, 255, .2) 75%,
-      transparent 75%,
-      transparent
-  );
-  background-size: 50px 50px;
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  z-index: 1;
-  border-radius: 20px 8px 8px 20px;
-  overflow: hidden;
+:host([animation='bars']){
+  .inner-bar {
+    animation: spin 2s linear infinite;
+    -webkit-animation: spin 2s linear infinite;
+    -moz-animation: spin 2s linear infinite;
+    background-image:
+    linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, .2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, .2) 50%,
+        rgba(255, 255, 255, .2) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 50px 50px;
+    content: "";
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: 1;
+    border-radius: 20px 8px 8px 20px;
+    overflow: hidden;
+    display: block;
+    height: 100%;
+    border-radius: 20px 8px 8px 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgb(194, 51, 31);
+
+  }
 }
 
 @-webkit-keyframes spin {
@@ -96,20 +114,28 @@
 }
 
 /* Pulsing Animation */
+:host([animation='pulse']){
+  .inner-bar {
+    animation: pulse 2s ease-out infinite;
+    -webkit-animation: pulse 2s ease-out infinite;
+    -moz-animation: pulse 2s ease-out infinite;
+    background-image: linear-gradient(135deg, red, #ffc6d0);
+    background-size: 1000px 2000px;
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: 1;
+    border-radius: 20px 8px 8px 20px;
+    overflow: hidden;display: block;
+    height: 100%;
+    border-radius: 20px 8px 8px 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgb(194, 51, 31);
 
-.pulse-animation {
-  animation: pulse 2s ease-out infinite;
-  -webkit-animation: pulse 2s ease-out infinite;
-  -moz-animation: pulse 2s ease-out infinite;
-  background-image: linear-gradient(135deg, red, #ffc6d0);
-  background-size: 1000px 2000px;
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  z-index: 1;
-  border-radius: 20px 8px 8px 20px;
-  overflow: hidden;
- }
+  }
+}
 
 @-webkit-keyframes pulse {
 
@@ -146,10 +172,16 @@
 
 }
 
-.no-visibility {
-  visibility: hidden;
+/* Show/Hide Values */
+:host([show-value='false']){
+  .progress-display {
+    visibility: hidden;
+  }
+  .current-text {
+    visibility: hidden;
+  }
+  .max-text {
+    visibility: hidden;
+  }
 }
 
-.visibility {
-  visibility: visible;
-}
