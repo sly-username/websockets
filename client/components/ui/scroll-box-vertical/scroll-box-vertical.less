@@ -1,0 +1,27 @@
+
+.inner-box {
+  overflow: auto;
+  overflow-x: hidden;
+  max-height: 100%;
+  margin-right: -100px;
+  padding-right: 100px;
+}
+.outer-box {
+  height: 300px;
+  width: 300px;
+  background-color: lightgrey;
+  padding: 0 5px;
+  position: relative;
+  overflow: hidden;
+}
+.outer-box:after {
+  content: '';
+  height: 2em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.inner-box p:last-child {
+  margin-bottom: 2em;
+}
