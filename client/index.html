@@ -28,9 +28,17 @@
 </head>
 <body>
 
-<paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>
+<scroll-box-vertical>
+  <div>Items Title</div>
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+</scroll-box-vertical>
+<!--<paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>-->
 
-<on-off on-text="Yes" off-text="No" checked></on-off>
+<!--<on-off on-text="Yes" off-text="No" checked></on-off>-->
 
 <script id="reload-tag" type="text/javascript">
   if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
