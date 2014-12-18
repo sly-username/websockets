@@ -1,54 +1,56 @@
-(function( Polymer ) {
+( function( Polymer ) {
   "use strict";
-
-  var copyAttributes = function (elemFrom, elemTo, attrs) {
-    attrs.forEach(function (attr) {
-      if ( elemFrom.hasAttribute(attr) ) {
-        elemTo.setAttribute(attr, elemFrom.getAttribute(attr));
+  var copyAttributes = function( elemFrom, elemTo, attrs ) {
+    attrs.forEach( function( attr ) {
+      if ( elemFrom.hasAttribute( attr ) ) {
+        elemTo.setAttribute( attr, elemFrom.getAttribute( attr ) );
       } else {
-        elemTo.removeAttribute(attr);
+        elemTo.removeAttribute( attr );
       }
     });
   };
 
-  Polymer("on-off", {
-    get onText(){
+  Polymer( "on-off", {
+    get onText() {
       return this._onText;
     },
-    set onText(value){
+    set onText( value ) {
       this.attributes["on-text"].value = value;
-      return (this._onText = value);
+      this._onText = value;
+      return value;
     },
-    get offText(){
+    get offText() {
       return this._offText;
     },
-    set offText(value){
+    set offText( value ) {
       this.attributes["off-text"].value = value;
-      return (this._offText = value);
+      this._offText = value;
+      return value;
     },
-    ready: function () {
-      //on-text off-text
-      var checkedBox = this.shadowRoot.getElementById("checkbox");
+    ready: function() {
+      // on-text off-text
+      var checkedBox = this.shadowRoot.getElementById( "checkbox" );
 
-      this.onText  = this.attributes["on-text"].value;
+      this.onText = this.attributes["on-text"].value;
       this.offText = this.attributes["off-text"].value;
 
-      copyAttributes(this, checkedBox, ["checked", "disabled"]);
+      copyAttributes( this, checkedBox, [ "checked", "disabled" ]);
     },
-    attached: function () {
+    attached: function() {
       var self = this,
-          toggle = self.shadowRoot.querySelector("input[type=checkbox]");
+          toggle = self.shadowRoot.querySelector( "input[type=checkbox]" );
 
-      toggle.addEventListener("change", function() {
+      toggle.addEventListener( "change", function() {
         var state = toggle.checked ? "on" : "off";
 
-        self.fire("toggle", { msg: "toggle" });
-        self.fire(state, { msg: state });
-
+        /*jscs:disable requirePaddingNewLinesInObjects*/
+        self.fire( "toggle", { msg: "toggle" });
+        self.fire( state, { msg: state });
+        /*jscs:enable */
       });
     },
-    attributeChanged: function (attrName, oldVal, newVal) {
-      var checkbox = this.shadowRoot.getElementById("checkbox");
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      var checkbox = this.shadowRoot.getElementById( "checkbox" );
 
       switch ( attrName ) {
         case "on-text":
@@ -60,7 +62,7 @@
         case "disabled":
           // fallthrough
         case "checked":
-          checkbox[newVal == null ? "removeAttribute" : "setAttribute"](attrName, "");
+          checkbox[newVal == null ? "removeAttribute" : "setAttribute"]( attrName, "" );
           break;
         default:
           // do nothing
@@ -68,5 +70,4 @@
       }
     }
   });
-
 })( window.Polymer );

@@ -51,7 +51,9 @@
         this.primaryBox.style.display = this.confirmBox.style.display = "inline";
       }
 
-      if ( !/text|password|email|tel|number|url|search/.test( this.attributes.type.value ) ) {
+      /*eslint-disable*/
+      if ( !(/text|password|email|tel|number|url|search/).test( this.attributes.type.value ) ) {
+      /*eslint-enable*/
         this.setAttribute( "type", "text" );
       }
     },
