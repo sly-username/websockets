@@ -13,16 +13,21 @@
       return ( this._showArrow = value );
     },
     /*** END PROPERTIES ***/
+    /*** LIFECYCLE ***/
+    ready: function() {
+      this.innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[0];
+    },
+    /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
     // Scroll Up
     scrollUp: function( value ) {
-      var innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[0];
-      innerBox.scrollTop = parseInt( value, 10 );
+      var scrollPosition = this.innerBox.scrollTop;
+      this.innerBox.scrollTop = scrollPosition - value.replace( /\D/g, "" );
     },
     // Scroll Down
     scrollDown: function( value ) {
-      var innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[0];
-      console.log( innerBox.scrollHeight );
+      var scrollPosition = this.innerBox.scrollTop;
+      this.innerBox.scrollTop = scrollPosition + value.replace( /\D/g, "" );
     },
     // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {
