@@ -19,12 +19,14 @@ lessOptions = {
 /* jshint -W071 */
 myLess = function() {
   return through.obj( function( file, enc, done ) {
+    var str, opts;
+
     if ( file.isNull() ) {
       return done( null, file );
     }
 
-    var str = file.contents.toString( "utf8" ),
-      opts = defaults( {}, lessOptions );
+    str = file.contents.toString( "utf8" );
+    opts = defaults( {}, lessOptions );
 
     opts.filename = file.path;
     opts.sourceMap = file.sourceMap ? true : false;
