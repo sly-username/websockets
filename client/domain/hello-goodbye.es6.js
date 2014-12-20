@@ -2,11 +2,17 @@
  * Created by rj on 11/24/14.
  */
 
-export var hello = (name) => { alert("Hello " + name); return name; };
+var hello = ( name ) => {
+    console.log( "Hello " + name );
+    return name;
+  },
+  goodbye = ( name ) => {
+    console.log( "Goodbye " + name );
+  };
 
-export var goodbye = (name) => { console.log("Goodbye " + name); };
+export { hello, goodbye };
 
 export default {
-  get hello(){ return hello; },
-  get goodbye(){ return goodbye; }
+  get hello() { return hello; },
+  get goodbye() { return goodbye; }
 };

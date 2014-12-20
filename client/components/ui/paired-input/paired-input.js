@@ -1,83 +1,86 @@
-(function( Polymer ) {
+( function( Polymer ) {
   "use strict";
+  var copyableAttributes = [ "type", "disabled", "required", "pattern", "placeholder" ],
+    copyAttributes = function( elemFrom, elemsTo, attrs ) {
+      attrs.forEach( function( attr ) {
+        var value;
 
-  var copyableAttributes = ["type", "disabled", "required", "pattern", "placeholder"];
+        if ( elemFrom.hasAttribute( attr ) ) {
+          value = elemFrom.getAttribute( attr );
+          elemsTo.forEach( function( elem ) { elem.setAttribute( attr, value ); });
+        } else {
+          elemsTo.forEach( function( elem ) { elem.removeAttribute( attr ); });
+        }
+      });
+    };
 
-  var copyAttributes = function (elemFrom, elemsTo, attrs) {
-    attrs.forEach(function (attr) {
-      var value;
-      if ( elemFrom.hasAttribute(attr) ) {
-        value = elemFrom.getAttribute(attr);
-        elemsTo.forEach(function(elem){ elem.setAttribute(attr, value); });
-      } else {
-        elemsTo.forEach(function(elem){ elem.removeAttribute(attr); });
-      }
-    });
-  };
-
-  Polymer("paired-input", {
+  Polymer( "paired-input", {
     _primaryBox: null,
     _confirmBox: null,
     _errorDiv: null,
     _boxes: [],
-    get primaryBox(){
+    get primaryBox() {
       return this._primaryBox;
     },
-    get confirmBox(){
+    get confirmBox() {
       return this._confirmBox;
     },
-    get errorDiv(){
+    get errorDiv() {
       return this._errorDiv;
     },
-    get boxes(){
+    get boxes() {
       return this._boxes;
     },
-    ready: function () {
+    ready: function() {
+      this._primaryBox = this.shadowRoot.getElementById( "primaryBox" );
+      this._confirmBox = this.shadowRoot.getElementById( "confirmBox" );
+      this._errorDiv = this.shadowRoot.getElementById( "error" );
+      this._boxes = [ this.primaryBox, this.confirmBox ];
 
-      this._primaryBox = this.shadowRoot.getElementById("primaryBox");
-      this._confirmBox = this.shadowRoot.getElementById("confirmBox");
-      this._errorDiv = this.shadowRoot.getElementById("error");
-      this._boxes = [this.primaryBox, this.confirmBox];
+      copyAttributes( this, this.boxes, copyableAttributes );
 
-      copyAttributes(this, this.boxes, copyableAttributes);
-
-      if( this.hasAttribute("placeholder") ){
-        this.confirmBox.setAttribute("placeholder", "Confirm " + this.getAttribute("placeholder"));
+      if ( this.hasAttribute( "placeholder" ) ) {
+        this.confirmBox.setAttribute(
+          "placeholder",
+          "Confirm " + this.getAttribute( "placeholder" )
+        );
       }
 
       // TODO fix maybe?
-      if ( this.primaryBox.hasAttribute("single-line") ) {
+      if ( this.primaryBox.hasAttribute( "single-line" ) ) {
         this.primaryBox.style.display = this.confirmBox.style.display = "inline";
       }
 
-
-      if ( (/text|password|email|tel|number|url|search/).test(this.attributes.type.value) ) {
-        return;
-      } else {
-        this.setAttribute("type", "text");
+      /*eslint-disable*/
+      if ( !(/text|password|email|tel|number|url|search/).test( this.attributes.type.value ) ) {
+      /*eslint-enable*/
+        this.setAttribute( "type", "text" );
       }
     },
-    attached: function () {
-      this.addEventListener("keyup", this.keyConfirm);
+    attached: function() {
+      this.addEventListener( "keyup", this.keyConfirm );
     },
-    keyConfirm: function () {
-      this.errorDiv.innerHTML = this.isValid && this.primaryBox !== "" && this.confirmBox !== "" ? "fields are valid" : "fields are not valid";
+    keyConfirm: function() {
+      this.errorDiv.innerHTML =
+        this.isValid &&
+        this.primaryBox !== "" &&
+        this.confirmBox !== "" ? "fields are valid" : "fields are not valid";
     },
-    get isValid () {
-      return this.primaryBox.validity.valid && (this.primaryBox.value === this.confirmBox.value);
+    get isValid() {
+      return this.primaryBox.validity.valid && this.primaryBox.value === this.confirmBox.value;
     },
-    get val () {
-      return [this.primaryBox.value, this.confirmBox.value];
+    get val() {
+      return [ this.primaryBox.value, this.confirmBox.value ];
     },
-    set val (val){
+    set val( val ) {
       this.primaryBox.value = this.confirmBox.value = val;
       return true;
     },
-    attributeChanged: function (attrName, oldVal, newVal) {
-      if ( copyableAttributes.some(function(value){ return attrName === value; }) ) {
-        copyAttributes(this, this.boxes, [attrName]);
-      } else if( attrName === "single-line" ){
-        if( newVal == null ){
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      if ( copyableAttributes.some( function( value ) { return attrName === value; }) ) {
+        copyAttributes( this, this.boxes, [ attrName ]);
+      } else if ( attrName === "single-line" ) {
+        if ( newVal == null ) {
           this.primaryBox.style.display = this.confirmBox.style.display = "block";
         } else {
           this.primaryBox.style.display = this.confirmBox.style.display = "inline";
@@ -85,5 +88,4 @@
       }
     }
   });
-
 })( Polymer );
