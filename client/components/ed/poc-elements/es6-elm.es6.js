@@ -1,6 +1,6 @@
 ( function( Polymer ) {
   "use strict";
-  window.Polymer( "es6-elm", {
+  Polymer( "es6-elm", {
     attached() {
       System.import( "domain/main.es6" ).then( hello => {
         this.addEventListener( "click", () => {
