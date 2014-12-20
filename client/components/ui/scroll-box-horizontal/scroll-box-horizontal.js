@@ -4,13 +4,13 @@
 
     /*** PROPERTIES ***/
     // Show Arrow
-    get showArrow() {
-      return this._showArrow;
+    get showArrows() {
+      return this._showArrows;
     },
-    set showArrow( value ) {
+    set showArrows( value ) {
       this.setAttribute( "show-arrows", value );
 
-      return ( this._showArrow = value );
+      return ( this._showArrows = value );
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -19,15 +19,17 @@
     },
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
-    // Scroll Up
-    scrollUp: function( value ) {
-      var scrollPosition = this.innerBox.scrollTop;
-      this.innerBox.scrollTop = scrollPosition - value.replace( /\D/g, "" );
+    // Scroll Right
+    myScrollRight: function( value ) {
+      var currentPosition = this.innerBox.scrollLeft;
+      console.log( currentPosition );
+      this.innerBox.scrollLeft = currentPosition + value.replace( /\D/g, "" );
     },
-    // Scroll Down
-    scrollDown: function( value ) {
-      var scrollPosition = this.innerBox.scrollTop;
-      this.innerBox.scrollTop = scrollPosition + value.replace( /\D/g, "" );
+    // Scroll Left
+    myScrollLeft: function( value ) {
+      var currentPosition = this.innerBox.scrollLeft;
+      console.log( currentPosition );
+      this.innerBox.scrollLeft = currentPosition - value.replace( /\D/g, "" );
     },
     // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {

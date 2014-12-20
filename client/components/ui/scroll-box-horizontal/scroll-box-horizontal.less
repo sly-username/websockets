@@ -1,13 +1,16 @@
 .inner-box {
-  overflow: auto;
+  overflow-x: auto;
   overflow-y: hidden;
-  max-height: 100%;
-  margin-right: -100px;
-  padding-right: 100px;
-  &p:last-child {
-    margin-bottom: 2em;
+  margin-bottom: -100px;
+  padding-bottom: 400px;
+  white-space: nowrap;
+  content::content * {
+    display: inline-block;
+    vertical-align: middle;
   }
 }
+
+
 .outer-box {
   height: 300px;
   width: 300px;
@@ -35,7 +38,7 @@
 
 :host([show-arrows='true']){
   .inner-box {
-    margin-bottom: 5px;
-    padding-bottom: -100px;
+    margin-bottom: 100px;
+    padding-bottom: 10px;
   }
 }
