@@ -68,6 +68,13 @@ gulp.task( "traceur:dev", function() {
 gulp.task( "traceur:watch", function( done ) {
 //  gulp.watch( config.traceur.src,  [ "traceur:dev" ]);
 
+  /*
+  return watch( config.traceur.src, function( file ) {
+    return file
+      .pipe( compileES6( options ) )
+      .pipe( gulp.dest( config.traceur.out.dev ) );
+  });
+  */
   watch( config.traceur.src )
     .pipe( compileES6( options ) )
     .pipe( gulp.dest( config.traceur.out.dev ) );
