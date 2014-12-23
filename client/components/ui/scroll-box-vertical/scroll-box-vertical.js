@@ -1,16 +1,32 @@
 ( function( Polymer ) {
   "use strict";
   Polymer( "scroll-box-vertical", {
-
     /*** PROPERTIES ***/
+    // Disabled
+    get disabled() {
+      if ( !null ) {
+        return this._disabled;
+      }
+    },
+    set disabled( value ) {
+      if ( value !== null ) {
+        this.setAttribute( "disabled", value );
+
+        return ( this._disabled = value );
+      }
+    },
     // Show Arrow
     get showArrow() {
-      return this._showArrow;
+      if ( !null ) {
+        return this._showArrow;
+      }
     },
     set showArrow( value ) {
-      this.setAttribute( "show-arrows", value );
+      if ( value !== null ) {
+        this.setAttribute( "show-arrows", value );
 
-      return ( this._showArrow = value );
+        return ( this._showArrow = value );
+      }
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -22,12 +38,12 @@
     // Scroll Up
     scrollUp: function( value ) {
       var scrollPosition = this.innerBox.scrollTop;
-      this.innerBox.scrollTop = scrollPosition - value.replace( /\D/g, "" );
+      this.innerBox.scrollTop = scrollPosition - parseInt( value, 10 );
     },
     // Scroll Down
     scrollDown: function( value ) {
       var scrollPosition = this.innerBox.scrollTop;
-      this.innerBox.scrollTop = scrollPosition + value.replace( /\D/g, "" );
+      this.innerBox.scrollTop = scrollPosition + parseInt( value, 10 );
     },
     // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {
@@ -39,7 +55,10 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "show-arrows":
-          this.setAttribute( "show-arrows", newVal );
+
+          if ( newVal !== null ) {
+            this.setAttribute( "show-arrows", newVal );
+          }
           break;
         default:
           // do nothing
