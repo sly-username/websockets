@@ -2,7 +2,6 @@
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
   config = require( "../config.paths.js" ),
-  watch = require( "gulp-watch" ),
   jscs = require( "gulp-jscs" ),
   through = require( "through2" ),
   options,
@@ -39,18 +38,17 @@ runForPathWithOptions = function( path, opts ) {
     .pipe( hackPipeErrorPatch() );
 };
 
-// jscs:disable requirePaddingNewLinesInObjects
 watchPathWithOptionsAndName = function( path, opts, name ) {
   name = name || "JSCS";
 
-  return watch( path, { name: name }, function( file ) {
-    return file
-      .pipe( jscs( opts ) )
-      .on( "error", logJSCSErrors )
-      .pipe( hackPipeErrorPatch() );
-  });
+  return gulp.watch( path )
+    .on( "change", function( event ) {
+      if ( event.type !== "deleted" ) {
+        gutil.log( name + " saw a change at: " + event.path );
+        return runForPathWithOptions( event.path, opts );
+      }
+    });
 };
-// jscs:enable
 
 registerTaskPair = function( appendToName, path, opts ) {
   gulp.task( "jscs:" + appendToName, function() {
