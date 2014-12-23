@@ -135,6 +135,23 @@ paths.traceur = {
   }
 };
 
+/*** KARMA ***/
+paths.karma = {
+  rc: join( paths.root, "karma.conf.js" ),
+  port: 9876,
+  reporters: [ "progress" ],
+  frameworks: [ "mocha", "chai" ],
+  base: paths.root,
+  src: [
+    paths.scripts.tests,
+    join( paths.client, "**", "*.tests.js" )
+  ],
+  exclude: [
+    paths.nodeModules,
+    paths.bowerComponents
+  ]
+};
+
 /*** SERVER PATHS ***/
 paths.server = {
   ports: {
