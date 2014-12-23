@@ -82,6 +82,17 @@ gulp.task( "dev", function( done ) {
   );
 });
 
+/*** MAIN TEST TASK ***/
+/*
+gulp.task( "test", function( done ) {
+  run(
+    "build:tests",
+    "karma:server",
+    done
+  );
+});
+*/
+
 /*** PRODUCTION BUILD TASK ***/
 gulp.task( "build:prod", function( done ) {
   gutil.log( "TODO THIS TASK" );

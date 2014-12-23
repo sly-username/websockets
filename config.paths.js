@@ -143,8 +143,9 @@ paths.karma = {
   frameworks: [ "mocha", "chai" ],
   base: paths.root,
   src: [
-    paths.scripts.tests,
-    join( paths.client, "**", "*.tests.js" )
+    join( paths.root, "**", "*.*" )
+//    join( paths.client, "**", "*.*" ),
+//    join( paths.tests, "**", "*.*" )
   ],
   exclude: [
     paths.nodeModules,

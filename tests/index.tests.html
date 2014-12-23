@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <base href="/"/>
+  <title>Client App Tests</title>
+
+  <!-- Vendor Scripts -->
+  <script src="vendor/webcomponents.js"></script>
+  <script src="vendor/polymer.js"></script>
+  <script src="vendor/traceur-runtime.js"></script>
+  <script src="vendor/es6-module-loader.js"></script>
+  <script src="vendor/system.js"></script>
+
+  <!-- Test Vendor Scripts -->
+  <script src="vendor/mocha.js"></script>
+  <link rel="stylesheet" href="vendor/mocha.css"/>
+  <script src="vendor/chai.js"></script>
+
+  <script>
+    // Set up Mocha
+    mocha.setup({
+      ui:"TDD"
+    });
+  </script>
+
+  <!-- INCLUDE COMPONENT TEST FILES -->
+
+</head>
+<body>
+  <div id="mocha"></div>
+  <script>
+    // Run Mocha
+    window.addEventListener( "load", function() {
+      mocha.run();
+    });
+  </script>
+</body>
+</html>
