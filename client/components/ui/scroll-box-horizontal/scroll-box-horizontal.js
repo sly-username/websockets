@@ -3,14 +3,31 @@
   Polymer( "scroll-box-horizontal", {
 
     /*** PROPERTIES ***/
-    // Show Arrow
-    get showArrows() {
-      return this._showArrows;
+      // Disabled
+    get disabled() {
+      if ( !null ) {
+        return this._disabled;
+      }
     },
-    set showArrows( value ) {
-      this.setAttribute( "show-arrows", value );
+    set disabled( value ) {
+      if ( value !== null ) {
+        this.setAttribute( "disabled", value );
 
-      return ( this._showArrows = value );
+        return ( this._disabled = value );
+      }
+    },
+    // Show Arrow
+    get showArrow() {
+      if ( !null ) {
+        return this._showArrow;
+      }
+    },
+    set showArrow( value ) {
+      if ( value !== null ) {
+        this.setAttribute( "show-arrows", value );
+
+        return ( this._showArrow = value );
+      }
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -39,7 +56,10 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "show-arrows":
-          this.setAttribute( "show-arrows", newVal );
+
+          if ( newVal !== null ) {
+            this.setAttribute( "show-arrows", newVal );
+          }
           break;
         default:
           // do nothing
