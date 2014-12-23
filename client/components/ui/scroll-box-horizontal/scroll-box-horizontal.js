@@ -20,12 +20,12 @@
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
     // Scroll Right
-    myScrollRight: function( value ) {
+    scrollBoxRight: function( value ) {
       var currentPosition = this.innerBox.scrollLeft;
       this.innerBox.scrollLeft = currentPosition + parseInt( value, 10 );
     },
     // Scroll Left
-    myScrollLeft: function( value ) {
+    scrollBoxLeft: function( value ) {
       var currentPosition = this.innerBox.scrollLeft;
       this.innerBox.scrollLeft = currentPosition - parseInt( value, 10 );
     },
