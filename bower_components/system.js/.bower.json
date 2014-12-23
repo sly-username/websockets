@@ -21,7 +21,6 @@
     "commit": "ba271aa257bb0f8270197720c0dba15b0012ea42"
   },
   "_source": "git://github.com/systemjs/systemjs.git",
-  "_target": "~0.10.2",
-  "_originalSource": "system.js",
-  "_direct": true
+  "_target": "=0.10.2",
+  "_originalSource": "system.js"
 }

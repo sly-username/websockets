@@ -12,14 +12,17 @@ module.exports = function(environment, ParseTree, ImportManager) {
             options = {};
         }
 
-        if (callback) {
-            render.call(this, input, options)
-                .then(function(css) {
-                    callback(null, css);
-                },
-                function(error) {
-                    callback(error);
+        if (!callback) {
+            var self = this;
+            return new PromiseConstructor(function (resolve, reject) {
+                render.call(self, input, options, function(err, output) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(output);
+                    }
                 });
+            });
         } else {
             var context,
                 rootFileInfo,
@@ -46,19 +49,18 @@ module.exports = function(environment, ParseTree, ImportManager) {
             }
 
             var imports = new ImportManager(context, rootFileInfo);
-            var parser = new Parser(context, imports, rootFileInfo);
 
-            return new PromiseConstructor(function (resolve, reject) {
-                parser.parse(input, function (e, root) {
-                    if (e) { return reject(e); }
-                    try {
-                        var parseTree = new ParseTree(root, imports);
-                        var result = parseTree.toCSS(options);
-                        resolve(result);
-                    }
-                    catch (err) { reject( err); }
-                }, options);
-            });
+            new Parser(context, imports, rootFileInfo)
+                .parse(input, function (e, root) {
+                if (e) { return callback(e); }
+                var result;
+                try {
+                    var parseTree = new ParseTree(root, imports);
+                    result = parseTree.toCSS(options);
+                }
+                catch (err) { return callback( err); }
+                callback(null, result);
+            }, options);
         }
     };
     return render;

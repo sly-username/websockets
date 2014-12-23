@@ -1,6 +1,6 @@
 "use strict";
 var gulp = require( "gulp" ),
-  watch = require( "gulp-watch" ),
+  gutil = require( "gulp-util" ),
   eslint = require( "gulp-eslint" ),
   config = require( "../config.paths.js" ),
   formatter = "stylish",
@@ -20,17 +20,17 @@ runForPathWithOptions = function( path ) {
 };
 
 // watch version, add opts arg to eslint if needed
-// jscs:disable requirePaddingNewLinesInObjects
 watchPathWithOptionsAndName = function( path, opts, name ) {
   name = name || "ESLINT";
 
-  return watch( path, { name: name }, function( file ) {
-    return file
-      .pipe( eslint() )
-      .pipe( eslint.format( formatter ) );
-  });
+  return gulp.watch( path )
+    .on( "change", function( event ) {
+      if ( event.type !== "deleted" ) {
+        gutil.log( name + " saw a change at: " + event.path );
+        return runForPathWithOptions( event.path, opts );
+      }
+    });
 };
-// jscs:enable
 
 // register both lint and lint:watch for prop name with gulp
 registerTaskPair = function( appendToName, path, opts ) {

@@ -10,15 +10,16 @@
     },
     set showValue( value ) {
       this.setAttribute( "show-value", value );
-
-      return ( this._showValue = value );
+      this._showValue = value;
+      return value;
     },
     // percentage
     get valuePercentage() {
       return this._valuePercentage;
     },
     set valuePercentage( value ) {
-      return ( this._valuePercentage = value );
+      this._valuePercentage = value;
+      return value;
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -35,7 +36,9 @@
 
       // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
-        this.max = parseInt( this.attributes.max.value, 10 ) && typeof parseInt( this.attributes.max.value, 10 ) === "number" ? parseInt( this.attributes.max.value, 10 ) : 100;
+        this.max = parseInt( this.attributes.max.value, 10 ) &&
+                   typeof parseInt( this.attributes.max.value, 10 ) === "number" ?
+                     parseInt( this.attributes.max.value, 10 ) : 100;
       } else {
         this.max = 100;
       }

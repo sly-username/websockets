@@ -16,7 +16,8 @@ dummy = requiredir( "./tasks" );
 
 /*** MAGIC "START" TASK ***/
 gulp.task( "start", function( done ) {
-  gutil.log( "running task for env: " + process.env.GULP_ENVIRONMENT );
+  gutil.log( ( new Date() ).toString() );
+  gutil.log( "Running task for env: " + process.env.GULP_ENVIRONMENT );
 
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
