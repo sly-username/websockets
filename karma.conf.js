@@ -2,6 +2,7 @@
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
 
 module.exports = function( config ) {
+  "use strict";
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
