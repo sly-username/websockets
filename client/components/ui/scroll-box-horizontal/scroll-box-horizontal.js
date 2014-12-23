@@ -22,14 +22,12 @@
     // Scroll Right
     myScrollRight: function( value ) {
       var currentPosition = this.innerBox.scrollLeft;
-      console.log( currentPosition );
-      this.innerBox.scrollLeft = currentPosition + value.replace( /\D/g, "" );
+      this.innerBox.scrollLeft = currentPosition + parseInt( value, 10 );
     },
     // Scroll Left
     myScrollLeft: function( value ) {
       var currentPosition = this.innerBox.scrollLeft;
-      console.log( currentPosition );
-      this.innerBox.scrollLeft = currentPosition - value.replace( /\D/g, "" );
+      this.innerBox.scrollLeft = currentPosition - parseInt( value, 10 );
     },
     // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {

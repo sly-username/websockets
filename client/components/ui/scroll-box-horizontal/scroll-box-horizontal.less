@@ -1,31 +1,16 @@
 .inner-box {
   overflow-x: auto;
   overflow-y: hidden;
-  margin-bottom: -100px;
   padding-bottom: 400px;
   white-space: nowrap;
-  content::content * {
-    display: inline-block;
-    vertical-align: middle;
-  }
 }
-
 
 .outer-box {
   height: 300px;
   width: 300px;
   background-color: lightgrey;
-  padding: 0 5px;
-  position: relative;
+  padding: 5px;
   overflow: hidden;
-  &:after {
-    content: '';
-    height: 2em;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
 }
 
 :host([disabled='true']){
@@ -38,7 +23,6 @@
 
 :host([show-arrows='true']){
   .inner-box {
-    margin-bottom: 100px;
     padding-bottom: 10px;
   }
 }
