@@ -26,17 +26,27 @@
   }
 }
 
-:host([disabled='true']){
-  .inner-box {
-    overflow: hidden;
-    opacity: .5;
-    pointer-events: none;
-  }
+:host([disabled='true']),
+  :host([disabled]){
+    .inner-box {
+      overflow: hidden;
+      opacity: .5;
+      pointer-events: none;
+    }
 }
 
-:host([show-arrows='true']){
-  .inner-box {
-    margin-right: -5px;
-    padding-right: -100px;
-  }
+:host([show-arrows='true']),
+  :host([show-arrows]) {
+    .inner-box {
+      margin-right: -5px;
+      padding-right: -100px;
+    }
+}
+
+:host([disabled='false']){
+
+}
+
+:host([show-arrows='false']){
+
 }
