@@ -1,39 +1,44 @@
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
-  watch = require( "gulp-watch" ),
+  plumber = require( "gulp-plumber" ),
   through = require( "through2" ),
+  path = require( "path" ),
+  defaults = require( "lodash" ).defaults,
   config = require( "../config.paths.js" ),
   traceur = require( "traceur" ),
-  options, compileES6;
+  traceurOptions,
+  compileES6,
+  runCompileFromToWithOptions;
 
 // Compiler Options
-options = {
+traceurOptions = {
   modules: "instantiate",
   experimental: true
 };
 
 // Traceur compile in a stream!
 /* Traceur node api is working! ...for now... */
-compileES6 = function( opts ) {
+compileES6 = function( options ) {
   return through.obj( function( file, enc, done ) {
     var es6,
-        oldPath = file.path;
+      opts = defaults( {}, options ),
+      oldPath = file.path;
 
     if ( file.isNull() ) {
       this.push( file );
-
       return done();
     }
 
-    // set module name
-    // jscs:disable disallowSpaceBeforeBinaryOperators
-    opts.moduleName = oldPath.replace( config.client + "/", "" ).replace( /\.js$/, "" );
-    // jscs:enable
-
     // if in components folder, set to script mode
-    if ( ( new RegExp( "^" + config.client + "/components" ) ).test( oldPath ) ) {
+    // else set module name
+    if ( ( new RegExp( "^" + config.client + ".components" ) ).test( oldPath ) ) {
+      gutil.log( "Compiling as Script" );
       opts.script = true;
+    } else {
+      // jscs:disable disallowSpaceBeforeBinaryOperators
+      opts.moduleName = oldPath.replace( config.client + "/", "" ).replace( /\.js$/, "" );
+      // jscs:enable
     }
 
     // Get ES6 File Content
@@ -57,34 +62,37 @@ compileES6 = function( opts ) {
   });
 };
 
+runCompileFromToWithOptions = function( src, dest, opts ) {
+  return gulp.src( src )
+    .pipe( plumber() )
+    .pipe( compileES6( opts ) )
+    .pipe( gulp.dest( dest ) );
+};
+
 /* dev task */
 gulp.task( "traceur:dev", function() {
-  return gulp.src( config.traceur.src )
-    .pipe( compileES6( options ) )
-    .pipe( gulp.dest( config.traceur.out.dev ) );
+  return runCompileFromToWithOptions( config.traceur.src, config.traceur.out.dev, traceurOptions );
 });
 
 /* watch task */
-gulp.task( "traceur:watch", function( done ) {
+gulp.task( "traceur:watch", function() {
+  var transformDirName = function( src, srcDir, destDir ) {
+    return path.dirname( src.replace( srcDir, destDir ) );
+  };
 //  gulp.watch( config.traceur.src,  [ "traceur:dev" ]);
+  return gulp.watch( config.traceur.src )
+    .on( "change", function( event ) {
+      var destinationPath;
 
-  /*
-  return watch( config.traceur.src, function( file ) {
-    return file
-      .pipe( compileES6( options ) )
-      .pipe( gulp.dest( config.traceur.out.dev ) );
-  });
-  */
-  watch( config.traceur.src )
-    .pipe( compileES6( options ) )
-    .pipe( gulp.dest( config.traceur.out.dev ) );
-
-  done();
+      if ( event.type !== "deleted" ) {
+        destinationPath = transformDirName( event.path, config.client, config.dev );
+        gutil.log( "Traceur saw a change at " + event.path );
+        return runCompileFromToWithOptions( event.path, destinationPath, traceurOptions );
+      }
+    });
 });
 
 // TODO prod task
 gulp.task( "traceur:prod", function() {
-  return gulp.src( config.traceur.src )
-    .pipe( compileES6( options ) )
-    .pipe( gulp.dest( config.traceur.out.prod ) );
+  return runCompileFromToWithOptions( config.traceur.src, config.traceur.out.prod, traceurOptions );
 });

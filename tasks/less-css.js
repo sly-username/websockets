@@ -1,13 +1,14 @@
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
-  watch = require( "gulp-watch" ),
-  plumber = require( "gulp-plumber" ),
+  path = require( "path" ),
   through = require( "through2" ),
   config = require( "../config.paths.js" ),
   defaults = require( "lodash" ).defaults,
   less = require( "less" ),
-  lessOptions, myLess;
+  lessOptions,
+  runCompile,
+  myLessCompile;
 
 // Options
 lessOptions = {
@@ -17,7 +18,7 @@ lessOptions = {
 };
 
 /* jshint -W071 */
-myLess = function() {
+myLessCompile = function( options ) {
   return through.obj( function( file, enc, done ) {
     var str, opts;
 
@@ -26,7 +27,7 @@ myLess = function() {
     }
 
     str = file.contents.toString( "utf8" );
-    opts = defaults( {}, lessOptions );
+    opts = defaults( {}, options );
 
     opts.filename = file.path;
     opts.sourceMap = file.sourceMap ? true : false;
@@ -55,25 +56,43 @@ myLess = function() {
   });
 };
 
-gulp.task( "less", [ "less:dev" ]);
+runCompile = function( src, dest, opts ) {
+  return gulp.src( src )
+    .pipe( myLessCompile( opts ) )
+    .pipe( gulp.dest( dest ) );
+};
 
+// COMPILE DEV
 gulp.task( "less:dev", function() {
-  return gulp.src( config.less.compile )
-    .pipe( myLess() )
-    .pipe( gulp.dest( config.less.out.dev ) );
+  return runCompile( config.less.compile, config.less.out.dev, lessOptions );
 });
 
-gulp.task( "less:watch", function( done ) {
+// WATCH LESS COMPILE TO DEV
+gulp.task( "less:watch", function() {
+  var transformDirName = function( src, srcDir, destDir ) {
+    return path.dirname( src.replace( srcDir, destDir ) );
+  };
+
   // regular watch included less, recompile all
   gulp.watch( config.less.included, [ "less" ]);
 
   // watch all non-include and compile per file
-  // jscs:disable requirePaddingNewLinesInObjects
-  watch( config.less.compile, { name: "LESS" })
-    .pipe( plumber() )
-    .pipe( myLess() )
-    .pipe( gulp.dest( config.less.out.dev ) );
-  // jscs:enable
+  return gulp.watch( config.less.compile )
+    .on( "change", function( event ) {
+      var destinationPath;
 
-  done();
+      if ( event.type !== "deleted" ) {
+        destinationPath = transformDirName( event.path, config.client, config.dev );
+        gutil.log( "LESS saw a change at: " + event.path );
+        return runCompile( event.path, destinationPath, lessOptions );
+      }
+    });
 });
+
+// COMPILE FOR PRODUCTION
+// TODO MINIMIZE AND OTHER OPTIMIZATIONS
+gulp.task( "less:prod", function() {
+  return runCompile( config.less.compile, config.less.out.prod, lessOptions );
+});
+
+gulp.task( "less", [ "less:dev" ]);
