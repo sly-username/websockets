@@ -25,8 +25,11 @@ paths.testsBuild = join( paths.build, "tests" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
-  dev: join( paths.dev, "vendor" ),
-  prod: join( paths.prod, "vendor" ),
+  out: {
+    dev: join( paths.dev, "vendor" ),
+    prod: join( paths.prod, "vendor" ),
+    tests: join( paths.testsBuild, "vendor" )
+  },
   src: [
       // Stuff in bower_components
       join( "webcomponentsjs", "webcomponents.js" ),
@@ -54,7 +57,12 @@ paths.vendor = {
     ).concat([
       // Stuff in node_modules
       join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
+  tests: [
+    join( "mocha", "mocha.js" ),
+    join( "mocha", "mocha.css" ),
+    join( "chai", "chai.js" )
+  ].map( function( p ) { return join( paths.nodeModules, p ); } )
 };
 
 /*** TODO COPY (FOR PROD) ***/
