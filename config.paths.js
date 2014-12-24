@@ -21,6 +21,7 @@ var join = require( "path" ).join,
 
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
+paths.testsBuild = join( paths.build, "tests" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
