@@ -63,15 +63,18 @@ paths.vendor = {
 paths.symlink = {
   src: [
     // don't link these
-    // less, markdown, es6 js,
+    // less, markdown, es6 js, test html,
     join( "!**", "*.less" ),
     join( "!**", "*.md" ),
     join( "!**", "*.es6.js" ),
+    join( "!**", "*.tests.html" ),
 
     // link these (everything else)
     join( paths.client, "**", "*.*" )
   ]
 };
+// Tests Symlink (add back *.tests.html files) from symlink.src
+paths.symlink.tests = paths.symlink.src.filter( function( p ) { return !(/\*\.tests\.html$/).test(p); })
 
 /*** LESS ***/
 paths.less = {
