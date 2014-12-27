@@ -81,8 +81,9 @@ paths.symlink = {
     join( paths.client, "**", "*.*" )
   ]
 };
-// Tests Symlink (add back *.tests.html files) from symlink.src
-paths.symlink.tests = paths.symlink.src.filter( function( p ) { return !(/\*\.tests\.html$/).test(p); })
+// Tests Symlink (add back *.tests.html files) from symlink.src, also don't link "index.html"
+paths.symlink.tests = paths.symlink.src.filter( function( p ) { return !(/\*\.tests\.html$/).test( p ); });
+paths.symlink.tests.push( join( "!**", "index.html" ) );
 
 /*** LESS ***/
 paths.less = {

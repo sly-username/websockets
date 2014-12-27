@@ -1,5 +1,6 @@
 "use strict";
 var gulp = require( "gulp" ),
+  run = require( "run-sequence" ),
   config = require( "../config.paths.js" );
 
 // build/tests
@@ -10,3 +11,17 @@ var gulp = require( "gulp" ),
 //      -- traceur
 //      -- less
 //    -- run tests/index.tests.js
+
+gulp.task( "build:tests", function( done ) {
+  run(
+    "clean:tests",
+    [
+      "symlink:tests",
+      "vendor:tests"
+//      "traceur:tests", todo
+//      "less:tests" todo
+    ],
+//    "build:tests:index", todo
+    done
+  );
+});
