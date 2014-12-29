@@ -3,8 +3,11 @@
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
   run = require( "run-sequence" ),
+  fs = require( "fs" ),
+  nodemon = require( "nodemon" ),
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
+  config = require( "./config.paths.js" ),
   dummy;
 
 dotenv.load();
@@ -14,6 +17,22 @@ dotenv.load();
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
 
+gulp.task( "nodemon", function ( done ) {
+  var currDate = new Date(),
+    readableDate = currDate.getMonth() + "-" + currDate.getDate() + "-" + currDate.getFullYear();
+  nodemon({
+    script: "node_modules/gulp/bin/gulp.js",
+    stdout:false,
+    stderr:false
+  }).on( "stdout", function () {
+    this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
+  }).on( "stderr", function () {
+    this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
+  });
+  done();
+
+});
+
 /*** MAGIC "START" TASK ***/
 gulp.task( "start", function( done ) {
   gutil.log( ( new Date() ).toString() );
@@ -21,7 +40,7 @@ gulp.task( "start", function( done ) {
 
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
-      run( "dev", done );
+      run("dev", done);
       break;
     case "PRODUCTION":
       run( "prod", done );

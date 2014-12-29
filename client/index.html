@@ -69,7 +69,7 @@
 </div>
 
 <script id="reload-tag" type="text/javascript">
-  if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
+  if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
     document.write(
         "<script src=\"http://" +
         (location.host || "localhost").split(":")[0] +

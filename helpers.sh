@@ -3,9 +3,13 @@
 # TODO When Moved to .config folder change this to be ".ed_profile" or something of the like
 
 # Save Some Paths
-ED_PROJECT_PATH="/home/vagrant/clientapp"
+ED_PROJECT_PATH="/home/$USER/clientapp"
 ED_MODULES_PATH="$ED_PROJECT_PATH/node_modules"
 ED_MODULES_BIN="$ED_MODULES_PATH/.bin"
+
+export ED_PROJECT_PATH
+export ED_MODULES_PATH
+export ED_MODULES_BIN
 
 # Add Node Moduels Bin to Path
 PATH="$PATH:$ED_MODULES_BIN"
@@ -47,12 +51,12 @@ start-gulp ()
     echo "gulp already running"
   else
     local CWD=`pwd`
-    cd /home/vagrant/clientapp/
-    if [[ "$NVM_DIR" == */home/vagrant/* ]]; then
-      npm start
+    cd "$ED_PROJECT_PATH"
+    if [[ "$NVM_DIR" == */home/ubuntu/* ]]; then
+      npm run-script nodemonGulp
     else
-      command -v npm > /dev/null 2>&1 || echo "source nvm" ; source /home/vagrant/.nvm/nvm.sh
-      nohup npm start > /dev/null 2>&1 &
+      command -v npm > /dev/null 2>&1 || echo "source nvm" ; source /home/ubuntu/.nvm/nvm.sh
+      nohup npm run-script nodemonGulp # > /dev/null 2>&1 &
     fi
     cd $CWD
   fi

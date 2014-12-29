@@ -17,6 +17,7 @@
     "postinstall": "./node_modules/bower/bin/bower install",
     "test": "./node_modules/karma/bin/karma run",
     "start": "npm run-script gulp start > logs/gulp/dev.log 2>&1 &",
+    "nodemonGulp": "nodemon --exec \"npm run-script gulp nodemon\"",
     "dev": "npm run-script gulp dev",
     "gulp": "node --harmony node_modules/gulp/bin/gulp.js"
   },

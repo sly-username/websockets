@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # install and load nvm
-curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
-chmod +x ~/install.nvm.sh
-. ~/install.nvm.sh
-rm ~/install.nvm.sh
-source ~/.nvm/nvm.sh ; echo "installed nvm"
+#curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
+#chmod +x ~/install.nvm.sh
+#. ~/install.nvm.sh
+#rm ~/install.nvm.sh
+#source ~/.nvm/nvm.sh ; echo "installed nvm"
 
 # install node 0.11 via nvm
 nvm install 0.11
@@ -23,18 +23,18 @@ echo "source ~/clientapp/helpers.sh" >> ~/.profile
 #npm install -g gulp bower karma-cli less traceur npm-check-updates
 
 # Create clientapp for prosperty
-if [ ! -d "/home/vagrant/clientapp" ]; then
-  mkdir /home/vagrant/clientapp
+if [ ! -d "$ED_PROJECT_PATH" ]; then
+  mkdir "$ED_PROJECT_PATH"
 fi
 
 # Create logs folder if needed
-if [ ! -d "/home/vagrant/clientapp/logs" ]; then
-  mkdir /home/vagrant/clientapp/logs
+if [ ! -d "$ED_PROJECT_PATH/logs" ]; then
+  mkdir "$ED_PROJECT_PATH/logs"
 fi
 
 # Create logs/gulp folder if needed
-if [ ! -d "/home/vagrant/clientapp/logs/gulp" ]; then
-  mkdir /home/vagrant/clientapp/logs/gulp
+if [ ! -d "$ED_PROJECT_PATH/logs/gulp" ]; then
+  mkdir "$ED_PROJECT_PATH/logs/gulp"
 fi
 
 # Set up node_modules if not already set up
