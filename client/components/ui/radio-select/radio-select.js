@@ -2,7 +2,6 @@
   "use strict";
 
   var copyAttributes = function( elemFrom, elemTo, attrs ) {
-
     attrs.forEach( function( attr ) {
       if ( elemFrom.hasAttribute( attr ) ) {
         elemTo.setAttribute( attr, elemFrom.getAttribute( attr ) );
@@ -11,7 +10,6 @@
       }
     });
   };
-
 
   Polymer( "radio-select", {
     ready: function() {
@@ -28,6 +26,7 @@
           this.checked = true;
           this.setAttribute( "checked", "" );
           this.clearOthers();
+          console.log(this.children);
           this.children[0].style.transform = "scale(1)";
         }
       });
