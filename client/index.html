@@ -24,6 +24,16 @@
 
 <body>
 
+<checkbox-select name="notifications" value="notes">
+  <img src="http://images.ventrino.com/icons/iconex_ap/16x16/plain/checkbox.png" alt="checkbox icon" />
+</checkbox-select>
+
+<script>
+  var chkbx = document.querySelector("checkbox-select[value=notes]");
+
+  chkbx.disabled = false;
+</script>
+
 <div class="left">
   <scroll-box-horizontal show-arrows disabled>
     <img src="http://i.imgur.com/OpYDgt3.gif">
