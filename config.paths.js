@@ -144,7 +144,8 @@ paths.traceur = {
   src: join( paths.client, "**", "*.es6.js" ),
   out: {
     dev: paths.dev,
-    prod: paths.prod
+    prod: paths.prod,
+    tests: paths.testsBuild
   }
 };
 
