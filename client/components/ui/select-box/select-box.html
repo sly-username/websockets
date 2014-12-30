@@ -1,0 +1,9 @@
+<polymer-element name="select-box" attributes="">
+  <template>
+    <link rel="stylesheet" href="./select-box.css">
+      <select class="select-box">
+        <option template repeat="{{opt in _options}}" value="{{opt.value}}">{{opt.label}}</option>
+      </select>
+  </template>
+  <script src="./select-box.js"></script>
+</polymer-element>
