@@ -17,11 +17,41 @@ gulp.task( "build:tests", function( done ) {
     "clean:tests",
     [
       "symlink:tests",
-      "vendor:tests"
-//      "traceur:tests", todo
-//      "less:tests" todo
+      "vendor:tests",
+      "traceur:tests",
+      "less:tests"
     ],
-//    "build:tests:index", todo
+    "build:tests:index",
+    done
+  );
+});
+
+// TODO Test Watchers
+gulp.task( "tests:watch", function( done ) {
+  run(
+    "build:tests",
+    [
+      "traceur:watch:tests",
+      "less:watch:tests"
+    ],
+    done
+  );
+});
+
+// TODO Karma task
+gulp.task( "tests", function( done ) {
+  run(
+    "build:tests",
+//    "karma:once",
+    done
+  );
+});
+
+// TODO Karma and Watchers
+gulp.task( "tests:watch", function( done ) {
+  run(
+    "build:tests",
+//    "karma:watch",
     done
   );
 });

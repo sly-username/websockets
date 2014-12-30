@@ -22,6 +22,7 @@ var join = require( "path" ).join,
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
 paths.testsBuild = join( paths.build, "tests" );
+paths.testsIndex = join( paths.tests, "index.tests.html" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
@@ -108,11 +109,12 @@ paths.less.compile = paths.less.included.map( function( s ) { return join( "!", 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
   // todo add proper ignore for node_modules and bower_components
-  all:    join( paths.root, "**", "*.js" ),
-  client: join( paths.client, "**", "*.js" ),
-  tasks:  join( paths.tasks, "**", "*.js" ),
-  tests:  join( paths.tests, "**", "*.js" ),
-  server: join( paths.server, "**", "*.js" ),
+  all:            join( paths.root, "**", "*.js" ),
+  client:         join( paths.client, "**", "*.js" ),
+  tasks:          join( paths.tasks, "**", "*.js" ),
+  tests:          join( paths.tests, "**", "*.js" ),
+  componentTests: join( paths.client, "**", "*.tests.html" ),
+  server:         join( paths.server, "**", "*.js" ),
   es6: {
     all: join( paths.root, "**", "*.es6.js" ),
     client: join( paths.client, "**", "*.es6.js" )
