@@ -16,7 +16,6 @@ dotenv.load();
 /*eslint no-unused-vars:0*/
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
-
 gulp.task( "nodemon", function ( done ) {
   var currDate = new Date(),
     readableDate = currDate.getMonth() + "-" + currDate.getDate() + "-" + currDate.getFullYear();
@@ -24,9 +23,10 @@ gulp.task( "nodemon", function ( done ) {
     script: "node_modules/gulp/bin/gulp.js",
     stdout:false,
     stderr:false
-  }).on( "stdout", function () {
+  }).on( "readable", function () {
+    this.stdout.setMaxListeners(0);
+    this.stderr.setMaxListeners(0);
     this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
-  }).on( "stderr", function () {
     this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
   });
   done();

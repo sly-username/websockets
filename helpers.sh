@@ -29,6 +29,11 @@ proc-gulp ()
   ps ux | awk '!/awk|bash/ && /npm|node|gulp/ {print}'
 }
 
+follow ()
+{
+  tail -f $1 2> >(grep -v truncated >&2)
+}
+
 # This will kill all the procs running the gulp dev server
 kill-gulp ()
 {
