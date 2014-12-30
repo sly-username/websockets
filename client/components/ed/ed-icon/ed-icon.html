@@ -1,10 +1,7 @@
 <polymer-element name="ed-icon" attributes="name rotation">
   <template>
     <link rel="stylesheet" href="./ed-icon.css">
-    <div class="flip{{rotation}}" value="{{name}}">
-      <div class="glyph flaticon-basic14">testing</div>
-    </div>
+    <div class="flip{{rotation}} flaticon-{{name}}" value="{{name}}"></div>
   </template>
   <script src="ed-icon.js"></script>
 </polymer-element>
-vagra
