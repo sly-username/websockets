@@ -3,6 +3,7 @@
 
   Polymer( "ed-icon", {
     /*** PROPERTIES ***/
+    // nameList
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     /*** END LIFECYCLE ***/
