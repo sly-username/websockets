@@ -13,7 +13,7 @@
 
   Polymer( "checkbox-select", {
     ready: function() {
-      this.checkboxField = this.shadowRoot.getElementById( "checkboxSelect" );
+      this.checkboxField = this.shadowRoot.getElementById( "checkbox-field" );
 
       this.addEventListener( "click", function( event ) {
         if ( this.disabled ) {
