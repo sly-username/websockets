@@ -90,11 +90,16 @@ paths.less = {
   src: join( paths.client, "**", "*.less" ),
   out: {
     dev: paths.dev,
-    prod: paths.prod
+    prod: paths.prod,
+    tests: paths.testsBuild
   },
   // todo double check in windows if '/' gets changed to '\'
   includePaths: [ join( "client", "styles", "/" ) ],
-  included: [ join( "**", "*.vars.less" ), join( "**", "*.mixin.less" ) ].map( function( s ) { return join( paths.client, s ); })
+  included: [
+    join( "**", "*.vars.less" ),
+    join( "**", "*.mixin.less" ),
+    join( "**", "*.include.less" )
+  ].map( function( s ) { return join( paths.client, s ); })
   // when es6 mode: (s => join( paths.client, s ) )
 };
 paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
