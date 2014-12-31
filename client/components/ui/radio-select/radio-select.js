@@ -15,19 +15,16 @@
     ready: function() {
       this.radioButton = this.shadowRoot.getElementById( "radioSelect" );
 
-      this.addEventListener( "click", function( event ) {
-        if ( this.disabled ) {
-          event.preventDefault();
-          event.stopPropagation();
+      this.addEventListener( "click", function() {
+        if ( this.hasAttribute( "disabled" ) ) {
           return false;
         }
 
         if ( !this.checked ) {
           this.checked = true;
           this.setAttribute( "checked", "" );
-          this.clearOthers();
-          console.log(this.children);
           this.children[0].style.transform = "scale(1)";
+          this.clearOthers();
         }
       });
     },
@@ -44,7 +41,7 @@
     },
     clearOthers: function() {
       this.otherMembers.forEach( function( elm ) {
-        elm.checked = "";
+        elm.checked = false;
         elm.removeAttribute( "checked" );
         elm.children[0].style.transform = "scale(1)";
       }, this );
