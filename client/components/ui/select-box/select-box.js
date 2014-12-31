@@ -18,14 +18,21 @@
       }
     },
     get selectedIndex() {
+      var i;
+
+      for ( i = 0; i < this.listItems.length; i++ ) {
+        if ( this.listItems[i].children[0].checked ) {
+          return i;
+        }
+      }
     },
     set selectedIndex( value ) {
-      var listItems = this.shadowRoot.getElementsByTagName( "li" );
-      listItems[ parseInt( value, 10 ) ].children[0].checked = true;
+      this.listItems[ parseInt( value, 10 ) ].children[0].checked = true;
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
+      this.listItems = this.shadowRoot.getElementsByTagName( "li" );
       this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[0];
       this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
     },
