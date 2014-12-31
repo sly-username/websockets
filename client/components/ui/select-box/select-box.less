@@ -71,21 +71,21 @@
       }
     }
   }
-}
-
-.select #is-focus {
-  position: absolute;
-  display: block;
-  top: -999px;
-  &:focus {
-    ~ label span.label:after {
-      border-top-color: transparent;
-      border-bottom-color: #999;
-      top: 0.3em;
-    }
-    ~ .options {
-      height: auto;
-      border-bottom: 2px solid #999;
+  #is-focus {
+    position: absolute;
+    display: block;
+    top: -999px;
+    &:focus {
+      ~ label span.label:after {
+        border-top-color: transparent;
+        border-bottom-color: #999;
+        top: 0.3em;
+      }
+      ~ .options {
+        height: auto;
+        border-bottom: 2px solid #999;
+      }
     }
   }
 }
+
