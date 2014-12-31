@@ -1,10 +1,12 @@
 /*eslint-env mocha */
 ( function() {
   "use strict";
+  var expect = chai.expect;
+
   suite( "Array", function() {
     suite( "#indexOf()", function() {
       test( "should return -1 when not present", function() {
-        chai.assert.equal( -1, [ 1, 2, 3 ].indexOf( 4 ) );
+        expect( [ 1, 2, 3 ].indexOf( 4 ) ).to.equal( -1 );
       });
     });
   });
@@ -14,9 +16,12 @@
     setup( function() {
       element = document.createElement( "on-off" );
     });
+
     suite( "life cycle", function() {
       test( "ready: can create from document.createElement", function() {
-        chai.assert.equal( "<on-off></on-off>", element.outerHTML );
+        expect( element )
+          .to.have.property( "outerHTML" )
+          .that.equals( "<on-off></on-off>" );
       });
     });
     /*

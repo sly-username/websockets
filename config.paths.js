@@ -162,9 +162,26 @@ paths.karma = {
   port: 9876,
   reporters: [ "progress" ],
   frameworks: [ "mocha", "chai" ],
-  base: paths.root,
+  base: paths.testsBuild,
   src: [
-    join( paths.root, "**", "*.*" )
+    {
+      pattern: join( "vendor", "**", "*.*" ),
+      watched: false,
+      included: false,
+      served: true
+    },
+    {
+      pattern: join( "**", "*.*" ),
+      watched: false,
+      included: false,
+      served: true
+    },
+    {
+      pattern: "index.html",
+      watched: false,
+      included: true,
+      served: true
+    }
 //    join( paths.client, "**", "*.*" ),
 //    join( paths.tests, "**", "*.*" )
   ],

@@ -17,6 +17,7 @@ gulp.task( "build:tests", function( done ) {
     "clean:tests",
     [
       "symlink:tests",
+//      "copy:tests",
       "vendor:tests",
       "traceur:tests",
       "less:tests"
