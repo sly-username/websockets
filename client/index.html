@@ -24,7 +24,11 @@
 
 <body>
 
-<ed-scrubber min="0" max="100" type="default | bar | bubble | fill" format="percent | time"></ed-scrubber>
+<ed-scrubber min="0" max="100" type="default" format="percent"></ed-scrubber>
+<ed-scrubber min="0" max="100" type="bar" format="time"></ed-scrubber>
+<ed-scrubber min="0" max="100" type="bubble" format="percent"></ed-scrubber>
+<ed-scrubber min="0" max="100" type="fill" format="time"></ed-scrubber>
+
 
 <script>
   var scrubber = document.querySelector("ed-scrubber");
