@@ -17,6 +17,12 @@
         return ( this._disabled = value );
       }
     },
+    get selectedIndex() {
+    },
+    set selectedIndex( value ) {
+      var listItems = this.shadowRoot.getElementsByTagName( "li" );
+      listItems[ parseInt( value, 10 ) ].children[0].checked = true;
+    },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
