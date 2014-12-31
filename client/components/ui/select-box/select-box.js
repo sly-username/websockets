@@ -29,12 +29,27 @@
     set selectedIndex( value ) {
       this.listItems[ parseInt( value, 10 ) ].children[0].checked = true;
     },
+    get value() {
+      var i;
+
+      for ( i = 0; i < this.listItems.length; i++ ) {
+        if ( this.listItems[i].children[0].checked ) {
+          return this.listItems[i].children[0].value;
+        }
+      }
+    },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
+      //this.testStuff = this.shadowRoot.getElementById( "test" );
       this.listItems = this.shadowRoot.getElementsByTagName( "li" );
       this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[0];
       this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
+      //// required attribute
+      //if ( this.hasAttribute( "required" ) ) {
+      //  this.testStuff.required;
+      //
+      //}
     },
     created: function() {
       Array.prototype.forEach.call( this.children, function( elem ) {
