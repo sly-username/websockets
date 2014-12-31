@@ -17,6 +17,7 @@ nvm alias default 0.11
 echo "" >> ~/.profile
 echo "# Added during provision" >> ~/.profile
 echo "source ~/clientapp/helpers.sh" >> ~/.profile
+source ~/.profile
 
 # install gulp, bower, karma globally
 # TODO Remove?
