@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # install and load nvm
-#curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
-#chmod +x ~/install.nvm.sh
-#. ~/install.nvm.sh
-#rm ~/install.nvm.sh
-#source ~/.nvm/nvm.sh ; echo "installed nvm"
+curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
+chmod +x ~/install.nvm.sh
+. ~/install.nvm.sh
+rm ~/install.nvm.sh
+source ~/.nvm/nvm.sh ; echo "installed nvm"
 
 # install node 0.11 via nvm
 nvm install 0.11
@@ -21,6 +21,8 @@ echo "source ~/clientapp/helpers.sh" >> ~/.profile
 # install gulp, bower, karma globally
 # TODO Remove?
 #npm install -g gulp bower karma-cli less traceur npm-check-updates
+
+echo "$ED_PROJECT_PATH"
 
 # Create clientapp for prosperty
 if [ ! -d "$ED_PROJECT_PATH" ]; then
