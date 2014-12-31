@@ -17,15 +17,18 @@
 }
 
 #scrubber-progress {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   position: absolute;
   top: 50%;
   left: 0px;
-  width: 15px;
-  height: 15px;
-  margin-left: -6px;
-  margin-top: -7px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  margin-top: -11px;
   cursor: pointer;
   opacity: 0.7;
+  border: 8px solid #BECFE4;
 //  border-radius: 100%;
   background: #4F81BD;
 }
@@ -39,6 +42,7 @@
 :host([type="bar"]){
   #scrubber-progress {
     width: 5px;
+    border: 0px;
     margin-left: 0;
   }
 }
