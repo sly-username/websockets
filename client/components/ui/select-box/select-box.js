@@ -3,6 +3,21 @@
 
   Polymer( "select-box", {
     _options: [],
+    /*** PROPERTIES ***/
+    // Disabled
+    get disabled() {
+      if ( !null ) {
+        return this._disabled;
+      }
+    },
+    set disabled( value ) {
+      if ( value !== null ) {
+        this.setAttribute( "disabled", value );
+
+        return ( this._disabled = value );
+      }
+    },
+    /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
       this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[0];
@@ -17,15 +32,17 @@
         });
       }.bind( this ) );
     },
-    /*** PROPERTIES ***/
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
     sizeChanged: function( oldVal, newVal ) {
       this.size = newVal;
       this.setAttribute( "size", newVal );
       this.getOptions.style.maxHeight = ( newVal * 32.4 ) + "px";
+    },
+    // Listens for disabled
+    disabledChanged: function( oldVal, newVal ) {
+      this.disabled = newVal;
+      this.setAttribute( "disabled", newVal );
     }
     /*** END FUNCTIONS ***/
   });
