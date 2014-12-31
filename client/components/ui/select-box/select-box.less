@@ -2,21 +2,22 @@
 .select {
   position:  relative;
   overflow:  hidden;
-  max-width: 150px;
   .label {
     padding: 8px;
+    max-width: 150px;
+    //creates the arrow from a square
     &:after{
       content: "";
       position: absolute;
-      right: 0.5em;
-      top: 0.9em;
-      border: 0.5em solid transparent;
+      left: 12px;
+      top: 14px;
+      border: 8px solid transparent;
       border-top-color: #999;
     }
   }
   // current display box
   label {
-    //width: 150px;
+    max-width: 150px;
     display: block;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
@@ -24,6 +25,7 @@
     cursor: pointer;
   }
   .options {
+    max-width: 220px;
     margin: 0;
     padding: 0;
     color: #666;
@@ -33,6 +35,7 @@
     border-radius: 5px;
     max-height: 200px;
     overflow-y: auto;
+    overflow-x: hidden;
     &:hover {
       height: auto;
       border-bottom: 2px solid #999;
@@ -42,7 +45,7 @@
       label {
         text-align: left;
         display:    block;
-        padding:    6px 8px;
+        padding:    6px 220px 6px 15px;
         cursor:     pointer;
         overflow:   hidden;
         box-sizing: border-box;
@@ -61,8 +64,8 @@
           display: block;
           position: absolute;
           top: 6px;
-          right: 8px;
-          padding: 8px 25px;
+          left: 20px;
+          padding: 5px 25px;
           color: #666;
           pointer-events: none;
           font-size: 80%;
@@ -75,6 +78,7 @@
     position: absolute;
     display: block;
     top: -999px;
+    // creates the arrow after clicking
     &:focus {
       ~ label span.label:after {
         border-top-color: transparent;
