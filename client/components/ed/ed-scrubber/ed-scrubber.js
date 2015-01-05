@@ -11,6 +11,12 @@
     });
   };
 
+
+  var isDown = false;
+  var scrubberDiv;
+  var offset;
+  var mousePosition;
+
   Polymer( "ed-scrubber", {
     ready: function() {
       this.scrubberBox = this.shadowRoot.getElementById( "scrubber-box" );
@@ -18,15 +24,30 @@
     attached: function() {
       copyAttributes( this, this.scrubberBox, [ "min", "max", "format", "type" ] );
 
-      // this.addEventListener( "mousedown", this.startDragging );
+      this.addEventListener( "mousedown", this.startDragging );
+      this.addEventListener( "mousemove", this.dragging );
+      this.addEventListener( "mouseup", this.stopDragging );
+    },
+    createScrubberDiv: function() {
+      scrubberDiv = document.createElement( "div" );
+
+      // create div
+      this.appendChild( scrubberDiv );
+    },
+    startDragging: function( event ) {
+      isDown = true;
+      offset = scrubberDiv.offsetLeft - event.clientX;
+    },
+    dragging: function( event ) {
+      event.preventDefault();
+
+      if ( isDown ) {
+        mousePosition = event.clientX;
+        scrubberDiv.style.left = ( mousePosition.x + offset[0] ) + "px";
+      }
+    },
+    stopDragging: function() {
+      isDown = false;
     }
-    // startDragging: function() {
-    //  var rect = this.scrubberBox.getBoudingClientRect();
-    //  var xOffset = window.pageXOffset;
-    //  var cachedLeft = rect.left + xOffset;
-    //  var cachedWidth = rect.width;
-    //  var cachedTop = rect.top + yOffset;
-    //  var cachedHeight = rect.height;
-    // }
   });
 })( window.Polymer );
