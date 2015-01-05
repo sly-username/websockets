@@ -13,16 +13,16 @@
 
   Polymer( "ed-scrubber", {
     ready: function() {
-      this.scrubberBox = this.shadowRoot.getElementById( "scrubber-box" );
+      this.scrubberWrapper = this.shadowRoot.getElementById( "scrubberWrapper" );
+      this.scrubberInput = this.shadowRoot.getElementById( "scrubberInput" );
     },
     attached: function() {
-      copyAttributes( this, this.scrubberBox, [ "min", "max", "format", "type" ] );
-      this.scrubberBox.addEventListener( "mousedown", this.createScrubber );
-      this.scrubberDiv = document.createElement( "INPUT" );
+      copyAttributes( this, this.scrubberInput, [ "min", "max", "format" ]);
+      copyAttributes( this, this.scrubberWrapper, [ "type" ]);
     },
-    createScrubber: function() {
-      this.scrubberDiv.setAttribute( "type", "range" );
-      this.scrubberDiv.id = "scrubber-progress";
+    showVal: function( newVal ) {
+      this.valBox = this.shadowRoot.getElementById( "valBox" );
+      this.valBox.innerHTML = newVal;
     }
   });
 })( window.Polymer );

@@ -1,8 +1,9 @@
 <polymer-element name="ed-scrubber" attributes="min max type format">
   <template>
     <link rel="stylesheet" href="./ed-scrubber.css">
-    <div id="scrubber-box">
-      <input type="range" />
+    <span id="valBox"></span>
+    <div id="scrubberWrapper" class="{{type}}">
+      <input id="scrubberInput" type="range" on-input="{{showVal}}" on-change="{{showVal}}" max?="{{max}}" min?="{{min}}" format="{{format}}">
     </div>
   </template>
   <script src="./ed-scrubber.js"></script>
