@@ -46,7 +46,10 @@
       this.listItems = this.shadowRoot.getElementsByTagName( "li" );
       this.mainBox = this.shadowRoot.getElementById( "is-focus" );
       this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[0];
-      this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
+
+      if ( this.size > 0 ) {
+        this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
+      }
       // required attribute
       if ( this.hasAttribute( "required" ) ) {
         this.mainBox.setAttribute( "required", this.getAttribute( "required" ) );
@@ -66,9 +69,11 @@
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
     sizeChanged: function( oldVal, newVal ) {
-      this.size = newVal;
-      this.setAttribute( "size", newVal );
-      this.getOptions.style.maxHeight = ( newVal * 32.4 ) + "px";
+      if ( this.size > 0 ) {
+        this.size = newVal;
+        this.setAttribute( "size", newVal );
+        this.getOptions.style.maxHeight = ( newVal * 32.4 ) + "px";
+      }
     },
     // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {
