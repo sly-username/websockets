@@ -17,6 +17,7 @@
         return ( this._disabled = value );
       }
     },
+    // selectedIndex
     get selectedIndex() {
       var i;
 
@@ -29,6 +30,7 @@
     set selectedIndex( value ) {
       this.listItems[ parseInt( value, 10 ) ].children[0].checked = true;
     },
+    // value
     get value() {
       var i;
 
@@ -41,15 +43,16 @@
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      //this.testStuff = this.shadowRoot.getElementById( "test" );
       this.listItems = this.shadowRoot.getElementsByTagName( "li" );
+      this.mainBox = this.shadowRoot.getElementById( "is-focus" );
       this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[0];
       this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
-      //// required attribute
-      //if ( this.hasAttribute( "required" ) ) {
-      //  this.testStuff.required;
-      //
-      //}
+      // required attribute
+      if ( this.hasAttribute( "required" ) ) {
+        this.mainBox.setAttribute( "required", this.getAttribute( "required" ) );
+      } else {
+        this.mainBox.removeAttribute( "required" );
+      }
     },
     created: function() {
       Array.prototype.forEach.call( this.children, function( elem ) {
@@ -69,8 +72,19 @@
     },
     // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {
-      this.disabled = newVal;
+      this._disabled = newVal;
       this.setAttribute( "disabled", newVal );
+    },
+    // Listens for required
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      switch ( attrName ) {
+        case "required":
+          this.mainBox[newVal == null ? "removeAttribute" : "setAttribute"]( attrName, "" );
+          break;
+        default:
+          // do nothing
+          break;
+      }
     }
     /*** END FUNCTIONS ***/
   });
