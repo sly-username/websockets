@@ -73,6 +73,8 @@
         this.size = newVal;
         this.setAttribute( "size", newVal );
         this.getOptions.style.maxHeight = ( newVal * 32.4 ) + "px";
+      } else if ( !this.hasAttribute( "size" ) ) {
+        this.getOptions.style.maxHeight = ( 5 * 32.4 ) + "px";
       }
     },
     // Listens for disabled
