@@ -28,6 +28,10 @@ gulp.task( "nodemon", function ( done ) {
     this.stderr.setMaxListeners(0);
     this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
     this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
+  }).on( "stdout", function ( data ) {
+    console.log( data.toString().trim() );
+  }).on( "stderr", function ( data ) {
+    console.log( data.toString().trim() );
   });
   done();
 

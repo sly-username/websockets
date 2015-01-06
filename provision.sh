@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # install and load nvm
-curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
-chmod +x ~/install.nvm.sh
-. ~/install.nvm.sh
-rm ~/install.nvm.sh
-source ~/.nvm/nvm.sh ; echo "installed nvm"
+if [ ! -d ~/.nvm ]; then
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
+  chmod +x ~/install.nvm.sh
+  . ~/install.nvm.sh
+  rm ~/install.nvm.sh
+  source ~/.nvm/nvm.sh ; echo "installed nvm"
+fi
 
 # install node 0.11 via nvm
 nvm install 0.11
@@ -46,4 +48,3 @@ if [ ! -d "~/clientapp/node_modules" ]; then
   cd ~/clientapp/
   npm install
 fi
-
