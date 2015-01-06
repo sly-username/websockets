@@ -79,11 +79,6 @@ gulp.task( "traceur:dev", function() {
   return runCompileFromToWithOptions( config.traceur.src, config.traceur.out.dev, traceurOptions );
 });
 
-/* compile into tests folder */
-gulp.task( "traceur:tests", function() {
-  return runCompileFromToWithOptions( config.traceur.src, config.traceur.out.tests, traceurOptions );
-});
-
 /* watch task */
 gulp.task( "traceur:watch", [ "traceur:watch:dev" ] );
 gulp.task( "traceur:watch:dev", function() {
@@ -93,20 +88,6 @@ gulp.task( "traceur:watch:dev", function() {
 
       if ( event.type !== "deleted" ) {
         destinationPath = transformDirName( event.path, config.client, config.dev );
-        gutil.log( "Traceur saw a change at " + event.path );
-        return runCompileFromToWithOptions( event.path, destinationPath, traceurOptions );
-      }
-    });
-});
-
-// this could be compiled into a single watcher probably
-gulp.task( "traceur:watch:tests", function() {
-  return gulp.watch( config.traceur.src )
-    .on( "change", function( event ) {
-      var destinationPath;
-
-      if ( event.type !== "deleted" ) {
-        destinationPath = transformDirName( event.path, config.client, config.testsBuild );
         gutil.log( "Traceur saw a change at " + event.path );
         return runCompileFromToWithOptions( event.path, destinationPath, traceurOptions );
       }

@@ -95,30 +95,12 @@ gulp.task( "less:watch:dev", function() {
     });
 });
 
-// COMPILE TESTS
-gulp.task( "less:tests", function() {
-  return runCompile( config.less.compile, config.less.out.tests, lessOptions );
-});
-// WATCH FOR TESTS
-gulp.task( "less:watch:tests", function() {
-  gulp.watch( config.less.included, [ "less:tests" ]);
-
-  return gulp.watch( config.less.compile )
-    .on( "change", function( event ) {
-      var destinationPath;
-
-      if ( event.type !== "deleted" ) {
-        destinationPath = transformDirName( event.path, config.client, config.testsBuild );
-        gutil.log( "LESS:TESTS saw a change at: " + event.path );
-        return runCompile( event.path, destinationPath, lessOptions );
-      }
-    });
-});
-
 // COMPILE FOR PRODUCTION
-// TODO MINIMIZE AND OTHER OPTIMIZATIONS
+// TODO PRODUCTION OPTIMIZATIONS
 gulp.task( "less:prod", function() {
-  return runCompile( config.less.compile, config.less.out.prod, lessOptions );
+  var opts = defaults( {}, lessOptions );
+  opts.compress = true;
+  return runCompile( config.less.compile, config.less.out.prod, opts );
 });
 
 gulp.task( "less", [ "less:dev" ]);

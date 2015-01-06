@@ -65,8 +65,8 @@ gulp.task( "vendor:dev", function() {
 });
 
 gulp.task( "vendor:tests", function( ) {
-//  return runSymlink( config.vendor.src.concat( config.vendor.tests ), config.vendor.out.tests );
-  return runCopy( config.vendor.src.concat( config.vendor.tests ), config.vendor.out.tests );
+  return runSymlink( config.vendor.tests, config.vendor.out.dev );
+//  return runCopy( config.vendor.tests, config.vendor.out.dev );
 });
 
 gulp.task( "vendor:prod", function() {

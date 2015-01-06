@@ -54,8 +54,6 @@ gulp.task( "watch", function( done ) {
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-    "jscs:client",
-    "lint:client",
     [
       "less:dev",
       "symlink:dev",
@@ -69,10 +67,12 @@ gulp.task( "build:dev", function( done ) {
 /*** MAIN DEVELOPMENT TASK ***/
 gulp.task( "dev", function( done ) {
   run(
+    "jscs:client",
+    "lint:client",
     "build:dev",
+    "build:tests:only",
     "server:dev",
     [
-      // todo make specific 'watch:dev' tasks?
       "less:watch",
       "jscs:watch",
       "lint:watch",
@@ -82,7 +82,26 @@ gulp.task( "dev", function( done ) {
   );
 });
 
-/*** MAIN TEST TASK ***/
+/*** TESTING TASKS ***/
+gulp.task( "build:tests:only", function( done ) {
+  run(
+    [
+      "symlink:tests",
+      "vendor:tests",
+      "build:tests:index"
+    ],
+    done
+  );
+});
+
+gulp.task( "build:tests", function( done ) {
+  run(
+    "build:dev",
+    "build:tests:only",
+    done
+  );
+});
+
 /*
 gulp.task( "test", function( done ) {
   run(

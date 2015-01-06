@@ -21,15 +21,12 @@ var join = require( "path" ).join,
 
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
-paths.testsBuild = join( paths.build, "tests" );
-paths.testsIndex = join( paths.tests, "index.tests.html" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
   out: {
     dev: join( paths.dev, "vendor" ),
-    prod: join( paths.prod, "vendor" ),
-    tests: join( paths.testsBuild, "vendor" )
+    prod: join( paths.prod, "vendor" )
   },
   src: [
       // Stuff in bower_components
@@ -77,22 +74,23 @@ paths.symlink = {
     join( "!**", "*.md" ),
     join( "!**", "*.es6.js" ),
     join( "!**", "*.tests.html" ),
+    join( "!**", "*.tests.js" ),
 
     // link these (everything else)
     join( paths.client, "**", "*.*" )
+  ],
+  tests: [
+    join( paths.client, "**", "*.tests.html" ),
+    join( paths.client, "**", "*.tests.js" )
   ]
 };
-// Tests Symlink (add back *.tests.html files) from symlink.src, also don't link "index.html"
-paths.symlink.tests = paths.symlink.src.filter( function( p ) { return !(/\*\.tests\.html$/).test( p ); });
-paths.symlink.tests.push( join( "!**", "index.html" ) );
 
 /*** LESS ***/
 paths.less = {
   src: join( paths.client, "**", "*.less" ),
   out: {
     dev: paths.dev,
-    prod: paths.prod,
-    tests: paths.testsBuild
+    prod: paths.prod
   },
   // todo double check in windows if '/' gets changed to '\'
   includePaths: [ join( "client", "styles", "/" ) ],
@@ -104,17 +102,23 @@ paths.less = {
   // when es6 mode: (s => join( paths.client, s ) )
 };
 paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
-// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat(paths.less.src);
+// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
-  // todo add proper ignore for node_modules and bower_components
-  all:            join( paths.root, "**", "*.js" ),
-  client:         join( paths.client, "**", "*.js" ),
-  tasks:          join( paths.tasks, "**", "*.js" ),
-  tests:          join( paths.tests, "**", "*.js" ),
-  componentTests: join( paths.client, "**", "*.tests.html" ),
-  server:         join( paths.server, "**", "*.js" ),
+  all:            [
+    join( "!", paths.bowerComponents ),
+    join( "!", paths.nodeModules ),
+    join( paths.root, "**", "*.js" )
+  ],
+  client: join( paths.client, "**", "*.js" ),
+  tasks: join( paths.tasks, "**", "*.js" ),
+  tests: join( paths.tests, "**", "*.js" ),
+  clientTests: [
+    join( paths.client, "**", "*.tests.js" ),
+    join( paths.client, "**", "*.tests.html" )
+  ],
+  server: join( paths.server, "**", "*.js" ),
   es6: {
     all: join( paths.root, "**", "*.es6.js" ),
     client: join( paths.client, "**", "*.es6.js" )
@@ -151,10 +155,22 @@ paths.traceur = {
   src: join( paths.client, "**", "*.es6.js" ),
   out: {
     dev: paths.dev,
-    prod: paths.prod,
-    tests: paths.testsBuild
+    prod: paths.prod
   }
 };
+
+/*** TESTING ***/
+paths.testing = {
+  index: join( paths.tests, "index.tests.html" ),
+  client: {
+    js: join( paths.client, "**", "*.tests.js" ),
+    html: join( paths.client, "**", "*.tests.html" )
+  },
+  tests: join( paths.tests, "**", "*.js" )
+};
+paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ){
+  return paths.testing.client[prop];
+});
 
 /*** KARMA ***/
 paths.karma = {
@@ -162,7 +178,7 @@ paths.karma = {
   port: 9876,
   reporters: [ "progress" ],
   frameworks: [ "mocha", "chai" ],
-  base: paths.testsBuild,
+  base: paths.dev,
   src: [
     {
       pattern: join( "vendor", "**", "*.*" ),
