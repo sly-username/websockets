@@ -97,9 +97,9 @@ paths.less = {
   included: [
     join( "**", "*.vars.less" ),
     join( "**", "*.mixin.less" ),
-    join( "**", "*.include.less" )
+    join( "**", "*.include.less" ),
+    join( "**", "fonts", "*.less" )
   ].map( function( s ) { return join( paths.client, s ); })
-  // when es6 mode: (s => join( paths.client, s ) )
 };
 paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
 // paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
