@@ -24,6 +24,7 @@
       this.scrubberWrapper = this.shadowRoot.getElementById( "scrubber-wrapper" );
       this.scrubberInput = this.shadowRoot.getElementById( "scrubber-input" );
       this.valBox = this.shadowRoot.getElementById( "val-box" );
+      this.backFill = this.shadowRoot.getElementsByClassName( "back-fill" )[0];
     },
     attached: function() {
       copyAttributes( this, this.scrubberInput, [ "min", "max", "format" ]);
@@ -35,6 +36,7 @@
           valTime = inputValue + " seconds";
 
       this.valBox.innerHTML = this.format === "percent" ? valPercent : valTime;
+      this.backFill.style.width = valPercent;
     }
   });
 })( window.Polymer );
