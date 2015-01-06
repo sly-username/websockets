@@ -55,22 +55,76 @@
   chkbx.disabled = false;
 </script>
 
+<!-- REMOVE FOR PRODUCTION -->
 <script id="reload-tag" type="text/javascript">
-  if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
-    document.write(
-        "<script src=\"http://" +
-        (location.host || "localhost").split(":")[0] +
-        ":35729/livereload.js\"></" +
-        "script>"
-    );
-  }
+  (function(){
+    // Live Reload Script
+    if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
+      document.write(
+          "<script src=\"http://" +
+          (location.host || "localhost").split(":")[0] +
+          ":35729/livereload.js\"></" +
+          "script>"
+      );
+    }
 
-  // Remove this script tag
-  var here = document.getElementById("reload-tag");
-  setTimeout(function(){
-    document.body.removeChild(here);
-  }, 200);
+    // Remove this script tag
+    var here = document.getElementById("reload-tag");
+    setTimeout(function(){
+      document.body.removeChild(here);
+    }, 200);
+  })();
 </script>
+
+<style type="text/css">
+  #mocha-tests {
+    position: absolute;
+    left: 0;
+    bottom: 0.5%;
+    margin: 0 0.5%;
+    padding: 0;
+    width: 99%;
+    height: 75%;
+  }
+  #show-hide-tests {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
+  #mocha-tests.hidden, #mocha-tests.hide{
+    display: none;
+  }
+</style>
+<script type="text/javascript">
+  (function(){
+
+    var iframe = document.createElement( "iframe" ),
+        button = document.createElement( "button" );
+
+    iframe.src = "./tests.html";
+    iframe.id = "mocha-tests";
+    iframe.className = "hidden";
+
+    button.innerHTML = "Show Tests";
+    button.id = "show-hide-tests";
+
+    button.addEventListener( "click", function( event ) {
+      if ( ( /hidden|hide/g ).test( iframe.className ) ) {
+        iframe.className = iframe.className.split(" ").filter( function(strClass) {
+          return strClass !== "hidden" && strClass !== "hide";
+        }).join( " " ).trim();
+        button.innerHTML = "Hide Tests";
+      } else {
+        iframe.className = iframe.className + " hidden";
+        button.innerHTML = "Show Tests";
+      }
+    });
+
+    document.body.appendChild(iframe);
+    document.body.appendChild(button);
+  })();
+</script>
+<!-- END REMOVE FOR PRODUCTION -->
 
 </body>
 </html>

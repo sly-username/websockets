@@ -183,18 +183,32 @@ paths.karma = {
     {
       pattern: join( "vendor", "**", "*.*" ),
       watched: false,
-      included: false,
+      included: true,
       served: true
     },
     {
       pattern: join( "**", "*.*" ),
       watched: false,
-      included: false,
+      included: true,
       served: true
     },
+    /*
+    {
+      pattern: join( "**", "*.js" ),
+      watched: true,
+      included: true,
+      served: true
+    },
+    */
     {
       pattern: "index.html",
       watched: false,
+      included: false,
+      served: false
+    },
+    {
+      pattern: join( "**", "*.tests.js" ),
+      watched: true,
       included: true,
       served: true
     }
