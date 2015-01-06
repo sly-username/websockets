@@ -13,7 +13,7 @@
   <script src="vendor/system.js"></script>
 
   <!-- Global Styles -->
-  <link rel="stylesheet" href="styles/reset.css" />
+  <link rel="stylesheet" href="styles/main.css" />
 
   <!-- UI WebComponents -->
   <link rel="import" href="components/ui/ui-components.html" />
@@ -31,6 +31,10 @@
 <body>
 
 <div class="left">
+  <ed-icon name="add189" rotation="180"></ed-icon>
+</div>
+
+<div class="left">
   <select-box size="5" required disabled>
     <option value="apples">Apples</option>
     <option value="banannas">Banannas</option>
@@ -44,6 +48,30 @@
     <option value="lameness">Lameness</option>
   </select-box>
 </div>
+
+<div class="left">
+  <checkbox-select name="notifications" value="notes" disabled>
+    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
+  </checkbox-select>
+
+  <checkbox-select name="notifications" value="notes" disabled>
+    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
+  </checkbox-select>
+
+  <checkbox-select name="notifications" value="notes" disabled>
+    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
+  </checkbox-select>
+
+  <checkbox-select name="notifications" value="notes">
+    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
+  </checkbox-select>
+</div>
+<script>
+  (function() {
+    var chkbx = document.querySelector("checkbox-select[value=notes]");
+    chkbx.disabled = false;
+  })();
+</script>
 
 <div class="left">
   <scroll-box-horizontal show-arrows disabled>
@@ -88,30 +116,6 @@
 <div class="left">
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
 </div>
-
-<div class="left">
-  <checkbox-select name="notifications" value="notes" disabled>
-    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
-  </checkbox-select>
-
-  <checkbox-select name="notifications" value="notes" disabled>
-    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
-  </checkbox-select>
-
-  <checkbox-select name="notifications" value="notes" disabled>
-    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
-  </checkbox-select>
-
-  <checkbox-select name="notifications" value="notes">
-    <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
-  </checkbox-select>
-</div>
-
-<script>
-  var chkbx = document.querySelector("checkbox-select[value=notes]");
-
-  chkbx.disabled = false;
-</script>
 
 <script id="reload-tag" type="text/javascript">
   if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
