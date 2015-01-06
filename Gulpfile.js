@@ -21,11 +21,11 @@ gulp.task( "nodemon", function ( done ) {
     readableDate = currDate.getMonth() + "-" + currDate.getDate() + "-" + currDate.getFullYear();
   nodemon({
     script: "node_modules/gulp/bin/gulp.js",
-    stdout:false,
-    stderr:false
+    stdout: false,
+    stderr: false
   }).on( "readable", function () {
-    this.stdout.setMaxListeners(0);
-    this.stderr.setMaxListeners(0);
+    this.stdout.setMaxListeners( 0 );
+    this.stderr.setMaxListeners( 0 );
     this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
     this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
   }).on( "stdout", function ( data ) {
@@ -44,7 +44,7 @@ gulp.task( "start", function( done ) {
 
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
-      run("dev", done);
+      run( "dev", done );
       break;
     case "PRODUCTION":
       run( "prod", done );
