@@ -30,10 +30,11 @@
       copyAttributes( this, this.scrubberWrapper, [ "type" ]);
     },
     showVal: function() {
-      this.valBox.innerHTML = this.format === "percent" ? parseInt( ( ( this.scrubberInput.value - this.scrubberInput.min ) / ( this.scrubberInput.max - this.scrubberInput.min ) * 100 ), 10 ) + "%" : this.scrubberInput.value + " seconds";
+      var inputValue = this.scrubberInput.value,
+          valPercent = parseInt( ( (inputValue - this.scrubberInput.min ) / ( this.scrubberInput.max - this.scrubberInput.min ) * 100 ), 10 ) + "%",
+          valTime = inputValue + " seconds";
+
+      this.valBox.innerHTML = this.format === "percent" ? valPercent : valTime;
     }
   });
 })( window.Polymer );
-
-
-// scrubber value / scrubber max * 100
