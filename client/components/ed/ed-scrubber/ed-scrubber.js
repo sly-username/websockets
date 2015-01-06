@@ -15,14 +15,14 @@
     ready: function() {
       this.scrubberWrapper = this.shadowRoot.getElementById( "scrubberWrapper" );
       this.scrubberInput = this.shadowRoot.getElementById( "scrubberInput" );
+      this.valBox = this.shadowRoot.getElementById( "valBox" );
     },
     attached: function() {
       copyAttributes( this, this.scrubberInput, [ "min", "max", "format" ]);
       copyAttributes( this, this.scrubberWrapper, [ "type" ]);
     },
-    showVal: function( newVal ) {
-      this.valBox = this.shadowRoot.getElementById( "valBox" );
-      this.valBox.innerHTML = newVal;
+    showVal: function() {
+      this.valBox.innerHTML = this.scrubberInput.value;
     }
   });
 })( window.Polymer );
