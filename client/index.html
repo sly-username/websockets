@@ -21,14 +21,16 @@
   <!-- Eardish WebComponents -->
   <link rel="import" href="components/ed/ed-components.html" />
 
-  <style>
-    checkbox-select {
-      background: url("http://www.psoriasispatients.com/images/icons/qa_rating_star1.png") no-repeat;
-    }
-  </style>
 </head>
 
 <body>
+
+<div class="left">
+  <ed-scrubber min="7" max="100" type="default" format="percent"></ed-scrubber>
+  <ed-scrubber min="43" max="350" type="bar" format="time"></ed-scrubber>
+  <ed-scrubber min="25" max="100" type="bubble" format="percent"></ed-scrubber>
+  <ed-scrubber min="700" max="1000" type="fill" format="percent"></ed-scrubber>
+</div>
 
 <div class="left">
   <ed-icon name="add189" rotation="180"></ed-icon>
@@ -67,10 +69,10 @@
   </checkbox-select>
 </div>
 <script>
-  (function() {
+  ( function( document ) {
     var chkbx = document.querySelector("checkbox-select[value=notes]");
     chkbx.disabled = false;
-  })();
+  })( document );
 </script>
 
 <div class="left">
