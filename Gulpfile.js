@@ -3,8 +3,11 @@
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
   run = require( "run-sequence" ),
+  fs = require( "fs" ),
+  nodemon = require( "nodemon" ),
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
+  config = require( "./config.paths.js" ),
   dummy;
 
 dotenv.load();
@@ -13,6 +16,26 @@ dotenv.load();
 /*eslint no-unused-vars:0*/
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
+gulp.task( "nodemon", function ( done ) {
+  var currDate = new Date(),
+    readableDate = currDate.getMonth() + "-" + currDate.getDate() + "-" + currDate.getFullYear();
+  nodemon({
+    script: "node_modules/gulp/bin/gulp.js",
+    stdout: false,
+    stderr: false
+  }).on( "readable", function () {
+    this.stdout.setMaxListeners( 0 );
+    this.stderr.setMaxListeners( 0 );
+    this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
+    this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
+  }).on( "stdout", function ( data ) {
+    console.log( data.toString().trim() );
+  }).on( "stderr", function ( data ) {
+    console.log( data.toString().trim() );
+  });
+  done();
+
+});
 
 /*** MAGIC "START" TASK ***/
 gulp.task( "start", function( done ) {

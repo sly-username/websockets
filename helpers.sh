@@ -3,9 +3,10 @@
 # TODO When Moved to .config folder change this to be ".ed_profile" or something of the like
 
 # Save Some Paths
-ED_PROJECT_PATH="/home/vagrant/clientapp"
+ED_PROJECT_PATH="/home/$USER/clientapp"
 ED_MODULES_PATH="$ED_PROJECT_PATH/node_modules"
 ED_MODULES_BIN="$ED_MODULES_PATH/.bin"
+
 
 # Add Node Moduels Bin to Path
 PATH="$PATH:$ED_MODULES_BIN"
@@ -13,7 +14,7 @@ PATH="$PATH:$ED_MODULES_BIN"
 # Alias gulp so that it uses harmony (only works in vagrant not through ssh -c command)
 alias gulp="node --harmony $ED_MODULES_PATH/gulp/bin/gulp.js"
 
-export PATH
+export PATH ED_PROJECT_PATH ED_MODULES_PATH ED_MODULES_BIN
 
 # Helpful Functions
 # These must be run inside of vagrant
@@ -23,6 +24,11 @@ export PATH
 proc-gulp ()
 {
   ps ux | awk '!/awk|bash/ && /npm|node|gulp/ {print}'
+}
+
+follow ()
+{
+  tail -f "$1" 2> >(grep -v truncated >&2)
 }
 
 # This will kill all the procs running the gulp dev server
@@ -47,12 +53,12 @@ start-gulp ()
     echo "gulp already running"
   else
     local CWD=`pwd`
-    cd /home/vagrant/clientapp/
+    cd "$ED_PROJECT_PATH"
     if [[ "$NVM_DIR" == */home/vagrant/* ]]; then
       npm start
     else
       command -v npm > /dev/null 2>&1 || echo "source nvm" ; source /home/vagrant/.nvm/nvm.sh
-      nohup npm start > /dev/null 2>&1 &
+      nohup npm start # > /dev/null 2>&1 &
     fi
     cd $CWD
   fi
