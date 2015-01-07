@@ -1,69 +1,158 @@
+/*global __dirname*/
+/*eslint strict:0, key-spacing:0*/
+// jscs:disable maximumLineLength
+/***
+ * This file contains paths for all the different files in the codebase.
+ * Everything is absolute path'd starting from the __dirname of this file, which should
+ * be at the root of the project directory
+ ***/
 
-var paths = {
-  root:   __dirname,
-  client: __dirname + "/client",
-  tests:  __dirname + "/tests",
-  build:  __dirname + "/build",
-  bower:  __dirname + "/bower_components"
-};
+var join = require( "path" ).join,
+  paths = {
+    root:             __dirname,
+    client:           join( __dirname, "client" ),
+    tests:            join( __dirname, "tests" ),
+    build:            join( __dirname, "build" ),
+    tasks:            join( __dirname, "tasks" ),
+    server:           join( __dirname, "server" ),
+    bowerComponents:  join( __dirname, "bower_components" ),
+    nodeModules:      join( __dirname, "node_modules" )
+  };
 
-paths.dev = paths.build + "/www";
-paths.prod = paths.build + "/prod";
+paths.dev = join( paths.build, "www" );
+paths.prod = join( paths.build, "prod" );
 
-
-/* VENDOR SCRIPTS */
+/*** VENDOR SCRIPTS ***/
 paths.vendor = {
-  dev: paths.dev + "/vendor",
-  prod: paths.prod + "/vendor",
+  dev: join( paths.dev, "vendor" ),
+  prod: join( paths.prod, "vendor" ),
   src: [
-    "/platform/platform.js",
-    "/platform/platform.js.map",
-    "/polymer/polymer.js",
-    "/polymer/polymer.js.map"
-  ].map(function(s){ return paths.bower+s; }),
+      // Stuff in bower_components
+      join( "webcomponentsjs", "webcomponents.js" ),
+      join( "polymer", "polymer.js" ),
+      join( "system.js", "dist", "system.js" ),
+//      join( "system.js", "dist", "system.src.js" ),
+      join( "system.js", "dist", "system.js.map" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
+//      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+    ].map( function( s ) { return join( paths.bowerComponents, s ); }
+    ).concat([
+      // Stuff in node_modules
+      join( "traceur", "bin", "traceur-runtime.js" )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
   min: [
-    "/platform/platform.js",
-    "/platform/platform.js.map",
-    "/polymer/polymer.js",
-    "/polymer/polymer.js.map"
-  ].map(function(s){ return paths.bower+s; })
+      // Stuff in bower_components
+      join( "webcomponentsjs", "webcomponents.min.js" ),
+      join( "polymer", "polymer.min.js" ),
+      join( "system.js", "dist", "system.js" ),
+      join( "system.js", "dist", "system.js.map" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+    ].map( function( s ) { return join( paths.bowerComponents, s ); }
+    ).concat([
+      // Stuff in node_modules
+      join( "traceur", "bin", "traceur-runtime.js" )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) )
 };
 
+/*** TODO COPY (FOR PROD) ***/
 
-/* LESS PATHS */
+/*** SYMLINK ***/
+paths.symlink = {
+  src: [
+    // don't link these
+    // less, markdown, es6 js,
+    join( "!**", "*.less" ),
+    join( "!**", "*.md" ),
+    join( "!**", "*.es6.js" ),
+
+    // link these (everything else)
+    join( paths.client, "**", "*.*" )
+  ]
+};
+
+/*** LESS ***/
 paths.less = {
-  src:  paths.client + "/**/*.less",
-  out:  {
+  src: join( paths.client, "**", "*.less" ),
+  out: {
     dev: paths.dev,
     prod: paths.prod
   },
-  includePaths: [ './client/styles/' ],
-  skip: ["/**/*.vars.less", "/**/*.mixin.less"].map(function(s){return paths.client + s; })
+  // todo double check in windows if '/' gets changed to '\'
+  includePaths: [ join( "client", "styles", "/" ) ],
+  included: [
+    join( "**", "*.vars.less" ),
+    join( "**", "*.mixin.less" ),
+    join( "**", "*.include.less" ),
+    join( "**", "fonts", "*.less" )
+  ].map( function( s ) { return join( paths.client, s ); })
 };
-paths.less.compile = paths.less.skip.map(function(s){return "!"+s; }).concat(paths.less.src);
+paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
+// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat(paths.less.src);
 
+/*** Paths to JavaScript Files ***/
+paths.scripts = {
+  // todo add proper ignore for node_modules and bower_components
+  all:    join( paths.root, "**", "*.js" ),
+  client: join( paths.client, "**", "*.js" ),
+  tasks:  join( paths.tasks, "**", "*.js" ),
+  tests:  join( paths.tests, "**", "*.js" ),
+  server: join( paths.server, "**", "*.js" ),
+  es6: {
+    all: join( paths.root, "**", "*.es6.js" ),
+    client: join( paths.client, "**", "*.es6.js" )
+  }
+};
 
-/* SERVER PATHS */
+/*** JSCS ***/
+paths.jscs = {
+  rc:     join( paths.root, ".jscsrc" ),
+  all:    paths.scripts.all,
+  client: paths.scripts.client,
+  tasks:  paths.scripts.tasks,
+  tests:  paths.scripts.tests,
+  server: paths.scripts.server,
+  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); }),
+  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
+};
+
+/*** ESLINT ***/
+paths.eslint = {
+  rc:     join( paths.root, ".eslintrc" ),
+  all:    paths.scripts.all,
+  client: paths.scripts.client,
+  tasks:  paths.scripts.tasks,
+  tests:  paths.scripts.tests,
+  server: paths.scripts.server,
+  root: join( paths.root, "*.js" ),
+  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
+};
+
+/*** Traceur ES6 --> ES5 ***/
+paths.traceur = {
+  bin: join( paths.nodeModules, ".bin", "traceur" ),
+  src: join( paths.client, "**", "*.es6.js" ),
+  out: {
+    dev: paths.dev,
+    prod: paths.prod
+  }
+};
+
+/*** SERVER PATHS ***/
 paths.server = {
   ports: {
     dev: 5115,
     prod: 5116
   },
   fallback: {
-    dev: paths.dev + "/index.html",
-    prod: paths.prod + "/index.html"
+    dev: join( paths.dev, "index.html" ),
+    prod: join( paths.prod, "index.html" )
   },
   watch: paths.dev
 };
 
+/*** TODO ***/
 
-/* SYMLINK */
-paths.symlink = {
-  src: ["!**/*.less", "!**/*.md", paths.client + "/**/*.*"]//.map(function(s){return paths.client + s; })
-};
-
-/* TODO COPY */
-
-/* TODO */
-
+// Export!
 module.exports = paths;
