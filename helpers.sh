@@ -31,7 +31,7 @@ proc-gulp ()
 
 follow ()
 {
-  tail -f $1 2> >(grep -v truncated >&2)
+  tail -f "$1" 2> >(grep -v truncated >&2)
 }
 
 # This will kill all the procs running the gulp dev server
