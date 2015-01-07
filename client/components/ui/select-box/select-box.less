@@ -1,7 +1,8 @@
 
 .select {
-  position:  relative;
+  position:  absolute;
   overflow:  hidden;
+  z-index: 2;
   .label {
     padding: 8px;
     max-width: 150px;
@@ -23,6 +24,7 @@
     border-radius: 3px;
     padding: 8px;
     cursor: pointer;
+    background: white;
   }
   .options {
     max-width: 220px;
@@ -33,7 +35,7 @@
     border-right: 1px dotted #999;
     border-left: 1px dotted #999;
     border-radius: 5px;
-    max-height: 162px;
+    max-height: 160px;
     overflow-y: auto;
     overflow-x: hidden;
     &:hover {
