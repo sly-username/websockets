@@ -68,6 +68,12 @@
     <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
   </checkbox-select>
 </div>
+<script>
+  ( function( document ) {
+    var chkbx = document.querySelector("checkbox-select[value=notes]");
+    chkbx.disabled = false;
+  })( document );
+</script>
 
 <div class="left">
   <scroll-box-horizontal show-arrows disabled>
