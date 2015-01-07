@@ -7,9 +7,6 @@ ED_PROJECT_PATH="/home/$USER/clientapp"
 ED_MODULES_PATH="$ED_PROJECT_PATH/node_modules"
 ED_MODULES_BIN="$ED_MODULES_PATH/.bin"
 
-export ED_PROJECT_PATH
-export ED_MODULES_PATH
-export ED_MODULES_BIN
 
 # Add Node Moduels Bin to Path
 PATH="$PATH:$ED_MODULES_BIN"
@@ -17,7 +14,7 @@ PATH="$PATH:$ED_MODULES_BIN"
 # Alias gulp so that it uses harmony (only works in vagrant not through ssh -c command)
 alias gulp="node --harmony $ED_MODULES_PATH/gulp/bin/gulp.js"
 
-export PATH
+export PATH ED_PROJECT_PATH ED_MODULES_PATH ED_MODULES_BIN
 
 # Helpful Functions
 # These must be run inside of vagrant
@@ -57,11 +54,11 @@ start-gulp ()
   else
     local CWD=`pwd`
     cd "$ED_PROJECT_PATH"
-    if [[ "$NVM_DIR" == */home/ubuntu/* ]]; then
-      npm run-script nodemonGulp
+    if [[ "$NVM_DIR" == */home/vagrant/* ]]; then
+      npm start
     else
-      command -v npm > /dev/null 2>&1 || echo "source nvm" ; source /home/ubuntu/.nvm/nvm.sh
-      nohup npm run-script nodemonGulp # > /dev/null 2>&1 &
+      command -v npm > /dev/null 2>&1 || echo "source nvm" ; source /home/vagrant/.nvm/nvm.sh
+      nohup npm start # > /dev/null 2>&1 &
     fi
     cd $CWD
   fi
