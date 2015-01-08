@@ -2,11 +2,11 @@
   "use strict";
 
   Polymer( "img-placeholder", {
-    /*** PROPERTIES ***/
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
-    /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
+    typeChanged: function( oldVal, newVal ) {
+      this.name = newVal;
+      this.setAttribute( "type", newVal );
+    }
     /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
