@@ -1,0 +1,8 @@
+{
+  "restartable": "restart-gulp",
+  "verbose": true,
+  "ignore": ["*.test.js", "node_modules/", "bower_components/", "build/", "Vagrantfile", "vagrant/", "logs/", ".git"],
+  "execMap": {
+    "js" :"node --harmony"
+  }
+}
