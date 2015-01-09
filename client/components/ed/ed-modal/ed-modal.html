@@ -2,9 +2,9 @@
   <template>
     <link rel="stylesheet" href="./ed-modal.css">
     <a href="#">checking whether this is accessible</a>
-    <div id="a-button" class="modal-box">
+    <div id="{{trigger}}" class="modal-box">
       <div>
-        <button name="Close" class="close-button">X</button>
+        <button on-click="{{closeModal}}" name="Close" class="close-button">X</button>
         <content select="*"></content>
       </div>
     </div>
