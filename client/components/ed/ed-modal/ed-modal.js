@@ -24,6 +24,10 @@
     },
     attached: function() {
       copyAttributes( this, this, [ "trigger", "clickOff", "closeButton" ]);
+      this.addEventListener( "click", this.closeButton.bind( this ) );
+    },
+    closeButton: function() {
+
     }
   });
 })( window.Polymer );

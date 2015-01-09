@@ -1,7 +1,13 @@
 <polymer-element name="ed-modal" attributes="trigger clickOff closeButton">
   <template>
     <link rel="stylesheet" href="./ed-modal.css">
-
+    <a href="#">checking whether this is accessible</a>
+    <div id="a-button" class="modal-box">
+      <div>
+        <button name="Close" class="close-button">X</button>
+        <content select="*"></content>
+      </div>
+    </div>
   </template>
   <script src="./ed-modal.js"></script>
 </polymer-element>
