@@ -23,103 +23,39 @@
 
 </head>
 
-<body>
+<body unresolved>
 
-<img-placeholder type="wrench"></img-placeholder>
+<img-placeholder image="user-profile" src="http://www.fillmurray.com/300/200"></img-placeholder>
+<img-placeholder image="user-profile"></img-placeholder>
+<img-placeholder></img-placeholder>
 
-<!--<div class="left">-->
-  <!--<ed-scrubber min="7" max="100" type="default" format="percent"></ed-scrubber>-->
-  <!--<ed-scrubber min="43" max="350" type="bar" format="time"></ed-scrubber>-->
-  <!--<ed-scrubber min="25" max="100" type="bubble" format="percent"></ed-scrubber>-->
-  <!--<ed-scrubber min="700" max="1000" type="fill" format="percent"></ed-scrubber>-->
-<!--</div>-->
 
-<!--<div class="left">-->
-  <!--<ed-icon name="add189" rotation="180"></ed-icon>-->
-<!--</div>-->
+<script>
+  // script required for <img-placeholder>
+  document.addEventListener('polymer-ready', function() {
+    document.createElement("img-placeholder").imageMap = (function(){
+      var urlPrefix = "./assets/placeholder/",
+          urlPostfix = ".svg",
+          map = {},
+          imageNames = [
+            "user-profile",
+            "artist-profile",
+            "person-silhoutte",
+            "song-art",
+            "album-art"
+          ];
 
-<!--<div class="left">-->
-  <!--<select-box size="5" required disabled>-->
-    <!--<option value="apples">Apples</option>-->
-    <!--<option value="banannas">Banannas</option>-->
-    <!--<option value="pears">Pears</option>-->
-    <!--<option value="oranges">Oranges</option>-->
-    <!--<option value="peaches">Peaches</option>-->
-    <!--<option value="socks">Socks</option>-->
-    <!--<option value="cheese">Cheese</option>-->
-    <!--<option value="cream">Cream</option>-->
-    <!--<option value="boogars">Boogars</option>-->
-    <!--<option value="lameness">Lameness</option>-->
-  <!--</select-box>-->
-<!--</div>-->
+      imageNames.forEach( function ( imageName ){
+        map[imageName] = urlPrefix + imageName + urlPostfix;
+      });
+      //return map;
+      return {
+        "user-profile":"http://www.fillmurray.com/300/300"
+      }
+    })();
+  });
 
-<!--<div class="left">-->
-  <!--<checkbox-select name="notifications" value="notes" disabled>-->
-    <!--<img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />-->
-  <!--</checkbox-select>-->
-
-  <!--<checkbox-select name="notifications" value="notes" disabled>-->
-    <!--<img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />-->
-  <!--</checkbox-select>-->
-
-  <!--<checkbox-select name="notifications" value="notes" disabled>-->
-    <!--<img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />-->
-  <!--</checkbox-select>-->
-
-  <!--<checkbox-select name="notifications" value="notes">-->
-    <!--<img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />-->
-  <!--</checkbox-select>-->
-<!--</div>-->
-<!--<script>-->
-  <!--( function( document ) {-->
-    <!--var chkbx = document.querySelector("checkbox-select[value=notes]");-->
-    <!--chkbx.disabled = false;-->
-  <!--})( document );-->
-<!--</script>-->
-
-<!--<div class="left">-->
-  <!--<scroll-box-horizontal show-arrows disabled>-->
-    <!--<img src="http://i.imgur.com/OpYDgt3.gif">-->
-    <!--<h2> SCROLL BOX HORIZONTAL </h2>-->
-    <!--<p> Pizza </p>-->
-    <!--<p>Zombies</p>-->
-  <!--</scroll-box-horizontal>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<scroll-box-vertical show-arrows disabled>-->
-    <!--<h2>List of Stuff and Things and Stuff</h2>-->
-    <!--<p>Scroll</p>-->
-    <!--<p>Pizza</p>-->
-    <!--<p>Cheese</p>-->
-    <!--<p>Stuff</p>-->
-    <!--<p>Orange</p>-->
-    <!--<p>Water</p>-->
-    <!--<p>Screen</p>-->
-    <!--<p>Bottles</p>-->
-    <!--<p>Bannanna</p>-->
-    <!--<p>Pizza</p>-->
-    <!--<p>Cheese</p>-->
-    <!--<p>Stuff</p>-->
-    <!--<p>Orange</p>-->
-    <!--<p>Water</p>-->
-    <!--<p>Ninjas</p>-->
-    <!--<p>Zombies</p>-->
-    <!--<img src="http://i.imgur.com/OQNonT2.jpg">-->
-  <!--</scroll-box-vertical>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<on-off on-text="Yes" off-text="No" checked></on-off>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>-->
-<!--</div>-->
+</script>
 
 <script id="reload-tag" type="text/javascript">
   if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
