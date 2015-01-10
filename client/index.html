@@ -22,14 +22,16 @@
   <!-- Eardish WebComponents -->
   <link rel="import" href="components/ed/ed-components.html" />
 
-  <style>
-    checkbox-select {
-      background: url("http://www.psoriasispatients.com/images/icons/qa_rating_star1.png") no-repeat;
-    }
-  </style>
 </head>
 
 <body>
+
+<div class="left">
+  <ed-scrubber min="7" max="100" type="default" format="percent"></ed-scrubber>
+  <ed-scrubber min="43" max="350" type="bar" format="time"></ed-scrubber>
+  <ed-scrubber min="25" max="100" type="bubble" format="percent"></ed-scrubber>
+  <ed-scrubber min="700" max="1000" type="fill" format="percent"></ed-scrubber>
+</div>
 
 <div class="left">
   <ed-icon name="add189" rotation="180"></ed-icon>
@@ -68,10 +70,10 @@
   </checkbox-select>
 </div>
 <script>
-  (function() {
+  ( function( document ) {
     var chkbx = document.querySelector("checkbox-select[value=notes]");
     chkbx.disabled = false;
-  })();
+  })( document );
 </script>
 
 <div class="left">
@@ -122,10 +124,10 @@
 <script id="reload-tag" type="text/javascript">
   (function(){
     // Live Reload Script
-    if( (/(^local.eardish.com:5115)|(localhost:5115)/g).test(location.host) ){
+    if( ( /^local.eardish|localhost|:5115/g ).test( location.host ) ) {
       document.write(
           "<script src=\"http://" +
-          (location.host || "localhost").split(":")[0] +
+          ( location.host || "localhost" ).split( ":" )[0] +
           ":35729/livereload.js\"></" +
           "script>"
       );
@@ -165,7 +167,7 @@
   (function(){
 
     var iframe = document.createElement( "iframe" ),
-        button = document.createElement( "button" );
+      button = document.createElement( "button" );
 
     iframe.src = "./tests.html";
     iframe.id = "mocha-tests";
@@ -176,7 +178,7 @@
 
     button.addEventListener( "click", function( event ) {
       if ( ( /hidden|hide/g ).test( iframe.className ) ) {
-        iframe.className = iframe.className.split(" ").filter( function(strClass) {
+        iframe.className = iframe.className.split(" ").filter( function( strClass ) {
           return strClass !== "hidden" && strClass !== "hide";
         }).join( " " ).trim();
         button.innerHTML = "Hide Tests";
@@ -186,8 +188,8 @@
       }
     });
 
-    document.body.appendChild(iframe);
-    document.body.appendChild(button);
+    document.body.appendChild( iframe );
+    document.body.appendChild( button );
   })();
 </script>
 <!-- END REMOVE FOR PRODUCTION -->
