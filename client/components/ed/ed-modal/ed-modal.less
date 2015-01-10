@@ -6,20 +6,19 @@
   left: 0;
   background: rgba(0,0,0,0.8);
   z-index: 10;
-//  visibility: hidden;
-  opacity: 0;
+//  visibility: visible;
 //  -webkit-transition: opacity 400ms ease-in;
 //  -moz-transition: opacity 400ms ease-in;
 //  transition: opacity 400ms ease-in;
-  pointer-events: none;
+//  pointer-events: none;
   text-align: center;
 }
-
-.modal-box:target {
-//  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
+//
+//.modal-box:target {
+////  visibility: visible;
+//  opacity: 1;
+//  pointer-events: auto;
+//}
 
 .modal-box > div {
   width: 400px;
@@ -39,6 +38,7 @@
 }
 
 .close-button {
+//  visibility: hidden;
   background: #606061;
   color: #FFFFFF;
   width: 40px;
@@ -57,4 +57,4 @@
   box-shadow: 1px 1px 3px #000;
 }
 
-.close:hover { background: #00d9ff; }
+//.close:hover { background: #00d9ff; }

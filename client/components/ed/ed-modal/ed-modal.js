@@ -1,32 +1,39 @@
 ( function( Polymer ) {
   "use strict";
 
-  var copyAttributes = function( elemFrom, elemTo, attrs ) {
-    attrs.forEach( function( attr ) {
-      if ( elemFrom.hasAttribute( attr ) ) {
-        elemTo.setAttribute( attr, elemFrom.getAttribute( attr ) );
-      } else {
-        elemTo.removeAttribute( attr );
-      }
-    });
-  };
-
   Polymer( "ed-modal", {
-    get clickOff() {
-      return this._format;
+    get trigger() {
+      return this._trigger;
     },
-     set clickOff( value ) {
-       this.attributes.clickOff.value = value;
-       this._format = value;
-       return value;
-     },
+    set trigger( value ) {
+      this.attributes.trigger.value = value;
+      this._trigger = value;
+      return value;
+    },
+    get clickOff() {
+      return this._clickOff;
+    },
+    set clickOff( value ) {
+
+    },
+    get closeButton() {
+      return this._closeButton;
+    },
+    set closeButton( value ) {
+
+    },
     ready: function() {
+      console.log(this);
+      this.modalBox = this.shadowRoot.getElementById( this.attributes.trigger.value );
+      this.modalButton = this.shadowRoot.getElementById( "modal-button" );
     },
     attached: function() {
-      copyAttributes( this, this, [ "trigger", "clickOff", "closeButton" ]);
-      this.addEventListener( "click", this.closeButton.bind( this ) );
+      this.modalButton.addEventListener( "click", this.close.bind( this ) );
     },
-    closeButton: function() {
+    close: function() {
+      this.style.visibility = "hidden";
+    },
+    open: function() {
 
     }
   });
