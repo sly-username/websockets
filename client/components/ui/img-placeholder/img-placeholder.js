@@ -38,7 +38,7 @@
     /*** END LIFECYCLE ***/
     /*** FUNCTION ***/
     errorOut: function() {
-      this.fallBack.src = globalMap[this.image] || "";
+      this.fallBack.src = globalMap[this.image] || "null";
     }
     /*** END FUNCTION ***/
   });
