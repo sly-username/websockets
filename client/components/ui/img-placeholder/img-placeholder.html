@@ -1,7 +1,7 @@
-<polymer-element name="img-placeholder" attributes="src image">
+<polymer-element name="img-placeholder" attributes="">
   <template>
     <link rel="stylesheet" href="./img-placeholder.css">
-    <img class="display" src="{{ src || imageMap[image] || '' }}" />
+    <img class="fall-back" src="{{ _src || imageMap[image] || '' }}" />
   </template>
   <script src="./img-placeholder.js"></script>
 </polymer-element>
