@@ -23,18 +23,19 @@
 
     },
     ready: function() {
-      console.log(this);
       this.modalBox = this.shadowRoot.getElementById( this.attributes.trigger.value );
       this.modalButton = this.shadowRoot.getElementById( "modal-button" );
     },
     attached: function() {
-      this.modalButton.addEventListener( "click", this.close.bind( this ) );
+      document.querySelector( this.attributes.trigger.value ).addEventListener( "click", this.open.bind( this ) );
+      this.modalButton.addEventListener( "click", this.close( this ) );
     },
     close: function() {
       this.style.visibility = "hidden";
     },
     open: function() {
-
+      console.log( this );
+      this.modalBox.style.visibility = "visible";
     }
   });
 })( window.Polymer );
