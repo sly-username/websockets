@@ -31,7 +31,15 @@
     /*** LIFECYCLE ***/
     ready: function() {
       this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[0];
-    }
+    },
+    attached: function() {
+      this.fallBack.addEventListener( "error", this.errorOut.bind( this ) );
+    },
     /*** END LIFECYCLE ***/
+    /*** FUNCTION ***/
+    errorOut: function() {
+      this.fallBack.src = globalMap[this.image];
+    }
+    /*** END FUNCTION ***/
   });
 })( window.Polymer );
