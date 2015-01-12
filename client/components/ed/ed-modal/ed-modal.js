@@ -28,10 +28,10 @@
     },
     attached: function() {
       document.querySelector( this.attributes.trigger.value ).addEventListener( "click", this.open.bind( this ) );
-      this.modalButton.addEventListener( "click", this.close( this ) );
+      this.modalButton.addEventListener( "click", this.close.bind( this ) );
     },
     close: function() {
-      this.style.visibility = "hidden";
+      this.modalBox.style.visibility = "hidden";
     },
     open: function() {
       console.log( this );
