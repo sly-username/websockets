@@ -25,9 +25,9 @@
 
 <body unresolved>
 
-<img-placeholder image="fillmurray.com/200/300" src="http://www.fillmurray.com/300/200"></img-placeholder>
-<img-placeholder image="placecage.com/200/300"></img-placeholder>
-<img-placeholder image="placecage.com/200/300" src="invalidsource.com"></img-placeholder>
+<img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
+<img-placeholder image="placecage"></img-placeholder>
+<img-placeholder image="fillmurray" src="invalidsource.com"></img-placeholder>
 <img-placeholder src="invalidsource.com"></img-placeholder>
 <img-placeholder image="notavalidprofile"></img-placeholder>
 
@@ -163,19 +163,19 @@
   document.addEventListener('polymer-ready', function() {
     document.createElement("img-placeholder").imageMap = (function(){
       var urlPrefix = "http://",
+          urlPostfix = ".com/200/300",
           map = {},
           imageNames = [
-            "fillmurray.com/200/300",
-            "placecage.com/200/300"
+            "fillmurray",
+            "placecage"
           ];
 
       imageNames.forEach( function ( imageName ){
-        map[imageName] = urlPrefix + imageName;
+        map[imageName] = urlPrefix + imageName + urlPostfix;
       });
       return map;
     })();
   });
-
 </script>
 
 
