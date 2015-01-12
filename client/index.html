@@ -25,8 +25,10 @@
 
 <body unresolved>
 
-<img-placeholder image="user-profile" src="http://www.fillmurray.com/300/200"></img-placeholder>
-<img-placeholder image="artist-profile"></img-placeholder>
+<img-placeholder image="fillmurray.com/200/300" src="http://www.fillmurray.com/300/200"></img-placeholder>
+<img-placeholder image="placecage.com/200/300"></img-placeholder>
+<img-placeholder image="placecage.com/200/300" src="invalidsource.com"></img-placeholder>
+<img-placeholder image="notavalidprofile"></img-placeholder>
 
 
 <radio-select name="privacy" value="public">
@@ -159,25 +161,17 @@
   // script required for <img-placeholder>
   document.addEventListener('polymer-ready', function() {
     document.createElement("img-placeholder").imageMap = (function(){
-      var urlPrefix = "./assets/placeholder/",
-          urlPostfix = ".svg",
+      var urlPrefix = "http://",
           map = {},
           imageNames = [
-            "user-profile",
-            "artist-profile",
-            "person-silhoutte",
-            "song-art",
-            "album-art"
+            "fillmurray.com/200/300",
+            "placecage.com/200/300"
           ];
 
       imageNames.forEach( function ( imageName ){
-        map[imageName] = urlPrefix + imageName + urlPostfix;
+        map[imageName] = urlPrefix + imageName;
       });
-      //return map;
-      return {
-        "user-profile":"http://www.placecage.com/c/460/300",
-        "artist-profile":"http://www.placecage.com/g/155/300"
-      }
+      return map;
     })();
   });
 
