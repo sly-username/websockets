@@ -42,7 +42,10 @@
     },
     imageChanged: function( oldVal, newVal ) {
       this.image = newVal;
-      this.fallBack.src = newVal;
+
+      if ( !this.src ) {
+        this.fallBack.src = this.src || globalMap[this.image];
+      }
       this.setAttribute( "image", newVal );
     }
     /*** END FUNCTION ***/
