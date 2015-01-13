@@ -12,6 +12,8 @@
   };
 
   Polymer( "ed-modal", {
+    //clickOff: true,
+    //closeButton: true,
     get trigger() {
       return this._trigger;
     },
@@ -25,7 +27,7 @@
       this.modalButton = this.shadowRoot.getElementById( "modal-button" );
     },
     attached: function() {
-      copyAttributes( this, this.modalBox, [ "clickOff", "closeButton" ]);
+      copyAttributes( this, this.modalBox, [ "clickOff", "closeButton" ] );
       document.querySelector( this.attributes.trigger.value ).addEventListener( "click", this.open.bind( this ) );
       this.modalButton.addEventListener( "click", this.close.bind( this ) );
 
@@ -51,12 +53,13 @@
         this.trigger = this.attributes.trigger.value;
       }
     },
-    //clickOffChanged: function( oldVal, newVal ) {
-    //  this.clickOff = newVal;
-    //  this.setAttribute( "clickOff", "" );
-    //},
-    //closeButtonChanged: function( oldVal, newVal ) {
-    //  this.closeButton = newVal;
-    //}
+    clickOffChanged: function( oldVal, newVal ) {
+      this.clickOff = newVal;
+      this.setAttribute( "clickOff", newVal );
+    },
+    closeButtonChanged: function( oldVal, newVal ) {
+      this.closeButton = newVal;
+      this.setAttribute( "closeButton", newVal );
+    }
   });
 })( window.Polymer );
