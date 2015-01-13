@@ -33,27 +33,23 @@
       this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[0];
     },
     attached: function() {
-      this.fallBack.addEventListener( "error", this.errorOut.bind( this ) );
+      this.updateSrc();
     },
     /*** END LIFECYCLE ***/
     /*** FUNCTION ***/
-    errorOut: function() {
-      this.fallBack[globalMap[this.image] ? "setAttribute" : "removeAttribute"]( "src", globalMap[this.image] );
-    },
     imageChanged: function( oldVal, newVal ) {
-      var promise = this.checkSrc( this.src );
       this.image = newVal;
-
-      if ( !this.src ) {
-        this.fallBack.src = this.src || globalMap[this.image];
-      } else {
-        promise.then( function( response ) {
-          this.fallBack.src = this.src;
-        }.bind( this ) ).catch( function( error ) {
-          this.fallBack.src = globalMap[this.image];
-        }.bind( this ) );
-      }
+      this.updateSrc()
       this.setAttribute( "image", newVal );
+    },
+    updateSrc: function() {
+      this.checkSrc( this.src ).then( function( result ) {
+        if ( result ) {
+          this.fallBack.src = this.src;
+        } else {
+          this.fallBack.src = globalMap[this.image];
+        }
+      }.bind( this ) );
     },
     checkSrc: function( src ) {
       return ( new Promise( function( resolve, reject ) {
