@@ -1,7 +1,7 @@
-<polymer-element name="ed-modal" attributes="trigger clickOff closeButton">
+<polymer-element name="ed-modal" attributes="trigger click-off close-button">
   <template>
     <link rel="stylesheet" href="./ed-modal.css">
-    <div id="{{trigger}}" class="modal-box" clickOff?="{{clickOff}}" closeButton?="{{closeButton}}">
+    <div id="{{trigger}}" class="modal-box">
       <div>
         <button id="modal-button" class="close-button">X</button>
         <content select="*"></content>
