@@ -4,7 +4,8 @@
     "node": true
   },
   "globals": {
-    "Polymer": true
+    "Polymer": true,
+    "Promise": true
   },
   "rules": {
     // 0 is off

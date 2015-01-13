@@ -23,7 +23,14 @@
 
 </head>
 
-<body>
+<body unresolved>
+
+<img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
+<img-placeholder image="placecage"></img-placeholder>
+<img-placeholder image="fillmurray" src="invalidsource.com"></img-placeholder>
+<img-placeholder src="invalidsource.com"></img-placeholder>
+<img-placeholder image="notavalidprofile"></img-placeholder>
+
 
 <radio-select name="privacy" value="public">
   <img src="http://www.geocaching.com/images/logtypes/2.png" alt="radio button icon" />
@@ -52,56 +59,11 @@
 
 <script>
   var radios = document.querySelectorAll("radio-select[value=privacy]");
-
   Array.prototype.forEach.call(radios, function(radio){
     radio.disabled = false;
   });
 </script>
 
-
-<!--<div class="left">-->
-  <!--<scroll-box-horizontal show-arrows disabled>-->
-    <!--<img src="http://i.imgur.com/OpYDgt3.gif">-->
-    <!--<h2> SCROLL BOX HORIZONTAL </h2>-->
-    <!--<p> Pizza </p>-->
-    <!--<p>Zombies</p>-->
-  <!--</scroll-box-horizontal>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<scroll-box-vertical show-arrows disabled>-->
-    <!--<h2>List of Stuff and Things and Stuff</h2>-->
-    <!--<p>Scroll</p>-->
-    <!--<p>Pizza</p>-->
-    <!--<p>Cheese</p>-->
-    <!--<p>Stuff</p>-->
-    <!--<p>Orange</p>-->
-    <!--<p>Water</p>-->
-    <!--<p>Screen</p>-->
-    <!--<p>Bottles</p>-->
-    <!--<p>Bannanna</p>-->
-    <!--<p>Pizza</p>-->
-    <!--<p>Cheese</p>-->
-    <!--<p>Stuff</p>-->
-    <!--<p>Orange</p>-->
-    <!--<p>Water</p>-->
-    <!--<p>Ninjas</p>-->
-    <!--<p>Zombies</p>-->
-    <!--<img src="http://i.imgur.com/OQNonT2.jpg">-->
-  <!--</scroll-box-vertical>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<on-off on-text="Yes" off-text="No" checked></on-off>-->
-<!--</div>-->
-
-<!--<div class="left">-->
-  <!--<progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>-->
-<!--</div>-->
 <div class="left">
   <ed-scrubber min="7" max="100" type="default" format="percent"></ed-scrubber>
   <ed-scrubber min="43" max="350" type="bar" format="time"></ed-scrubber>
@@ -195,6 +157,28 @@
 <div class="left">
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
 </div>
+
+<script>
+  // script required for <img-placeholder>
+  document.addEventListener('polymer-ready', function() {
+    document.createElement("img-placeholder").imageMap = (function(){
+      var urlPrefix = "http://",
+          urlPostfix = ".com/200/300",
+          map = {},
+          imageNames = [
+            "fillmurray",
+            "placecage"
+          ];
+
+      imageNames.forEach( function ( imageName ){
+        map[imageName] = urlPrefix + imageName + urlPostfix;
+      });
+      return map;
+    })();
+  });
+</script>
+
+
 <script id="reload-tag" type="text/javascript">
   if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
     document.write(
