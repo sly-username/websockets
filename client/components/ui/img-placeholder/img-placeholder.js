@@ -38,7 +38,12 @@
     /*** END LIFECYCLE ***/
     /*** FUNCTION ***/
     errorOut: function() {
-      this.fallBack.src = globalMap[this.image] || "";
+      this.fallBack[globalMap[this.image] ? "setAttribute" : "removeAttribute"]( "src", globalMap[this.image] );
+    },
+    imageChanged: function( oldVal, newVal ) {
+      this.image = newVal;
+      this.fallBack.src = newVal;
+      this.setAttribute( "image", newVal );
     }
     /*** END FUNCTION ***/
   });
