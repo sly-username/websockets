@@ -29,23 +29,21 @@
   <div id = "a-button">
     content
   </div>
-  <ed-modal trigger="#a-button" closeButton>
+  <ed-modal trigger="#a-button" clickOff>
     <h2>Modal title</h2>
     <p>I only work in black</p>
     <p> ... and very very very dark grey.</p>
     <video class="some-video" auto-play="true">
-      <source src="http://youtu.be/_M-BcQLEAJY">
+      <source src="http://vimeo.com/51651391">
       I'm sorry; your browser doesn't support HTML5 video.
     </video>
   </ed-modal>
 </div>
 <script>
-
   var modal = document.querySelector("ed-modal");
 
   console.log(modal.trigger);
   modal.trigger = "theButton";
-
 </script>
 
 <div class="left">
