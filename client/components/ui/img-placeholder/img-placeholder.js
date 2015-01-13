@@ -36,20 +36,16 @@
       this.updateSrc();
     },
     /*** END LIFECYCLE ***/
-    /*** FUNCTION ***/
+    /*** FUNCTIONS ***/
     imageChanged: function( oldVal, newVal ) {
       this.image = newVal;
-      this.updateSrc()
-      this.setAttribute( "image", newVal );
+      this.updateSrc().setAttribute( "image", newVal );
     },
     updateSrc: function() {
       this.checkSrc( this.src ).then( function( result ) {
-        if ( result ) {
-          this.fallBack.src = this.src;
-        } else {
-          this.fallBack.src = globalMap[this.image];
-        }
+        this.fallBack.src = result ? this.src : globalMap[this.image];
       }.bind( this ) );
+      return this;
     },
     checkSrc: function( src ) {
       return ( new Promise( function( resolve, reject ) {
@@ -63,6 +59,8 @@
         tmpImage.src = src;
       }) );
     }
-    /*** END FUNCTION ***/
+    /*** END FUNCTIONS ***/
   });
+
 })( window.Polymer );
+
