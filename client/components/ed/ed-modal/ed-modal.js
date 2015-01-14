@@ -1,6 +1,9 @@
 ( function( Polymer ) {
   "use strict";
   Polymer( "ed-modal", {
+
+  /* GETTERS AND SETTERS */
+    /* CLICK OFF */
     get clickoff() {
       return this.hasAttribute( "clickoff" );
     },
@@ -13,18 +16,18 @@
         this.removeAttribute( "clickoff" );
       }
     },
+    /* CLOSE BUTTON */
     get closebutton() {
       return this.hasAttribute( "closebutton" );
     },
     set closebutton( value ) {
       if ( value ) {
         this.setAttribute( "closebutton", "" );
-        //this.attachClickoffListener();
       } else {
-        //this.removeClickoffListener();
         this.removeAttribute( "closebutton" );
       }
     },
+    /* TRIGGER */
     get trigger() {
       return this._trigger;
     },
@@ -33,6 +36,8 @@
       this._trigger = value;
       return value;
     },
+
+    /* FUNCTIONS */
     ready: function() {
       this.modalContainer = this.shadowRoot.getElementById( this.attributes.trigger.value );
       this.modalBox = this.shadowRoot.getElementById( "modal-box" );
@@ -54,8 +59,9 @@
       if ( this.hasAttribute( "clickoff" ) ) {
         this.attachClickoffListener();
       }
-
     },
+
+    /* EVENT LISTENERS */
     attachTriggerListener: function() {
       [ "mousedown", "touchstart" ].forEach( function( e ) {
         document.querySelector( this.attributes.trigger.value )
@@ -78,6 +84,8 @@
         this.modalBox.removeEventListener( e, this.closeListener );
       }.bind( this ) );
     },
+
+    /* MODAL APPEAR AND DISAPPEAR */
     open: function() {
       this.modalContainer.style.display = "block";
       this.setZIndices();
@@ -85,6 +93,8 @@
     close: function() {
       this.modalContainer.style.display = "none";
     },
+
+    /* ATTRIBUTE CHANGED FUNCTIONS*/
     triggerChanged: function( oldVal, newVal ) {
       this.removeTriggerListener();
       this.trigger = newVal;
@@ -96,10 +106,20 @@
       }
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      if ( attrName === "clickoff" ) {
-        this[attrName] = newVal === "";
+
+      switch ( attrName ) {
+        case "clickoff":
+        // fallthrough
+        case "closebutton":
+          this.attrName = newVal === "";
+          break;
+        default:
+          // do nothing
+          break;
       }
     },
+
+    /* Z-INDEX */
     findHighestZIndex: function() {
       var currentZ,
           highestZ = 0,
