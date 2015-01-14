@@ -1,3 +1,6 @@
+.modal-container {
+  display: none;
+}
 .modal-box {
   position: fixed;
   top: 0;
@@ -6,19 +9,19 @@
   left: 0;
   background: rgba(0,0,0,0.8);
   z-index: 10;
-  visibility: hidden;
 //  -webkit-transition: opacity 400ms ease-in;
 //  -moz-transition: opacity 400ms ease-in;
 //  transition: opacity 400ms ease-in;
-//  pointer-events: none;
-  text-align: center;
 }
 
-.modal-box > div {
+.modal-window {
+  z-index: 11;
+  text-align: center;
   width: 400px;
-  position: relative;
-  margin: 10% auto;
-  padding: 5px 20px 13px 20px;
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  padding: 5px 20px 25px 20px;
   background: #fff;
   border-radius: 1%;
   -webkit-border-radius: 1%;

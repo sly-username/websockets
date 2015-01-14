@@ -41,20 +41,29 @@
       return value;
     },
     ready: function() {
-      this.modalBox = this.shadowRoot.getElementById( this.attributes.trigger.value );
+      this.modalContainer = this.shadowRoot.getElementById( this.attributes.trigger.value );
+      this.modalBox = this.shadowRoot.getElementById( "modal-box" );
       this.modalButton = this.shadowRoot.getElementById( "modal-button" );
       this.openListener = this.open.bind( this );
       this.closeListener = this.close.bind( this );
     },
     attached: function() {
-      copyAttributes( this, this.modalBox, [ "clickOff", "closeButton" ] );
+      copyAttributes( this, this.modalContainer, [ "clickOff", "closeButton" ] );
       this.attachTriggerListener();
+
       [ "mousedown", "touchstart" ].forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
       if ( !this.hasAttribute( "close-button" ) ) {
         this.modalButton.style.visibility = "hidden";
+      }
+
+      if ( this.hasAttribute( "click-off" ) ) {
+        [ "mousedown", "touchstart" ].forEach( function( e ) {
+          console.log(this.modalBox);
+          this.modalBox.addEventListener( e, this.closeListener );
+        }.bind( this ) );
       }
     },
     attachTriggerListener: function() {
@@ -69,11 +78,12 @@
         .removeEventListener( e, this.openListener );
       }.bind( this ) );
     },
+
     open: function() {
-      this.modalBox.style.visibility = "visible";
+      this.modalContainer.style.display = "block";
     },
     close: function() {
-      this.modalBox.style.visibility = "hidden";
+      this.modalContainer.style.display = "none";
     },
     triggerChanged: function( oldVal, newVal ) {
       this.removeTriggerListener();
