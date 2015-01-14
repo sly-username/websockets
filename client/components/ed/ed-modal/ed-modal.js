@@ -109,9 +109,15 @@
 
       switch ( attrName ) {
         case "clickoff":
-        // fallthrough
+          this.clickoff = newVal === "";
         case "closebutton":
-          this.attrName = newVal === "";
+          this.closebutton = newVal === "";
+
+          if ( !this.hasAttribute( "closebutton" ) ) {
+            this.modalButton.style.visibility = "hidden";
+          } else {
+            this.modalButton.style.visibility = "visible";
+          }
           break;
         default:
           // do nothing
