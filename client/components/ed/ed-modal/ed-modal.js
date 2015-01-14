@@ -1,35 +1,28 @@
 ( function( Polymer ) {
   "use strict";
-
-  var copyAttributes = function( elemFrom, elemTo, attrs ) {
-    attrs.forEach( function( attr ) {
-      if ( elemFrom.hasAttribute( attr ) ) {
-        elemTo.setAttribute( attr, elemFrom.getAttribute( attr ) );
-      } else {
-        elemTo.removeAttribute( attr );
-      }
-    });
-  };
-
   Polymer( "ed-modal", {
-    get clickOff() {
-      return this.hasAttribute( "click-off" );
+    get clickoff() {
+      return this.hasAttribute( "clickoff" );
     },
-    set clickOff( value ) {
+    set clickoff( value ) {
       if ( value ) {
-        this.setAttribute( "click-off", "" );
+        this.setAttribute( "clickoff", "" );
+        this.attachClickoffListener();
       } else {
-        this.removeAttribute( "click-off" );
+        this.removeClickoffListener();
+        this.removeAttribute( "clickoff" );
       }
     },
-    get closeButton() {
-      return this.hasAttribute( "close-button" );
+    get closebutton() {
+      return this.hasAttribute( "closebutton" );
     },
-    set closeButton( value ) {
+    set closebutton( value ) {
       if ( value ) {
-        // turn on
+        this.setAttribute( "closebutton", "" );
+        //this.attachClickoffListener();
       } else {
-        this.removeAttribute( "close-button" );
+        //this.removeClickoffListener();
+        this.removeAttribute( "closebutton" );
       }
     },
     get trigger() {
@@ -48,22 +41,20 @@
       this.closeListener = this.close.bind( this );
     },
     attached: function() {
-      copyAttributes( this, this.modalContainer, [ "clickOff", "closeButton" ] );
       this.attachTriggerListener();
 
       [ "mousedown", "touchstart" ].forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
-      if ( !this.hasAttribute( "close-button" ) ) {
+      if ( !this.hasAttribute( "closebutton" ) ) {
         this.modalButton.style.visibility = "hidden";
       }
 
-      if ( this.hasAttribute( "click-off" ) ) {
-        [ "mousedown", "touchstart" ].forEach( function( e ) {
-          this.modalBox.addEventListener( e, this.closeListener );
-        }.bind( this ) );
+      if ( this.hasAttribute( "clickoff" ) ) {
+        this.attachClickoffListener();
       }
+
     },
     attachTriggerListener: function() {
       [ "mousedown", "touchstart" ].forEach( function( e ) {
@@ -75,6 +66,16 @@
       [ "mousedown", "touchstart" ].forEach( function( e ) {
         document.querySelector( this.attributes.trigger.value )
         .removeEventListener( e, this.openListener );
+      }.bind( this ) );
+    },
+    attachClickoffListener: function() {
+      [ "mousedown", "touchstart" ].forEach( function( e ) {
+        this.modalBox.addEventListener( e, this.closeListener );
+      }.bind( this ) );
+    },
+    removeClickoffListener: function() {
+      [ "mousedown", "touchstart" ].forEach( function( e ) {
+        this.modalBox.removeEventListener( e, this.closeListener );
       }.bind( this ) );
     },
     open: function() {
@@ -94,14 +95,11 @@
         this.attachTriggerListener();
       }
     },
-    //clickOffChanged: function( oldVal, newVal ) {
-    //  this.clickOff = newVal;
-    //  this.setAttribute( "click-off", newVal );
-    //},
-    //closeButtonChanged: function( oldVal, newVal ) {
-    //  this.closeButton = newVal;
-    //  this.setAttribute( "close-button", newVal );
-    //}
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      if ( attrName === "clickoff" ) {
+        this[attrName] = newVal === "";
+      }
+    },
     findHighestZIndex: function() {
       var currentZ,
           highestZ = 0,
