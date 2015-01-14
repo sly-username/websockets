@@ -23,7 +23,14 @@
 
 </head>
 
-<body>
+<body unresolved>
+
+<img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
+<img-placeholder image="placecage"></img-placeholder>
+<img-placeholder image="fillmurray" src="invalidsource.com"></img-placeholder>
+<img-placeholder src="invalidsource.com"></img-placeholder>
+<img-placeholder image="notavalidprofile"></img-placeholder>
+
 
 <div class="left">
   <div id = "a-button">
@@ -80,7 +87,6 @@
 
 <script>
   var radios = document.querySelectorAll("radio-select[value=privacy]");
-
   Array.prototype.forEach.call(radios, function(radio){
     radio.disabled = false;
   });
@@ -179,6 +185,26 @@
 <div class="left">
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
 </div>
+
+<script>
+  // script required for <img-placeholder>
+  document.addEventListener('polymer-ready', function() {
+    document.createElement("img-placeholder").imageMap = (function(){
+      var urlPrefix = "http://",
+          urlPostfix = ".com/200/300",
+          map = {},
+          imageNames = [
+            "fillmurray",
+            "placecage"
+          ];
+
+      imageNames.forEach( function ( imageName ){
+        map[imageName] = urlPrefix + imageName + urlPostfix;
+      });
+      return map;
+    })();
+  });
+</script>
 
 <script id="reload-tag" type="text/javascript">
   if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
