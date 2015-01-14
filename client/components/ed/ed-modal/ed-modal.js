@@ -48,15 +48,8 @@
     },
     attached: function() {
       copyAttributes( this, this.modalBox, [ "clickOff", "closeButton" ] );
-
       this.attachTriggerListener();
-      //[ "mousedown", "touchstart" ].forEach( function( e ) {
-      //  document.querySelector( this.attributes.trigger.value )
-      //    .addEventListener( e, this.open() );
-      //}.bind( this ) );
-
       [ "mousedown", "touchstart" ].forEach( function( e ) {
-        console.log( this.modalButton );
         this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
@@ -71,8 +64,10 @@
       }.bind( this ) );
     },
     removeTriggerListener: function() {
-      document.querySelector( this.attributes.trigger.value )
-        .removeEventListener( "click", this.openListener );
+      [ "mousedown", "touchstart" ].forEach( function( e ) {
+        document.querySelector( this.attributes.trigger.value )
+        .removeEventListener( e, this.openListener );
+      }.bind( this ) );
     },
     open: function() {
       this.modalBox.style.visibility = "visible";
