@@ -24,7 +24,34 @@
 
 </head>
 
-<body>
+<body unresolved>
+
+<div class="left">
+  <img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
+  <img-placeholder image="placecage"></img-placeholder>
+  <img-placeholder image="fillmurray" src="invalidsource.com"></img-placeholder>
+  <img-placeholder src="invalidsource.com"></img-placeholder>
+  <img-placeholder image="notavalidprofile"></img-placeholder>
+</div>
+<script>
+  // script required for <img-placeholder>
+  document.addEventListener('polymer-ready', function() {
+    document.createElement("img-placeholder").imageMap = (function(){
+      var urlPrefix = "http://",
+          urlPostfix = ".com/200/300",
+          map = {},
+          imageNames = [
+            "fillmurray",
+            "placecage"
+          ];
+
+      imageNames.forEach( function ( imageName ){
+        map[imageName] = urlPrefix + imageName + urlPostfix;
+      });
+      return map;
+    })();
+  });
+</script>
 
 <div class="left">
   <radio-select name="privacy" value="public">
@@ -56,7 +83,6 @@
 <script>
   (function( document ){
     var radios = document.querySelectorAll("radio-select[value=privacy]");
-
     Array.prototype.forEach.call(radios, function(radio){
       radio.disabled = false;
     });
@@ -201,7 +227,7 @@
   }
 </style>
 <script type="text/javascript">
-  (function(){
+  (function( document ){
 
     var iframe = document.createElement( "iframe" ),
       button = document.createElement( "button" );
@@ -227,7 +253,7 @@
 
     document.body.appendChild( iframe );
     document.body.appendChild( button );
-  })();
+  })( document );
 </script>
 <!-- END REMOVE FOR PRODUCTION -->
 
