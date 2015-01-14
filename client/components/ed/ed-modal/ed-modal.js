@@ -61,7 +61,6 @@
 
       if ( this.hasAttribute( "click-off" ) ) {
         [ "mousedown", "touchstart" ].forEach( function( e ) {
-          console.log(this.modalBox);
           this.modalBox.addEventListener( e, this.closeListener );
         }.bind( this ) );
       }
@@ -78,9 +77,9 @@
         .removeEventListener( e, this.openListener );
       }.bind( this ) );
     },
-
     open: function() {
       this.modalContainer.style.display = "block";
+      this.setZIndices();
     },
     close: function() {
       this.modalContainer.style.display = "none";
@@ -95,13 +94,36 @@
         this.attachTriggerListener();
       }
     },
-    clickOffChanged: function( oldVal, newVal ) {
-      this.clickOff = newVal;
-      this.setAttribute( "click-off", newVal );
+    //clickOffChanged: function( oldVal, newVal ) {
+    //  this.clickOff = newVal;
+    //  this.setAttribute( "click-off", newVal );
+    //},
+    //closeButtonChanged: function( oldVal, newVal ) {
+    //  this.closeButton = newVal;
+    //  this.setAttribute( "close-button", newVal );
+    //}
+    findHighestZIndex: function() {
+      var currentZ,
+          highestZ = 0,
+          divs = document.getElementsByTagName( "*" );
+      console.log(divs);
+
+      if ( !divs.length ) {
+        return highestZ;
+      }
+      divs.forEach( function( div ) {
+        if ( div.style.position && div.style.zIndex ) {
+          currentZ = parseInt( div.style.zIndex, 10 );
+
+          if ( currentZ > highestZ ) {
+            highestZ = currentZ;
+          }
+        }
+      });
+      return highestZ;
     },
-    closeButtonChanged: function( oldVal, newVal ) {
-      this.closeButton = newVal;
-      this.setAttribute( "close-button", newVal );
+    setZIndices: function() {
+
     }
   });
 })( window.Polymer );
