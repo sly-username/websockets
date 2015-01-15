@@ -78,7 +78,7 @@
     /* Click Off */
     attachClickoffListener: function() {
       [ "mousedown", "touchstart" ].forEach( function( e ) {
-        this.modalContainer.addEventListener( e, this.closeModalListener, true );
+        this.modalContainer.addEventListener( e, this.closeModalListener );
       }.bind( this ) );
     },
     removeClickoffListener: function() {
@@ -92,7 +92,7 @@
       this.modalContainer.style.display = "block";
       this.setZIndices();
     },
-    close: function() {
+    closeButton: function() {
       this.modalContainer.style.display = "none";
     },
     closeModal: function( e ) {
@@ -117,6 +117,7 @@
       switch ( attrName ) {
         case "clickoff":
           this.clickoff = newVal === "";
+          break;
         case "closebutton":
           this.closebutton = newVal === "";
 
