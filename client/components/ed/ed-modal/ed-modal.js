@@ -3,7 +3,7 @@
   Polymer( "ed-modal", {
 
 /* GETTERS AND SETTERS */
-  /* CLICK OFF */
+  /* Click Off */
     get clickoff() {
       return this.hasAttribute( "clickoff" );
     },
@@ -16,7 +16,7 @@
         this.removeAttribute( "clickoff" );
       }
     },
-  /* CLOSE BUTTON */
+  /* Close Button */
     get closebutton() {
       return this.hasAttribute( "closebutton" );
     },
@@ -27,7 +27,7 @@
         this.removeAttribute( "closebutton" );
       }
     },
-  /* TRIGGER */
+  /* Trigger */
     get trigger() {
       return this._trigger;
     },
@@ -53,7 +53,7 @@
       }.bind( this ) );
 
       if ( !this.hasAttribute( "closebutton" ) ) {
-        this.modalButton.style.visibility = "hidden";
+        this.modalButton.setAttribute( "class", "modal-button modal-container-closed" );
       }
 
       if ( this.hasAttribute( "clickoff" ) ) {
@@ -89,19 +89,19 @@
 
     /* MODAL APPEAR AND DISAPPEAR */
     open: function() {
-      this.modalContainer.style.display = "block";
       this.setZIndices();
+      this.modalContainer.setAttribute( "class", "modal-container modal-container-opened" );
     },
     closeButton: function() {
-      this.modalContainer.style.display = "none";
+      this.modalContainer.setAttribute( "class", "modal-container" );
     },
     closeModal: function( e ) {
       if ( e.target == this.modalContainer ) {
-        this.modalContainer.style.display = "none";
+        this.modalContainer.setAttribute( "class", "modal-container" );
       }
     },
 
-  /* ATTRIBUTE CHANGED FUNCTIONS*/
+  /* ATTRIBUTE CHANGED FUNCTIONS */
     triggerChanged: function( oldVal, newVal ) {
       this.removeTriggerListener();
       this.trigger = newVal;
@@ -122,9 +122,9 @@
           this.closebutton = newVal === "";
 
           if ( !this.hasAttribute( "closebutton" ) ) {
-            this.modalButton.style.visibility = "hidden";
+            this.modalButton.setAttribute( "class", "modal-button modal-container-closed" );
           } else {
-            this.modalButton.style.visibility = "visible";
+            this.modalButton.setAttribute( "class", "modal-button" );
           }
           break;
         default:
@@ -136,26 +136,34 @@
   /* Z-INDEX */
     findHighestZIndex: function() {
       var currentZ,
-          highestZ = 0,
-          divs = document.getElementsByTagName( "*" );
-      console.log(divs);
+          highestZ = 1,
+          siblingsList = this.parentNode.childNodes;
 
-      if ( !divs.length ) {
+      if ( !siblingsList.length ) {
         return highestZ;
       }
-      divs.forEach( function( div ) {
-        if ( div.style.position && div.style.zIndex ) {
-          currentZ = parseInt( div.style.zIndex, 10 );
 
+      siblingsList.forEach( function( sib ) {
+        console.log( "running?" );
+        var isItWorking = sib.style.position && sibs.style.zIndex;
+        console.log( isItWorking );
+
+        if ( isItWorking ) {
+          console.log( "running!" );
+          currentZ = parseInt( sibs.style.zIndex, 10 );
+          console.log( currentZ );
           if ( currentZ > highestZ ) {
             highestZ = currentZ;
+            console.log( highestZ );
           }
         }
       });
       return highestZ;
     },
     setZIndices: function() {
-
+      var baseZ = this.findHighestZIndex();
+      console.log( baseZ );
+      this.style.zIndex = baseZ;
     }
   });
 })( window.Polymer );

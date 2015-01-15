@@ -12,6 +12,10 @@
 //  transition: opacity 400ms ease-in;
 }
 
+.modal-container-opened {
+  display: block;
+}
+
 .modal-window {
   z-index: 11;
   text-align: center;
@@ -33,6 +37,7 @@
 }
 
 .modal-button {
+  visibility: visible;
   background: #606061;
   color: #FFFFFF;
   width: 40px;
@@ -49,6 +54,10 @@
   -moz-box-shadow: 1px 1px 3px #000;
   -webkit-box-shadow: 1px 1px 3px #000;
   box-shadow: 1px 1px 3px #000;
+}
+
+.modal-button-closed {
+  visibility: hidden;
 }
 
 
