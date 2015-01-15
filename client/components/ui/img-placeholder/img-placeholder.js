@@ -2,15 +2,15 @@
   "use strict";
 
   var globalMap = {},
-      updateMap = function() {
-        Array.prototype.forEach.call(
-          document.getElementsByTagName( "img-placeholder" ),
-          function( element ) {
-            element.rePrep();
-            return true;
-          }
-        );
-      }
+    updateMap = function() {
+      Array.prototype.forEach.call(
+        document.getElementsByTagName( "img-placeholder" ),
+        function( element ) {
+          element.rePrep();
+          return true;
+        }
+      );
+    };
 
   Polymer( "img-placeholder", {
     /*** PROPERTIES ***/
@@ -48,19 +48,17 @@
       return this;
     },
     checkSrc: function( src ) {
-      return ( new Promise( function( resolve, reject ) {
+      return new Promise( function( resolve ) {
         var tmpImage = new Image();
         tmpImage.onload = function( event ) {
           resolve( true );
-        }
+        };
         tmpImage.onerror = function( event ) {
           resolve( false );
-        }
+        };
         tmpImage.src = src;
-      }) );
+      });
     }
     /*** END FUNCTIONS ***/
   });
-
 })( window.Polymer );
-

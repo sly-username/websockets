@@ -21,10 +21,6 @@ echo "# Added during provision" >> ~/.profile
 echo "source ~/clientapp/helpers.sh" >> ~/.profile
 source ~/.profile
 
-# install gulp, bower, karma globally
-# TODO Remove?
-#npm install -g gulp bower karma-cli less traceur npm-check-updates
-
 echo "$ED_PROJECT_PATH"
 
 # Create clientapp for prosperty

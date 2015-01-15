@@ -1,41 +1,60 @@
-/*eslint no-process-env:0, valid-jsdoc:0*/
+/*eslint no-process-env:0, valid-jsdoc:0, no-unused-vars:0*/
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
   run = require( "run-sequence" ),
   fs = require( "fs" ),
-  nodemon = require( "nodemon" ),
+  join = require( "path" ).join,
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
   config = require( "./config.paths.js" ),
   dummy;
 
+// load .env file into process.env
 dotenv.load();
 
+// rewrite stdout & stderr write functions to write to log
+( function( ogout, ogerr ) {
+  var shouldLog = process.env.GULP_LOG_TO_CONSOLE === "TRUE",
+    writeToLog = ( function() {
+      var now = new Date(),
+        filename = join( config.logs, "gulp",
+          "build-log_" +
+            now.getHours() + "-" +
+            now.getMinutes() + "_" +
+            ( 1 + now.getMonth() ) + "-" +
+            now.getDate() + "-" +
+            now.getFullYear() +
+          ".log"
+        );
+
+      return function( chunk ) {
+        fs.appendFile( filename, chunk );
+      };
+    })();
+
+  // rewrite stdout
+  process.stdout.write = function( chunk ) {
+    writeToLog( chunk );
+
+    if ( shouldLog ) {
+      ogout.apply( this, arguments );
+    }
+  };
+
+  // rewrite stderr
+  process.stderr.write = function( chunk ) {
+    writeToLog( chunk );
+
+    if ( shouldLog ) {
+      ogerr.apply( this, arguments );
+    }
+  };
+})( process.stdout.write, process.stderr.write );
+
 // load gulp tasks from ./tasks
-/*eslint no-unused-vars:0*/
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
-gulp.task( "nodemon", function ( done ) {
-  var currDate = new Date(),
-    readableDate = currDate.getMonth() + "-" + currDate.getDate() + "-" + currDate.getFullYear();
-  nodemon({
-    script: "node_modules/gulp/bin/gulp.js",
-    stdout: false,
-    stderr: false
-  }).on( "readable", function () {
-    this.stdout.setMaxListeners( 0 );
-    this.stderr.setMaxListeners( 0 );
-    this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
-    this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
-  }).on( "stdout", function ( data ) {
-    console.log( data.toString().trim() );
-  }).on( "stderr", function ( data ) {
-    console.log( data.toString().trim() );
-  });
-  done();
-
-});
 
 /*** MAGIC "START" TASK ***/
 gulp.task( "start", function( done ) {

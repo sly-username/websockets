@@ -1,8 +1,28 @@
 {
-  "restartable": "restart-gulp",
+  "restartable": "rs",
   "verbose": true,
-  "ignore": ["*.test.js", "node_modules/", "bower_components/", "build/", "Vagrantfile", "vagrant/", "logs/", ".git"],
+  "ignore": [
+    ".git",
+    "node_modules/",
+    "bower_components/",
+    "vagrant/",
+    "Vagrantfile",
+    "build/",
+    "logs/",
+    "client/",
+    "tests/",
+    "*.test.js"
+  ],
+  "watch": [
+    "tasks/",
+    "Gulpfile.js",
+    "server/"
+  ],
   "execMap": {
     "js" :"node --harmony"
+  },
+  "delay": 0.5,
+  "env": {
+    "IS_IN_NODEMON": "TRUE"
   }
 }

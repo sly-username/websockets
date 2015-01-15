@@ -13,6 +13,7 @@ var join = require( "path" ).join,
     client:           join( __dirname, "client" ),
     tests:            join( __dirname, "tests" ),
     build:            join( __dirname, "build" ),
+    logs:             join( __dirname, "logs" ),
     tasks:            join( __dirname, "tasks" ),
     server:           join( __dirname, "server" ),
     bowerComponents:  join( __dirname, "bower_components" ),
@@ -136,6 +137,15 @@ paths.traceur = {
   out: {
     dev: paths.dev,
     prod: paths.prod
+  }
+};
+
+/*** NODEMON ***/
+paths.nodemon = {
+  gulp: join( paths.nodeModules, "gulp", "bin", "gulp.js" ),
+  logs: {
+    gulp: join( paths.logs, "gulp" ),
+    nodemon: join( paths.logs, "nodemon" )
   }
 };
 
