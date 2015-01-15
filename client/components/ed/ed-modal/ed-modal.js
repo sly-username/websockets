@@ -137,24 +137,25 @@
     findHighestZIndex: function() {
       var currentZ,
           highestZ = 1,
-          siblingsList = this.parentNode.childNodes;
+          //siblings = Array.from( this.siblings );
+          levelOnes = Array.from( document.querySelectorAll( "body > *" ) );
 
-      if ( !siblingsList.length ) {
+      if ( !levelOnes.length ) {
         return highestZ;
       }
 
-      siblingsList.forEach( function( sib ) {
-        console.log( "running?" );
-        var isItWorking = sib.style.position && sibs.style.zIndex;
-        console.log( isItWorking );
+      levelOnes.forEach( function( elem ) {
+        console.log("running?");
+        var isItWorking = elem.style.position && elem.style.zIndex;
+        console.log(isItWorking);
 
         if ( isItWorking ) {
-          console.log( "running!" );
-          currentZ = parseInt( sibs.style.zIndex, 10 );
-          console.log( currentZ );
+          console.log("running!");
+          currentZ = parseInt( elem.style.zIndex, 10 );
+          console.log(currentZ);
           if ( currentZ > highestZ ) {
             highestZ = currentZ;
-            console.log( highestZ );
+            console.log(highestZ);
           }
         }
       });
@@ -162,8 +163,7 @@
     },
     setZIndices: function() {
       var baseZ = this.findHighestZIndex();
-      console.log( baseZ );
-      this.style.zIndex = baseZ;
+      console.log(baseZ);
     }
   });
 })( window.Polymer );
