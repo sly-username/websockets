@@ -40,10 +40,10 @@
     /* FUNCTIONS */
     ready: function() {
       this.modalContainer = this.shadowRoot.getElementById( this.attributes.trigger.value );
-      this.modalBox = this.shadowRoot.getElementById( "modal-box" );
       this.modalButton = this.shadowRoot.getElementById( "modal-button" );
       this.openListener = this.open.bind( this );
       this.closeListener = this.close.bind( this );
+      this.closeClickoffListener = this.closeClickoff.bind( this );
     },
     attached: function() {
       this.attachTriggerListener();
@@ -76,12 +76,12 @@
     },
     attachClickoffListener: function() {
       [ "mousedown", "touchstart" ].forEach( function( e ) {
-        this.modalBox.addEventListener( e, this.closeListener );
+        this.modalContainer.addEventListener( e, this.closeClickoffListener, true );
       }.bind( this ) );
     },
     removeClickoffListener: function() {
       [ "mousedown", "touchstart" ].forEach( function( e ) {
-        this.modalBox.removeEventListener( e, this.closeListener );
+        this.modalContainer.removeEventListener( e, this.closeClickoffListener );
       }.bind( this ) );
     },
 
@@ -92,6 +92,11 @@
     },
     close: function() {
       this.modalContainer.style.display = "none";
+    },
+    closeClickoff: function( e ) {
+      if ( e.target == this.modalContainer ) {
+        this.modalContainer.style.display = "none";
+      }
     },
 
     /* ATTRIBUTE CHANGED FUNCTIONS*/
