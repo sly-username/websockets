@@ -1,14 +1,14 @@
-<polymer-element name="file-drop" attributes="">
+<polymer-element name="file-drop" attributes="accepts">
   <template>
     <link rel="stylesheet" href="./file-drop.css">
 
-    <div class="wrapper">
+    <!--<div class="wrapper">
       <div id="holder">
       </div>
-      <div id="upload" class="hidden">
-          <input id="hidden-input" type="file"/>
-      </div>
-    </div>
+      <div id="upload" class="hidden">-->
+          <input id="hidden-input" type="file" accept="{{accepts}}" />
+      <!--</div>
+    </div>-->
 
   </template>
   <script src="./file-drop.js"></script>
