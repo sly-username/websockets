@@ -156,15 +156,6 @@ paths.logging = {
   }
 };
 
-/*** NODEMON ***/
-paths.nodemon = {
-  gulp: join( paths.nodeModules, "gulp", "bin", "gulp.js" ),
-  logs: {
-    gulp: join( paths.logs, "gulp" ),
-    nodemon: join( paths.logs, "nodemon" )
-  }
-};
-
 /*** SERVER PATHS ***/
 paths.server = {
   ports: {
