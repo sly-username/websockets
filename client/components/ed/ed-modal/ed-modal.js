@@ -122,7 +122,7 @@
           this.closebutton = newVal === "";
 
           if ( !this.hasAttribute( "closebutton" ) ) {
-            this.modalButton.setAttribute( "class", "modal-button modal-container-closed" );
+            this.modalButton.setAttribute( "class", "modal-button modal-button-closed" );
           } else {
             this.modalButton.setAttribute( "class", "modal-button" );
           }
@@ -150,8 +150,10 @@
         if ( sib.style.zIndex && sib.style.position ) {
           currentZ = parseInt( sib.style.zIndex, 10 );
 
-          if ( currentZ > highestZ ) {
+          if ( 2147483647 > currentZ > highestZ ) {
             highestZ = currentZ;
+          } else {
+            highestZ = 2147483647;
           }
         }
       }, this );
