@@ -152,7 +152,7 @@ paths.logging = {
   gulp: join( paths.logs, "gulp" ),
   createDatedFilename: function( name, date ) {
     date = date || new Date();
-    return date.getFullYear() + "_" +
+    return date.getFullYear() + "-" +
       ( 1 + date.getMonth() ) + "-" +
       date.getDate() + "_" +
 //      date.toTimeString().split( " " )[0].replace( /:/g, "-" ) + "_" +
