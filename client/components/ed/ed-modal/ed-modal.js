@@ -89,7 +89,7 @@
 
     /* MODAL APPEAR AND DISAPPEAR */
     open: function() {
-      this.setZIndices();
+      this.setZIndex();
       this.modalContainer.setAttribute( "class", "modal-container modal-container-opened" );
     },
     closeButton: function() {
@@ -157,7 +157,7 @@
       }, this );
       return highestZ;
     },
-    setZIndices: function() {
+    setZIndex: function() {
       var baseZ = this.findHighestZIndex();
       this.style.zIndex = baseZ + 1;
     }
