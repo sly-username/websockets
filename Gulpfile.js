@@ -4,52 +4,52 @@ var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
   run = require( "run-sequence" ),
   fs = require( "fs" ),
-  join = require( "path" ).join,
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
   config = require( "./config.paths.js" ),
-  dummy;
+  dummy,
+  currentTasks;
 
 // load .env file into process.env
 dotenv.load();
 
+// get array of currently running tasks
+currentTasks = process.argv.reduce(
+  function( prev, curr ) {
+    if ( prev.consume ) {
+      prev.list.push( curr );
+    } else if ( ( /gulp(\.js)?$/ ).test( curr ) ) {
+      prev.consume = true;
+    }
+    return prev;
+  }, {
+    consume: false,
+    list: []
+  }
+).list;
+
 // rewrite stdout & stderr write functions to write to log
 ( function( ogout, ogerr ) {
-  var shouldLog = process.env.GULP_LOG_TO_CONSOLE === "TRUE",
-    writeToLog = ( function() {
-      var now = new Date(),
-        filename = join( config.logs, "gulp",
-          "build-log_" +
-            now.getHours() + "-" +
-            now.getMinutes() + "_" +
-            ( 1 + now.getMonth() ) + "-" +
-            now.getDate() + "-" +
-            now.getFullYear() +
-          ".log"
-        );
-
-      return function( chunk ) {
-        fs.appendFile( filename, chunk );
-      };
-    })();
+  var taskNames = currentTasks.join( "_" ).replace( /:/g, "-" ),
+    filename = config.logging.createDatedLogFile(
+      config.logging.gulp, taskNames, new Date()
+    ),
+    createWrite = function( originalStream ) {
+      return process.env.GULP_LOG_TO_CONSOLE === "TRUE" ?
+        function( chunk ) {
+          fs.appendFile( filename, chunk );
+          originalStream.apply( this, arguments );
+        } :
+        function( chunk ) {
+          fs.appendFile( filename, chunk );
+        };
+    };
 
   // rewrite stdout
-  process.stdout.write = function( chunk ) {
-    writeToLog( chunk );
-
-    if ( shouldLog ) {
-      ogout.apply( this, arguments );
-    }
-  };
+  process.stdout.write = createWrite( ogout );
 
   // rewrite stderr
-  process.stderr.write = function( chunk ) {
-    writeToLog( chunk );
-
-    if ( shouldLog ) {
-      ogerr.apply( this, arguments );
-    }
-  };
+  process.stderr.write = createWrite( ogerr );
 })( process.stdout.write, process.stderr.write );
 
 // load gulp tasks from ./tasks

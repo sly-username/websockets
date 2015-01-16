@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Set TimeZone to LA
+sudo timedatectl set-timezone America/Los_Angeles
+# old way I found
+#echo "America/Los_Angeles" | sudo tee /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
+
 # install and load nvm
 if [ ! -d ~/.nvm ]; then
   curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh

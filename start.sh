@@ -15,7 +15,7 @@
 #fi
 
 # TODO REMOVE HARDCODE PATH
-if [[ $(cat /home/vagrant/clientapp/.env | grep -c VAGRANT_RUN_NPM_ON_START=TRUE) > 0 ]]; then
+if [[ $(cat /home/vagrant/clientapp/.env | grep -c VAGRANT_RUN_GULP_ON_START=TRUE) > 0 ]]; then
   source /home/vagrant/clientapp/helpers.sh
   start-gulp
 fi

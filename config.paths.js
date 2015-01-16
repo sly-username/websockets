@@ -140,6 +140,22 @@ paths.traceur = {
   }
 };
 
+/*** LOGGING ***/
+paths.logging = {
+  gulp: join( paths.logs, "gulp" ),
+  createDatedFilename: function( name, date ) {
+    date = date || new Date();
+    return date.getFullYear() + "_" +
+      ( 1 + date.getMonth() ) + "-" +
+      date.getDate() + "_" +
+//      date.toTimeString().split( " " )[0].replace( /:/g, "-" ) + "_" +
+      name + ".log";
+  },
+  createDatedLogFile: function( folder, name, date ) {
+    return join( folder, paths.logging.createDatedFilename( name, date ) );
+  }
+};
+
 /*** NODEMON ***/
 paths.nodemon = {
   gulp: join( paths.nodeModules, "gulp", "bin", "gulp.js" ),
