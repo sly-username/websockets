@@ -137,33 +137,29 @@
     findHighestZIndex: function() {
       var currentZ,
           highestZ = 1,
-          siblingsList = this.parentNode.childNodes;
+          siblingsList = Array.from( this.parentNode.children ).filter( function( elm ) {
+            return this !== elm;
+          }, this );
 
       if ( !siblingsList.length ) {
         return highestZ;
       }
 
       siblingsList.forEach( function( sib ) {
-        console.log( "running?" );
-        var isItWorking = sib.style.position && sibs.style.zIndex;
-        console.log( isItWorking );
 
-        if ( isItWorking ) {
-          console.log( "running!" );
-          currentZ = parseInt( sibs.style.zIndex, 10 );
-          console.log( currentZ );
+        if ( sib.style.zIndex && sib.style.position ) {
+          currentZ = parseInt( sib.style.zIndex, 10 );
+
           if ( currentZ > highestZ ) {
             highestZ = currentZ;
-            console.log( highestZ );
           }
         }
-      });
+      }, this );
       return highestZ;
     },
     setZIndices: function() {
       var baseZ = this.findHighestZIndex();
-      console.log( baseZ );
-      this.style.zIndex = baseZ;
+      this.style.zIndex = baseZ + 1;
     }
   });
 })( window.Polymer );
