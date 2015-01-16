@@ -89,7 +89,7 @@
 
     /* MODAL APPEAR AND DISAPPEAR */
     open: function() {
-      this.setZIndices();
+      this.setZIndex();
       this.modalContainer.setAttribute( "class", "modal-container modal-container-opened" );
     },
     closeButton: function() {
@@ -137,33 +137,29 @@
     findHighestZIndex: function() {
       var currentZ,
           highestZ = 1,
-          //siblings = Array.from( this.siblings );
-          levelOnes = Array.from( document.querySelectorAll( "body > *" ) );
+          siblingsList = Array.from( this.parentNode.children ).filter( function( elm ) {
+            return this !== elm;
+          }, this );
 
-      if ( !levelOnes.length ) {
+      if ( !siblingsList.length ) {
         return highestZ;
       }
 
-      levelOnes.forEach( function( elem ) {
-        console.log("running?");
-        var isItWorking = elem.style.position && elem.style.zIndex;
-        console.log(isItWorking);
+      siblingsList.forEach( function( sib ) {
 
-        if ( isItWorking ) {
-          console.log("running!");
-          currentZ = parseInt( elem.style.zIndex, 10 );
-          console.log(currentZ);
+        if ( sib.style.zIndex && sib.style.position ) {
+          currentZ = parseInt( sib.style.zIndex, 10 );
+
           if ( currentZ > highestZ ) {
             highestZ = currentZ;
-            console.log(highestZ);
           }
         }
-      });
+      }, this );
       return highestZ;
     },
-    setZIndices: function() {
+    setZIndex: function() {
       var baseZ = this.findHighestZIndex();
-      console.log(baseZ);
+      this.style.zIndex = baseZ + 1;
     }
   });
 })( window.Polymer );
