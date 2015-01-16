@@ -2,15 +2,22 @@
   "use strict";
 
   Polymer( "file-drop", {
-    files: [],
+    fileList: null,
+    fileArr: [],
+    get files() {
+      return this.fileArr;
+    },
     /*** PROPERTIES ***/
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      this.hiddenInput = this.shadowRoot.getElementById("hidden-input");
       this.holder = this.shadowRoot.getElementById( "holder" );
+
+
+      // fill attribute
     },
     attached: function() {
+      // listens for drag events
       this.holder.addEventListener( "dragover", function( event ) {
         event.stopPropagation();
         event.preventDefault();
@@ -18,12 +25,13 @@
       this.holder.addEventListener( "drop", function( event ) {
         event.stopPropagation();
         event.preventDefault();
-        this.files = Array.from( event.dataTransfer.files ).filter( function( file ) {
+        // filters files
+        this.fileList = event.dataTransfer.files;
+        this.fileArr = Array.from( this.fileList ).filter( function( file ) {
           var compare = new RegExp( file.type );
-          console.log( compare.test( this.accepts ) );
           return compare.test( this.accepts );
         }.bind( this ) );
-        console.log( this.files );
+        console.log( this.fileArr );
       }.bind( this ) );
     }
     /*** END LIFECYCLE ***/
