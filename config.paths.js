@@ -29,14 +29,20 @@ paths.vendor = {
   prod: join( paths.prod, "vendor" ),
   src: [
       // Stuff in bower_components
+    // Web Components Shim
       join( "webcomponentsjs", "webcomponents.js" ),
+    // Polymer
       join( "polymer", "polymer.js" ),
+    // SystemJS + source map
       join( "system.js", "dist", "system.js" ),
 //      join( "system.js", "dist", "system.src.js" ),
       join( "system.js", "dist", "system.js.map" ),
+    // ES6-Module-Loader + source map
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
 //      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+    // Director (Routing)
+      join( "director", "build", "director.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
@@ -49,7 +55,8 @@ paths.vendor = {
       join( "system.js", "dist", "system.js" ),
       join( "system.js", "dist", "system.js.map" ),
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+      join( "director", "build", "director.min.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
