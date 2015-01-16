@@ -37,19 +37,19 @@
       return value;
     },
 
-  /* FUNCTIONS */
+/* FUNCTIONS */
     ready: function() {
       this.modalContainer = this.shadowRoot.getElementById( this.attributes.trigger.value );
       this.modalButton = this.shadowRoot.getElementById( "modal-button" );
       this.openListener = this.open.bind( this );
-      this.closeButtonListener = this.closeButton.bind( this );
+      this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
     },
     attached: function() {
       this.attachTriggerListener();
 
       [ "mousedown", "touchstart" ].forEach( function( e ) {
-        this.modalButton.addEventListener( e, this.closeButtonListener );
+        this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
       if ( !this.hasAttribute( "closebutton" ) ) {
@@ -92,7 +92,7 @@
       this.setZIndex();
       this.modalContainer.setAttribute( "class", "modal-container modal-container-opened" );
     },
-    closeButton: function() {
+    close: function() {
       this.modalContainer.setAttribute( "class", "modal-container" );
     },
     closeModal: function( e ) {
@@ -141,6 +141,7 @@
             return this !== elm;
           }, this );
 
+      console.log(siblingsList.length);
       if ( !siblingsList.length ) {
         return highestZ;
       }

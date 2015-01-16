@@ -27,11 +27,11 @@
 <body unresolved>
 
 <div class="left">
-  <div id="a-button" style="position: fixed; z-index: 999999999999999999999999999">
+  <div id="a-button">
     #a-button trigger
   </div>
   <br/>
-  <div id="b-button" style="position: fixed; z-index: 14">
+  <div id="b-button">
     #b-button trigger
   </div>
 
@@ -45,14 +45,24 @@
     </video>
   </ed-modal>
 </div>
-<section></section>
+
+<style>
+  #a-button {
+    position: fixed;
+    z-index: 999999999999999999999999999;
+  }
+  #b-button {
+    position: fixed;
+    z-index: 14;
+  }
+</style>
 <script>
   var modal = document.querySelector("ed-modal");
 
   console.log(modal.trigger);
   modal.trigger = "theButton";
 </script>
-<!--
+
 <div class="left">
   <img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
   <img-placeholder image="placecage"></img-placeholder>
@@ -82,7 +92,6 @@
     });
   })( document );
 </script>
->>>>>>> dev
 
 <div class="left">
   <radio-select name="privacy" value="public">
@@ -212,7 +221,6 @@
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
 </div>
 
-<<<<<<< HEAD
 <script>
   // script required for <img-placeholder>
   document.addEventListener('polymer-ready', function() {
@@ -232,7 +240,6 @@
     })();
   });
 </script>
--->
 
 <script id="reload-tag" type="text/javascript">
   if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
