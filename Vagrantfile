@@ -9,6 +9,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = true
 
+  config.vm.boot_timeout = 500
+
   config.vm.synced_folder "./", "/home/vagrant/clientapp"
 
   config.vm.network "forwarded_port", guest: 5115, host: 5115

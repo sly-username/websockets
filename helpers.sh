@@ -31,6 +31,14 @@ follow ()
   tail -f "$1" 2> >(grep -v truncated >&2)
 }
 
+follow-last ()
+{
+  local logFolder="$ED_PROJECT_PATH/logs/gulp"
+  local lastLog="$(ls -t ${logFolder} | head -n1)"
+  echo "following ${lastLog}"
+  tail -f "${logFolder}/${lastLog}"
+}
+
 # This will kill all the procs running the gulp dev server
 kill-gulp ()
 {
@@ -54,11 +62,16 @@ start-gulp ()
   else
     local CWD=`pwd`
     cd "$ED_PROJECT_PATH"
-    if [[ "$NVM_DIR" == */home/vagrant/* ]]; then
+
+    # source NVM if needed
+    command -v npm > /dev/null 2>&1 || source /home/vagrant/.nvm/nvm.sh
+
+    # run in background if no logs
+    if [[ $(cat .env | grep -c GULP_LOG_TO_CONSOLE=TRUE) > 0 ]]; then
       npm start
     else
-      command -v npm > /dev/null 2>&1 || echo "source nvm" ; source /home/vagrant/.nvm/nvm.sh
-      nohup npm start # > /dev/null 2>&1 &
+#      npm start &
+      nohup npm start > /dev/null 2>&1 &
     fi
     cd $CWD
   fi
