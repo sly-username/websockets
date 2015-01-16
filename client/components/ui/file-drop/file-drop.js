@@ -9,7 +9,6 @@
     ready: function() {
       this.hiddenInput = this.shadowRoot.getElementById("hidden-input");
       this.holder = this.shadowRoot.getElementById( "holder" );
-      // Listeners for dragEvents
     },
     attached: function() {
       this.holder.addEventListener( "dragover", function( event ) {
