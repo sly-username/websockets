@@ -5,12 +5,13 @@
   <base href="/" />
   <link rel="shortcut icon" href="assets/favicon.ico" />
 
-  <!-- Scripts -->
+  <!-- Vendor Scripts -->
   <script src="vendor/webcomponents.js"></script>
   <script src="vendor/polymer.js"></script>
   <script src="vendor/traceur-runtime.js"></script>
   <script src="vendor/es6-module-loader.js"></script>
   <script src="vendor/system.js"></script>
+  <script src="vendor/director.js"></script>
 
   <!-- Global Styles -->
   <link rel="stylesheet" href="styles/main.css" />
@@ -60,6 +61,29 @@
   <img-placeholder image="notavalidprofile"></img-placeholder>
 </div>
 
+<script>
+  ( function( document ) {
+    // script required for <img-placeholder>
+    document.addEventListener('polymer-ready', function() {
+      document.createElement("img-placeholder").imageMap = (function(){
+        var urlPrefix = "http://",
+            urlPostfix = ".com/200/300",
+            map = {},
+            imageNames = [
+              "fillmurray",
+              "placecage"
+            ];
+
+        imageNames.forEach( function ( imageName ){
+          map[imageName] = urlPrefix + imageName + urlPostfix;
+        });
+        return map;
+      })();
+    });
+  })( document );
+</script>
+>>>>>>> dev
+
 <div class="left">
   <radio-select name="privacy" value="public">
     <img src="http://www.geocaching.com/images/logtypes/2.png" alt="radio button icon" />
@@ -94,7 +118,7 @@
   });
 </script>
 
-<div class="left">
+<div class="left hidden">
   <ed-scrubber min="7" max="100" type="default" format="percent"></ed-scrubber>
   <ed-scrubber min="43" max="350" type="bar" format="time"></ed-scrubber>
   <ed-scrubber min="25" max="100" type="bubble" format="percent"></ed-scrubber>
@@ -144,7 +168,7 @@
   })( document );
 </script>
 
-<div class="left">
+<div class="left hidden">
   <scroll-box-horizontal show-arrows disabled>
     <img src="http://i.imgur.com/OpYDgt3.gif">
     <h2> SCROLL BOX HORIZONTAL </h2>
@@ -153,7 +177,7 @@
   </scroll-box-horizontal>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <scroll-box-vertical show-arrows disabled>
     <h2>List of Stuff and Things and Stuff</h2>
     <p>Scroll</p>
@@ -188,6 +212,7 @@
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
 </div>
 
+<<<<<<< HEAD
 <script>
   // script required for <img-placeholder>
   document.addEventListener('polymer-ready', function() {
@@ -208,6 +233,7 @@
   });
 </script>
 -->
+
 <script id="reload-tag" type="text/javascript">
   if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
     document.write(
