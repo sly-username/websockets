@@ -13,6 +13,7 @@ var join = require( "path" ).join,
     client:           join( __dirname, "client" ),
     tests:            join( __dirname, "tests" ),
     build:            join( __dirname, "build" ),
+    logs:             join( __dirname, "logs" ),
     tasks:            join( __dirname, "tasks" ),
     server:           join( __dirname, "server" ),
     bowerComponents:  join( __dirname, "bower_components" ),
@@ -30,14 +31,20 @@ paths.vendor = {
   },
   src: [
       // Stuff in bower_components
+    // Web Components Shim
       join( "webcomponentsjs", "webcomponents.js" ),
+    // Polymer
       join( "polymer", "polymer.js" ),
+    // SystemJS + source map
       join( "system.js", "dist", "system.js" ),
 //      join( "system.js", "dist", "system.src.js" ),
       join( "system.js", "dist", "system.js.map" ),
+    // ES6-Module-Loader + source map
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
 //      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+    // Director (Routing)
+      join( "director", "build", "director.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
@@ -50,7 +57,8 @@ paths.vendor = {
       join( "system.js", "dist", "system.js" ),
       join( "system.js", "dist", "system.js.map" ),
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+      join( "director", "build", "director.min.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
@@ -219,6 +227,22 @@ paths.karma = {
     paths.nodeModules,
     paths.bowerComponents
   ]
+};
+
+/*** LOGGING ***/
+paths.logging = {
+  gulp: join( paths.logs, "gulp" ),
+  createDatedFilename: function( name, date ) {
+    date = date || new Date();
+    return date.getFullYear() + "-" +
+      ( 1 + date.getMonth() ) + "-" +
+      date.getDate() + "_" +
+//      date.toTimeString().split( " " )[0].replace( /:/g, "-" ) + "_" +
+      name + ".log";
+  },
+  createDatedLogFile: function( folder, name, date ) {
+    return join( folder, paths.logging.createDatedFilename( name, date ) );
+  }
 };
 
 /*** SERVER PATHS ***/

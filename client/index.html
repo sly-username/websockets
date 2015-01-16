@@ -12,6 +12,7 @@
   <script src="vendor/traceur-runtime.js"></script>
   <script src="vendor/es6-module-loader.js"></script>
   <script src="vendor/system.js"></script>
+  <script src="vendor/director.js"></script>
 
   <!-- Global Styles -->
   <link rel="stylesheet" href="styles/main.css" />
@@ -34,23 +35,25 @@
   <img-placeholder image="notavalidprofile"></img-placeholder>
 </div>
 <script>
-  // script required for <img-placeholder>
-  document.addEventListener('polymer-ready', function() {
-    document.createElement("img-placeholder").imageMap = (function(){
-      var urlPrefix = "http://",
-          urlPostfix = ".com/200/300",
-          map = {},
-          imageNames = [
-            "fillmurray",
-            "placecage"
-          ];
+  ( function( document ) {
+    // script required for <img-placeholder>
+    document.addEventListener('polymer-ready', function() {
+      document.createElement("img-placeholder").imageMap = (function(){
+        var urlPrefix = "http://",
+            urlPostfix = ".com/200/300",
+            map = {},
+            imageNames = [
+              "fillmurray",
+              "placecage"
+            ];
 
-      imageNames.forEach( function ( imageName ){
-        map[imageName] = urlPrefix + imageName + urlPostfix;
-      });
-      return map;
-    })();
-  });
+        imageNames.forEach( function ( imageName ){
+          map[imageName] = urlPrefix + imageName + urlPostfix;
+        });
+        return map;
+      })();
+    });
+  })( document );
 </script>
 
 <div class="left">
@@ -67,7 +70,6 @@
     <img src="http://png-5.findicons.com/files/icons/1617/circular/16/smiley_smile.png" alt="radio button icon" />
   </radio-select>
 </div>
-
 <style>
   radio-select {
     border: 3px solid green;
@@ -79,7 +81,6 @@
     border-color: purple;
   }
 </style>
-
 <script>
   (function( document ){
     var radios = document.querySelectorAll("radio-select[value=privacy]");
@@ -185,7 +186,7 @@
 
 <!-- REMOVE FOR PRODUCTION -->
 <script id="reload-tag" type="text/javascript">
-  (function(){
+  (function( window, document ){
     // Live Reload Script
     if( ( /^local.eardish|localhost|:5115/g ).test( location.host ) ) {
       document.write(
@@ -197,11 +198,10 @@
     }
 
     // Remove this script tag
-    var here = document.getElementById("reload-tag");
-    setTimeout(function(){
-      document.body.removeChild(here);
-    }, 200);
-  })();
+    window.setTimeout(function(){
+      document.body.removeChild(this);
+    }.bind( document.getElementById( "reload-tag" ) ), 200);
+  })( window, document );
 </script>
 
 <style type="text/css">

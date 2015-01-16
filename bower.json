@@ -12,6 +12,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.1",
     "es6-module-loader": "=0.10.0",
-    "system.js": "=0.10.2"
+    "system.js": "=0.10.2",
+    "director": "=1.2.5"
   }
 }
