@@ -44,11 +44,12 @@
       this.openListener = this.open.bind( this );
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
+      this.eventObjs = [ "mousedown", "touchstart" ];
     },
     attached: function() {
       this.attachTriggerListener();
 
-      [ "mousedown", "touchstart" ].forEach( function( e ) {
+      this.eventObjs.forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
@@ -64,25 +65,23 @@
   /* EVENT LISTENERS */
     /* Trigger */
     attachTriggerListener: function() {
-      [ "mousedown", "touchstart" ].forEach( function( e ) {
-        document.querySelector( this.attributes.trigger.value )
-          .addEventListener( e, this.openListener );
+      this.eventObjs.forEach( function( e ) {
+        document.querySelector( this.attributes.trigger.value ).addEventListener( e, this.openListener );
       }.bind( this ) );
     },
     removeTriggerListener: function() {
-      [ "mousedown", "touchstart" ].forEach( function( e ) {
-        document.querySelector( this.attributes.trigger.value )
-        .removeEventListener( e, this.openListener );
+      this.eventObjs.forEach( function( e ) {
+        document.querySelector( this.attributes.trigger.value ).removeEventListener( e, this.openListener );
       }.bind( this ) );
     },
     /* Click Off */
     attachClickoffListener: function() {
-      [ "mousedown", "touchstart" ].forEach( function( e ) {
+      this.eventObjs.forEach( function( e ) {
         this.modalContainer.addEventListener( e, this.closeModalListener );
       }.bind( this ) );
     },
     removeClickoffListener: function() {
-      [ "mousedown", "touchstart" ].forEach( function( e ) {
+      this.eventObjs.forEach( function( e ) {
         this.modalContainer.removeEventListener( e, this.closeModalListener );
       }.bind( this ) );
     },
@@ -96,7 +95,7 @@
       this.modalContainer.setAttribute( "class", "modal-container" );
     },
     closeModal: function( e ) {
-      if ( e.target == this.modalContainer ) {
+      if ( e.target === this.modalContainer ) {
         this.modalContainer.setAttribute( "class", "modal-container" );
       }
     },
@@ -137,19 +136,20 @@
     findHighestZIndex: function() {
       var currentZ,
           highestZ = 1,
-          siblingsList = Array.from( this.parentNode.children ).filter( function( elm ) {
-            return this !== elm;
+          siblingsList = Array.from( this.parentNode.children ).filter( function( elem ) {
+            return this !== elem;
           }, this );
 
-      console.log(siblingsList.length);
       if ( !siblingsList.length ) {
         return highestZ;
       }
 
       siblingsList.forEach( function( sib ) {
+        var getZ = window.getComputedStyle( sib, null ).getPropertyValue( "z-index" ),
+            getPosition = window.getComputedStyle( sib, null ).getPropertyValue( "position" );
 
-        if ( sib.style.zIndex && sib.style.position ) {
-          currentZ = parseInt( sib.style.zIndex, 10 );
+        if ( getZ && getPosition ) {
+          currentZ = parseInt( getZ, 10 );
 
           if ( 2147483647 > currentZ > highestZ ) {
             highestZ = currentZ;
@@ -162,7 +162,7 @@
     },
     setZIndex: function() {
       var baseZ = this.findHighestZIndex();
-      this.style.zIndex = baseZ + 1;
+      this.modalContainer.style.zIndex = baseZ + 1;
     }
   });
 })( window.Polymer );
