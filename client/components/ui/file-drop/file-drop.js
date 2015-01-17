@@ -4,17 +4,26 @@
   Polymer( "file-drop", {
     fileList: null,
     fileArr: [],
+    /*** PROPERTIES ***/
     get files() {
       return this.fileArr;
     },
-    /*** PROPERTIES ***/
+    get multiple() {
+      if ( !null ) {
+        return this._multiple;
+      }
+    },
+    set multiple( value ) {
+      if ( value !== null ) {
+        this.setAttribute( "multiple", value );
+
+        return ( this._multiple = value );
+      }
+    },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
       this.holder = this.shadowRoot.getElementById( "holder" );
-
-
-      // fill attribute
     },
     attached: function() {
       // listens for drag events
@@ -27,15 +36,38 @@
         event.preventDefault();
         // filters files
         this.fileList = event.dataTransfer.files;
-        this.fileArr = Array.from( this.fileList ).filter( function( file ) {
-          var compare = new RegExp( file.type );
-          return compare.test( this.accepts );
-        }.bind( this ) );
+        // checks for multiple attribute
+        if ( ( this.hasAttribute( "multiple" ) && ( this.fileList.length > 1 ) ) || this.fileList.length === 1 ) {
+          this.fileArr = Array.from( this.fileList ).filter( function( file ) {
+            var compare = new RegExp( file.type );
+            return compare.test( this.accepts );
+          }.bind( this ) );
+        }
+        this.formData = new FormData();
+        this.formData.append( "userFiles", this.fileArr );
         console.log( this.fileArr );
       }.bind( this ) );
-    }
+    },
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
+    onDrop: function( lambda ) {
+      this.holder.addEventListener( "drop", lambda );
+    },
+    onDragOver: function( lambda ) {
+      this.holder.addEventListener( "dragover", lambda );
+    },
+    fillChanged: function( oldVal, newVal ) {
+      this.fill = newVal;
+      this.setAttribute( "fill", newVal );
+    },
+    acceptsChanged: function( oldVal, newVal ) {
+      this.accepts = newVal;
+      this.setAttribute( "accepts", newVal );
+    },
+    multipleChanged: function( oldVal, newVal ) {
+      this.multiple = newVal;
+      this.setAttribute( "multiple", newVal );
+    }
     /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
