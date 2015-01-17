@@ -1,7 +1,6 @@
 ( function( Polymer ) {
   "use strict";
   Polymer( "ed-modal", {
-
 /* GETTERS AND SETTERS */
   /* Click Off */
     get clickoff() {
@@ -32,19 +31,22 @@
       return this._trigger;
     },
     set trigger( value ) {
-      this.attributes.trigger.value = value;
+      this.removeTriggerListener();
+      this.setAttribute( "trigger", value );
       this._trigger = value;
+      this.attachTriggerListener();
       return value;
     },
 
 /* FUNCTIONS */
     ready: function() {
-      this.modalContainer = this.shadowRoot.getElementById( this.attributes.trigger.value );
-      this.modalButton = this.shadowRoot.getElementById( "modal-button" );
+      this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[0];
+      this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[0];
       this.openListener = this.open.bind( this );
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
       this.eventObjs = [ "mousedown", "touchstart" ];
+      this._trigger = this.attributes.trigger.value;
     },
     attached: function() {
       this.attachTriggerListener();
@@ -66,12 +68,33 @@
     /* Trigger */
     attachTriggerListener: function() {
       this.eventObjs.forEach( function( e ) {
-        document.querySelector( this.attributes.trigger.value ).addEventListener( e, this.openListener );
+        var elems = document.querySelectorAll( this.trigger );
+
+        if ( elems.length === 0 ) {
+          return;
+        } else if ( elems.length === 1 ) {
+          document.querySelector( this.trigger ).addEventListener( e, this.openListener );
+        } else {
+          Array.prototype.forEach( elems, function( elem ) {
+            elem.addEventListener( e, this.openListener );
+          });
+        }
       }.bind( this ) );
     },
     removeTriggerListener: function() {
       this.eventObjs.forEach( function( e ) {
-        document.querySelector( this.attributes.trigger.value ).removeEventListener( e, this.openListener );
+        var elems = document.querySelectorAll( this.trigger );
+
+        if ( elems.length === 0 ) {
+          return;
+        } else if ( elems.length === 1 ) {
+          document.querySelector( this.trigger ).removeEventListener( e, this.openListener );
+        } else {
+          Array.prototype.forEach( elems, function( elem ) {
+            elem.removeEventListener( e, this.openListener );
+          });
+        }
+        document.querySelector( this.trigger ).removeEventListener( e, this.openListener );
       }.bind( this ) );
     },
     /* Click Off */
