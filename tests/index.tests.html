@@ -32,7 +32,8 @@
   <div id="mocha" style="width: 100%;"></div>
   <script>
     // Run Mocha
-    window.addEventListener( "load", function() {
+    document.addEventListener( "polymer-ready", function() {
+      console.log( "running tests" );
       mocha.run();
     });
   </script>
