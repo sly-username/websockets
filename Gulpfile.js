@@ -26,7 +26,7 @@ currentTasks = process.argv.reduce(
     consume: false,
     list: []
   }
-).list;
+).list.filter( function( name ) { return !( /(^--)|(\/)/g ).test( name ); });
 
 // rewrite stdout & stderr write functions to write to log
 ( function( ogout, ogerr ) {
@@ -44,6 +44,12 @@ currentTasks = process.argv.reduce(
           fs.appendFile( filename, chunk );
         };
     };
+
+  // if no valid task names, don't overwrite write.
+  if ( currentTasks.length === 0 ) {
+    // don't rewrite
+    return;
+  }
 
   // rewrite stdout
   process.stdout.write = createWrite( ogout );
