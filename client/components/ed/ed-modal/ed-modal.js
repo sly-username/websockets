@@ -23,21 +23,19 @@
       return this._trigger;
     },
     set trigger( value ) {
-      this.removeTriggerListener();
       this.setAttribute( "trigger", value );
       this._trigger = value;
-      this.setTriggerListener();
       return value;
     },
 
 /* FUNCTIONS */
     ready: function() {
-      this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[0];
-      this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[0];
-      this.openListener = this.open.bind( this );
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
       this.eventObjs = [ "mousedown", "touchstart" ];
+      this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[0];
+      this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[0];
+      this.openListener = this.open.bind( this );
       this._trigger = this.attributes.trigger.value;
     },
     attached: function() {
@@ -57,8 +55,8 @@
     },
 
   /* EVENT LISTENERS */
-    /* Trigger */
     setTriggerListener: function() {
+      //this.triggerListener( "add" );
       this.eventObjs.forEach( function( e ) {
         var elems = document.querySelectorAll( this.trigger );
 
@@ -119,38 +117,19 @@
     triggerChanged: function( oldVal, newVal ) {
       this.removeTriggerListener();
       this.trigger = newVal;
-      this.setAttribute( "trigger", newVal );
-
-      if ( this.hasAttribute( "trigger" ) ) {
-        this.trigger = this.attributes.trigger.value;
-        this.setTriggerListener();
-      }
+      this.setTriggerListener();
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
+      this[attrName] = newVal === "";
 
-      switch ( attrName ) {
-        case "clickoff":
-          this.clickoff = newVal === "";
-          break;
-        case "closebutton":
-          this.closebutton = newVal === "";
-
-          if ( !this.hasAttribute( "closebutton" ) ) {
-            this.modalButton.classList.add( "modal-button-closed" );
-          } else {
-            this.modalButton.classList.remove( "modal-button-closed" );
-          }
-          break;
-        default:
-          // do nothing
-          break;
+      if ( attrName === "closebutton" ) {
+        this.modalButton.classList[ !newVal && newVal !== "" ? "add" : "remove" ]( "hidden" );
       }
     },
 
   /* Z-INDEX */
     findHighestZIndex: function() {
-      var currentZ,
-          highestZ = 1,
+      var highestZ = 1,
           siblingsList = Array.from( this.parentNode.children ).filter( function( elem ) {
             return this !== elem;
           }, this );
@@ -161,18 +140,13 @@
 
       siblingsList.forEach( function( sib ) {
         var getZ = window.getComputedStyle( sib, null ).getPropertyValue( "z-index" ),
-            getPosition = window.getComputedStyle( sib, null ).getPropertyValue( "position" );
+            currentZ = parseInt( getZ, 10 );
 
-        if ( getZ && getPosition ) {
-          currentZ = parseInt( getZ, 10 );
-
-          if ( 2147483647 > currentZ > highestZ ) {
-            highestZ = currentZ;
-          } else {
-            highestZ = 2147483647;
-          }
+        if ( getZ && getZ !== "auto" ) {
+          highestZ = currentZ > highestZ ? currentZ : highestZ;
+          highestZ = highestZ >= 2147483647 ? 2147483646 : highestZ;
         }
-      }, this );
+      });
       return highestZ;
     },
     setZIndex: function() {
