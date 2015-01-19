@@ -7,24 +7,16 @@
       return this.hasAttribute( "clickoff" );
     },
     set clickoff( value ) {
-      if ( value ) {
-        this.setAttribute( "clickoff", "" );
-        this.attachClickoffListener();
-      } else {
-        this.removeClickoffListener();
-        this.removeAttribute( "clickoff" );
-      }
+      value = value ? "set" : "remove";
+      this[ value + "Attribute" ]( "clickoff", "" );
+      this[ value + "ClickOffListener"]();
     },
   /* Close Button */
     get closebutton() {
       return this.hasAttribute( "closebutton" );
     },
     set closebutton( value ) {
-      if ( value ) {
-        this.setAttribute( "closebutton", "" );
-      } else {
-        this.removeAttribute( "closebutton" );
-      }
+      this[ value ? "setAttribute" : "removeAttribute" ]( "closebutton", "" );
     },
   /* Trigger */
     get trigger() {
@@ -34,7 +26,7 @@
       this.removeTriggerListener();
       this.setAttribute( "trigger", value );
       this._trigger = value;
-      this.attachTriggerListener();
+      this.setTriggerListener();
       return value;
     },
 
@@ -49,24 +41,24 @@
       this._trigger = this.attributes.trigger.value;
     },
     attached: function() {
-      this.attachTriggerListener();
+      this.setTriggerListener();
 
       this.eventObjs.forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
       if ( !this.hasAttribute( "closebutton" ) ) {
-        this.modalButton.setAttribute( "class", "modal-button modal-container-closed" );
+        this.modalButton.classList.add( "modal-button-closed" );
       }
 
       if ( this.hasAttribute( "clickoff" ) ) {
-        this.attachClickoffListener();
+        this.setClickoffListener();
       }
     },
 
   /* EVENT LISTENERS */
     /* Trigger */
-    attachTriggerListener: function() {
+    setTriggerListener: function() {
       this.eventObjs.forEach( function( e ) {
         var elems = document.querySelectorAll( this.trigger );
 
@@ -98,7 +90,7 @@
       }.bind( this ) );
     },
     /* Click Off */
-    attachClickoffListener: function() {
+    setClickoffListener: function() {
       this.eventObjs.forEach( function( e ) {
         this.modalContainer.addEventListener( e, this.closeModalListener );
       }.bind( this ) );
@@ -112,14 +104,14 @@
     /* MODAL APPEAR AND DISAPPEAR */
     open: function() {
       this.setZIndex();
-      this.modalContainer.setAttribute( "class", "modal-container modal-container-opened" );
+      this.modalContainer.classList.add( "modal-container-opened" );
     },
     close: function() {
-      this.modalContainer.setAttribute( "class", "modal-container" );
+      this.modalContainer.classList.remove( "modal-container-opened" );
     },
     closeModal: function( e ) {
       if ( e.target === this.modalContainer ) {
-        this.modalContainer.setAttribute( "class", "modal-container" );
+        this.modalContainer.classList.add( "modal-container" );
       }
     },
 
@@ -131,7 +123,7 @@
 
       if ( this.hasAttribute( "trigger" ) ) {
         this.trigger = this.attributes.trigger.value;
-        this.attachTriggerListener();
+        this.setTriggerListener();
       }
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
@@ -144,9 +136,9 @@
           this.closebutton = newVal === "";
 
           if ( !this.hasAttribute( "closebutton" ) ) {
-            this.modalButton.setAttribute( "class", "modal-button modal-button-closed" );
+            this.modalButton.classList.add( "modal-button-closed" );
           } else {
-            this.modalButton.setAttribute( "class", "modal-button" );
+            this.modalButton.classList.remove( "modal-button-closed" );
           }
           break;
         default:
