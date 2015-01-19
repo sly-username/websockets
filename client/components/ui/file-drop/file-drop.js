@@ -36,6 +36,8 @@
         event.preventDefault();
         // filters files
         this.fileList = event.dataTransfer.files;
+        // resets the fileArr
+        this.fileArr = [];
         // checks for multiple attribute
         if ( ( this.hasAttribute( "multiple" ) && ( this.fileList.length > 1 ) ) || this.fileList.length === 1 ) {
           this.fileArr = Array.from( this.fileList ).filter( function( file ) {
@@ -45,7 +47,6 @@
         }
         this.formData = new FormData();
         this.formData.append( "userFiles", this.fileArr );
-        console.log( this.fileArr );
       }.bind( this ) );
     },
     /*** END LIFECYCLE ***/
