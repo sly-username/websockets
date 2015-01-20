@@ -17,7 +17,7 @@
       if ( value !== null ) {
         this.setAttribute( "multiple", value );
 
-        return ( this._multiple = value );
+        return this._multiple = value;
       }
     },
     /*** END PROPERTIES ***/
@@ -51,11 +51,11 @@
     },
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
-    onDrop: function( lambda ) {
-      this.holder.addEventListener( "drop", lambda );
+    onDrop: function( callback ) {
+      this.holder.addEventListener( "drop", callback );
     },
-    onDragOver: function( lambda ) {
-      this.holder.addEventListener( "dragover", lambda );
+    onDragOver: function( callback ) {
+      this.holder.addEventListener( "dragover", callback );
     },
     fillChanged: function( oldVal, newVal ) {
       this.fill = newVal;
