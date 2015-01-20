@@ -9,7 +9,7 @@
     set clickoff( value ) {
       value = value ? "set" : "remove";
       this[ value + "Attribute" ]( "clickoff", "" );
-      this[ value + "ClickOffListener"]();
+      this[ value + "ClickoffListener"]();
     },
   /* Close Button */
     get closebutton() {
@@ -29,6 +29,7 @@
     },
 
 /* FUNCTIONS */
+  /* Life Cycle */
     ready: function() {
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
@@ -39,7 +40,7 @@
       this._trigger = this.attributes.trigger.value;
     },
     attached: function() {
-      this.setTriggerListener();
+      this.triggerListener( "add" );
 
       this.eventObjs.forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
@@ -55,36 +56,20 @@
     },
 
   /* EVENT LISTENERS */
-    setTriggerListener: function() {
-      //this.triggerListener( "add" );
+    /* Trigger */
+    triggerListener: function( toggle ) {
       this.eventObjs.forEach( function( e ) {
         var elems = document.querySelectorAll( this.trigger );
 
         if ( elems.length === 0 ) {
           return;
         } else if ( elems.length === 1 ) {
-          document.querySelector( this.trigger ).addEventListener( e, this.openListener );
+          elems[0][ toggle + "EventListener" ]( e, this.openListener );
         } else {
           Array.prototype.forEach( elems, function( elem ) {
-            elem.addEventListener( e, this.openListener );
+            elem[ toggle + "EventListener" ]( e, this.openListener );
           });
         }
-      }.bind( this ) );
-    },
-    removeTriggerListener: function() {
-      this.eventObjs.forEach( function( e ) {
-        var elems = document.querySelectorAll( this.trigger );
-
-        if ( elems.length === 0 ) {
-          return;
-        } else if ( elems.length === 1 ) {
-          document.querySelector( this.trigger ).removeEventListener( e, this.openListener );
-        } else {
-          Array.prototype.forEach( elems, function( elem ) {
-            elem.removeEventListener( e, this.openListener );
-          });
-        }
-        document.querySelector( this.trigger ).removeEventListener( e, this.openListener );
       }.bind( this ) );
     },
     /* Click Off */
@@ -99,7 +84,7 @@
       }.bind( this ) );
     },
 
-    /* MODAL APPEAR AND DISAPPEAR */
+  /* MODAL APPEAR AND DISAPPEAR */
     open: function() {
       this.setZIndex();
       this.modalContainer.classList.add( "modal-container-opened" );
@@ -109,18 +94,20 @@
     },
     closeModal: function( e ) {
       if ( e.target === this.modalContainer ) {
-        this.modalContainer.classList.add( "modal-container" );
+        this.modalContainer.classList.remove( "modal-container-opened" );
       }
     },
 
   /* ATTRIBUTE CHANGED FUNCTIONS */
-    triggerChanged: function( oldVal, newVal ) {
-      this.removeTriggerListener();
-      this.trigger = newVal;
-      this.setTriggerListener();
-    },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      this[attrName] = newVal === "";
+
+      if ( attrName === "trigger" ) {
+        this.triggerListener( "remove" );
+        this.trigger = newVal;
+        this.triggerListener( "add" );
+      } else {
+        this[attrName] = newVal === "";
+      }
 
       if ( attrName === "closebutton" ) {
         this.modalButton.classList[ !newVal && newVal !== "" ? "add" : "remove" ]( "hidden" );
