@@ -9,9 +9,24 @@ module.exports = function( config ) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: paths.karma.base,
 
+    // web server port
+    port: paths.karma.port,
+
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: paths.karma.frameworks,
+    frameworks: [
+      "mocha",
+      "chai",
+      "chai-as-promised"
+    ],
+
+    plugins: [
+      "karma-mocha",
+      "karma-chai",
+      "karma-chai-plugins",
+      "karma-chrome-launcher",
+      "karma-mocha-reporter"
+    ],
 
     client: {
       mocha: {
@@ -20,7 +35,7 @@ module.exports = function( config ) {
     },
 
     // list of files / patterns to load in the browser
-    files: paths.karma.src,
+    files: paths.karma.files,
 
     // list of files to exclude
     exclude: paths.karma.exclude,
@@ -32,10 +47,12 @@ module.exports = function( config ) {
     // test results reporter to use
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: paths.karma.reporters,
+    reporters: [
+//      "progress"
+      "mocha"
+    ],
 
-    // web server port
-    port: paths.karma.port,
+//    proxies: {},
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
@@ -47,14 +64,14 @@ module.exports = function( config ) {
     //    config.LOG_WARN
     //    config.LOG_INFO
     //    config.LOG_DEBUG
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-//    browsers: [ "Chrome", "Firefox", "Safari", "Opera" ],
+    browsers: [ "Chrome" ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

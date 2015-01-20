@@ -7,7 +7,9 @@
  * be at the root of the project directory
  ***/
 
-var join = require( "path" ).join,
+var npath = require( "path" ),
+  join = npath.join,
+  basename = npath.basename,
   paths = {
     root:             __dirname,
     client:           join( __dirname, "client" ),
@@ -67,7 +69,8 @@ paths.vendor = {
   tests: [
     join( "mocha", "mocha.js" ),
     join( "mocha", "mocha.css" ),
-    join( "chai", "chai.js" )
+    join( "chai", "chai.js" ),
+    join( "chai-as-promised", "lib", "chai-as-promised.js" )
   ].map( function( p ) { return join( paths.nodeModules, p ); } )
 };
 
@@ -176,56 +179,105 @@ paths.testing = {
   },
   tests: join( paths.tests, "**", "*.js" )
 };
-paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ){
-  return paths.testing.client[prop];
+paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ) {
+  return paths.testing.client[ prop ];
 });
 
 /*** KARMA ***/
 paths.karma = {
   rc: join( paths.root, "karma.conf.js" ),
-  port: 9876,
-  reporters: [ "progress" ],
-  frameworks: [ "mocha", "chai" ],
   base: paths.dev,
-  src: [
-    {
-      pattern: join( "vendor", "**", "*.*" ),
+  port: 9876,
+  files: ( function() {
+    var files = [];
+
+    // load vendor scripts in correct order
+    [
+      "webcomponents.js",
+      "polymer.js",
+      "traceur-runtime.js",
+      "es6-module-loader.js",
+      "system.js"
+    ].forEach( function( vendor ) {
+        files.push({
+          pattern: join( "vendor", vendor ),
+          watched: false,
+          included: true,
+          served: true
+        });
+      });
+
+    // load all html that aren't .tests.html
+    files.push({
+//      pattern: "**/*.!(tests).html",
+      pattern: "**/*.tests.html",
       watched: false,
       included: true,
       served: true
-    },
-    {
-      pattern: join( "**", "*.*" ),
-      watched: false,
-      included: true,
-      served: true
-    },
-    /*
-    {
-      pattern: join( "**", "*.js" ),
+    });
+
+//    files.push({
+//      pattern: "**/*!(tests).js",
+//      watched: false,
+//      included: true,
+//      served: true
+//    });
+
+    // get top level html namespaces
+//    files.push({
+//      pattern: "components/{ed/ed,ui/ui}-components.html",
+//      watched: false,
+//      included: true,
+//      served: true
+//    });
+
+//    // get html tests
+//    files.push({
+//      pattern: "components/**/*.tests.html",
+//      watched: true,
+//      included: true,
+//      served: true
+//    });
+//
+    // make sure everything else is served
+    files.push({
+      pattern: "**/*.*",
       watched: true,
-      included: true,
-      served: true
-    },
-    */
-    {
-      pattern: "index.html",
-      watched: false,
       included: false,
-      served: false
-    },
-    {
-      pattern: join( "**", "*.tests.js" ),
-      watched: true,
-      included: true,
       served: true
-    }
-//    join( paths.client, "**", "*.*" ),
-//    join( paths.tests, "**", "*.*" )
-  ],
+    });
+
+//    files.push({
+//      pattern: "**/*.tests.html",
+//      watched: true,
+//      included: true,
+//      served: true
+//    });
+
+//    files.push({
+//      pattern: "components/**/*.tests.js",
+//      watched: true,
+//      included: false,
+//      served: true
+//    });
+
+//    files.push({
+//      pattern: "**/*.tests.html",
+//      watched: true,
+//      included: true,
+//      served: true
+//    });
+
+    return files;
+  })(),
   exclude: [
-    paths.nodeModules,
-    paths.bowerComponents
+//    "**/*.map",
+    "index.html",
+    "tests.html",
+    "**/ed-components.html",
+    "**/ui-components.html"
+//    paths.nodeModules,
+//    paths.bowerComponents
   ]
 };
 
