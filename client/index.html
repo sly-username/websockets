@@ -33,8 +33,20 @@
   <br/>
   <br/>
   <br/>
-  <div id="b-button">
-    #b-button trigger
+  <div class="b-button">
+    .b-button trigger
+  </div>
+  <br/>
+  <br/>
+  <br/>
+  <div class="b-button">
+    .b-button trigger
+  </div>
+  <br/>
+  <br/>
+  <br/>
+  <div class="b-button">
+    .b-button trigger
   </div>
 
   <ed-modal trigger="#a-button" clickoff closebutton>
@@ -53,7 +65,7 @@
     position: fixed;
     z-index: 99;
   }
-  #b-button {
+  .b-button {
     position: fixed;
     z-index: 140;
   }
@@ -64,7 +76,7 @@
   document.addEventListener( "polymer-ready", function () {
     console.log( "polymer-ready", performance.now() );
     console.log(modal.trigger); // #a-button
-    modal.trigger = "#b-button";
+    modal.trigger = ".b-button";
 
     console.log(modal.clickoff); // true
     modal.clickoff = false;

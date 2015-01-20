@@ -66,9 +66,9 @@
         } else if ( elems.length === 1 ) {
           elems[0][ toggle + "EventListener" ]( e, this.openListener );
         } else {
-          Array.prototype.forEach( elems, function( elem ) {
+          Array.from( elems ).forEach( function( elem ) {
             elem[ toggle + "EventListener" ]( e, this.openListener );
-          });
+          }.bind( this ) );
         }
       }.bind( this ) );
     },
