@@ -98,7 +98,7 @@
       }
     },
 
-  /* ATTRIBUTE CHANGED FUNCTIONS */
+  /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
 
       if ( attrName === "trigger" ) {
