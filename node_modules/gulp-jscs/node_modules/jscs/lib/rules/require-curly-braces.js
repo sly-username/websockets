@@ -1,3 +1,43 @@
+/**
+ * Requires curly braces after statements.
+ *
+ * Type: `Array` or `Boolean`
+ *
+ * Values: Array of quoted keywords or `true` to require curly braces after the following keywords:
+ *
+ * JSHint: [`curly`](http://jshint.com/docs/options/#curly)
+ *
+ * #### Example
+ *
+ * ```js
+ * "requireCurlyBraces": [
+ *     "if",
+ *     "else",
+ *     "for",
+ *     "while",
+ *     "do",
+ *     "try",
+ *     "catch",
+ *     "case",
+ *     "default"
+ * ]
+ * ```
+ *
+ * ##### Valid
+ *
+ * ```js
+ * if (x) {
+ *     x++;
+ * }
+ * ```
+ *
+ * ##### Invalid
+ *
+ * ```js
+ * if (x) x++;
+ * ```
+ */
+
 var assert = require('assert');
 var defaultKeywords = require('../utils').curlyBracedKeywords;
 
@@ -28,10 +68,20 @@ module.exports.prototype = {
     check: function(file, errors) {
 
         function addError(typeString, node) {
+            var entity = node;
+
+            if (typeString === 'Else') {
+                entity = file.findPrevToken(
+                    file.getTokenByRangeStart(node.alternate.range[0]),
+                    'Keyword',
+                    'else'
+                );
+            }
+
             errors.add(
                 typeString + ' statement without curly braces',
-                node.loc.start.line,
-                node.loc.start.column
+                entity.loc.start.line,
+                entity.loc.start.column
             );
         }
 
