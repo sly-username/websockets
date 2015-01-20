@@ -28,6 +28,11 @@ currentTasks = process.argv.reduce(
   }
 ).list.filter( function( name ) { return !( /(^--)|(\/)/g ).test( name ); });
 
+// assume default
+if ( currentTasks.length === 0 && process.argv.length === 2 ) {
+  currentTasks.push( "default" );
+}
+
 // rewrite stdout & stderr write functions to write to log
 ( function( ogout, ogerr ) {
   var taskNames = currentTasks.join( "_" ).replace( /:/g, "-" ),
