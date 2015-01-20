@@ -2,23 +2,22 @@
   "use strict";
 
   Polymer( "file-drop", {
+    publish: {
+      fill: {
+        reflect: true
+      },
+      accepts: {
+        reflect: true
+      },
+      multiple: {
+        reflect: true
+      }
+    },
     fileList: null,
     fileArr: [],
     /*** PROPERTIES ***/
     get files() {
       return this.fileArr;
-    },
-    get multiple() {
-      if ( !null ) {
-        return this._multiple;
-      }
-    },
-    set multiple( value ) {
-      if ( value !== null ) {
-        this.setAttribute( "multiple", value );
-
-        return this._multiple = value;
-      }
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
@@ -57,17 +56,8 @@
     onDragOver: function( callback ) {
       this.holder.addEventListener( "dragover", callback );
     },
-    fillChanged: function( oldVal, newVal ) {
-      this.fill = newVal;
-      this.setAttribute( "fill", newVal );
-    },
-    acceptsChanged: function( oldVal, newVal ) {
-      this.accepts = newVal;
-      this.setAttribute( "accepts", newVal );
-    },
-    multipleChanged: function( oldVal, newVal ) {
-      this.multiple = newVal;
-      this.setAttribute( "multiple", newVal );
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      this[ attrName ] = newVal;
     }
     /*** END FUNCTIONS ***/
   });
