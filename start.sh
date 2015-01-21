@@ -14,6 +14,10 @@
 ##  nohup npm start &
 #fi
 
+# Start up Xvfb so chrome runs
+Xvfb :1 +extension RANDR -screen 5 1024x768x8 >~/clientapp/logs/xvfb/$(date +%F).log 2>&1 &
+export DISPLAY=:1.5
+
 if [[ $(cat ~/clientapp/.env | grep -c VAGRANT_RUN_GULP_ON_START=TRUE) > 0 ]]; then
   source ~/clientapp/helpers.sh
   start-gulp

@@ -120,8 +120,6 @@ gulp.task( "build:dev", function( done ) {
 /*** MAIN DEVELOPMENT TASK ***/
 gulp.task( "dev", function( done ) {
   run(
-    "jscs:client",
-    "lint:client",
     "build:dev",
     "build:tests:only",
     "server:dev",
@@ -131,6 +129,9 @@ gulp.task( "dev", function( done ) {
       "lint:watch",
       "traceur:watch"
     ],
+    "jscs:client",
+    "lint:client",
+    "tdd",
     done
   );
 });
@@ -155,15 +156,13 @@ gulp.task( "build:tests", function( done ) {
   );
 });
 
-/*
 gulp.task( "test", function( done ) {
   run(
     "build:tests",
-    "karma:server",
+    "karma:once",
     done
   );
 });
-*/
 
 /*** PRODUCTION BUILD TASK ***/
 gulp.task( "build:prod", function( done ) {

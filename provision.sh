@@ -7,7 +7,7 @@ sudo timedatectl set-timezone America/Los_Angeles
 
 # install and load nvm
 if [ ! -d ~/.nvm ]; then
-  curl https://raw.githubusercontent.com/creationix/nvm/v0.18.0/install.sh > ~/install.nvm.sh
+  curl -# https://raw.githubusercontent.com/creationix/nvm/v0.23.0/install.sh > ~/install.nvm.sh
   chmod +x ~/install.nvm.sh
   . ~/install.nvm.sh
   rm ~/install.nvm.sh
@@ -20,13 +20,19 @@ nvm install 0.11
 # install set 0.11 as default for system in nvm
 nvm alias default 0.11
 
+## Install Google Chrome (NOT NEEDED FOR NOW, using chromium)
+#wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+#sudo apt-get update
+#sudo apt-get install google-chrome-stable
+
 # add some stuff to .profile
 echo "" >> ~/.profile
 echo "# Added during provision" >> ~/.profile
 echo "source ~/clientapp/helpers.sh" >> ~/.profile
 source ~/.profile
 
-echo "$ED_PROJECT_PATH"
+#echo "$ED_PROJECT_PATH"
 
 # Create clientapp for prosperty
 if [ ! -d "$ED_PROJECT_PATH" ]; then
@@ -43,8 +49,13 @@ if [ ! -d "$ED_PROJECT_PATH/logs/gulp" ]; then
   mkdir "$ED_PROJECT_PATH/logs/gulp"
 fi
 
+# Create logs/xvfb folder if needed
+if [ ! -d "$ED_PROJECT_PATH/logs/xvfb" ]; then
+  mkdir "$ED_PROJECT_PATH/logs/xvfb"
+fi
+
 # Set up node_modules if not already set up
-if [ ! -d "~/clientapp/node_modules" ]; then
+if [ ! -d "$ED_PROJECT_PATH/node_modules" ]; then
   echo "npm install deps for clientapp"
   cd ~/clientapp/
   npm install

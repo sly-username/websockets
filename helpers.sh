@@ -7,14 +7,23 @@ ED_PROJECT_PATH="/home/$USER/clientapp"
 ED_MODULES_PATH="$ED_PROJECT_PATH/node_modules"
 ED_MODULES_BIN="$ED_MODULES_PATH/.bin"
 
-
 # Add Node Moduels Bin to Path
 PATH="$PATH:$ED_MODULES_BIN"
 
 # Alias gulp so that it uses harmony (only works in vagrant not through ssh -c command)
 alias gulp="node --harmony $ED_MODULES_PATH/gulp/bin/gulp.js"
 
-export PATH ED_PROJECT_PATH ED_MODULES_PATH ED_MODULES_BIN
+# PhantomJS Path
+#PHANTOMJS_BIN=`command -v phantomjs`
+#export  PHANTOMJS_BIN
+
+# Chromium
+CHROME_BIN=`command -v chromium-browser`
+
+# Set in start.sh, needs re-export
+DISPLAY=:1.5
+
+export PATH ED_PROJECT_PATH ED_MODULES_PATH ED_MODULES_BIN CHROME_BIN DISPLAY
 
 # Helpful Functions
 # These must be run inside of vagrant

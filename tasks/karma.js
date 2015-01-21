@@ -1,17 +1,25 @@
 "use strict";
 var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
   karma = require( "karma" ).server,
   paths = require( "../config.paths.js" );
 
-gulp.task( "karma:run", function( done ) {
+gulp.task( "karma:once", function( done ) {
   karma.start({
-    config: paths.karma.rc,
+    configFile: paths.karma.rc,
     singleRun: true
-  }, done );
+  }, function( exitCode ) {
+    gutil.log( "Karma exited with code: " + exitCode );
+    done();
+  });
 });
 
-gulp.task( "karma:watch", function( done ) {
+gulp.task( "tdd", function( done ) {
   karma.start({
-    config: paths.karma.rc
-  }, done );
+    configFile: paths.karma.rc
+  }, function( exitCode ) {
+    gutil.log( "Karma exited with code: " + exitCode );
+    done( exitCode );
+    global.process.exit( exitCode );
+  });
 });

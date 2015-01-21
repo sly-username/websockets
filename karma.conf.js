@@ -48,7 +48,6 @@ module.exports = function( config ) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-//      "progress"
       "mocha"
     ],
 
@@ -69,12 +68,23 @@ module.exports = function( config ) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ "Chrome" ],
-
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
+
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: [ "Chrome" ]
+    /*
+    browserNoActivityTimeout: 30000,
+    browsers: [ "PhantomJS" ],
+    phantomjsLauncher: {
+      cmd: {
+        linux: global.process.env.PHANTOMJS_BIN,
+        darwin: global.process.env.PHANTOMJS_BIN,
+        win32: global.process.env.PHANTOMJS_BIN
+      }
+    }
+    */
   });
 };
