@@ -7,9 +7,7 @@
  * be at the root of the project directory
  ***/
 
-var npath = require( "path" ),
-  join = npath.join,
-  basename = npath.basename,
+var join = require( "path" ).join,
   paths = {
     root:             __dirname,
     client:           join( __dirname, "client" ),
@@ -86,6 +84,7 @@ paths.symlink = {
     join( "!**", "*.es6.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
+    join( "!**", ".new" ),
 
     // link these (everything else)
     join( paths.client, "**", "*.*" )
@@ -207,38 +206,14 @@ paths.karma = {
         });
       });
 
-    // load all html that aren't .tests.html
+    // load html tests files
     files.push({
-//      pattern: "**/*.!(tests).html",
       pattern: "**/*.tests.html",
       watched: false,
       included: true,
       served: true
     });
 
-//    files.push({
-//      pattern: "**/*!(tests).js",
-//      watched: false,
-//      included: true,
-//      served: true
-//    });
-
-    // get top level html namespaces
-//    files.push({
-//      pattern: "components/{ed/ed,ui/ui}-components.html",
-//      watched: false,
-//      included: true,
-//      served: true
-//    });
-
-//    // get html tests
-//    files.push({
-//      pattern: "components/**/*.tests.html",
-//      watched: true,
-//      included: true,
-//      served: true
-//    });
-//
     // make sure everything else is served
     files.push({
       pattern: "**/*.*",
@@ -247,37 +222,14 @@ paths.karma = {
       served: true
     });
 
-//    files.push({
-//      pattern: "**/*.tests.html",
-//      watched: true,
-//      included: true,
-//      served: true
-//    });
-
-//    files.push({
-//      pattern: "components/**/*.tests.js",
-//      watched: true,
-//      included: false,
-//      served: true
-//    });
-
-//    files.push({
-//      pattern: "**/*.tests.html",
-//      watched: true,
-//      included: true,
-//      served: true
-//    });
-
     return files;
   })(),
   exclude: [
-//    "**/*.map",
     "index.html",
     "tests.html",
+    "**/.new/*.*",
     "**/ed-components.html",
     "**/ui-components.html"
-//    paths.nodeModules,
-//    paths.bowerComponents
   ]
 };
 

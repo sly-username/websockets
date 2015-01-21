@@ -14,8 +14,7 @@
 ##  nohup npm start &
 #fi
 
-# TODO REMOVE HARDCODE PATH
-if [[ $(cat /home/vagrant/clientapp/.env | grep -c VAGRANT_RUN_GULP_ON_START=TRUE) > 0 ]]; then
-  source /home/vagrant/clientapp/helpers.sh
+if [[ $(cat ~/clientapp/.env | grep -c VAGRANT_RUN_GULP_ON_START=TRUE) > 0 ]]; then
+  source ~/clientapp/helpers.sh
   start-gulp
 fi
