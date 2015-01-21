@@ -43,9 +43,3 @@ if [ ! -d "$ED_PROJECT_PATH/logs/gulp" ]; then
   mkdir "$ED_PROJECT_PATH/logs/gulp"
 fi
 
-# Set up node_modules if not already set up
-if [ ! -d "~/clientapp/node_modules" ]; then
-  echo "npm install deps for clientapp"
-  cd ~/clientapp/
-  npm install
-fi
