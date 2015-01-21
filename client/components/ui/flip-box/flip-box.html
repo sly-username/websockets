@@ -1,8 +1,16 @@
 <polymer-element name="flip-box" attributes="trigger animation">
   <template>
     <link rel="stylesheet" href="./flip-box.css">
-
-
+    <div class="flipbox-container">
+      <div class="front">
+        <content select=".front"></content>
+      </div>
+      <br>
+      <br>
+      <div class="back">
+        <content select=".back"></content>
+      </div>
+    </div>
   </template>
   <script src="./flip-box.js"></script>
 </polymer-element>

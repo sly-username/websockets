@@ -27,10 +27,46 @@
 <body unresolved>
 
 <flip-box animation="horiz" trigger="btn">
-  <section class="front"></section>
-  <div class="front"></div>
-  <span class="back"></span>
+  <section id="title" class="front">
+    <h3>i'm batman</h3>
+  </section>
+  <div class="front">
+    <img src="http://goo.gl/Rnlefq">
+  </div>
+  <span class="back">
+    that was fun; i wonder if the spec will change next week.
+  </span>
 </flip-box>
+
+<style>
+  flip-box {
+    background-color: black;
+    height: 540px;
+    width: 400px;
+    color: white;
+  }
+
+  .front {
+    text-align: center;
+  }
+
+  section {
+  }
+
+  img {
+    height: 200px;
+    width: 320px;
+  }
+
+  .back {
+  }
+
+  span {
+
+  }
+
+
+</style>
 
 <!--<script>-->
   <!--var flipBox = document.querySelector('flip-box');-->
