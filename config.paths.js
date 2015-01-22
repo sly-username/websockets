@@ -105,6 +105,7 @@ paths.less = {
   // todo double check in windows if '/' gets changed to '\'
   includePaths: [ join( "client", "styles", "/" ) ],
   included: [
+    join( "styles", "mixins", "**", "*.less" ),
     join( "**", "*.vars.less" ),
     join( "**", "*.mixin.less" ),
     join( "**", "*.include.less" ),

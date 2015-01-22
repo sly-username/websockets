@@ -68,7 +68,11 @@
   flipBox.flip();
 </script>
 
-<div class="parent">
+<div class="left hidden">
+  <ed-lr></ed-lr>
+</div>
+
+<div class="parent left">
   <file-drop fill="parent" accepts="image/png,image/jpeg">
     <p>Content and Stuff</p>
     <ed-icon name="add189"></ed-icon>
@@ -320,7 +324,7 @@
 
 <style type="text/css">
   #mocha-tests {
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0.5%;
     margin: 0 0.5%;
@@ -331,7 +335,7 @@
     z-index: 9998;
   }
   #show-hide-tests {
-    position: absolute;
+    position: fixed;
     right: 20px;
     bottom: 20px;
     z-index: 9999;

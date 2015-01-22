@@ -247,7 +247,7 @@
         })();
       });
 
-      test( "on + toggle", function( done ) {
+      test( "on event fires when checked property changed", function( done ) {
         element.checked = false;
 
         element.addEventListener( "on", function( event ) {
@@ -259,23 +259,7 @@
             .and.to.have.property( "type", "on" )
             .and.to.have.deep.property( "detail.msg", "on" );
 
-          if ( countEvents() === 2 ) {
-            done();
-          }
-        });
-
-        element.addEventListener( "toggle", function( event ) {
-          console.log( "toggle(on) fired", event );
-          expect( event )
-            .to.be.an.instanceof( CustomEvent )
-            .and.to.have.property( "target", element )
-            .and.to.have.property( "srcElement", element )
-            .and.to.have.property( "type", "toggle" )
-            .and.to.have.deep.property( "detail.msg", "toggle" );
-
-          if ( countEvents() === 2 ) {
-            done();
-          }
+          done();
         });
 
         // should fire "on" and "toggle" event
