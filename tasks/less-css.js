@@ -16,6 +16,7 @@ var gulp = require( "gulp" ),
 lessOptions = {
   "no-ie-compat": true,
   compress: false,
+  silent: true,
   paths: config.less.includePaths
 };
 
@@ -39,26 +40,26 @@ myLessCompile = function( options ) {
     opts.sourceMap = file.sourceMap ? true : false;
 
     less.render( str, opts )
-      .then(
-        function( css ) {
-          file.contents = new Buffer( css.css );
-          file.path = gutil.replaceExtension( file.path, ".css" );
+      .then( function( css ) {
+        file.contents = new Buffer( css.css );
+        file.path = gutil.replaceExtension( file.path, ".css" );
 
-          if ( file.sourceMap ) {
-            // TODO: add source map stuff?
-            gutil.log( "LESS Source mapping not implemented" );
-          }
-
-          done( null, file );
-        },
-        function( err ) {
-          err.lineNumber = err.line;
-          err.fileName = err.filename;
-          err.message = err.message + " in file " + err.fileName + " line #" + err.lineNumber;
-
-          done( new gutil.PluginError( "my-less", err ) );
+        if ( file.sourceMap ) {
+          // TODO: add source map stuff?
+          gutil.log( "LESS Source mapping not implemented" );
         }
-      );
+
+        done( null, file );
+      })
+      .catch( function( err ) {
+        err.lineNumber = err.line;
+        err.fileName = err.filename;
+        err.message = err.message + " in file " + err.fileName + " line #" + err.lineNumber;
+
+        gutil.log( "LESS error ", err.message );
+
+        done( new gutil.PluginError( "my-less", err ) );
+      });
   });
 };
 
@@ -76,6 +77,7 @@ runWatchCompile = function( src, dest, task, opts ) {
 gulp.task( "less:dev", function() {
   return runCompile( config.less.compile, config.less.out.dev, lessOptions );
 });
+
 // WATCH LESS COMPILE TO DEV
 gulp.task( "less:watch", [ "less:watch:dev" ]);
 gulp.task( "less:watch:dev", function() {
