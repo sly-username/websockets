@@ -29,10 +29,21 @@
   -ms-transition: all .4s ease-in-out;
   -o-transition: all .4s ease-in-out;
   transition: all .4s ease-in-out;
+
+
+  height: inherit;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  text-align: center;
 }
 
 .back {
   visibility: visible;
+  height: inherit;
+  position: absolute;
+  top: 0;
+  z-index: 10;
   -webkit-transform: rotateY(-180deg);
   -moz-transform: rotateY(-180deg);
   -webkit-transform-style: preserve-3d;
@@ -44,7 +55,4 @@
   -ms-transition: all .4s ease-in-out;
   -o-transition: all .4s ease-in-out;
   transition: all .4s ease-in-out;
-
-//  -webkit-backface-visibility: hidden;
-//  backface-visibility: hidden;
 }
