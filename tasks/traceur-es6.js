@@ -57,9 +57,9 @@ compileES6 = function( options ) {
 
     // Log work
     gutil.log(
-      "\n\tCompiling: " + oldPath +
+      "Traceur-Compiler\n\tCompiling: " + oldPath +
       // "\n\tTo: " + file.path +
-      "\n\tNamed: " + opts.moduleName
+      "\n\t" + opts.script ? "Named: " + opts.moduleName : "As Script"
     );
 
     this.push( file );

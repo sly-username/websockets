@@ -1,0 +1,44 @@
+
+
+/***
+ * Keyframes mixin
+ * .keyframes( @name:string, @rules:{ keyframe block } );
+ *
+ * This will build a set of keyframe definitions with the given
+ * prefixes.
+ *
+ * Example:
+ ```less
+  .keyframes("my-fade-animation", {
+    from {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.3;
+    }
+    to{
+      opacity: 1;
+    }
+  });
+ ```
+***/
+.keyframes( @name, @rules ) {
+  @-webkit-keyframes @name {
+    @rules();
+  }
+  @keyframes @name {
+    @rules();
+  }
+}
+
+/***
+ * Animation property mixin
+ * .animation();
+ *
+ * Example:
+ *   .animation( ~"my-fade-animation 3s" );
+***/
+.animation( @animation ) when ( isstring(@animation) ) {
+  -webkit-animation+: @animation;
+          animation+: @animation;
+}
