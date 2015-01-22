@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <base href="/" />
+  <title>Eardish</title>
   <link rel="shortcut icon" href="assets/favicon.ico" />
 
   <!-- Vendor Scripts -->
@@ -66,7 +67,6 @@
     </video>
   </ed-modal>
 </div>
-
 <style>
   #a-button {
     position: fixed;
@@ -78,24 +78,25 @@
   }
 </style>
 <script>
-  var modal = document.querySelector("ed-modal");
+  ( function( document ) {
+    var modal = document.querySelector("ed-modal");
 
-  document.addEventListener( "polymer-ready", function () {
-    console.log( "polymer-ready", performance.now() );
-    console.log(modal.trigger); // #a-button
-    modal.trigger = ".b-button";
+    document.addEventListener( "polymer-ready", function () {
+      console.log( "polymer-ready", performance.now() );
+      console.log(modal.trigger); // #a-button
+      modal.trigger = ".b-button";
 
-    console.log(modal.clickoff); // true
-    modal.clickoff = false;
+      console.log(modal.clickoff); // true
+      modal.clickoff = false;
 
-    console.log(modal.closebutton); // true
-    modal.closebutton = false;
+      console.log(modal.closebutton); // true
+      modal.closebutton = false;
 
-    modal.open();
+      modal.open();
 
-    modal.close();
-  });
-
+      modal.close();
+    });
+  })( document );
 </script>
 
 <div class="left">
@@ -142,7 +143,6 @@
     <img src="http://png-5.findicons.com/files/icons/1617/circular/16/smiley_smile.png" alt="radio button icon" />
   </radio-select>
 </div>
-
 <style>
   radio-select {
     border: 3px solid green;
@@ -154,12 +154,13 @@
     border-color: purple;
   }
 </style>
-
 <script>
-  var radios = document.querySelectorAll("radio-select[value=privacy]");
-  Array.prototype.forEach.call(radios, function(radio){
-    radio.disabled = false;
-  });
+  (function( document ){
+    var radios = document.querySelectorAll("radio-select[value=privacy]");
+    Array.prototype.forEach.call(radios, function(radio){
+      radio.disabled = false;
+    });
+  })( document );
 </script>
 
 <div class="left hidden">
@@ -244,55 +245,90 @@
   </scroll-box-vertical>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <on-off on-text="Yes" off-text="No" checked></on-off>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
 </div>
 
-<script>
-  // script required for <img-placeholder>
-  document.addEventListener('polymer-ready', function() {
-    document.createElement("img-placeholder").imageMap = (function(){
-      var urlPrefix = "http://",
-          urlPostfix = ".com/200/300",
-          map = {},
-          imageNames = [
-            "fillmurray",
-            "placecage"
-          ];
-
-      imageNames.forEach( function ( imageName ){
-        map[imageName] = urlPrefix + imageName + urlPostfix;
-      });
-      return map;
-    })();
-  });
-</script>
-
-
+<!-- REMOVE FOR PRODUCTION -->
 <script id="reload-tag" type="text/javascript">
-  if( (/^local.eardish|localhost|:5115/g).test(location.host) ){
-    document.write(
-        "<script src=\"http://" +
-        (location.host || "localhost").split(":")[0] +
-        ":35729/livereload.js\"></" +
-        "script>"
-    );
-  }
+  (function( window, document ){
+    // Live Reload Script
+    if( ( /^local.eardish|localhost|:5115/g ).test( location.host ) ) {
+      document.write(
+          "<script src=\"http://" +
+          ( location.host || "localhost" ).split( ":" )[0] +
+          ":35729/livereload.js\"></" +
+          "script>"
+      );
+    }
 
-  // Remove this script tag
-  var here = document.getElementById("reload-tag");
-  setTimeout(function(){
-    document.body.removeChild(here);
-  }, 200);
+    // Remove this script tag
+    window.setTimeout(function(){
+      document.body.removeChild(this);
+    }.bind( document.getElementById( "reload-tag" ) ), 200);
+  })( window, document );
 </script>
+
+<style type="text/css">
+  #mocha-tests {
+    position: absolute;
+    left: 0;
+    bottom: 0.5%;
+    margin: 0 0.5%;
+    padding: 0;
+    width: 99%;
+    height: 85%;
+    background-color: white;
+    z-index: 9998;
+  }
+  #show-hide-tests {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9999;
+  }
+  #mocha-tests.hidden, #mocha-tests.hide{
+    display: none;
+  }
+</style>
+<script type="text/javascript">
+  (function( document ){
+
+    var iframe = document.createElement( "iframe" ),
+      button = document.createElement( "button" );
+
+    iframe.src = "./tests.html";
+    iframe.id = "mocha-tests";
+    iframe.className = "hidden";
+
+    button.innerHTML = "Show Tests";
+    button.id = "show-hide-tests";
+
+    button.addEventListener( "click", function( event ) {
+      if ( ( /hidden|hide/g ).test( iframe.className ) ) {
+        iframe.className = iframe.className.split(" ").filter( function( strClass ) {
+          return strClass !== "hidden" && strClass !== "hide";
+        }).join( " " ).trim();
+        button.innerHTML = "Hide Tests";
+      } else {
+        iframe.className = iframe.className + " hidden";
+        button.innerHTML = "Show Tests";
+      }
+    });
+
+    document.body.appendChild( iframe );
+    document.body.appendChild( button );
+  })( document );
+</script>
+<!-- END REMOVE FOR PRODUCTION -->
 
 </body>
 </html>

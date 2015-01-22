@@ -7,7 +7,9 @@ var gulp = require( "gulp" ),
   defaults = require( "lodash" ).defaults,
   less = require( "less" ),
   lessOptions,
+  transformDirName,
   runCompile,
+  runWatchCompile,
   myLessCompile;
 
 // Options
@@ -15,6 +17,10 @@ lessOptions = {
   "no-ie-compat": true,
   compress: false,
   paths: config.less.includePaths
+};
+
+transformDirName = function( src, srcDir, destDir ) {
+  return path.dirname( src.replace( srcDir, destDir ) );
 };
 
 /* jshint -W071 */
@@ -62,19 +68,19 @@ runCompile = function( src, dest, opts ) {
     .pipe( gulp.dest( dest ) );
 };
 
+runWatchCompile = function( src, dest, task, opts ) {
+  // TODO abstract watch task?
+};
+
 // COMPILE DEV
 gulp.task( "less:dev", function() {
   return runCompile( config.less.compile, config.less.out.dev, lessOptions );
 });
-
 // WATCH LESS COMPILE TO DEV
-gulp.task( "less:watch", function() {
-  var transformDirName = function( src, srcDir, destDir ) {
-    return path.dirname( src.replace( srcDir, destDir ) );
-  };
-
+gulp.task( "less:watch", [ "less:watch:dev" ]);
+gulp.task( "less:watch:dev", function() {
   // regular watch included less, recompile all
-  gulp.watch( config.less.included, [ "less" ]);
+  gulp.watch( config.less.included, [ "less:dev" ]);
 
   // watch all non-include and compile per file
   return gulp.watch( config.less.compile )
@@ -90,9 +96,11 @@ gulp.task( "less:watch", function() {
 });
 
 // COMPILE FOR PRODUCTION
-// TODO MINIMIZE AND OTHER OPTIMIZATIONS
+// TODO PRODUCTION OPTIMIZATIONS
 gulp.task( "less:prod", function() {
-  return runCompile( config.less.compile, config.less.out.prod, lessOptions );
+  var opts = defaults( {}, lessOptions );
+  opts.compress = true;
+  return runCompile( config.less.compile, config.less.out.prod, opts );
 });
 
 gulp.task( "less", [ "less:dev" ]);

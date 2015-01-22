@@ -25,8 +25,10 @@ paths.prod = join( paths.build, "prod" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
-  dev: join( paths.dev, "vendor" ),
-  prod: join( paths.prod, "vendor" ),
+  out: {
+    dev: join( paths.dev, "vendor" ),
+    prod: join( paths.prod, "vendor" )
+  },
   src: [
       // Stuff in bower_components
     // Web Components Shim
@@ -61,7 +63,13 @@ paths.vendor = {
     ).concat([
       // Stuff in node_modules
       join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
+  tests: [
+    join( "mocha", "mocha.js" ),
+    join( "mocha", "mocha.css" ),
+    join( "chai", "chai.js" ),
+    join( "chai-as-promised", "lib", "chai-as-promised.js" )
+  ].map( function( p ) { return join( paths.nodeModules, p ); } )
 };
 
 /*** TODO COPY (FOR PROD) ***/
@@ -70,13 +78,20 @@ paths.vendor = {
 paths.symlink = {
   src: [
     // don't link these
-    // less, markdown, es6 js,
+    // less, markdown, es6 js, test html,
     join( "!**", "*.less" ),
     join( "!**", "*.md" ),
     join( "!**", "*.es6.js" ),
+    join( "!**", "*.tests.html" ),
+    join( "!**", "*.tests.js" ),
+    join( "!**", ".new" ),
 
     // link these (everything else)
     join( paths.client, "**", "*.*" )
+  ],
+  tests: [
+    join( paths.client, "**", "*.tests.html" ),
+    join( paths.client, "**", "*.tests.js" )
   ]
 };
 
@@ -97,15 +112,22 @@ paths.less = {
   ].map( function( s ) { return join( paths.client, s ); })
 };
 paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
-// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat(paths.less.src);
+// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
-  // todo add proper ignore for node_modules and bower_components
-  all:    join( paths.root, "**", "*.js" ),
+  all:            [
+    join( "!", paths.bowerComponents ),
+    join( "!", paths.nodeModules ),
+    join( paths.root, "**", "*.js" )
+  ],
   client: join( paths.client, "**", "*.js" ),
-  tasks:  join( paths.tasks, "**", "*.js" ),
-  tests:  join( paths.tests, "**", "*.js" ),
+  tasks: join( paths.tasks, "**", "*.js" ),
+  tests: join( paths.tests, "**", "*.js" ),
+  clientTests: [
+    join( paths.client, "**", "*.tests.js" ),
+    join( paths.client, "**", "*.tests.html" )
+  ],
   server: join( paths.server, "**", "*.js" ),
   es6: {
     all: join( paths.root, "**", "*.es6.js" ),
@@ -145,6 +167,70 @@ paths.traceur = {
     dev: paths.dev,
     prod: paths.prod
   }
+};
+
+/*** TESTING ***/
+paths.testing = {
+  index: join( paths.tests, "index.tests.html" ),
+  client: {
+    js: join( paths.client, "**", "*.tests.js" ),
+    html: join( paths.client, "**", "*.tests.html" )
+  },
+  tests: join( paths.tests, "**", "*.js" )
+};
+paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ) {
+  return paths.testing.client[ prop ];
+});
+
+/*** KARMA ***/
+paths.karma = {
+  rc: join( paths.root, "karma.conf.js" ),
+  base: paths.dev,
+  port: 9876,
+  files: ( function() {
+    var files = [];
+
+    // load vendor scripts in correct order
+    [
+      "webcomponents.js",
+      "polymer.js",
+      "traceur-runtime.js",
+      "es6-module-loader.js",
+      "system.js"
+    ].forEach( function( vendor ) {
+        files.push({
+          pattern: join( "vendor", vendor ),
+          watched: false,
+          included: true,
+          served: true
+        });
+      });
+
+    // load html tests files
+    files.push({
+      pattern: "**/*.tests.html",
+      watched: false,
+      included: true,
+      served: true
+    });
+
+    // make sure everything else is served
+    files.push({
+      pattern: "**/*.*",
+      watched: true,
+      included: false,
+      served: true
+    });
+
+    return files;
+  })(),
+  exclude: [
+    "index.html",
+    "tests.html",
+    "**/.new/*.*",
+    "**/ed-components.html",
+    "**/ui-components.html"
+  ]
 };
 
 /*** LOGGING ***/

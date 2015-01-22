@@ -15,4 +15,5 @@ clean = function( path ) {
 
 gulp.task( "clean:dev", clean( config.dev ) );
 gulp.task( "clean:prod", clean( config.prod ) );
+
 gulp.task( "clean", [ "clean:dev", "clean:prod" ]);
