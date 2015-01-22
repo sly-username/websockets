@@ -26,7 +26,12 @@ currentTasks = process.argv.reduce(
     consume: false,
     list: []
   }
-).list;
+).list.filter( function( name ) { return !( /(^--)|(\/)/g ).test( name ); });
+
+// assume default
+if ( currentTasks.length === 0 && process.argv.length === 2 ) {
+  currentTasks.push( "default" );
+}
 
 // rewrite stdout & stderr write functions to write to log
 ( function( ogout, ogerr ) {
@@ -44,6 +49,12 @@ currentTasks = process.argv.reduce(
           fs.appendFile( filename, chunk );
         };
     };
+
+  // if no valid task names, don't overwrite write.
+  if ( currentTasks.length === 0 ) {
+    // don't rewrite
+    return;
+  }
 
   // rewrite stdout
   process.stdout.write = createWrite( ogout );
@@ -96,8 +107,6 @@ gulp.task( "watch", function( done ) {
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-    "jscs:client",
-    "lint:client",
     [
       "less:dev",
       "symlink:dev",
@@ -112,14 +121,45 @@ gulp.task( "build:dev", function( done ) {
 gulp.task( "dev", function( done ) {
   run(
     "build:dev",
+    "build:tests:only",
     "server:dev",
     [
-      // todo make specific 'watch:dev' tasks?
       "less:watch",
       "jscs:watch",
       "lint:watch",
       "traceur:watch"
     ],
+    "jscs:client",
+    "lint:client",
+    "tdd",
+    done
+  );
+});
+
+/*** TESTING TASKS ***/
+gulp.task( "build:tests:only", function( done ) {
+  run(
+    [
+      "symlink:tests",
+      "vendor:tests",
+      "build:tests:index"
+    ],
+    done
+  );
+});
+
+gulp.task( "build:tests", function( done ) {
+  run(
+    "build:dev",
+    "build:tests:only",
+    done
+  );
+});
+
+gulp.task( "test", function( done ) {
+  run(
+    "build:tests",
+    "karma:once",
     done
   );
 });

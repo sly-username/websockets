@@ -18,7 +18,7 @@ options = {
 
 // Apparently putting something after jscs makes it work fine.
 // Will need to keep an eye out for changes to gulp-jscs, looks
-//   like there a ticket to enable better error reporting.
+//   like there is a ticket to enable better error reporting.
 hackPipeErrorPatch = function() {
   return through.obj( function( file, encoding, done ) {
     done();

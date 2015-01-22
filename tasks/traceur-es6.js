@@ -9,12 +9,17 @@ var gulp = require( "gulp" ),
   traceur = require( "traceur" ),
   traceurOptions,
   compileES6,
+  transformDirName,
   runCompileFromToWithOptions;
 
 // Compiler Options
 traceurOptions = {
   modules: "instantiate",
   experimental: true
+};
+
+transformDirName = function( src, srcDir, destDir ) {
+  return path.dirname( src.replace( srcDir, destDir ) );
 };
 
 // Traceur compile in a stream!
@@ -75,11 +80,8 @@ gulp.task( "traceur:dev", function() {
 });
 
 /* watch task */
-gulp.task( "traceur:watch", function() {
-  var transformDirName = function( src, srcDir, destDir ) {
-    return path.dirname( src.replace( srcDir, destDir ) );
-  };
-//  gulp.watch( config.traceur.src,  [ "traceur:dev" ]);
+gulp.task( "traceur:watch", [ "traceur:watch:dev" ] );
+gulp.task( "traceur:watch:dev", function() {
   return gulp.watch( config.traceur.src )
     .on( "change", function( event ) {
       var destinationPath;
