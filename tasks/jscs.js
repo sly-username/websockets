@@ -44,7 +44,7 @@ watchPathWithOptionsAndName = function( path, opts, name ) {
   return gulp.watch( path )
     .on( "change", function( event ) {
       if ( event.type !== "deleted" ) {
-        gutil.log( name + " saw a change at: " + event.path );
+        gutil.log( name + " saw a change at: " + gutil.colors.magenta( event.path ) );
         return runForPathWithOptions( event.path, opts );
       }
     });
@@ -62,8 +62,8 @@ registerTaskPair = function( appendToName, path, opts ) {
 
 // Iterate over taskNames to generate tasks at given prop name
 config.jscs.taskNames.forEach( function( property ) {
-  if ( config.jscs[property] ) {
-    registerTaskPair( property, config.jscs[property], options );
+  if ( config.jscs[ property ] ) {
+    registerTaskPair( property, config.jscs[ property ], options );
   }
 });
 
