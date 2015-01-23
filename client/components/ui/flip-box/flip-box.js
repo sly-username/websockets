@@ -29,6 +29,13 @@
     },
     attached: function() {
       this.btnListener();
+      this.boxListener();
+      // if trigger === "btn"
+      //  then attach this.btnListener;
+      //  also make button visible;
+
+      // if trigger === "box"
+      //  then attach this.boxListener
     },
 
     /*** FUNCTIONS ***/
@@ -40,11 +47,13 @@
         }.bind( this ) );
       }.bind( this ) );
     },
-
-    // if trigger = box
-    //  then add hover listener to this.flipboxContainer
-    //    when user hovers over the flip box,
-    //      then class will change from front/back or back/front
+    boxListener: function() {
+      this.boxes.forEach( function( box ) {
+        box.addEventListener( "mouseover", function() {
+          this.flipBoxContainer.classList.toggle( "flip" );
+        }.bind( this ) );
+      }.bind( this ) );
+    },
 
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
