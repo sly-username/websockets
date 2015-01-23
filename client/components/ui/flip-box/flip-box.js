@@ -29,12 +29,6 @@
     },
     attached: function() {
       this.btnListener();
-
-      if ( this.attributes.animation.value === "vert" ) {
-        this.boxes.forEach( function( box ) {
-          box.classList.add( "vert" );
-        });
-      }
     },
 
     /*** FUNCTIONS ***/
