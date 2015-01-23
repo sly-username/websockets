@@ -26,7 +26,7 @@ watchPathWithOptionsAndName = function( path, opts, name ) {
   return gulp.watch( path )
     .on( "change", function( event ) {
       if ( event.type !== "deleted" ) {
-        gutil.log( name + " saw a change at: " + event.path );
+        gutil.log( name + " saw a change at: " + gutil.colors.magenta( event.path ) );
         return runForPathWithOptions( event.path, opts );
       }
     });
@@ -45,8 +45,8 @@ registerTaskPair = function( appendToName, path, opts ) {
 
 // Iterate taskNames in config.eslint building tasks for paths
 config.eslint.taskNames.forEach( function( property ) {
-  if ( config.eslint[property] ) {
-    registerTaskPair( property, config.eslint[property], options );
+  if ( config.eslint[ property ] ) {
+    registerTaskPair( property, config.eslint[ property ], options );
   }
 });
 

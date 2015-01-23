@@ -1,7 +1,7 @@
 /**
  * Created by rj on 11/24/14.
  */
-import helloGoodbye from "./hello-goodbye.es6";
+import helloGoodbye from "./hello-goodbye";
 
 // Hello ES6
 helloGoodbye.hello( "ES6" );
