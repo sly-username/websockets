@@ -2,7 +2,7 @@
  * Created by rj on 11/24/14.
  */
 
-System.map[ "hello-goodbye" ] = "domain/hello-goodbye.es6";
+System.map[ "hello-goodbye" ] = "domain/hello-goodbye";
 
 var hello = ( name ) => {
     console.log( "Hello " + name );
