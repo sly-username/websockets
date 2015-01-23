@@ -1,0 +1,13 @@
+/***
+ * Transform property mixin
+ * .transform();
+ *
+ * Example:
+ * .transform( skewX(25deg) rotate(25deg) translateX(17px) );
+***/
+.transform( @transform ) {
+  -webkit-transform+_: @transform;
+      -ms-transform+_: @transform;
+          transform+_: @transform;
+}
+

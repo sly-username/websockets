@@ -1,0 +1,28 @@
+@import "mixins/prefixes/animations.less";
+@import "mixins/prefixes/transforms.less";
+
+//#less-test {
+//  background: pink;
+//  .animation(myAnimation; 5s; @iterationCount: infinite);
+//}
+//
+//.keyframes( myAnimation, {
+//  0% {
+//    background: pink;
+//  }
+//  25% {
+//    background: orange;
+//  }
+//  50% {
+//    background: blue;
+//  }
+//  100% {
+//    background: red;
+//  }
+//});
+
+#less-test {
+  background: yellow;
+  .transform( skewX(25deg) rotate(25deg) translateX(17px) );
+
+}

@@ -1,5 +1,3 @@
-
-
 /***
  * Keyframes mixin
  * .keyframes( @name:string, @rules:{ keyframe block } );
@@ -36,9 +34,22 @@
  * .animation();
  *
  * Example:
- *   .animation( ~"my-fade-animation 3s" );
+ *   .animation( my-fade-animation 3s, my-other-animation 2s 2s ; );
 ***/
-.animation( @animation ) when ( isstring(@animation) ) {
+.animation( @animation ) {
   -webkit-animation+: @animation;
-          animation+: @animation;
+  animation+: @animation;
+}
+
+/***
+ * Example
+ * .animation( my-fade-animation; 3s; @delay: 2s );
+ *
+ * This animation mixin requires a name and duration, but for every additional parameter
+ * there needs to be an @parameterName: value. The following is a list of usable parameters
+ * for this mixin
+ ***/
+.animation( @name; @duration; @timingFn: ease; @delay: 0s; @iterationCount: 1; @direction: normal; @fillMode: none; @playState: running ) {
+  -webkit-animation+: @name @duration @timingFn @delay @iterationCount @direction @fillMode @playState;
+          animation+: @name @duration @timingFn @delay @iterationCount @direction @fillMode @playState;
 }
