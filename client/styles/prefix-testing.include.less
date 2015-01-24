@@ -1,28 +1,73 @@
 @import "mixins/prefixes/animations.less";
 @import "mixins/prefixes/transforms.less";
+@import "mixins/prefixes/filters.less";
+@import "mixins/prefixes/flex.less";
 
-//#less-test {
-//  background: pink;
-//  .animation(myAnimation; 5s; @iterationCount: infinite);
-//}
-//
-//.keyframes( myAnimation, {
-//  0% {
-//    background: pink;
-//  }
-//  25% {
-//    background: orange;
-//  }
-//  50% {
-//    background: blue;
-//  }
-//  100% {
-//    background: red;
-//  }
-//});
+// Animation Tests
+#less-test-animation {
+  background: pink;
+  .animation(myAnimation; 5s; @iterationCount: infinite);
+}
 
-#less-test {
+.keyframes( myAnimation, {
+  0% {
+    background: pink;
+  }
+  25% {
+    background: orange;
+  }
+  50% {
+    background: blue;
+  }
+  100% {
+    background: red;
+  }
+});
+
+// Transformation Tests
+#less-test-transform {
   background: yellow;
+  height: 40px;
+  width: 40px;
   .transform( skewX(25deg) rotate(25deg) translateX(17px) );
 
+}
+
+// Filter Tests
+#less-test-filter {
+  background: pink;
+  height: 40px;
+  width: 40px;
+  .filter( sepia(50%) blur(1px) );
+}
+
+// Flex Tests
+#less-test-flex {
+  background: red;
+  height: 100px;
+  width: 600px;
+  .flex-container( row-reverse nowrap; @justifyContent: space-around; @alignItems: center );
+}
+
+#flex-item1 {
+  background: lightcoral;
+  height: 80px;
+  width: 100px;
+  .flex-item(@grow: 2);
+  .flex-order( 2 );
+}
+#flex-item2 {
+  background: lightgoldenrodyellow;
+  height: 80px;
+  width: 70px;
+  .flex-item(@grow: 1);
+  .flex-order( 1 );
+  .align-self( flex-end );
+}
+#flex-item3 {
+  background: lightgreen;
+  height: 80px;
+  width: 40px;
+  .flex-item(@grow: 1);
+  .flex-order( 3 );
 }

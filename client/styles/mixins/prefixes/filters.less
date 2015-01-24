@@ -1,0 +1,19 @@
+/***
+ * Filter property mixin
+ * .filter();
+ *
+ * No support for IE and Opera Mini
+ *
+ * Example:
+ * .filter( grayscale(50%) contrast(20%) );
+ *
+ * The following is a list of methods for this mixin:
+ * none, blur(), brightnress(), contrast(), url(),
+ * drop-shadow(), grayscale(), hue-rotate(), invert(),
+ * opacity(), sepia()
+***/
+.filter( @filter ) {
+  -webkit-filter+_: @filter;
+  filter+_: @filter;
+}
+

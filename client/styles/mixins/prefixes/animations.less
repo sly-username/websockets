@@ -47,7 +47,15 @@
  *
  * This animation mixin requires a name and duration, but for every additional parameter
  * there needs to be an @parameterName: value. The following is a list of usable parameters
- * for this mixin
+ * for this mixin are as follows:
+ * @name: a name of your custom animation
+ * @duration: a numerical value (Default is 0)
+ * @timingFn: linear, ease, ease-in, ease-out, ease-in-out, cubic-bezier(n,n,n,n)
+ * @delay: a numerical value (Default is 0)
+ * @iterationCount: a numerical value (Default is 1), infinite
+ * @direction: normal, reverse, alternate, alternate-reverse
+ * @fillMode: none, forwards, backwards, both
+ * @playState: paused, running
  ***/
 .animation( @name; @duration; @timingFn: ease; @delay: 0s; @iterationCount: 1; @direction: normal; @fillMode: none; @playState: running ) {
   -webkit-animation+: @name @duration @timingFn @delay @iterationCount @direction @fillMode @playState;
