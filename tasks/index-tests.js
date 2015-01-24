@@ -49,9 +49,11 @@ transformFileListToImports = function( files ) {
 };
 
 // Gulp Plugin style testing index page builder
-buildIndexPage = function( toReplace, imports ) {
+buildIndexPage = function( replaceString, imports ) {
   return through.obj( function( file, enc, done ) {
-    file.contents = new Buffer( file.contents.toString( "utf8" ).replace( toReplace, imports ) );
+    file.contents = new Buffer(
+      file.contents.toString( "utf8" ).replace( replaceString, imports )
+    );
     file.path = file.path.replace( /index\.tests\.html$/, "tests.html" );
     done( null, file );
   });

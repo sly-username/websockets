@@ -8,6 +8,10 @@
     "Promise": true,
     "chai": true
   },
+  "settings": {
+    "ecmascript": 6,
+    "jsx": false
+  },
   "rules": {
     // 0 is off
     // 1 is warning

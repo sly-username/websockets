@@ -82,6 +82,7 @@ paths.symlink = {
     join( "!**", "*.less" ),
     join( "!**", "*.md" ),
     join( "!**", "*.es6.js" ),
+    join( "!" + paths.client, "domain", "**", "*.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
     join( "!**", ".new" ),
@@ -163,7 +164,11 @@ paths.eslint = {
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
   bin: join( paths.nodeModules, ".bin", "traceur" ),
-  src: join( paths.client, "**", "*.es6.js" ),
+  src: [
+    join( paths.client, "**", "*.es6.js" ),
+    join( paths.client, "domain", "**", "*.js" )
+  ],
+  compileAsScript: new RegExp( "^" + join( paths.client, "components" ) + "|\\.script\\.js$" ),
   out: {
     dev: paths.dev,
     prod: paths.prod
@@ -210,15 +215,31 @@ paths.karma = {
     // load html tests files
     files.push({
       pattern: "**/*.tests.html",
-      watched: false,
+      watched: true,
       included: true,
+      served: true
+    });
+
+    // Watch JS Files
+    files.push({
+      pattern: "**/*.js",
+      watched: true,
+      included: false,
+      served: true
+    });
+
+    // Watch HTML Files
+    files.push({
+      pattern: "**/*.html",
+      watched: true,
+      included: false,
       served: true
     });
 
     // make sure everything else is served
     files.push({
       pattern: "**/*.*",
-      watched: true,
+      watched: false,
       included: false,
       served: true
     });

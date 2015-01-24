@@ -9,17 +9,12 @@ var gulp = require( "gulp" ),
   traceur = require( "traceur" ),
   traceurOptions,
   compileES6,
-  transformDirName,
   runCompileFromToWithOptions;
 
 // Compiler Options
 traceurOptions = {
   modules: "instantiate",
   experimental: true
-};
-
-transformDirName = function( src, srcDir, destDir ) {
-  return path.dirname( src.replace( srcDir, destDir ) );
 };
 
 // Traceur compile in a stream!
@@ -35,15 +30,16 @@ compileES6 = function( options ) {
       return done();
     }
 
+    gutil.log( "Source: " + gutil.colors.magenta( oldPath ) );
+
     // if in components folder, set to script mode
     // else set module name
-    if ( ( new RegExp( "^" + config.client + ".components" ) ).test( oldPath ) ) {
-      gutil.log( "Compiling as Script" );
+    if ( config.traceur.compileAsScript.test( oldPath ) ) {
+      gutil.log( "Compiling as " + gutil.colors.blue( "Script" ) );
       opts.script = true;
     } else {
-      // jscs:disable disallowSpaceBeforeBinaryOperators
-      opts.moduleName = oldPath.replace( config.client + "/", "" ).replace( /\.js$/, "" );
-      // jscs:enable
+      opts.moduleName = oldPath.replace( config.client + path.sep, "" ).replace( /\.js$/, "" );
+      gutil.log( "Compiling as module with name: " + gutil.colors.magenta( opts.moduleName ) );
     }
 
     // Get ES6 File Content
@@ -52,15 +48,6 @@ compileES6 = function( options ) {
     // Update File Object
     file.contents = new Buffer( traceur.compile( es6, opts ) );
     file.path = oldPath;
-    // TODO: Do we remove the .es6 postfix?
-//    file.path = oldPath.replace(/\.es6\.js$/, ".js");
-
-    // Log work
-    gutil.log(
-      "Traceur-Compiler\n\tCompiling: " + oldPath +
-      // "\n\tTo: " + file.path +
-      "\n\t" + opts.script ? "Named: " + opts.moduleName : "As Script"
-    );
 
     this.push( file );
     done();
@@ -68,7 +55,9 @@ compileES6 = function( options ) {
 };
 
 runCompileFromToWithOptions = function( src, dest, opts ) {
-  return gulp.src( src )
+  return gulp.src( src, {
+    base: config.client
+  })
     .pipe( plumber() )
     .pipe( compileES6( opts ) )
     .pipe( gulp.dest( dest ) );
@@ -76,6 +65,7 @@ runCompileFromToWithOptions = function( src, dest, opts ) {
 
 /* dev task */
 gulp.task( "traceur:dev", function() {
+  gutil.log( "Traceur Compiling" );
   return runCompileFromToWithOptions( config.traceur.src, config.traceur.out.dev, traceurOptions );
 });
 
@@ -84,12 +74,9 @@ gulp.task( "traceur:watch", [ "traceur:watch:dev" ] );
 gulp.task( "traceur:watch:dev", function() {
   return gulp.watch( config.traceur.src )
     .on( "change", function( event ) {
-      var destinationPath;
-
       if ( event.type !== "deleted" ) {
-        destinationPath = transformDirName( event.path, config.client, config.dev );
-        gutil.log( "Traceur saw a change at " + event.path );
-        return runCompileFromToWithOptions( event.path, destinationPath, traceurOptions );
+        gutil.log( "Traceur Watch saw a change" );
+        return runCompileFromToWithOptions( event.path, config.traceur.out.dev, traceurOptions );
       }
     });
 });

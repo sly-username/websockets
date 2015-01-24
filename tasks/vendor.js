@@ -16,7 +16,7 @@ var gulp = require( "gulp" ),
 join = function( folder, file ) {
   var basename = path.basename( file.path );
 
-  if ( (/\.min\.js$/).test( basename ) ) {
+  if ( ( /\.min\.js$/ ).test( basename ) ) {
     gutil.log( "rewrite min: " + basename );
     basename = basename.replace( /\.min\.js$/, ".js" );
   }
