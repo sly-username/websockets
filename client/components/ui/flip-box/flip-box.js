@@ -18,58 +18,77 @@
       this._animation = value;
       return value;
     },
-    /*** LIFECYCLE ***/
+
+  /*** LIFECYCLE ***/
     ready: function() {
-      this.flipBoxContainer = this.shadowRoot.getElementsByClassName( "flipbox-container" )[ 0 ];
-      this.backFlipBox = this.shadowRoot.getElementById( "back" );
-      this.frontFlipBox = this.shadowRoot.getElementById( "front" );
-      this.flipBoxButtons = Array.from( this.shadowRoot.getElementsByClassName( "flipbox-button" ) );
-      this.boxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
+      this.boxEventList = [ "mouseover", "touchmove" ];
+      this.btnEventList = [ "mousedown", "touchstart" ];
+      this.flipBoxContainer = this.shadowRoot
+        .getElementsByClassName( "flipbox-container" )[ 0 ];
+      this.flipListener = this.flip.bind( this );
       this._trigger = this.attributes.trigger.value;
+      this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
+      this.triggerButtons = Array.from( this.shadowRoot
+        .getElementsByClassName( "flipbox-button" ) );
     },
     attached: function() {
-      this.btnListener();
-      this.boxListener();
-      // if trigger === "btn"
-      //  then attach this.btnListener;
-      //  also make button visible;
-
-      // if trigger === "box"
-      //  then attach this.boxListener
+      if ( this._trigger === "btn" ) {
+        this.addBtnListener();
+      } else if ( this._trigger === "box" ) {
+        this.addBoxListener();
+      }
     },
-
-    /*** FUNCTIONS ***/
+  /*** FUNCTIONS ***/
+    flip: function() {
+      this.flipBoxContainer.classList.toggle( "flip" );
+    },
     /* EVENT LISTENERS */
-    btnListener: function() {
-      this.flipBoxButtons.forEach( function( button ) {
-        button.addEventListener( "mousedown", function() {
-          this.flipBoxContainer.classList.toggle( "flip" );
+    addBtnListener: function() {
+      this.triggerButtons.forEach( function( button ) {
+        this.btnEventList.forEach( function( event ) {
+          button.addEventListener( event, this.flipListener );
         }.bind( this ) );
       }.bind( this ) );
     },
-    boxListener: function() {
-      this.boxes.forEach( function( box ) {
-        box.addEventListener( "mouseover", function() {
-          this.flipBoxContainer.classList.toggle( "flip" );
+    removeBtnListener: function() {
+      this.triggerButtons.forEach( function( button ) {
+        this.btnEventList.forEach( function( event ) {
+          button.removeEventListener( event, this.flipListener );
         }.bind( this ) );
       }.bind( this ) );
     },
-
+    addBoxListener: function() {
+      this.triggerBoxes.forEach( function( box ) {
+        this.boxEventList.forEach( function( event ) {
+          box.addEventListener( event, this.flipListener );
+        }.bind( this ) );
+      }.bind( this ) );
+    },
+    removeBoxListener: function() {
+      this.triggerBoxes.forEach( function( box ) {
+        this.boxEventList.forEach( function( event ) {
+          box.removeEventListener( event, this.flipListener );
+        }.bind( this ) );
+      }.bind( this ) );
+    },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
-
       if ( attrName === "trigger" ) {
-        //this.triggerListener( "remove" );
-        this.trigger = newVal;
-        //this.triggerListener( "add" );
-      } else {
-        this[attrName] = newVal === "";
+        if ( newVal === "btn" ) {
+          this.removeBoxListener();
+          this.trigger = newVal;
+          this.addbtnListener();
+        } else if ( newVal === "box" ) {
+          this.removeBtnListener();
+          this.trigger = newVal;
+          this.addBoxListener();
+        }
       }
-
-      if ( attrName === "closebutton" ) {
-        this.modalButton.classList[ !newVal && newVal !== "" ? "add" : "remove" ]( "hidden" );
-      }
+    },
+    animationChanged: function( oldVal, newVal ) {
+      this.animation = newVal;
+      this.setAttribute( "animation", newVal );
     }
-    /*** END FUNCTIONS ***/
+  /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
