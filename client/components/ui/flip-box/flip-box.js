@@ -33,9 +33,9 @@
     },
     attached: function() {
       if ( this._trigger === "btn" ) {
-        this.addBtnListener();
+        this.btnListener( "add" );
       } else if ( this._trigger === "box" ) {
-        this.addBoxListener();
+        this.boxListener( "add" );
       }
     },
   /*** FUNCTIONS ***/
@@ -43,31 +43,17 @@
       this.flipBoxContainer.classList.toggle( "flip" );
     },
     /* EVENT LISTENERS */
-    addBtnListener: function() {
+    btnListener: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         this.btnEventList.forEach( function( event ) {
-          button.addEventListener( event, this.flipListener );
+          button[ flag + "EventListener" ]( event, this.flipListener );
         }.bind( this ) );
       }.bind( this ) );
     },
-    removeBtnListener: function() {
-      this.triggerButtons.forEach( function( button ) {
-        this.btnEventList.forEach( function( event ) {
-          button.removeEventListener( event, this.flipListener );
-        }.bind( this ) );
-      }.bind( this ) );
-    },
-    addBoxListener: function() {
+    boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
-          box.addEventListener( event, this.flipListener );
-        }.bind( this ) );
-      }.bind( this ) );
-    },
-    removeBoxListener: function() {
-      this.triggerBoxes.forEach( function( box ) {
-        this.boxEventList.forEach( function( event ) {
-          box.removeEventListener( event, this.flipListener );
+          box[ flag + "EventListener" ]( event, this.flipListener );
         }.bind( this ) );
       }.bind( this ) );
     },
@@ -75,13 +61,13 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       if ( attrName === "trigger" ) {
         if ( newVal === "btn" ) {
-          this.removeBoxListener();
+          this.boxListener( "remove" );
           this.trigger = newVal;
-          this.addbtnListener();
+          this.btnListener( "add" );
         } else if ( newVal === "box" ) {
-          this.removeBtnListener();
+          this.btnListener( "remove" );
           this.trigger = newVal;
-          this.addBoxListener();
+          this.boxListener( "add" );
         }
       }
     },
