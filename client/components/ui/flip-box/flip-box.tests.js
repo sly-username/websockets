@@ -24,7 +24,7 @@
         expect( div )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<new-element></new-element>" );
+          .and.equals( "<flip-box></flip-box>" );
 
         div.removeChild( element );
         expect( div )
