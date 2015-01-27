@@ -19,7 +19,7 @@
       return value;
     },
 
-  /*** LIFECYCLE ***/
+    /*** LIFECYCLE ***/
     ready: function() {
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
@@ -38,7 +38,7 @@
         this.boxListener( "add" );
       }
     },
-  /*** FUNCTIONS ***/
+    /*** FUNCTIONS ***/
     flip: function() {
       this.flipBoxContainer.classList.toggle( "flip" );
     },
@@ -75,6 +75,6 @@
       this.animation = newVal;
       this.setAttribute( "animation", newVal );
     }
-  /*** END FUNCTIONS ***/
+    /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
