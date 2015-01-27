@@ -1,0 +1,421 @@
+/*eslint-env mocha */
+( function( window, document, chai ) {
+  "use strict";
+  var expect = chai.expect,
+    newCheckSelect = function() {
+      return document.createElement( "checkbox-select" );
+    };
+
+  suite( "<checkbox-select>", function() {
+    suite( "Life Cycle", function() {
+      test( "ready: can create from document.createElement", function() {
+        expect( document.createElement( "checkbox-select" ) )
+          .to.have.property( "outerHTML" )
+          .that.is.a( "string" )
+          .and.equals( "<checkbox-select></checkbox-select>" );
+      });
+
+      test( "attached: can be added to the DOM", function() {
+        var checkSelect = newCheckSelect(),
+            div = document.createElement( "div" );
+
+        div.appendChild( checkSelect );
+
+        expect( div )
+          .to.have.property( "innerHTML" )
+          .that.is.a( "string" )
+          .and.equals( "<checkbox-select></checkbox-select>" );
+      });
+
+      test( "detached: can be removed from another Dom element", function() {
+        var checkSelect = newCheckSelect(),
+            div = document.createElement( "div" );
+
+        div.appendChild( checkSelect );
+        div.removeChild( checkSelect );
+
+        expect( div )
+          .to.have.property( "outerHTML" )
+          .that.is.a( "string" )
+          .and.equals( "<div></div>" );
+      });
+    });
+
+    suite( "Attributes and Properties", function() {
+
+      // Tests for Value attribute and property
+      suite( "value", function() {
+        test( "can be set via setattribute", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Attribute";
+
+          checkSelect.setAttribute( "value", setTo );
+
+          expect( checkSelect.hasAttribute( "value" ) ).to.equal( true );
+
+          expect( checkSelect.getAttribute( "value" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.equals( "<checkbox-select value=\"" + setTo + "\"></checkbox-select>" );
+        });
+
+        test( "can be set via property \"value\"", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Property";
+
+          checkSelect.value = setTo;
+
+          expect( checkSelect )
+            .to.have.property( "value" )
+            .that.equals( setTo );
+        });
+
+        test( "setting via \"setAttribute\" reflects to property \"value\"", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Attribute";
+
+          checkSelect.setAttribute( "value", setTo );
+
+          expect( checkSelect )
+            .to.have.property( "value" )
+            .that.equals( setTo )
+            .and.equals( checkSelect.getAttribute( "value" ) );
+        });
+
+        test( "setting via property \"value\" reflects to attribute \"value\"", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Property";
+
+          checkSelect.value = setTo;
+
+          expect( checkSelect.hasAttribute( "value" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "value" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo )
+            .and.equal( checkSelect.value );
+        });
+      });
+
+      // Tests for Name attribute and property
+      suite( "name", function() {
+        test( "can be set via setattribute", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Attribute";
+
+          checkSelect.setAttribute( "name", setTo );
+
+          expect( checkSelect.hasAttribute( "name" ) ).to.equal( true );
+
+          expect( checkSelect.getAttribute( "name" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.equals( "<checkbox-select name=\"" + setTo + "\"></checkbox-select>" );
+        });
+
+        test( "can be set via property \"value\"", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Property";
+
+          checkSelect.name = setTo;
+
+          expect( checkSelect )
+            .to.have.property( "name" )
+            .that.equals( setTo );
+        });
+
+        test( "setting via \"setAttribute\" reflects to property \"name\"", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Attribute";
+
+          checkSelect.setAttribute( "name", setTo );
+
+          expect( checkSelect )
+            .to.have.property( "name" )
+            .that.equals( setTo )
+            .and.equals( checkSelect.getAttribute( "name" ) );
+        });
+
+        test( "setting via property \"value\" reflects to attribute \"name\"", function() {
+          var checkSelect = newCheckSelect(),
+              setTo = "Set via Property";
+
+          checkSelect.value = setTo;
+
+          expect( checkSelect.hasAttribute( "name" ) ).to.equal( true );;
+          expect( checkSelect.getAttribute( "name" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo )
+            .and.equal( checkSelect.name );
+        });
+      });
+
+      // Tests for Required attribute and property
+      suite( "required", function() {
+        test( "has default value: false", function() {
+          var checkSelect = newCheckSelect();
+
+          expect( checkSelect )
+            .to.have.property( "required" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "can be set via attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "required", "" );
+
+          expect( checkSelect.hasAttribute( "required" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "required" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select required=\"\"></checkbox-select>" );
+        });
+
+        test( "can be set via attribute reflect property", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "required", "" );
+
+          expect( checkSelect )
+            .to.have.property( "required" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "can be set via property reflect attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.required = true;
+
+          expect( checkSelect.hasAttribute( "required" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "required" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+        });
+
+        test( "can be removed via attribute", function(){
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "required", "" );
+          checkSelect.removeAttribute( "required" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+
+        test( "can be removed via attribute reflect property", function(){
+          var checkSelect = newCheckSelect();
+
+          checkSelect.required = true;
+          checkSelect.removeAttribute( "required" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+
+        test( "can be removed via property reflect attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "required", "" );
+          checkSelect.required = false;
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+      });
+
+      // Tests for checked attribute and property
+      suite( "checked", function() {
+        test( "has default value: false", function() {
+          var checkSelect = newCheckSelect();
+
+          expect( checkSelect )
+            .to.have.property( "checked" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        })
+
+        test( "can be set via attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "checked", "" );
+
+          expect( checkSelect.hasAttribute( "checked" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "checked" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select checked=\"\"></checkbox-select>" );
+        });
+
+        test( "can be set via attribute reflect property", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "checked", "" );
+
+          expect( checkSelect )
+            .to.have.property( "checked" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "can be set via property reflect attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.checked = true;
+
+          expect( checkSelect.hasAttribute( "checked" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "checked" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+        });
+
+        test( "can be removed via attribute", function(){
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "checked", "" );
+          checkSelect.removeAttribute( "checked" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+
+        test( "can be removed via attribute reflect property", function(){
+          var checkSelect = newCheckSelect();
+
+          checkSelect.checked = true;
+          checkSelect.removeAttribute( "checked" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+
+        test( "can be removed via property reflect attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "checked", "" );
+          checkSelect.checked = false;
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+      });
+
+      // Tests for disabled attribute and property
+      suite( "disabled", function() {
+        test( "has default value: false", function() {
+          var checkSelect = newCheckSelect();
+
+          expect( checkSelect )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        })
+
+        test( "can be set via attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "disabled", "" );
+
+          expect( checkSelect.hasAttribute( "disabled" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "disabled" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select disabled=\"\"></checkbox-select>" );
+        });
+
+        test( "can be set via attribute reflect property", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "disabled", "" );
+
+          expect( checkSelect )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "can be set via property reflect attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.checked = true;
+
+          expect( checkSelect.hasAttribute( "disabled" ) ).to.equal( true );
+          expect( checkSelect.getAttribute( "disabled" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+        });
+
+        test( "can be removed via attribute", function(){
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "disabled", "" );
+          checkSelect.removeAttribute( "disabled" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+
+        test( "can be removed via attribute reflect property", function(){
+          var checkSelect = newCheckSelect();
+
+          checkSelect.disabled = true;
+          checkSelect.removeAttribute( "disabled" );
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+
+        test( "can be removed via property reflect attribute", function() {
+          var checkSelect = newCheckSelect();
+
+          checkSelect.setAttribute( "disabled", "" );
+          checkSelect.checked = false;
+
+          expect( checkSelect )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<checkbox-select></checkbox-select>" );
+        });
+      });
+    });
+
+    suite( "Events", function() {
+      test( "customEvent", function( done ) {});
+    });
+  });
+})( window, document, window.chai );
