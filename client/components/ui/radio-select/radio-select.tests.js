@@ -4,6 +4,19 @@
   var expect = chai.expect,
       newRadioSelect = function() {
         return document.createElement( "radio-select" );
+      },
+      // get wrapper from document or for karma, create a new div and append it to the DOM
+      testingWrapper = document.getElementById( "radio-select-test-wrapper" ) ||
+        ( function() {
+          var wrapper = document.createElement( "div" );
+          document.body.appendChild( wrapper );
+          return wrapper;
+        })(),
+      // original state to test against
+      originalWrapperOuterHTML = testingWrapper.outerHTML,
+      // re-sets wrapper to blank
+      resetWrapper = function() {
+        testingWrapper.innerHTML = "";
       };
 
   suite( "<radio-select>", function() {
@@ -16,28 +29,30 @@
       });
 
       test( "attached: can be added to the DOM", function() {
-        var radioSelect = newRadioSelect(),
-            div = document.createElement( "div" );
+        var radioSelect = newRadioSelect();
 
-        div.appendChild( radioSelect );
+        testingWrapper.appendChild( radioSelect );
 
-        expect( div )
+        expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<radio-select></radio-select>" );
+
+        resetWrapper();
       });
 
       test( "detached: can be removed from another Dom element", function() {
-        var radioSelect = newRadioSelect(),
-            div = document.createElement( "div" );
+        var radioSelect = newRadioSelect();
 
-        div.appendChild( radioSelect );
-        div.removeChild( radioSelect );
+        testingWrapper.appendChild( radioSelect );
+        testingWrapper.removeChild( radioSelect );
 
-        expect( div )
+        expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<div></div>" );
+          .and.equals( originalWrapperOuterHTML );
+
+        resetWrapper();
       });
     });
 
