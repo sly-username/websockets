@@ -69,11 +69,10 @@
           this.trigger = newVal;
           this.boxListener( "add" );
         }
+      } else if ( attrName === "animation" ) {
+        this.animation = newVal;
+        this.setAttribute( "animation", newVal );
       }
-    },
-    animationChanged: function( oldVal, newVal ) {
-      this.animation = newVal;
-      this.setAttribute( "animation", newVal );
     }
     /*** END FUNCTIONS ***/
   });
