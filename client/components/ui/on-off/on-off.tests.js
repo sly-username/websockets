@@ -5,6 +5,19 @@
   var expect = chai.expect,
     newOnOff = function() {
       return document.createElement( "on-off" );
+    },
+    // get wrapper from document or for karma, create a new div and append it to the DOM
+    testingWrapper = document.getElementById( "on-off-test-wrapper" ) ||
+      ( function() {
+        var wrapper = document.createElement( "div" );
+        document.body.appendChild( wrapper );
+        return wrapper;
+      })(),
+    // original state to test against
+    originalWrapperOuterHTML = testingWrapper.outerHTML,
+    // re-sets wrapper to blank
+    resetWrapper = function() {
+      testingWrapper.innerHTML = "";
     };
 
   suite( "<on-off>", function() {
@@ -17,28 +30,30 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var onOff = newOnOff(),
-          div = document.createElement( "div" );
+        var onOff = newOnOff();
 
-        div.appendChild( onOff );
+        testingWrapper.appendChild( onOff );
 
-        expect( div )
+        expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<on-off></on-off>" );
+
+        resetWrapper();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var onOff = newOnOff(),
-          div = document.createElement( "div" );
+        var onOff = newOnOff();
 
-        div.appendChild( onOff );
-        div.removeChild( onOff );
+        testingWrapper.appendChild( onOff );
+        testingWrapper.removeChild( onOff );
 
-        expect( div )
+        expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<div></div>" );
+          .and.equals( originalWrapperOuterHTML );
+
+        resetWrapper();
       });
     });
 
@@ -289,190 +304,373 @@
             .and.equal( "" );
         });
 
-        // TODO
-        test( "can be set via property \"checked\"", function() {});
+        test( "can be set via property \"checked\"", function() {
+          var onOff = newOnOff();
 
-        test( "setting via attribute reflects to property", function() {});
+          onOff.checked = true;
+          expect( onOff )
+            .to.have.property( "checked" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
 
-        test( "setting via property reflects to attribute", function() {});
+        test( "setting via attribute reflects to property", function() {
+          var onOff = newOnOff();
+
+          onOff.setAttribute( "checked", "" );
+          expect( onOff )
+            .to.have.property( "checked" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via property reflects to attribute", function() {
+          var onOff = newOnOff();
+
+          onOff.checked = true;
+          expect( onOff.hasAttribute( "checked" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+        });
 
         // remove attribute sets to false
-        test( "removing attribute reflects to attribute", function() {});
+        test( "removing attribute reflects to attribute", function() {
+          var onOff = newOnOff();
 
-        test( "setting property to false removes attribute", function() {});
+          onOff.setAttribute( "checked", "" );
+          expect( onOff.hasAttribute( "checked" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
 
-        test( "old tests: ", function() {
-          var element = newOnOff();
+          onOff.removeAttribute( "checked" );
+          expect( onOff )
+            .to.have.property( "checked" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
 
-          expect( element )
+        test( "setting property to false removes attribute", function() {
+          var onOff = newOnOff();
+
+          onOff.checked = true;
+          expect( onOff )
             .to.have.property( "checked" )
             .that.is.a( "boolean" )
             .and.equals( true );
 
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off checked=\"\"></on-off>" );
+          expect( onOff.hasAttribute( "checked" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
 
-          element.removeAttribute( "checked" );
-          expect( element )
+          onOff.checked = false;
+          expect( onOff )
             .to.have.property( "checked" )
             .that.is.a( "boolean" )
             .and.equals( false );
 
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off></on-off>" );
-
-          element.checked = true;
-          expect( element )
-            .to.have.property( "checked" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
-
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off checked=\"\"></on-off>" );
-
-          element.checked = false;
-          expect( element )
-            .to.have.property( "checked" )
-            .that.is.a( "boolean" )
-            .and.equals( false );
-
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off></on-off>" );
+          expect( onOff.hasAttribute( "checked" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( false );
         });
       });
 
-      suite( "disabled", function() {
-        test( "Still To Do", function() {
-          var element = newOnOff();
+      suite( "disabled / disabled", function() {
+        test( "has default value: false", function() {
+          var onOff = newOnOff();
 
           // Check default setup
-          expect( element )
+          expect( onOff )
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
+        });
+
+        test( "can be set via \"setAttribute\"", function() {
+          var onOff = newOnOff();
 
           // Set to be disabled
-          element.setAttribute( "disabled", "" );
-          expect( element )
+          onOff.setAttribute( "disabled", "" );
+          expect( onOff.hasAttribute( "disabled" ) ).to.equal( true );
+          expect( onOff.getAttribute( "disabled" ) )
+            .to.be.a( "string" )
+            .and.equal( "" );
+        });
+
+        test( "can be set via property \"disabled\"", function() {
+          var onOff = newOnOff();
+
+          onOff.disabled = true;
+          expect( onOff )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via attribute reflects to property", function() {
+          var onOff = newOnOff();
+
+          onOff.setAttribute( "disabled", "" );
+          expect( onOff )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via property reflects to attribute", function() {
+          var onOff = newOnOff();
+
+          onOff.disabled = true;
+          expect( onOff.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+        });
+
+        // remove attribute sets to false
+        test( "removing attribute reflects to attribute", function() {
+          var onOff = newOnOff();
+
+          onOff.setAttribute( "disabled", "" );
+          expect( onOff.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+
+          onOff.removeAttribute( "disabled" );
+          expect( onOff )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "setting property to false removes attribute", function() {
+          var onOff = newOnOff();
+
+          onOff.disabled = true;
+          expect( onOff )
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( true );
 
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off disabled=\"\"></on-off>" );
+          expect( onOff.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
 
-          element.removeAttribute( "disabled" );
-          expect( element )
+          onOff.disabled = false;
+          expect( onOff )
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
 
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off></on-off>" );
-
-          element.disabled = true;
-          expect( element )
-            .to.have.property( "disabled" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
-
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off disabled=\"\"></on-off>" );
-
-          element.disabled = false;
-          expect( element )
-            .to.have.property( "disabled" )
-            .that.is.a( "boolean" )
-            .and.equals( false );
-
-          expect( element )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<on-off></on-off>" );
+          expect( onOff.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( false );
         });
       });
     });
 
     suite( "Events", function() {
-      var countEvents;
-      setup( function() {
-        countEvents = ( function() {
-          var count = 0;
-          return function() {
-            count += 1;
-            return count;
-          };
-        })();
+      suite( "On Event", function() {
+        test( "on event fires when clicked", function( done ) {
+          var onOff = newOnOff();
+
+          onOff.checked = false;
+          onOff.disabled = false;
+
+          onOff.addEventListener( "on", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "on" );
+
+            expect( event )
+              .to.have.deep.property( "detail.msg", "on" );
+
+            done();
+          });
+
+          // Fire "attachedCallback"
+          testingWrapper.appendChild( onOff );
+
+          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
+
+          resetWrapper();
+        });
+
+        test( "on event fires when checked property changed", function( done ) {
+          var onOff = newOnOff();
+          onOff.checked = false;
+
+          onOff.addEventListener( "on", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "on" );
+
+            expect( event )
+              .to.have.deep.property( "detail.msg", "on" );
+
+            done();
+          });
+
+          // Fire "attachedCallback"
+          testingWrapper.appendChild( onOff );
+
+          // should fire "on" and "toggle" event
+          onOff.checked = true;
+
+          resetWrapper();
+        });
       });
 
-      test( "on event fires when checked property changed", function( done ) {
-        var element = newOnOff();
-        element.checked = false;
+      suite( "Off Event", function() {
+        test( "off event fires when clicked", function( done ) {
+          var onOff = newOnOff();
 
-        element.addEventListener( "on", function( event ) {
-          console.log( "on fired", event );
-          expect( event )
-            .to.be.an.instanceof( CustomEvent )
-            .and.to.have.property( "target", element )
-            .and.to.have.property( "srcElement", element )
-            .and.to.have.property( "type", "on" )
-            .and.to.have.deep.property( "detail.msg", "on" );
+          // set on
+          onOff.checked = true;
 
-          done();
+          onOff.addEventListener( "off", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "off" );
+
+            expect( event )
+              .to.have.deep.property( "detail.msg", "off" );
+
+            done();
+          });
+
+          // Fire "attachedCallback"
+          testingWrapper.appendChild( onOff );
+
+          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
+
+          resetWrapper();
         });
 
-        // should fire "on" and "toggle" event
-        element.checked = true;
+        test( "off event fires when checked property changed", function( done ) {
+          var onOff = newOnOff();
+
+          onOff.checked = true;
+
+          onOff.addEventListener( "off", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "off" );
+
+            expect( event )
+              .to.have.deep.property( "detail.msg", "off" );
+
+            done();
+          });
+
+          testingWrapper.appendChild( onOff );
+
+          onOff.checked = false;
+
+          resetWrapper();
+        });
       });
 
-      test( "off", function( done ) {
-        var element = newOnOff();
-        element.checked = true;
+      suite( "Toggle Event", function() {
+        test( "toggle event fires when clicked on", function( done ) {
+          var onOff = newOnOff();
 
-        element.addEventListener( "off", function( event ) {
-          console.log( "off fired", event );
-          expect( event )
-            .to.be.an.instanceof( CustomEvent )
-            .and.to.have.property( "target", element )
-            .and.to.have.property( "srcElement", element )
-            .and.to.have.property( "type", "off" )
-            .and.to.have.deep.property( "detail.msg", "off" );
+          onOff.checked = false;
 
-          if ( countEvents() === 2 ) {
+          onOff.addEventListener( "toggle", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "msg", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "state", "on" );
+
             done();
-          }
+          });
+
+          testingWrapper.appendChild( onOff );
+
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
+
+          resetWrapper();
         });
 
-        element.addEventListener( "toggle", function( event ) {
-          console.log( "toggle(off) fired", event );
-          expect( event )
-            .to.be.an.instanceof( CustomEvent )
-            .and.to.have.property( "target", element )
-            .and.to.have.property( "srcElement", element )
-            .and.to.have.property( "type", "toggle" )
-            .and.to.have.deep.property( "detail.msg", "off" );
+        test( "toggle event fires when clicked off", function( done ) {
+          var onOff = newOnOff();
 
-          if ( countEvents() === 2 ) {
+          // set on
+          onOff.checked = true;
+
+          onOff.addEventListener( "toggle", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "msg", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "state", "off" );
+
             done();
-          }
+          });
+
+          // Fire "attachedCallback"
+          testingWrapper.appendChild( onOff );
+
+          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
+
+          resetWrapper();
         });
 
-        // should fire "off" and "toggle" events
-        element.checked = false;
+        test( "toggle event fires when checked property changed", function( done ) {
+          var onOff = newOnOff();
+
+          onOff.checked = false;
+
+          onOff.addEventListener( "toggle", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "msg", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "state", "on" );
+
+            done();
+          });
+
+          testingWrapper.appendChild( onOff );
+
+          onOff.checked = true;
+
+          resetWrapper();
+        });
       });
     });
   });

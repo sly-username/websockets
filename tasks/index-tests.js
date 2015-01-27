@@ -1,6 +1,6 @@
 /*jscs:disable requirePaddingNewLinesInObjects */
 "use strict";
-// Read ./index.tests.html
+// Read ./tests.html
 // Find all files matching "client/components/**/*.test.html"
 // Add <link> tag for each component test file
 // Write out to build/tests/index.html
@@ -9,10 +9,16 @@ var gulp = require( "gulp" ),
 //  gutil = require( "gulp-util" ),
   through = require( "through2" ),
   config = require( "../config.paths.js" ),
-  separator = require( "path" ).sep,
-  toReplace = "<!-- INCLUDE COMPONENT TEST FILES -->",
+  path = require( "path" ),
+  separator = path.sep,
+  toReplace = {
+    imports: "<!-- INCLUDE COMPONENT TEST FILES -->",
+    wrappers: "<!-- INCLUDE TEST WRAPPERS -->"
+  },
   getTestFileList,
+  pathToElementName,
   transformFileListToImports,
+  transformFileListToTestWrappers,
   buildIndexPage;
 
 // Return promise that revolves to an array of absolute file names
@@ -41,10 +47,28 @@ getTestFileList = function() {
   });
 };
 
+pathToElementName = function( filePath, extension ) {
+  extension = extension || ".tests.html";
+  return path.basename( filePath, extension );
+};
+
 // Create an array of <link rel="import" /> elements for files in array
 transformFileListToImports = function( files ) {
-  return files.map( function( path ) {
-    return "<link rel=\"import\" href=\"" + path + "\" />";
+  return files.map( function( thisPath ) {
+    return "<link" +
+      " id=\"tests-import-" + pathToElementName( thisPath ) + "\"" +
+      " rel=\"import\"" +
+      " href=\"" + thisPath + "\" />";
+  });
+};
+
+// Create an array of <div id="element-name-test-wrapper" class="hidden"></div>
+// elements for files in the array, these get added for testing purposes
+transformFileListToTestWrappers = function( files ) {
+  return files.map( function( thisPath ) {
+    return "<div" +
+      " id=\"" + pathToElementName( thisPath ) + "-test-wrapper\"" +
+      " class=\"hidden\"></div>";
   });
 };
 
@@ -52,9 +76,8 @@ transformFileListToImports = function( files ) {
 buildIndexPage = function( replaceString, imports ) {
   return through.obj( function( file, enc, done ) {
     file.contents = new Buffer(
-      file.contents.toString( "utf8" ).replace( replaceString, imports )
+      file.contents.toString( "utf8" ).replace( replaceString, imports.join( "\n  " ) )
     );
-    file.path = file.path.replace( /index\.tests\.html$/, "tests.html" );
     done( null, file );
   });
 };
@@ -63,7 +86,8 @@ buildIndexPage = function( replaceString, imports ) {
 gulp.task( "build:tests:index", function() {
   return getTestFileList().then( function( files ) {
     return gulp.src( config.testing.index )
-      .pipe( buildIndexPage( toReplace, transformFileListToImports( files ) ) )
+      .pipe( buildIndexPage( toReplace.imports, transformFileListToImports( files ) ) )
+      .pipe( buildIndexPage( toReplace.wrappers, transformFileListToTestWrappers( files ) ) )
       .pipe( gulp.dest( config.dev ) );
   });
 });
