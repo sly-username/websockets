@@ -413,9 +413,5 @@
         });
       });
     });
-
-    suite( "Events", function() {
-      test( "customEvent", function( done ) {});
-    });
   });
 })( window, document, window.chai );
