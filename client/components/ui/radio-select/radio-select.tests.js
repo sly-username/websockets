@@ -57,7 +57,6 @@
     });
 
     suite( "Attributes and Properties", function() {
-
       // Tests for Value attribute and property
       suite( "value", function() {
         test( "can be set via setattribute", function() {
@@ -162,7 +161,7 @@
 
           radioSelect.value = setTo;
 
-          expect( radioSelect.hasAttribute( "name" ) ).to.equal( true );;
+          expect( radioSelect.hasAttribute( "name" ) ).to.equal( true );
           expect( radioSelect.getAttribute( "name" ) )
             .to.be.a( "string" )
             .that.equals( setTo )
@@ -219,7 +218,7 @@
             .and.equals( "" );
         });
 
-        test( "can be removed via attribute", function(){
+        test( "can be removed via attribute", function() {
           var radioSelect = newRadioSelect();
 
           radioSelect.setAttribute( "required", "" );
@@ -231,7 +230,7 @@
             .and.equals( "<radio-select></radio-select>" );
         });
 
-        test( "can be removed via attribute reflect property", function(){
+        test( "can be removed via attribute reflect property", function() {
           var radioSelect = newRadioSelect();
 
           radioSelect.required = true;
@@ -265,7 +264,7 @@
             .to.have.property( "checked" )
             .that.is.a( "boolean" )
             .and.equals( false );
-        })
+        });
 
         test( "can be set via attribute", function() {
           var radioSelect = newRadioSelect();
@@ -305,7 +304,7 @@
             .and.equals( "" );
         });
 
-        test( "can be removed via attribute", function(){
+        test( "can be removed via attribute", function() {
           var radioSelect = newRadioSelect();
 
           radioSelect.setAttribute( "checked", "" );
@@ -317,7 +316,7 @@
             .and.equals( "<radio-select></radio-select>" );
         });
 
-        test( "can be removed via attribute reflect property", function(){
+        test( "can be removed via attribute reflect property", function() {
           var radioSelect = newRadioSelect();
 
           radioSelect.checked = true;
@@ -351,7 +350,7 @@
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
-        })
+        });
 
         test( "can be set via attribute", function() {
           var radioSelect = newRadioSelect();
@@ -391,7 +390,7 @@
             .and.equals( "" );
         });
 
-        test( "can be removed via attribute", function(){
+        test( "can be removed via attribute", function() {
           var radioSelect = newRadioSelect();
 
           radioSelect.setAttribute( "disabled", "" );
@@ -403,7 +402,7 @@
             .and.equals( "<radio-select></radio-select>" );
         });
 
-        test( "can be removed via attribute reflect property", function(){
+        test( "can be removed via attribute reflect property", function() {
           var radioSelect = newRadioSelect();
 
           radioSelect.disabled = true;
