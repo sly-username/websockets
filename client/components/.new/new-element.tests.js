@@ -3,9 +3,6 @@
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
-    createNewElement = function() {
-      return document.createElement( "new-element" );
-    },
     // get wrapper from document or for karma, create a new div and append it to the DOM
     testingWrapper = document.getElementById( "new-element-test-wrapper" ) ||
       ( function() {
@@ -30,7 +27,7 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = createNewElement();
+        var newElement = document.createElement( "new-element" );
 
         testingWrapper.appendChild( newElement );
 
@@ -43,7 +40,7 @@
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var newElement = createNewElement();
+        var newElement = document.createElement( "new-element" );
 
         testingWrapper.appendChild( newElement );
         testingWrapper.removeChild( newElement );

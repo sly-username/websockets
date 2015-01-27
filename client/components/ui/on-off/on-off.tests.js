@@ -3,9 +3,6 @@
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
-    newOnOff = function() {
-      return document.createElement( "on-off" );
-    },
     // get wrapper from document or for karma, create a new div and append it to the DOM
     testingWrapper = document.getElementById( "on-off-test-wrapper" ) ||
       ( function() {
@@ -30,7 +27,7 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var onOff = newOnOff();
+        var onOff = document.createElement( "on-off" );
 
         testingWrapper.appendChild( onOff );
 
@@ -43,7 +40,7 @@
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var onOff = newOnOff();
+        var onOff = document.createElement( "on-off" );
 
         testingWrapper.appendChild( onOff );
         testingWrapper.removeChild( onOff );
@@ -60,14 +57,14 @@
     suite( "Attributes & Associated Properties", function() {
       suite( "on-text / onText", function() {
         test( "has default value: \"On\"", function() {
-          expect( newOnOff() )
+          expect( document.createElement( "on-off" ) )
             .to.have.property( "onText" )
             .that.is.a( "string" )
             .and.equals( "On" );
         });
 
         test( "can be set via \"setAttribute\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Attribute";
 
           onOff.setAttribute( "on-text", setTo );
@@ -84,7 +81,7 @@
         });
 
         test( "can be set via property \"onText\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.onText = setTo;
@@ -95,7 +92,7 @@
         });
 
         test( "setting via \"setAttribute\" reflects to property \"onText\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Attribute";
 
           onOff.setAttribute( "on-text", setTo );
@@ -107,7 +104,7 @@
         });
 
         test( "setting via property \"onText\" reflects to attribute \"on-text\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.onText = setTo;
@@ -120,7 +117,7 @@
         });
 
         test( "removing attribute \"on-text\" sets property back to default value", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Attribute";
 
           onOff.setAttribute( "on-text", setTo );
@@ -136,7 +133,7 @@
         });
 
         test( "setting \"onText\" to null resets property to default value", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.onText = setTo;
@@ -153,7 +150,7 @@
         });
 
         test( "setting \"onText\" to undefined resets property to default value", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.onText = setTo;
@@ -172,14 +169,14 @@
 
       suite( "off-text / offText", function() {
         test( "has default value: \"Off\"", function() {
-          expect( newOnOff() )
+          expect( document.createElement( "on-off" ) )
             .to.have.property( "offText" )
             .that.is.a( "string" )
             .and.equals( "Off" );
         });
 
         test( "can be set via \"setAttribute\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Attribute";
 
           onOff.setAttribute( "off-text", setTo );
@@ -196,7 +193,7 @@
         });
 
         test( "can be set via property \"offText\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.offText = setTo;
@@ -207,7 +204,7 @@
         });
 
         test( "setting via \"setAttribute\" reflects to property \"offText\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Attribute";
 
           onOff.setAttribute( "off-text", setTo );
@@ -219,7 +216,7 @@
         });
 
         test( "setting via property \"offText\" reflects to attribute \"off-text\"", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.offText = setTo;
@@ -232,7 +229,7 @@
         });
 
         test( "removing attribute \"off-text\" sets property back to default value", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Attribute";
 
           onOff.setAttribute( "off-text", setTo );
@@ -248,7 +245,7 @@
         });
 
         test( "setting \"offText\" to null resets property to default value", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.offText = setTo;
@@ -265,7 +262,7 @@
         });
 
         test( "setting \"offText\" to undefined resets property to default value", function() {
-          var onOff = newOnOff(),
+          var onOff = document.createElement( "on-off" ),
             setTo = "Set via Property";
 
           onOff.offText = setTo;
@@ -284,7 +281,7 @@
 
       suite( "checked / checked", function() {
         test( "has default value: false", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           // Check default setup
           expect( onOff )
@@ -294,7 +291,7 @@
         });
 
         test( "can be set via \"setAttribute\"", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           // Set to be checked
           onOff.setAttribute( "checked", "" );
@@ -305,7 +302,7 @@
         });
 
         test( "can be set via property \"checked\"", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = true;
           expect( onOff )
@@ -315,7 +312,7 @@
         });
 
         test( "setting via attribute reflects to property", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.setAttribute( "checked", "" );
           expect( onOff )
@@ -325,7 +322,7 @@
         });
 
         test( "setting via property reflects to attribute", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = true;
           expect( onOff.hasAttribute( "checked" ) )
@@ -335,7 +332,7 @@
 
         // remove attribute sets to false
         test( "removing attribute reflects to attribute", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.setAttribute( "checked", "" );
           expect( onOff.hasAttribute( "checked" ) )
@@ -350,7 +347,7 @@
         });
 
         test( "setting property to false removes attribute", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = true;
           expect( onOff )
@@ -376,7 +373,7 @@
 
       suite( "disabled / disabled", function() {
         test( "has default value: false", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           // Check default setup
           expect( onOff )
@@ -386,7 +383,7 @@
         });
 
         test( "can be set via \"setAttribute\"", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           // Set to be disabled
           onOff.setAttribute( "disabled", "" );
@@ -397,7 +394,7 @@
         });
 
         test( "can be set via property \"disabled\"", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.disabled = true;
           expect( onOff )
@@ -407,7 +404,7 @@
         });
 
         test( "setting via attribute reflects to property", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.setAttribute( "disabled", "" );
           expect( onOff )
@@ -417,7 +414,7 @@
         });
 
         test( "setting via property reflects to attribute", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.disabled = true;
           expect( onOff.hasAttribute( "disabled" ) )
@@ -427,7 +424,7 @@
 
         // remove attribute sets to false
         test( "removing attribute reflects to attribute", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.setAttribute( "disabled", "" );
           expect( onOff.hasAttribute( "disabled" ) )
@@ -442,7 +439,7 @@
         });
 
         test( "setting property to false removes attribute", function() {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.disabled = true;
           expect( onOff )
@@ -470,7 +467,7 @@
     suite( "Events", function() {
       suite( "On Event", function() {
         test( "on event fires when clicked", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = false;
           onOff.disabled = false;
@@ -498,7 +495,7 @@
         });
 
         test( "on event fires when checked property changed", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
           onOff.checked = false;
 
           onOff.addEventListener( "on", function( event ) {
@@ -527,7 +524,7 @@
 
       suite( "Off Event", function() {
         test( "off event fires when clicked", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           // set on
           onOff.checked = true;
@@ -555,7 +552,7 @@
         });
 
         test( "off event fires when checked property changed", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = true;
 
@@ -583,7 +580,7 @@
 
       suite( "Toggle Event", function() {
         test( "toggle event fires when clicked on", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = false;
 
@@ -613,7 +610,7 @@
         });
 
         test( "toggle event fires when clicked off", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           // set on
           onOff.checked = true;
@@ -644,7 +641,7 @@
         });
 
         test( "toggle event fires when checked property changed", function( done ) {
-          var onOff = newOnOff();
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = false;
 
