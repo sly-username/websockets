@@ -264,7 +264,7 @@
             .to.have.property( "checked" )
             .that.is.a( "boolean" )
             .and.equals( false );
-        })
+        });
 
         test( "can be set via attribute", function() {
           var checkSelect = newCheckSelect();
