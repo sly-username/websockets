@@ -161,7 +161,7 @@
 
           checkSelect.value = setTo;
 
-          expect( checkSelect.hasAttribute( "name" ) ).to.equal( true );;
+          expect( checkSelect.hasAttribute( "name" ) ).to.equal( true );
           expect( checkSelect.getAttribute( "name" ) )
             .to.be.a( "string" )
             .that.equals( setTo )
@@ -218,7 +218,7 @@
             .and.equals( "" );
         });
 
-        test( "can be removed via attribute", function(){
+        test( "can be removed via attribute", function() {
           var checkSelect = newCheckSelect();
 
           checkSelect.setAttribute( "required", "" );
@@ -230,7 +230,7 @@
             .and.equals( "<checkbox-select></checkbox-select>" );
         });
 
-        test( "can be removed via attribute reflect property", function(){
+        test( "can be removed via attribute reflect property", function() {
           var checkSelect = newCheckSelect();
 
           checkSelect.required = true;
@@ -304,7 +304,7 @@
             .and.equals( "" );
         });
 
-        test( "can be removed via attribute", function(){
+        test( "can be removed via attribute", function() {
           var checkSelect = newCheckSelect();
 
           checkSelect.setAttribute( "checked", "" );
@@ -316,7 +316,7 @@
             .and.equals( "<checkbox-select></checkbox-select>" );
         });
 
-        test( "can be removed via attribute reflect property", function(){
+        test( "can be removed via attribute reflect property", function() {
           var checkSelect = newCheckSelect();
 
           checkSelect.checked = true;
@@ -350,7 +350,7 @@
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
-        })
+        });
 
         test( "can be set via attribute", function() {
           var checkSelect = newCheckSelect();
@@ -390,7 +390,7 @@
             .and.equals( "" );
         });
 
-        test( "can be removed via attribute", function(){
+        test( "can be removed via attribute", function() {
           var checkSelect = newCheckSelect();
 
           checkSelect.setAttribute( "disabled", "" );
@@ -402,7 +402,7 @@
             .and.equals( "<checkbox-select></checkbox-select>" );
         });
 
-        test( "can be removed via attribute reflect property", function(){
+        test( "can be removed via attribute reflect property", function() {
           var checkSelect = newCheckSelect();
 
           checkSelect.disabled = true;
