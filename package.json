@@ -31,7 +31,7 @@
     "chai-as-promised": "=4.1.1",
     "dotenv": "=0.4.0",
     "gulp": "=3.8.10",
-    "gulp-eslint": "git://github.com/mrak/gulp-eslint#64463b0dab5156161679e2bb6ceeb8782364d747",
+    "gulp-eslint": "=0.2.2",
     "gulp-jscs": "=1.4.0",
     "gulp-plumber": "=0.6.6",
     "gulp-symlink": "=2.1.0",
