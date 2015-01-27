@@ -4,6 +4,19 @@
   var expect = chai.expect,
     newCheckSelect = function() {
       return document.createElement( "checkbox-select" );
+    },
+    // get wrapper from document or for karma, create a new div and append it to the DOM
+    testingWrapper = document.getElementById( "checkbox-select-test-wrapper" ) ||
+      ( function() {
+        var wrapper = document.createElement( "div" );
+        document.body.appendChild( wrapper );
+        return wrapper;
+      })(),
+    // original state to test against
+    originalWrapperOuterHTML = testingWrapper.outerHTML,
+    // re-sets wrapper to blank
+    resetWrapper = function() {
+      testingWrapper.innerHTML = "";
     };
 
   suite( "<checkbox-select>", function() {
@@ -16,33 +29,34 @@
       });
 
       test( "attached: can be added to the DOM", function() {
-        var checkSelect = newCheckSelect(),
-            div = document.createElement( "div" );
+        var checkSelect = newCheckSelect();
 
-        div.appendChild( checkSelect );
+        testingWrapper.appendChild( checkSelect );
 
-        expect( div )
+        expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<checkbox-select></checkbox-select>" );
+
+        resetWrapper();
       });
 
       test( "detached: can be removed from another Dom element", function() {
-        var checkSelect = newCheckSelect(),
-            div = document.createElement( "div" );
+        var checkSelect = newCheckSelect();
 
-        div.appendChild( checkSelect );
-        div.removeChild( checkSelect );
+        testingWrapper.appendChild( checkSelect );
+        testingWrapper.removeChild( checkSelect );
 
-        expect( div )
+        expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<div></div>" );
+          .and.equals( originalWrapperOuterHTML );
+
+        resetWrapper();
       });
     });
 
     suite( "Attributes and Properties", function() {
-
       // Tests for Value attribute and property
       suite( "value", function() {
         test( "can be set via setattribute", function() {
