@@ -26,7 +26,7 @@
         expect( document.createElement( "new-element" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<on-off></on-off>" );
+          .and.equals( "<new-element></new-element>" );
       });
 
       test( "attached: can be added to another DOM Element", function() {
