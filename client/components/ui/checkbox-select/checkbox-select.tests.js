@@ -26,9 +26,7 @@
       });
 
       test( "attached: can be added to the DOM", function() {
-        var checkSelect = document.createElement( "checkbox-select" );
-
-        testingWrapper.appendChild( checkSelect );
+        testingWrapper.appendChild( document.createElement( "checkbox-select" ) );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
@@ -169,9 +167,7 @@
       // Tests for Required attribute and property
       suite( "required", function() {
         test( "has default value: false", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
-
-          expect( checkSelect )
+          expect( document.createElement( "checkbox-select" ) )
             .to.have.property( "required" )
             .that.is.a( "boolean" )
             .and.equals( false );
@@ -255,9 +251,7 @@
       // Tests for checked attribute and property
       suite( "checked", function() {
         test( "has default value: false", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
-
-          expect( checkSelect )
+          expect( document.createElement( "checkbox-select" ) )
             .to.have.property( "checked" )
             .that.is.a( "boolean" )
             .and.equals( false );
@@ -341,9 +335,7 @@
       // Tests for disabled attribute and property
       suite( "disabled", function() {
         test( "has default value: false", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
-
-          expect( checkSelect )
+          expect( document.createElement( "checkbox-select" ) )
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
