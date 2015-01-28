@@ -26,9 +26,7 @@
       });
 
       test( "attached: can be added to the DOM", function() {
-        var radioSelect = document.createElement( "radio-select" );
-
-        testingWrapper.appendChild( radioSelect );
+        testingWrapper.appendChild( document.createElement( "radio-select" ) );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
@@ -169,9 +167,7 @@
       // Tests for Required attribute and property
       suite( "required", function() {
         test( "has default value: false", function() {
-          var radioSelect = document.createElement( "radio-select" );
-
-          expect( radioSelect )
+          expect( document.createElement( "radio-select" ) )
             .to.have.property( "required" )
             .that.is.a( "boolean" )
             .and.equals( false );
@@ -255,9 +251,7 @@
       // Tests for checked attribute and property
       suite( "checked", function() {
         test( "has default value: false", function() {
-          var radioSelect = document.createElement( "radio-select" );
-
-          expect( radioSelect )
+          expect( document.createElement( "radio-select" ) )
             .to.have.property( "checked" )
             .that.is.a( "boolean" )
             .and.equals( false );
@@ -341,9 +335,7 @@
       // Tests for disabled attribute and property
       suite( "disabled", function() {
         test( "has default value: false", function() {
-          var radioSelect = document.createElement( "radio-select" );
-
-          expect( radioSelect )
+          expect( document.createElement( "radio-select" ) )
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
@@ -427,13 +419,11 @@
 
     suite( "Events", function() {
       test( "uncheck other <radio-select> elements when one is checked", function() {
-        var radioSelect = document.createElement( "radio-select" ),
-            radioDupe = document.createElement( "radio-select" );
-
-        radioDupe.setAttribute( "checked", "" );
+        var radioSelect = document.createElement( "radio-select" );
         radioSelect.setAttribute( "checked", "" );
+        document.createElement( "radio-select" ).setAttribute( "checked", "" );
 
-        expect( radioDupe )
+        expect( radioSelect )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<radio-select></radio-select>" );
