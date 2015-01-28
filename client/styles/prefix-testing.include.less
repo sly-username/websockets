@@ -3,6 +3,7 @@
 @import "mixins/prefixes/filters.less";
 @import "mixins/prefixes/flex.less";
 @import "mixins/prefixes/masks.less";
+@import "mixins/prefixes/multiplecolumns.less";
 
 // Animation Tests
 #less-test-animation {
@@ -72,3 +73,13 @@
   .flex-item(@grow: 1);
   .flex-order( 3 );
 }
+
+// Masks Tests
+#less-test-masks {
+  background: lightblue;
+  height: 200px;
+  width: 200px;
+  .masks(url('https://n9neo.files.wordpress.com/2013/09/moon-ti-uccido.png'));
+}
+
+// Multiple Columns test
