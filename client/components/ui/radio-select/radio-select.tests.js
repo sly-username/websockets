@@ -2,9 +2,6 @@
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
-      newRadioSelect = function() {
-        return document.createElement( "radio-select" );
-      },
       // get wrapper from document or for karma, create a new div and append it to the DOM
       testingWrapper = document.getElementById( "radio-select-test-wrapper" ) ||
         ( function() {
@@ -29,7 +26,7 @@
       });
 
       test( "attached: can be added to the DOM", function() {
-        var radioSelect = newRadioSelect();
+        var radioSelect = document.createElement( "radio-select" );
 
         testingWrapper.appendChild( radioSelect );
 
@@ -42,7 +39,7 @@
       });
 
       test( "detached: can be removed from another Dom element", function() {
-        var radioSelect = newRadioSelect();
+        var radioSelect = document.createElement( "radio-select" );
 
         testingWrapper.appendChild( radioSelect );
         testingWrapper.removeChild( radioSelect );
@@ -60,7 +57,7 @@
       // Tests for Value attribute and property
       suite( "value", function() {
         test( "can be set via setattribute", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Attribute";
 
           radioSelect.setAttribute( "value", setTo );
@@ -77,7 +74,7 @@
         });
 
         test( "can be set via property \"value\"", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Property";
 
           radioSelect.value = setTo;
@@ -88,7 +85,7 @@
         });
 
         test( "setting via \"setAttribute\" reflects to property \"value\"", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Attribute";
 
           radioSelect.setAttribute( "value", setTo );
@@ -100,7 +97,7 @@
         });
 
         test( "setting via property \"value\" reflects to attribute \"value\"", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Property";
 
           radioSelect.value = setTo;
@@ -116,7 +113,7 @@
       // Tests for Name attribute and property
       suite( "name", function() {
         test( "can be set via setattribute", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Attribute";
 
           radioSelect.setAttribute( "name", setTo );
@@ -133,7 +130,7 @@
         });
 
         test( "can be set via property \"value\"", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Property";
 
           radioSelect.name = setTo;
@@ -144,7 +141,7 @@
         });
 
         test( "setting via \"setAttribute\" reflects to property \"name\"", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Attribute";
 
           radioSelect.setAttribute( "name", setTo );
@@ -156,7 +153,7 @@
         });
 
         test( "setting via property \"value\" reflects to attribute \"name\"", function() {
-          var radioSelect = newRadioSelect(),
+          var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Property";
 
           radioSelect.value = setTo;
@@ -172,7 +169,7 @@
       // Tests for Required attribute and property
       suite( "required", function() {
         test( "has default value: false", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           expect( radioSelect )
             .to.have.property( "required" )
@@ -181,7 +178,7 @@
         });
 
         test( "can be set via attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "required", "" );
 
@@ -197,7 +194,7 @@
         });
 
         test( "can be set via attribute reflect property", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "required", "" );
 
@@ -208,7 +205,7 @@
         });
 
         test( "can be set via property reflect attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.required = true;
 
@@ -219,7 +216,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "required", "" );
           radioSelect.removeAttribute( "required" );
@@ -231,7 +228,7 @@
         });
 
         test( "can be removed via attribute reflect property", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.required = true;
           radioSelect.removeAttribute( "required" );
@@ -243,7 +240,7 @@
         });
 
         test( "can be removed via property reflect attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "required", "" );
           radioSelect.required = false;
@@ -258,7 +255,7 @@
       // Tests for checked attribute and property
       suite( "checked", function() {
         test( "has default value: false", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           expect( radioSelect )
             .to.have.property( "checked" )
@@ -267,7 +264,7 @@
         });
 
         test( "can be set via attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "checked", "" );
 
@@ -283,7 +280,7 @@
         });
 
         test( "can be set via attribute reflect property", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "checked", "" );
 
@@ -294,7 +291,7 @@
         });
 
         test( "can be set via property reflect attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.checked = true;
 
@@ -305,7 +302,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "checked", "" );
           radioSelect.removeAttribute( "checked" );
@@ -317,7 +314,7 @@
         });
 
         test( "can be removed via attribute reflect property", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.checked = true;
           radioSelect.removeAttribute( "checked" );
@@ -329,7 +326,7 @@
         });
 
         test( "can be removed via property reflect attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "checked", "" );
           radioSelect.checked = false;
@@ -344,7 +341,7 @@
       // Tests for disabled attribute and property
       suite( "disabled", function() {
         test( "has default value: false", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           expect( radioSelect )
             .to.have.property( "disabled" )
@@ -353,7 +350,7 @@
         });
 
         test( "can be set via attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "disabled", "" );
 
@@ -369,7 +366,7 @@
         });
 
         test( "can be set via attribute reflect property", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "disabled", "" );
 
@@ -380,7 +377,7 @@
         });
 
         test( "can be set via property reflect attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.checked = true;
 
@@ -391,7 +388,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "disabled", "" );
           radioSelect.removeAttribute( "disabled" );
@@ -403,7 +400,7 @@
         });
 
         test( "can be removed via attribute reflect property", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.disabled = true;
           radioSelect.removeAttribute( "disabled" );
@@ -415,7 +412,7 @@
         });
 
         test( "can be removed via property reflect attribute", function() {
-          var radioSelect = newRadioSelect();
+          var radioSelect = document.createElement( "radio-select" );
 
           radioSelect.setAttribute( "disabled", "" );
           radioSelect.checked = false;
@@ -430,8 +427,8 @@
 
     suite( "Events", function() {
       test( "uncheck other <radio-select> elements when one is checked", function() {
-        var radioSelect = newRadioSelect(),
-            radioDupe = newRadioSelect();
+        var radioSelect = document.createElement( "radio-select" ),
+            radioDupe = document.createElement( "radio-select" );
 
         radioDupe.setAttribute( "checked", "" );
         radioSelect.setAttribute( "checked", "" );
