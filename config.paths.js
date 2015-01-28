@@ -177,7 +177,7 @@ paths.traceur = {
 
 /*** TESTING ***/
 paths.testing = {
-  index: join( paths.tests, "index.tests.html" ),
+  index: join( paths.tests, "tests.html" ),
   client: {
     js: join( paths.client, "**", "*.tests.js" ),
     html: join( paths.client, "**", "*.tests.html" )
