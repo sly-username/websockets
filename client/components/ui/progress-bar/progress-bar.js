@@ -24,15 +24,15 @@
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[0];
+      this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[ 0 ];
 
       // value
       this.value = parseInt( this.attributes.value.value, 10 );
 
       // text display
-      this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[0];
-      this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[0];
-      this.progressDisplay = this.shadowRoot.getElementsByClassName( "progress-display" )[0];
+      this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[ 0 ];
+      this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[ 0 ];
+      this.progressDisplay = this.shadowRoot.getElementsByClassName( "progress-display" )[ 0 ];
 
       // checks if attribute is an integer and sets Max
       if ( this.attributes.max ) {
@@ -49,7 +49,7 @@
       this.innerBar.style.width = this._valuePercentage + "%";
       // showValue
       if ( this.hasAttribute( "show-value" ) ) {
-        this.showValue = this.attributes["show-value"].value;
+        this.showValue = this.attributes[ "show-value" ].value;
       }
 
       // animation
@@ -67,7 +67,7 @@
       this.updateRange( "max", newVal );
     },
     updateRange: function( property, newVal ) {
-      this[property] = newVal;
+      this[ property ] = newVal;
       this.setAttribute( property, newVal );
 
       if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {

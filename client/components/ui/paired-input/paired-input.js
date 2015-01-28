@@ -52,7 +52,7 @@
       }
 
       /*eslint-disable*/
-      if ( !(/text|password|email|tel|number|url|search/).test( this.attributes.type.value ) ) {
+      if ( !( /text|password|email|tel|number|url|search/ ).test( this.attributes.type.value ) ) {
       /*eslint-enable*/
         this.setAttribute( "type", "text" );
       }

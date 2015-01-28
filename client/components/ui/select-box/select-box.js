@@ -22,21 +22,21 @@
       var i;
 
       for ( i = 0; i < this.listItems.length; i++ ) {
-        if ( this.listItems[i].children[0].checked ) {
+        if ( this.listItems[ i ].children[ 0 ].checked ) {
           return i;
         }
       }
     },
     set selectedIndex( value ) {
-      this.listItems[ parseInt( value, 10 ) ].children[0].checked = true;
+      this.listItems[ parseInt( value, 10 ) ].children[ 0 ].checked = true;
     },
     // value
     get value() {
       var i;
 
       for ( i = 0; i < this.listItems.length; i++ ) {
-        if ( this.listItems[i].children[0].checked ) {
-          return this.listItems[i].children[0].value;
+        if ( this.listItems[ i ].children[ 0 ].checked ) {
+          return this.listItems[ i ].children[ 0 ].value;
         }
       }
     },
@@ -45,7 +45,7 @@
     ready: function() {
       this.listItems = this.shadowRoot.getElementsByTagName( "li" );
       this.mainBox = this.shadowRoot.getElementById( "is-focus" );
-      this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[0];
+      this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[ 0 ];
 
       if ( this.size > 0 ) {
         this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
@@ -86,7 +86,7 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "required":
-          this.mainBox[newVal == null ? "removeAttribute" : "setAttribute"]( attrName, "" );
+          this.mainBox[ newVal == null ? "removeAttribute" : "setAttribute" ]( attrName, "" );
           break;
         default:
           // do nothing
