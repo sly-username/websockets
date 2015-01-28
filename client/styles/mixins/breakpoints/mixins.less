@@ -1,3 +1,38 @@
 
+@import "./queries.less";
 
+/**
+ *
+ * Breakpoints
+ *
+ *  -- Phone
+ *
+ *  -- Portrait
+ *
+ *  -- Landscape
+ *
+ *  -- Desktop
+ *
+ *
+ *
+ **/
 
+.phone( @rules ) {
+  .media( screen, {
+    @media (max-device-width: 500px) {
+      @rules();
+    }
+  });
+}
+
+.portrait( @rules ) {
+  .media( screen, @rules );
+}
+
+.landscape( @rules ) {
+  .media( screen, @rules );
+}
+
+.desktop( @rules ) {
+  .media( screen, @rules );
+}
