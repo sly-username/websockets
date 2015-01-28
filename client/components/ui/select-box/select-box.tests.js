@@ -3,6 +3,11 @@
   "use strict";
   var expect = chai.expect;
 
+  // THIS IS THE OLD VERSION
+  // PLEASE UPDATE THIS TO MATCH THE NEW STUFF IN
+  // .new/new-element.tests.js OR USE THE <on-off> TESTS
+  // AS A REFERENCE
+
   suite( "<select-box>", function() {
     var element;
     setup( function() {

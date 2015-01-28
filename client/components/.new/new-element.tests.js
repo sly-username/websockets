@@ -1,45 +1,69 @@
 /*eslint-env mocha */
+/*eslint-env mocha */
 ( function( window, document, chai ) {
   "use strict";
-  var expect = chai.expect;
+  var expect = chai.expect,
+    // get wrapper from document or for karma, create a new div and append it to the DOM
+    testingWrapper = document.getElementById( "new-element-test-wrapper" ) ||
+      ( function() {
+        var wrapper = document.createElement( "div" );
+        document.body.appendChild( wrapper );
+        return wrapper;
+      })(),
+    // original state to test against
+    originalWrapperOuterHTML = testingWrapper.outerHTML,
+    // re-sets wrapper to blank
+    resetWrapper = function() {
+      testingWrapper.innerHTML = "";
+    };
 
   suite( "<new-element>", function() {
-    var element;
-    setup( function() {
-      element = document.createElement( "new-element" );
-    });
-
     suite( "Life Cycle", function() {
       test( "ready: can create from document.createElement", function() {
-        expect( element )
+        expect( document.createElement( "new-element" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<new-element></new-element>" );
       });
 
-      test( "attached/detached: can be added/removed to/from the DOM", function() {
-        var div = document.createElement( "div" );
-        div.appendChild( element );
+      test( "attached: can be added to another DOM Element", function() {
+        var newElement = document.createElement( "new-element" );
 
-        expect( div )
+        testingWrapper.appendChild( newElement );
+
+        expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<new-element></new-element>" );
 
-        div.removeChild( element );
-        expect( div )
+        resetWrapper();
+      });
+
+      test( "detached: can be removed from another DOM element", function() {
+        var newElement = document.createElement( "new-element" );
+
+        testingWrapper.appendChild( newElement );
+        testingWrapper.removeChild( newElement );
+
+        expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<div></div>" );
+          .and.equals( originalWrapperOuterHTML );
+
+        resetWrapper();
       });
     });
 
     suite( "Attributes", function() {
-      test( "data-text", function() {});
+      suite( "data-text", function() {
+        test( "reflection", function() {});
+      });
     });
 
     suite( "Events", function() {
-      test( "customEvent", function( done ) {});
+      suite( "Event Name", function() {
+        test( "customEvent", function( done ) {});
+      });
     });
   });
 })( window, document, window.chai );

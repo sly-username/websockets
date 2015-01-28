@@ -17,9 +17,6 @@ alias gulp="node --harmony $ED_MODULES_PATH/gulp/bin/gulp.js"
 #PHANTOMJS_BIN=`command -v phantomjs`
 #export  PHANTOMJS_BIN
 
-# Chromium
-CHROME_BIN=`command -v chromium-browser`
-
 # Set in start.sh, needs re-export
 DISPLAY=:1.5
 
