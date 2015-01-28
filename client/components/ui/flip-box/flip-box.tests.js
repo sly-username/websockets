@@ -34,9 +34,7 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "flip-box" );
-
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( document.createElement( "flip-box" ) );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
@@ -47,10 +45,10 @@
       });
 
       test( "detached: can be removed from another DOM Element", function() {
-        var newElement = document.createElement( "flip-box" );
+        var flipBox = document.createElement( "flip-box" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( flipBox );
+        testingWrapper.removeChild( flipBox );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )

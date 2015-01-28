@@ -33,9 +33,6 @@
         .getElementsByClassName( "flipbox-button" ) );
     },
     attached: function() {
-      console.log( this.attributes.animation.value );
-      console.log( this.attributes.trigger.value );
-
       if ( this._trigger === "btn" ) {
         this.attributes.trigger.value = "btn";
         this.btnListener( "add" );
