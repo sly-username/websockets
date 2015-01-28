@@ -2,9 +2,6 @@
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
-      newPairInput = function() {
-        return document.createElement( "paired-input" );
-      },
       // get wrapper from document or for karma, create a new div and append it to the DOM
       testingWrapper = document.getElementById( "paired-input-test-wrapper" ) ||
         ( function() {
@@ -29,7 +26,7 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var pairInput = newPairInput();
+        var pairInput = document.createElement( "paired-input" );
 
         testingWrapper.appendChild( pairInput );
 
@@ -42,7 +39,7 @@
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var pairInput = newPairInput();
+        var pairInput = document.createElement( "paired-input" );
 
         testingWrapper.appendChild( pairInput );
         testingWrapper.removeChild( pairInput );
@@ -60,7 +57,7 @@
       // Tests for Type
       suite( "type", function() {
         test( "can be set via \"setAttribute\"", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               setTo = "Set via Attribute";
 
           pairInput.setAttribute( "type", setTo );
@@ -77,7 +74,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
           setTo = "Set via Attribute";
 
           pairInput.setAttribute( "type", setTo );
@@ -90,7 +87,7 @@
         });
 
         test( "reject if type is an invalid type", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "type", "button" );
 
@@ -100,7 +97,7 @@
       // Tests for placeholder
       suite( "placeholder", function() {
         test( "can be set via \"setAttribute\"", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               setTo = "Set via Attribute";
 
           pairInput.setAttribute( "placeholder", setTo );
@@ -117,7 +114,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               setTo = "Set via Attribute";
 
           pairInput.setAttribute( "placeholder", setTo );
@@ -132,7 +129,7 @@
       // Tests for pattern
       suite( "pattern", function() {
         test( "can be set via \"setAttribute\"", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               setTo = "Set via Attribute";
 
           pairInput.setAttribute( "pattern", setTo );
@@ -149,7 +146,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               setTo = "Set via Attribute";
 
           pairInput.setAttribute( "pattern", setTo );
@@ -162,7 +159,7 @@
         });
 
         test( "reject if invalid type", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               genericValue = "649595";
 
           pairInput.setAttribute( "pattern", "[A-Za-z]{3}" );
@@ -174,7 +171,7 @@
       // Tests for single-line
       suite( "single-line", function() {
         test( "can be set via attribute", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "single-line", "" );
 
@@ -190,7 +187,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "single-line", "" );
           pairInput.removeAttribute( "single-line" );
@@ -204,7 +201,7 @@
       // Tests for required
       suite( "required", function() {
         test( "can be set via attribute", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "required", "" );
 
@@ -220,7 +217,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "required", "" );
           pairInput.removeAttribute( "required" );
@@ -234,7 +231,7 @@
       // Tests for disabled
       suite( "disabled", function() {
         test( "can be set via attribute", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "disabled", "" );
 
@@ -250,7 +247,7 @@
         });
 
         test( "can be removed via attribute", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           pairInput.setAttribute( "disabled", "" );
           pairInput.removeAttribute( "disabled" );
@@ -262,7 +259,7 @@
         });
 
         test( "should not be able to input value with disable tag present", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               genericValue = "random test value",
               firstInput = pairInput.shadowRoot.getElementsByTagName( "input" )[ 0 ];
 
@@ -277,7 +274,7 @@
       // Tests for valid
       suite( "valid", function() {
         test( "has default value: false", function() {
-          var pairInput = newPairInput();
+          var pairInput = document.createElement( "paired-input" );
 
           expect( pairInput )
             .to.have.property( "valid" )
@@ -286,7 +283,7 @@
         });
 
         test( "is true when input values match", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               genericValue = "random test value";
 
           pairInput.shadowRoot.getElementsByTagName( "input" )[ 0 ].value = genericValue;
@@ -301,7 +298,7 @@
       // Tests for value
       suite( "value", function() {
         test( "returns undefined when element is not valid", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               firstValue = "first value",
               secondValue = "second value";
 
@@ -314,7 +311,7 @@
         });
 
         test( "returns value if both input fields match", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               genericValue = "random test value";
 
           pairInput.shadowRoot.getElementsByTagName( "input" )[ 0 ].value = genericValue;
@@ -327,7 +324,7 @@
         });
 
         test( "set value of both input fields via property", function() {
-          var pairInput = newPairInput(),
+          var pairInput = document.createElement( "paired-input" ),
               genericValue = "random test value",
               firstInput = pairInput.shadowRoot.getElementsByTagName( "input" )[ 0 ],
               secondInput = pairInput.shadowRoot.getElementsByTagName( "input" )[ 1 ];
