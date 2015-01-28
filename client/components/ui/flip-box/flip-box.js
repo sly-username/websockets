@@ -77,9 +77,9 @@
         if ( newVal === "btn" ) {
           this.boxListener( "remove" );
           this.btnListener( "add" );
-        } else if ( newVal === "box" ) {
+        } else {
           this.btnListener( "remove" );
-          this.trigger = newVal;
+          this.trigger = "box";
           this.boxListener( "add" );
         }
       } else if ( attrName === "animation" ) {
