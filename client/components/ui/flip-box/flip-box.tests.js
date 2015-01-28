@@ -162,7 +162,7 @@
               .to.be.a( "string" )
               .that.equals( setTo )
               .and.equal( element.trigger );
-        });
+          });
       });
     });
 
