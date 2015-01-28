@@ -1,0 +1,83 @@
+/***
+* Flex display property mixin
+* .flex-container();
+*
+* No support for Opera Mini
+* Ex: .flex-container( row nowrap; @flexDirection: column; );
+*
+* This mixin has a default display property abd needs to take
+* in a flex-direction followed by a flex-wrap in order to work
+*
+* This mixin takes in the following parameters:
+* @flexFlow ( which is the equivalent of flex-direction and flex-wrap ) *REQUIRED*
+  flex-direction ( row | row-reverse | column | column-reverse )
+  flex-wrap ( nowrap | wrap | wrap-reverse )
+* @justifyContent ( flex-start | flex-end | center | space-between | space-around )
+* @alignItems ( flex-start | flex-end | center | baseline | stretch )
+* @alignContent has no effect when there is only one line of content
+  @alignContent ( flex-start | flex-end | center | space-between | space-around | stretch )
+***/
+.flex-container( @flexFlow; @justifyContent: flex-start; @alignItems: stretch; @alignContent: stretch ) {
+  -webkit-flex-flow: @flexFlow;
+  flex-flow: @flexFlow;
+  -webkit-justify-content: @justifyContent;
+  justify-content: @justifyContent;
+  -webkit-align-items: @alignItems;
+  align-items: @alignItems;
+  -webkit-align-content: @alignContent;
+  align-content: @alignContent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+/***
+ * Flex property mixin
+ * .flex-item();
+ *
+ * No support for Opera Mini
+ * These are mixins that apply to items inside a flex-box container
+ *
+ * Example:
+ * .flex-item( 1 2 auto );
+ *
+ * flex-item is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
+   flex-grow: A numerical value (default is 0)
+   flex-shrink: A numerical value (default is 1)
+   flex-basis: A numerical value, auto
+***/
+.flex-item( @grow: 0; @shrink: 1; @basis: auto; ) {
+  -webkit-box-flex+: @grow @shrink @basis;
+  -webkit-flex+: @grow @shrink @basis;
+  -ms-flex+: @grow @shrink @basis;
+  flex+: @grow @shrink @basis;
+}
+
+/***
+* Flex order property mixin
+* .flex-order();
+*
+* Example: .flex-order( 1 );
+* Usage: controls the order in which items appear in the flex container
+***/
+.flex-order( @order ){
+  -webkit-order: @order;
+  order: @order;
+}
+
+/***
+* Flex align-self mixin
+*.align-self();
+*
+* Overrides align-items
+*
+* Example: .align-self( stretch );
+* @alignSelf: auto, stretch, center, flex-start, flex-end, baseline
+***/
+
+.align-self( @alignSelf ) {
+  -webkit-align-self: @alignSelf;
+  align-self: @alignSelf;
+}
+
