@@ -1,0 +1,30 @@
+
+/**
+ * Base media rules
+ *  all, print, screen, speech
+ **/
+.media( all, @rules ) {
+  @media all {
+    @rules();
+  }
+}
+
+.media( print, @rules ) {
+  @media print {
+    @rules();
+  }
+}
+
+.media( screen, @rules ) {
+  @media screen {
+    @rules();
+  }
+}
+
+.media( speech, @rules ) {
+  @media speech {
+    @rules();
+  }
+}
+
+

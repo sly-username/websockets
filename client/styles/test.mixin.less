@@ -2,36 +2,16 @@
  * Created by rj on 11/10/14.
  */
 
-.hidden(display) {
-  &.hidden, &.hide {
-    display: none;
-  }
-}
-.hidden(visibility) {
-  &.hidden, &.hide {
-    visibility: hidden;
-  }
-}
-.hidden(opacity) {
-  &.hidden, &.hide {
-    opacity: 0;
-  }
-}
-.hidden() {
-  &.hidden, &.hide {
-    display: none;
-    visibility: hidden;
-  }
-}
+@import "mixins/hidden.less";
 
-.cool(@c){
-  &.cool{
+.cool( @c ) {
+  &.cool {
     color: @c;
   }
-  &.cooler{
-    color: darken(@c, 50%);
+  &.cooler {
+    color: darken( @c, 50% );
   }
-  &.coolest{
-    color: darken(@c, 80%);
+  &.coolest {
+    color: darken( @c, 80% );
   }
 }
