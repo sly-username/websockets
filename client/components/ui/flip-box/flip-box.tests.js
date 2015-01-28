@@ -164,10 +164,60 @@
               .and.equal( element.trigger );
           });
       });
+
+      //suite( "rotation", function() {
+      //  test( "can be set via setAttribute", function() {
+      //    var setTo = "Set via Attribute";
+      //
+      //    element.setAttribute( "rotation", setTo );
+      //
+      //    expect( element.hasAttribute( "rotation" ) ).to.equal( true );
+      //
+      //    expect( element.getAttribute( "rotation" ) )
+      //      .to.be.a( "string" )
+      //      .that.equals( setTo );
+      //
+      //    expect( element )
+      //      .to.have.property( "outerHTML" )
+      //      .that.equals( "<flip-box rotation=\"" + setTo + "\"></flip-box>" );
+      //  });
+      //
+      //  test( "can be set via property \"rotation\"", function() {
+      //    var setTo = "Set via Property";
+      //
+      //    element.rotation = setTo;
+      //
+      //    expect( element )
+      //      .to.have.property( "rotation" )
+      //      .that.equals( setTo );
+      //  });
+      //
+      //  test( "setting via \"setAttribute\" reflects to property \"rotation\"", function() {
+      //    var setTo = "Set via Attribute";
+      //
+      //    element.setAttribute( "rotation", setTo );
+      //    expect( element )
+      //      .to.have.property( "rotation" )
+      //      .that.equals( setTo )
+      //      .and.equals( element.getAttribute( "rotation" ) );
+      //  });
+      //
+      //  test( "setting via property \"rotation\" reflects to attribute \"rotation\"",
+      //    function() {
+      //      var setTo = "Set via Property";
+      //
+      //      element.rotation = setTo;
+      //      expect( element.hasAttribute( "rotation" ) ).to.equal( true );
+      //      expect( element.getAttribute( "rotation" ) )
+      //        .to.be.a( "string" )
+      //        .that.equals( setTo )
+      //        .and.equal( element.rotation );
+      //    });
+      //});
     });
 
-    suite( "Events", function() {
-      test( "customEvent", function( done ) {});
+    suite( "Methods", function() {
+      //test( "customEvent", function( done ) {});
     });
   });
 })( window, document, window.chai );

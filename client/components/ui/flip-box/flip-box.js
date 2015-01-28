@@ -21,21 +21,33 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
+      this._animation = this.attributes.animation.value;
+      this._trigger = this.attributes.trigger.value;
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
       this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
       this.flipListener = this.flip.bind( this );
-      this._trigger = this.attributes.trigger.value;
       this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
     },
     attached: function() {
+      console.log( this.attributes.animation.value );
+      console.log( this.attributes.trigger.value );
+
       if ( this._trigger === "btn" ) {
+        this.attributes.trigger.value = "btn";
         this.btnListener( "add" );
-      } else if ( this._trigger === "box" ) {
+      } else {
+        this.attributes.trigger.value = "box";
         this.boxListener( "add" );
+      }
+
+      if ( this._animation === "vertical" ) {
+        this.attributes.animation.value = "vertical";
+      } else {
+        this.attributes.animation.value = "horizontal";
       }
     },
     /*** FUNCTIONS ***/
@@ -60,9 +72,10 @@
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
       if ( attrName === "trigger" ) {
+        this.trigger = newVal;
+
         if ( newVal === "btn" ) {
           this.boxListener( "remove" );
-          this.trigger = newVal;
           this.btnListener( "add" );
         } else if ( newVal === "box" ) {
           this.btnListener( "remove" );
@@ -70,8 +83,14 @@
           this.boxListener( "add" );
         }
       } else if ( attrName === "animation" ) {
+        console.log( "are you noticing the animation change" );
         this.animation = newVal;
-        this.setAttribute( "animation", newVal );
+
+        if ( newVal === "vertical" ) {
+          this.animation = "vertical";
+        } else {
+          this.animation = "horizontal";
+        }
       }
     }
     /*** END FUNCTIONS ***/
