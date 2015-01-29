@@ -21,8 +21,8 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
-      //this._animation = this.getAttribute( "animation" ).value;
-      //this._trigger = this.attributes.trigger.value;
+      this._animation = this.attributes.animation.value;
+      this._trigger = this.attributes.trigger.value;
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
       this.flipBoxContainer = this.shadowRoot
@@ -36,12 +36,9 @@
       if ( this._trigger === "btn" ) {
         this.trigger = "btn";
         this.btnListener( "add" );
-        this.addButtons();
-        console.log( "are you a button?" );
       } else {
         this.trigger = "box";
         this.boxListener( "add" );
-        console.log( "are you a box?" );
       }
 
       if ( this._animation === "vertical" ) {
@@ -62,9 +59,9 @@
         }.bind( this ) );
       }.bind( this ) );
     },
-    addButtons: function() {
-      this.triggerBoxes.forEach( function( box ) {
-        box.classList.add( "flipbox-button" );
+    btnHiddenClass: function( flag ) {
+      this.triggerButtons.forEach( function( button ) {
+        button.classList[ flag ]( "hidden" );
       }.bind( this ) );
     },
     boxListener: function( flag ) {
@@ -82,11 +79,12 @@
         if ( newVal === "btn" ) {
           this.boxListener( "remove" );
           this.btnListener( "add" );
-          this.addButtons();
+          this.btnHiddenClass( "remove" );
         } else {
           this.btnListener( "remove" );
           this.trigger = "box";
           this.boxListener( "add" );
+          this.btnHiddenClass( "add" );
         }
       } else if ( attrName === "animation" ) {
         this.animation = newVal;
