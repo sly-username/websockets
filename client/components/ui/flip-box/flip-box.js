@@ -67,18 +67,25 @@
     boxRotation: function() {
       if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
         this.flipBoxContainer.classList.remove( "pause" );
+        console.log( "unpausing?" );
         return;
       }
       this.flipBoxContainer.classList.add( "pause" );
+      console.log( "pausing?" );
       this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
         this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
+        console.log( "listening?" );
       });
     },
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         this.btnEventList.forEach( function( event ) {
-          button[ flag + "EventListener" ]( event, this.flipListener );
+          if ( this.rotation === "loop" ) {
+            button[ flag + "EventListener" ]( event, this.rotationListener );
+          } else {
+            button[ flag + "EventListener" ]( event, this.flipListener );
+          }
         }.bind( this ) );
       }.bind( this ) );
     },
