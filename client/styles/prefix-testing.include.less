@@ -3,7 +3,7 @@
 @import "mixins/prefixes/filters.less";
 @import "mixins/prefixes/flex.less";
 @import "mixins/prefixes/masks.less";
-@import "mixins/prefixes/multiplecolumns.less";
+@import "mixins/prefixes/columns.less";
 
 // Animation Tests
 #less-test-animation {
@@ -79,7 +79,10 @@
   background: lightblue;
   height: 200px;
   width: 200px;
-  .masks(url('https://n9neo.files.wordpress.com/2013/09/moon-ti-uccido.png'));
+  text-align: center;
+  vertical-align: middle;
+  line-height: 200px;
+  .masks( url("https://n9neo.files.wordpress.com/2013/09/moon-ti-uccido.png") );
 }
 
 // Multiple Columns test
