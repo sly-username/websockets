@@ -17,7 +17,7 @@ var gulp = require( "gulp" ),
 lessOptions = {
   ieCompat: false,
   compress: false,
-//  strictMath: true,
+  strictMath: true,
 //  silent: true,
   paths: config.less.includePaths
 };
