@@ -11,22 +11,27 @@
   }
 }
 
-//.flipbox-button {
-//  position: absolute;
-//  top: 2%;
-//  left: -33%;
-//}
+button {
+  display: none;
+}
+
+.flipbox-button {
+  display: block;
+  position: absolute;
+  top: 2%;
+}
 
 .flipbox-container {
   color: white;
+  height: 540px;
   position: relative;
   perspective: 800px;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: transform 1s;
-  -moz-transition: transform 1s;
-  transition: transform 1s;
+  -webkit-transition: transform .8s linear;
+  -moz-transition: transform .8s linear;
+  transition: transform .8s linear;
 }
 .box {
   width: 100%;
@@ -39,37 +44,42 @@
   backface-visibility: hidden;
 }
 
-.front {
-  z-index: 5;
-}
-
-.back {
-  z-index: 10;
-}
-
 :host([animation="vertical"]){
-  .flipbox-container.flip {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
-  }
-
   .back {
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
     transform: rotateY(180deg);
   }
+
+  .flipbox-container.flip {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
 }
 
-:host([animation="horizontal"]){
-  .box {
-    height: 360px;
-    width: 400px;
+:host([animation="horizontal"]) {
+  .flipbox-container {
+    -webkit-transform-origin: center;
+    -moz-transform-origin: center;
+    transform-origin: center;
+  }
+
+  .front {
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;
+    backface-visibility: visible;
+  }
+
+  .back {
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    transform: rotateX(180deg);
   }
 
   .flipbox-container.flip {
-    -webkit-transform: scaleY(-1);
-    -moz-transform: scaleY(-1);
-    transform: scaleY(-1);
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    transform: rotateX(180deg);
   }
 }

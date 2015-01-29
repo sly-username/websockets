@@ -21,7 +21,7 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
-      this._animation = this.attributes.animation.value;
+      this._animation = this.getAttribute( "animation" ).value;
       this._trigger = this.attributes.trigger.value;
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
@@ -36,6 +36,7 @@
       if ( this._trigger === "btn" ) {
         this.attributes.trigger.value = "btn";
         this.btnListener( "add" );
+        this.addButtons();
       } else {
         this.attributes.trigger.value = "box";
         this.boxListener( "add" );
@@ -59,6 +60,11 @@
         }.bind( this ) );
       }.bind( this ) );
     },
+    addButtons: function() {
+      this.triggerBoxes.forEach( function( box ) {
+        box.classList.add( "flipbox-button" );
+      }.bind( this ) );
+    },
     boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
@@ -74,13 +80,13 @@
         if ( newVal === "btn" ) {
           this.boxListener( "remove" );
           this.btnListener( "add" );
+          this.addButtons();
         } else {
           this.btnListener( "remove" );
           this.trigger = "box";
           this.boxListener( "add" );
         }
       } else if ( attrName === "animation" ) {
-        console.log( "are you noticing the animation change" );
         this.animation = newVal;
 
         if ( newVal === "vertical" ) {
