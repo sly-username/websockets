@@ -2,10 +2,7 @@
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
-    newFlipBox = function() {
-      return document.createElement( "flip-box" );
-    },
-    // get wrapper from document or for karma, create a new div and append it to the DOM
+  // get wrapper from document or for karma, create a new div and append it to the DOM
     testingWrapper = document.getElementById( "flip-box-test-wrapper" ) ||
     ( function() {
       var wrapper = document.createElement( "div" );
@@ -20,37 +17,30 @@
     };
 
   suite( "<flip-box>", function() {
-    var element;
-    setup( function() {
-      element = newFlipBox();
-    });
-
     suite( "Life Cycle", function() {
       test( "ready: can create from document.createElement", function() {
-        expect( element )
+        expect( document.createElement( "flip-box" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<flip-box></flip-box>" );
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "flip-box" );
-
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( document.createElement( "flip-box" ) );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<flip-box></flip-box>" );
+          .and.equals( "<flip-box trigger=\"box\" animation=\"horizontal\"></flip-box>" );
 
         resetWrapper();
       });
 
       test( "detached: can be removed from another DOM Element", function() {
-        var newElement = document.createElement( "flip-box" );
+        var flipBox = document.createElement( "flip-box" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( flipBox );
+        testingWrapper.removeChild( flipBox );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
@@ -65,103 +55,109 @@
     /* setAttribute */
       suite( "animation", function() {
         test( "can be set via setAttribute", function() {
-          var setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" ),
+              setTo = "Set via Attribute";
 
-          element.setAttribute( "animation", setTo );
+          flipBox.setAttribute( "animation", setTo );
 
-          expect( element.hasAttribute( "animation" ) ).to.equal( true );
+          expect( flipBox.hasAttribute( "animation" ) ).to.equal( true );
 
-          expect( element.getAttribute( "animation" ) )
+          expect( flipBox.getAttribute( "animation" ) )
             .to.be.a( "string" )
             .that.equals( setTo );
 
-          expect( element )
+          expect( flipBox )
             .to.have.property( "outerHTML" )
             .that.equals( "<flip-box animation=\"" + setTo + "\"></flip-box>" );
         });
 
         test( "can be set via property \"animation\"", function() {
-          var setTo = "Set via Property";
+          var flipBox = document.createElement( "flip-box" ),
+              setTo = "Set via Property";
 
-          element.animation = setTo;
+          flipBox.animation = setTo;
 
-          expect( element )
+          expect( flipBox )
             .to.have.property( "animation" )
             .that.equals( setTo );
         });
 
         test( "setting via \"setAttribute\" reflects to property \"animation\"", function() {
-          var setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" ),
+              setTo = "Set via Attribute";
 
-          element.setAttribute( "animation", setTo );
+          flipBox.setAttribute( "animation", setTo );
 
-          expect( element )
+          expect( flipBox )
             .to.have.property( "animation" )
             .that.equals( setTo )
-            .and.equals( element.getAttribute( "animation" ) );
+            .and.equals( flipBox.getAttribute( "animation" ) );
         });
 
         test( "setting via property \"animation\" reflects to attribute \"animation\"",
           function() {
-          var setTo = "Set via Property";
+            var flipBox = document.createElement( "flip-box" ),
+                setTo = "Set via Property";
 
-          element.animation = setTo;
-          expect( element.hasAttribute( "animation" ) ).to.equal( true );
-          expect( element.getAttribute( "animation" ) )
-            .to.be.a( "string" )
-            .that.equals( setTo )
-            .and.equal( element.animation );
-        });
+            flipBox.animation = setTo;
+            expect( flipBox.hasAttribute( "animation" ) ).to.equal( true );
+            expect( flipBox.getAttribute( "animation" ) )
+              .to.be.a( "string" )
+              .that.equals( setTo )
+              .and.equal( flipBox.animation );
+          });
       });
 
       suite( "trigger", function() {
       /* setAttribute */
         test( "can be set via setAttribute", function() {
-          var setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" ),
+              setTo = "Set via Attribute";
 
-          element.setAttribute( "trigger", setTo );
+          flipBox.setAttribute( "trigger", setTo );
 
-          expect( element.hasAttribute( "trigger" ) ).to.equal( true );
+          expect( flipBox.hasAttribute( "trigger" ) ).to.equal( true );
 
-          expect( element.getAttribute( "trigger" ) )
+          expect( flipBox.getAttribute( "trigger" ) )
             .to.be.a( "string" )
-            .that.equals( setTo );
+            .that.equals( "box" );
 
-          expect( element )
+          expect( flipBox )
             .to.have.property( "outerHTML" )
-            .that.equals( "<flip-box trigger=\"" + setTo + "\"></flip-box>" );
+            .that.equals( "<flip-box trigger=\"box\"></flip-box>" );
         });
 
         test( "can be set via property \"trigger\"", function() {
-          var setTo = "Set via Property";
+          var flipBox = document.createElement( "flip-box" ),
+              setTo = "Set via Property";
 
-          element.trigger = setTo;
+          flipBox.trigger = setTo;
 
-          expect( element )
+          expect( flipBox )
             .to.have.property( "trigger" )
             .that.equals( setTo );
         });
 
         test( "setting via \"setAttribute\" reflects to property \"trigger\"", function() {
-          var setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" );
 
-          element.setAttribute( "trigger", setTo );
-          expect( element )
+          flipBox.setAttribute( "trigger", "box" );
+          expect( flipBox )
             .to.have.property( "trigger" )
-            .that.equals( setTo )
-            .and.equals( element.getAttribute( "trigger" ) );
+            .that.equals( "box" )
+            .and.equals( flipBox.getAttribute( "trigger" ) );
         });
 
         test( "setting via property \"trigger\" reflects to attribute \"trigger\"",
           function() {
-            var setTo = "Set via Property";
+            var flipBox = document.createElement( "flip-box" );
 
-            element.trigger = setTo;
-            expect( element.hasAttribute( "trigger" ) ).to.equal( true );
-            expect( element.getAttribute( "trigger" ) )
+            flipBox.trigger = setTo;
+            expect( flipBox.hasAttribute( "trigger" ) ).to.equal( true );
+            expect( flipBox.getAttribute( "trigger" ) )
               .to.be.a( "string" )
-              .that.equals( setTo )
-              .and.equal( element.trigger );
+              .that.equals( "box" )
+              .and.equal( flipBox.trigger );
           });
       });
 

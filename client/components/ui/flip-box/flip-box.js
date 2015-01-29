@@ -21,8 +21,8 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
-      this._animation = this.getAttribute( "animation" ).value;
-      this._trigger = this.attributes.trigger.value;
+      //this._animation = this.getAttribute( "animation" ).value;
+      //this._trigger = this.attributes.trigger.value;
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
       this.flipBoxContainer = this.shadowRoot
@@ -34,18 +34,20 @@
     },
     attached: function() {
       if ( this._trigger === "btn" ) {
-        this.attributes.trigger.value = "btn";
+        this.trigger = "btn";
         this.btnListener( "add" );
         this.addButtons();
+        console.log( "are you a button?" );
       } else {
-        this.attributes.trigger.value = "box";
+        this.trigger = "box";
         this.boxListener( "add" );
+        console.log( "are you a box?" );
       }
 
       if ( this._animation === "vertical" ) {
-        this.attributes.animation.value = "vertical";
+        this.animation = "vertical";
       } else {
-        this.attributes.animation.value = "horizontal";
+        this.animation = "horizontal";
       }
     },
     /*** FUNCTIONS ***/
@@ -89,9 +91,7 @@
       } else if ( attrName === "animation" ) {
         this.animation = newVal;
 
-        if ( newVal === "vertical" ) {
-          this.animation = "vertical";
-        } else {
+        if ( newVal !== "vertical" ) {
           this.animation = "horizontal";
         }
       }
