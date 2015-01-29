@@ -21,8 +21,6 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
-      this._animation = this.attributes.animation.value;
-      this._trigger = this.attributes.trigger.value;
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
       this.flipBoxContainer = this.shadowRoot
