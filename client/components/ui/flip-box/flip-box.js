@@ -18,6 +18,14 @@
       this._animation = value;
       return value;
     },
+    get rotation() {
+      return this._rotation;
+    },
+    set rotation( value ) {
+      this.setAttribute( "rotation", value );
+      this._rotation = value;
+      return value;
+    },
 
     /*** LIFECYCLE ***/
     ready: function() {
@@ -26,6 +34,7 @@
       this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
       this.flipListener = this.flip.bind( this );
+      this.rotationListener = this.boxRotation.bind( this );
       this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
@@ -44,10 +53,26 @@
       } else {
         this.animation = "horizontal";
       }
+
+      if ( this._rotation === "loop" ) {
+        this.rotation = "loop";
+      } else {
+        this.rotation = "toggle";
+      }
     },
     /*** FUNCTIONS ***/
     flip: function() {
       this.flipBoxContainer.classList.toggle( "flip" );
+    },
+    boxRotation: function() {
+      if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
+        this.flipBoxContainer.classList.remove( "pause" );
+        return;
+      }
+      this.flipBoxContainer.classList.add( "pause" );
+      this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
+        this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
+      });
     },
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
@@ -65,7 +90,11 @@
     boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ]( event, this.flipListener );
+          if ( this.rotation === "loop" ) {
+            box[ flag + "EventListener" ]( event, this.rotationListener );
+          } else {
+            box[ flag + "EventListener" ]( event, this.flipListener );
+          }
         }.bind( this ) );
       }.bind( this ) );
     },

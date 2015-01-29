@@ -27,9 +27,9 @@
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: transform .8s linear;
-  -moz-transition: transform .8s linear;
-  transition: transform .8s linear;
+  -webkit-transition: transform 2s linear;
+  -moz-transition: transform 2s linear;
+  transition: transform 2s linear;
 }
 .box {
   width: 100%;
@@ -80,4 +80,26 @@
     -moz-transform: rotateX(180deg);
     transform: rotateX(180deg);
   }
+}
+
+:host([animation="vertical"][rotation="loop"]){
+  .flipbox-container.flip {
+    -webkit-transform: rotateY(360deg);
+    -moz-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+
+:host([animation="horizontal"][rotation="loop"]){
+  .flipbox-container.flip {
+    -webkit-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    transform: rotateX(360deg);
+  }
+}
+
+.pause {
+  -webkit-animation-play-state:paused;
+  -moz-animation-play-state:paused;
+  animation-play-state:paused;
 }
