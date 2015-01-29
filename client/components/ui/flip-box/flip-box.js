@@ -60,7 +60,7 @@
     btnHiddenClass: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         button.classList[ flag ]( "hidden" );
-      }.bind( this ) );
+      }, this );
     },
     boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
