@@ -1,0 +1,30 @@
+/***
+* Multiple Column property mixin
+* .flex-container();
+*
+* No support for Opera Mini
+* Ex: .flex-container( row nowrap; @flexDirection: column; );
+*
+* This mixin has a default display property abd needs to take
+* in a flex-direction followed by a flex-wrap in order to work
+*
+* This mixin takes in the following parameters:
+* @flexFlow ( which is the equivalent of flex-direction and flex-wrap ) *REQUIRED*
+  flex-direction ( row | row-reverse | column | column-reverse )
+  flex-wrap ( nowrap | wrap | wrap-reverse )
+* @justifyContent ( flex-start | flex-end | center | space-between | space-around )
+* @alignItems ( flex-start | flex-end | center | baseline | stretch )
+* @alignContent has no effect when there is only one line of content
+  @alignContent ( flex-start | flex-end | center | space-between | space-around | stretch )
+***/
+//.column( @columnCount; @columnGap: flex-start; @columnRule: stretch ) {
+//  -webkit-column-count: @columnCount; /* Chrome, Safari, Opera */
+//  -moz-column-count: @columnCount; /* Firefox */
+//  column-count: @columnCount;
+//  -webkit-column-gap: @columnGap; /* Chrome, Safari, Opera */
+//  -moz-column-gap: @columnGap; /* Firefox */
+//  column-gap: @columnGap;
+//  -webkit-column-rule: @columnRule; /* Chrome, Safari, Opera */
+//  -moz-column-rule: @columnRule; /* Firefox */
+//  column-rule: @columnRule;
+//}
