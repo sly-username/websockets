@@ -55,55 +55,51 @@
     /* setAttribute */
       suite( "animation", function() {
         test( "can be set via setAttribute", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.setAttribute( "animation", setTo );
+          flipBox.setAttribute( "animation", "Set via Attribute" );
 
           expect( flipBox.hasAttribute( "animation" ) ).to.equal( true );
 
           expect( flipBox.getAttribute( "animation" ) )
             .to.be.a( "string" )
-            .that.equals( setTo );
+            .that.equals( "horizontal" );
 
           expect( flipBox )
             .to.have.property( "outerHTML" )
-            .that.equals( "<flip-box animation=\"" + setTo + "\"></flip-box>" );
+            .that.equals( "<flip-box animation=\"horizontal\"></flip-box>" );
         });
 
         test( "can be set via property \"animation\"", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Property";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.animation = setTo;
+          flipBox.animation = "Set via Property";
 
           expect( flipBox )
             .to.have.property( "animation" )
-            .that.equals( setTo );
+            .that.equals( "horizontal" );
         });
 
         test( "setting via \"setAttribute\" reflects to property \"animation\"", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.setAttribute( "animation", setTo );
+          flipBox.setAttribute( "animation", "Set via Attribute" );
 
           expect( flipBox )
             .to.have.property( "animation" )
-            .that.equals( setTo )
+            .that.equals( "horizontal" )
             .and.equals( flipBox.getAttribute( "animation" ) );
         });
 
         test( "setting via property \"animation\" reflects to attribute \"animation\"",
           function() {
-            var flipBox = document.createElement( "flip-box" ),
-                setTo = "Set via Property";
+            var flipBox = document.createElement( "flip-box" );
 
-            flipBox.animation = setTo;
+            flipBox.animation = "Set via Property";
             expect( flipBox.hasAttribute( "animation" ) ).to.equal( true );
             expect( flipBox.getAttribute( "animation" ) )
               .to.be.a( "string" )
-              .that.equals( setTo )
+              .that.equals( "horizontal" )
               .and.equal( flipBox.animation );
           });
       });
@@ -111,10 +107,9 @@
       suite( "trigger", function() {
       /* setAttribute */
         test( "can be set via setAttribute", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.setAttribute( "trigger", setTo );
+          flipBox.setAttribute( "trigger", "Set via Attribute" );
 
           expect( flipBox.hasAttribute( "trigger" ) ).to.equal( true );
 
@@ -128,14 +123,13 @@
         });
 
         test( "can be set via property \"trigger\"", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Property";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.trigger = setTo;
+          flipBox.trigger = "Set via Property";
 
           expect( flipBox )
             .to.have.property( "trigger" )
-            .that.equals( setTo );
+            .that.equals( "box" );
         });
 
         test( "setting via \"setAttribute\" reflects to property \"trigger\"", function() {
@@ -150,52 +144,48 @@
 
         test( "setting via property \"trigger\" reflects to attribute \"trigger\"",
           function() {
-            var flipBox = document.createElement( "flip-box" ),
-                setTo = "Set via Property";
+            var flipBox = document.createElement( "flip-box" );
 
-            flipBox.trigger = setTo;
+            flipBox.trigger = "Set via Property";
             expect( flipBox.hasAttribute( "trigger" ) ).to.equal( true );
             expect( flipBox.getAttribute( "trigger" ) )
               .to.be.a( "string" )
-              .that.equals( "box" )
-              .and.equal( flipBox.trigger );
+              .that.equals( "box" );
+            expect( flipBox.trigger ).to.equal( "box" );
           });
       });
 
       suite( "rotation", function() {
         test( "can be set via setAttribute", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.setAttribute( "rotation", setTo );
+          flipBox.setAttribute( "rotation", "Set via Attribute" );
 
           expect( flipBox.hasAttribute( "rotation" ) ).to.equal( true );
 
           expect( flipBox.getAttribute( "rotation" ) )
             .to.be.a( "string" )
-            .that.equals( setTo );
+            .that.equals( "toggle" );
 
           expect( flipBox )
             .to.have.property( "outerHTML" )
-            .that.equals( "<flip-box rotation=\"" + setTo + "\"></flip-box>" );
+            .that.equals( "<flip-box rotation=\"toggle\"></flip-box>" );
         });
 
         test( "can be set via property \"rotation\"", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Property";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.rotation = setTo;
+          flipBox.rotation = "Set via Property";
 
           expect( flipBox )
             .to.have.property( "rotation" )
-            .that.equals( setTo );
+            .that.equals( "toggle" );
         });
 
         test( "setting via \"setAttribute\" reflects to property \"rotation\"", function() {
-          var flipBox = document.createElement( "flip-box" ),
-              setTo = "Set via Attribute";
+          var flipBox = document.createElement( "flip-box" );
 
-          flipBox.setAttribute( "rotation", setTo );
+          flipBox.setAttribute( "rotation", "Set via Attribute" );
           expect( flipBox )
             .to.have.property( "rotation" )
             .that.equals( "toggle" )
@@ -204,15 +194,14 @@
 
         test( "setting via property \"rotation\" reflects to attribute \"rotation\"",
           function() {
-            var flipBox = document.createElement( "flip-box" ),
-                setTo = "Set via Property";
+            var flipBox = document.createElement( "flip-box" );
 
-            flipBox.rotation = setTo;
+            flipBox.rotation = "Set via Property";
             expect( flipBox.hasAttribute( "rotation" ) ).to.equal( true );
             expect( flipBox.getAttribute( "rotation" ) )
               .to.be.a( "string" )
-              .that.equals( setTo )
-              .and.equal( flipBox.rotation );
+              .that.equals( "toggle" );
+            expect( flipBox.rotation ).to.equal( "toggle" );
           });
       });
     });
