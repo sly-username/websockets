@@ -27,9 +27,6 @@
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: transform 2s linear;
-  -moz-transition: transform 2s linear;
-  transition: transform 2s linear;
 }
 .box {
   width: 100%;
@@ -42,7 +39,15 @@
   backface-visibility: hidden;
 }
 
-:host([animation="vertical"]){
+:host([rotation="toggle"]){
+  .flipbox-container {
+    -webkit-animation:loop 2s linear;
+    -moz-animation:loop 2s linear;
+    animation:loop 2s linear;
+  }
+}
+
+:host([animation="vertical"][rotation="toggle"]){
   .back {
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
@@ -56,7 +61,7 @@
   }
 }
 
-:host([animation="horizontal"]) {
+:host([animation="horizontal"][rotation="toggle"]) {
   .flipbox-container {
     -webkit-transform-origin: center;
     -moz-transform-origin: center;
@@ -82,24 +87,34 @@
   }
 }
 
+:host([rotation="loop"]){
+  .flipbox-container {
+    -webkit-animation:loop 2s linear infinite;
+    -moz-animation:loop 2s linear infinite;
+    animation:loop 2s linear infinite;
+  }
+}
 :host([animation="vertical"][rotation="loop"]){
-  .flipbox-container.flip {
-    -webkit-transform: rotateY(360deg);
-    -moz-transform: rotateY(360deg);
-    transform: rotateY(360deg);
+  @-moz-keyframes loop {
+    100% { -moz-transform: rotateY(180deg); }
+  }
+  @-webkit-keyframes loop {
+    100% { -webkit-transform: rotateY(180deg); }
+  }
+  @keyframes loop {
+    100% { -webkit-transform: rotateY(180deg); transform:rotateY(360deg); }
   }
 }
 
 :host([animation="horizontal"][rotation="loop"]){
-  .flipbox-container.flip {
-    -webkit-transform: rotateX(360deg);
-    -moz-transform: rotateX(360deg);
-    transform: rotateX(360deg);
+  @-moz-keyframes loop {
+    100% { -moz-transform: rotateX(180deg); }
+  }
+  @-webkit-keyframes loop {
+    100% { -webkit-transform: rotateX(180deg); }
+  }
+  @keyframes loop {
+    100% { -webkit-transform: rotateX(180deg); transform:rotateX(360deg); }
   }
 }
 
-.pause {
-  -webkit-animation-play-state:paused;
-  -moz-animation-play-state:paused;
-  animation-play-state:paused;
-}
