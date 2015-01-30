@@ -29,9 +29,13 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
+      this.degree = 0;
       this._animation = this.attributes.animation.value;
       this._rotation = this.attributes.rotation.value;
       this._trigger = this.attributes.trigger.value;
+
+      this.boxEventList = [ "mouseleave", "touchleave" ];
+      this.btnEventList = [ "mousedown", "touchstart" ];
 
       this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
@@ -40,22 +44,15 @@
         .getElementsByClassName( "flipbox-button" ) );
 
       this.flipFunction = this.flip.bind( this );
-      this.startRotation = this.startRotation.bind( this );
-      this.stopRotation = this.stopRotation.bind( this );
-
-      this.boxEventList = [ "mouseover", "touchmove" ];
-      this.btnEventList = [ "mousedown", "touchstart" ];
-      this.loopStartEventList = [ "mouseout", "touchend" ];
-      this.loopStopEventList = [ "mouseenter", "touchenter" ];
+      this.loopFunction = this.loop.bind( this );
     },
     attached: function() {
-      console.log( this.attributes );
-
       if ( this.trigger === "btn" ) {
         this.trigger = "btn";
-        this.btnHiddenClass( "remove" );
+        this.btnListener( "add" );
       } else {
         this.trigger = "box";
+        this.boxListener( "add" );
         this.btnHiddenClass( "add" );
       }
 
@@ -67,79 +64,61 @@
 
       if ( this.rotation === "loop" ) {
         this.rotation = "loop";
-        this.flipBoxContainer.classList.add( "pause" );
-
-        if ( this.trigger === "box" ) {
-          this.boxLoopListener( "add" );
-        }
+      } else {
+        this.rotation = "toggle";
       }
     },
     /*** FUNCTIONS ***/
     flip: function() {
       this.flipBoxContainer.classList.toggle( "flip" );
     },
-    startRotation: function() {
-      if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
-        this.flipBoxContainer.classList.remove( "pause" );
-        return;
-      }
-    },
-    stopRotation: function() {
-      this.flipBoxContainer.classList.add( "pause" );
-      this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
-        this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
-      });
+    loop: function() {
+      this.degree += 180;
+      this.flipBoxContainer.style.transform = "rotateY(" + this.degree + "deg)";
     },
     /* EVENT LISTENERS */
+    btnListener: function( flag ) {
+      this.triggerButtons.forEach( function( button ) {
+        this.btnEventList.forEach( function( event ) {
+          if ( this.rotation === "loop" ) {
+            button[ flag + "EventListener" ]( event, this.loopFunction );
+          } else {
+            button[ flag + "EventListener" ]( event, this.flipFunction );
+          }
+        }.bind( this ) );
+      }.bind( this ) );
+    },
     btnHiddenClass: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         button.classList[ flag ]( "hidden" );
       }, this );
     },
-    // toggle
-    btnToggleListener: function( flag ) {
-      this.triggerButtons.forEach( function( button ) {
-        this.btnEventList.forEach( function( event ) {
-          button[ flag + "EventListener" ]( event, this.flipFunction );
-        }.bind( this ) );
-      }.bind( this ) );
-    },
-    boxToggleListener: function( flag ) {
+    boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ]( event, this.flipFunction );
-        }.bind( this ) );
-      }.bind( this ) );
-    },
-    // loop
-    startLoopListener: function( flag ) {
-      this.triggerBoxes.forEach( function( box ) {
-        this.loopStartEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ]( event, this.startRotation );
-        }.bind( this ) );
-      }.bind( this ) );
-    },
-    stopLoopListener: function() {
-      this.triggerBoxes.forEach( function( box ) {
-        this.loopStopEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ]( event, this.stopRotation );
+          if ( this.rotation === "loop" ) {
+            box[ flag + "EventListener" ]( event, this.loopFunction );
+          } else {
+            box[ flag + "EventListener" ]( event, this.flipFunction );
+          }
         }.bind( this ) );
       }.bind( this ) );
     },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
-      // trigger
       if ( attrName === "trigger" ) {
         this.trigger = newVal;
 
         if ( newVal === "btn" ) {
+          this.boxListener( "remove" );
+          this.btnListener( "add" );
           this.btnHiddenClass( "remove" );
         } else {
-          this.btnHiddenClass( "add" );
+          this.btnListener( "remove" );
           this.trigger = "box";
           this.boxListener( "add" );
+          this.btnHiddenClass( "add" );
         }
-      // animation
       } else if ( attrName === "animation" ) {
         this.animation = newVal;
 
@@ -148,30 +127,11 @@
         } else {
           this.animation = "horizontal";
         }
-      // rotation
       } else if ( attrName === "rotation" ) {
         this.rotation = newVal;
 
-        if ( newVal === "loop" ) {
-          this.rotation = "loop";
-
-          if ( this.trigger === "btn" ) {
-            this.boxLoopListener( "remove" );
-            this.btnLoopListener( "add" );
-          } else {
-            this.btnLoopListener( "remove" );
-            this.boxLoopListener( "add" );
-          }
-        } else {
+        if ( newVal !== "loop" ) {
           this.rotation = "toggle";
-
-          if ( this.trigger === "btn" ) {
-            this.boxToggleListener( "remove" );
-            this.btnToggleListener( "add" );
-          } else {
-            this.btnToggleListener( "remove" );
-            this.boxToggleListener( "add" );
-          }
         }
       }
     }

@@ -27,7 +27,11 @@
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-transition: transform 2s linear;
+  -moz-transition: transform 2s linear;
+  animation:transform 2s linear;
 }
+
 .box {
   width: 100%;
   height: 540px;
@@ -40,14 +44,6 @@
 }
 
 // toggle
-:host([rotation="toggle"]){
-  .flipbox-container {
-    -webkit-transition: transform 2s linear;
-    -moz-transition: transform 2s linear;
-    animation:transform 2s linear;
-  }
-}
-
 :host([animation="vertical"][rotation="toggle"]){
   .back {
     -webkit-transform: rotateY(180deg);
@@ -89,71 +85,66 @@
 }
 
 // loop
-:host([rotation="loop"]){
-  .front {
-    -webkit-backface-visibility: visible;
-    -moz-backface-visibility: visible;
-    backface-visibility: visible;
-  }
-}
-
-:host([rotation="loop"][animation="horizontal"]){
-  .flipbox-container {
-    -webkit-animation:horizontalLoop 2s linear infinite;
-    -moz-animation:horizontalLoop 2s linear infinite;
-    animation:horizontalLoop 2s linear infinite;
-  }
-
-  .back {
-    -webkit-transform: rotateX(180deg);
-    -moz-transform: rotateX(180deg);
-    transform: rotateX(180deg);
-  }
-
-  @-moz-keyframes horizontalLoop {
-    100% { -moz-transform: rotateX(360deg); }
-  }
-  @-webkit-keyframes horizontalLoop {
-    100% { -webkit-transform: rotateX(360deg); }
-  }
-  @keyframes horizontalLoop {
-    100% { -webkit-transform: rotateX(360deg); transform:rotateX(360deg); }
-  }
-
-  .flipbox-container.pause {
-    -webkit-animation-play-state: paused;
-    -moz-animation-play-state: paused;
-    animation-play-state: paused;
-  }
-}
-
 :host([rotation="loop"][animation="vertical"]){
-  .flipbox-container {
-    -webkit-animation:verticalLoop 2s linear infinite;
-    -moz-animation:verticalLoop 2s linear infinite;
-    animation:verticalLoop 2s linear infinite;
-    animation-direction: alternate;
-  }
-
   .back {
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
     transform: rotateY(180deg);
   }
 
-  @-moz-keyframes verticalLoop {
-    100% { -moz-transform: rotateY(360deg); }
-  }
-  @-webkit-keyframes verticalLoop {
-    100% { -webkit-transform: rotateY(360deg); }
-  }
-  @keyframes verticalLoop {
-    100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); }
+//  .flipbox-container.flip {
+//    -webkit-transform: rotateY(180deg);
+//    -moz-transform: rotateY(180deg);
+//    transform: rotateY(180deg);
+//  }
+//
+//  .flipbox-container.flip-continue {
+//    -webkit-transform: rotateY(360deg);
+//    -moz-transform: rotateY(360deg);
+//    transform: rotateY(360deg);
+//  }
+//
+//  .flipbox-container.flip-return {
+//    -webkit-transform: rotateY(-180deg);
+//    -moz-transform: rotateY(180deg);
+//    transform: rotateY(180deg);
+//  }
+//
+//  .flipbox-container.flip-complete {
+//    -webkit-transform: rotateY(0deg);
+//    -moz-transform: rotateY(0deg);
+//    transform: rotateY(0deg);
+//  }
+}
+
+:host([rotation="loop"][animation="horizontal"]){
+  .back {
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    transform: rotateX(180deg);
   }
 
-  .flipbox-container.pause {
-    -webkit-animation-play-state: paused;
-    -moz-animation-play-state: paused;
-    animation-play-state: paused;
-  }
+//  .flipbox-container.flip {
+//    -webkit-transform: rotateX(180deg);
+//    -moz-transform: rotateX(180deg);
+//    transform: rotateX(180deg);
+//  }
+//
+//  .flipbox-container.flip-continue {
+//    -webkit-transform: rotateX(360deg);
+//    -moz-transform: rotateX(360deg);
+//    transform: rotateX(360deg);
+//  }
+//
+//  .flipbox-container.flip-return {
+//    -webkit-transform: rotateX(-180deg);
+//    -moz-transform: rotateX(180deg);
+//    transform: rotateX(180deg);
+//  }
+//
+//  .flipbox-container.flip-complete {
+//    -webkit-transform: rotateX(0deg);
+//    -moz-transform: rotateX(0deg);
+//    transform: rotateX(0deg);
+//  }
 }
