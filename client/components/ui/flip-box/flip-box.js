@@ -74,7 +74,12 @@
     },
     loop: function() {
       this.degree += 180;
-      this.flipBoxContainer.style.transform = "rotateY(" + this.degree + "deg)";
+
+      if ( this.animation === "vertical" ) {
+        this.flipBoxContainer.style.transform = "rotateY(" + this.degree + "deg)";
+      } else {
+        this.flipBoxContainer.style.transform = "rotateX(" + this.degree + "deg)";
+      }
     },
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
@@ -128,10 +133,16 @@
           this.animation = "horizontal";
         }
       } else if ( attrName === "rotation" ) {
+        this.boxListener( "remove" );
+        this.btnListener( "remove" );
         this.rotation = newVal;
 
-        if ( newVal !== "loop" ) {
-          this.rotation = "toggle";
+        if ( newVal === "loop" ) {
+          this.animation = "loop";
+          //this.boxListener( "add" );
+          //this.btnListener( "add" );
+        } else {
+          this.animation = "toggle";
         }
       }
     }
