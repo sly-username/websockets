@@ -33,18 +33,20 @@
       this._rotation = this.attributes.rotation.value;
       this._trigger = this.attributes.trigger.value;
 
-            this.flipBoxContainer = this.shadowRoot
+      this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
       this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
 
-      this.flipListener = this.flip.bind( this );
-      this.rotationListener = this.boxRotation.bind( this );
+      this.flipFunction = this.flip.bind( this );
+      this.startRotation = this.startRotation.bind( this );
+      this.stopRotation = this.stopRotation.bind( this );
 
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
-      this.loopEventList = [ "mouseout", "touchleave" ];
+      this.loopStartEventList = [ "mouseout", "touchend" ];
+      this.loopStopEventList = [ "mouseenter", "touchenter" ];
     },
     attached: function() {
       console.log( this.attributes );
@@ -67,18 +69,8 @@
         this.rotation = "loop";
         this.flipBoxContainer.classList.add( "pause" );
 
-        if ( this.trigger === "btn" ) {
-          this.btnLoopListener( "add" );
-        } else {
+        if ( this.trigger === "box" ) {
           this.boxLoopListener( "add" );
-        }
-      } else {
-        this.rotation = "toggle";
-
-        if ( this.trigger === "btn" ) {
-          this.btnToggleListener( "add" );
-        } else {
-          this.boxToggleListener( "add" );
         }
       }
     },
@@ -86,11 +78,13 @@
     flip: function() {
       this.flipBoxContainer.classList.toggle( "flip" );
     },
-    boxRotation: function() {
+    startRotation: function() {
       if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
         this.flipBoxContainer.classList.remove( "pause" );
         return;
       }
+    },
+    stopRotation: function() {
       this.flipBoxContainer.classList.add( "pause" );
       this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
         this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
@@ -102,31 +96,33 @@
         button.classList[ flag ]( "hidden" );
       }, this );
     },
+    // toggle
     btnToggleListener: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         this.btnEventList.forEach( function( event ) {
-          button[ flag + "EventListener" ]( event, this.flipListener );
+          button[ flag + "EventListener" ]( event, this.flipFunction );
         }.bind( this ) );
       }.bind( this ) );
     },
     boxToggleListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ]( event, this.flipListener );
+          box[ flag + "EventListener" ]( event, this.flipFunction );
         }.bind( this ) );
       }.bind( this ) );
     },
-    btnLoopListener: function( flag ) {
-      this.triggerButtons.forEach( function( button ) {
-        this.btnEventList.forEach( function( event ) {
-          button[ flag + "EventListener" ]( event, this.rotationListener );
-        }.bind( this ) );
-      }.bind( this ) );
-    },
-    boxLoopListener: function( flag ) {
+    // loop
+    startLoopListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
-        this.loopEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ]( event, this.rotationListener );
+        this.loopStartEventList.forEach( function( event ) {
+          box[ flag + "EventListener" ]( event, this.startRotation );
+        }.bind( this ) );
+      }.bind( this ) );
+    },
+    stopLoopListener: function() {
+      this.triggerBoxes.forEach( function( box ) {
+        this.loopStopEventList.forEach( function( event ) {
+          box[ flag + "EventListener" ]( event, this.stopRotation );
         }.bind( this ) );
       }.bind( this ) );
     },
