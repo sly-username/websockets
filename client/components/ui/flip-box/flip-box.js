@@ -32,16 +32,19 @@
       this._animation = this.attributes.animation.value;
       this._rotation = this.attributes.rotation.value;
       this._trigger = this.attributes.trigger.value;
-      this.boxEventList = [ "mouseover", "touchmove" ];
-      this.btnEventList = [ "mousedown", "touchstart" ];
-      this.loopEventList = [ "mouseout", "touchleave" ];
-      this.flipBoxContainer = this.shadowRoot
+
+            this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
-      this.flipListener = this.flip.bind( this );
-      this.rotationListener = this.boxRotation.bind( this );
       this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
+
+      this.flipListener = this.flip.bind( this );
+      this.rotationListener = this.boxRotation.bind( this );
+
+      this.boxEventList = [ "mouseover", "touchmove" ];
+      this.btnEventList = [ "mousedown", "touchstart" ];
+      this.loopEventList = [ "mouseout", "touchleave" ];
     },
     attached: function() {
       console.log( this.attributes );
@@ -134,10 +137,6 @@
         this.trigger = newVal;
 
         if ( newVal === "btn" ) {
-          this.boxToggleListener( "remove" );
-          this.boxLoopListener( "remove" );
-          this.btnToggleListener( "add" );
-          this.btnLoopListener( "add" );
           this.btnHiddenClass( "remove" );
         } else {
           this.btnHiddenClass( "add" );

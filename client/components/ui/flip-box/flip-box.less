@@ -97,12 +97,11 @@
   }
 }
 
-:host([animation="horizontal"][rotation="loop"]){
+:host([rotation="loop"][animation="horizontal"]){
   .flipbox-container {
-    -webkit-animation:loop 2s linear infinite;
-    -moz-animation:loop 2s linear infinite;
-    animation:loop 2s linear infinite;
-    animation-direction: alternate;
+    -webkit-animation:horizontalLoop 2s linear infinite;
+    -moz-animation:horizontalLoop 2s linear infinite;
+    animation:horizontalLoop 2s linear infinite;
   }
 
   .back {
@@ -111,22 +110,28 @@
     transform: rotateX(180deg);
   }
 
-  @-moz-keyframes loop {
+  @-moz-keyframes horizontalLoop {
     100% { -moz-transform: rotateX(360deg); }
   }
-  @-webkit-keyframes loop {
+  @-webkit-keyframes horizontalLoop {
     100% { -webkit-transform: rotateX(360deg); }
   }
-  @keyframes loop {
+  @keyframes horizontalLoop {
     100% { -webkit-transform: rotateX(360deg); transform:rotateX(360deg); }
+  }
+
+  .flipbox-container.pause {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    animation-play-state: paused;
   }
 }
 
-:host([animation="vertical"][rotation="loop"]){
+:host([rotation="loop"][animation="vertical"]){
   .flipbox-container {
-    -webkit-animation:loop 2s linear infinite;
-    -moz-animation:loop 2s linear infinite;
-    animation:loop 2s linear infinite;
+    -webkit-animation:verticalLoop 2s linear infinite;
+    -moz-animation:verticalLoop 2s linear infinite;
+    animation:verticalLoop 2s linear infinite;
     animation-direction: alternate;
   }
 
@@ -136,19 +141,19 @@
     transform: rotateY(180deg);
   }
 
-  @-moz-keyframes loop {
+  @-moz-keyframes verticalLoop {
     100% { -moz-transform: rotateY(360deg); }
   }
-  @-webkit-keyframes loop {
+  @-webkit-keyframes verticalLoop {
     100% { -webkit-transform: rotateY(360deg); }
   }
-  @keyframes loop {
+  @keyframes verticalLoop {
     100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); }
   }
-}
 
-.flipbox-container.pause {
-  -webkit-animation-play-state: paused;
-  -moz-animation-play-state: paused;
-  animation-play-state: paused;
+  .flipbox-container.pause {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    animation-play-state: paused;
+  }
 }
