@@ -44,7 +44,7 @@
 }
 
 // toggle
-:host([animation="vertical"][rotation="toggle"]){
+:host([rotation="toggle"][animation="vertical"]){
   .back {
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
@@ -58,7 +58,7 @@
   }
 }
 
-:host([animation="horizontal"][rotation="toggle"]) {
+:host([rotation="toggle"][animation="horizontal"]) {
   .flipbox-container {
     -webkit-transform-origin: center;
     -moz-transform-origin: center;
@@ -94,6 +94,12 @@
 }
 
 :host([rotation="loop"][animation="horizontal"]){
+  .front {
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;
+    backface-visibility: visible;
+  }
+
   .back {
     -webkit-transform: rotateX(180deg);
     -moz-transform: rotateX(180deg);

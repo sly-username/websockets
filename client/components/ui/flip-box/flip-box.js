@@ -109,22 +109,34 @@
         }.bind( this ) );
       }.bind( this ) );
     },
+    listenersReset: function() {
+      this.boxListener( "remove" );
+      this.btnListener( "remove" );
+      this.flipBoxContainer.removeAttribute( "style" );
+    },
+    btnPackage: function() {
+      this.btnListener( "add" );
+      this.btnHiddenClass( "remove" );
+    },
+    boxPackage: function() {
+      this.trigger = "box";
+      this.boxListener( "add" );
+      this.btnHiddenClass( "add" );
+    },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
+
       if ( attrName === "trigger" ) {
+        this.listenersReset();
         this.trigger = newVal;
 
         if ( newVal === "btn" ) {
-          this.boxListener( "remove" );
-          this.btnListener( "add" );
-          this.btnHiddenClass( "remove" );
+          this.btnPackage();
         } else {
-          this.btnListener( "remove" );
-          this.trigger = "box";
-          this.boxListener( "add" );
-          this.btnHiddenClass( "add" );
+          this.boxPackage();
         }
       } else if ( attrName === "animation" ) {
+        this.listenersReset();
         this.animation = newVal;
 
         if ( newVal === "vertical" ) {
@@ -132,17 +144,26 @@
         } else {
           this.animation = "horizontal";
         }
+
+        if ( newVal === "btn" ) {
+          this.btnPackage();
+        } else {
+          this.boxPackage();
+        }
       } else if ( attrName === "rotation" ) {
-        this.boxListener( "remove" );
-        this.btnListener( "remove" );
+        this.listenersReset();
         this.rotation = newVal;
 
         if ( newVal === "loop" ) {
           this.animation = "loop";
-          //this.boxListener( "add" );
-          //this.btnListener( "add" );
         } else {
           this.animation = "toggle";
+        }
+
+        if ( newVal === "btn" ) {
+          this.btnPackage();
+        } else {
+          this.boxPackage();
         }
       }
     }
