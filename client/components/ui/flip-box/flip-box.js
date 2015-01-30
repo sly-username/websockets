@@ -34,13 +34,14 @@
       this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
       this.flipListener = this.flip.bind( this );
-      this.rotationListener = this.boxRotation.bind( this );
+      //this.rotationListener = this.boxRotation.bind( this );
       this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
     },
     attached: function() {
-      if ( this._trigger === "btn" ) {
+      console.log(this.trigger, this.animation, this.rotation);
+      if ( this.trigger === "btn" ) {
         this.trigger = "btn";
         this.btnListener( "add" );
       } else {
@@ -48,13 +49,13 @@
         this.boxListener( "add" );
       }
 
-      if ( this._animation === "vertical" ) {
+      if ( this.animation === "vertical" ) {
         this.animation = "vertical";
       } else {
         this.animation = "horizontal";
       }
 
-      if ( this._rotation === "loop" ) {
+      if ( this.rotation === "loop" ) {
         this.rotation = "loop";
       } else {
         this.rotation = "toggle";
@@ -64,28 +65,28 @@
     flip: function() {
       this.flipBoxContainer.classList.toggle( "flip" );
     },
-    boxRotation: function() {
-      if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
-        this.flipBoxContainer.classList.remove( "pause" );
-        console.log( "unpausing?" );
-        return;
-      }
-      this.flipBoxContainer.classList.add( "pause" );
-      console.log( "pausing?" );
-      this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
-        this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
-        console.log( "listening?" );
-      });
-    },
+    //boxRotation: function() {
+    //  if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
+    //    this.flipBoxContainer.classList.remove( "pause" );
+    //    console.log( "unpausing?" );
+    //    return;
+    //  }
+    //  this.flipBoxContainer.classList.add( "pause" );
+    //  console.log( "pausing?" );
+    //  this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
+    //    this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
+    //    console.log( "listening?" );
+    //  });
+    //},
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         this.btnEventList.forEach( function( event ) {
-          if ( this.rotation === "loop" ) {
-            button[ flag + "EventListener" ]( event, this.rotationListener );
-          } else {
+          //if ( this.rotation === "loop" ) {
+          //  button[ flag + "EventListener" ]( event, this.rotationListener );
+          //} else {
             button[ flag + "EventListener" ]( event, this.flipListener );
-          }
+          //}
         }.bind( this ) );
       }.bind( this ) );
     },
@@ -97,11 +98,11 @@
     boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
-          if ( this.rotation === "loop" ) {
-            box[ flag + "EventListener" ]( event, this.rotationListener );
-          } else {
+          //if ( this.rotation === "loop" ) {
+          //  box[ flag + "EventListener" ]( event, this.rotationListener );
+          //} else {
             box[ flag + "EventListener" ]( event, this.flipListener );
-          }
+          //}
         }.bind( this ) );
       }.bind( this ) );
     },
@@ -123,10 +124,20 @@
       } else if ( attrName === "animation" ) {
         this.animation = newVal;
 
-        if ( newVal !== "vertical" ) {
+        if ( newVal === "vertical" ) {
+          this.animation = "vertical";
+        } else {
           this.animation = "horizontal";
         }
+
+      } else if ( attrName === "rotation" ) {
+        this.rotation = newVal;
+
+        if ( newVal !== "loop" ) {
+          this.rotation = "toggle";
+        }
       }
+
     }
     /*** END FUNCTIONS ***/
   });

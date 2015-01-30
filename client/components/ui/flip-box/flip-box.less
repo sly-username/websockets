@@ -41,9 +41,9 @@
 
 :host([rotation="toggle"]){
   .flipbox-container {
-    -webkit-animation:loop 2s linear;
-    -moz-animation:loop 2s linear;
-    animation:loop 2s linear;
+    -webkit-transition: transform 2s linear;
+    -moz-transition: transform 2s linear;
+    animation:transform 2s linear;
   }
 }
 
@@ -88,25 +88,20 @@
 }
 
 :host([rotation="loop"]){
+  .front {
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;
+    backface-visibility: visible;
+  }
+
   .flipbox-container {
     -webkit-animation:loop 2s linear infinite;
     -moz-animation:loop 2s linear infinite;
     animation:loop 2s linear infinite;
+    animation-direction: alternate;
   }
 }
-:host([animation="vertical"][rotation="loop"]){
-  @-moz-keyframes loop {
-    100% { -moz-transform: rotateY(180deg); }
-  }
-  @-webkit-keyframes loop {
-    100% { -webkit-transform: rotateY(180deg); }
-  }
-  @keyframes loop {
-    100% { -webkit-transform: rotateY(180deg); transform:rotateY(360deg); }
-  }
-}
-
-:host([animation="horizontal"][rotation="loop"]){
+:host([animation="vertical"]){
   @-moz-keyframes loop {
     100% { -moz-transform: rotateX(180deg); }
   }
@@ -115,6 +110,18 @@
   }
   @keyframes loop {
     100% { -webkit-transform: rotateX(180deg); transform:rotateX(360deg); }
+  }
+}
+
+:host([animation="horizontal"]){
+  @-moz-keyframes loop {
+    100% { -moz-transform: rotateY(180deg); }
+  }
+  @-webkit-keyframes loop {
+    100% { -webkit-transform: rotateY(180deg); }
+  }
+  @keyframes loop {
+    100% { -webkit-transform: rotateY(180deg); transform:rotateY(360deg); }
   }
 }
 

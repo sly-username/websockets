@@ -31,7 +31,7 @@
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<flip-box trigger=\"box\" animation=\"horizontal\"></flip-box>" );
+          .and.equals( "<flip-box trigger=\"box\" animation=\"horizontal\" rotation=\"toggle\"></flip-box>" );
 
         resetWrapper();
       });
@@ -198,7 +198,7 @@
           flipBox.setAttribute( "rotation", setTo );
           expect( flipBox )
             .to.have.property( "rotation" )
-            .that.equals( setTo )
+            .that.equals( "toggle" )
             .and.equals( flipBox.getAttribute( "rotation" ) );
         });
 
