@@ -245,7 +245,6 @@
             .and.to.equal( true );
         });
 
-        // remove attribute sets to false
         test( "removing attribute reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
@@ -286,29 +285,46 @@
         });
       });
 
-      //suite( "Modal", function() {
-      //  test( ".open() method displays the modal", function() {
-      //    var edModal = document.createElement( "ed-modal" ),
-      //        modalDisplay = getComputedStyle( edModal, null ).display;
-      //
-      //    edModal.open();
-      //
-      //    expect( modalDisplay )
-      //      .to.be.a( "string" )
-      //      .and.equals( "block" );
-      //  });
-      //
-      //  test( ".close() method hides the modal", function() {
-      //    var edModal = document.createElement( "ed-modal" ),
-      //        modalDisplay = window.getComputedStyle( edModal, null ).getPropertyValue( "display" );
-      //
-      //    edModal.close();
-      //
-      //    expect( modalDisplay )
-      //      .to.be.a( "string" )
-      //      .and.equals( "none" );
-      //  });
-      //});
+      suite( "isOpen", function() {
+        test( "has default value: false", function() {
+          expect( document.createElement( "ed-modal" ) )
+            .to.have.property( "isOpen" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "cannot be set via property \"isOpen\"", function() {
+          var edModal = document.createElement( "ed-modal" );
+
+          edModal.isOpen = true;
+          expect( edModal )
+            .to.have.property( "isOpen" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "setting via .open() method sets isOpen to true", function() {
+          var edModal = document.createElement( "ed-modal" );
+
+          edModal.open();
+
+          expect( edModal )
+            .to.have.property( "isOpen" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via .close() method sets isOpen to false", function() {
+          var edModal = document.createElement( "ed-modal" );
+
+          edModal.close();
+
+          expect( edModal )
+            .to.have.property( "isOpen" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+      });
     });
   });
 })( window, document, window.chai );
