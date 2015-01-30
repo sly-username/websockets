@@ -134,9 +134,10 @@
         this.trigger = newVal;
 
         if ( newVal === "btn" ) {
-          this.boxListener( "remove" );
-          this.btnListener( "add" );
-          this.btnListener( "remove" );
+          this.boxToggleListener( "remove" );
+          this.boxLoopListener( "remove" );
+          this.btnToggleListener( "add" );
+          this.btnLoopListener( "add" );
           this.btnHiddenClass( "remove" );
         } else {
           this.btnHiddenClass( "add" );
