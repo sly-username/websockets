@@ -115,6 +115,7 @@
       this.flipBoxContainer.removeAttribute( "style" );
     },
     btnPackage: function() {
+      this.trigger = "btn";
       this.btnListener( "add" );
       this.btnHiddenClass( "remove" );
     },
@@ -125,9 +126,9 @@
     },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
-
+      this.listenersReset();
+      // trigger
       if ( attrName === "trigger" ) {
-        this.listenersReset();
         this.trigger = newVal;
 
         if ( newVal === "btn" ) {
@@ -135,8 +136,8 @@
         } else {
           this.boxPackage();
         }
+      // animation
       } else if ( attrName === "animation" ) {
-        this.listenersReset();
         this.animation = newVal;
 
         if ( newVal === "vertical" ) {
@@ -150,14 +151,14 @@
         } else {
           this.boxPackage();
         }
+      // rotation
       } else if ( attrName === "rotation" ) {
-        this.listenersReset();
         this.rotation = newVal;
 
         if ( newVal === "loop" ) {
-          this.animation = "loop";
+          this.rotation = "loop";
         } else {
-          this.animation = "toggle";
+          this.rotation = "toggle";
         }
 
         if ( newVal === "btn" ) {
