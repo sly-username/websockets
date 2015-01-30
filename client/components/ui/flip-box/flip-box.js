@@ -29,9 +29,6 @@
 
     /*** LIFECYCLE ***/
     ready: function() {
-      this._animation = this.attributes.animation.value;
-      this._rotation = this.attributes.rotation.value;
-      this._trigger = this.attributes.trigger.value;
       this.boxEventList = [ "mouseover", "touchmove" ];
       this.btnEventList = [ "mousedown", "touchstart" ];
       this.flipBoxContainer = this.shadowRoot
@@ -43,12 +40,18 @@
         .getElementsByClassName( "flipbox-button" ) );
     },
     attached: function() {
+      this._animation = this.attributes.animation.value;
+      this._rotation = this.attributes.rotation.value;
+      this._trigger = this.attributes.trigger.value;
+
       if ( this.trigger === "btn" ) {
         this.trigger = "btn";
         this.btnListener( "add" );
+        this.btnHiddenClass( "remove" );
       } else {
         this.trigger = "box";
         this.boxListener( "add" );
+        this.btnHiddenClass( "add" );
       }
 
       if ( this.animation === "vertical" ) {
@@ -59,9 +62,11 @@
 
       if ( this.rotation === "loop" ) {
         this.rotation = "loop";
+        this.flipBoxContainer.classList.add( "pause" );
       } else {
         this.rotation = "toggle";
       }
+
     },
     /*** FUNCTIONS ***/
     flip: function() {
@@ -70,14 +75,11 @@
     boxRotation: function() {
       if ( this.flipBoxContainer.classList.contains( "pause" ) ) {
         this.flipBoxContainer.classList.remove( "pause" );
-        console.log( "unpausing?" );
         return;
       }
       this.flipBoxContainer.classList.add( "pause" );
-      console.log( "pausing?" );
       this.flipBoxContainer.addEventListener( "webkitAnimationEnd", function() {
         this.flipBoxContainer.style.webkitAnimationPlayState = "paused";
-        console.log( "listening?" );
       });
     },
     /* EVENT LISTENERS */
@@ -116,12 +118,12 @@
         if ( newVal === "btn" ) {
           this.boxListener( "remove" );
           this.btnListener( "add" );
+          this.btnListener( "remove" );
           this.btnHiddenClass( "remove" );
         } else {
-          this.btnListener( "remove" );
+          this.btnHiddenClass( "add" );
           this.trigger = "box";
           this.boxListener( "add" );
-          this.btnHiddenClass( "add" );
         }
       } else if ( attrName === "animation" ) {
         this.animation = newVal;

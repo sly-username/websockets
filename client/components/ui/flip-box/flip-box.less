@@ -107,27 +107,32 @@
     -moz-transform: rotateY(180deg);
     transform: rotateY(180deg);
   }
-  
+
   @-moz-keyframes loop {
-    100% { -moz-transform: rotateX(180deg); }
+    100% { -moz-transform: rotateX(360deg); }
   }
   @-webkit-keyframes loop {
-    100% { -webkit-transform: rotateX(180deg); }
+    100% { -webkit-transform: rotateX(360deg); }
   }
   @keyframes loop {
-    100% { -webkit-transform: rotateX(180deg); transform:rotateX(360deg); }
+    100% { -webkit-transform: rotateX(360deg); transform:rotateX(360deg); }
   }
 }
 
 :host([animation="horizontal"]){
   @-moz-keyframes loop {
-    100% { -moz-transform: rotateY(180deg); }
+    100% { -moz-transform: rotateY(360deg); }
   }
   @-webkit-keyframes loop {
-    100% { -webkit-transform: rotateY(180deg); }
+    100% { -webkit-transform: rotateY(360deg); }
   }
   @keyframes loop {
-    100% { -webkit-transform: rotateY(180deg); transform:rotateY(360deg); }
+    100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); }
   }
 }
 
+.flipbox-container.pause {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  animation-play-state: paused;
+}
