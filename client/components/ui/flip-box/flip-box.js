@@ -26,7 +26,12 @@
       this._rotation = value;
       return value;
     },
-
+    get isFlipped() {
+      return this.flipBoxContainer.classList.contains( "flip" );
+    },
+    set isFlipped( value ) {
+      this.flipBoxContainer.classList[ value ? "add" : "remove" ]( "flip" );
+    },
     /*** LIFECYCLE ***/
     ready: function() {
       this.degree = 0;
@@ -70,6 +75,7 @@
     },
     /*** FUNCTIONS ***/
     flip: function() {
+      this.flipBoxContainer.removeAttribute( "style" );
       this.flipBoxContainer.classList.toggle( "flip" );
     },
     loop: function() {
