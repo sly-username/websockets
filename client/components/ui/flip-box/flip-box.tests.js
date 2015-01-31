@@ -522,7 +522,46 @@
     });
 
     suite( "Methods", function() {
-      // test( "customEvent", function( done ) {});
+      suite( "isFlipped", function() {
+        test( "default value is \"false\"", function() {
+          expect( document.createElement( "flip-box" ) )
+            .to.have.property( "isFlipped" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "cannot be set via property \"isFlipped\"", function() {
+          var flipBox = document.createElement( "flip-box" );
+
+          flipBox.isFlipped = true;
+          expect( flipBox )
+            .to.have.property( "isFlipped" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( ".flip() method sets isFlipped to \"true\"", function() {
+          var flipBox = document.createElement( "flip-box" );
+
+          flipBox.flip();
+
+          expect( flipBox )
+            .to.have.property( "isFlipped" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "when isFlipped is \"true\", .flip() sets isFlipped to \"false\"", function() {
+          var flipBox = document.createElement( "flip-box" );
+
+          flipBox.flip();
+
+          expect( flipBox )
+            .to.have.property( "isFlipped" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+      });
     });
   });
 })( window, document, window.chai );
