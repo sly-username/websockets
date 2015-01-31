@@ -52,6 +52,7 @@
     });
 
     suite( "Attributes", function() {
+      // Testing for Size
       suite( "Size", function() {
         test( "has default value", function() {
           expect( document.createElement( "select-box" ) )
@@ -147,6 +148,140 @@
             .to.have.property( "size" )
             .that.is.a( "number" )
             .and.equals( 8 );
+        });
+      });
+      // Testing for disabled
+      suite( "disabled", function() {
+        test( "has default value: false", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          // Check default setup
+          expect( selectBox )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "can be set via \"setAttribute\"", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          // Set to be disabled
+          selectBox.setAttribute( "disabled", "" );
+          expect( selectBox.hasAttribute( "disabled" ) ).to.equal( true );
+          expect( selectBox.getAttribute( "disabled" ) )
+            .to.be.a( "string" )
+            .and.equal( "" );
+        });
+
+        test( "can be set via property \"disabled\"", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.disabled = true;
+          expect( selectBox )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via attribute reflects to property", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.setAttribute( "disabled", "" );
+          expect( selectBox )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via property reflects to attribute", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.disabled = true;
+          expect( selectBox.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+        });
+
+        test( "removing attribute reflects to attribute", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.setAttribute( "disabled", "" );
+          expect( selectBox.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+
+          selectBox.removeAttribute( "disabled" );
+          expect( selectBox )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "setting property to false removes attribute", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.disabled = true;
+          expect( selectBox )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+
+          expect( selectBox.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
+
+          selectBox.disabled = false;
+          expect( selectBox )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+
+          expect( selectBox.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( false );
+        });
+      });
+      // Testing for required
+      suite( "required", function() {
+        test( "can be set via attribute", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.setAttribute( "required", "" );
+
+          expect( selectBox.hasAttribute( "required" ) ).to.equal( true );
+          expect( selectBox.getAttribute( "required" ) )
+            .to.be.a( "string" )
+            .and.equals( "" );
+
+          expect( selectBox )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<select-box required=\"\"></select-box>" );
+        });
+
+        test( "can be removed via attribute", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.setAttribute( "required", "" );
+          selectBox.removeAttribute( "required" );
+
+          expect( selectBox )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<select-box></select-box>" );
+        });
+      });
+
+      suite( "value", function() {
+        test( "has default value: false", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.value = "someString";
+
+          expect( selectBox )
+            .to.have.property( "value" )
+            .that.is.a( "string" )
+            .and.equals( "someString" )
         });
       });
     });
