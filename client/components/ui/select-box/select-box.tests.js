@@ -240,6 +240,18 @@
             .to.be.a( "boolean" )
             .and.to.equal( false );
         });
+
+        test( "should not be able to input value with disable tag present", function() {
+          // selectBox is defined as firstInput requires selectBox and is used twice
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.setAttribute( "disabled", "" );
+          selectBox.selectedIndex = 5;
+
+          expect( selectBox )
+            .to.have.property( "selectedIndex" )
+            .to.be.null();
+        });
       });
       // Testing for required
       suite( "required", function() {
@@ -272,16 +284,16 @@
         });
       });
 
-      suite( "value", function() {
-        test( "has default value: false", function() {
+      suite( "selectedIndex", function() {
+        test( "can be set via property \"selectedIndex\"", function() {
           var selectBox = document.createElement( "select-box" );
 
-          selectBox.value = "someString";
+          selectBox.selectedIndex = 5;
 
           expect( selectBox )
-            .to.have.property( "value" )
-            .that.is.a( "string" )
-            .and.equals( "someString" )
+            .to.have.property( "selectedIndex" )
+            .that.is.a( "number" )
+            .that.equals( 5 );
         });
       });
     });
