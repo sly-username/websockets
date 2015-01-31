@@ -110,9 +110,10 @@
       }.bind( this ) );
     },
     listenersReset: function() {
+      this.flipBoxContainer.removeAttribute( "style" );
+      this.degree = 0;
       this.boxListener( "remove" );
       this.btnListener( "remove" );
-      this.flipBoxContainer.removeAttribute( "style" );
     },
     btnPackage: function() {
       this.trigger = "btn";
@@ -126,9 +127,9 @@
     },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
-      this.listenersReset();
       // trigger
       if ( attrName === "trigger" ) {
+        this.listenersReset();
         this.trigger = newVal;
 
         if ( newVal === "btn" ) {
@@ -138,6 +139,7 @@
         }
       // animation
       } else if ( attrName === "animation" ) {
+        this.listenersReset();
         this.animation = newVal;
 
         if ( newVal === "vertical" ) {
@@ -146,13 +148,14 @@
           this.animation = "horizontal";
         }
 
-        if ( newVal === "btn" ) {
+        if ( this.trigger === "btn" ) {
           this.btnPackage();
         } else {
           this.boxPackage();
         }
       // rotation
       } else if ( attrName === "rotation" ) {
+        this.listenersReset();
         this.rotation = newVal;
 
         if ( newVal === "loop" ) {
@@ -161,7 +164,7 @@
           this.rotation = "toggle";
         }
 
-        if ( newVal === "btn" ) {
+        if ( this.trigger === "btn" ) {
           this.btnPackage();
         } else {
           this.boxPackage();
