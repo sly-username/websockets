@@ -5,6 +5,7 @@
 @import "mixins/prefixes/masks.less";
 @import "mixins/prefixes/columns.less";
 @import "mixins/prefixes/font-text.less";
+@import "mixins/prefixes/regions.less";
 
 // Animation Tests
 #less-test-animation {
@@ -115,4 +116,17 @@
   height: 200px;
   width: 200px;
   .hyphens( auto );
+}
+
+// regions test
+.text {
+  color: #F2F2F2;
+  .flow-to( text-flow );
+}
+
+.containers{
+  background: #333333;
+  width: 200px;
+  height: 100px;
+  .flow-from( text-flow );
 }

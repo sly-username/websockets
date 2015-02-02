@@ -1,0 +1,28 @@
+/***
+ * Filter property mixin
+ * .flow-to();
+ * .flow-from();
+ *
+ * Only supports IE and Safari
+ *
+ * Example:
+ * .starting-variable {
+ *  .flow-to( flow-name );
+ * }
+ *
+ * .ending-variable {
+ *  .flow-from( flow-name );
+ * }
+ * This mixin takes in the following parameter
+ * @flowTo: <name>
+ * @flowFrom: <name>
+***/
+.flow-to( @flowTo ) {
+  -webkit-flow-into: @flowTo;
+  -ms-flow-into: @flowTo;
+}
+
+.flow-from( @flowFrom ) {
+  -webkit-flow-from: @flowFrom;
+  -ms-flow-from: @flowFrom;
+}
