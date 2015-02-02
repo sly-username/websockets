@@ -46,9 +46,6 @@
       this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
-
-      this.flipFunction = this.flip.bind( this );
-      this.loopFunction = this.loop.bind( this );
     },
     attached: function() {
       if ( this.trigger === "btn" ) {
@@ -96,14 +93,12 @@
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
       // look into event delegation (event.target)
-      this.triggerButtons.forEach( function( button ) {
-        this.btnEventList.forEach( function( event ) {
-          button[ flag + "EventListener" ](
-            event, this.rotation === "loop" ? this.loopFunction : this.flipFunction
-          );
-          console.log( this );
+      this.btnEventList.forEach( function( event ) {
+        this[ flag + "EventListener" ]( event, function( e ) {
+          if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
+            this.rotation === "loop" ? this.loop() : this.flip();
+          }
         }.bind( this ) );
-        console.log( this );
       }.bind( this ) );
     },
     btnHiddenClass: function( flag ) {
@@ -112,11 +107,9 @@
       }, this );
     },
     boxListener: function( flag ) {
-      this.triggerBoxes.forEach( function( box ) {
-        this.boxEventList.forEach( function( event ) {
-          box[ flag + "EventListener" ](
-            event, this.rotation === "loop" ? this.loop : this.flip
-          );
+      this.boxEventList.forEach( function( event ) {
+        this[ flag + "EventListener" ]( event, function() {
+          this.rotation === "loop" ? this.loop() : this.flip();
         }.bind( this ) );
       }.bind( this ) );
     },
