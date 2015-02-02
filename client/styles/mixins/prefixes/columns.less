@@ -2,26 +2,38 @@
 * Multiple Column property mixin
 * .column();
 *
-* No support for Opera Mini
-* Ex: .flex-container( row nowrap; @flexDirection: column; );
+* Support across all browsers with the exception of @fill which only has support
+* for Moz, see below for details
 *
-* This mixin has a default display property abd needs to take
-* in a flex-direction followed by a flex-wrap in order to work
+* Ex: .column( 3; @width: 200px; @ruleColor: red );
+*
+* This mixin needs to take in @count, which is short for column-count, as its first
+* parameter in order to work
 *
 * This mixin takes in the following parameters:
-* @flexFlow ( which is the equivalent of flex-direction and flex-wrap ) *REQUIRED*
-  flex-direction ( row | row-reverse | column | column-reverse )
-  flex-wrap ( nowrap | wrap | wrap-reverse )
-* @justifyContent ( flex-start | flex-end | center | space-between | space-around )
-* @alignItems ( flex-start | flex-end | center | baseline | stretch )
-* @alignContent has no effect when there is only one line of content
-  @alignContent ( flex-start | flex-end | center | space-between | space-around | stretch )
+* @count: <number> | auto *REQUIRED*
+* @width: auto | <length>
+* @ruleWidth: medium | thin | thick | <length>
+* @ruleStyle: none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset
+* @ruleColor:  <color>, currently set to transparent as it has no default color and takes
+               in the current color of the element as default
+* @fill:  balance | auto
+* @gap: <length> | normal
+* @span: 1 | all
 ***/
-//.columns( @width; @count; @ruleWidth; @ruleStyle; @ruleColor; @fill; @gap; @span ){
-//  -webkit-columns: @width @count; /* Chrome, Safari, Opera */
-//  -moz-columns: @width @count; /* Firefox */
-//  columns: @width @count;
-//  -webkit-column-rule: @ruleWidth @ruleStyle @ruleColor; /* Chrome, Safari, Opera */
-//  -moz-column-rule: @ruleWidth @ruleStyle @ruleColor; /* Firefox */
-//  column-rule: @ruleWidth @ruleStyle @ruleColor;
-//}
+.columns( @count; @width: auto; @ruleWidth: medium; @ruleStyle: none; @ruleColor: transparent; @fill: balance; @gap: normal; @span: 1 ){
+  -webkit-columns: @width @count;
+  -moz-columns: @width @count;
+  columns: @width @count;
+  -webkit-column-rule: @ruleWidth @ruleStyle @ruleColor;
+  -moz-column-rule: @ruleWidth @ruleStyle @ruleColor;
+  column-rule: @ruleWidth @ruleStyle @ruleColor;
+  // no support for fill other than Mozilla
+  -moz-column-fill: @fill;
+  column-fill: @fill;
+  -webkit-column-gap: @gap;
+  -moz-column-gap: @gap;
+  column-gap: @gap;
+  -webkit-column-span: @span;
+  column-span: @span;
+}
