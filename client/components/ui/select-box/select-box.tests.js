@@ -153,10 +153,8 @@
       // Testing for disabled
       suite( "disabled", function() {
         test( "has default value: false", function() {
-          var selectBox = document.createElement( "select-box" );
-
           // Check default setup
-          expect( selectBox )
+          expect( document.createElement( "select-box" ) )
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( false );
@@ -283,7 +281,7 @@
             .and.equals( "<select-box></select-box>" );
         });
       });
-
+      // Testing for selectedIndex
       suite( "selectedIndex", function() {
         test( "can be set via property \"selectedIndex\"", function() {
           var selectBox = document.createElement( "select-box" );
@@ -294,6 +292,31 @@
             .to.have.property( "selectedIndex" )
             .that.is.a( "number" )
             .that.equals( 5 );
+        });
+      });
+      // Testing for value, default for 2 is "pears"
+      suite( "value", function() {
+        test( "can get value via property \"selectedIndex\"", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.selectedIndex = 2;
+
+          expect( selectBox )
+            .to.have.property( "value" )
+            .that.is.a( "string" )
+            .that.equals( "pears" );
+        });
+
+        test( "value is a getter only", function() {
+          var selectBox = document.createElement( "select-box" );
+
+          selectBox.selectedIndex = 2;
+          selectBox.value = "pie";
+
+          expect( selectBox )
+            .to.have.property( "value" )
+            .that.is.a( "string" )
+            .that.equals( "pears" );
         });
       });
     });
