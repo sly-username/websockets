@@ -4,6 +4,7 @@
 @import "mixins/prefixes/flex.less";
 @import "mixins/prefixes/masks.less";
 @import "mixins/prefixes/columns.less";
+@import "mixins/prefixes/font-text.less";
 
 // Animation Tests
 #less-test-animation {
@@ -90,4 +91,28 @@
   background: lightgreen;
   height: 200px;
   .columns( 3; @ruleColor: black; @width: 2px; @ruleWidth: 2px; @gap: 20px; @ruleStyle: outset );
+}
+
+// font-text test
+#less-test-text {
+  background: lightgoldenrodyellow;
+  height: 120px;
+  width: 120px;
+  font-family: 'Open Sans';
+}
+
+.kern {
+ .font-feature( "kern" );
+}
+
+.smallcaps {
+  .font-feature( "smcp" on );
+}
+
+// hyphens test
+#less-test-hyphens {
+  background: lightseagreen;
+  height: 200px;
+  width: 200px;
+  .hyphens( auto );
 }

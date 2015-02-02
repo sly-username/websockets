@@ -1,0 +1,37 @@
+/***
+* font-feature-settings Mixin
+* .font-feature();
+*
+* No support for Safari and Opera Mini
+*
+* Ex: .font-feature( "kern" 2 );
+*     .font-feature( "smcp" );
+*
+* This mixin is shorthand for font-feature-settings
+*
+* This mixin takes in the following parameters:
+* @feature: <string> [ <integer> | on | off ]
+***/
+.font-feature( @feature ) {
+  -webkit-font-feature-settings+: @feature;
+  -moz-font-feature-settings+: @feature;
+  font-feature-settings+: @feature;
+}
+
+/***
+* Hyphen mixin
+* .hyphen();
+*
+* No support for Chrome, Opera, or Mobile devices
+*
+* Ex: .hyphens( auto );
+*
+* This mixin takes in the following parameters:
+* @hyphens: none | manual | auto
+***/
+.hyphens( @hypen ) {
+  -webkit-hyphens: @hypen;
+  -moz-hyphens: @hypen;
+  -ms-hyphens: @hypen;
+  hyphens: @hypen;
+}
