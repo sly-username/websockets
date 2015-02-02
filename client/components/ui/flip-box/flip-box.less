@@ -27,6 +27,9 @@
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
+}
+
+.flipbox-transition {
   -webkit-transition: transform 2s linear;
   -moz-transition: transform 2s linear;
   animation:transform 2s linear;
@@ -91,6 +94,24 @@
     -moz-transform: rotateY(180deg);
     transform: rotateY(180deg);
   }
+  .no-transform {
+     -webkit-transform: none;
+     -moz-transform: none;
+     transform: none;
+  }
+
+  .flipbox-container{
+    &.flip {
+      -webkit-transform: rotateY(180deg);
+      -moz-transform:    rotateY(180deg);
+      transform:         rotateY(180deg);
+    }
+    &.continue{
+      -webkit-transform: rotateY(360deg);
+      -moz-transform: rotateY(360deg);
+      transform: rotateY(360deg);
+    }
+  }
 }
 
 :host([rotation="loop"][animation="horizontal"]){
@@ -104,5 +125,22 @@
     -webkit-transform: rotateX(180deg);
     -moz-transform: rotateX(180deg);
     transform: rotateX(180deg);
+  }
+  .no-transform {
+    -webkit-transform: none;
+    -moz-transform: none;
+    transform: none;
+  }
+
+  .flipbox-container.flip {
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+  }
+
+  .flipbox-container.continue {
+    -webkit-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    transform: rotateX(360deg);
   }
 }

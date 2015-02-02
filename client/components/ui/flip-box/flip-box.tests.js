@@ -122,7 +122,7 @@
             expect( flipBox )
               .to.have.property( "animation" )
               .that.equals( "horizontal" );
-        });
+          });
 
         test( "can be set to value = \"vertical\" via property \"animation\"",
           function() {
@@ -133,7 +133,7 @@
             expect( flipBox )
               .to.have.property( "animation" )
               .that.equals( "vertical" );
-        });
+          });
 
         test( "set invalid value via \"setAttribute\" reflects to property \"animation\"",
           function() {
@@ -145,7 +145,7 @@
               .to.have.property( "animation" )
               .that.equals( "horizontal" )
               .and.equals( flipBox.getAttribute( "animation" ) );
-        });
+          });
 
         test( "set value = \"horizontal\" via \"setAttribute\" reflects to property \"animation\"",
           function() {
@@ -157,7 +157,7 @@
               .to.have.property( "animation" )
               .that.equals( "horizontal" )
               .and.equals( flipBox.getAttribute( "animation" ) );
-        });
+          });
 
         test( "set value = \"vertical\" via \"setAttribute\" reflects to property \"animation\"",
           function() {
@@ -169,7 +169,7 @@
               .to.have.property( "animation" )
               .that.equals( "vertical" )
               .and.equals( flipBox.getAttribute( "animation" ) );
-        });
+          });
 
         test( "set invalid value via property \"animation\" reflects to attribute \"animation\"",
           function() {
@@ -181,7 +181,7 @@
               .to.be.a( "string" )
               .that.equals( "horizontal" )
               .and.equal( flipBox.animation );
-        });
+          });
 
         test( "set value = \"horizontal\" via property \"animation\" reflects to attribute \"animation\"",
           function() {
@@ -193,7 +193,7 @@
               .to.be.a( "string" )
               .that.equals( "horizontal" )
               .and.equal( flipBox.animation );
-        });
+          });
 
         test( "set value = \"vertical\" via property \"animation\" reflects to attribute \"animation\"",
           function() {
@@ -205,7 +205,7 @@
               .to.be.a( "string" )
               .that.equals( "vertical" )
               .and.equal( flipBox.animation );
-        });
+          });
       });
 
     /* Trigger */
@@ -267,7 +267,7 @@
             expect( flipBox )
               .to.have.property( "trigger" )
               .that.equals( "box" );
-        });
+          });
 
         test( "can be set to value = \"box\" via property \"trigger\"",
           function() {
@@ -278,7 +278,7 @@
             expect( flipBox )
               .to.have.property( "trigger" )
               .that.equals( "box" );
-        });
+          });
 
         test( "can be set to value = \"btn\" via property \"trigger\"",
           function() {
@@ -289,7 +289,7 @@
             expect( flipBox )
               .to.have.property( "trigger" )
               .that.equals( "btn" );
-        });
+          });
 
         test( "set invalid value via \"setAttribute\" reflects to property \"trigger\"",
           function() {
@@ -301,7 +301,7 @@
               .to.have.property( "trigger" )
               .that.equals( "box" )
               .and.equals( flipBox.getAttribute( "trigger" ) );
-        });
+          });
 
         test( "set value = \"box\" via \"setAttribute\" reflects to property \"trigger\"",
           function() {
@@ -313,7 +313,7 @@
               .to.have.property( "trigger" )
               .that.equals( "box" )
               .and.equals( flipBox.getAttribute( "trigger" ) );
-        });
+          });
 
         test( "set value = \"btn\" via \"setAttribute\" reflects to property \"trigger\"",
           function() {
@@ -325,7 +325,7 @@
               .to.have.property( "trigger" )
               .that.equals( "btn" )
               .and.equals( flipBox.getAttribute( "trigger" ) );
-        });
+          });
 
         test( "set invalid value via property \"trigger\" reflects to attribute \"trigger\"",
           function() {
@@ -337,7 +337,7 @@
               .to.be.a( "string" )
               .that.equals( "box" )
               .and.equal( flipBox.trigger );
-        });
+          });
 
         test( "set value = \"box\" via property \"trigger\" reflects to attribute \"trigger\"",
           function() {
@@ -349,7 +349,7 @@
               .to.be.a( "string" )
               .that.equals( "box" )
               .and.equal( flipBox.trigger );
-        });
+          });
 
         test( "set value = \"btn\" via property \"trigger\" reflects to attribute \"trigger\"",
           function() {
@@ -361,8 +361,8 @@
               .to.be.a( "string" )
               .that.equals( "btn" )
               .and.equal( flipBox.trigger );
-        });
-    });
+          });
+      });
 
     /* Rotation */
       suite( "rotation", function() {
@@ -423,7 +423,7 @@
             expect( flipBox )
               .to.have.property( "rotation" )
               .that.equals( "toggle" );
-        });
+          });
 
         test( "can be set to value = \"toggle\" via property \"rotation\"",
           function() {
@@ -434,7 +434,7 @@
             expect( flipBox )
               .to.have.property( "rotation" )
               .that.equals( "toggle" );
-        });
+          });
 
         test( "can be set to value = \"loop\" via property \"rotation\"",
           function() {
@@ -445,7 +445,7 @@
             expect( flipBox )
               .to.have.property( "rotation" )
               .that.equals( "loop" );
-        });
+          });
 
         test( "set invalid value via \"setAttribute\" reflects to property \"rotation\"",
           function() {
@@ -457,7 +457,7 @@
               .to.have.property( "rotation" )
               .that.equals( "toggle" )
               .and.equals( flipBox.getAttribute( "rotation" ) );
-        });
+          });
 
         test( "set value = \"toggle\" via \"setAttribute\" reflects to property \"rotation\"",
           function() {
@@ -469,7 +469,7 @@
               .to.have.property( "rotation" )
               .that.equals( "toggle" )
               .and.equals( flipBox.getAttribute( "rotation" ) );
-        });
+          });
 
         test( "set value = \"loop\" via \"setAttribute\" reflects to property \"rotation\"",
           function() {
@@ -481,7 +481,7 @@
               .to.have.property( "rotation" )
               .that.equals( "loop" )
               .and.equals( flipBox.getAttribute( "rotation" ) );
-        });
+          });
 
         test( "set invalid value via property \"rotation\" reflects to attribute \"rotation\"",
           function() {
@@ -493,7 +493,7 @@
               .to.be.a( "string" )
               .that.equals( "toggle" )
               .and.equal( flipBox.rotation );
-        });
+          });
 
         test( "set value = \"toggle\" via property \"rotation\" reflects to attribute \"rotation\"",
           function() {
@@ -505,7 +505,7 @@
               .to.be.a( "string" )
               .that.equals( "toggle" )
               .and.equal( flipBox.rotation );
-        });
+          });
 
         test( "set value = \"loop\" via property \"rotation\" reflects to attribute \"rotation\"",
           function() {
@@ -517,7 +517,7 @@
               .to.be.a( "string" )
               .that.equals( "loop" )
               .and.equal( flipBox.rotation );
-        });
+          });
       });
     });
 

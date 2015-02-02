@@ -34,7 +34,6 @@
     },
     /*** LIFECYCLE ***/
     ready: function() {
-      this.degree = 0;
       this._animation = this.attributes.animation.value;
       this._rotation = this.attributes.rotation.value;
       this._trigger = this.attributes.trigger.value;
@@ -75,28 +74,36 @@
     },
     /*** FUNCTIONS ***/
     flip: function() {
-      this.flipBoxContainer.removeAttribute( "style" );
+      this.flipBoxContainer.classList.remove( "continue" );
+      this.flipBoxContainer.classList.remove( "no-transform" );
+      this.flipBoxContainer.classList.add( "flipbox-transition" );
       this.flipBoxContainer.classList.toggle( "flip" );
     },
     loop: function() {
-      this.degree += 180;
-
-      if ( this.animation === "vertical" ) {
-        this.flipBoxContainer.style.transform = "rotateY(" + this.degree + "deg)";
+      if ( this.flipBoxContainer.classList.contains( "flip" ) ) {
+        this.flipBoxContainer.classList.remove( "flip" );
+        this.flipBoxContainer.classList.add( "flipbox-transition", "continue" );
+        this.flipBoxContainer.addEventListener( "transitionend", function() {
+          this.flipBoxContainer.classList.remove( "continue", "flipbox-transition"  );
+          this.flipBoxContainer.classList.add( "no-transform" );
+          this.flipBoxContainer.removeEventListener( "transitionEnd" );
+        }. bind( this ) );
       } else {
-        this.flipBoxContainer.style.transform = "rotateX(" + this.degree + "deg)";
+        this.flipBoxContainer.classList.remove( "no-transform" );
+        this.flipBoxContainer.classList.add( "flip", "flipbox-transition" );
       }
     },
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
+      // look into event delegation (event.target)
       this.triggerButtons.forEach( function( button ) {
         this.btnEventList.forEach( function( event ) {
-          if ( this.rotation === "loop" ) {
-            button[ flag + "EventListener" ]( event, this.loopFunction );
-          } else {
-            button[ flag + "EventListener" ]( event, this.flipFunction );
-          }
+          button[ flag + "EventListener" ](
+            event, this.rotation === "loop" ? this.loopFunction : this.flipFunction
+          );
+          console.log( this );
         }.bind( this ) );
+        console.log( this );
       }.bind( this ) );
     },
     btnHiddenClass: function( flag ) {
@@ -107,19 +114,17 @@
     boxListener: function( flag ) {
       this.triggerBoxes.forEach( function( box ) {
         this.boxEventList.forEach( function( event ) {
-          if ( this.rotation === "loop" ) {
-            box[ flag + "EventListener" ]( event, this.loopFunction );
-          } else {
-            box[ flag + "EventListener" ]( event, this.flipFunction );
-          }
+          box[ flag + "EventListener" ](
+            event, this.rotation === "loop" ? this.loop : this.flip
+          );
         }.bind( this ) );
       }.bind( this ) );
     },
     listenersReset: function() {
-      this.flipBoxContainer.removeAttribute( "style" );
-      this.degree = 0;
       this.boxListener( "remove" );
       this.btnListener( "remove" );
+      this.flipBoxContainer.classList.add( "no-transform" );
+      this.flipBoxContainer.classList.remove( "flipbox-transition" );
     },
     btnPackage: function() {
       this.trigger = "btn";
