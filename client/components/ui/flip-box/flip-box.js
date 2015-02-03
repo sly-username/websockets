@@ -61,7 +61,7 @@
         this.flipBoxContainer.classList.remove( "flip" );
         this.flipBoxContainer.classList.add( "flipbox-transition", "continue" );
         this.flipBoxContainer.addEventListener( "transitionend", function() {
-          this.flipBoxContainer.classList.remove( "continue", "flipbox-transition"  );
+          this.flipBoxContainer.classList.remove( "flipbox-transition", "continue" );
           this.flipBoxContainer.classList.add( "no-transform" );
         }. bind( this ) );
       } else {
