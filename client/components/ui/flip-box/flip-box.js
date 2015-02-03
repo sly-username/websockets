@@ -2,29 +2,16 @@
   "use strict";
 
   Polymer( "flip-box", {
-    get trigger() {
-      return this._trigger;
-    },
-    set trigger( value ) {
-      this.setAttribute( "trigger", value );
-      this._trigger = value;
-      return value;
-    },
-    get animation() {
-      return this._animation;
-    },
-    set animation( value ) {
-      this.setAttribute( "animation", value );
-      this._animation = value;
-      return value;
-    },
-    get rotation() {
-      return this._rotation;
-    },
-    set rotation( value ) {
-      this.setAttribute( "rotation", value );
-      this._rotation = value;
-      return value;
+    publish: {
+      trigger: {
+        reflect: true
+      },
+      rotation: {
+        reflect: true
+      },
+      animation: {
+        reflect: true
+      }
     },
     get isFlipped() {
       return this.flipBoxContainer.classList.contains( "flip" );
@@ -34,12 +21,7 @@
     },
     /*** LIFECYCLE ***/
     ready: function() {
-      this._animation = this.attributes.animation.value;
-      this._rotation = this.attributes.rotation.value;
-      this._trigger = this.attributes.trigger.value;
-
-      this.boxEventList = [ "mouseleave", "touchleave" ];
-      this.btnEventList = [ "mousedown", "touchstart" ];
+      this.eventList = [ "mousedown", "touchleave" ];
 
       this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
@@ -70,7 +52,8 @@
     },
     /*** FUNCTIONS ***/
     flip: function() {
-      this.flipBoxContainer.classList.remove( "continue", "no-transform" );
+      this.flipBoxContainer.classList.remove( "no-transform" );
+      this.flipBoxContainer.classList.add( "flipbox-transition" );
       this.flipBoxContainer.classList.toggle( "flip" );
     },
     loop: function() {
@@ -88,7 +71,7 @@
     },
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
-      this.btnEventList.forEach( function( event ) {
+      this.eventList.forEach( function( event ) {
         this[ flag + "EventListener" ]( event, function( e ) {
           if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
             this.rotation === "loop" ? this.loop() : this.flip();
@@ -102,25 +85,19 @@
       }, this );
     },
     boxListener: function( flag ) {
-      this.boxEventList.forEach( function( event ) {
+      this.eventList.forEach( function( event ) {
         this[ flag + "EventListener" ]( event, function() {
           this.rotation === "loop" ? this.loop() : this.flip();
         }.bind( this ) );
       }.bind( this ) );
     },
-    listenersReset: function() {
-      this.boxListener( "remove" );
-      this.btnListener( "remove" );
-      this.flipBoxContainer.classList.add( "no-transform" );
-      this.flipBoxContainer.classList.remove( "flipbox-transition" );
-    },
     btnPackage: function() {
-      this.trigger = "btn";
-      this.btnListener( "add" );
+      this.boxListener( "remove" );
       this.btnHiddenClass( "remove" );
+      this.btnListener( "add" );
     },
     boxPackage: function() {
-      this.trigger = "box";
+      this.btnListener( "remove" );
       this.boxListener( "add" );
       this.btnHiddenClass( "add" );
     },
@@ -128,9 +105,7 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       // trigger
       if ( attrName === "trigger" ) {
-        console.log("did you notice trigger changed?");
-        this.listenersReset();
-        this.trigger = newVal;
+        console.log( "did you notice trigger changed to:", newVal );
 
         if ( newVal === "btn" ) {
           this.btnPackage();
@@ -139,38 +114,10 @@
         }
       // animation
       } else if ( attrName === "animation" ) {
-        console.log("did you notice animation changed?");
-        this.listenersReset();
-        this.animation = newVal;
-
-        if ( newVal === "vertical" ) {
-          this.animation = "vertical";
-        } else {
-          this.animation = "horizontal";
-        }
-
-        if ( this.trigger === "btn" ) {
-          this.btnPackage();
-        } else {
-          this.boxPackage();
-        }
+        this.animation = newVal === "vertical" ? newVal : "horizontal";
       // rotation
       } else if ( attrName === "rotation" ) {
-        console.log("did you notice rotation changed?");
-        this.listenersReset();
-        this.rotation = newVal;
-
-        if ( newVal === "loop" ) {
-          this.rotation = "loop";
-        } else {
-          this.rotation = "toggle";
-        }
-
-        if ( this.trigger === "btn" ) {
-          this.btnPackage();
-        } else {
-          this.boxPackage();
-        }
+        this.rotation = newVal === "loop" ? newVal : "toggle";
       }
     }
     /*** END FUNCTIONS ***/
