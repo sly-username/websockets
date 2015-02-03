@@ -9,15 +9,25 @@
   margin: 0 auto;
   ::content * {
   }
-}
-
-.flipbox-button {
-  position: absolute;
-  top: 2%;
-  &.hidden {
-    display: none;
+  .flipbox-button{
+    position: absolute;
+    top: 2%;
+    display:none;
+  }
+  &([trigger="btn"]){
+    .flipbox-button{
+      display:block;
+    }
   }
 }
+
+//.flipbox-button {
+//  position: absolute;
+//  top: 2%;
+//  &.hidden {
+//    display: none;
+//  }
+//}
 
 .flipbox-container {
   color: white;

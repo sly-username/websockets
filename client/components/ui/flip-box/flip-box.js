@@ -75,11 +75,6 @@
       }
     },
     /* EVENT LISTENERS */
-    btnHiddenClass: function( flag ) {
-      this.triggerButtons.forEach( function( button ) {
-        button.classList[ flag ]( "hidden" );
-      }, this );
-    },
     btnListener: function( flag ) {
       this.eventList.forEach( function( event ) {
         this[ flag + "EventListener" ]( event, this.btnListenerFunction );
@@ -101,13 +96,11 @@
     // resetting event listeners
     btnPackage: function() {
       this.boxListener( "remove" );
-      this.btnHiddenClass( "remove" );
       this.btnListener( "add" );
     },
     boxPackage: function() {
       this.btnListener( "remove" );
       this.boxListener( "add" );
-      this.btnHiddenClass( "add" );
     },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
