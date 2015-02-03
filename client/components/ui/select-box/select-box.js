@@ -14,7 +14,7 @@
       if ( value !== null ) {
         this.setAttribute( "disabled", value );
 
-        return ( this._disabled = value );
+        return this._disabled = value;
       }
     },
     // selectedIndex
@@ -48,7 +48,7 @@
       this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[ 0 ];
 
       if ( this.size > 0 ) {
-        this.getOptions.style.maxHeight = ( this.size * 32.4 ) + "px";
+        this.getOptions.style.maxHeight = this.size * 32.4 + "px";
       }
       // required attribute
       if ( this.hasAttribute( "required" ) ) {
@@ -72,9 +72,9 @@
       if ( this.size > 0 ) {
         this.size = newVal;
         this.setAttribute( "size", newVal );
-        this.getOptions.style.maxHeight = ( newVal * 32 ) + "px";
+        this.getOptions.style.maxHeight = newVal * 32 + "px";
       } else if ( !this.hasAttribute( "size" ) ) {
-        this.getOptions.style.maxHeight = ( 5 * 32 ) + "px";
+        this.getOptions.style.maxHeight = 5 * 32 + "px";
       }
     },
     // Listens for disabled

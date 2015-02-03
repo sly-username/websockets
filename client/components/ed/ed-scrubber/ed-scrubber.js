@@ -32,8 +32,8 @@
     },
     showVal: function() {
       var inputValue = this.scrubberInput.value,
-          valPercent = parseInt( ( inputValue - this.scrubberInput.min /
-            ( this.scrubberInput.max - this.scrubberInput.min ) * 100 ), 10 ) + "%",
+          valPercent = parseInt( inputValue - this.scrubberInput.min /
+            ( this.scrubberInput.max - this.scrubberInput.min * 100 ), 10 ) + "%",
           valTime = inputValue + " seconds";
 
       this.valBox.innerHTML = this.format === "percent" ? valPercent : valTime;

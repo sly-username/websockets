@@ -44,7 +44,7 @@
       }
       // percentage conversion
       if ( parseInt( this.value, 10 ) < parseInt( this.max, 10 ) ) {
-        this.valuePercentage = Math.round( ( this.value * 100 ) / this.max );
+        this.valuePercentage = Math.round( this.value * 100 ) / this.max;
       }
       this.innerBar.style.width = this._valuePercentage + "%";
       // showValue
@@ -71,7 +71,7 @@
       this.setAttribute( property, newVal );
 
       if ( parseInt( this.value, 10 ) <= parseInt( this.max, 10 ) ) {
-        this.valuePercentage = Math.round( ( this.value * 100 ) / this.max  );
+        this.valuePercentage = Math.round( this.value * 100 ) / this.max;
       }
       this.innerBar.style.width = this._valuePercentage + "%";
     },
