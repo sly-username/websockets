@@ -223,7 +223,6 @@
       suite( "scroll down", function() {
         test( "scrolls the inside bucket down", function() {
           var sbVert = document.createElement( "scroll-box-vertical" ),
-              innerBox = sbVert.shadowRoot.querySelector( ".inner-box" ),
               image = document.createElement( "img" );
 
           image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
@@ -232,7 +231,7 @@
           sbVert.appendChild( image );
           sbVert.scrollDown( "50px" );
 
-          expect( innerBox )
+          expect( sbVert.shadowRoot.querySelector( ".inner-box" ) )
             .to.have.property( "scrollTop" )
             .that.is.a( "number" )
             .and.equals( 50 );
