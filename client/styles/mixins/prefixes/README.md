@@ -220,14 +220,10 @@ Example:
 
 ## Masks property mixin
  * **.masks();**
-
- Example:
+Example:
  ```less
- 
   .masks( url('images/mask.png'); @repeat: no-repeat; @attach: scroll );
-  
  ```
-
  * **Description:** This mixin is used in order to crop over images with another image. Currently this mixin only
  supports Webkit due to low support for other browsers will be improved upon for other browsers moving forward.
  .masks is a mixin for -webkit-mask which is shorthand for
@@ -236,16 +232,13 @@ Example:
  ```
  * This mixin will take in the following parameters with its respective values
  ```sh
- 
   @image: url('somekindofimage.png')| -webkit-gradient | none
   @repeat: repeat | repeat-x | repeat-y | no-repeat | inherit
   @attach: scroll | fixed
   @position: [ <percentage>| <length>| left | center | right  ]  [ <percentage> | <length> | top  | center | bottom ]
   @origin: [padding | border | content]
   @clip: border | padding | content | text
-  
 ```
-
 ## Region property mixin
  * **.flow-to(); .flow-from(); **
 
@@ -264,26 +257,22 @@ Example:
   
   ```
  * This mixin takes in the following parameter
- ```sh
- 
+```sh
   @flowTo: <name>
   @flowFrom: <name>
-  
 ```
-
 ## Transform property mixin
- * **.transform();**
+* **.transform();**
 
- * **Description:** This mixin is shorthand for transform, -webkit-transform, and -ms-transform. .transform should be
-  used like a native css transform property
+* **Description:** This mixin is shorthand for transform, -webkit-transform, and -ms-transform. .transform should be used like a native css transform property
 
- Example:
+Example:
  ```less
  
   .transform( skewX(25deg) rotate(25deg) translateX(17px) );
   
  ```
- * This mixin will take in the following parameters with its respective values. Only one of these may be used at a time
+* This mixin will take in the following parameters with its respective values. Only one of these may be used at a time
  ```sh
  
   <none>
