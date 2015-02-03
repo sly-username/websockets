@@ -129,3 +129,14 @@
   height: 100px;
   .flow-from( text-flow );
 }
+
+// backface-visibility testing
+
+#less-test-backface {
+  height: 160px;
+  width: 160px;
+  background-color: lightgray;
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  .backface-visibility( visible );
+}

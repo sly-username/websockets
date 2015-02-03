@@ -301,3 +301,19 @@ Example:
   perspective(n): <length>
   
 ```
+
+
+## Masks property mixin
+* **.backface-visibility();**
+
+Example:
+```less
+.backface-visibility( hidden );
+```
+* **Description:** The backface-visibility property defines whether or not an element should be visible when not
+facing the screen. Currently this mixin only has no support for Opera Mini
+
+*This mixin will take in the following parameters with its respective values
+```sh
+@visibility: visible | hidden
+```
