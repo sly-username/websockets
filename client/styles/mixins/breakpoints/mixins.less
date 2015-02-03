@@ -1,5 +1,6 @@
 
 @import "./queries.less";
+@import "./variables.less";
 
 /**
  *
@@ -13,26 +14,34 @@
  *
  *  -- Desktop
  *
- *
- *
  **/
 
 .phone( @rules ) {
-  .media( screen, {
-    @media (max-device-width: 500px) {
-      @rules();
-    }
+  .mediaOnly( screen, {
+    .maxDeviceWidth( @phoneMaxDeviceWidth, @rules);
   });
 }
 
 .portrait( @rules ) {
-  .media( screen, @rules );
+  .mediaOnly( screen, {
+    .maxDeviceWidth( @portraitMaxDeviceWidth, {
+      .maxDeviceHeight( @portraitMaxDeviceHeight, @rules );
+    });
+  });
 }
 
 .landscape( @rules ) {
-  .media( screen, @rules );
+  .mediaOnly( screen, {
+    .maxDeviceWidth( @landscapeMaxDeviceWidth, {
+      .maxDeviceHeight( @landscapeMaxDeviceHeight, @rules );
+    });
+  });
 }
 
 .desktop( @rules ) {
-  .media( screen, @rules );
+  .mediaOnly( screen, {
+    .maxDeviceWidth( @desktopMaxDeviceWidth, {
+      .maxDeviceHeight( @desktopMaxDeviceHeight, @rules );
+    });
+  });
 }

@@ -4,6 +4,7 @@
 @import "test.mixin.less";
 @import "mixins/hidden.less";
 @import "fonts/icons.less";
+@import "mixins/breakpoints/mixins.less";
 
 @color: white;
 
@@ -15,6 +16,13 @@ body{
     clear: both;
     width: 100%;
     margin: 20px 0 0;
+  }
+  div {
+    .phone({
+      & {
+        background-color: blue;
+      }
+    });
   }
 }
 
