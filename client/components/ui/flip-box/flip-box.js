@@ -43,7 +43,6 @@
       } else {
         this.trigger = "box";
         this.boxListener( "add" );
-        this.btnHiddenClass( "add" );
       }
 
       if ( this.animation === "vertical" ) {
@@ -91,7 +90,7 @@
       }.bind( this ) );
     },
     boxListenerFunction: function() {
-      this.rotation === "loop" ? this.loop() : this.flip();
+      this[ this.rotation === "loop" ? "loop" : "flip" ]();
     },
     // resetting event listeners
     btnPackage: function() {
