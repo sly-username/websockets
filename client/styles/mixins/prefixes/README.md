@@ -299,11 +299,8 @@ Example:
   skewX(angle): an <angle>, e.g., skewX(-30deg)
   skewY(angle): an <angle>, e.g., skewY(4deg)
   perspective(n): <length>
-  
 ```
-
-
-## Masks property mixin
+## Backface-Visibility property mixin
 * **.backface-visibility();**
 
 Example:
