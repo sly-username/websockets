@@ -2,6 +2,7 @@
  * Keyframes mixin
  * .keyframes( @name:string, @rules:{ keyframe block } );
  *
+ * Description:
  * This will build a set of keyframe definitions with the given
  * prefixes.
  *
@@ -36,7 +37,10 @@
  * Example:
  *   .animation( my-fade-animation 3s, my-other-animation 2s 2s ; );
  *
- * .animation mixin is shorthand for -webkit-animation and animation
+ * Description:
+ * .animation mixin is shorthand for -webkit-animation and animation and use for css animations
+ * should be used like a native css animation property
+ *
  * This mixin will take in the following parameters with its respective values in order
  * @animation: <single-animation-name> || <time> || <timing-function> || <time> ||
                <single-animation-iteration-count> || <single-animation-direction> ||
@@ -51,9 +55,12 @@
  * Example
  * .animation( my-fade-animation; 3s; @delay: 2s );
  *
- * This animation mixin requires a name and duration, but for every additional parameter
+ * Description:
+ * This is an extended mixin for advance animation and -webkit-animation.
+ * This mixin requires a name and duration, but for every additional parameter
  * there needs to be an @parameterName: value. The following is a list of usable parameters
  * for this mixin are as follows:
+ *
  * @name: a name of your custom animation
  * @duration: <time> (Default is 0)
  * @timingFn: linear || ease || ease-in || ease-out || ease-in-out || cubic-bezier(n,n,n,n)

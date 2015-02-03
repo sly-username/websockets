@@ -2,11 +2,13 @@
 * Flex display property mixin
 * .flex-container();
 *
-* No support for Opera Mini
 * Ex: .flex-container( row nowrap; @flexDirection: column; );
 *
+* Description:
+* This mixin controls the flow on content as a container and works with the .flex-item mixin
 * This mixin has a default display property and needs to take
 * in a flex-direction followed by a flex-wrap in order to work
+* No support for Opera Mini
 *
 * This mixin takes in the following parameters:
 * @flexFlow: which is the equivalent of flex-direction and flex-wrap  *REQUIRED*
@@ -36,6 +38,8 @@
  * Flex property mixin
  * .flex-item();
  *
+ * Description:
+ * This mixin controls the flow of the items inside of the .flex-container mixin
  * Currently no support for Opera Mini due to lack of support for native flex
  * These are mixins that apply to items inside a flex-box container
  *
@@ -43,20 +47,26 @@
  * .flex-item( 1 2 auto );
  *
  * flex-item is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
-   flex-grow: <number> (default is 0)
-   flex-shrink: <number> (default is 1)
-   flex-basis: <number> || auto
+   @grow: <number> (default is 0)
+   @shrink: <number> (default is 1)
+   @basis: <number> || auto
+   @alignSelf: auto || stretch || center || flex-start || flex-end || baseline
 ***/
-.flex-item( @grow: 0; @shrink: 1; @basis: auto; ) {
+.flex-item( @grow: 0; @shrink: 1; @basis: auto; @alignSelf: auto ) {
   -webkit-box-flex+: @grow @shrink @basis;
   -webkit-flex+: @grow @shrink @basis;
   -ms-flex+: @grow @shrink @basis;
   flex+: @grow @shrink @basis;
+  -webkit-align-self: @alignSelf;
+  align-self: @alignSelf;
 }
 
 /***
 * Flex order property mixin
 * .flex-order();
+*
+* Description:
+* This mixin controls the order of the contents inside the .flex-mixin container
 *
 * Example: .flex-order( 1 );
 * Usage: controls the order in which items appear in the flex container
@@ -67,18 +77,4 @@
   order: @order;
 }
 
-/***
-* Flex align-self mixin
-*.align-self();
-*
-* Overrides align-items
-*
-* Example: .align-self( stretch );
-* @alignSelf: auto || stretch || center || flex-start || flex-end || baseline
-***/
-
-.align-self( @alignSelf ) {
-  -webkit-align-self: @alignSelf;
-  align-self: @alignSelf;
-}
 

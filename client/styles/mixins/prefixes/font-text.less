@@ -2,12 +2,14 @@
 * font-feature-settings Mixin
 * .font-feature();
 *
-* No support for Safari and Opera Mini
 *
 * Ex: .font-feature( "kern" 2 );
 *     .font-feature( "smcp" );
 *
-* This mixin is shorthand for font-feature-settings
+* Description:
+* This mixin is shorthand for font-feature-settings which applies
+* advance typographic and font features to OpenType fonts.
+* No support for Safari and Opera Mini
 *
 * This mixin takes in the following parameters:
 * @feature: <string> [ <integer> | on | off ]
@@ -22,6 +24,10 @@
 * Hyphen mixin
 * .hyphen();
 *
+* Description:
+* This mixin hyphenates words that are too long when it reaches a margin
+* instead of moving the entire word down to the next row. The word should also contain
+* "&shy;" in order to hyphenate the word.
 * No support for Chrome, Opera, or Mobile devices
 *
 * Ex: .hyphens( auto );
