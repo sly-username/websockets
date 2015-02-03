@@ -228,10 +228,12 @@ Example:
  supports Webkit due to low support for other browsers will be improved upon for other browsers moving forward.
  .masks is a mixin for -webkit-mask which is shorthand for
  ```sh
+ 
  <mask-image> [<mask-repeat> || <mask-attachment> || <mask-position> || <mask-origin> || <mask-clip>]
+ 
  ```
  * This mixin will take in the following parameters with its respective values
- ```sh
+```sh
   @image: url('somekindofimage.png')| -webkit-gradient | none
   @repeat: repeat | repeat-x | repeat-y | no-repeat | inherit
   @attach: scroll | fixed
