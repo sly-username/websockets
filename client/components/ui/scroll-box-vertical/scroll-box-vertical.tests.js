@@ -220,17 +220,45 @@
         });
       });
 
+      suite( "scroll down", function() {
+        test( "scrolls the inside bucket down", function() {
+          var sbVert = document.createElement( "scroll-box-vertical" ),
+              innerBox = sbVert.shadowRoot.querySelector( ".inner-box" ),
+              image = document.createElement( "img" );
+
+          image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
+          testingWrapper.appendChild( sbVert );
+
+          sbVert.appendChild( image );
+          sbVert.scrollDown( "50px" );
+
+          expect( innerBox )
+            .to.have.property( "scrollTop" )
+            .that.is.a( "number" )
+            .and.equals( 50 );
+
+          resetWrapper();
+        });
+      });
+
       suite( "scroll up", function() {
         test( "scrolls the inside bucket up", function() {
           var sbVert = document.createElement( "scroll-box-vertical" ),
-              moveUp = sbVert.shadowRoot.getElementsByClassName( "inner-box" )[0];
+              image = document.createElement( "img" );
 
-          sbVert.scrollDown( "10px" );
+          image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
+          testingWrapper.appendChild( sbVert );
 
-          expect( moveUp )
+          sbVert.appendChild( image );
+          sbVert.scrollDown( "50px" );
+          sbVert.scrollUp( "30px" );
+
+          expect( sbVert.shadowRoot.querySelector( ".inner-box" ) )
             .to.have.property( "scrollTop" )
             .that.is.a( "number" )
-            .and.equals( moveUp.scrollTop + 10 );
+            .and.equals( 20 );
+
+          resetWrapper();
         });
       });
     });
