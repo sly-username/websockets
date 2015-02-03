@@ -223,7 +223,6 @@
       suite( "scroll box right", function() {
         test( "scrolls the inside bucket right", function() {
           var sbHort = document.createElement( "scroll-box-horizontal" ),
-              innerBox = sbHort.shadowRoot.querySelector( ".inner-box" ),
               image = document.createElement( "img" );
 
           image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
@@ -232,7 +231,7 @@
           sbHort.appendChild( image );
           sbHort.scrollBoxRight( "50px" );
 
-          expect( innerBox )
+          expect( sbHort.shadowRoot.querySelector( ".inner-box" ) )
             .to.have.property( "scrollLeft" )
             .that.is.a( "number" )
             .and.equals( 50 );
