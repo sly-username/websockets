@@ -27,6 +27,14 @@
         .getElementsByClassName( "flipbox-container" )[ 0 ];
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
+
+      // Add transition end
+      this.flipBoxContainer.addEventListener( "transitionend", function() {
+        if ( this.needsReset ) {
+          this.flipBoxContainer.classList.remove( "flipbox-transition", "continue" );
+          this.flipBoxContainer.classList.add( "no-transform" );
+        }
+      }. bind( this ) );
     },
     attached: function() {
       if ( this.trigger === "btn" ) {
@@ -58,12 +66,9 @@
     },
     loop: function() {
       if ( this.flipBoxContainer.classList.contains( "flip" ) ) {
+        this.needsReset = true;
         this.flipBoxContainer.classList.remove( "flip" );
         this.flipBoxContainer.classList.add( "flipbox-transition", "continue" );
-        this.flipBoxContainer.addEventListener( "transitionend", function() {
-          this.flipBoxContainer.classList.remove( "flipbox-transition", "continue" );
-          this.flipBoxContainer.classList.add( "no-transform" );
-        }. bind( this ) );
       } else {
         this.flipBoxContainer.classList.remove( "no-transform" );
         this.flipBoxContainer.classList.add( "flip", "flipbox-transition" );
