@@ -70,27 +70,30 @@
       }
     },
     /* EVENT LISTENERS */
-    btnListener: function( flag ) {
-      this.eventList.forEach( function( event ) {
-        this[ flag + "EventListener" ]( event, function( e ) {
-          if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
-            this.rotation === "loop" ? this.loop() : this.flip();
-          }
-        }.bind( this ) );
-      }.bind( this ) );
-    },
     btnHiddenClass: function( flag ) {
       this.triggerButtons.forEach( function( button ) {
         button.classList[ flag ]( "hidden" );
       }, this );
     },
-    boxListener: function( flag ) {
+    btnListener: function( flag ) {
       this.eventList.forEach( function( event ) {
-        this[ flag + "EventListener" ]( event, function() {
-          this.rotation === "loop" ? this.loop() : this.flip();
-        }.bind( this ) );
+        this[ flag + "EventListener" ]( event, this.btnListenerFunction );
       }.bind( this ) );
     },
+    btnListenerFunction: function( e ) {
+      if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
+        this.rotation === "loop" ? this.loop() : this.flip();
+      }
+    },
+    boxListener: function( flag ) {
+      this.eventList.forEach( function( event ) {
+        this[ flag + "EventListener" ]( event, this.boxListenerFunction );
+      }.bind( this ) );
+    },
+    boxListenerFunction: function() {
+      this.rotation === "loop" ? this.loop() : this.flip();
+    },
+    // resetting event listeners
     btnPackage: function() {
       this.boxListener( "remove" );
       this.btnHiddenClass( "remove" );
@@ -105,11 +108,11 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       // trigger
       if ( attrName === "trigger" ) {
-        console.log( "did you notice trigger changed to:", newVal );
-
         if ( newVal === "btn" ) {
+          this.trigger = newVal;
           this.btnPackage();
         } else {
+          this.trigger = "box";
           this.boxPackage();
         }
       // animation
