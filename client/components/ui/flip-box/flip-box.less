@@ -54,10 +54,12 @@
     transform: rotateY(180deg);
   }
 
-  .flipbox-container.flip {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+  .flipbox-container {
+    &.flip {
+      -webkit-transform: rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+      transform: rotateY(180deg);
+    }
   }
 }
 
@@ -66,6 +68,11 @@
     -webkit-transform-origin: center;
     -moz-transform-origin: center;
     transform-origin: center;
+    &.flip {
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+    }
   }
 
   .front {
@@ -75,12 +82,6 @@
   }
 
   .back {
-    -webkit-transform: rotateX(180deg);
-    -moz-transform: rotateX(180deg);
-    transform: rotateX(180deg);
-  }
-
-  .flipbox-container.flip {
     -webkit-transform: rotateX(180deg);
     -moz-transform: rotateX(180deg);
     transform: rotateX(180deg);
@@ -103,8 +104,8 @@
   .flipbox-container{
     &.flip {
       -webkit-transform: rotateY(180deg);
-      -moz-transform:    rotateY(180deg);
-      transform:         rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+      transform: rotateY(180deg);
     }
     &.continue{
       -webkit-transform: rotateY(360deg);
@@ -132,15 +133,17 @@
     transform: none;
   }
 
-  .flipbox-container.flip {
-    -webkit-transform: rotateX(180deg);
-    -moz-transform: rotateX(180deg);
-    transform: rotateX(180deg);
+  .flipbox-container{
+    &.flip {
+      -webkit-transform: rotateX(180deg);
+      -moz-transform: rotateX(180deg);
+      transform: rotateX(180deg);
+    }
+    &.continue {
+       -webkit-transform: rotateX(360deg);
+       -moz-transform: rotateX(360deg);
+       transform: rotateX(360deg);
+     }
   }
 
-  .flipbox-container.continue {
-    -webkit-transform: rotateX(360deg);
-    -moz-transform: rotateX(360deg);
-    transform: rotateX(360deg);
-  }
 }

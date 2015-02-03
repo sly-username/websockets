@@ -43,7 +43,6 @@
 
       this.flipBoxContainer = this.shadowRoot
         .getElementsByClassName( "flipbox-container" )[ 0 ];
-      this.triggerBoxes = Array.from( this.shadowRoot.getElementsByClassName( "box" ) );
       this.triggerButtons = Array.from( this.shadowRoot
         .getElementsByClassName( "flipbox-button" ) );
     },
@@ -71,9 +70,7 @@
     },
     /*** FUNCTIONS ***/
     flip: function() {
-      this.flipBoxContainer.classList.remove( "continue" );
-      this.flipBoxContainer.classList.remove( "no-transform" );
-      this.flipBoxContainer.classList.add( "flipbox-transition" );
+      this.flipBoxContainer.classList.remove( "continue", "no-transform" );
       this.flipBoxContainer.classList.toggle( "flip" );
     },
     loop: function() {
@@ -83,7 +80,6 @@
         this.flipBoxContainer.addEventListener( "transitionend", function() {
           this.flipBoxContainer.classList.remove( "continue", "flipbox-transition"  );
           this.flipBoxContainer.classList.add( "no-transform" );
-          this.flipBoxContainer.removeEventListener( "transitionEnd" );
         }. bind( this ) );
       } else {
         this.flipBoxContainer.classList.remove( "no-transform" );
@@ -92,7 +88,6 @@
     },
     /* EVENT LISTENERS */
     btnListener: function( flag ) {
-      // look into event delegation (event.target)
       this.btnEventList.forEach( function( event ) {
         this[ flag + "EventListener" ]( event, function( e ) {
           if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
@@ -133,6 +128,7 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       // trigger
       if ( attrName === "trigger" ) {
+        console.log("did you notice trigger changed?");
         this.listenersReset();
         this.trigger = newVal;
 
@@ -143,6 +139,7 @@
         }
       // animation
       } else if ( attrName === "animation" ) {
+        console.log("did you notice animation changed?");
         this.listenersReset();
         this.animation = newVal;
 
@@ -159,6 +156,7 @@
         }
       // rotation
       } else if ( attrName === "rotation" ) {
+        console.log("did you notice rotation changed?");
         this.listenersReset();
         this.rotation = newVal;
 
