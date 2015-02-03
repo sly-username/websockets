@@ -13,20 +13,18 @@
         reflect: true
       }
     },
+    _isFlipped: false,
     get isFlipped() {
-      return this.flipBoxContainer.classList.contains( "flip" );
-    },
-    set isFlipped( value ) {
-      this.flipBoxContainer.classList[ value ? "add" : "remove" ]( "flip" );
+      return this._isFlipped;
     },
     /*** LIFECYCLE ***/
     ready: function() {
       this.eventList = [ "mousedown", "touchleave" ];
 
-      this.flipBoxContainer = this.shadowRoot
-        .getElementsByClassName( "flipbox-container" )[ 0 ];
-      this.triggerButtons = Array.from( this.shadowRoot
-        .getElementsByClassName( "flipbox-button" ) );
+      this.flipBoxContainer = this.shadowRoot.getElementsByClassName( "flipbox-container" )[ 0 ];
+      this.triggerButtons = Array.from(
+        this.shadowRoot.getElementsByClassName( "flipbox-button" )
+      );
 
       // Add transition end
       this.flipBoxContainer.addEventListener( "transitionend", function() {
@@ -37,81 +35,56 @@
       }. bind( this ) );
     },
     attached: function() {
-      if ( this.trigger === "btn" ) {
-        this.trigger = "btn";
-        this.btnListener( "add" );
-      } else {
-        this.trigger = "box";
-        this.boxListener( "add" );
-      }
+      this.trigger = !( /btn|box/ ).test( this.trigger ) ? "box" : this.trigger;
+      this[ this.trigger + "Listener" ]( "add" );
 
-      if ( this.animation === "vertical" ) {
-        this.animation = "vertical";
-      } else {
-        this.animation = "horizontal";
-      }
-
-      if ( this.rotation === "loop" ) {
-        this.rotation = "loop";
-      } else {
-        this.rotation = "toggle";
-      }
+      this.animation = !( /vertical|hoizontal/ ).test( this.animation ) ? "hoizontal" : this.animation;
+      this.rotation = !( /loop|toggle/ ).test( this.rotation ) ? "toggle" : this.rotation;
     },
     /*** FUNCTIONS ***/
     flip: function() {
       this.flipBoxContainer.classList.remove( "no-transform" );
       this.flipBoxContainer.classList.add( "flipbox-transition" );
       this.flipBoxContainer.classList.toggle( "flip" );
+      this._isFlipped = this.flipBoxContainer.classList.contains( "flip" );
     },
     loop: function() {
       if ( this.flipBoxContainer.classList.contains( "flip" ) ) {
         this.needsReset = true;
         this.flipBoxContainer.classList.remove( "flip" );
         this.flipBoxContainer.classList.add( "flipbox-transition", "continue" );
+        this._isFlipped = false;
       } else {
         this.flipBoxContainer.classList.remove( "no-transform" );
         this.flipBoxContainer.classList.add( "flip", "flipbox-transition" );
+        this._isFlipped = true;
       }
     },
     /* EVENT LISTENERS */
-    btnListener: function( flag ) {
-      this.eventList.forEach( function( event ) {
-        this[ flag + "EventListener" ]( event, this.btnListenerFunction );
-      }.bind( this ) );
-    },
     btnListenerFunction: function( e ) {
       if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
         this.rotation === "loop" ? this.loop() : this.flip();
       }
     },
-    boxListener: function( flag ) {
-      this.eventList.forEach( function( event ) {
-        this[ flag + "EventListener" ]( event, this.boxListenerFunction );
-      }.bind( this ) );
-    },
     boxListenerFunction: function() {
       this[ this.rotation === "loop" ? "loop" : "flip" ]();
     },
-    // resetting event listeners
-    btnPackage: function() {
-      this.boxListener( "remove" );
-      this.btnListener( "add" );
+    listener: function( listener, flag ){
+      this.eventList.forEach( function( event ) {
+        this[ flag + "EventListener" ]( event, this[ listener + "ListenerFunction"] );
+      }.bind( this ) );
     },
-    boxPackage: function() {
-      this.btnListener( "remove" );
-      this.boxListener( "add" );
+    // resetting event listeners
+    listenerPackage( listener ){
+      this.listener( listener, "add" );
+      this.listener( listener === "btn" "box" : "btn" ], "remove" );
     },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
       // trigger
       if ( attrName === "trigger" ) {
-        if ( newVal === "btn" ) {
-          this.trigger = newVal;
-          this.btnPackage();
-        } else {
-          this.trigger = "box";
-          this.boxPackage();
-        }
+        this.trigger = newVal;
+        this.listenerPackage( newVal );
       // animation
       } else if ( attrName === "animation" ) {
         this.animation = newVal === "vertical" ? newVal : "horizontal";
