@@ -44,10 +44,9 @@ The following is a list of less mixin for CSS shortcuts.
   .animation( my-fade-animation; 3s; @delay: 2s );
  ```
 
- * **Description:** This is an extended mixin for advance animation and -webkit-animation. This mixin requires a name
-  and duration, but for every additional parameter there needs to be an @parameterName: value. The following is a
-  list of usable parameters for this mixin are as follows:
+ * **Description:** This is an extended mixin for advance animation and -webkit-animation. This mixin requires a name and duration, but for every additional parameter there needs to be an @parameterName: value. The following is a list of usable parameters for this mixin are as follows:
  ```sh
+ 
   @name: a name of your custom animation
   @duration: <time> (Default is 0)
   @timingFn: linear || ease || ease-in || ease-out || ease-in-out || cubic-bezier(n,n,n,n)
@@ -56,6 +55,7 @@ The following is a list of less mixin for CSS shortcuts.
   @direction: normal || reverse || alternate || alternate-reverse
   @fillMode: none || forwards || backwards || both
   @playState: paused || running
+  
  ```
 
 ## Column property mixin
@@ -142,9 +142,7 @@ Example:
 ## Flex property mixin
  * **.flex-item();**
 
- * **Description:** This mixin controls the flow of the items inside of the .flex-container mixin. Currently no
- support for Opera Mini due to lack of support for native flex. These are mixins that apply to items inside a
- flex-box container
+ * **Description:** This mixin controls the flow of the items inside of the .flex-container mixin. Currently no support for Opera Mini due to lack of support for native flex. These are mixins that apply to items inside a flex-box container
 
  Example:
  ```less
@@ -152,10 +150,12 @@ Example:
  ```
  * flex-item is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
    ```sh
+   
    @grow: <number> (default is 0)
    @shrink: <number> (default is 1)
    @basis: <number> || auto
    @alignSelf: auto || stretch || center || flex-start || flex-end || baseline
+   
  ```
 
 ## Flex order property mixin
@@ -169,7 +169,9 @@ Example:
   ```
  * Usage: controls the order in which items appear in the flex container
   ```sh
+  
   @order: <number>
+  
  ```
 
 ## Font-feature-settings Mixin
@@ -180,13 +182,17 @@ features to OpenType fonts. No support for Safari and Opera Mini.
 
 Example:
  ```less
+ 
 .font-feature( "kern" 2 );
 .font-feature( "smcp" );
+
 ```
 
 * This mixin takes in the following parameters:
 ```sh
+
  @feature: <string> [ <integer> | on | off ]
+ 
 ```
 
 
@@ -199,12 +205,16 @@ entire word down to the next row. The word should also contain "&shy;" in order 
 
 Example:
  ```less
+ 
  .hyphens( auto );
+ 
  ```
 
 * This mixin takes in the following parameters:
 ```sh
+
  @hyphens: none | manual | auto
+ 
 ```
 
 
@@ -213,7 +223,9 @@ Example:
 
  Example:
  ```less
+ 
   .masks( url('images/mask.png'); @repeat: no-repeat; @attach: scroll );
+  
  ```
 
  * **Description:** This mixin is used in order to crop over images with another image. Currently this mixin only
@@ -224,12 +236,14 @@ Example:
  ```
  * This mixin will take in the following parameters with its respective values
  ```sh
+ 
   @image: url('somekindofimage.png')| -webkit-gradient | none
   @repeat: repeat | repeat-x | repeat-y | no-repeat | inherit
   @attach: scroll | fixed
   @position: [ <percentage>| <length>| left | center | right  ]  [ <percentage> | <length> | top  | center | bottom ]
   @origin: [padding | border | content]
   @clip: border | padding | content | text
+  
 ```
 
 ## Region property mixin
@@ -240,17 +254,21 @@ Example:
 
  Example:
  ```less
+ 
   .starting-variable {
    .flow-to( flow-name );
   }
   .ending-variable {
    .flow-from( flow-name );
   }
+  
   ```
  * This mixin takes in the following parameter
  ```sh
+ 
   @flowTo: <name>
   @flowFrom: <name>
+  
 ```
 
 ## Transform property mixin
@@ -261,10 +279,13 @@ Example:
 
  Example:
  ```less
+ 
   .transform( skewX(25deg) rotate(25deg) translateX(17px) );
+  
  ```
  * This mixin will take in the following parameters with its respective values. Only one of these may be used at a time
  ```sh
+ 
   <none>
   matrix(n,n,n,n,n,n): <number> (6 values)
   matrix3d(n,n,n,n, ...): <number> (16 values)
@@ -287,4 +308,5 @@ Example:
   skewX(angle): an <angle>, e.g., skewX(-30deg)
   skewY(angle): an <angle>, e.g., skewY(4deg)
   perspective(n): <length>
+  
 ```
