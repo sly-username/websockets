@@ -334,58 +334,213 @@
         });
       });
 
-      suite( "animation", function() {
+      suite( "Direction", function() {
+        test( "has default value: RTL", function() {
+          expect( document.createElement( "progress-bar" ) )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "RTL" );
+        });
+
         test( "can be set via \"setAttribute\"", function() {
-          var bar = document.createElement( "progress-bar" ),
-              setTo = "Set via Attribute";
+          var bar = document.createElement( "progress-bar" );
 
-          bar.setAttribute( "animation", setTo );
+          bar.setAttribute( "direction", "LTR" );
 
-          expect( bar.hasAttribute( "animation" ) ).to.equal( true );
+          expect( bar.hasAttribute( "direction" ) ).to.equal( true );
 
-          expect( bar.getAttribute( "animation" ) )
+          expect( bar.getAttribute( "direction" ) )
             .to.be.a( "string" )
-            .that.equals( setTo );
+            .that.equals( "LTR" );
 
           expect( bar )
             .to.have.property( "outerHTML" )
-            .that.equals( "<progress-bar animation=\"" + setTo + "\"></progress-bar>" );
+            .that.equals( "<progress-bar direction=\"LTR\"></progress-bar>" );
         });
 
-        test( "can be set via property \"animation\"", function() {
-          var bar = document.createElement( "progress-bar" ),
-              setTo = "Set via Property";
+        test( "can be set via property \"direction\"", function() {
+          var bar = document.createElement( "progress-bar" );
 
-          bar.animation = setTo;
+          bar.direction = "LTR";
 
           expect( bar )
-            .to.have.property( "animation" )
-            .that.equals( setTo );
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "LTR" );
         });
 
-        test( "setting via \"setAttribute\" reflects to property \"animation\"", function() {
-          var bar = document.createElement( "progress-bar" ),
-              setTo = "Set via Attribute";
+        test( "setting via \"setAttribute\" reflects to property \"direction\"", function() {
+          var bar = document.createElement( "progress-bar" );
 
-          bar.setAttribute( "animation", setTo );
+          bar.setAttribute( "direction", "LTR" );
 
           expect( bar )
-            .to.have.property( "animation" )
-            .that.equals( setTo )
-            .and.equals( bar.getAttribute( "animation" ) );
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "LTR" );
         });
 
-        test( "setting via property \"animation\" reflects to attribute \"animation\"", function() {
-          var bar = document.createElement( "progress-bar" ),
-              setTo = "Set via Property";
+        test( "setting via property \"max\" reflects to attribute \"direction\"", function() {
+          var bar = document.createElement( "progress-bar" );
 
-          bar.animation = setTo;
+          bar.direction = "LTR";
 
-          expect( bar.hasAttribute( "animation" ) ).to.equal( true );
-          expect( bar.getAttribute( "animation" ) )
+          expect( bar.hasAttribute( "direction" ) ).to.equal( true );
+          expect( bar.getAttribute( "direction" ) )
             .to.be.a( "string" )
-            .that.equals( setTo )
-            .and.equal( bar.animation );
+            .that.equals( "LTR" )
+            .and.equal( bar.direction );
+        });
+
+        test( "removing attribute \"direction\" sets property back to default value", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.setAttribute( "direction", "LTR" );
+          expect( bar.hasAttribute( "direction" ) ).to.equal( true );
+
+          bar.removeAttribute( "direction" );
+          expect( bar.hasAttribute( "direction" ) ).to.equal( false );
+
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "RTL" );
+        });
+
+        test( "setting \"direction\" to null resets property to default value", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.direction = "LTR";
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "LTR" );
+
+          bar.direction = null;
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "RTL" );
+        });
+
+        test( "setting \"direction\" to undefined resets property to default value", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.direction = "LTR";
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "LTR" );
+
+          bar.direction = undefined;
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "RTL" );
+        });
+
+        test( "setting \"direction\" to other than RTL or LTR sets to default", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.direction = "pie";
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "RTL" );
+
+          bar.direction = -12;
+          expect( bar )
+            .to.have.property( "direction" )
+            .that.is.a( "string" )
+            .and.equals( "RTL" );
+        });
+      });
+
+      suite( "Show-value", function() {
+        test( "has default value: false", function() {
+          expect( document.createElement( "progress-bar" ) )
+            .to.have.property( "showValue" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "can be set via \"setAttribute\"", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.setAttribute( "show-value", "" );
+          expect( bar.hasAttribute( "show-value" ) ).to.equal( true );
+          expect( bar.getAttribute( "show-value" ) )
+            .to.be.a( "string" )
+            .and.equal( "" );
+        });
+
+        test( "can be set via property \"show-value\"", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.showValue = true;
+          expect( bar )
+            .to.have.property( "showValue" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via attribute reflects to property", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.setAttribute( "show-value", "" );
+          expect( bar )
+            .to.have.property( "showValue" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via property reflects to attribute", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.showValue = true;
+          expect( bar.hasAttribute( "show-value" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+        });
+
+        // remove attribute sets to false
+        test( "removing attribute reflects to attribute", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.setAttribute( "show-value", "" );
+          expect( bar.hasAttribute( "show-value" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( true );
+
+          bar.removeAttribute( "show-value" );
+          expect( bar )
+            .to.have.property( "showValue" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "setting property to false removes attribute", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.showValue = true;
+          expect( bar )
+            .to.have.property( "showValue" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+
+          expect( bar.hasAttribute( "show-value" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
+
+          bar.showValue = false;
+          expect( bar )
+            .to.have.property( "showValue" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+
+          expect( bar.hasAttribute( "show-value" ) )
+            .to.be.a( "boolean" )
+            .and.to.equal( false );
         });
       });
     });
