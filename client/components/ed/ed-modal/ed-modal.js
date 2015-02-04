@@ -9,7 +9,7 @@
     set clickoff( value ) {
       value = value ? "set" : "remove";
       this[ value + "Attribute" ]( "clickoff", "" );
-      this[ value + "ClickoffListener"]();
+      this[ value + "ClickoffListener" ]();
     },
   /* Close Button */
     get closebutton() {
@@ -34,8 +34,8 @@
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
       this.eventObjs = [ "mousedown", "touchstart" ];
-      this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[0];
-      this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[0];
+      this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[ 0 ];
+      this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[ 0 ];
       this.openListener = this.open.bind( this );
       this._trigger = this.attributes.trigger.value;
     },
@@ -64,7 +64,7 @@
         if ( elems.length === 0 ) {
           return;
         } else if ( elems.length === 1 ) {
-          elems[0][ toggle + "EventListener" ]( e, this.openListener );
+          elems[ 0 ][ toggle + "EventListener" ]( e, this.openListener );
         } else {
           Array.from( elems ).forEach( function( elem ) {
             elem[ toggle + "EventListener" ]( e, this.openListener );
@@ -100,13 +100,12 @@
 
   /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
-
       if ( attrName === "trigger" ) {
         this.triggerListener( "remove" );
         this.trigger = newVal;
         this.triggerListener( "add" );
       } else {
-        this[attrName] = newVal === "";
+        this[ attrName ] = newVal === "";
       }
 
       if ( attrName === "closebutton" ) {
