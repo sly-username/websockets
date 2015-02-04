@@ -1,0 +1,47 @@
+
+@import "./queries.less";
+@import "./variables.less";
+
+/**
+ *
+ * Breakpoints
+ *
+ *  -- Phone
+ *
+ *  -- Portrait
+ *
+ *  -- Landscape
+ *
+ *  -- Desktop
+ *
+ **/
+
+// TODO DPI Check, move down a bp on high dpi devices
+
+.phone( @rules ) {
+  .mediaOnly( screen, {
+    .queryWidth( max; @phoneMaxWidth; @rules);
+  });
+}
+
+.portrait( @rules ) {
+  .mediaOnly( screen, {
+    .queryWidth( min; @phoneMaxWidth; {
+      .queryWidth( max; @portraitMaxWidth; @rules);
+    });
+  });
+}
+
+.landscape( @rules ) {
+  .mediaOnly( screen, {
+    .queryWidth( min; @portraitMaxWidth; {
+      .queryWidth( max; @desktopMinWidth; @rules);
+    });
+  });
+}
+
+.desktop( @rules ) {
+  .mediaOnly( screen, {
+    .queryWidth( min; @desktopMinWidth; @rules);
+  });
+}

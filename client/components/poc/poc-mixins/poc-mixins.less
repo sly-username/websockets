@@ -1,11 +1,4 @@
-@import "mixins/prefixes/animations.less";
-@import "mixins/prefixes/transforms.less";
-@import "mixins/prefixes/filters.less";
-@import "mixins/prefixes/flex.less";
-@import "mixins/prefixes/masks.less";
-@import "mixins/prefixes/columns.less";
-@import "mixins/prefixes/font-text.less";
-@import "mixins/prefixes/regions.less";
+@import "mixins/all-prefixes.less";
 
 // Animation Tests
 #less-test-animation {
@@ -136,7 +129,6 @@
   height: 160px;
   width: 160px;
   background-color: lightgray;
-  -webkit-transform: rotateY(180deg);
-  transform: rotateY(180deg);
+  .transform( rotateY(180deg) );
   .backface-visibility( visible );
 }

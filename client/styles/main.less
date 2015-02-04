@@ -1,11 +1,15 @@
+@charset "UTF-8";
 
 @import "reset.less";
 @import "test.mixin.less";
+@import "mixins/hidden.less";
 @import "fonts/icons.less";
+@import "mixins/breakpoints/mixins.less";
 
 @color: white;
 
 body{
+  font-family: "Helvetica", "Arial", sans-serif;
   background-color: @color;
   .cool(cyan);
   & > .left {

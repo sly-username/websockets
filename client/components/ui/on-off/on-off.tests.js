@@ -423,7 +423,7 @@
         });
 
         // remove attribute sets to false
-        test( "removing attribute reflects to attribute", function() {
+        test( "removing attribute reflects to property", function() {
           var onOff = document.createElement( "on-off" );
 
           onOff.setAttribute( "disabled", "" );

@@ -10,15 +10,16 @@ var gulp = require( "gulp" ),
   lessOptions,
   transformDirName,
   runCompile,
-//  runWatchCompile,
+//  runWatchCompile, // TODO?
   formatLessError,
   myLessCompile;
 
 // Options
 lessOptions = {
-  "no-ie-compat": true,
+  ieCompat: false,
   compress: false,
-  silent: true,
+  strictMath: true,
+//  silent: true,
   paths: config.less.includePaths
 };
 

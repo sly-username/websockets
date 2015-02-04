@@ -4,6 +4,10 @@
   <base href="/" />
   <title>Eardish</title>
   <link rel="shortcut icon" href="assets/favicon.ico" />
+  <meta name="viewport" content="initial-scale=1" />
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="styles/main.css" />
 
   <!-- Vendor Scripts -->
   <script src="vendor/webcomponents.js"></script>
@@ -12,9 +16,6 @@
   <script src="vendor/es6-module-loader.js"></script>
   <script src="vendor/system.js"></script>
   <script src="vendor/director.js"></script>
-
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="styles/main.css" />
 
   <!-- UI WebComponents -->
   <link rel="import" href="components/ui/ui-components.html" />
@@ -29,6 +30,14 @@
 </head>
 
 <body unresolved>
+
+<div class="left">
+  <poc-bp></poc-bp>
+</div>
+
+<div class="left">
+  <poc-mixins></poc-mixins>
+</div>
 
 <flip-box animation="horizontal" trigger="btn" rotation="loop">
   <section id="title" class="front">
@@ -73,10 +82,6 @@
 
   flipBox.flip();
 </script>
-
-<div class="left hidden">
-  <ed-lr></ed-lr>
-</div>
 
 <div class="parent left">
   <file-drop fill="parent" accepts="image/png,image/jpeg">
