@@ -9,6 +9,7 @@
 @color: white;
 
 body{
+  font-family: "Helvetica", "Arial", sans-serif;
   background-color: @color;
   .cool(cyan);
   & > .left {
@@ -16,13 +17,6 @@ body{
     clear: both;
     width: 100%;
     margin: 20px 0 0;
-  }
-  div {
-    .phone({
-      & {
-        background-color: blue;
-      }
-    });
   }
 }
 

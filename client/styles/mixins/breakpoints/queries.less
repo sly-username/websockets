@@ -77,12 +77,6 @@
     @rules();
   }
 }
-.minAspectRatio( @ratio; @rules ) {
-  .aspectRatio(min; @ratio; @rules);
-}
-.maxAspectRatio( @ratio; @rules ) {
-  .aspectRatio(max; @ratio; @rules);
-}
 
 /*
 @media (device-aspect-ratio: 16/9) { ... }
@@ -103,12 +97,6 @@
   @media (max-device-aspect-ratio: @ratio) {
     @rules();
   }
-}
-.minDeviceAspectRatio( @ratio; @rules ) {
-  .deviceAspectRatio(min; @ratio; @rules);
-}
-.maxDeviceAspectRatio( @ratio; @rules ) {
-  .deviceAspectRatio(max; @ratio; @rules);
 }
 
 /*
@@ -131,12 +119,6 @@
     @rules();
   }
 }
-.minDeviceHeight( @height; @rules ){
-  .deviceHeight( min; @height; @rules );
-}
-.maxDeviceHeight( @height; @rules ){
-  .deviceHeight( max; @height; @rules );
-}
 
 /*
 @media (max-device-width: 799px) { ... }
@@ -158,12 +140,6 @@
     @rules();
   }
 }
-.minDeviceWidth( @width; @rules ){
-  .deviceWidth( min; @width; @rules );
-}
-.maxDeviceWidth( @width; @rules ){
-  .deviceWidth( max; @width; @rules );
-}
 
 /*
 // No real support yet
@@ -178,7 +154,6 @@
 @media (height: 10px) { ... }
   has min/max
   height of the device's rendering surface
-  TODO BETTER NAME
 */
 .queryHeight( @height; @rules ){
   @media (height: @height) {
@@ -200,7 +175,6 @@
 @media (min-width: 500px) and (max-width: 800px) { ... }
   has min/max
   value: the width of the rendering surface
-  TODO BETTER NAME
 */
 .queryWidth( @width; @rules ){
   @media (width: @width) {
@@ -243,12 +217,6 @@
     @rules();
   }
 }
-.minMonochrome( @bitsPerPixel; @rules ){
-  .monochrome( min; @bitsPerPixel; @rules );
-}
-.maxMonochrome( @bitsPerPixel; @rules ){
-  .monochrome( max; @bitsPerPixel; @rules );
-}
 
 /*
 @media (orientation: portrait) { ... }
@@ -287,12 +255,6 @@
   @media (max-resolution: @density){
     @rules();
   }
-}
-.minResolution( @density; @rules ){
-  .resolution( min; @density; @rules );
-}
-.maxResolution( @density; @rules ){
-  .resolution( max; @density; @rules );
 }
 .resolution( high; @rules ){
   .resolution( 2dppx; @rules );
