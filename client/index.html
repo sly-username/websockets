@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <base href="/" />
@@ -39,22 +40,24 @@
   <poc-mixins></poc-mixins>
 </div>
 
-<flip-box animation="horizontal" trigger="btn" rotation="loop">
-  <section id="title" class="front">
-    <h3>i'm batman</h3>
-  </section>
-  <div class="front">
-    <img src="http://goo.gl/Rnlefq" />
-  </div>
-  <span class="back">
-    <h4>that was fun! <br> Ryan is a great manager!</h4>
-  </span>
-</flip-box>
+<div class="left">
+  <flip-box animation="horizontal" trigger="btn" rotation="loop">
+    <section id="title" class="front">
+      <h3>i'm batman</h3>
+    </section>
+    <div class="front">
+      <img src="http://goo.gl/Rnlefq" />
+    </div>
+    <span class="back">
+      <h4>that was fun! <br> Ryan is a great manager!</h4>
+    </span>
+  </flip-box>
+</div>
 <style>
-  .front, .back {
+  flip-box .front, flip-box .back {
     text-align: center;
   }
-  img {
+  flip-box img {
     height: 200px;
     width: 320px;
   }
