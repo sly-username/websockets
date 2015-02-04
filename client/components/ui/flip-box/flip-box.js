@@ -33,9 +33,9 @@
     },
     attached: function() {
       this.trigger = !( /btn|box/ ).test( this.trigger ) ? "box" : this.trigger;
-      this[ this.trigger + "Listener" ]( "add" );
+      this.listener( this.trigger, "add" );
 
-      this.animation = !( /vertical|hoizontal/ ).test( this.animation ) ? "hoizontal" : this.animation;
+      this.animation = !( /vertical|horizontal/ ).test( this.animation ) ? "horizontal" : this.animation;
       this.rotation = !( /loop|toggle/ ).test( this.rotation ) ? "toggle" : this.rotation;
     },
     /*** FUNCTIONS ***/

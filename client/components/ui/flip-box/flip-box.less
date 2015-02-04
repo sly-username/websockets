@@ -79,13 +79,7 @@
     transform: rotateX(180deg);
     }
   }
-
-  .front {
-    -webkit-backface-visibility: visible;
-    -moz-backface-visibility: visible;
-    backface-visibility: visible;
-  }
-
+  
   .back {
     -webkit-transform: rotateX(180deg);
     -moz-transform: rotateX(180deg);
@@ -121,12 +115,6 @@
 }
 
 :host([rotation="loop"][animation="horizontal"]){
-  .front {
-    -webkit-backface-visibility: visible;
-    -moz-backface-visibility: visible;
-    backface-visibility: visible;
-  }
-
   .back {
     -webkit-transform: rotateX(180deg);
     -moz-transform: rotateX(180deg);
