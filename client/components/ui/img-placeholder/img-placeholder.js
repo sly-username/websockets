@@ -24,13 +24,13 @@
     },
     rePrep: function() {
       if ( !this.src ) {
-        this.fallBack.src = this.src || globalMap[this.image];
+        this.fallBack.src = this.src || globalMap[ this.image ];
       }
     },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[0];
+      this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[ 0 ];
     },
     attached: function() {
       this.updateSrc();
@@ -43,7 +43,7 @@
     },
     updateSrc: function() {
       this.checkSrc( this.src ).then( function( result ) {
-        this.fallBack.src = result ? this.src : globalMap[this.image];
+        this.fallBack.src = result ? this.src : globalMap[ this.image ];
       }.bind( this ) );
       return this;
     },

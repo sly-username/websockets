@@ -24,7 +24,7 @@
       this.scrubberWrapper = this.shadowRoot.getElementById( "scrubber-wrapper" );
       this.scrubberInput = this.shadowRoot.getElementById( "scrubber-input" );
       this.valBox = this.shadowRoot.getElementById( "val-box" );
-      this.backFill = this.shadowRoot.getElementsByClassName( "back-fill" )[0];
+      this.backFill = this.shadowRoot.getElementsByClassName( "back-fill" )[ 0 ];
     },
     attached: function() {
       copyAttributes( this, this.scrubberInput, [ "min", "max", "format" ]);
@@ -32,7 +32,8 @@
     },
     showVal: function() {
       var inputValue = this.scrubberInput.value,
-          valPercent = parseInt( ( (inputValue - this.scrubberInput.min ) / ( this.scrubberInput.max - this.scrubberInput.min ) * 100 ), 10 ) + "%",
+          valPercent = parseInt( inputValue - this.scrubberInput.min /
+            ( this.scrubberInput.max - this.scrubberInput.min * 100 ), 10 ) + "%",
           valTime = inputValue + " seconds";
 
       this.valBox.innerHTML = this.format === "percent" ? valPercent : valTime;
