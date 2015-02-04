@@ -38,7 +38,8 @@
         // resets the fileArr
         this.fileArr = [];
         // checks for multiple attribute
-        if ( ( this.hasAttribute( "multiple" ) && ( this.fileList.length > 1 ) ) || this.fileList.length === 1 ) {
+        if ( ( this.hasAttribute( "multiple" ) && ( this.fileList.length > 1 ) ) ||
+          this.fileList.length === 1 ) {
           this.fileArr = Array.from( this.fileList ).filter( function( file ) {
             var compare = new RegExp( file.type );
             return compare.test( this.accepts );

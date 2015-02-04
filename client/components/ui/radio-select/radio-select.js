@@ -23,7 +23,7 @@
         if ( !this.checked ) {
           this.checked = true;
           this.setAttribute( "checked", "" );
-          this.children[0].style.transform = "scale(1)";
+          this.children[ 0 ].style.transform = "scale(1)";
           this.clearOthers();
         }
       });
@@ -43,7 +43,7 @@
       this.otherMembers.forEach( function( elm ) {
         elm.checked = false;
         elm.removeAttribute( "checked" );
-        elm.children[0].style.transform = "scale(1)";
+        elm.children[ 0 ].style.transform = "scale(1)";
       }, this );
     }
   });

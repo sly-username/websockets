@@ -21,8 +21,8 @@
         }
 
         this.checked = !this.checked;
-        this[this.checked ? "setAttribute" : "removeAttribute"]( "checked", "" );
-        this.children[0].style.transform = "scale(1)";
+        this[ this.checked ? "setAttribute" : "removeAttribute" ]( "checked", "" );
+        this.children[ 0 ].style.transform = "scale(1)";
       });
     },
     attached: function() {
