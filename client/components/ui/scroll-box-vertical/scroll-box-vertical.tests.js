@@ -140,7 +140,7 @@
       suite( "show-arrows", function() {
         test( "has default value: false", function() {
           expect( document.createElement( "scroll-box-vertical" ) )
-            .to.have.property( "show-arrows" )
+            .to.have.property( "showArrows" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
@@ -167,7 +167,7 @@
           sbVert.setAttribute( "show-arrows", "" );
 
           expect( sbVert )
-            .to.have.property( "show-arrows" )
+            .to.have.property( "showArrows" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
@@ -175,7 +175,7 @@
         test( "can be set via property reflect attribute", function() {
           var sbVert = document.createElement( "scroll-box-vertical" );
 
-          sbVert[ "show-arrows" ] = true;
+          sbVert.showArrows = true;
 
           expect( sbVert.hasAttribute( "show-arrows" ) ).to.equal( true );
           expect( sbVert.getAttribute( "show-arrows" ) )
@@ -198,7 +198,7 @@
         test( "can be removed via attribute reflect property", function() {
           var sbVert = document.createElement( "scroll-box-vertical" );
 
-          sbVert[ "show-arrows" ] = true;
+          sbVert.showArrows = true;
           sbVert.removeAttribute( "show-arrows" );
 
           expect( sbVert )
@@ -211,7 +211,7 @@
           var sbVert = document.createElement( "scroll-box-vertical" );
 
           sbVert.setAttribute( "show-arrows", "" );
-          sbVert[ "show-arrows" ] = false;
+          sbVert.showArrows = false;
 
           expect( sbVert )
             .to.have.property( "outerHTML" )
