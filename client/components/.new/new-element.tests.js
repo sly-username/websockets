@@ -1,6 +1,5 @@
 /*eslint-env mocha */
 /*eslint-env mocha */
-// Line 30 causes the testing to bug out
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
