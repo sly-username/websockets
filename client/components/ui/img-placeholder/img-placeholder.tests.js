@@ -4,7 +4,7 @@
   "use strict";
   var expect = chai.expect,
     // get wrapper from document or for karma, create a new div and append it to the DOM
-    testingWrapper = document.getElementById( "new-element-test-wrapper" ) ||
+    testingWrapper = document.getElementById( "img-placeholder-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
@@ -17,33 +17,31 @@
       testingWrapper.innerHTML = "";
     };
 
-  suite( "<new-element>", function() {
+  suite( "<img-placeholder>", function() {
     suite( "Life Cycle", function() {
       test( "ready: can create from document.createElement", function() {
-        expect( document.createElement( "new-element" ) )
+        expect( document.createElement( "img-placeholder" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<new-element></new-element>" );
+          .and.equals( "<img-placeholder></img-placeholder>" );
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "new-element" );
-
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( document.createElement( "img-placeholder" ) );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<new-element></new-element>" );
+          .and.equals( "<img-placeholder></img-placeholder>" );
 
         resetWrapper();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "new-element" );
+        var imgPlaceholder = document.createElement( "img-placeholder" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( imgPlaceholder );
+        testingWrapper.removeChild( imgPlaceholder );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
@@ -57,12 +55,6 @@
     suite( "Attributes", function() {
       suite( "data-text", function() {
         test( "reflection", function() {});
-      });
-    });
-
-    suite( "Events", function() {
-      suite( "Event Name", function() {
-        test( "customEvent", function( done ) {});
       });
     });
   });
