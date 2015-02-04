@@ -72,101 +72,101 @@
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Attribute";
 
-          imgPlaceholder.setAttribute( "on-text", setTo );
+          imgPlaceholder.setAttribute( "image", setTo );
 
-          expect( imgPlaceholder.hasAttribute( "on-text" ) ).to.equal( true );
+          expect( imgPlaceholder.hasAttribute( "image" ) ).to.equal( true );
 
-          expect( imgPlaceholder.getAttribute( "on-text" ) )
+          expect( imgPlaceholder.getAttribute( "image" ) )
             .to.be.a( "string" )
             .that.equals( setTo );
 
           expect( imgPlaceholder )
             .to.have.property( "outerHTML" )
-            .that.equals( "<img-placeholder on-text=\"" + setTo + "\"></img-placeholder>" );
+            .that.equals( "<img-placeholder image=\"" + setTo + "\"></img-placeholder>" );
         });
 
-        test( "can be set via property \"onText\"", function() {
+        test( "can be set via property \"image\"", function() {
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Property";
 
-          imgPlaceholder.onText = setTo;
+          imgPlaceholder.image = setTo;
 
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.equals( setTo );
         });
 
-        test( "setting via \"setAttribute\" reflects to property \"onText\"", function() {
+        test( "setting via \"setAttribute\" reflects to property \"image\"", function() {
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Attribute";
 
-          imgPlaceholder.setAttribute( "on-text", setTo );
+          imgPlaceholder.setAttribute( "image", setTo );
 
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.equals( setTo )
-            .and.equals( imgPlaceholder.getAttribute( "on-text" ) );
+            .and.equals( imgPlaceholder.getAttribute( "image" ) );
         });
 
-        test( "setting via property \"onText\" reflects to attribute \"on-text\"", function() {
+        test( "setting via property \"image\" reflects to attribute \"image\"", function() {
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Property";
 
-          imgPlaceholder.onText = setTo;
+          imgPlaceholder.image = setTo;
 
-          expect( imgPlaceholder.hasAttribute( "on-text" ) ).to.equal( true );
-          expect( imgPlaceholder.getAttribute( "on-text" ) )
+          expect( imgPlaceholder.hasAttribute( "image" ) ).to.equal( true );
+          expect( imgPlaceholder.getAttribute( "image" ) )
             .to.be.a( "string" )
             .that.equals( setTo )
-            .and.equal( imgPlaceholder.onText );
+            .and.equal( imgPlaceholder.image );
         });
 
-        test( "removing attribute \"on-text\" sets property back to default value", function() {
+        test( "removing attribute \"image\" sets property back to default value", function() {
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Attribute";
 
-          imgPlaceholder.setAttribute( "on-text", setTo );
-          expect( imgPlaceholder.hasAttribute( "on-text" ) ).to.equal( true );
+          imgPlaceholder.setAttribute( "image", setTo );
+          expect( imgPlaceholder.hasAttribute( "image" ) ).to.equal( true );
 
-          imgPlaceholder.removeAttribute( "on-text" );
-          expect( imgPlaceholder.hasAttribute( "on-text" ) ).to.equal( false );
+          imgPlaceholder.removeAttribute( "image" );
+          expect( imgPlaceholder.hasAttribute( "image" ) ).to.equal( false );
 
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.is.a( "string" )
             .and.equals( "On" );
         });
 
-        test( "setting \"onText\" to null resets property to default value", function() {
+        test( "setting \"image\" to null resets property to default value", function() {
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Property";
 
-          imgPlaceholder.onText = setTo;
+          imgPlaceholder.image = setTo;
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.is.a( "string" )
             .and.equals( setTo );
 
-          imgPlaceholder.onText = null;
+          imgPlaceholder.image = null;
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.is.a( "string" )
             .and.equals( setTo );
         });
 
-        test( "setting \"onText\" to undefined resets property to default value", function() {
+        test( "setting \"image\" to undefined resets property to default value", function() {
           var imgPlaceholder = document.createElement( "img-placeholder" ),
               setTo = "Set via Property";
 
-          imgPlaceholder.onText = setTo;
+          imgPlaceholder.image = setTo;
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.is.a( "string" )
             .and.equals( setTo );
 
-          imgPlaceholder.onText = undefined;
+          imgPlaceholder.image = undefined;
           expect( imgPlaceholder )
-            .to.have.property( "onText" )
+            .to.have.property( "image" )
             .that.is.a( "string" )
             .and.equals( setTo );
         });
