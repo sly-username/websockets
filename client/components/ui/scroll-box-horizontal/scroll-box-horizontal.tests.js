@@ -140,7 +140,7 @@
       suite( "show-arrows", function() {
         test( "has default value: false", function() {
           expect( document.createElement( "scroll-box-horizontal" ) )
-            .to.have.property( "show-arrows" )
+            .to.have.property( "showArrows" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
@@ -167,7 +167,7 @@
           sbHort.setAttribute( "show-arrows", "" );
 
           expect( sbHort )
-            .to.have.property( "show-arrows" )
+            .to.have.property( "showArrows" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
@@ -175,7 +175,7 @@
         test( "can be set via property reflect attribute", function() {
           var sbHort = document.createElement( "scroll-box-horizontal" );
 
-          sbHort[ "show-arrows" ] = true;
+          sbHort.showArrows = true;
 
           expect( sbHort.hasAttribute( "show-arrows" ) ).to.equal( true );
           expect( sbHort.getAttribute( "show-arrows" ) )
@@ -198,7 +198,7 @@
         test( "can be removed via attribute reflect property", function() {
           var sbHort = document.createElement( "scroll-box-horizontal" );
 
-          sbHort[ "show-arrows" ] = true;
+          sbHort.showArrows = true;
           sbHort.removeAttribute( "show-arrows" );
 
           expect( sbHort )
@@ -211,7 +211,7 @@
           var sbHort = document.createElement( "scroll-box-horizontal" );
 
           sbHort.setAttribute( "show-arrows", "" );
-          sbHort[ "show-arrows" ] = false;
+          sbHort.showArrows = false;
 
           expect( sbHort )
             .to.have.property( "outerHTML" )
