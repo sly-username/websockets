@@ -80,7 +80,7 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       // trigger
       if ( attrName === "trigger" ) {
-        this.trigger = newVal;
+        this.trigger = newVal === "btn" ? newVal : "box";
         this.listenerPackage( newVal );
       // animation
       } else if ( attrName === "animation" ) {
