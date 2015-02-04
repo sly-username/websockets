@@ -1,0 +1,142 @@
+@import "mixins/prefixes/animations.less";
+@import "mixins/prefixes/transforms.less";
+@import "mixins/prefixes/filters.less";
+@import "mixins/prefixes/flex.less";
+@import "mixins/prefixes/masks.less";
+@import "mixins/prefixes/columns.less";
+@import "mixins/prefixes/font-text.less";
+@import "mixins/prefixes/regions.less";
+
+// Animation Tests
+#less-test-animation {
+  background: pink;
+  .animation(myAnimation; 5s; @iterationCount: infinite);
+}
+
+.keyframes( myAnimation, {
+0% {
+  background: pink;
+}
+25% {
+  background: orange;
+}
+50% {
+  background: blue;
+}
+100% {
+  background: red;
+}
+});
+
+// Transformation Tests
+#less-test-transform {
+  background: yellow;
+  height: 40px;
+  width: 40px;
+  .transform( skewX(25deg) rotate(25deg) translateX(17px) );
+
+}
+
+// Filter Tests
+#less-test-filter {
+  background: pink;
+  height: 40px;
+  width: 40px;
+  .filter( sepia(50%) blur(1px) );
+}
+
+// Flex Tests
+#less-test-flex {
+  background: red;
+  height: 100px;
+  width: 600px;
+  .flex-container( row-reverse nowrap; @justifyContent: space-around; @alignItems: center );
+}
+
+#flex-item1 {
+  background: lightcoral;
+  height: 80px;
+  width: 100px;
+  .flex-item(@grow: 2);
+  .flex-order( 2 );
+}
+#flex-item2 {
+  background: lightgoldenrodyellow;
+  height: 80px;
+  width: 70px;
+  .flex-item(@grow: 1; @alignSelf: flex-end);
+  .flex-order( 1 );
+}
+#flex-item3 {
+  background: lightgreen;
+  height: 80px;
+  width: 40px;
+  .flex-item(@grow: 1);
+  .flex-order( 3 );
+}
+
+// Masks Tests
+#less-test-masks {
+  background: lightblue;
+  height: 200px;
+  width: 200px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 200px;
+  .masks( url("https://n9neo.files.wordpress.com/2013/09/moon-ti-uccido.png") );
+}
+
+// Multiple Columns test
+#less-test-column {
+  background: lightgreen;
+  height: 200px;
+  .columns( 3; @ruleColor: black; @width: 2px; @ruleWidth: 2px; @gap: 20px; @ruleStyle: outset );
+}
+
+// font-text test
+#less-test-text {
+  background: lightgoldenrodyellow;
+  height: 120px;
+  width: 120px;
+  font-family: "Open Sans", "sans-serif";
+}
+
+.kern {
+  .font-feature( "kern" );
+}
+
+.smallcaps {
+  .font-feature( "smcp" on );
+}
+
+// hyphens test
+#less-test-hyphens {
+  background: lightseagreen;
+  height: 200px;
+  width: 200px;
+  .hyphens( auto );
+}
+
+// regions test
+.text {
+  color: #F2F2F2;
+  .flow-to( text-flow );
+}
+
+.containers{
+  background: #333333;
+  width: 200px;
+  height: 100px;
+  .flow-from( text-flow );
+}
+
+// backface-visibility testing
+
+#less-test-backface {
+  height: 160px;
+  width: 160px;
+  background-color: lightgray;
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  .backface-visibility( visible );
+}
