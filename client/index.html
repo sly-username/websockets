@@ -24,12 +24,16 @@
   <!-- Eardish WebComponents -->
   <link rel="import" href="components/ed/ed-components.html" />
 
+  <!-- REMOVE FOR PRODUCTION -->
+  <!-- POC WebComponents -->
+  <link rel="import" href="components/poc/poc-elements.html" />
+  <!-- END REMOVE FOR PRODUCTION -->
 </head>
 
 <body unresolved>
 
-<div class="left hidden">
-  <ed-lr></ed-lr>
+<div class="left">
+  <poc-mixins></poc-mixins>
 </div>
 
 <div class="parent left">
@@ -282,58 +286,58 @@
   })( window, document );
 </script>
 
-<style type="text/css">
-  #mocha-tests {
-    position: fixed;
-    left: 0;
-    bottom: 0.5%;
-    margin: 0 0.5%;
-    padding: 0;
-    width: 99%;
-    height: 85%;
-    background-color: white;
-    z-index: 9998;
-  }
-  #show-hide-tests {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 9999;
-  }
-  #mocha-tests.hidden, #mocha-tests.hide{
-    display: none;
-  }
-</style>
-<script type="text/javascript">
-  (function( document ){
+<!--<style type="text/css">-->
+  <!--#mocha-tests {-->
+    <!--position: fixed;-->
+    <!--left: 0;-->
+    <!--bottom: 0.5%;-->
+    <!--margin: 0 0.5%;-->
+    <!--padding: 0;-->
+    <!--width: 99%;-->
+    <!--height: 85%;-->
+    <!--background-color: white;-->
+    <!--z-index: 9998;-->
+  <!--}-->
+  <!--#show-hide-tests {-->
+    <!--position: fixed;-->
+    <!--right: 20px;-->
+    <!--bottom: 20px;-->
+    <!--z-index: 9999;-->
+  <!--}-->
+  <!--#mocha-tests.hidden, #mocha-tests.hide{-->
+    <!--display: none;-->
+  <!--}-->
+<!--</style>-->
+<!--<script type="text/javascript">-->
+  <!--(function( document ){-->
 
-    var iframe = document.createElement( "iframe" ),
-      button = document.createElement( "button" );
+    <!--var iframe = document.createElement( "iframe" ),-->
+      <!--button = document.createElement( "button" );-->
 
-    iframe.src = "./tests.html";
-    iframe.id = "mocha-tests";
-    iframe.className = "hidden";
+    <!--iframe.src = "./tests.html";-->
+    <!--iframe.id = "mocha-tests";-->
+    <!--iframe.className = "hidden";-->
 
-    button.innerHTML = "Show Tests";
-    button.id = "show-hide-tests";
+    <!--button.innerHTML = "Show Tests";-->
+    <!--button.id = "show-hide-tests";-->
 
-    button.addEventListener( "click", function( event ) {
-      if ( ( /hidden|hide/g ).test( iframe.className ) ) {
-        iframe.className = iframe.className.split(" ").filter( function( strClass ) {
-          return strClass !== "hidden" && strClass !== "hide";
-        }).join( " " ).trim();
-        button.innerHTML = "Hide Tests";
-      } else {
-        iframe.className = iframe.className + " hidden";
-        button.innerHTML = "Show Tests";
-      }
-    });
+    <!--button.addEventListener( "click", function( event ) {-->
+      <!--if ( ( /hidden|hide/g ).test( iframe.className ) ) {-->
+        <!--iframe.className = iframe.className.split(" ").filter( function( strClass ) {-->
+          <!--return strClass !== "hidden" && strClass !== "hide";-->
+        <!--}).join( " " ).trim();-->
+        <!--button.innerHTML = "Hide Tests";-->
+      <!--} else {-->
+        <!--iframe.className = iframe.className + " hidden";-->
+        <!--button.innerHTML = "Show Tests";-->
+      <!--}-->
+    <!--});-->
 
-    document.body.appendChild( iframe );
-    document.body.appendChild( button );
-  })( document );
-</script>
-<!-- END REMOVE FOR PRODUCTION -->
+    <!--document.body.appendChild( iframe );-->
+    <!--document.body.appendChild( button );-->
+  <!--})( document );-->
+<!--</script>-->
+<!--END REMOVE FOR PRODUCTION -->
 
 </body>
 </html>
