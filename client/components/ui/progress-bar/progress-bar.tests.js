@@ -227,7 +227,7 @@
           expect( bar )
             .to.have.property( "max" )
             .that.is.a( "number" )
-            .and.equals( 0 );
+            .and.equals( 1 );
         });
 
         test( "setting \"max\" to null resets property to default value", function() {
@@ -243,7 +243,7 @@
           expect( bar )
             .to.have.property( "max" )
             .that.is.a( "number" )
-            .and.equals( 0 );
+            .and.equals( 1 );
         });
 
         test( "setting \"max\" to undefined resets property to default value", function() {
@@ -259,10 +259,135 @@
           expect( bar )
             .to.have.property( "max" )
             .that.is.a( "number" )
-            .and.equals( 0 );
+            .and.equals( 1 );
+        });
+
+        test( "setting \"max\" to less than 1 resets property to default value", function() {
+          var bar = document.createElement( "progress-bar" );
+
+          bar.max = 5;
+          expect( bar )
+            .to.have.property( "max" )
+            .that.is.a( "number" )
+            .and.equals( 5 );
+
+          bar.max = -12;
+          expect( bar )
+            .to.have.property( "max" )
+            .that.is.a( "number" )
+            .and.equals( 1 );
         });
       });
 
+      suite( "animation", function() {
+        test( "can be set via \"setAttribute\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Attribute";
+
+          bar.setAttribute( "animation", setTo );
+
+          expect( bar.hasAttribute( "animation" ) ).to.equal( true );
+
+          expect( bar.getAttribute( "animation" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo );
+
+          expect( bar )
+            .to.have.property( "outerHTML" )
+            .that.equals( "<progress-bar animation=\"" + setTo + "\"></progress-bar>" );
+        });
+
+        test( "can be set via property \"animation\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Property";
+
+          bar.animation = setTo;
+
+          expect( bar )
+            .to.have.property( "animation" )
+            .that.equals( setTo );
+        });
+
+        test( "setting via \"setAttribute\" reflects to property \"animation\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Attribute";
+
+          bar.setAttribute( "animation", setTo );
+
+          expect( bar )
+            .to.have.property( "animation" )
+            .that.equals( setTo )
+            .and.equals( bar.getAttribute( "animation" ) );
+        });
+
+        test( "setting via property \"animation\" reflects to attribute \"animation\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Property";
+
+          bar.animation = setTo;
+
+          expect( bar.hasAttribute( "animation" ) ).to.equal( true );
+          expect( bar.getAttribute( "animation" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo )
+            .and.equal( bar.animation );
+        });
+      });
+
+      suite( "animation", function() {
+        test( "can be set via \"setAttribute\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Attribute";
+
+          bar.setAttribute( "animation", setTo );
+
+          expect( bar.hasAttribute( "animation" ) ).to.equal( true );
+
+          expect( bar.getAttribute( "animation" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo );
+
+          expect( bar )
+            .to.have.property( "outerHTML" )
+            .that.equals( "<progress-bar animation=\"" + setTo + "\"></progress-bar>" );
+        });
+
+        test( "can be set via property \"animation\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Property";
+
+          bar.animation = setTo;
+
+          expect( bar )
+            .to.have.property( "animation" )
+            .that.equals( setTo );
+        });
+
+        test( "setting via \"setAttribute\" reflects to property \"animation\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Attribute";
+
+          bar.setAttribute( "animation", setTo );
+
+          expect( bar )
+            .to.have.property( "animation" )
+            .that.equals( setTo )
+            .and.equals( bar.getAttribute( "animation" ) );
+        });
+
+        test( "setting via property \"animation\" reflects to attribute \"animation\"", function() {
+          var bar = document.createElement( "progress-bar" ),
+              setTo = "Set via Property";
+
+          bar.animation = setTo;
+
+          expect( bar.hasAttribute( "animation" ) ).to.equal( true );
+          expect( bar.getAttribute( "animation" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo )
+            .and.equal( bar.animation );
+        });
+      });
     });
   });
 })( window, document, window.chai );
