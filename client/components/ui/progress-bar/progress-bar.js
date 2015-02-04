@@ -27,7 +27,7 @@
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[0];
 
       // value
-      this.value = parseInt( this.attributes.value.value, 10 );
+      this.value = parseInt( this.attributes.value && this.attributes.value.value || 0, 10 );
 
       // text display
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[0];
