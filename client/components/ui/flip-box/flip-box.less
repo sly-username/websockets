@@ -8,6 +8,9 @@
   width: 400px;
   margin: 0 auto;
   ::content * {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
   .flipbox-button{
     position: absolute;
@@ -20,14 +23,6 @@
     }
   }
 }
-
-//.flipbox-button {
-//  position: absolute;
-//  top: 2%;
-//  &.hidden {
-//    display: none;
-//  }
-//}
 
 .flipbox-container {
   color: white;

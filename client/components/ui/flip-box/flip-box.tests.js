@@ -520,20 +520,10 @@
             .and.equals( false );
         });
 
-        test( "can be set to true via \"isFlipped\" property", function() {
+        test( "cannot be set via property \"isFlipped\"", function() {
           var flipBox = document.createElement( "flip-box" );
 
           flipBox.isFlipped = true;
-          expect( flipBox )
-            .to.have.property( "isFlipped" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
-        });
-
-        test( "can be set to false via \"isFlipped\" property", function() {
-          var flipBox = document.createElement( "flip-box" );
-
-          flipBox.isFlipped = false;
           expect( flipBox )
             .to.have.property( "isFlipped" )
             .that.is.a( "boolean" )

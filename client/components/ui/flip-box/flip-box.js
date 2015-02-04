@@ -22,9 +22,6 @@
       this.eventList = [ "mousedown", "touchleave" ];
 
       this.flipBoxContainer = this.shadowRoot.getElementsByClassName( "flipbox-container" )[ 0 ];
-      this.triggerButtons = Array.from(
-        this.shadowRoot.getElementsByClassName( "flipbox-button" )
-      );
 
       // Add transition end
       this.flipBoxContainer.addEventListener( "transitionend", function() {
@@ -61,23 +58,23 @@
       }
     },
     /* EVENT LISTENERS */
-    btnListenerFunction: function( e ) {
+    btnListener: function( e ) {
       if ( e.path[ 0 ].classList.contains( "flipbox-button" ) ) {
-        this.rotation === "loop" ? this.loop() : this.flip();
+        this[ this.rotation === "loop" ? "loop" : "flip" ]();
       }
     },
-    boxListenerFunction: function() {
+    boxListener: function() {
       this[ this.rotation === "loop" ? "loop" : "flip" ]();
     },
-    listener: function( listener, flag ){
+    listener: function( listener, flag ) {
       this.eventList.forEach( function( event ) {
-        this[ flag + "EventListener" ]( event, this[ listener + "ListenerFunction"] );
+        this[ flag + "EventListener" ]( event, this[ listener + "Listener" ] );
       }.bind( this ) );
     },
     // resetting event listeners
-    listenerPackage( listener ){
+    listenerPackage: function( listener ) {
       this.listener( listener, "add" );
-      this.listener( listener === "btn" "box" : "btn" ], "remove" );
+      this.listener( listener === "btn" ? "box" : "btn", "remove" );
     },
     /* ATTRIBUTE CHANGE */
     attributeChanged: function( attrName, oldVal, newVal ) {
