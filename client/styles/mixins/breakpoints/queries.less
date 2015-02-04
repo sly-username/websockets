@@ -173,32 +173,27 @@
   0 otherwise
   "em" -- 1em is one cell of the grid horizontally and vertically
 */
+
 /*
 @media (height: 10px) { ... }
   has min/max
   height of the device's rendering surface
   TODO BETTER NAME
 */
-.mediaQueryHeight( @height; @rules ){
+.queryHeight( @height; @rules ){
   @media (height: @height) {
     @rules();
   }
 }
-.mediaQueryHeight( min; @height; @rules ){
+.queryHeight( min; @height; @rules ){
   @media (min-height: @height) {
     @rules();
   }
 }
-.mediaQueryHeight( max; @height; @rules ){
+.queryHeight( max; @height; @rules ){
   @media (max-height: @height) {
     @rules();
   }
-}
-.minMediaQueryHeight( @height; @rules ){
-  .mediaQueryHeight( min; @height; @rules );
-}
-.maxMediaQueryHeight( @height; @rules ){
-  .mediaQueryHeight( max; @height; @rules );
 }
 
 /*
@@ -207,26 +202,20 @@
   value: the width of the rendering surface
   TODO BETTER NAME
 */
-.mediaQueryWidth( @width; @rules ){
+.queryWidth( @width; @rules ){
   @media (width: @width) {
     @rules();
   }
 }
-.mediaQueryWidth( min; @width; @rules ){
+.queryWidth( min; @width; @rules ){
   @media (min-width: @width) {
     @rules();
   }
 }
-.mediaQueryWidth( max; @width; @rules ){
+.queryWidth( max; @width; @rules ){
   @media (max-width: @width) {
     @rules();
   }
-}
-.minMediaQueryWidth( @width; @rules ){
-  .mediaQueryWidth( min; @width; @rules );
-}
-.maxMediaQueryWidth( @width; @rules ){
-  .mediaQueryWidth( max; @width; @rules );
 }
 
 /*

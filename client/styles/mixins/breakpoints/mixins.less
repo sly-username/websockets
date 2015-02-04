@@ -18,30 +18,24 @@
 
 .phone( @rules ) {
   .mediaOnly( screen, {
-    .maxDeviceWidth( @phoneMaxDeviceWidth, @rules);
+    .queryWidth( max; @phoneMaxWidth; @rules);
   });
 }
 
 .portrait( @rules ) {
   .mediaOnly( screen, {
-    .maxDeviceWidth( @portraitMaxDeviceWidth, {
-      .maxDeviceHeight( @portraitMaxDeviceHeight, @rules );
-    });
+    .queryWidth( max; @portraitMaxWidth; @rules);
   });
 }
 
 .landscape( @rules ) {
   .mediaOnly( screen, {
-    .maxDeviceWidth( @landscapeMaxDeviceWidth, {
-      .maxDeviceHeight( @landscapeMaxDeviceHeight, @rules );
-    });
+    .queryWidth( min; @landscapeMinWidth; @rules);
   });
 }
 
 .desktop( @rules ) {
   .mediaOnly( screen, {
-    .maxDeviceWidth( @desktopMaxDeviceWidth, {
-      .maxDeviceHeight( @desktopMaxDeviceHeight, @rules );
-    });
+    .queryWidth( min; @desktopMinWidth; @rules);
   });
 }
