@@ -89,3 +89,48 @@ restart-gulp ()
 {
   kill-gulp ; start-gulp
 }
+
+# $1: namespace | < ed | ui | poc >
+# $2: elem-name
+copy-element ()
+{
+  # little bit of protection
+  if [ "$#" != 2 ]; then
+    echo "ERROR: Not the right number of args, must be 2 ie: namespace elem-name"
+    return
+  fi
+  local CWD=`pwd`
+
+  # transform $2 into camel case
+  local replaceNext=false
+  local varname=""
+  for char in `echo "$2" | sed -e "s/\(.\)/\1\n/g"` ; do
+    if [ "$replaceNext" == true ]; then
+      varname="$varname$(echo $char | tr '[:lower:]' '[:upper:]')"
+      replaceNext=false
+      continue
+    fi
+    if [ "$char" == "-" ]; then
+      replaceNext=true
+    else
+      varname="$varname$char"
+    fi
+  done
+  echo "variable name will be: $varname"
+
+  # move dirs and copy ./.new/*
+  cd "$ED_PROJECT_PATH/client/components/"
+  cp -r "./.new/" "./$1/$2/" && echo "copied sucessfuly"
+
+  # move again and do magic on files
+  cd "./$1/$2"
+  for file in ./*; do
+    sed -i -e "s/new-element/$2/g" "${file}" && echo "rewrote tag style names"
+    sed -i -e "s/newElement/${varname}/g" "${file}" && echo "rewrote variable name"
+    mv "${file}" "${file/new-element/$2}" && echo "renamed ${file} -> ${file/new-element/$2}"
+  done
+
+  # yay done
+  echo "created new element in: " && pwd
+  cd "$CWD"
+}
