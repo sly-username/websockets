@@ -127,7 +127,7 @@
             .that.equals( "<radio-select name=\"" + setTo + "\"></radio-select>" );
         });
 
-        test( "can be set via property \"value\"", function() {
+        test( "can be set via property \"name\"", function() {
           var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Property";
 
@@ -150,11 +150,11 @@
             .and.equals( radioSelect.getAttribute( "name" ) );
         });
 
-        test( "setting via property \"value\" reflects to attribute \"name\"", function() {
+        test( "setting via property \"name\" reflects to attribute \"name\"", function() {
           var radioSelect = document.createElement( "radio-select" ),
               setTo = "Set via Property";
 
-          radioSelect.value = setTo;
+          radioSelect.name = setTo;
 
           expect( radioSelect.hasAttribute( "name" ) ).to.equal( true );
           expect( radioSelect.getAttribute( "name" ) )

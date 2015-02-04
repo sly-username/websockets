@@ -1,6 +1,7 @@
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
+  plumber = require( "gulp-plumber" ),
   path = require( "path" ),
   through = require( "through2" ),
   config = require( "../config.paths.js" ),
@@ -73,6 +74,7 @@ myLessCompile = function( options ) {
 
 runCompile = function( src, dest, opts ) {
   return gulp.src( src )
+    .pipe( plumber() )
     .pipe( myLessCompile( opts ) )
     .pipe( gulp.dest( dest ) );
 };

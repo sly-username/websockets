@@ -371,7 +371,7 @@
         test( "can be set via property reflect attribute", function() {
           var checkSelect = document.createElement( "checkbox-select" );
 
-          checkSelect.checked = true;
+          checkSelect.disabled = true;
 
           expect( checkSelect.hasAttribute( "disabled" ) ).to.equal( true );
           expect( checkSelect.getAttribute( "disabled" ) )
@@ -407,7 +407,7 @@
           var checkSelect = document.createElement( "checkbox-select" );
 
           checkSelect.setAttribute( "disabled", "" );
-          checkSelect.checked = false;
+          checkSelect.disabled = false;
 
           expect( checkSelect )
             .to.have.property( "outerHTML" )
