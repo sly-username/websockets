@@ -1,3 +1,5 @@
+@import "mixins/all-prefixes.less";
+
 .container {
   height: 20px;  /* Can be anything */
   position: relative;
@@ -24,11 +26,7 @@
   }
   .inner-bar {
     float: right;
-    transform:rotate(180deg);
-    -ms-transform:rotate(180deg); /* IE 9 */
-    -moz-transform:rotate(180deg); /* Firefox */
-    -webkit-transform:rotate(180deg); /* Safari and Chrome */
-    -o-transform:rotate(180deg); /* Opera */
+    .transform( rotate(180deg) );
   }
   .max-text{
     float:left;
@@ -57,9 +55,7 @@
 
 :host([animation='bars']){
   .inner-bar {
-    animation: spin 2s linear infinite;
-    -webkit-animation: spin 2s linear infinite;
-    -moz-animation: spin 2s linear infinite;
+    .animation( spin 2s linear infinite );
     background-image:
     linear-gradient(
         -45deg,
@@ -79,98 +75,48 @@
     overflow: hidden;
     display: block;
     height: 100%;
-    border-radius: 20px 8px 8px 20px;
     position: relative;
-    overflow: hidden;
     text-align: center;
     background-color: rgb(194, 51, 31);
 
   }
 }
 
-@-webkit-keyframes spin {
+.keyframes( spin, {
   0% {
     background-position: 0 0;
   }
   100% {
     background-position: 50px 50px;
   }
-}
-@-moz-keyframes spin {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 50px 50px;
-  }
-}
-@keyframes spin {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 50px 50px;
-  }
-}
+});
 
 /* Pulsing Animation */
 :host([animation='pulse']){
   .inner-bar {
-    animation: pulse 2s ease-out infinite;
-    -webkit-animation: pulse 2s ease-out infinite;
-    -moz-animation: pulse 2s ease-out infinite;
+    .animation( pulse 2s ease-out infinite );
     background-image: linear-gradient(135deg, red, #ffc6d0);
     background-size: 1000px 2000px;
     content: "";
-    position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
     z-index: 1;
     border-radius: 20px 8px 8px 20px;
     overflow: hidden;display: block;
     height: 100%;
-    border-radius: 20px 8px 8px 20px;
     position: relative;
-    overflow: hidden;
     text-align: center;
-    background-color: rgb(194, 51, 31);
-
   }
 }
 
-@-webkit-keyframes pulse {
-
+.keyframes( pulse, {
   100% {
     background-position: 0% center, left center, right center;
   }
-
   0% {
     background-position: 150% center, left center, right center;
   }
+});
 
-}
-
-@-moz-keyframes pulse {
-
-  100% {
-    background-position: 0% center, left center, right center;
-  }
-
-  0% {
-    background-position: 150% center, left center, right center;
-  }
-
-}
-@keyframes pulse {
-
-  100% {
-    background-position: 0% center, left center, right center;
-  }
-
-  0% {
-    background-position: 150% center, left center, right center;
-  }
-
-}
 
 /* Show/Hide Values */
 :host([show-value='false']){

@@ -314,3 +314,35 @@ facing the screen. Currently this mixin only has no support for Opera Mini
 ```sh
 @visibility: visible | hidden
 ```
+
+## Perspective property mixin
+* **.perspective();**
+
+* **Description:** The perspective property defines how many pixels a 3D element is placed from the view. This property
+allows you to change the perspective on how 3D elements are viewed.
+
+Example:
+ ```less
+ .perspective( 200px );
+ ```
+
+* This mixin will take in the following parameters
+```sh
+ @perspective: <length> | none
+```
+
+## Transform-style property mixin
+* **.transform-style();**
+
+* **Description:** The transform-style property specifies how nested elements are rendered in 3D space. To be used
+with transform
+
+Example:
+```less
+.transform-style( preserve-3d );
+```
+
+* This mixin will take in the following parameters
+```sh
+ @perspective: flat | preserve-3d
+```
