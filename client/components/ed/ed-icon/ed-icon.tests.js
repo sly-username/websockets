@@ -4,7 +4,7 @@
   "use strict";
   var expect = chai.expect,
     // get wrapper from document or for karma, create a new div and append it to the DOM
-    testingWrapper = document.getElementById( "new-element-test-wrapper" ) ||
+    testingWrapper = document.getElementById( "ed-icon-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
@@ -17,33 +17,33 @@
       testingWrapper.innerHTML = "";
     };
 
-  suite( "<new-element>", function() {
+  suite( "<ed-icon>", function() {
     suite( "Life Cycle", function() {
       test( "ready: can create from document.createElement", function() {
-        expect( document.createElement( "new-element" ) )
+        expect( document.createElement( "ed-icon" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<new-element></new-element>" );
+          .and.equals( "<ed-icon></ed-icon>" );
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "new-element" );
+        var edIcon = document.createElement( "ed-icon" );
 
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( edIcon );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<new-element></new-element>" );
+          .and.equals( "<ed-icon></ed-icon>" );
 
         resetWrapper();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "new-element" );
+        var edIcon = document.createElement( "ed-icon" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( edIcon );
+        testingWrapper.removeChild( edIcon );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
@@ -54,15 +54,176 @@
       });
     });
 
-    suite( "Attributes", function() {
-      suite( "data-text", function() {
-        test( "reflection", function() {});
-      });
-    });
+    suite( "Attributes and Properties", function() {
+      // Tests for Name attribute and property
+      suite( "name", function() {
+        test( "can be set via setattribute", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "Set via Attribute";
 
-    suite( "Events", function() {
-      suite( "Event Name", function() {
-        test( "customEvent", function( done ) {});
+          edIcon.setAttribute( "name", setTo );
+
+          expect( edIcon.hasAttribute( "name" ) ).to.equal( true );
+
+          expect( edIcon.getAttribute( "name" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo );
+
+          expect( edIcon )
+            .to.have.property( "outerHTML" )
+            .that.equals( "<ed-icon name=\"" + setTo + "\"></ed-icon>" );
+        });
+
+        test( "can be set via property \"name\"", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "Set via Property";
+
+          edIcon.name = setTo;
+
+          expect( edIcon )
+            .to.have.property( "name" )
+            .that.equals( setTo );
+        });
+
+        test( "setting via \"setAttribute\" reflects to property \"name\"", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "Set via Attribute";
+
+          edIcon.setAttribute( "name", setTo );
+
+          expect( edIcon )
+            .to.have.property( "name" )
+            .that.equals( setTo )
+            .and.equals( edIcon.getAttribute( "name" ) );
+        });
+
+        test( "setting via property \"name\" reflects to attribute \"name\"", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "Set via Property";
+
+          edIcon.name = setTo;
+
+          expect( edIcon.hasAttribute( "name" ) ).to.equal( true );
+          expect( edIcon.getAttribute( "name" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo )
+            .and.equal( edIcon.name );
+        });
+      });
+
+      // Tests for rotation
+      suite( "rotation", function() {
+        test( "can be set via setattribute", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "90";
+
+          edIcon.setAttribute( "rotation", setTo );
+
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
+
+          expect( edIcon.getAttribute( "rotation" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo );
+
+          expect( edIcon )
+            .to.have.property( "outerHTML" )
+            .that.equals( "<ed-icon rotation=\"" + setTo + "\"></ed-icon>" );
+        });
+
+        test( "can be set via property \"rotation\"", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "90";
+
+          edIcon.rotation = setTo;
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.equals( setTo );
+        });
+
+        test( "setting via \"setAttribute\" reflects to property \"rotation\"", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "90";
+
+          edIcon.setAttribute( "rotation", setTo );
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.equals( setTo )
+            .and.equals( edIcon.getAttribute( "rotation" ) );
+        });
+
+        test( "setting via property \"rotation\" reflects to attribute \"rotation\"", function() {
+          var edIcon = document.createElement( "ed-icon" ),
+              setTo = "90";
+
+          edIcon.rotation = setTo;
+
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
+          expect( edIcon.getAttribute( "rotation" ) )
+            .to.be.a( "string" )
+            .that.equals( setTo )
+            .and.equal( edIcon.rotation );
+        });
+
+        test( "only accept 90, 180, or 270 when set via property", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.rotation = "pie";
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.empty();
+        });
+
+        test( "only accept 90, 180, or 270 when set via attribute", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.setAttribute( "rotation", "pie" );
+
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
+          expect( edIcon.getAttribute( "rotation" ) )
+            .to.be.a( "string" )
+            .that.equals( "" )
+            .and.equal( edIcon.rotation );
+        });
+
+        test( "should keep previous value when changed to invalid value via property", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.rotation = "90";
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "string" )
+            .and.equals( "90" );
+
+          edIcon.rotation = "pie";
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "string" )
+            .and.equals( "90" );
+        });
+
+        test( "should keep previous value when changed to invalid value via attribute", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.setAttribute( "rotation", "90" );
+
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
+          expect( edIcon.getAttribute( "rotation" ) )
+            .to.be.a( "string" )
+            .that.equals( "90" )
+            .and.equal( edIcon.rotation );
+
+          edIcon.setAttribute( "rotation", "pie" );
+
+          expect( edIcon.getAttribute( "rotation" ) )
+            .to.be.a( "string" )
+            .that.equals( "90" )
+            .and.equal( edIcon.rotation );
+        });
       });
     });
   });
