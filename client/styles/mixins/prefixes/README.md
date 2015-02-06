@@ -346,3 +346,21 @@ Example:
 ```sh
  @perspective: flat | preserve-3d
 ```
+
+## Transform-origin property mixin
+* **.transformOrigin();**
+
+* **Description:** The transform-origin property allows you to change the position on transformed elements.
+
+Example:
+```less
+.transformOrigin( center bottom );
+```
+
+* This mixin will take in the following parameters
+```sh
+ @origin: x-axis y-axis z-axis
+  x-axis: left | center | right | <length> | <percent>
+  y-axis: top | center | bottom | <length> | <percent>
+  z-axis: <length>
+```

@@ -1,4 +1,5 @@
-@import "mixins/all-prefixes.less";
+@import "mixins/prefixes/transforms.less";
+@import "mixins/prefixes/backface-visibility";
 
 :host {
   display: block;
@@ -59,9 +60,7 @@
 
 :host([rotation="toggle"][animation="horizontal"]) {
   .flipbox-container {
-    -webkit-transform-origin: center;
-    -moz-transform-origin: center;
-    transform-origin: center;
+    .transformOrigin( center );
     &.flip {
       .transform( rotateX(180deg) );
     }

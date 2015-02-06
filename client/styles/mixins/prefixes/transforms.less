@@ -78,3 +78,26 @@
   -webkit-perspective: @perspective;
   perspective: @perspective;
 }
+
+/***
+ * Transform-origin property mixin
+ * .transformOrigin();
+ *
+ * Description:
+ * The transform-origin property allows you to change the position on transformed elements.
+ *
+ * Example:
+ * .transformOrigin( center bottom );
+ *
+ * This mixin will take in the following parameters
+ * @origin: x-axis y-axis z-axis
+   x-axis: left | center | right | <length> | <percent>
+   y-axis: top | center | bottom | <length> | <percent>
+   z-axis: <length>
+ ***/
+
+.transformOrigin( @origin ) {
+  -ms-transform-origin: @origin;
+  -webkit-transform-origin: @origin;
+  transform-origin: @origin;
+}
