@@ -1,5 +1,5 @@
 /*eslint-env mocha */
-/*eslint-env mocha */
+/*jscs:disable maximumLineLength*/
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
