@@ -2,7 +2,20 @@
   "use strict";
 
   Polymer( "progress-bar", {
-
+    publish: {
+      value: {
+        reflect: true
+      },
+      animation: {
+        reflect: true
+      },
+      max: {
+        reflect: true
+      },
+      direction: {
+        reflect: true
+      }
+    },
     /*** PROPERTIES ***/
     // show value
     get showValue() {
@@ -27,8 +40,9 @@
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[ 0 ];
 
       // value
-      this.value = parseInt( this.attributes.value && this.attributes.value.value || 0, 10 );
-
+      if ( this.attributes.value ) {
+        this.value = parseInt( this.attributes.value.value, 10 );
+      }
       // text display
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[ 0 ];
       this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[ 0 ];
@@ -60,12 +74,12 @@
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
 
-    valueChanged: function( oldVal, newVal ) {
-      this.updateRange( "value", newVal );
-    },
-    maxChanged: function( oldVal, newVal ) {
-      this.updateRange( "max", newVal );
-    },
+    //valueChanged: function( oldVal, newVal ) {
+    //  this.updateRange( "value", newVal );
+    //},
+    //maxChanged: function( oldVal, newVal ) {
+    //  this.updateRange( "max", newVal );
+    //},
     updateRange: function( property, newVal ) {
       this[ property ] = newVal;
       this.setAttribute( property, newVal );
@@ -76,23 +90,39 @@
       this.innerBar.style.width = this._valuePercentage + "%";
     },
 
-    directionChanged: function( oldVal, newVal ) {
-      this.direction = newVal;
-      this.setAttribute( "direction", newVal );
-
-      if ( this.hasAttribute( "direction" ) ) {
-        this.direction = this.attributes.direction.value;
-      }
-    },
-    animationChanged: function( oldVal, newVal ) {
-      this.animation = newVal;
-      this.setAttribute( "animation", newVal );
-    },
+    //directionChanged: function( oldVal, newVal ) {
+    //  this.direction = newVal;
+    //  this.setAttribute( "direction", newVal );
+    //
+    //  if ( this.hasAttribute( "direction" ) ) {
+    //    this.direction = this.attributes.direction.value;
+    //  }
+    //},
+    //animationChanged: function( oldVal, newVal ) {
+    //  this.animation = newVal;
+    //  this.setAttribute( "animation", newVal );
+    //},
 
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "show-value":
           this._showValue = newVal;
+          break;
+        case "direction":
+          this.setAttribute( "direction", newVal );
+
+          if ( this.hasAttribute( "direction" ) ) {
+            this.direction = this.attributes.direction.value;
+          }
+          break;
+        case "max":
+          this.updateRange( "max", newVal );
+          break;
+        case "value":
+          this.updateRange( "value", newVal );
+          break;
+        case "animation":
+          this.setAttribute( "animation", newVal );
           break;
         default:
           // do nothing
