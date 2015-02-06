@@ -113,6 +113,13 @@
 
       // Tests for rotation
       suite( "rotation", function() {
+        test( "has default value: \"0\"", function() {
+          expect( document.createElement( "ed-icon" ) )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 0 );
+        });
+
         test( "can be set via setattribute", function() {
           var edIcon = document.createElement( "ed-icon" ),
               setTo = "90";
@@ -131,98 +138,107 @@
         });
 
         test( "can be set via property \"rotation\"", function() {
-          var edIcon = document.createElement( "ed-icon" ),
-              setTo = "90";
+          var edIcon = document.createElement( "ed-icon" );
 
-          edIcon.rotation = setTo;
+          edIcon.rotation = 180;
 
           expect( edIcon )
             .to.have.property( "rotation" )
-            .that.equals( setTo );
+            .that.is.a( "number" )
+            .and.equals( 180 );
         });
 
         test( "setting via \"setAttribute\" reflects to property \"rotation\"", function() {
-          var edIcon = document.createElement( "ed-icon" ),
-              setTo = "90";
-
-          edIcon.setAttribute( "rotation", setTo );
-
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.equals( setTo )
-            .and.equals( edIcon.getAttribute( "rotation" ) );
-        });
-
-        test( "setting via property \"rotation\" reflects to attribute \"rotation\"", function() {
-          var edIcon = document.createElement( "ed-icon" ),
-              setTo = "90";
-
-          edIcon.rotation = setTo;
-
-          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
-          expect( edIcon.getAttribute( "rotation" ) )
-            .to.be.a( "string" )
-            .that.equals( setTo )
-            .and.equal( edIcon.rotation );
-        });
-
-        test( "only accept 90, 180, or 270 when set via property", function() {
-          var edIcon = document.createElement( "ed-icon" );
-
-          edIcon.rotation = "pie";
-
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.empty();
-        });
-
-        test( "only accept 90, 180, or 270 when set via attribute", function() {
-          var edIcon = document.createElement( "ed-icon" );
-
-          edIcon.setAttribute( "rotation", "pie" );
-
-          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
-          expect( edIcon.getAttribute( "rotation" ) )
-            .to.be.a( "string" )
-            .that.equals( "" )
-            .and.equal( edIcon.rotation );
-        });
-
-        test( "should keep previous value when changed to invalid value via property", function() {
-          var edIcon = document.createElement( "ed-icon" );
-
-          edIcon.rotation = "90";
-
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "string" )
-            .and.equals( "90" );
-
-          edIcon.rotation = "pie";
-
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "string" )
-            .and.equals( "90" );
-        });
-
-        test( "should keep previous value when changed to invalid value via attribute", function() {
           var edIcon = document.createElement( "ed-icon" );
 
           edIcon.setAttribute( "rotation", "90" );
 
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 90 );
+        });
+
+        test( "setting via property \"rotation\" reflects to attribute \"rotation\"", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.rotation = 90;
+
           expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
           expect( edIcon.getAttribute( "rotation" ) )
             .to.be.a( "string" )
             .that.equals( "90" )
-            .and.equal( edIcon.rotation );
+            .and.equal( edIcon.rotation.toString() );
+        });
+
+        test( "defaults to 0 if invalid when set via property", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.rotation = 999999;
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equal( 0 );
+        });
+
+        test( "defaults to 0 if invalid when set via attribute", function() {
+          var edIcon = document.createElement( "ed-icon" );
 
           edIcon.setAttribute( "rotation", "pie" );
 
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
           expect( edIcon.getAttribute( "rotation" ) )
             .to.be.a( "string" )
-            .that.equals( "90" )
-            .and.equal( edIcon.rotation );
+            .that.equals( "0" )
+            .and.equal( edIcon.rotation.toString() );
+        });
+
+        test( "removing attribute \"rotation\" sets property back to default value", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.setAttribute( "rotation", "90" );
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
+
+          edIcon.removeAttribute( "rotation" );
+          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( false );
+
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 0 );
+        });
+
+        test( "setting \"rotation\" to null resets property to default value", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.rotation = 90;
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 90 );
+
+          edIcon.rotation = null;
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 0 );
+        });
+
+        test( "setting \"rotation\" to undefined resets property to default value", function() {
+          var edIcon = document.createElement( "ed-icon" );
+
+          edIcon.rotation = 90;
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 0 );
+
+          edIcon.rotation = undefined;
+          expect( edIcon )
+            .to.have.property( "rotation" )
+            .that.is.a( "number" )
+            .and.equals( 0 );
         });
       });
     });
