@@ -1,11 +1,11 @@
 /***
 * Flex display property mixin
-* .flex-container();
+* .flexContainer();
 *
-* Ex: .flex-container( row nowrap; @flexDirection: column; );
+* Ex: .flexContainer( row nowrap; @flexDirection: column; );
 *
 * Description:
-* This mixin controls the flow on content as a container and works with the .flex-item mixin
+* This mixin controls the flow on content as a container and works with the .flexItem mixin
 * This mixin has a default display property and needs to take
 * in a flex-direction followed by a flex-wrap in order to work
 * No support for Opera Mini
@@ -19,7 +19,7 @@
 * @alignContent has no effect when there is only one line of content
   @alignContent: flex-start || flex-end || center || space-between || space-around || stretch
 ***/
-.flex-container( @flexFlow; @justifyContent: flex-start; @alignItems: stretch; @alignContent: stretch ) {
+.flexContainer( @flexFlow; @justifyContent: flex-start; @alignItems: stretch; @alignContent: stretch ) {
   -webkit-flex-flow: @flexFlow;
   flex-flow: @flexFlow;
   -webkit-justify-content: @justifyContent;
@@ -36,23 +36,23 @@
 
 /***
  * Flex property mixin
- * .flex-item();
+ * .flexItem();
  *
  * Description:
- * This mixin controls the flow of the items inside of the .flex-container mixin
+ * This mixin controls the flow of the items inside of the .flexContainer mixin
  * Currently no support for Opera Mini due to lack of support for native flex
  * These are mixins that apply to items inside a flex-box container
  *
  * Example:
- * .flex-item( 1 2 auto );
+ * .flexItem( 1 2 auto );
  *
- * flex-item is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
+ * flexItem is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
    @grow: <number> (default is 0)
    @shrink: <number> (default is 1)
    @basis: <number> || auto
    @alignSelf: auto || stretch || center || flex-start || flex-end || baseline
 ***/
-.flex-item( @grow: 0; @shrink: 1; @basis: auto; @alignSelf: auto ) {
+.flexItem( @grow: 0; @shrink: 1; @basis: auto; @alignSelf: auto ) {
   -webkit-box-flex+: @grow @shrink @basis;
   -webkit-flex+: @grow @shrink @basis;
   -ms-flex+: @grow @shrink @basis;
@@ -63,16 +63,16 @@
 
 /***
 * Flex order property mixin
-* .flex-order();
+* .flexOrder();
 *
 * Description:
 * This mixin controls the order of the contents inside the .flex-mixin container
 *
-* Example: .flex-order( 1 );
+* Example: .flexOrder( 1 );
 * Usage: controls the order in which items appear in the flex container
 * @order: <number>
 ***/
-.flex-order( @order ){
+.flexOrder( @order ){
   -webkit-order: @order;
   order: @order;
 }

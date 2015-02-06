@@ -41,21 +41,21 @@
 }
 
 /***
- * Transform-style property mixin
- * .transform-style();
+ * TransformStyle property mixin
+ * .transformStyle();
  *
  * Description:
- * The transform-style property specifies how nested elements are rendered in 3D space.
+ * The transformStyle property specifies how nested elements are rendered in 3D space.
  * To be used with transform
  *
  * Example:
- * .transform-style( preserve-3d );
+ * .transformStyle( preserve-3d );
  *
  * This mixin will take in the following parameters
  * @perspective: flat | preserve-3d
  ***/
 
-.transform-style( @style ) {
+.transformStyle( @style ) {
   -webkit-transform-style: @style;
   transform-style: @style;
 }
