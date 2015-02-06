@@ -127,7 +127,7 @@
             .that.equals( "<checkbox-select name=\"" + setTo + "\"></checkbox-select>" );
         });
 
-        test( "can be set via property \"value\"", function() {
+        test( "can be set via property \"name\"", function() {
           var checkSelect = document.createElement( "checkbox-select" ),
               setTo = "Set via Property";
 
@@ -150,11 +150,11 @@
             .and.equals( checkSelect.getAttribute( "name" ) );
         });
 
-        test( "setting via property \"value\" reflects to attribute \"name\"", function() {
+        test( "setting via property \"name\" reflects to attribute \"name\"", function() {
           var checkSelect = document.createElement( "checkbox-select" ),
               setTo = "Set via Property";
 
-          checkSelect.value = setTo;
+          checkSelect.name = setTo;
 
           expect( checkSelect.hasAttribute( "name" ) ).to.equal( true );
           expect( checkSelect.getAttribute( "name" ) )
