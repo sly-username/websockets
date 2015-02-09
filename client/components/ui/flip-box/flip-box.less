@@ -1,5 +1,6 @@
 @import "mixins/prefixes/transforms.less";
-@import "mixins/prefixes/backface-visibility";
+@import "mixins/prefixes/backface-visibility.less";
+@import "mixins/prefixes/animations.less";
 
 :host {
   display: block;
@@ -33,7 +34,8 @@
 
 .flipbox-transition {
   transition: transform 2s linear;
-  animation:transform 2s linear;
+  // animation:transform 2s linear;
+  .animation( transform 2s linear );
 }
 
 .box {
