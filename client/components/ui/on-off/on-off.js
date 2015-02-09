@@ -41,19 +41,7 @@
     //
     //  copyAttributes( this, checkedBox, [ "checked", "disabled" ]);
     //},
-    //attached: function() {
-    //  var self = this,
-    //      toggle = self.shadowRoot.querySelector( "input[type=checkbox]" );
-    //
-    //  toggle.addEventListener( "change", function() {
-    //    var state = toggle.checked ? "on" : "off";
-    //
-    //    /*jscs:disable requirePaddingNewLinesInObjects*/
-    //    self.fire( "toggle", { msg: "toggle" });
-    //    self.fire( state, { msg: state });
-    //    /*jscs:enable */
-    //  });
-    //},
+
     //attributeChanged: function( attrName, oldVal, newVal ) {
     //  var checkbox = this.shadowRoot.getElementById( "checkbox" );
     //
@@ -101,18 +89,30 @@
       "off-text": {
         value: "Off",
         reflect: true
+      },
+      checked: {
+        reflect: true
+      },
+      disabled: {
+        reflect: true
       }
     },
     get onText() {
       return this["on-text"];
     },
     set onText( value ) {
+      if ( value == null ) {
+        value = "On";
+      }
       return this["on-text"] = value;
     },
     get offText() {
       return this["off-text"];
     },
     set offText( value ) {
+      if ( value == null ) {
+        value = "Off";
+      }
       return this["off-text"] = value;
     },
     ready: function() {
@@ -120,12 +120,37 @@
       this.offText = this["off-text"];
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      console.log( "attr changed", attrName, oldVal, newVal );
-      console.log( "outside" );
+      //switch ( attrName ) {
+      //  case "checked":
+      //    this.checked = newVal;
+      //    break;
+      //  case "disabled":
+      //    this.disabled = newVal
+      //  default:
+      //    // do nothing
+      //    break;
+      //}
+
       if ( newVal == null && ( /^(on|off)/ ).test( attrName ) ) {
-        console.log("inside");
         this[attrName] = this.publish[attrName].value;
         return;
+      }
+    },
+    attached: function() {
+      var self = this,
+          toggle = self.shadowRoot.querySelector( "input[type=checkbox]" );
+
+      toggle.addEventListener( "change", function() {
+        var state = toggle.checked ? "on" : "off";
+
+        self.fire( "toggle", { msg: "toggle" });
+        self.fire( state, { msg: state });
+      });
+    },
+    checkedChanged: function() {
+
+      if( this.checked = true ) {
+        this.fire("on", { msg: "on" });
       }
     }
   });

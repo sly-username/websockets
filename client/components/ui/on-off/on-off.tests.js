@@ -146,7 +146,7 @@
           expect( onOff )
             .to.have.property( "onText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "On" );
         });
 
         test( "setting \"onText\" to undefined resets property to default value", function() {
@@ -163,7 +163,7 @@
           expect( onOff )
             .to.have.property( "onText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "On" );
         });
       });
 
@@ -236,7 +236,7 @@
           expect( onOff.hasAttribute( "off-text" ) ).to.equal( true );
 
           onOff.removeAttribute( "off-text" );
-          expect( onOff.hasAttribute( "off-text" ) ).to.equal( false );
+          expect( onOff.hasAttribute( "off-text" ) ).to.equal( true );
 
           expect( onOff )
             .to.have.property( "offText" )
@@ -258,7 +258,7 @@
           expect( onOff )
             .to.have.property( "offText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "Off" );
         });
 
         test( "setting \"offText\" to undefined resets property to default value", function() {
@@ -275,7 +275,7 @@
           expect( onOff )
             .to.have.property( "offText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "Off" );
         });
       });
 
@@ -499,6 +499,7 @@
           onOff.checked = false;
 
           onOff.addEventListener( "on", function( event ) {
+            console.log( event );
             expect( event )
               .to.be.an.instanceof( CustomEvent )
               .and.to.have.property( "target", onOff );
