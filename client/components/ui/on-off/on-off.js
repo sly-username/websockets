@@ -121,9 +121,9 @@
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
       console.log( "attr changed", attrName, oldVal, newVal );
-
+      console.log( "outside" );
       if ( newVal == null && ( /^(on|off)/ ).test( attrName ) ) {
-        console.log("hit");
+        console.log("inside");
         this[attrName] = this.publish[attrName].value;
         return;
       }
