@@ -486,12 +486,8 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
-          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
         });
 
         test( "on event fires when checked property changed", function( done ) {
@@ -499,7 +495,6 @@
           onOff.checked = false;
 
           onOff.addEventListener( "on", function( event ) {
-            console.log( event );
             expect( event )
               .to.be.an.instanceof( CustomEvent )
               .and.to.have.property( "target", onOff );
@@ -513,13 +508,8 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
           // should fire "on" and "toggle" event
           onOff.checked = true;
-
-          resetWrapper();
         });
       });
 
@@ -544,12 +534,8 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
-          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
         });
 
         test( "off event fires when checked property changed", function( done ) {
@@ -571,11 +557,7 @@
             done();
           });
 
-          testingWrapper.appendChild( onOff );
-
           onOff.checked = false;
-
-          resetWrapper();
         });
       });
 
@@ -602,12 +584,8 @@
             done();
           });
 
-          testingWrapper.appendChild( onOff );
-
           onOff.shadowRoot.getElementById( "checkbox" )
             .dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
         });
 
         test( "toggle event fires when clicked off", function( done ) {
@@ -633,15 +611,11 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
-          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
         });
 
-        test( "toggle event fires when checked property changed", function( done ) {
+        test( "toggle event fires when checked property changed to true(on)", function( done ) {
           var onOff = document.createElement( "on-off" );
 
           onOff.checked = false;
@@ -663,11 +637,32 @@
             done();
           });
 
-          testingWrapper.appendChild( onOff );
+          onOff.checked = true;
+        });
+
+        test( "toggle event fires when checked property changed to false(off)", function( done ) {
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = true;
 
-          resetWrapper();
+          onOff.addEventListener( "toggle", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "msg", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "state", "off" );
+
+            done();
+          });
+
+          onOff.checked = false;
         });
       });
     });
