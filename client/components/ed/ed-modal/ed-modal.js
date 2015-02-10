@@ -1,33 +1,43 @@
 ( function( Polymer ) {
   "use strict";
   Polymer( "ed-modal", {
-/* GETTERS AND SETTERS */
-  /* Click Off */
-    get clickoff() {
-      return this.hasAttribute( "clickoff" );
+///* GETTERS AND SETTERS */
+//  /* Click Off */
+//    get clickoff() {
+//      return this.hasAttribute( "clickoff" );
+//    },
+//    set clickoff( value ) {
+//      value = value ? "set" : "remove";
+//      this[ value + "Attribute" ]( "clickoff", "" );
+//      this[ value + "ClickoffListener" ]();
+//    },
+//  /* Close Button */
+//    get closebutton() {
+//      return this.hasAttribute( "closebutton" );
+//    },
+//    set closebutton( value ) {
+//      this[ value ? "setAttribute" : "removeAttribute" ]( "closebutton", "" );
+//    },
+//  /* Trigger */
+//    get trigger() {
+//      return this._trigger;
+//    },
+//    set trigger( value ) {
+//      this.setAttribute( "trigger", value );
+//      this._trigger = value;
+//      return value;
+//    },
+    publish: {
+      clickoff: {
+        reflect: true
+      },
+      closebutton: {
+        reflect: true
+      },
+      trigger: {
+        reflect: true
+      }
     },
-    set clickoff( value ) {
-      value = value ? "set" : "remove";
-      this[ value + "Attribute" ]( "clickoff", "" );
-      this[ value + "ClickoffListener" ]();
-    },
-  /* Close Button */
-    get closebutton() {
-      return this.hasAttribute( "closebutton" );
-    },
-    set closebutton( value ) {
-      this[ value ? "setAttribute" : "removeAttribute" ]( "closebutton", "" );
-    },
-  /* Trigger */
-    get trigger() {
-      return this._trigger;
-    },
-    set trigger( value ) {
-      this.setAttribute( "trigger", value );
-      this._trigger = value;
-      return value;
-    },
-
 /* FUNCTIONS */
   /* Life Cycle */
     ready: function() {
@@ -37,7 +47,7 @@
       this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[ 0 ];
       this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[ 0 ];
       this.openListener = this.open.bind( this );
-      this._trigger = this.attributes.trigger.value;
+      //this._trigger = this.attributes.trigger.value;
     },
     attached: function() {
       this.triggerListener( "add" );
