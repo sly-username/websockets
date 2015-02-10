@@ -109,7 +109,7 @@
         });
       });
 
-      suite( "ClickOff", function() {
+      suite( "clickoff", function() {
         test( "has default value: false", function() {
           expect( document.createElement( "ed-modal" ) )
             .to.have.property( "clickOff" )
@@ -198,7 +198,7 @@
         });
       });
 
-      suite( "CloseButton", function() {
+      suite( "closebutton", function() {
         test( "has default value: false", function() {
           expect( document.createElement( "ed-modal" ) )
             .to.have.property( "closeButton" )
