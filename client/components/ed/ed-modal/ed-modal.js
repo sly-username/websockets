@@ -32,7 +32,7 @@
       this._isOpen = this.modalContainer.classList.contains( "modal-container-opened" );
     },
     attached: function() {
-      this.triggerListener( "add" );
+      this.triggerListener( "add", this.trigger );
 
       this.eventList.forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
@@ -48,9 +48,9 @@
     },
     /*** FUNCTIONS ***/
     /*** event listeners ***/
-    triggerListener: function( flag ) {
+    triggerListener: function( flag, value ) {
       this.eventList.forEach( function( e ) {
-        var elems = document.querySelectorAll( this.trigger );
+        var elems = document.querySelectorAll( value );
 
         if ( elems.length === 0 ) {
           return;
@@ -88,9 +88,9 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "trigger":
-          this.triggerListener( "remove" );
+          this.triggerListener( "remove", oldVal );
           this.trigger = newVal;
-          this.triggerListener( "add" );
+          this.triggerListener( "add", newVal );
           break;
         case "close-button":
           this.modalButton.classList[ !newVal && newVal !== "" ? "add" : "remove" ]( "hidden" );
