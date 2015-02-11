@@ -1,6 +1,5 @@
 /*eslint-env mocha */
 /*eslint-env mocha */
-/* Line 40 in the js.file is causing the tests to duplicate and fail */
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
@@ -306,10 +305,11 @@
         });
 
         test( 'invoking .open() method sets isOpen to "true"', function() {
-          var edModal = document.createElement( "ed-modal" );
+          var div = document.createElement( "div" ),
+              edModal = document.createElement( "ed-modal" );
+          div.appendChild( edModal );
 
           edModal.open();
-
           expect( edModal )
             .to.have.property( "isOpen" )
             .that.is.a( "boolean" )
