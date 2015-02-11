@@ -3,9 +3,11 @@
   Polymer( "ed-modal", {
     publish: {
       clickoff: {
+        value: false,
         reflect: true
       },
       closebutton: {
+        value: false,
         reflect: true
       },
       trigger: {
@@ -20,7 +22,7 @@
     ready: function() {
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
-      this.eventObjs = [ "mousedown", "touchstart" ];
+      this.eventList = [ "mousedown", "touchstart" ];
       this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[ 0 ];
       this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[ 0 ];
       this.openListener = this.open.bind( this );
@@ -28,7 +30,7 @@
     attached: function() {
       this.triggerListener( "add" );
 
-      this.eventObjs.forEach( function( e ) {
+      this.eventList.forEach( function( e ) {
         this.modalButton.addEventListener( e, this.closeListener );
       }.bind( this ) );
 
@@ -37,34 +39,29 @@
       }
 
       if ( this.hasAttribute( "clickoff" ) ) {
-        this.setClickoffListener();
+        this.clickoffListener( "add" );
       }
     },
     /*** FUNCTIONS ***/
     /*** event listeners ***/
-    triggerListener: function( toggle ) {
-      this.eventObjs.forEach( function( e ) {
+    triggerListener: function( flag ) {
+      this.eventList.forEach( function( e ) {
         var elems = document.querySelectorAll( this.trigger );
 
         if ( elems.length === 0 ) {
           return;
         } else if ( elems.length === 1 ) {
-          elems[ 0 ][ toggle + "EventListener" ]( e, this.openListener );
+          elems[ 0 ][ flag + "EventListener" ]( e, this.openListener );
         } else {
           Array.from( elems ).forEach( function( elem ) {
-            elem[ toggle + "EventListener" ]( e, this.openListener );
+            elem[ flag + "EventListener" ]( e, this.openListener );
           }.bind( this ) );
         }
       }.bind( this ) );
     },
-    setClickoffListener: function() {
-      this.eventObjs.forEach( function( e ) {
-        this.modalContainer.addEventListener( e, this.closeModalListener );
-      }.bind( this ) );
-    },
-    removeClickoffListener: function() {
-      this.eventObjs.forEach( function( e ) {
-        this.modalContainer.removeEventListener( e, this.closeModalListener );
+    clickoffListener: function( flag ) {
+      this.eventList.forEach( function( e ) {
+        this.modalContainer[ flag + "EventListener" ]( e, this.closeModalListener );
       }.bind( this ) );
     },
     /*** show/hide modal ***/
@@ -81,19 +78,25 @@
       if ( e.target === this.modalContainer ) {
         this.modalContainer.classList.remove( "modal-container-opened" );
       }
+      this._isOpen = false;
     },
     /*** attribute change ***/
     attributeChanged: function( attrName, oldVal, newVal ) {
-      if ( attrName === "trigger" ) {
-        this.triggerListener( "remove" );
-        this.trigger = newVal;
-        this.triggerListener( "add" );
-      } else {
-        this[ attrName ] = newVal === "";
-      }
-
-      if ( attrName === "closebutton" ) {
-        this.modalButton.classList[ !newVal && newVal !== "" ? "add" : "remove" ]( "hidden" );
+      switch ( attrName ) {
+        case "trigger":
+          this.triggerListener( "remove" );
+          this.trigger = newVal;
+          this.triggerListener( "add" );
+          break;
+        case "close-button":
+          this.modalButton.classList[ !newVal && newVal !== "" ? "add" : "remove" ]( "hidden" );
+          break;
+        case "clickoff":
+          this.clickoffListener( !newVal && newVal !== "" ? "remove" : "add" );
+          break;
+        default:
+          // do nothing
+          break;
       }
     },
     /*** z-index ***/
