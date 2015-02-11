@@ -32,15 +32,15 @@
 
 <body unresolved>
 
-<div class="left">
+<div class="left hidden">
   <poc-bp></poc-bp>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <poc-mixins></poc-mixins>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <flip-box animation="horizontal" trigger="btn" rotation="loop">
     <section id="title" class="front">
       <h3>i'm batman</h3>
@@ -62,19 +62,7 @@
     width: 320px;
   }
 </style>
-
-<div class="parent left">
-  <file-drop fill="parent" accepts="image/png,image/jpeg">
-    <p>Content and Stuff</p>
-    <ed-icon name="add189"></ed-icon>
-  </file-drop>
-</div>
-
-<div class="left hidden">
-  <div id="a-button">
-    #a-button trigger
-  </div>
-  <script>
+<script>
   var flipBox = document.querySelector('flip-box');
 
   flipBox.animation = "vertical";
@@ -86,7 +74,7 @@
   flipBox.flip();
 </script>
 
-<div class="parent left">
+<div class="parent left hidden">
   <file-drop fill="parent" accepts="image/png,image/jpeg">
     <p>Content and Stuff</p>
     <ed-icon name="add189"></ed-icon>
@@ -116,7 +104,7 @@
     .b-button trigger
   </div>
 
-  <ed-modal trigger="#a-button" clickoff closebutton>
+  <ed-modal trigger=".b-button" clickoff closebutton>
     <h2>Modal title</h2>
     <p>I only work in black</p>
     <p> ... and very very very dark grey.</p>
@@ -158,7 +146,7 @@
   })( document );
 </script>
 
-<div class="left">
+<div class="left hidden">
   <img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
   <img-placeholder image="placecage"></img-placeholder>
   <img-placeholder image="fillmurray" src="invalidsource.com"></img-placeholder>
@@ -188,7 +176,7 @@
   })( document );
 </script>
 
-<div class="left">
+<div class="left hidden">
   <radio-select name="privacy" value="public">
     <img src="http://www.geocaching.com/images/logtypes/2.png" alt="radio button icon" />
   </radio-select>
@@ -229,11 +217,11 @@
   <ed-scrubber min="700" max="1000" type="fill" format="percent"></ed-scrubber>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <ed-icon name="add189" rotation="180"></ed-icon>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <select-box size="5" required disabled>
     <option value="apples">Apples</option>
     <option value="bananas">Bananas</option>
@@ -248,7 +236,7 @@
   </select-box>
 </div>
 
-<div class="left">
+<div class="left hidden">
   <checkbox-select name="notifications" value="notes" disabled>
     <img src="https://cdn4.iconfinder.com/data/icons/6x16-free-application-icons/16/Favourites.png" alt="checkbox icon" />
   </checkbox-select>
@@ -308,7 +296,7 @@
   <paired-input type="password" placeholder="Password" pattern="[A-Za-z0-9-_!@#$]{8,}"></paired-input>
 </div>
 
-<div class="left hidden">
+<div class="left">
   <on-off on-text="Yes" off-text="No" checked></on-off>
 </div>
 

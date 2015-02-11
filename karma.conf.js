@@ -52,6 +52,10 @@ module.exports = function( config ) {
     reporters: [
       "mocha"
     ],
+    mochaReporter: {
+      output: "autowatch",
+      ignoreSkipped: true
+    },
 
 //    proxies: {},
 
