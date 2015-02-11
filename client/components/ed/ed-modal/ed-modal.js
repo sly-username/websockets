@@ -18,6 +18,9 @@
     get isOpen() {
       return this._isOpen;
     },
+    set isOpen( value ) {
+      return this._isOpen;
+    },
     /*** LIFECYCLE ***/
     ready: function() {
       this.closeListener = this.close.bind( this );
@@ -26,6 +29,7 @@
       this.modalButton = this.shadowRoot.getElementsByClassName( "modal-button" )[ 0 ];
       this.modalContainer = this.shadowRoot.getElementsByClassName( "modal-container" )[ 0 ];
       this.openListener = this.open.bind( this );
+      this._isOpen = this.modalContainer.classList.contains( "modal-container-opened" );
     },
     attached: function() {
       this.triggerListener( "add" );
@@ -66,13 +70,13 @@
     },
     /*** show/hide modal ***/
     open: function() {
+      this._isOpen = true;
       this.setZIndex();
       this.modalContainer.classList.add( "modal-container-opened" );
-      this._isOpen = true;
     },
     close: function() {
-      this.modalContainer.classList.remove( "modal-container-opened" );
       this._isOpen = false;
+      this.modalContainer.classList.remove( "modal-container-opened" );
     },
     closeModal: function( e ) {
       if ( e.target === this.modalContainer ) {

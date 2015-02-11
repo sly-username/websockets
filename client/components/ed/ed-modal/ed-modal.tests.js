@@ -73,7 +73,7 @@
             .that.equals( "<ed-modal trigger=\"" + setTo + "\"></ed-modal>" );
         });
 
-        test( 'value can be set via property', function() {
+        test( "value can be set via property", function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Property";
 
@@ -96,7 +96,7 @@
             .and.equals( edModal.getAttribute( "trigger" ) );
         });
 
-        test( 'setting value via property reflects to attribute', function() {
+        test( "setting value via property reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Property";
 
@@ -130,7 +130,7 @@
             .and.equal( "" );
         });
 
-        test( 'value can be set via property', function() {
+        test( "value can be set via property", function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.clickoff = true;
@@ -218,7 +218,7 @@
             .and.equal( "" );
         });
 
-        test( 'value can be set via property', function() {
+        test( "value can be set via property", function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.closebutton = true;
