@@ -1,6 +1,14 @@
 # [CSS Premix Mixins]
 The following is a list of less mixin for CSS shortcuts.
 
+
+**TODOS**
+- [ ] Add import information
+- [ ] re-organize a little bit
+- [ ] ensure proper examples
+- [ ] double check for proper use cases
+
+
 ## Keyframes mixin
  * **.keyframes( @name:string, @rules:{ keyframe block } );**
 
