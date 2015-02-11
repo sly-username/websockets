@@ -1,6 +1,5 @@
 /*eslint-env mocha */
 /*eslint-env mocha */
-/* Line 40 in the js.file is causing the tests to duplicate and fail */
 ( function( window, document, chai ) {
   "use strict";
   var expect = chai.expect,
@@ -54,8 +53,9 @@
     });
 
     suite( "Attributes and Properties", function() {
+      /** trigger **/
       suite( "trigger", function() {
-        test( "can be set via \"setAttribute\"", function() {
+        test( 'value can be set via "setAttribute"', function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Attribute";
 
@@ -72,7 +72,7 @@
             .that.equals( "<ed-modal trigger=\"" + setTo + "\"></ed-modal>" );
         });
 
-        test( "can be set via property \"trigger\"", function() {
+        test( "value can be set via property", function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Property";
 
@@ -83,7 +83,7 @@
             .that.equals( setTo );
         });
 
-        test( "setting via \"setAttribute\" reflects to property \"trigger\"", function() {
+        test( 'setting value via "setAttribute" reflects to property', function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Attribute";
 
@@ -95,7 +95,7 @@
             .and.equals( edModal.getAttribute( "trigger" ) );
         });
 
-        test( "setting via property \"trigger\" reflects to attribute \"trigger\"", function() {
+        test( "setting value via property reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Property";
 
@@ -109,50 +109,51 @@
         });
       });
 
-      suite( "ClickOff", function() {
-        test( "has default value: false", function() {
+      /** clickoff **/
+      suite( "clickoff", function() {
+        test( 'default value is "false"', function() {
           expect( document.createElement( "ed-modal" ) )
-            .to.have.property( "clickOff" )
+            .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
-        test( "can be set via \"setAttribute\"", function() {
+        test( 'value can be set via "setAttribute"', function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.setAttribute( "clickOff", "" );
+          edModal.setAttribute( "clickoff", "" );
 
-          expect( edModal.hasAttribute( "clickOff" ) ).to.equal( true );
-          expect( edModal.getAttribute( "clickOff" ) )
+          expect( edModal.hasAttribute( "clickoff" ) ).to.equal( true );
+          expect( edModal.getAttribute( "clickoff" ) )
             .to.be.a( "string" )
             .and.equal( "" );
         });
 
-        test( "can be set via property \"clickOff\"", function() {
+        test( "value can be set via property", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.clickOff = true;
+          edModal.clickoff = true;
           expect( edModal )
-            .to.have.property( "clickOff" )
+            .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
 
-        test( "setting via attribute reflects to property", function() {
+        test( "setting value via setAttribute reflects to property", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.setAttribute( "clickOff", "" );
+          edModal.setAttribute( "clickoff", "" );
           expect( edModal )
-            .to.have.property( "clickOff" )
+            .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
 
-        test( "setting via property reflects to attribute", function() {
+        test( "setting value via property reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.clickOff = true;
-          expect( edModal.hasAttribute( "clickOff" ) )
+          edModal.clickoff = true;
+          expect( edModal.hasAttribute( "clickoff" ) )
             .to.be.a( "boolean" )
             .and.to.equal( true );
         });
@@ -161,14 +162,14 @@
         test( "removing attribute reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.setAttribute( "clickOff", "" );
-          expect( edModal.hasAttribute( "clickOff" ) )
+          edModal.setAttribute( "clickoff", "" );
+          expect( edModal.hasAttribute( "clickoff" ) )
             .to.be.a( "boolean" )
             .and.to.equal( true );
 
-          edModal.removeAttribute( "clickOff" );
+          edModal.removeAttribute( "clickoff" );
           expect( edModal )
-            .to.have.property( "clickOff" )
+            .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
@@ -176,71 +177,71 @@
         test( "setting property to false removes attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.clickOff = true;
+          edModal.clickoff = true;
           expect( edModal )
-            .to.have.property( "clickOff" )
+            .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( true );
 
-          expect( edModal.hasAttribute( "clickOff" ) )
+          expect( edModal.hasAttribute( "clickoff" ) )
             .to.be.a( "boolean" )
             .that.equals( true );
 
-          edModal.clickOff = false;
+          edModal.clickoff = false;
           expect( edModal )
-            .to.have.property( "clickOff" )
+            .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( false );
 
-          expect( edModal.hasAttribute( "clickOff" ) )
+          expect( edModal.hasAttribute( "clickoff" ) )
             .to.be.a( "boolean" )
             .and.to.equal( false );
         });
       });
-
-      suite( "CloseButton", function() {
-        test( "has default value: false", function() {
+      /** closebutton **/
+      suite( "closebutton", function() {
+        test( 'default value is "false"', function() {
           expect( document.createElement( "ed-modal" ) )
-            .to.have.property( "closeButton" )
+            .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
-        test( "can be set via \"setAttribute\"", function() {
+        test( 'value can be set via "setAttribute"', function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.setAttribute( "closeButton", "" );
-          expect( edModal.hasAttribute( "closeButton" ) ).to.equal( true );
-          expect( edModal.getAttribute( "closeButton" ) )
+          edModal.setAttribute( "closebutton", "" );
+          expect( edModal.hasAttribute( "closebutton" ) ).to.equal( true );
+          expect( edModal.getAttribute( "closebutton" ) )
             .to.be.a( "string" )
             .and.equal( "" );
         });
 
-        test( "can be set via property \"closeButton\"", function() {
+        test( "value can be set via property", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.closeButton = true;
+          edModal.closebutton = true;
           expect( edModal )
-            .to.have.property( "closeButton" )
+            .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
 
-        test( "setting via attribute reflects to property", function() {
+        test( "setting value via setAttribute reflects to property", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.setAttribute( "closeButton", "" );
+          edModal.setAttribute( "closebutton", "" );
           expect( edModal )
-            .to.have.property( "closeButton" )
+            .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
 
-        test( "setting via property reflects to attribute", function() {
+        test( "setting value via property reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.closeButton = true;
-          expect( edModal.hasAttribute( "closeButton" ) )
+          edModal.closebutton = true;
+          expect( edModal.hasAttribute( "closebutton" ) )
             .to.be.a( "boolean" )
             .and.to.equal( true );
         });
@@ -248,14 +249,14 @@
         test( "removing attribute reflects to attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.setAttribute( "closeButton", "" );
-          expect( edModal.hasAttribute( "closeButton" ) )
+          edModal.setAttribute( "closebutton", "" );
+          expect( edModal.hasAttribute( "closebutton" ) )
             .to.be.a( "boolean" )
             .and.to.equal( true );
 
-          edModal.removeAttribute( "closeButton" );
+          edModal.removeAttribute( "closebutton" );
           expect( edModal )
-            .to.have.property( "closeButton" )
+            .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
@@ -263,37 +264,37 @@
         test( "setting property to false removes attribute", function() {
           var edModal = document.createElement( "ed-modal" );
 
-          edModal.closeButton = true;
+          edModal.closebutton = true;
           expect( edModal )
-            .to.have.property( "closeButton" )
+            .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( true );
 
-          expect( edModal.hasAttribute( "closeButton" ) )
+          expect( edModal.hasAttribute( "closebutton" ) )
             .to.be.a( "boolean" )
             .that.equals( true );
 
-          edModal.closeButton = false;
+          edModal.closebutton = false;
           expect( edModal )
-            .to.have.property( "closeButton" )
+            .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( false );
 
-          expect( edModal.hasAttribute( "closeButton" ) )
+          expect( edModal.hasAttribute( "closebutton" ) )
             .to.be.a( "boolean" )
             .and.to.equal( false );
         });
       });
 
       suite( "isOpen", function() {
-        test( "has default value: false", function() {
+        test( 'default value is "false"', function() {
           expect( document.createElement( "ed-modal" ) )
             .to.have.property( "isOpen" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
-        test( "cannot be set via property \"isOpen\"", function() {
+        test( 'cannot be set via "isOpen" property', function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.isOpen = true;
@@ -303,18 +304,19 @@
             .and.equals( false );
         });
 
-        test( "setting via .open() method sets isOpen to true", function() {
-          var edModal = document.createElement( "ed-modal" );
+        test( 'invoking .open() method sets isOpen to "true"', function() {
+          var div = document.createElement( "div" ),
+              edModal = document.createElement( "ed-modal" );
+          div.appendChild( edModal );
 
           edModal.open();
-
           expect( edModal )
             .to.have.property( "isOpen" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
 
-        test( "setting via .close() method sets isOpen to false", function() {
+        test( 'invoking .close() method sets isOpen to "false"', function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.close();
