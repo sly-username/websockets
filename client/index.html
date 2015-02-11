@@ -124,27 +124,27 @@
     z-index: 140;
   }
 </style>
-<!--<script>-->
-  <!--( function( document ) {-->
-    <!--var modal = document.querySelector("ed-modal");-->
+<script>
+  ( function( document ) {
+    var modal = document.querySelector("ed-modal");
 
-    <!--document.addEventListener( "polymer-ready", function () {-->
-      <!--console.log( "polymer-ready", performance.now() );-->
-      <!--console.log(modal.trigger); // #a-button-->
-      <!--modal.trigger = ".b-button";-->
+    document.addEventListener( "polymer-ready", function () {
+      console.log( "polymer-ready", performance.now() );
+      console.log(modal.trigger); // #a-button
+      modal.trigger = ".b-button";
 
-      <!--console.log(modal.clickoff); // true-->
-      <!--modal.clickoff = false;-->
+      console.log(modal.clickoff); // true
+      modal.clickoff = false;
 
-      <!--console.log(modal.closebutton); // true-->
-      <!--modal.closebutton = false;-->
+      console.log(modal.closebutton); // true
+      modal.closebutton = false;
 
-      <!--modal.open();-->
+      modal.open();
 
-      <!--modal.close();-->
-    <!--});-->
-  <!--})( document );-->
-<!--</script>-->
+      modal.close();
+    });
+  })( document );
+</script>
 
 <div class="left hidden">
   <img-placeholder image="placecage" src="http://www.fillmurray.com/300/200"></img-placeholder>
