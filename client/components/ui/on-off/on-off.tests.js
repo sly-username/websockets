@@ -56,7 +56,7 @@
 
     suite( "Attributes & Associated Properties", function() {
       suite( "on-text / onText", function() {
-        test( "has default value: \"on\"", function() {
+        test( "has default value: \"On\"", function() {
           expect( document.createElement( "on-off" ) )
             .to.have.property( "onText" )
             .that.is.a( "string" )
