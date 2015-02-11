@@ -1,10 +1,10 @@
 /***
 * font-feature-settings Mixin
-* .font-feature();
+* .fontFeature();
 *
 *
-* Ex: .font-feature( "kern" 2 );
-*     .font-feature( "smcp" );
+* Ex: .fontFeature( "kern" 2 );
+*     .fontFeature( "smcp" );
 *
 * Description:
 * This mixin is shorthand for font-feature-settings which applies
@@ -14,7 +14,7 @@
 * This mixin takes in the following parameters:
 * @feature: <string> [ <integer> | on | off ]
 ***/
-.font-feature( @feature ) {
+.fontFeature( @feature ) {
   -webkit-font-feature-settings+: @feature;
   -moz-font-feature-settings+: @feature;
   font-feature-settings+: @feature;
