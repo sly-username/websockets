@@ -18,7 +18,7 @@ options = {
 
 // Apparently putting something after jscs makes it work fine.
 // Will need to keep an eye out for changes to gulp-jscs, looks
-//   like there a ticket to enable better error reporting.
+//   like there is a ticket to enable better error reporting.
 hackPipeErrorPatch = function() {
   return through.obj( function( file, encoding, done ) {
     done();
@@ -44,7 +44,7 @@ watchPathWithOptionsAndName = function( path, opts, name ) {
   return gulp.watch( path )
     .on( "change", function( event ) {
       if ( event.type !== "deleted" ) {
-        gutil.log( name + " saw a change at: " + event.path );
+        gutil.log( name + " saw a change at: " + gutil.colors.magenta( event.path ) );
         return runForPathWithOptions( event.path, opts );
       }
     });
@@ -62,8 +62,8 @@ registerTaskPair = function( appendToName, path, opts ) {
 
 // Iterate over taskNames to generate tasks at given prop name
 config.jscs.taskNames.forEach( function( property ) {
-  if ( config.jscs[property] ) {
-    registerTaskPair( property, config.jscs[property], options );
+  if ( config.jscs[ property ] ) {
+    registerTaskPair( property, config.jscs[ property ], options );
   }
 });
 

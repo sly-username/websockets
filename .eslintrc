@@ -4,7 +4,13 @@
     "node": true
   },
   "globals": {
-    "Polymer": true
+    "Polymer": true,
+    "Promise": true,
+    "chai": true
+  },
+  "settings": {
+    "ecmascript": 6,
+    "jsx": false
   },
   "rules": {
     // 0 is off
@@ -139,7 +145,7 @@
         "afterColon": true
       }
     ],
-    "max-nested-callbacks": [ 2, 3 ],
+    "max-nested-callbacks": [ 2, 5 ],
     "new-cap": [
       2, {
         "newIsCap": true,

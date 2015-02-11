@@ -1,41 +1,71 @@
-/*eslint no-process-env:0, valid-jsdoc:0*/
+/*eslint no-process-env:0, valid-jsdoc:0, no-unused-vars:0*/
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
   run = require( "run-sequence" ),
   fs = require( "fs" ),
-  nodemon = require( "nodemon" ),
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
   config = require( "./config.paths.js" ),
-  dummy;
+  dummy,
+  currentTasks;
 
+// load .env file into process.env
 dotenv.load();
 
+// get array of currently running tasks
+currentTasks = process.argv.reduce(
+  function( prev, curr ) {
+    if ( prev.consume ) {
+      prev.list.push( curr );
+    } else if ( ( /gulp(\.js)?$/ ).test( curr ) ) {
+      prev.consume = true;
+    }
+    return prev;
+  }, {
+    consume: false,
+    list: []
+  }
+).list.filter( function( name ) { return !( /(^--)|(\/)/g ).test( name ); });
+
+// assume default
+if ( currentTasks.length === 0 && process.argv.length === 2 ) {
+  currentTasks.push( "default" );
+}
+
+// rewrite stdout & stderr write functions to write to log
+( function( ogout, ogerr ) {
+  var taskNames = currentTasks.join( "_" ).replace( /:/g, "-" ),
+    filename = config.logging.createDatedLogFile(
+      config.logging.gulp, taskNames, new Date()
+    ),
+    createWrite = function( originalStream ) {
+      return process.env.GULP_LOG_TO_CONSOLE === "TRUE" ?
+        function( chunk ) {
+          fs.appendFile( filename, chunk );
+          originalStream.apply( this, arguments );
+        } :
+        function( chunk ) {
+          fs.appendFile( filename, chunk );
+        };
+    };
+
+  // if no valid task names, don't overwrite write.
+  if ( currentTasks.length === 0 ) {
+    // don't rewrite
+    return;
+  }
+
+  // rewrite stdout
+  process.stdout.write = createWrite( ogout );
+
+  // rewrite stderr
+  process.stderr.write = createWrite( ogerr );
+})( process.stdout.write, process.stderr.write );
+
 // load gulp tasks from ./tasks
-/*eslint no-unused-vars:0*/
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
-gulp.task( "nodemon", function ( done ) {
-  var currDate = new Date(),
-    readableDate = currDate.getMonth() + "-" + currDate.getDate() + "-" + currDate.getFullYear();
-  nodemon({
-    script: "node_modules/gulp/bin/gulp.js",
-    stdout: false,
-    stderr: false
-  }).on( "readable", function () {
-    this.stdout.setMaxListeners( 0 );
-    this.stderr.setMaxListeners( 0 );
-    this.stdout.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
-    this.stderr.pipe( fs.createWriteStream( "logs/gulp/nodemon." + readableDate + ".log" ) );
-  }).on( "stdout", function ( data ) {
-    console.log( data.toString().trim() );
-  }).on( "stderr", function ( data ) {
-    console.log( data.toString().trim() );
-  });
-  done();
-
-});
 
 /*** MAGIC "START" TASK ***/
 gulp.task( "start", function( done ) {
@@ -77,8 +107,6 @@ gulp.task( "watch", function( done ) {
 gulp.task( "build:dev", function( done ) {
   run(
     "clean:dev",
-    "jscs:client",
-    "lint:client",
     [
       "less:dev",
       "symlink:dev",
@@ -93,14 +121,45 @@ gulp.task( "build:dev", function( done ) {
 gulp.task( "dev", function( done ) {
   run(
     "build:dev",
+    "build:tests:only",
     "server:dev",
     [
-      // todo make specific 'watch:dev' tasks?
       "less:watch",
       "jscs:watch",
       "lint:watch",
       "traceur:watch"
     ],
+    "jscs:client",
+    "lint:client",
+    "tdd",
+    done
+  );
+});
+
+/*** TESTING TASKS ***/
+gulp.task( "build:tests:only", function( done ) {
+  run(
+    [
+      "symlink:tests",
+      "vendor:tests",
+      "build:tests:index"
+    ],
+    done
+  );
+});
+
+gulp.task( "build:tests", function( done ) {
+  run(
+    "build:dev",
+    "build:tests:only",
+    done
+  );
+});
+
+gulp.task( "test", function( done ) {
+  run(
+    "build:tests",
+    "karma:once",
     done
   );
 });

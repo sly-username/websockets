@@ -13,6 +13,7 @@ var join = require( "path" ).join,
     client:           join( __dirname, "client" ),
     tests:            join( __dirname, "tests" ),
     build:            join( __dirname, "build" ),
+    logs:             join( __dirname, "logs" ),
     tasks:            join( __dirname, "tasks" ),
     server:           join( __dirname, "server" ),
     bowerComponents:  join( __dirname, "bower_components" ),
@@ -24,18 +25,30 @@ paths.prod = join( paths.build, "prod" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
-  dev: join( paths.dev, "vendor" ),
-  prod: join( paths.prod, "vendor" ),
+  out: {
+    dev: join( paths.dev, "vendor" ),
+    prod: join( paths.prod, "vendor" )
+  },
   src: [
       // Stuff in bower_components
+      // Web Components Shim
       join( "webcomponentsjs", "webcomponents.js" ),
+
+      // Polymer
       join( "polymer", "polymer.js" ),
+
+      // SystemJS + source map
       join( "system.js", "dist", "system.js" ),
 //      join( "system.js", "dist", "system.src.js" ),
       join( "system.js", "dist", "system.js.map" ),
+
+      // ES6-Module-Loader + source map
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
 //      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+
+      // Director (Routing)
+      join( "director", "build", "director.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
@@ -48,12 +61,22 @@ paths.vendor = {
       join( "system.js", "dist", "system.js" ),
       join( "system.js", "dist", "system.js.map" ),
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" )
+      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+      join( "director", "build", "director.min.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
       // Stuff in node_modules
       join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) )
+    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
+  tests: [
+    // in node_modules
+    join( "mocha", "mocha.js" ),
+    join( "mocha", "mocha.css" ),
+    join( "chai", "chai.js" ),
+    join( "chai-as-promised", "lib", "chai-as-promised.js" ),
+    join( "sinon", "pkg", "sinon.js" ),
+    join( "sinon-chai", "lib", "sinon-chai.js" )
+  ].map( function( p ) { return join( paths.nodeModules, p ); } )
 };
 
 /*** TODO COPY (FOR PROD) ***/
@@ -62,13 +85,21 @@ paths.vendor = {
 paths.symlink = {
   src: [
     // don't link these
-    // less, markdown, es6 js,
+    // less, markdown, es6 js, test html,
     join( "!**", "*.less" ),
     join( "!**", "*.md" ),
     join( "!**", "*.es6.js" ),
+    join( "!" + paths.client, "domain", "**", "*.js" ),
+    join( "!**", "*.tests.html" ),
+    join( "!**", "*.tests.js" ),
+    join( "!**", ".new" ),
 
     // link these (everything else)
     join( paths.client, "**", "*.*" )
+  ],
+  tests: [
+    join( paths.client, "**", "*.tests.html" ),
+    join( paths.client, "**", "*.tests.js" )
   ]
 };
 
@@ -82,6 +113,7 @@ paths.less = {
   // todo double check in windows if '/' gets changed to '\'
   includePaths: [ join( "client", "styles", "/" ) ],
   included: [
+    join( "styles", "mixins", "**", "*.less" ),
     join( "**", "*.vars.less" ),
     join( "**", "*.mixin.less" ),
     join( "**", "*.include.less" ),
@@ -89,15 +121,22 @@ paths.less = {
   ].map( function( s ) { return join( paths.client, s ); })
 };
 paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
-// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat(paths.less.src);
+// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
-  // todo add proper ignore for node_modules and bower_components
-  all:    join( paths.root, "**", "*.js" ),
+  all:            [
+    join( "!", paths.bowerComponents ),
+    join( "!", paths.nodeModules ),
+    join( paths.root, "**", "*.js" )
+  ],
   client: join( paths.client, "**", "*.js" ),
-  tasks:  join( paths.tasks, "**", "*.js" ),
-  tests:  join( paths.tests, "**", "*.js" ),
+  tasks: join( paths.tasks, "**", "*.js" ),
+  tests: join( paths.tests, "**", "*.js" ),
+  clientTests: [
+    join( paths.client, "**", "*.tests.js" ),
+    join( paths.client, "**", "*.tests.html" )
+  ],
   server: join( paths.server, "**", "*.js" ),
   es6: {
     all: join( paths.root, "**", "*.es6.js" ),
@@ -132,10 +171,110 @@ paths.eslint = {
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
   bin: join( paths.nodeModules, ".bin", "traceur" ),
-  src: join( paths.client, "**", "*.es6.js" ),
+  src: [
+    join( paths.client, "**", "*.es6.js" ),
+    join( paths.client, "domain", "**", "*.js" )
+  ],
+  compileAsScript: new RegExp( "^" + join( paths.client, "components" ) + "|\\.script\\.js$" ),
   out: {
     dev: paths.dev,
     prod: paths.prod
+  }
+};
+
+/*** TESTING ***/
+paths.testing = {
+  index: join( paths.tests, "tests.html" ),
+  client: {
+    js: join( paths.client, "**", "*.tests.js" ),
+    html: join( paths.client, "**", "*.tests.html" )
+  },
+  tests: join( paths.tests, "**", "*.js" )
+};
+paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ) {
+  return paths.testing.client[ prop ];
+});
+
+/*** KARMA ***/
+paths.karma = {
+  rc: join( paths.root, "karma.conf.js" ),
+  base: paths.dev,
+  port: 9876,
+  files: ( function() {
+    var files = [];
+
+    // load vendor scripts in correct order
+    [
+      "webcomponents.js",
+      "polymer.js",
+      "traceur-runtime.js",
+      "es6-module-loader.js",
+      "system.js"
+    ].forEach( function( vendor ) {
+        files.push({
+          pattern: join( "vendor", vendor ),
+          watched: false,
+          included: true,
+          served: true
+        });
+      });
+
+    // load html tests files
+    files.push({
+      pattern: "**/*.tests.html",
+      watched: true,
+      included: true,
+      served: true
+    });
+
+    // Watch JS Files
+    files.push({
+      pattern: "**/*.js",
+      watched: true,
+      included: false,
+      served: true
+    });
+
+    // Watch HTML Files
+    files.push({
+      pattern: "**/*.html",
+      watched: true,
+      included: false,
+      served: true
+    });
+
+    // make sure everything else is served
+    files.push({
+      pattern: "**/*.*",
+      watched: false,
+      included: false,
+      served: true
+    });
+
+    return files;
+  })(),
+  exclude: [
+    "index.html",
+    "tests.html",
+    "**/.new/*.*",
+    "**/ed-components.html",
+    "**/ui-components.html"
+  ]
+};
+
+/*** LOGGING ***/
+paths.logging = {
+  gulp: join( paths.logs, "gulp" ),
+  createDatedFilename: function( name, date ) {
+    date = date || new Date();
+    return date.getFullYear() + "-" +
+      ( 1 + date.getMonth() ) + "-" +
+      date.getDate() + "_" +
+//      date.toTimeString().split( " " )[0].replace( /:/g, "-" ) + "_" +
+      name + ".log";
+  },
+  createDatedLogFile: function( folder, name, date ) {
+    return join( folder, paths.logging.createDatedFilename( name, date ) );
   }
 };
 

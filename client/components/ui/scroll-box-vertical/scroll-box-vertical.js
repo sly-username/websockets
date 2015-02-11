@@ -31,7 +31,7 @@
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
-      this.innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[0];
+      this.innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[ 0 ];
     },
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/

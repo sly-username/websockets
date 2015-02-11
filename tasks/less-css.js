@@ -1,20 +1,39 @@
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
+  plumber = require( "gulp-plumber" ),
   path = require( "path" ),
   through = require( "through2" ),
   config = require( "../config.paths.js" ),
   defaults = require( "lodash" ).defaults,
   less = require( "less" ),
   lessOptions,
+  transformDirName,
   runCompile,
+//  runWatchCompile, // TODO?
+  formatLessError,
   myLessCompile;
 
 // Options
 lessOptions = {
-  "no-ie-compat": true,
+  ieCompat: false,
   compress: false,
+  strictMath: true,
+//  silent: true,
   paths: config.less.includePaths
+};
+
+transformDirName = function( src, srcDir, destDir ) {
+  return path.dirname( src.replace( srcDir, destDir ) );
+};
+
+formatLessError = function( error ) {
+  return [
+    gutil.colors.bgRed.black( " LESS " + error.type + " Error: " + error.message + " " ),
+    "In file: " + gutil.colors.magenta( error.filename ),
+    "At line: " + gutil.colors.cyan( error.line + ":" + error.column ),
+    "What it didn't like: " + gutil.colors.red.bold( error.extract )
+  ].join( "\n" );
 };
 
 /* jshint -W071 */
@@ -33,34 +52,37 @@ myLessCompile = function( options ) {
     opts.sourceMap = file.sourceMap ? true : false;
 
     less.render( str, opts )
-      .then(
-        function( css ) {
-          file.contents = new Buffer( css.css );
-          file.path = gutil.replaceExtension( file.path, ".css" );
+      .then( function( output ) {
+        file.contents = new Buffer( output.css );
+        file.path = gutil.replaceExtension( file.path, ".css" );
 
-          if ( file.sourceMap ) {
-            // TODO: add source map stuff?
-            gutil.log( "LESS Source mapping not implemented" );
-          }
-
-          done( null, file );
-        },
-        function( err ) {
-          err.lineNumber = err.line;
-          err.fileName = err.filename;
-          err.message = err.message + " in file " + err.fileName + " line #" + err.lineNumber;
-
-          done( new gutil.PluginError( "my-less", err ) );
+        if ( file.sourceMap ) {
+          // TODO: add source map stuff?
+          gutil.log( gutil.colors.blue.bgRed( "LESS Source mapping not implemented" ) );
         }
-      );
+
+        done( null, file );
+      })
+      .catch( function( err ) {
+        err.lineNumber = err.line;
+        err.fileName = err.filename;
+
+        gutil.log( formatLessError( err ) );
+        done( new gutil.PluginError( "LESS Compiler", err ) );
+      });
   });
 };
 
 runCompile = function( src, dest, opts ) {
   return gulp.src( src )
+    .pipe( plumber() )
     .pipe( myLessCompile( opts ) )
     .pipe( gulp.dest( dest ) );
 };
+
+// runWatchCompile = function( src, dest, task, opts ) {
+//  // TODO abstract watch task?
+// };
 
 // COMPILE DEV
 gulp.task( "less:dev", function() {
@@ -68,13 +90,10 @@ gulp.task( "less:dev", function() {
 });
 
 // WATCH LESS COMPILE TO DEV
-gulp.task( "less:watch", function() {
-  var transformDirName = function( src, srcDir, destDir ) {
-    return path.dirname( src.replace( srcDir, destDir ) );
-  };
-
+gulp.task( "less:watch", [ "less:watch:dev" ]);
+gulp.task( "less:watch:dev", function() {
   // regular watch included less, recompile all
-  gulp.watch( config.less.included, [ "less" ]);
+  gulp.watch( config.less.included, [ "less:dev" ]);
 
   // watch all non-include and compile per file
   return gulp.watch( config.less.compile )
@@ -83,16 +102,18 @@ gulp.task( "less:watch", function() {
 
       if ( event.type !== "deleted" ) {
         destinationPath = transformDirName( event.path, config.client, config.dev );
-        gutil.log( "LESS saw a change at: " + event.path );
+        gutil.log( "LESS saw a change at: " + gutil.colors.magenta( event.path ) );
         return runCompile( event.path, destinationPath, lessOptions );
       }
     });
 });
 
 // COMPILE FOR PRODUCTION
-// TODO MINIMIZE AND OTHER OPTIMIZATIONS
+// TODO PRODUCTION OPTIMIZATIONS
 gulp.task( "less:prod", function() {
-  return runCompile( config.less.compile, config.less.out.prod, lessOptions );
+  var opts = defaults( {}, lessOptions );
+  opts.compress = true;
+  return runCompile( config.less.compile, config.less.out.prod, opts );
 });
 
 gulp.task( "less", [ "less:dev" ]);

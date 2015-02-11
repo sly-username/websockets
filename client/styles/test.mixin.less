@@ -2,14 +2,16 @@
  * Created by rj on 11/10/14.
  */
 
-.cool(@c){
-  &.cool{
+@import "mixins/hidden.less";
+
+.cool( @c ) {
+  &.cool {
     color: @c;
   }
-  &.cooler{
-    color: darken(@c, 50%);
+  &.cooler {
+    color: darken( @c, 50% );
   }
-  &.coolest{
-    color: darken(@c, 80%);
+  &.coolest {
+    color: darken( @c, 80% );
   }
 }

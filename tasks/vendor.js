@@ -1,21 +1,24 @@
+// jscs:disable requirePaddingNewLinesInObjects
 "use strict";
 var gulp = require( "gulp" ),
+  gutil = require( "gulp-util" ),
   path = require( "path" ),
   through = require( "through2" ),
   symlink = require( "gulp-symlink" ),
   config = require( "../config.paths.js" ),
-  join, rewriteExt;
+  runSymlink,
+  runCopy,
+  join,
+  rewriteExt;
 
 // Joins folder name with path basename, will also change .min.js to .js
 // This is meant to be used when you have access to the file
 join = function( folder, file ) {
   var basename = path.basename( file.path );
 
-  if ( (/\.min\.js$/).test( basename ) ) {
-    console.log( "rewrite min: " + basename );
-    // jscs:disable disallowSpaceBeforeBinaryOperators
+  if ( ( /\.min\.js$/ ).test( basename ) ) {
+    gutil.log( "rewrite min: " + basename );
     basename = basename.replace( /\.min\.js$/, ".js" );
-    // jscs:enable
   }
 
   return path.join(
@@ -41,19 +44,31 @@ rewriteExt = function( pattern, replace ) {
   });
 };
 
-gulp.task( "vendor:dev", function() {
-  // jscs:disable requirePaddingNewLinesInObjects
-  return gulp.src( config.vendor.src, { read: false })
-  // jscs:enable
+// For dev and tests tasks
+runSymlink = function( src, dest ) {
+  return gulp.src( src, { read: false })
     .pipe( symlink( function( file ) {
-      return join( config.vendor.dev, file );
+      // rename file, fix extension
+      return join( dest, file );
     }) );
+};
+
+// for prod task
+runCopy = function( src, dest ) {
+  return gulp.src( src )
+    .pipe( rewriteExt( /\.min\.js$/, ".js" ) )
+    .pipe( gulp.dest( dest ) );
+};
+
+gulp.task( "vendor:dev", function() {
+  return runSymlink( config.vendor.src, config.vendor.out.dev );
+});
+
+gulp.task( "vendor:tests", function( ) {
+  return runSymlink( config.vendor.tests, config.vendor.out.dev );
+//  return runCopy( config.vendor.tests, config.vendor.out.dev );
 });
 
 gulp.task( "vendor:prod", function() {
-  return gulp.src( config.vendor.min )
-    // jscs:disable disallowSpaceBeforeBinaryOperators
-    .pipe( rewriteExt( /\.min\.js$/, ".js" ) )
-    // jscs:enable
-    .pipe( gulp.dest( config.vendor.prod ) );
+  return runCopy( config.vendor.min, config.vendor.out.prod );
 });
