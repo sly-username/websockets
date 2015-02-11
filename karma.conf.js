@@ -17,13 +17,15 @@ module.exports = function( config ) {
     frameworks: [
       "mocha",
       "chai",
-      "chai-as-promised"
+      "chai-as-promised",
+      "chai-sinon"
     ],
 
     plugins: [
       "karma-mocha",
       "karma-chai",
       "karma-chai-plugins",
+      "karma-chai-sinon",
       "karma-chrome-launcher",
       "karma-mocha-reporter"
     ],
@@ -50,6 +52,10 @@ module.exports = function( config ) {
     reporters: [
       "mocha"
     ],
+    mochaReporter: {
+      output: "autowatch",
+      ignoreSkipped: true
+    },
 
 //    proxies: {},
 

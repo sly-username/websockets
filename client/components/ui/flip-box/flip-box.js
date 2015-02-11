@@ -17,6 +17,9 @@
     get isFlipped() {
       return this._isFlipped;
     },
+    set isFlipped( value ) {
+      return this._isFlipped;
+    },
     /*** LIFECYCLE ***/
     ready: function() {
       this.eventList = [ "mousedown", "touchleave" ];

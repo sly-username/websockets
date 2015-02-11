@@ -11,63 +11,75 @@
   };
 
   Polymer( "on-off", {
+    publish: {
+      "on-text": {
+        value: "On",
+        reflect: true
+      },
+      "off-text": {
+        value: "Off",
+        reflect: true
+      },
+      checked: {
+        value: false,
+        reflect: true
+      },
+      disabled: {
+        value: false,
+        reflect: true
+      }
+    },
+    observe: {
+      "$.checkbox.checked": function( oldValue, newValue ) {
+        var state = newValue ? "on" : "off";
+        this.fire( "toggle", {
+          msg: "toggle",
+          state: state
+        });
+
+        this.fire( state, {
+          msg: state
+        });
+      }
+    },
     get onText() {
-      return this._onText;
+      return this["on-text"];
     },
     set onText( value ) {
-      this.attributes[ "on-text" ].value = value;
-      this._onText = value;
-      return value;
+      if ( value == null ) {
+        value = "On";
+      }
+      return this["on-text"] = value;
     },
     get offText() {
-      return this._offText;
+      return this["off-text"];
     },
     set offText( value ) {
-      this.attributes[ "off-text" ].value = value;
-      this._offText = value;
-      return value;
+      if ( value == null ) {
+        value = "Off";
+      }
+      return this["off-text"] = value;
     },
     ready: function() {
-      // on-text off-text
-      var checkedBox = this.shadowRoot.getElementById( "checkbox" );
+      var checkedBox = this.$.checkbox;
 
-      if ( this.attributes[ "on-text" ] ) {
-        this.onText = this.attributes[ "on-text" ].value;
-      }
-
-      if ( this.attributes[ "on-text" ] ) {
-        this.offText = this.attributes[ "off-text" ].value;
-      }
+      // Set Defaults
+      this.onText = this["on-text"];
+      this.offText = this["off-text"];
 
       copyAttributes( this, checkedBox, [ "checked", "disabled" ]);
     },
-    attached: function() {
-      var self = this,
-          toggle = self.shadowRoot.querySelector( "input[type=checkbox]" );
-
-      toggle.addEventListener( "change", function() {
-        var state = toggle.checked ? "on" : "off";
-
-        /*jscs:disable requirePaddingNewLinesInObjects*/
-        self.fire( "toggle", { msg: "toggle" });
-        self.fire( state, { msg: state });
-        /*jscs:enable */
-      });
-    },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      var checkbox = this.shadowRoot.getElementById( "checkbox" );
+      if ( newVal == null && ( /^(on|off)/ ).test( attrName ) ) {
+        this[attrName] = this.publish[attrName].value;
+        return;
+      }
 
       switch ( attrName ) {
-        case "on-text":
-          this.onText = newVal;
-          break;
-        case "off-text":
-          this.offText = newVal;
-          break;
         case "disabled":
           // fallthrough
         case "checked":
-          checkbox[ newVal == null ? "removeAttribute" : "setAttribute" ]( attrName, "" );
+          this.$.checkbox[ newVal == null ? "removeAttribute" : "setAttribute" ]( attrName, "" );
           break;
         default:
           // do nothing

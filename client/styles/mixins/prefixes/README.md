@@ -1,6 +1,14 @@
 # [CSS Premix Mixins]
 The following is a list of less mixin for CSS shortcuts.
 
+
+**TODOS**
+- [ ] Add import information
+- [ ] re-organize a little bit
+- [ ] ensure proper examples
+- [ ] double check for proper use cases
+
+
 ## Keyframes mixin
  * **.keyframes( @name:string, @rules:{ keyframe block } );**
 
@@ -116,15 +124,15 @@ exception of @fill which only has support for Moz, see below for details.
 ```
 
 ## Flex display property mixin
-* **.flex-container();**
+* **.flexContainer();**
 
-* **Description:** This mixin controls the flow on content as a container and works with the .flex-item mixin. This
+* **Description:** This mixin controls the flow on content as a container and works with the .flexItem mixin. This
 mixin has a default display property and needs to take in a flex-direction followed by a flex-wrap in order to work
 . No support for Opera Mini
 
 Example:
 ```less
-.flex-container( row nowrap; @flexDirection: column; );
+.flexContainer( row nowrap; @flexDirection: column; );
 ```
 
 * This mixin takes in the following parameters:
@@ -140,15 +148,16 @@ Example:
 
 
 ## Flex property mixin
- * **.flex-item();**
+ * **.flexItem();**
 
- * **Description:** This mixin controls the flow of the items inside of the .flex-container mixin. Currently no support for Opera Mini due to lack of support for native flex. These are mixins that apply to items inside a flex-box container
+ * **Description:** This mixin controls the flow of the items inside of the .flexContainer mixin. Currently no
+ support for Opera Mini due to lack of support for native flex. These are mixins that apply to items inside a flex-box container
 
  Example:
  ```less
-  .flex-item( 1 2 auto );
+  .flexItem( 1 2 auto );
  ```
- * flex-item is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
+ * flexItem is a mixin for flex which is shorthand for flex-grow, flex-shrink, and flex-basis in order
    ```sh
    
    @grow: <number> (default is 0)
@@ -159,13 +168,13 @@ Example:
  ```
 
 ## Flex order property mixin
- * **.flex-order();**
+ * **.flexOrder();**
 
  * **Description:** This mixin controls the order of the contents inside the .flex-mixin container
 
  Example:
   ```sh
-  .flex-order( 1 );
+  .flexOrder( 1 );
   ```
  * Usage: controls the order in which items appear in the flex container
   ```sh
@@ -175,16 +184,16 @@ Example:
  ```
 
 ## Font-feature-settings Mixin
-* **.font-feature();**
+* **.fontFeature();**
 
-* **Description:** This mixin is shorthand for font-feature-settings which applies advance typographic and font
+* **Description:** This mixin is shorthand for fontFeature-settings which applies advance typographic and font
 features to OpenType fonts. No support for Safari and Opera Mini.
 
 Example:
  ```less
  
-.font-feature( "kern" 2 );
-.font-feature( "smcp" );
+.fontFeature( "kern" 2 );
+.fontFeature( "smcp" );
 
 ```
 
@@ -242,19 +251,19 @@ Example:
   @clip: border | padding | content | text
 ```
 ## Region property mixin
- * **.flow-to(); .flow-from(); **
+ * **.flowTo(); .flowFrom(); **
 
  * **Description:** Using Regions allows you to flow text across different areas of the page into containers using
- the .flow-to and .flow-from CSS properties. ONLY SUPPORTS SAFARI AND IE.
+ the .flowTo and .flowFrom CSS properties. ONLY SUPPORTS SAFARI AND IE.
 
  Example:
  ```less
  
   .starting-variable {
-   .flow-to( flow-name );
+   .flowTo( flow-name );
   }
   .ending-variable {
-   .flow-from( flow-name );
+   .flowFrom( flow-name );
   }
   
   ```
@@ -300,17 +309,67 @@ Example:
   skewY(angle): an <angle>, e.g., skewY(4deg)
   perspective(n): <length>
 ```
-## Backface-Visibility property mixin
-* **.backface-visibility();**
+## BackfaceVisibility property mixin
+* **.backfaceVisibility();**
 
 Example:
 ```less
-.backface-visibility( hidden );
+.backfaceVisibility( hidden );
 ```
-* **Description:** The backface-visibility property defines whether or not an element should be visible when not
+* **Description:** The backfaceVisibility property defines whether or not an element should be visible when not
 facing the screen. Currently this mixin only has no support for Opera Mini
 
 *This mixin will take in the following parameters with its respective values
 ```sh
 @visibility: visible | hidden
+```
+
+## Perspective property mixin
+* **.perspective();**
+
+* **Description:** The perspective property defines how many pixels a 3D element is placed from the view. This property
+allows you to change the perspective on how 3D elements are viewed.
+
+Example:
+ ```less
+ .perspective( 200px );
+ ```
+
+* This mixin will take in the following parameters
+```sh
+ @perspective: <length> | none
+```
+
+## TransformStyle property mixin
+* **.transformStyle();**
+
+* **Description:** The transformStyle property specifies how nested elements are rendered in 3D space. To be used
+with transform
+
+Example:
+```less
+.transformStyle( preserve-3d );
+```
+
+* This mixin will take in the following parameters
+```sh
+ @perspective: flat | preserve-3d
+```
+
+## Transform-origin property mixin
+* **.transformOrigin();**
+
+* **Description:** The transform-origin property allows you to change the position on transformed elements.
+
+Example:
+```less
+.transformOrigin( center bottom );
+```
+
+* This mixin will take in the following parameters
+```sh
+ @origin: x-axis y-axis z-axis
+  x-axis: left | center | right | <length> | <percent>
+  y-axis: top | center | bottom | <length> | <percent>
+  z-axis: <length>
 ```

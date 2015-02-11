@@ -124,7 +124,7 @@
           expect( onOff.hasAttribute( "on-text" ) ).to.equal( true );
 
           onOff.removeAttribute( "on-text" );
-          expect( onOff.hasAttribute( "on-text" ) ).to.equal( false );
+          // expect( onOff.hasAttribute( "on-text" ) ).to.equal( false );
 
           expect( onOff )
             .to.have.property( "onText" )
@@ -146,7 +146,7 @@
           expect( onOff )
             .to.have.property( "onText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "On" );
         });
 
         test( "setting \"onText\" to undefined resets property to default value", function() {
@@ -163,7 +163,7 @@
           expect( onOff )
             .to.have.property( "onText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "On" );
         });
       });
 
@@ -236,7 +236,7 @@
           expect( onOff.hasAttribute( "off-text" ) ).to.equal( true );
 
           onOff.removeAttribute( "off-text" );
-          expect( onOff.hasAttribute( "off-text" ) ).to.equal( false );
+          expect( onOff.hasAttribute( "off-text" ) ).to.equal( true );
 
           expect( onOff )
             .to.have.property( "offText" )
@@ -258,7 +258,7 @@
           expect( onOff )
             .to.have.property( "offText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "Off" );
         });
 
         test( "setting \"offText\" to undefined resets property to default value", function() {
@@ -275,7 +275,7 @@
           expect( onOff )
             .to.have.property( "offText" )
             .that.is.a( "string" )
-            .and.equals( setTo );
+            .and.equals( "Off" );
         });
       });
 
@@ -486,12 +486,8 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
-          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
         });
 
         test( "on event fires when checked property changed", function( done ) {
@@ -512,13 +508,8 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
           // should fire "on" and "toggle" event
           onOff.checked = true;
-
-          resetWrapper();
         });
       });
 
@@ -543,12 +534,8 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
-          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
         });
 
         test( "off event fires when checked property changed", function( done ) {
@@ -570,11 +557,7 @@
             done();
           });
 
-          testingWrapper.appendChild( onOff );
-
           onOff.checked = false;
-
-          resetWrapper();
         });
       });
 
@@ -601,12 +584,8 @@
             done();
           });
 
-          testingWrapper.appendChild( onOff );
-
           onOff.shadowRoot.getElementById( "checkbox" )
             .dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
         });
 
         test( "toggle event fires when clicked off", function( done ) {
@@ -632,15 +611,11 @@
             done();
           });
 
-          // Fire "attachedCallback"
-          testingWrapper.appendChild( onOff );
-
-          onOff.shadowRoot.getElementById( "checkbox" ).dispatchEvent( new MouseEvent( "click" ) );
-
-          resetWrapper();
+          onOff.shadowRoot.getElementById( "checkbox" )
+            .dispatchEvent( new MouseEvent( "click" ) );
         });
 
-        test( "toggle event fires when checked property changed", function( done ) {
+        test( "toggle event fires when checked property changed to true(on)", function( done ) {
           var onOff = document.createElement( "on-off" );
 
           onOff.checked = false;
@@ -662,11 +637,32 @@
             done();
           });
 
-          testingWrapper.appendChild( onOff );
+          onOff.checked = true;
+        });
+
+        test( "toggle event fires when checked property changed to false(off)", function( done ) {
+          var onOff = document.createElement( "on-off" );
 
           onOff.checked = true;
 
-          resetWrapper();
+          onOff.addEventListener( "toggle", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .and.to.have.property( "target", onOff );
+
+            expect( event )
+              .to.have.property( "type", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "msg", "toggle" );
+
+            expect( event.detail )
+              .to.have.property( "state", "off" );
+
+            done();
+          });
+
+          onOff.checked = false;
         });
       });
     });
