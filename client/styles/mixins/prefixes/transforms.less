@@ -40,3 +40,64 @@
           transform+_: @transform;
 }
 
+/***
+ * TransformStyle property mixin
+ * .transformStyle();
+ *
+ * Description:
+ * The transformStyle property specifies how nested elements are rendered in 3D space.
+ * To be used with transform
+ *
+ * Example:
+ * .transformStyle( preserve-3d );
+ *
+ * This mixin will take in the following parameters
+ * @perspective: flat | preserve-3d
+ ***/
+
+.transformStyle( @style ) {
+  -webkit-transform-style: @style;
+  transform-style: @style;
+}
+
+
+/***
+ * Perspective property mixin
+ * .perspective();
+ *
+ * Description:
+ * The perspective property defines how many pixels a 3D element is placed from the view. This property allows you to change the perspective on how 3D elements are viewed.
+ *
+ * Example:
+ * .perspective( 200px );
+ *
+ * This mixin will take in the following parameters
+ * @perspective: <length> | none
+ ***/
+.perspective( @perspective ) {
+  -webkit-perspective: @perspective;
+  perspective: @perspective;
+}
+
+/***
+ * Transform-origin property mixin
+ * .transformOrigin();
+ *
+ * Description:
+ * The transform-origin property allows you to change the position on transformed elements.
+ *
+ * Example:
+ * .transformOrigin( center bottom );
+ *
+ * This mixin will take in the following parameters
+ * @origin: x-axis y-axis z-axis
+   x-axis: left | center | right | <length> | <percent>
+   y-axis: top | center | bottom | <length> | <percent>
+   z-axis: <length>
+ ***/
+
+.transformOrigin( @origin ) {
+  -ms-transform-origin: @origin;
+  -webkit-transform-origin: @origin;
+  transform-origin: @origin;
+}

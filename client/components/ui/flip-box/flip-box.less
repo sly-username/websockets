@@ -1,16 +1,16 @@
+@import "mixins/prefixes/transforms.less";
+@import "mixins/prefixes/backface-visibility.less";
+@import "mixins/prefixes/animations.less";
+
 :host {
   display: block;
   position: relative;
-  -webkit-perspective: 800px;
-  -moz-perspective: 800px;
-  perspective: 800px;
   height: 540px;
   width: 400px;
   margin: 0 auto;
+  .perspective( 800px );
   ::content * {
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    backface-visibility: hidden;
+    .backfaceVisibility( hidden );
   }
   .flipbox-button{
     position: absolute;
@@ -28,16 +28,14 @@
   color: white;
   height: 540px;
   position: relative;
-  perspective: 800px;
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
+  .perspective( 800px );
+  .transformStyle( preserve-3d );
 }
 
 .flipbox-transition {
-  -webkit-transition: transform 2s linear;
-  -moz-transition: transform 2s linear;
-  animation:transform 2s linear;
+  transition: transform 2s linear;
+  // animation:transform 2s linear;
+  .animation( transform 2s linear );
 }
 
 .box {
@@ -46,96 +44,68 @@
   position: absolute;
   top: 2%;
   background: black;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
+  .backfaceVisibility( hidden );
 }
 
 // toggle
 :host([rotation="toggle"][animation="vertical"]){
   .back {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+    .transform( rotateY(180deg) );
   }
 
   .flipbox-container {
     &.flip {
-      -webkit-transform: rotateY(180deg);
-      -moz-transform: rotateY(180deg);
-      transform: rotateY(180deg);
+      .transform( rotateY(180deg) );
     }
   }
 }
 
 :host([rotation="toggle"][animation="horizontal"]) {
   .flipbox-container {
-    -webkit-transform-origin: center;
-    -moz-transform-origin: center;
-    transform-origin: center;
+    .transformOrigin( center );
     &.flip {
-    -webkit-transform: rotateX(180deg);
-    -moz-transform: rotateX(180deg);
-    transform: rotateX(180deg);
+      .transform( rotateX(180deg) );
     }
   }
 
   .back {
-    -webkit-transform: rotateX(180deg);
-    -moz-transform: rotateX(180deg);
-    transform: rotateX(180deg);
+    .transform( rotateX(180deg) );
   }
 }
 
 // loop
 :host([rotation="loop"][animation="vertical"]){
   .back {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+    .transform( rotateY(180deg) );
   }
   .no-transform {
-     -webkit-transform: none;
-     -moz-transform: none;
-     transform: none;
+    .transform( none );
   }
 
   .flipbox-container{
     &.flip {
-      -webkit-transform: rotateY(180deg);
-      -moz-transform: rotateY(180deg);
-      transform: rotateY(180deg);
+      .transform( rotateY(180deg) );
     }
     &.continue{
-      -webkit-transform: rotateY(360deg);
-      -moz-transform: rotateY(360deg);
-      transform: rotateY(360deg);
+      .transform( rotateY(180deg) );
     }
   }
 }
 
 :host([rotation="loop"][animation="horizontal"]){
   .back {
-    -webkit-transform: rotateX(180deg);
-    -moz-transform: rotateX(180deg);
-    transform: rotateX(180deg);
+    .transform( rotateX(180deg) );
   }
   .no-transform {
-    -webkit-transform: none;
-    -moz-transform: none;
-    transform: none;
+    .transform( none );
   }
 
   .flipbox-container{
     &.flip {
-      -webkit-transform: rotateX(180deg);
-      -moz-transform: rotateX(180deg);
-      transform: rotateX(180deg);
+      .transform( rotateX(180deg) );
     }
     &.continue {
-       -webkit-transform: rotateX(360deg);
-       -moz-transform: rotateX(360deg);
-       transform: rotateX(360deg);
+      .transform( rotateX(360deg) );
      }
   }
 
