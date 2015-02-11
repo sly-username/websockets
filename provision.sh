@@ -7,7 +7,7 @@ sudo timedatectl set-timezone America/Los_Angeles
 
 # install and load nvm
 if [ ! -d ~/.nvm ]; then
-  curl -# https://raw.githubusercontent.com/creationix/nvm/v0.23.0/install.sh > ~/install.nvm.sh
+  curl -# https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh > ~/install.nvm.sh
   chmod +x ~/install.nvm.sh
   . ~/install.nvm.sh
   rm ~/install.nvm.sh
@@ -15,10 +15,10 @@ if [ ! -d ~/.nvm ]; then
 fi
 
 # install node 0.11 via nvm
-nvm install 0.11
+nvm install 0.12
 
 # install set 0.11 as default for system in nvm
-nvm alias default 0.11
+nvm alias default 0.12
 
 # Install Google Chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
