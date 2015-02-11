@@ -31,19 +31,23 @@ paths.vendor = {
   },
   src: [
       // Stuff in bower_components
-    // Web Components Shim
+      // Web Components Shim
       join( "webcomponentsjs", "webcomponents.js" ),
-    // Polymer
+
+      // Polymer
       join( "polymer", "polymer.js" ),
-    // SystemJS + source map
+
+      // SystemJS + source map
       join( "system.js", "dist", "system.js" ),
 //      join( "system.js", "dist", "system.src.js" ),
       join( "system.js", "dist", "system.js.map" ),
-    // ES6-Module-Loader + source map
+
+      // ES6-Module-Loader + source map
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
 //      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
       join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
-    // Director (Routing)
+
+      // Director (Routing)
       join( "director", "build", "director.js" )
     ].map( function( s ) { return join( paths.bowerComponents, s ); }
     ).concat([
@@ -65,10 +69,13 @@ paths.vendor = {
       join( "traceur", "bin", "traceur-runtime.js" )
     ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
   tests: [
+    // in node_modules
     join( "mocha", "mocha.js" ),
     join( "mocha", "mocha.css" ),
     join( "chai", "chai.js" ),
-    join( "chai-as-promised", "lib", "chai-as-promised.js" )
+    join( "chai-as-promised", "lib", "chai-as-promised.js" ),
+    join( "sinon", "pkg", "sinon.js" ),
+    join( "sinon-chai", "lib", "sinon-chai.js" )
   ].map( function( p ) { return join( paths.nodeModules, p ); } )
 };
 

@@ -1,6 +1,6 @@
 /*eslint-env mocha */
 /*jscs:disable maximumLineLength*/
-( function( window, document, chai ) {
+( function( window, document, Polymer, sinon, chai ) {
   "use strict";
   var expect = chai.expect,
     // get wrapper from document or for karma, create a new div and append it to the DOM
@@ -19,38 +19,56 @@
 
   suite( "<new-element>", function() {
     suite( "Life Cycle", function() {
+      teardown( function() {
+        resetWrapper();
+      });
+
       test( "ready: can create from document.createElement", function() {
+        var createdSpy = sinon.spy(
+          Polymer.getRegisteredPrototype( "new-element" ),
+          "ready"
+        );
+
         expect( document.createElement( "new-element" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<new-element></new-element>" );
+
+        expect( createdSpy ).to.have.callCount( 1 );
+        createdSpy.restore();
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "new-element" );
+        var newElement = document.createElement( "new-element" ),
+          attachedSpy = sinon.spy( newElement, "attached" );
 
         testingWrapper.appendChild( newElement );
+
+        expect( attachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<new-element></new-element>" );
 
-        resetWrapper();
+        attachedSpy.restore();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "new-element" );
+        var newElement = document.createElement( "new-element" ),
+          detachedSpy = sinon.spy( newElement, "detached" );
 
         testingWrapper.appendChild( newElement );
         testingWrapper.removeChild( newElement );
+
+        expect( detachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( originalWrapperOuterHTML );
 
-        resetWrapper();
+        detachedSpy.restore();
       });
     });
 
@@ -66,4 +84,4 @@
       });
     });
   });
-})( window, document, window.chai );
+})( window, document, window.Polymer, window.sinon, window.chai );
