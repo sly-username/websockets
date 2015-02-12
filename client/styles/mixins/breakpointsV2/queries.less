@@ -1,0 +1,10 @@
+.screenOnly(){
+  @withScreen: "only screen";
+}
+
+.create( @escape; @rules ) {
+  @escaped: ~"@{escape}";
+  @media @escaped {
+    @rules();
+  }
+}
