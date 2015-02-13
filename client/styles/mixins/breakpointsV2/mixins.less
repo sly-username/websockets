@@ -1,33 +1,34 @@
-
 @import "./queries.less";
 @import "./variables.less";
 
 .phone( @rules ) {
   .screenOnly();
   .and( @screenOnly );
-  .maxWidth( @phoneMaxWidth; @and );
-  .create( @maxWidth; @rules );
+  .maxQueryWidth( @phoneMaxWidth; @and );
+  .create( @maxQueryWidth; @rules );
 }
 
 .portrait( @rules ) {
   .screenOnly();
   .and( @screenOnly );
-  .minWidth( @phoneMaxWidth; @and );
-  .and( @minWidth );
-  .maxWidth( @portraitMaxWidth; @and );
-  .create( @maxWidth; @rules );
+  .minQueryWidth( @phoneMaxWidth; @and );
+  .and2( @minQueryWidth );
+  .maxQueryWidth( @portraitMaxWidth; @and2 );
+  .create( @maxQueryWidth; @rules );
 }
 
 .landscape( @rules ) {
-  .mediaOnly( screen, {
-    .queryWidth( min; @portraitMaxWidth; {
-      .queryWidth( max; @desktopMinWidth; @rules);
-    });
-  });
+  .screenOnly();
+  .and( @screenOnly );
+  .minQueryWidth( @portraitMaxWidth; @and );
+  .and2( @minQueryWidth );
+  .maxQueryWidth( @desktopMinWidth; @and2 );
+  .create( @maxQueryWidth; @rules );
 }
 
 .desktop( @rules ) {
-  .mediaOnly( screen, {
-    .queryWidth( min; @desktopMinWidth; @rules);
-  });
+  .screenOnly();
+  .and( @screenOnly );
+  .minQueryWidth( @desktopMinWidth; @and );
+  .create( @minQueryWidth; @rules );
 }
