@@ -3,29 +3,31 @@
 @import "./variables.less";
 
 .phone( @rules ) {
+  .screenOnly();
+  .and( @screenOnly );
+  .maxWidth( @phoneMaxWidth; @and );
+  .create( @maxWidth; @rules );
+}
+
+.portrait( @rules ) {
+  .screenOnly();
+  .and( @screenOnly );
+  .minWidth( @phoneMaxWidth; @and );
+  .and( @minWidth );
+  .maxWidth( @portraitMaxWidth; @and );
+  .create( @maxWidth; @rules );
+}
+
+.landscape( @rules ) {
   .mediaOnly( screen, {
-    .queryWidth( max; @phoneMaxWidth; @rules);
+    .queryWidth( min; @portraitMaxWidth; {
+      .queryWidth( max; @desktopMinWidth; @rules);
+    });
   });
 }
 
-//.portrait( @rules ) {
-//  .mediaOnly( screen, {
-//    .queryWidth( min; @phoneMaxWidth; {
-//      .queryWidth( max; @portraitMaxWidth; @rules);
-//    });
-//  });
-//}
-//
-//.landscape( @rules ) {
-//  .mediaOnly( screen, {
-//    .queryWidth( min; @portraitMaxWidth; {
-//      .queryWidth( max; @desktopMinWidth; @rules);
-//    });
-//  });
-//}
-//
-//.desktop( @rules ) {
-//  .mediaOnly( screen, {
-//    .queryWidth( min; @desktopMinWidth; @rules);
-//  });
-//}
+.desktop( @rules ) {
+  .mediaOnly( screen, {
+    .queryWidth( min; @desktopMinWidth; @rules);
+  });
+}
