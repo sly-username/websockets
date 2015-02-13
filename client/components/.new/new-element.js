@@ -1,13 +1,14 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "new-element", {
+  polymer( "new-element", {
     /*** LIFECYCLE ***/
     ready: function() {},
     attached: function() {},
     detached: function() {},
-    attributeChanged: function( attrName, oldVal, newVal ) {}
+    attributeChanged: function( attrName, oldValue, newValue ) {}
     /*** PROPERTIES ***/
     /*** METHODS ***/
   });
+
 })( window.Polymer );
