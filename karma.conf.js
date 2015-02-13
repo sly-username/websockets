@@ -27,7 +27,8 @@ module.exports = function( config ) {
       "karma-chai-plugins",
       "karma-chai-sinon",
       "karma-chrome-launcher",
-      "karma-mocha-reporter"
+      "karma-mocha-reporter",
+      "karma-coverage"
     ],
 
     client: {
@@ -44,17 +45,40 @@ module.exports = function( config ) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: ( function() {
+      var preprocessors = {};
+
+      preprocessors[paths.karma.coverage.src] = [ "coverage" ];
+      return preprocessors;
+    })(),
 
     // test results reporter to use
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      "mocha"
+      "mocha",
+      "coverage"
     ],
+
     mochaReporter: {
       output: "autowatch",
       ignoreSkipped: true
+    },
+
+    coverageReporter: {
+      subdir: function( browser ) {
+        return browser.toLowerCase().split(/[ /-]/)[0];
+      },
+      reporters: [
+        {
+          type: "html",
+          dir: paths.karma.coverage.out.html
+        },
+        {
+          type: "lcovonly",
+          dir: paths.karma.coverage.out.lcov,
+        }
+      ]
     },
 
 //    proxies: {},
