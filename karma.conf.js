@@ -67,7 +67,7 @@ module.exports = function( config ) {
 
     coverageReporter: {
       subdir: function( browser ) {
-        return browser.toLowerCase().split(/[ /-]/)[0];
+        return browser.toLowerCase().split( /[ /-]/ )[0];
       },
       reporters: [
         {

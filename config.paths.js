@@ -201,7 +201,7 @@ paths.karma = {
   base: paths.dev,
   port: 9876,
   coverage: {
-    src: "**/!(vendor)/*!(.tests).js",
+    src: "**/!(vendor)/!(*.tests).js",
     out: {
       html: join( paths.dev, "coverage" ),
       lcov: join( paths.build, "coverage" )
