@@ -13,7 +13,6 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install google-chrome-stable
   - export DISPLAY=:1.5
-#  - sh -e /etc/init.d/xvfb start
-  - sh -e /etc/init.d/xvfb :1 +extension RANDR -screen 5 1024x768x8
+  - sh -e /etc/init.d/xvfb start :1 +extension RANDR -screen 5 1024x768x8
 install:
   - npm install --force
