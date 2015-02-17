@@ -3,6 +3,8 @@ node_js:
   - "0.12"
   - "0.11"
   - "iojs"
+before_install:
+  - "rm -rf ./node_modules"
 install:
   - "npm install --force"
 script:
