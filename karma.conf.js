@@ -106,7 +106,14 @@ module.exports = function( config ) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ "Chrome" ] // process.env.IS_TRAVIS === "TRUE" ? [ "Firefox" ] : [ "Chrome", "Firefox" ]
+    browsers: process.env.IS_TRAVIS === "TRUE" ? [ "ChromeTravis" ] : [ "Chrome" ],
+
+    customLaunchers: {
+      ChromeTravis: {
+        base: "Chrome",
+        flags: [ "--no-sandbox" ]
+      }
+    }
     /*
     browserNoActivityTimeout: 30000,
     browsers: [ "PhantomJS" ],
