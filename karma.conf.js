@@ -1,3 +1,4 @@
+/*eslint no-process-env:0*/
 // Karma configuration
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
 var paths = require( "./config.paths.js" );
@@ -28,7 +29,8 @@ module.exports = function( config ) {
       "karma-chai-sinon",
       "karma-chrome-launcher",
       "karma-mocha-reporter",
-      "karma-coverage"
+      "karma-coverage",
+      "karma-firefox-launcher"
     ],
 
     client: {
@@ -76,7 +78,7 @@ module.exports = function( config ) {
         },
         {
           type: "lcovonly",
-          dir: paths.karma.coverage.out.lcov,
+          dir: paths.karma.coverage.out.lcov
         }
       ]
     },
@@ -104,7 +106,7 @@ module.exports = function( config ) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ "Chrome" ]
+    browsers: process.env.IS_TRAVIS === "TRUE" ? [ "Firefox" ] : [ "Chrome" ]
     /*
     browserNoActivityTimeout: 30000,
     browsers: [ "PhantomJS" ],
