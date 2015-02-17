@@ -8,10 +8,11 @@ before_install:
   - rm -rf ./node_modules
   - mkdir ./logs
   - mkdir ./logs/gulp
-  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-  - sudo apt-get update
-  - sudo apt-get install google-chrome-stable
+  - export CHROME_BIN=chromium-browser
+#  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#  - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+#  - sudo apt-get update
+#  - sudo apt-get install google-chrome-stable
   - export DISPLAY=:1.5
   - sh -e /etc/init.d/xvfb start :1 +extension RANDR -screen 5 1024x768x8
 install:
