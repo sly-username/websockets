@@ -9,6 +9,8 @@ before_install:
   - "rm -rf ./node_modules"
   - "mkdir ./logs"
   - "mkdir ./logs/gulp"
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 install:
   - "npm install --force"
 #before_script:
