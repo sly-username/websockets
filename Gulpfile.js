@@ -51,7 +51,7 @@ if ( currentTasks.length === 0 && process.argv.length === 2 ) {
     };
 
   // if no valid task names, don't overwrite write.
-  if ( currentTasks.length === 0 ) {
+  if ( currentTasks.length === 0 || process.env.IS_TRAVIS === "TRUE" ) {
     // don't rewrite
     return;
   }
