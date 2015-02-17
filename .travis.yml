@@ -3,7 +3,7 @@ node_js:
   - "0.12"
 #  - "iojs"
 env:
-#  - GULP_ENVIRONMENT=DEVELOPMENT
+  - GULP_ENVIRONMENT=DEVELOPMENT
   - IS_TRAVIS=TRUE
 before_install:
   - "rm -rf ./node_modules"
@@ -11,5 +11,5 @@ before_install:
   - "mkdir ./logs/gulp"
 install:
   - "npm install --force"
-before_script:
-  - "npm run gulp build"
+#before_script:
+#  - "npm run gulp build"
