@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - "0.12"
-#  - "0.11"
 #  - "iojs"
 env:
 #  - GULP_ENVIRONMENT=DEVELOPMENT
@@ -12,5 +11,5 @@ before_install:
   - "mkdir ./logs/gulp"
 install:
   - "npm install --force"
-script:
+before_script:
   - "npm run gulp build"
