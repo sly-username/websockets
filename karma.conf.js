@@ -3,6 +3,8 @@
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
 var paths = require( "./config.paths.js" );
 
+console.log( process.env );
+
 module.exports = function( config ) {
   "use strict";
   config.set({
