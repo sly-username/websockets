@@ -1,6 +1,6 @@
 /*eslint-env mocha */
 /*jscs:disable maximumLineLength*/
-( function( window, document, Polymer, sinon, chai ) {
+( function( window, document, polymer, sinon, chai ) {
   "use strict";
   var expect = chai.expect,
     // get wrapper from document or for karma, create a new div and append it to the DOM
@@ -25,7 +25,7 @@
 
       test( "ready: can create from document.createElement", function() {
         var createdSpy = sinon.spy(
-          Polymer.getRegisteredPrototype( "new-element" ),
+          polymer.getRegisteredPrototype( "new-element" ),
           "ready"
         );
 

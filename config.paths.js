@@ -23,6 +23,7 @@ var join = require( "path" ).join,
 
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
+paths.covearge = join( paths.build, "coverage" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
@@ -199,6 +200,21 @@ paths.karma = {
   rc: join( paths.root, "karma.conf.js" ),
   base: paths.dev,
   port: 9876,
+  coverage: {
+    src: "**/!(vendor)/!(*.tests).js",
+    out: {
+      html: join( paths.dev, "coverage" ),
+      lcov: join( paths.build, "coverage" )
+    }
+  },
+  exclude: [
+    "index.html",
+    "tests.html",
+    "**/.new/*.*",
+    "**/ed-components.html",
+    "**/ui-components.html",
+    "coverage/**"
+  ],
   files: ( function() {
     var files = [];
 
@@ -251,14 +267,7 @@ paths.karma = {
     });
 
     return files;
-  })(),
-  exclude: [
-    "index.html",
-    "tests.html",
-    "**/.new/*.*",
-    "**/ed-components.html",
-    "**/ui-components.html"
-  ]
+  })()
 };
 
 /*** LOGGING ***/
