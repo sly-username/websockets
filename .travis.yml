@@ -21,4 +21,4 @@ before_install:
 install:
   - npm install --force
 after_script:
-  - cat build/coverage/chrome/lcov.info | codeclimate
+  - cat ./build/coverage/chrome/lcov.info | codeclimate
