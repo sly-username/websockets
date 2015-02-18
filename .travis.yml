@@ -3,7 +3,7 @@ node_js:
   - 0.12
   - iojs
 #env:
-#  - IS_TRAVIS=TRUE
+#  -
 addons:
     code_climate:
         repo_token: f383188b35ffbe260acc6b9237b1bea9c884c3aa8155e8f78bc2761768573923
@@ -22,5 +22,6 @@ install:
   - npm install --force
 after_script:
   - npm install -g codeclimate-test-reporter
-#  - cat ./build/coverage/chromium/lcov.info | codeclimate
-  - codeclimate < ./build/coverage/chromium/lcov.info
+  - sed -i -e "s/SF:.\//SF:..\/..\/..\/www\//g" ./build/coverage/chromium/lcov.info
+  - cat ./build/coverage/chromium/lcov.info | codeclimate
+#  - codeclimate < ./build/coverage/chromium/lcov.info
