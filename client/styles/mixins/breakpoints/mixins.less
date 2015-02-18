@@ -1,4 +1,3 @@
-
 @import "./queries.less";
 @import "./variables.less";
 
@@ -19,29 +18,33 @@
 // TODO DPI Check, move down a bp on high dpi devices
 
 .phone( @rules ) {
-  .mediaOnly( screen, {
-    .queryWidth( max; @phoneMaxWidth; @rules);
-  });
+  .screenOnly();
+  .and( @screenOnly );
+  .maxQueryWidth( @phoneMaxWidth; @and );
+  .create( @maxQueryWidth; @rules );
 }
 
 .portrait( @rules ) {
-  .mediaOnly( screen, {
-    .queryWidth( min; @phoneMaxWidth; {
-      .queryWidth( max; @portraitMaxWidth; @rules);
-    });
-  });
+  .screenOnly();
+  .and( @screenOnly );
+  .minQueryWidth( @phoneMaxWidth; @and );
+  .and2( @minQueryWidth );
+  .maxQueryWidth( @portraitMaxWidth; @and2 );
+  .create( @maxQueryWidth; @rules );
 }
 
 .landscape( @rules ) {
-  .mediaOnly( screen, {
-    .queryWidth( min; @portraitMaxWidth; {
-      .queryWidth( max; @desktopMinWidth; @rules);
-    });
-  });
+  .screenOnly();
+  .and( @screenOnly );
+  .minQueryWidth( @portraitMaxWidth; @and );
+  .and2( @minQueryWidth );
+  .maxQueryWidth( @desktopMinWidth; @and2 );
+  .create( @maxQueryWidth; @rules );
 }
 
 .desktop( @rules ) {
-  .mediaOnly( screen, {
-    .queryWidth( min; @desktopMinWidth; @rules);
-  });
+  .screenOnly();
+  .and( @screenOnly );
+  .minQueryWidth( @desktopMinWidth; @and );
+  .create( @minQueryWidth; @rules );
 }
