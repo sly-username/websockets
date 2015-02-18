@@ -21,5 +21,6 @@ before_install:
 install:
   - npm install --force
 after_script:
-  - cat ./build/coverage/chrome/lcov.info && echo "ended coverage file"
+  - ls -alhR ./build/coverage
+  - npm install -g codeclimate-test-reporter
   - cat ./build/coverage/chrome/lcov.info | codeclimate
