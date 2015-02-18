@@ -38,7 +38,7 @@ if ( currentTasks.length === 0 && process.argv.length === 2 ) {
   var taskNames, filename, createWrite;
 
   // if no valid task names, or in TravisCI don't overwrite write.
-  if ( currentTasks.length === 0 || process.env.TRAVIS === "TRUE" ) {
+  if ( currentTasks.length === 0 || process.env.TRAVIS === "true" ) {
     // don't rewrite
     return;
   }
