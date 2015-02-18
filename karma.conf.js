@@ -32,7 +32,6 @@ module.exports = function( config ) {
       "karma-chrome-launcher",
       // Reporters
       "karma-mocha-reporter",
-      "karma-nyan-reporter",
       "karma-coverage"
     ],
 
@@ -61,7 +60,7 @@ module.exports = function( config ) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      process.env.KARMA_REPORTER === "NYAN" ? "nyan" : "mocha",
+      "mocha",
       "coverage"
     ],
 
