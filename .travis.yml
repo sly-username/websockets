@@ -1,9 +1,9 @@
 language: node_js
 node_js:
   - 0.12
-#  - "iojs"
-env:
-  - IS_TRAVIS=TRUE
+  - iojs
+#env:
+#  - IS_TRAVIS=TRUE
 before_install:
   - rm -rf ./node_modules
   - mkdir ./logs
@@ -13,9 +13,6 @@ before_install:
 #  - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 #  - sudo apt-get update
 #  - sudo apt-get install google-chrome-stable
-#  - export DISPLAY=:1.5
-#  - sh -e /etc/init.d/xvfb start :1 +extension RANDR -screen 5 1024x768x8
-#  - Xvfb :1 +extension RANDR -screen 5 1024x768x8
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:

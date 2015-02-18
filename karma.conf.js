@@ -3,8 +3,6 @@
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
 var paths = require( "./config.paths.js" );
 
-console.log( process.env );
-
 module.exports = function( config ) {
   "use strict";
   config.set({
@@ -25,14 +23,17 @@ module.exports = function( config ) {
     ],
 
     plugins: [
+      // Frameworks
       "karma-mocha",
       "karma-chai",
       "karma-chai-plugins",
       "karma-chai-sinon",
+      // Launchers
       "karma-chrome-launcher",
+      // Reporters
       "karma-mocha-reporter",
-      "karma-coverage",
-      "karma-firefox-launcher"
+      "karma-nyan-reporter",
+      "karma-coverage"
     ],
 
     client: {
@@ -60,7 +61,7 @@ module.exports = function( config ) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      "mocha",
+      process.env.KARMA_REPORTER === "NYAN" ? "nyan" : "mocha",
       "coverage"
     ],
 
@@ -97,7 +98,7 @@ module.exports = function( config ) {
     //    config.LOG_WARN
     //    config.LOG_INFO
     //    config.LOG_DEBUG
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_ERROR,
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
@@ -108,7 +109,7 @@ module.exports = function( config ) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: process.env.IS_TRAVIS === "TRUE" ? [ "ChromeTravis" ] : [ "Chrome" ],
+    browsers: process.env.TRAVIS === "TRUE" ? [ "ChromeTravis" ] : [ "Chrome" ],
 
     customLaunchers: {
       ChromeTravis: {
