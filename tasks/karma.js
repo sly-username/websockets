@@ -21,6 +21,6 @@ gulp.task( "tdd", function( done ) {
   }, function( exitCode ) {
     gutil.log( "Karma exited with code: " + exitCode );
     done( exitCode );
-//    global.process.exit( exitCode );
+    global.process.exit( exitCode );
   });
 });
