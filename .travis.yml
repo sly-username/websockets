@@ -11,6 +11,9 @@ before_install:
 - sh -e /etc/init.d/xvfb start
 install:
 - npm install
+before_script:
+- npm run jscs
+- npm run lint
 after_script:
 - npm install -g codeclimate-test-reporter coveralls
 - sed -i -e "s/SF:.\//SF:build\/www\//g" ./build/coverage/chromium/lcov.info
