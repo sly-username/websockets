@@ -19,6 +19,7 @@ after_script:
 - sed -i -e "s/SF:.\//SF:build\/www\//g" ./build/coverage/chromium/lcov.info
 - cat ./build/coverage/chromium/lcov.info | codeclimate
 - cat ./build/coverage/chromium/lcov.info | coveralls
+- npm install -g david && david
 notifications:
   slack:
     secure: MfoNnztzCMLi6sAZ5LCwPWSlAr18jqbHFFOe0J2xaVXiS01pH6An3xEmMG9cJjWL7Gvfuoa3Tr8WAzhexLZGqO4sN466NPGCl6wwM/GwAi1r59JoB92GggOl9/KA67i32mAXO4+6Gnu2foKvpibhw/SObsK16FJs7un5DvUWlaQ=
