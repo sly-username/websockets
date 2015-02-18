@@ -4,6 +4,9 @@ node_js:
   - iojs
 #env:
 #  - IS_TRAVIS=TRUE
+addons:
+    code_climate:
+        repo_token: f383188b35ffbe260acc6b9237b1bea9c884c3aa8155e8f78bc2761768573923
 before_install:
   - rm -rf ./node_modules
   - mkdir ./logs
@@ -17,3 +20,5 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 install:
   - npm install --force
+after_script:
+  - cat build/coverage/chrome/lcov.info | codeclimate
