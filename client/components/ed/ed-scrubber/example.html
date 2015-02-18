@@ -1,0 +1,16 @@
+
+<ed-scrubber id="scrub-1" min="7" max="100" type="default" format="percent"></ed-scrubber>
+<ed-scrubber min="43" max="350" type="bar" format="time"></ed-scrubber>
+<ed-scrubber min="25" max="100" type="bubble" format="percent"></ed-scrubber>
+<ed-scrubber min="700" max="1000" type="fill" format="percent"></ed-scrubber>
+
+<template>
+  <script>
+    (function(){
+      var scrub1 = document.getElementById( "scrub-1" );
+      console.log( scrub1.value );
+
+      console.log( 'hello from import template' );
+    })();
+  </script>
+</template>
