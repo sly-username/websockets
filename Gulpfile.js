@@ -89,7 +89,7 @@ gulp.task( "start", function( done ) {
       done();
       break;
     default:
-      run( "default", done );
+      run( "build", done );
       break;
   }
 });
