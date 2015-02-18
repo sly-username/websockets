@@ -20,7 +20,7 @@
       var linkImport = loadEvent.path[0].import,
           // todo account for multiple templates
           content = linkImport.querySelector( "template" ).content;
-      Array.prototype.map.call(
+      Array.prototype.forEach.call(
         linkImport.querySelectorAll( this.attributes["element-name"].value ),
           e => this.appendChild( e )
       );
