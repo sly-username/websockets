@@ -22,4 +22,5 @@ install:
   - npm install --force
 after_script:
   - npm install -g codeclimate-test-reporter
-  - cat ./build/coverage/chromium/lcov.info | codeclimate
+#  - cat ./build/coverage/chromium/lcov.info | codeclimate
+  - codeclimate < ./build/coverage/chromium/lcov.info
