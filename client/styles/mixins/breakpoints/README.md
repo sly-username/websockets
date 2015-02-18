@@ -1,12 +1,12 @@
 ## LESS Breakpoints
 
-* **Description:**
+**Description:**
 This mixin is a library of mixin that leverages string interpolation in order to simplify the nesting needed for LESS
 media queries. The user will need to create the use case mixin in addition to the custom mixin required for this
 library of mixins to work. The syntax for the mixin is similar to JQuery's way of chaining, see usage for example
 syntax.
 
-* **Rules:**
+**Rules:**
 
 * Query Mixins will always have/return the same variable names as the mixins themselves with the exception or the "@"
 at the front.
@@ -20,7 +20,7 @@ at the front.
 * Once the user is done with their mixin they should end the mixin with a .create( @previousVariable; @rules ); to
 interpolate the mixin
 
-* **Usage:**
+**Usage:**
 What the developers need to input:
 ```less
 // Use case
