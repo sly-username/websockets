@@ -12,7 +12,6 @@ before_install:
 install:
 - npm install
 before_script:
-- "[[ $TRAVIS_NODE_VERSION == v1* ]] && alias node=\"$(command -v node) --harmony_arrow_functions\""
 - npm run jscs
 - npm run lint
 after_script:

@@ -20,7 +20,7 @@
     "dev": "npm run-script gulp dev",
     "lint": "npm run-script gulp lint",
     "jscs": "npm run-script gulp jscs",
-    "gulp": "node --harmony node_modules/gulp/bin/gulp.js"
+    "gulp": "node --harmony --harmony_arrow_functions node_modules/gulp/bin/gulp.js"
   },
   "engineStrict": true,
   "os": [
