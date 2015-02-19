@@ -7,7 +7,7 @@ gulp.task( "docs:components", function() {
   var dgeni;
 
   try {
-    dgeni = new Dgeni([ require( "../docs/dgeni-packages/components.js" ) ]);
+    dgeni = new Dgeni([ require( "../dgeni/dgeni-packages/components.js" ) ]);
     return dgeni.generate();
   } catch ( error ) {
     gutil.log( error.stack );
@@ -19,7 +19,7 @@ gulp.task( "docs:less", function() {
   var dgeni;
 
   try {
-    dgeni = new Dgeni([ require( "../docs/dgeni-packages/less.js" ) ]);
+    dgeni = new Dgeni([ require( "../dgeni/dgeni-packages/less.js" ) ]);
     return dgeni.generate();
   } catch ( error ) {
     gutil.log( error.stack );
