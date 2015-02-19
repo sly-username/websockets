@@ -63,3 +63,9 @@
     /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
+
+// app.js
+/**
+ * @name log
+ * @description This function logs a string.
+ */
