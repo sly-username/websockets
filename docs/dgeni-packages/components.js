@@ -1,6 +1,6 @@
 "use strict"
-var path = require( "canonical-path" );
-var Package = require( "dgeni" ).Package;
+var path = require( "canonical-path" ),
+    Package = require( "dgeni" ).Package;
 
 module.exports = new Package( "components", [
   require( "dgeni-packages/jsdoc" ),
@@ -21,13 +21,9 @@ module.exports = new Package( "components", [
       }
     ];
 
-    // Add a folder to search for our own templates to use when rendering docs
-    templateFinder.templateFolders.unshift( path.resolve( __dirname, "templates" ));
+    templateFinder.templateFolders.unshift( path.resolve( __dirname, "templates" ) );
 
-    // Specify how to match docs to templates.
-    // In this case we just use the same static template for all docs
     templateFinder.templatePatterns.unshift( "common.template.html" );
 
-    // Specify where the writeFilesProcessor will write our generated doc files
     writeFilesProcessor.outputFolder = "components";
   });
