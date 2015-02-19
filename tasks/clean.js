@@ -1,15 +1,13 @@
 "use strict";
 var gulp = require( "gulp" ),
-  rimraf = require( "rimraf" ),
+  del = require( "del" ),
   config = require( "../config.paths.js" ),
   clean;
 
 // rm -rf path
 clean = function( path ) {
   return function( done ) {
-    rimraf( path, function() {
-      done();
-    });
+    del( path, done );
   };
 };
 
