@@ -14,7 +14,7 @@ install:
 before_script:
 - npm run jscs
 - npm run lint
-- [[ $TRAVIS_NODE_VERSION == v1* ]] && alias node="$(command -v node) --harmony_arrow_functions"
+- "[[ $TRAVIS_NODE_VERSION == v1* ]] && alias node=\"$(command -v node) --harmony_arrow_functions\""
 after_script:
 - npm install -g codeclimate-test-reporter coveralls
 - sed -i -e "s/SF:.\//SF:build\/www\//g" ./build/coverage/chromium/lcov.info
