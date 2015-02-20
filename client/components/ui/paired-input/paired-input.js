@@ -15,10 +15,30 @@
     };
 
   Polymer( "paired-input", {
-    _primaryBox: null,
-    _confirmBox: null,
-    _errorDiv: null,
-    _boxes: [],
+    publish: {
+      type: {
+        value: false,
+        reflect: true
+      },
+      placeholder: {
+        value: false,
+        reflect: true
+      },
+      pattern: {
+        reflect: true
+      },
+      required: {
+        value: false,
+        reflect: true
+      },
+      disabled: {
+        value: false,
+        reflect: true
+      },
+      singleline: {
+        reflect: true
+      }
+    },
     get primaryBox() {
       return this._primaryBox;
     },
