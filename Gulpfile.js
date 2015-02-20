@@ -2,7 +2,6 @@
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
-  run = require( "run-sequence" ),
   fs = require( "fs" ),
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
