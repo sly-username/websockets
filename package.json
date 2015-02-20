@@ -33,7 +33,7 @@
     "chai-as-promised": "=4.2.0",
     "del": "=1.1.1",
     "dotenv": "=0.5.1",
-    "gulp": "=3.8.10",
+    "gulp": "git://github.com/gulpjs/gulp.git#4.0",
     "gulp-eslint": "=0.2.2",
     "gulp-jscs": "=1.4.0",
     "gulp-plumber": "=0.6.6",
