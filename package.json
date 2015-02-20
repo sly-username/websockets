@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "description": "The Client for the Eardish Platform",
-  "author": "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
+  "author": "2014+ Eardish Corporation <ryan@eardish.com> (http://eardish.com)",
+  "maintainer": "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
   "repository": {
     "type": "git",
     "url": "https://github.com/eardish/clientapp.git"
