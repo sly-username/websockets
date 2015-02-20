@@ -99,7 +99,7 @@ gulp.task( "watch", gulp.parallel(
   "jscs:watch",
   "lint:watch",
   "traceur:watch"
-) );
+));
 
 /*** DEVELOPMENT BUILD TASK ***/
 gulp.task( "build:dev", gulp.series(
@@ -110,24 +110,24 @@ gulp.task( "build:dev", gulp.series(
     "vendor:dev",
     "traceur:dev"
   )
-) );
+));
 
 /*** TESTING TASKS ***/
 gulp.task( "build:tests:only", gulp.parallel(
   "symlink:tests",
   "vendor:tests",
   "build:tests:index"
-) );
+));
 
 gulp.task( "build:tests", gulp.series(
   "build:dev",
   "build:tests:only"
-) );
+));
 
 gulp.task( "test", gulp.series(
   "build:tests",
   "karma:once"
-) );
+));
 
 /*** MAIN DEVELOPMENT TASK ***/
 gulp.task( "dev", gulp.series(
@@ -138,7 +138,7 @@ gulp.task( "dev", gulp.series(
   "jscs:client",
   "lint:client",
   "tdd"
-) );
+));
 
 /*** PRODUCTION BUILD TASK ***/
 gulp.task( "build:prod", function( done ) {
