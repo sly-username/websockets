@@ -65,7 +65,7 @@ module.exports = function( config ) {
     ],
 
     mochaReporter: {
-      output: "autowatch",
+      output: "noFailures",
       ignoreSkipped: true
     },
 
