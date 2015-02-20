@@ -129,9 +129,9 @@ paths.less.compile = paths.less.included
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
   all:            [
+    join( paths.root, "**", "*.js" ),
     join( "!", paths.bowerComponents ),
-    join( "!", paths.nodeModules ),
-    join( paths.root, "**", "*.js" )
+    join( "!", paths.nodeModules )
   ],
   client: join( paths.client, "**", "*.js" ),
   tasks: join( paths.tasks, "**", "*.js" ),
