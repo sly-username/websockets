@@ -94,7 +94,7 @@ gulp.task( "start", function( done ) {
   }
 });
 
-/* TODO Do we need a watch task? */
+/*** Watch all the things ***/
 gulp.task( "watch", function( done ) {
   run(
     [
@@ -127,12 +127,7 @@ gulp.task( "dev", function( done ) {
     "build:dev",
     "build:tests:only",
     "server:dev",
-    [
-      "less:watch",
-      "jscs:watch",
-      "lint:watch",
-      "traceur:watch"
-    ],
+    "watch",
     "jscs:client",
     "lint:client",
     "tdd",
