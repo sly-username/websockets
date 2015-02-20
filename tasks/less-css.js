@@ -90,7 +90,6 @@ gulp.task( "less:dev", function() {
 });
 
 // WATCH LESS COMPILE TO DEV
-gulp.task( "less:watch", [ "less:watch:dev" ]);
 gulp.task( "less:watch:dev", function() {
   // regular watch included less, recompile all
   gulp.watch( config.less.included, [ "less:dev" ]);
@@ -107,6 +106,7 @@ gulp.task( "less:watch:dev", function() {
       }
     });
 });
+gulp.task( "less:watch", gulp.series( "less:watch:dev" ) );
 
 // COMPILE FOR PRODUCTION
 // TODO PRODUCTION OPTIMIZATIONS
@@ -116,4 +116,4 @@ gulp.task( "less:prod", function() {
   return runCompile( config.less.compile, config.less.out.prod, opts );
 });
 
-gulp.task( "less", [ "less:dev" ]);
+gulp.task( "less", gulp.series( "less:dev" ) );
