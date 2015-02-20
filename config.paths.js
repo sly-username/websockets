@@ -321,7 +321,19 @@ paths.dgeni = {
     outputFolder: join( paths.docs, "components" )
   },
   less: {
-
+    basePath: paths.dgeni,
+    src: [
+      {
+        include: join( paths.client, "components", "**", "*.less" ),
+        exclude: [
+          join( paths.client, "components", ".new", "*.*" )
+        ],
+        basePath: "components"
+      }
+    ],
+    templateFolder: join( paths.dgeni, "templates" ),
+    templatePattern: "common.template.html",
+    outputFolder: join( paths.docs, "less" )
   }
 };
 
