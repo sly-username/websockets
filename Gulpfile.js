@@ -71,24 +71,23 @@ if ( currentTasks.length === 0 && process.argv.length === 2 ) {
 dummy = requiredir( "./tasks" );
 
 /*** MAGIC "START" TASK ***/
-gulp.task( "start", function( done ) {
+gulp.task( "start", function() {
   gutil.log( ( new Date() ).toString() );
   gutil.log( "Running task for env: " + process.env.GULP_ENVIRONMENT );
 
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
-      run( "dev", done );
+      gulp.series( "dev" );
       break;
     case "PRODUCTION":
-      run( "prod", done );
+      gulp.series( "prod" );
       break;
     case "QA":
       // do QA task ?
       gutil.log( "Task has not been created yet" );
-      done();
       break;
     default:
-      run( "build", done );
+      gulp.series( "build" );
       break;
   }
 });
@@ -147,9 +146,7 @@ gulp.task( "build:prod", function( done ) {
 });
 
 /*** MAIN PRODUCTION TASK ***/
-gulp.task( "prod", function( done ) {
-  run( "build:prod", done );
-});
+gulp.task( "prod", gulp.series( "build:prod" ));
 
 /*** BUILD ALL THE THINGS ***/
 gulp.task( "build", gulp.series( "build:dev", "build:prod" ) );
