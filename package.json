@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "description": "The Client for the Eardish Platform",
-  "author": "2014+ Eardish Corporation <ryan@eardish.com> (http://eardish.com)",
+  "author": "",
   "maintainer": "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
   "repository": {
     "type": "git",
@@ -11,6 +11,13 @@
   },
   "bugs": {
     "url": "https://github.com/eardish/clientapp/issues"
+  },
+  "badges": {
+    "travis": true,
+    "david": true,
+    "daviddev": true,
+    "npm": true,
+    "npmdownloads": true
   },
   "homepage": "https://github.com/eardish/clientapp",
   "engines": {
@@ -24,7 +31,9 @@
     "dev": "npm run-script gulp dev",
     "lint": "npm run-script gulp lint",
     "jscs": "npm run-script gulp jscs",
-    "gulp": "node --harmony --harmony_arrow_functions node_modules/gulp/bin/gulp.js"
+    "gulp": "node --harmony --harmony_arrow_functions node_modules/gulp/bin/gulp.js",
+    "compile": "node ./node_modules/projectz/bin/projectz compile",
+    "posttest": "node ./node_modules/projectz/bin/projectz compile"
   },
   "engineStrict": true,
   "os": [
@@ -66,5 +75,12 @@
   },
   "dependencies": {
     "traceur": "=0.0.81"
+  },
+  "maintainers": [
+    ""
+  ],
+  "contributors": [],
+  "license": {
+    "type": ""
   }
 }

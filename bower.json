@@ -14,5 +14,7 @@
     "es6-module-loader": "=0.10.0",
     "system.js": "=0.10.2",
     "director": "=1.2.5"
-  }
+  },
+  "license": "",
+  "description": "The Client for the Eardish Platform"
 }
