@@ -35,26 +35,30 @@ if ( currentTasks.length === 0 && process.argv.length === 2 ) {
 
 // rewrite stdout & stderr write functions to write to log
 ( function( ogout, ogerr ) {
-  var taskNames = currentTasks.join( "_" ).replace( /:/g, "-" ),
-    filename = config.logging.createDatedLogFile(
-      config.logging.gulp, taskNames, new Date()
-    ),
-    createWrite = function( originalStream ) {
-      return process.env.GULP_LOG_TO_CONSOLE === "TRUE" ?
-        function( chunk ) {
-          fs.appendFile( filename, chunk );
-          originalStream.apply( this, arguments );
-        } :
-        function( chunk ) {
-          fs.appendFile( filename, chunk );
-        };
-    };
+  var taskNames, filename, createWrite;
 
-  // if no valid task names, don't overwrite write.
-  if ( currentTasks.length === 0 ) {
+  // if no valid task names, or in TravisCI don't overwrite write.
+  if ( currentTasks.length === 0 || process.env.TRAVIS === "true" ) {
     // don't rewrite
     return;
   }
+
+  taskNames = currentTasks.join( "_" ).replace( /:/g, "-" );
+
+  filename = config.logging.createDatedLogFile(
+    config.logging.gulp, taskNames, new Date()
+  );
+
+  createWrite = function( originalStream ) {
+    return process.env.GULP_LOG_TO_CONSOLE === "TRUE" ?
+      function( chunk ) {
+        fs.appendFile( filename, chunk );
+        originalStream.apply( this, arguments );
+      } :
+      function( chunk ) {
+        fs.appendFile( filename, chunk );
+      };
+  };
 
   // rewrite stdout
   process.stdout.write = createWrite( ogout );
@@ -85,12 +89,12 @@ gulp.task( "start", function( done ) {
       done();
       break;
     default:
-      run( "default", done );
+      run( "build", done );
       break;
   }
 });
 
-/* TODO Do we need a watch task? */
+/*** Watch all the things ***/
 gulp.task( "watch", function( done ) {
   run(
     [
@@ -123,12 +127,7 @@ gulp.task( "dev", function( done ) {
     "build:dev",
     "build:tests:only",
     "server:dev",
-    [
-      "less:watch",
-      "jscs:watch",
-      "lint:watch",
-      "traceur:watch"
-    ],
+    "watch",
     "jscs:client",
     "lint:client",
     "tdd",

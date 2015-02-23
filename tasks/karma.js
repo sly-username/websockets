@@ -10,7 +10,8 @@ gulp.task( "karma:once", function( done ) {
     singleRun: true
   }, function( exitCode ) {
     gutil.log( "Karma exited with code: " + exitCode );
-    done();
+    done( exitCode );
+//    global.process.exit( exitCode );
   });
 });
 

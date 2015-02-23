@@ -32,6 +32,7 @@
 
 <body unresolved>
 
+<<<<<<< HEAD
 
 <div class="left hidden">
   <poc-bp></poc-bp>
@@ -304,6 +305,12 @@
 
 <div class="left">
   <progress-bar value="33" max="52" show-value="true" animation="bars" direction="RTL"></progress-bar>
+=======
+<poc-viewer class="left" element-name="file-drop" path="ui/file-drop"></poc-viewer>
+
+<div class="left">
+  <poc-bp></poc-bp>
+>>>>>>> dev
 </div>
 
 <!-- REMOVE FOR PRODUCTION -->
@@ -324,58 +331,6 @@
       document.body.removeChild(this);
     }.bind( document.getElementById( "reload-tag" ) ), 200);
   })( window, document );
-</script>
-
-<style type="text/css">
-  #mocha-tests {
-    position: fixed;
-    left: 0;
-    bottom: 0.5%;
-    margin: 0 0.5%;
-    padding: 0;
-    width: 99%;
-    height: 85%;
-    background-color: white;
-    z-index: 9998;
-  }
-  #show-hide-tests {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 9999;
-  }
-  #mocha-tests.hidden, #mocha-tests.hide{
-    display: none;
-  }
-</style>
-<script type="text/javascript">
-  (function( document ){
-
-    var iframe = document.createElement( "iframe" ),
-      button = document.createElement( "button" );
-
-    iframe.src = "./tests.html";
-    iframe.id = "mocha-tests";
-    iframe.className = "hidden";
-
-    button.innerHTML = "Show Tests";
-    button.id = "show-hide-tests";
-
-    button.addEventListener( "click", function( event ) {
-      if ( ( /hidden|hide/g ).test( iframe.className ) ) {
-        iframe.className = iframe.className.split(" ").filter( function( strClass ) {
-          return strClass !== "hidden" && strClass !== "hide";
-        }).join( " " ).trim();
-        button.innerHTML = "Hide Tests";
-      } else {
-        iframe.className = iframe.className + " hidden";
-        button.innerHTML = "Show Tests";
-      }
-    });
-
-    document.body.appendChild( iframe );
-    document.body.appendChild( button );
-  })( document );
 </script>
 <!--END REMOVE FOR PRODUCTION -->
 

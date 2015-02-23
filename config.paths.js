@@ -1,6 +1,7 @@
 /*global __dirname*/
 /*eslint strict:0, key-spacing:0*/
 // jscs:disable maximumLineLength
+"use strict";
 /***
  * This file contains paths for all the different files in the codebase.
  * Everything is absolute path'd starting from the __dirname of this file, which should
@@ -22,6 +23,7 @@ var join = require( "path" ).join,
 
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
+paths.covearge = join( paths.build, "coverage" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
@@ -49,11 +51,11 @@ paths.vendor = {
 
       // Director (Routing)
       join( "director", "build", "director.js" )
-    ].map( function( s ) { return join( paths.bowerComponents, s ); }
+    ].map( s => join( paths.bowerComponents, s )
     ).concat([
       // Stuff in node_modules
       join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
+    ].map( s => join( paths.nodeModules, s ) ) ),
   min: [
       // Stuff in bower_components
       join( "webcomponentsjs", "webcomponents.min.js" ),
@@ -63,11 +65,11 @@ paths.vendor = {
       join( "es6-module-loader", "dist", "es6-module-loader.js" ),
       join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
       join( "director", "build", "director.min.js" )
-    ].map( function( s ) { return join( paths.bowerComponents, s ); }
+    ].map( s => join( paths.bowerComponents, s )
     ).concat([
       // Stuff in node_modules
       join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
+    ].map( s => join( paths.nodeModules, s ) ) ),
   tests: [
     // in node_modules
     join( "mocha", "mocha.js" ),
@@ -76,7 +78,7 @@ paths.vendor = {
     join( "chai-as-promised", "lib", "chai-as-promised.js" ),
     join( "sinon", "pkg", "sinon.js" ),
     join( "sinon-chai", "lib", "sinon-chai.js" )
-  ].map( function( p ) { return join( paths.nodeModules, p ); } )
+  ].map( p => join( paths.nodeModules, p ) )
 };
 
 /*** TODO COPY (FOR PROD) ***/
@@ -118,10 +120,9 @@ paths.less = {
     join( "**", "*.mixin.less" ),
     join( "**", "*.include.less" ),
     join( "**", "fonts", "*.less" )
-  ].map( function( s ) { return join( paths.client, s ); })
+  ].map( s => join( paths.client, s ) )
 };
-paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
-// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
+paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
@@ -152,7 +153,7 @@ paths.jscs = {
   tasks:  paths.scripts.tasks,
   tests:  paths.scripts.tests,
   server: paths.scripts.server,
-  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); }),
+  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( s => join( paths.root, s ) ),
   taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
 };
 
@@ -191,15 +192,29 @@ paths.testing = {
   },
   tests: join( paths.tests, "**", "*.js" )
 };
-paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ) {
-  return paths.testing.client[ prop ];
-});
+paths.testing.client.all = Object.keys( paths.testing.client )
+  .map( prop => paths.testing.client[ prop ] );
 
 /*** KARMA ***/
 paths.karma = {
   rc: join( paths.root, "karma.conf.js" ),
   base: paths.dev,
   port: 9876,
+  coverage: {
+    src: "**/!(vendor)/!(*.tests).js",
+    out: {
+      html: join( paths.dev, "coverage" ),
+      lcov: join( paths.build, "coverage" )
+    }
+  },
+  exclude: [
+    "index.html",
+    "tests.html",
+    "**/.new/*.*",
+    "**/ed-components.html",
+    "**/ui-components.html",
+    "coverage/**"
+  ],
   files: ( function() {
     var files = [];
 
@@ -252,14 +267,7 @@ paths.karma = {
     });
 
     return files;
-  })(),
-  exclude: [
-    "index.html",
-    "tests.html",
-    "**/.new/*.*",
-    "**/ed-components.html",
-    "**/ui-components.html"
-  ]
+  })()
 };
 
 /*** LOGGING ***/

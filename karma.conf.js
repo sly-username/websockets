@@ -1,3 +1,4 @@
+/*eslint no-process-env:0*/
 // Karma configuration
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
 var paths = require( "./config.paths.js" );
@@ -22,12 +23,16 @@ module.exports = function( config ) {
     ],
 
     plugins: [
+      // Frameworks
       "karma-mocha",
       "karma-chai",
       "karma-chai-plugins",
       "karma-chai-sinon",
+      // Launchers
       "karma-chrome-launcher",
-      "karma-mocha-reporter"
+      // Reporters
+      "karma-mocha-reporter",
+      "karma-coverage"
     ],
 
     client: {
@@ -44,17 +49,40 @@ module.exports = function( config ) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: ( function() {
+      var preprocessors = {};
+
+      preprocessors[paths.karma.coverage.src] = [ "coverage" ];
+      return preprocessors;
+    })(),
 
     // test results reporter to use
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      "mocha"
+      "mocha",
+      "coverage"
     ],
+
     mochaReporter: {
-      output: "autowatch",
+      output: "noFailures",
       ignoreSkipped: true
+    },
+
+    coverageReporter: {
+      subdir: function( browser ) {
+        return browser.toLowerCase().split( /[ /-]/ )[0];
+      },
+      reporters: [
+        {
+          type: "html",
+          dir: paths.karma.coverage.out.html
+        },
+        {
+          type: "lcovonly",
+          dir: paths.karma.coverage.out.lcov
+        }
+      ]
     },
 
 //    proxies: {},
@@ -69,7 +97,7 @@ module.exports = function( config ) {
     //    config.LOG_WARN
     //    config.LOG_INFO
     //    config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
@@ -80,7 +108,14 @@ module.exports = function( config ) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ "Chrome" ]
+    browsers: process.env.TRAVIS === "true" ? [ "ChromeTravis" ] : [ "Chrome" ],
+
+    customLaunchers: {
+      ChromeTravis: {
+        base: "Chrome",
+        flags: [ "--no-sandbox" ]
+      }
+    }
     /*
     browserNoActivityTimeout: 30000,
     browsers: [ "PhantomJS" ],

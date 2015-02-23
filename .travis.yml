@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+- 0.12
+- iojs
+before_install:
+- rm -rf ./node_modules
+- mkdir ./logs
+- mkdir ./logs/gulp
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+install:
+- npm install
+before_script:
+- npm run jscs
+- npm run lint
+after_script:
+- npm install -g codeclimate-test-reporter coveralls
+- sed -i -e "s/SF:.\//SF:build\/www\//g" ./build/coverage/chromium/lcov.info
+- cat ./build/coverage/chromium/lcov.info | codeclimate
+- cat ./build/coverage/chromium/lcov.info | coveralls
+- npm install -g david && david
+notifications:
+  slack:
+    secure: MfoNnztzCMLi6sAZ5LCwPWSlAr18jqbHFFOe0J2xaVXiS01pH6An3xEmMG9cJjWL7Gvfuoa3Tr8WAzhexLZGqO4sN466NPGCl6wwM/GwAi1r59JoB92GggOl9/KA67i32mAXO4+6Gnu2foKvpibhw/SObsK16FJs7un5DvUWlaQ=
+addons:
+  code_climate:
+    repo_token: f383188b35ffbe260acc6b9237b1bea9c884c3aa8155e8f78bc2761768573923
