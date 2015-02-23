@@ -15,3 +15,6 @@ gulp.task( "clean:dev", clean( config.dev ) );
 gulp.task( "clean:prod", clean( config.prod ) );
 
 gulp.task( "clean", [ "clean:dev", "clean:prod" ]);
+
+gulp.task( "clean:docs:components", clean( config.dgeni.components.outputFolder ) );
+gulp.task( "clean:docs", [ "clean:docs:components" ] );
