@@ -1,7 +1,7 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "flip-box", {
+  polymer( "flip-box", {
     publish: {
       trigger: {
         reflect: true

@@ -1,7 +1,7 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "ed-icon", {
+  polymer( "ed-icon", {
     /* PROPERTIES */
     _nameList: [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ],
     // nameList

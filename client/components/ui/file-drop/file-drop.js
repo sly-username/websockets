@@ -1,11 +1,11 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
   /**
    * @name file-drop
    * @description this is a file drop element
    */
-  Polymer( "file-drop", {
+  polymer( "file-drop", {
     publish: {
       fill: {
         reflect: true

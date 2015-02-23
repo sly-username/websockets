@@ -1,6 +1,6 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
-  Polymer( "ed-modal", {
+  polymer( "ed-modal", {
     publish: {
       clickoff: {
         value: false,

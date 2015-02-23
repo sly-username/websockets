@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
   var copyAttributes = function( elemFrom, elemTo, attrs ) {
@@ -11,7 +11,7 @@
     });
   };
 
-  Polymer( "checkbox-select", {
+  polymer( "checkbox-select", {
     ready: function() {
       this.checkboxField = this.shadowRoot.getElementById( "checkbox-field" );
 
