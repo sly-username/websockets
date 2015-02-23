@@ -24,7 +24,6 @@
       }
     },
     /*** PROPERTIES ***/
-
     // percentage
     get valuePercentage() {
       return this._valuePercentage;
@@ -40,22 +39,19 @@
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[ 0 ];
       this.maxText = this.shadowRoot.getElementsByClassName( "max-text" )[ 0 ];
       this.progressDisplay = this.shadowRoot.getElementsByClassName( "progress-display" )[ 0 ];
-      this.valuePercentage = Math.round( this.value * 100 ) / this.max;
-      this.innerBar.style.width = this._valuePercentage + "%";
 
       // showValue
       if ( this.hasAttribute( "show-value" ) ) {
         this.showValue = this.attributes[ "show-value" ].value;
       }
-
       // animation
       if ( this.hasAttribute( "animation" ) ) {
         this.animation = this.attributes.animation.value;
       }
+      this.updatePercentage();
     },
     /*** END LIFECYCLE ***/
     /*** FUNCTIONS ***/
-
     attributeChanged: function( attrName, oldVal, newVal ) {
 
       if ( newVal == null && ( /^(value|max|direction)/ ).test( attrName ) ) {
@@ -66,6 +62,8 @@
       if ( newVal == null && attrName === "show-value" ) {
         this.showValue = false;
       }
+
+      this.updatePercentage();
     },
     valueChanged: function( oldValue, newValue ) {
       if ( newValue == null ) {
@@ -83,12 +81,15 @@
       }
     },
     showValueChanged: function( oldValue, newValue ) {
-
       if ( newValue ) {
         this.setAttribute( "show-value", "" );
       } else {
         this.removeAttribute( "show-value" );
       }
+    },
+    updatePercentage: function() {
+      this.valuePercentage = Math.round( this.value * 100  / this.max );
+      this.innerBar.style.width = this.valuePercentage + "%";
     }
     /*** END FUNCTIONS ***/
   });

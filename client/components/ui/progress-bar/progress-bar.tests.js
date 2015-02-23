@@ -38,7 +38,7 @@
         createdSpy.restore();
       });
 
-      test( "attached: can be added to another DOM Element", function() {
+      test.skip( "attached: can be added to another DOM Element", function() {
         var newElement = document.createElement( "progress-bar" ),
             attachedSpy = sinon.spy( newElement, "attached" );
 
@@ -54,7 +54,7 @@
         attachedSpy.restore();
       });
 
-      test( "detached: can be removed from another DOM element", function() {
+      test.skip( "detached: can be removed from another DOM element", function() {
         var newElement = document.createElement( "progress-bar" ),
             detachedSpy = sinon.spy( newElement, "detached" );
 
