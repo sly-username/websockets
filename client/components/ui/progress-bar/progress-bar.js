@@ -1,9 +1,9 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "progress-bar", {
+  polymer( "progress-bar", {
 
-    /*** PROPERTIES ***/
+    /* PROPERTIES */
     // show value
     get showValue() {
       return this._showValue;
@@ -21,8 +21,8 @@
       this._valuePercentage = value;
       return value;
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+    /* END PROPERTIES */
+    /* LIFECYCLE */
     ready: function() {
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[ 0 ];
 
@@ -57,8 +57,8 @@
         this.animation = this.attributes.animation.value;
       }
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
+    /* END LIFECYCLE */
+    /* FUNCTIONS */
 
     valueChanged: function( oldVal, newVal ) {
       this.updateRange( "value", newVal );
@@ -99,6 +99,6 @@
           break;
       }
     }
-    /*** END FUNCTIONS ***/
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

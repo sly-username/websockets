@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
   var copyAttributes = function( elemFrom, elemTo, attrs ) {
@@ -11,7 +11,7 @@
     });
   };
 
-  Polymer( "ed-scrubber", {
+  polymer( "ed-scrubber", {
     get format() {
       return this._format;
     },

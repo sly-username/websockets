@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
   var copyableAttributes = [ "type", "disabled", "required", "pattern", "placeholder" ],
     copyAttributes = function( elemFrom, elemsTo, attrs ) {
@@ -14,7 +14,7 @@
       });
     };
 
-  Polymer( "paired-input", {
+  polymer( "paired-input", {
     _primaryBox: null,
     _confirmBox: null,
     _errorDiv: null,
