@@ -1,7 +1,7 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
-  Polymer( "scroll-box-vertical", {
-    /*** PROPERTIES ***/
+  polymer( "scroll-box-vertical", {
+    /* PROPERTIES */
     // Disabled
     get disabled() {
       if ( !null ) {
@@ -28,13 +28,13 @@
         return ( this._showArrow = value );
       }
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+    /* END PROPERTIES */
+    /* LIFECYCLE */
     ready: function() {
       this.innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[ 0 ];
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
+    /* END LIFECYCLE */
+    /* FUNCTIONS */
     // Scroll Up
     scrollUp: function( value ) {
       var scrollPosition = this.innerBox.scrollTop;
@@ -65,7 +65,6 @@
           break;
       }
     }
-    /*** END FUNCTIONS ***/
-
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

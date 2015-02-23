@@ -1,8 +1,8 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "poc-viewer", {
-    /*** LIFECYCLE ***/
+  polymer( "poc-viewer", {
+    /* LIFECYCLE */
     ready: function() {
       this.link = document.createElement( "link" );
     },
@@ -12,7 +12,7 @@
       }
       this.createLink();
     },
-    /*** FUNCTIONS ***/
+    /* FUNCTIONS */
     setUrl: function( path ) {
       return this.exampleUrl = `components/${path}/example.html`;
     },

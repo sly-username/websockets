@@ -2,14 +2,14 @@
   "use strict";
 
   Polymer( "ed-icon", {
-    /*** PROPERTIES ***/
+    /* PROPERTIES */
     _nameList: [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ],
     // nameList
     get nameList() {
       return this._nameList;
     },
-    /*** END PROPERTIES ***/
-    /*** FUNCTIONS ***/
+    /* END PROPERTIES */
+    /* FUNCTIONS */
     nameChanged: function( oldVal, newVal ) {
       this.name = newVal;
       this.setAttribute( "name", newVal );
@@ -18,6 +18,6 @@
       this.rotation = newVal;
       this.setAttribute( "rotation", newVal );
     }
-    /*** END FUNCTIONS ***/
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

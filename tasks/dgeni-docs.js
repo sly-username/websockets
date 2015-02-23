@@ -15,6 +15,7 @@ gulp.task( "docs:components", function() {
   }
 });
 
+/* TODO
 gulp.task( "docs:less", function() {
   var dgeni;
 
@@ -26,3 +27,6 @@ gulp.task( "docs:less", function() {
     throw error;
   }
 });
+*/
+
+gulp.task( "docs", [ "clean:docs", "docs:components" ] );

@@ -2,13 +2,13 @@
   "use strict";
 
   polymer( "new-element", {
-    /*** LIFECYCLE ***/
+    /* LIFECYCLE */
     ready: function() {},
     attached: function() {},
     detached: function() {},
     attributeChanged: function( attrName, oldValue, newValue ) {}
-    /*** PROPERTIES ***/
-    /*** METHODS ***/
+    /* PROPERTIES */
+    /* METHODS */
   });
 
 })( window.Polymer );

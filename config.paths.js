@@ -317,7 +317,7 @@ paths.dgeni = {
       }
     ],
     templateFolder: join( paths.dgeni, "templates" ),
-    templatePattern: "common.template.html",
+    templatePattern: "components.template.html",
     outputFolder: join( paths.docs, "components" )
   }
 };
