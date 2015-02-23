@@ -257,6 +257,28 @@
             .and.to.equal( false );
         });
       });
+
+      suite( "Methods", function() {
+        suite( "onDrop", function() {
+          // Skiping Test for Selenium
+          test.skip( "should fire on a drop event", function() {
+            var fileDrop = document.createElement( "file-drop" );
+            // Skipping tests until Selenium gets integrated for drag and drop
+            fileDrop.onDrop( function( evt ) {
+            });
+          });
+        });
+
+        suite( "onDragOver", function() {
+          // Skiping Test for Selenium
+          test.skip( "should fire on a drag over event", function() {
+            var fileDrop = document.createElement( "file-drop" );
+            // Skipping tests until Selenium gets integrated for drag and drop
+            fileDrop.onDragOver( function( evt ) {
+            });
+          });
+        });
+      });
     });
   });
 })( window, document, window.Polymer, window.sinon, window.chai );
