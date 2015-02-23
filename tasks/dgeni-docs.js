@@ -29,4 +29,4 @@ gulp.task( "docs:less", function() {
 });
 */
 
-gulp.task( "docs", [ "clean:docs", "docs:components" ] );
+gulp.task( "docs", gulp.series( "clean:docs", "docs:components" ) );
