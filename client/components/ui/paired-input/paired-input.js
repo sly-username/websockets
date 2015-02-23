@@ -17,22 +17,18 @@
   Polymer( "paired-input", {
     publish: {
       type: {
-        value: false,
         reflect: true
       },
       placeholder: {
-        value: false,
         reflect: true
       },
       pattern: {
         reflect: true
       },
       required: {
-        value: false,
         reflect: true
       },
       disabled: {
-        value: false,
         reflect: true
       },
       singleline: {
@@ -71,7 +67,8 @@
         this.primaryBox.style.display = this.confirmBox.style.display = "inline";
       }
 
-      if ( this.attributes.type && !( /text|password|email|tel|number|url|search/ ).test( this.attributes.type.value ) ) {
+      if ( this.hasAttribute( "type" ) && !( /text|password|email|tel|number|url|search/ )
+        .test( this.attributes.type.value ) ) {
         this.setAttribute( "type", "text" );
       }
     },
