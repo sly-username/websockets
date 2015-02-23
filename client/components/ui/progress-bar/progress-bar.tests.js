@@ -38,6 +38,7 @@
         createdSpy.restore();
       });
 
+      // Omitted due to polymer not creating a attached function
       test.skip( "attached: can be added to another DOM Element", function() {
         var newElement = document.createElement( "progress-bar" ),
             attachedSpy = sinon.spy( newElement, "attached" );
@@ -54,6 +55,7 @@
         attachedSpy.restore();
       });
 
+      // Omitted due to polymer not creating a detached function
       test.skip( "detached: can be removed from another DOM element", function() {
         var newElement = document.createElement( "progress-bar" ),
             detachedSpy = sinon.spy( newElement, "detached" );
@@ -145,6 +147,7 @@
             .and.equals( 0 );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"value\" to null resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -167,6 +170,7 @@
             .and.equals( 0 );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"value\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -256,6 +260,7 @@
             .and.equals( 1 );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"max\" to null resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -272,6 +277,7 @@
             .and.equals( 1 );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"max\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -288,6 +294,7 @@
             .and.equals( 1 );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"max\" to less than 1 resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -433,6 +440,7 @@
             .and.equals( "RTL" );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"direction\" to null resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -449,6 +457,7 @@
             .and.equals( "RTL" );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"direction\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -465,6 +474,7 @@
             .and.equals( "RTL" );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting \"direction\" to other than RTL or LTR sets to default", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -545,6 +555,7 @@
             .and.equals( false );
         });
 
+        // Omitted due to polymer ordering issue
         test.skip( "setting property to false removes attribute", function() {
           var bar = document.createElement( "progress-bar" );
 
