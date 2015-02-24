@@ -1,7 +1,11 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "file-drop", {
+  /**
+   * @name file-drop
+   * @description this is a file drop element
+   */
+  polymer( "file-drop", {
     publish: {
       fill: {
         reflect: true
@@ -15,12 +19,12 @@
     },
     fileList: null,
     fileArr: [],
-    /*** PROPERTIES ***/
+    /* PROPERTIES */
     get files() {
       return this.fileArr;
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+    /* END PROPERTIES */
+    /* LIFECYCLE */
     ready: function() {
       this.holder = this.shadowRoot.getElementById( "holder" );
     },
@@ -49,8 +53,8 @@
         this.formData.append( "userFiles", this.fileArr );
       }.bind( this ) );
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
+    /* END LIFECYCLE */
+    /* FUNCTIONS */
     onDrop: function( callback ) {
       this.holder.addEventListener( "drop", callback );
     },
@@ -60,6 +64,6 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       this[ attrName ] = newVal;
     }
-    /*** END FUNCTIONS ***/
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

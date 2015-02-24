@@ -99,7 +99,7 @@
   "requireSpacesInsideParentheses": {
     "all": true,
     "except": [
-//      "(", ")",
+      "(", ")",
       "{", "}",
       "[", "]",
       "/"

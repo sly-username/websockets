@@ -1,6 +1,6 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
-  Polymer( "ed-modal", {
+  polymer( "ed-modal", {
     publish: {
       clickoff: {
         value: false,
@@ -21,7 +21,7 @@
     set isOpen( value ) {
       return this._isOpen;
     },
-    /*** LIFECYCLE ***/
+    /* LIFECYCLE */
     ready: function() {
       this.closeListener = this.close.bind( this );
       this.closeModalListener = this.closeModal.bind( this );
@@ -46,8 +46,8 @@
         this.clickoffListener( "add" );
       }
     },
-    /*** FUNCTIONS ***/
-    /*** event listeners ***/
+    /* FUNCTIONS */
+    /* event listeners */
     triggerListener: function( flag, value ) {
       this.eventList.forEach( function( e ) {
         var elems = document.querySelectorAll( value );
@@ -68,7 +68,7 @@
         this.modalContainer[ flag + "EventListener" ]( e, this.closeModalListener );
       }.bind( this ) );
     },
-    /*** show/hide modal ***/
+    /* show/hide modal */
     open: function() {
       this._isOpen = true;
       this.setZIndex();
@@ -84,7 +84,7 @@
       }
       this._isOpen = false;
     },
-    /*** attribute change ***/
+    /* attribute change */
     attributeChanged: function( attrName, oldVal, newVal ) {
       switch ( attrName ) {
         case "trigger":
@@ -103,7 +103,7 @@
           break;
       }
     },
-    /*** z-index ***/
+    /* z-index */
     findHighestZIndex: function() {
       var highestZ = 1,
           siblingsList = Array.from( this.parentNode.children ).filter( function( elem ) {

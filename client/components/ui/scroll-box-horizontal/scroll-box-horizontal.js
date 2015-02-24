@@ -1,8 +1,8 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
-  Polymer( "scroll-box-horizontal", {
+  polymer( "scroll-box-horizontal", {
 
-    /*** PROPERTIES ***/
+    /* PROPERTIES */
       // Disabled
     get disabled() {
       if ( !null ) {
@@ -29,13 +29,13 @@
         return ( this._showArrow = value );
       }
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+    /* END PROPERTIES */
+    /* LIFECYCLE */
     ready: function() {
       this.innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[ 0 ];
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
+    /* END LIFECYCLE */
+    /* FUNCTIONS */
     // Scroll Right
     scrollBoxRight: function( value ) {
       var currentPosition = this.innerBox.scrollLeft;
@@ -66,7 +66,6 @@
           break;
       }
     }
-    /*** END FUNCTIONS ***/
-
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

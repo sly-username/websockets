@@ -1,9 +1,9 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "select-box", {
+  polymer( "select-box", {
     _options: [],
-    /*** PROPERTIES ***/
+    /* PROPERTIES */
     // Disabled
     get disabled() {
       if ( !null ) {
@@ -40,8 +40,8 @@
         }
       }
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+    /* END PROPERTIES */
+    /* LIFECYCLE */
     ready: function() {
       this.listItems = this.shadowRoot.getElementsByTagName( "li" );
       this.mainBox = this.shadowRoot.getElementById( "is-focus" );
@@ -66,8 +66,8 @@
         });
       }.bind( this ) );
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
+    /* END LIFECYCLE */
+    /* FUNCTIONS */
     sizeChanged: function( oldVal, newVal ) {
       if ( this.size > 0 ) {
         this.size = newVal;
@@ -93,6 +93,6 @@
           break;
       }
     }
-    /*** END FUNCTIONS ***/
+    /* END FUNCTIONS */
   });
 })( window.Polymer );
