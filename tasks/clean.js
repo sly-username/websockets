@@ -13,9 +13,10 @@ clean = function( path ) {
 
 gulp.task( "clean:dev", clean( config.dev ) );
 gulp.task( "clean:prod", clean( config.prod ) );
+gulp.task( "clean:coverage", clean( config.coverage ) );
 
 gulp.task( "clean:docs:components", clean( config.dgeni.components.outputFolder ) );
 
-gulp.task( "clean", gulp.series( "clean:dev", "clean:prod" ) );
+gulp.task( "clean", gulp.parallel( "clean:dev", "clean:prod", "clean:coverage" ) );
 
 gulp.task( "clean:docs", gulp.series( "clean:docs:components" ) );

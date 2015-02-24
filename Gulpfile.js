@@ -113,6 +113,7 @@ gulp.task( "build:dev", gulp.series(
 
 /*** TESTING TASKS ***/
 gulp.task( "build:tests:only", gulp.parallel(
+  "clean:coverage",
   "symlink:tests",
   "vendor:tests",
   "build:tests:index"

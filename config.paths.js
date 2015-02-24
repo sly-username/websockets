@@ -8,7 +8,8 @@
  * be at the root of the project directory
  ***/
 
-var join = require( "path" ).join,
+var path = require( "path" ),
+  join = path.join,
   paths = {
     root:             __dirname,
     client:           join( __dirname, "client" ),
@@ -25,7 +26,7 @@ var join = require( "path" ).join,
 
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
-paths.covearge = join( paths.build, "coverage" );
+paths.coverage = join( paths.build, "coverage" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
@@ -33,55 +34,42 @@ paths.vendor = {
     dev: join( paths.dev, "vendor" ),
     prod: join( paths.prod, "vendor" )
   },
-  src: [
-      // Stuff in bower_components
-      // Web Components Shim
-      join( "webcomponentsjs", "webcomponents.js" ),
-
-      // Polymer
-      join( "polymer", "polymer.js" ),
-
-      // SystemJS + source map
-      join( "system.js", "dist", "system.js" ),
-//      join( "system.js", "dist", "system.src.js" ),
-      join( "system.js", "dist", "system.js.map" ),
-
-      // ES6-Module-Loader + source map
-      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-//      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
-
-      // Director (Routing)
-      join( "director", "build", "director.js" )
-    ].map( s => join( paths.bowerComponents, s )
-    ).concat([
-      // Stuff in node_modules
-      join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( s => join( paths.nodeModules, s ) ) ),
-  min: [
-      // Stuff in bower_components
-      join( "webcomponentsjs", "webcomponents.min.js" ),
-      join( "polymer", "polymer.min.js" ),
-      join( "system.js", "dist", "system.js" ),
-      join( "system.js", "dist", "system.js.map" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
-      join( "director", "build", "director.min.js" )
-    ].map( s => join( paths.bowerComponents, s )
-    ).concat([
-      // Stuff in node_modules
-      join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( s => join( paths.nodeModules, s ) ) ),
   tests: [
     // in node_modules
-    join( "mocha", "mocha.js" ),
     join( "mocha", "mocha.css" ),
+    join( "mocha", "mocha.js" ),
     join( "chai", "chai.js" ),
-    join( "chai-as-promised", "lib", "chai-as-promised.js" ),
     join( "sinon", "pkg", "sinon.js" ),
+    join( "chai-as-promised", "lib", "chai-as-promised.js" ),
     join( "sinon-chai", "lib", "sinon-chai.js" )
-  ].map( p => join( paths.nodeModules, p ) )
+  ].map( p => join( paths.nodeModules, p ) ),
+  src: [
+    join( paths.bowerComponents, "webcomponentsjs", "webcomponents.js" ),
+    join( paths.bowerComponents, "polymer", "polymer.js" ),
+    join( paths.nodeModules, "traceur", "bin", "traceur-runtime.js" ),
+    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.js" ),
+//    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.src.js" ),
+    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+    join( paths.bowerComponents, "system.js", "dist", "system.js" ),
+//    join( paths.bowerComponents, "system.js", "dist", "system.src.js" ),
+    join( paths.bowerComponents, "system.js", "dist", "system.js.map" ),
+    join( paths.bowerComponents, "director", "build", "director.js" )
+  ],
+  minMap: {
+    "webcomponents.js": "webcomponents.min.js",
+    "polymer.js": "polymer.min.js",
+    "director.js": "director.min.js"
+  }
 };
+// Create min source paths from minMap and src
+paths.vendor.min = paths.vendor.src.map( source => {
+  var base = path.basename( source );
+
+  if ( paths.vendor.minMap.hasOwnProperty( base ) ) {
+    return source.replace( base, paths.vendor.minMap[base] );
+  }
+  return source;
+});
 
 /*** TODO COPY (FOR PROD) ***/
 
