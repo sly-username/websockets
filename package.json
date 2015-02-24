@@ -51,7 +51,7 @@
     "dev": "npm run-script gulp dev",
     "lint": "npm run-script gulp lint",
     "jscs": "npm run-script gulp jscs",
-    "projectz": "node ./node_modules/projectz/bin/projectz compile",
+    "projectz": "projectz compile",
     "docs": "npm run-script gulp docs",
     "gulp": "node --harmony --harmony_arrow_functions node_modules/gulp/bin/gulp.js"
   },
