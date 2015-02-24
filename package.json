@@ -13,7 +13,9 @@
     "Sylvia Hwang <shwang@eardish.com>",
     "Khoa Ngo <kngo@eardish.com>"
   ],
-  "license": "To Be Decided",
+  "license": {
+    "type": "To Be Decided"
+  },
   "homepage": "https://github.com/eardish/clientapp",
   "repository": {
     "type": "git",
@@ -22,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/eardish/clientapp/issues"
   },
-  "directories":{
+  "directories": {
     "doc": "./docs"
   },
   "badges": {
@@ -31,6 +33,7 @@
     "daviddev": true,
     "waffleio": true,
     "npm": false,
+    "npmdownloads": false,
     "gittip": false,
     "flattr": false,
     "paypal": false,
