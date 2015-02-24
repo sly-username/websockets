@@ -96,10 +96,8 @@
         copyAttributes( this, this.boxes, [ attrName ]);
       } else if ( attrName === "type" ) {
         if ( ( /text|password|email|tel|number|url|search/ ).test( newVal ) ) {
-          console.log( newVal.search( /text|password|email|tel|number|url|search/ ) );
           this.type = newVal;
         } else {
-          console.log( newVal );
           this.type = "text";
         }
       } else if ( attrName === "single-line" ) {

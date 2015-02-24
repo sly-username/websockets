@@ -54,34 +54,109 @@
     suite( "Attributes and Properties", function() {
       // Tests for Type
       suite( "type", function() {
-        test( "default value is \"text\"", function() {
-          var pairedInput = document.createElement( "paired-input" ),
-              setTo = "set via Attribute";
+        suite( "default values", function() {
+          test( "default value is \"text\"", function() {
+            var pairedInput = document.createElement( "paired-input" ),
+                setTo = "set via Attribute";
 
-          pairedInput.setAttribute( "type", setTo );
+            pairedInput.setAttribute( "type", setTo );
 
-          expect( pairedInput.hasAttribute( "type" ) )
-            .to.equal( true );
+            expect( pairedInput.hasAttribute( "type" ) )
+              .to.equal( true );
 
-          expect( pairedInput.getAttribute( "type" ) )
-            .to.be.a( "string" )
-            .that.equals( "text" );
+            expect( pairedInput.getAttribute( "type" ) )
+              .to.be.a( "string" )
+              .that.equals( "text" );
 
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.equals( '<paired-input type="text"></paired-input>' );
+            expect( pairedInput )
+              .to.have.property( "outerHTML" )
+              .that.equals( '<paired-input type="text"></paired-input>' );
+          });
+
+          test( "setting via setAttribute, default value \"text\" reflects to property", function() {
+            var pairedInput = document.createElement( "paired-input" ),
+                setTo = "set via Attribute";
+
+            pairedInput.setAttribute( "type", setTo );
+
+            expect( pairedInput )
+              .to.have.property( "type" )
+              .that.equals( "text" )
+              .and.equals( pairedInput.getAttribute( "type" ) );
+          });
+
+          test( "setting via property, default value \"text\" reflects to attribute", function() {
+            var pairedInput = document.createElement( "paired-input" );
+
+            pairedInput.type = "invalid-value";
+
+            expect( pairedInput.getAttribute( "type" ) )
+              .to.be.a( "string" )
+              .that.equals( "text" );
+          });
         });
 
-        [
-          "text",
-          "password",
-          "email",
-          "tel",
-          "number",
-          "url",
-          "search"
-        ].forEach( function( value ) {
-            test( "can be set via setAttribute to: " + value, function(){
+        suite( "attempting to set invalid values", function() {
+          test( "when set to an invalid value via setAttribute defaults to text", function() {
+            var pairedInput = document.createElement( "paired-input" );
+
+            pairedInput.setAttribute( "type", "invalid-value" );
+
+            expect( pairedInput.hasAttribute( "type" ) )
+              .to.equal( true );
+
+            expect( pairedInput.getAttribute( "type" ) )
+              .to.be.a( "string" )
+              .that.equals( "text" );
+          });
+
+          test( "when set to an invalid value via setAttribute reflects to property", function() {
+            var pairedInput = document.createElement( "paired-input" );
+
+            pairedInput.setAttribute( "type", "invalid-value" );
+
+            expect( pairedInput.hasAttribute( "type" ) )
+              .to.equal( true );
+
+            expect( pairedInput )
+              .to.have.property( "type" )
+              .that.equals( "text" )
+              .and.equals( pairedInput.getAttribute( "type" ) );
+          });
+
+          test( "when set to an invalid value via property defaults to text", function() {
+            var pairedInput = document.createElement( "paired-input" );
+
+            pairedInput.type = "invalid-value";
+
+            expect( pairedInput )
+              .to.have.property( "type" )
+              .that.equals( "text" )
+              .and.equals( pairedInput.getAttribute( "type" ) );
+          });
+
+          test( "when set to an invalid value via property reflects to attribute", function() {
+            var pairedInput = document.createElement( "paired-input" );
+
+            pairedInput.type = "invalid-value";
+
+            expect( pairedInput.getAttribute( "type" ) )
+              .to.be.a( "string" )
+              .that.equals( "text" );
+          });
+        });
+
+        suite( "set acceptable values via setAttribute", function() {
+          [
+            "text",
+            "password",
+            "email",
+            "tel",
+            "number",
+            "url",
+            "search"
+          ].forEach( function( value ) {
+            test( "can be set via setAttribute to: " + value, function() {
               var pairedInput = document.createElement( "paired-input" );
 
               pairedInput.setAttribute( "type", value );
@@ -95,32 +170,72 @@
             });
           });
 
-        test( "when set to an invalid value via setAttribute default to text", function() {
-          var pairedInput = document.createElement( "paired-input" );
+          [
+            "text",
+            "password",
+            "email",
+            "tel",
+            "number",
+            "url",
+            "search"
+          ].forEach( function( value ) {
+            test( "setting via " + value + " reflects to property", function() {
+              var pairedInput = document.createElement( "paired-input" );
 
-          pairedInput.setAttribute( "type", "not-a-real-thing" );
+              pairedInput.setAttribute( "type", value );
 
-          expect( pairedInput.hasAttribute( "type" ) )
-            .to.equal( true );
-
-          expect( pairedInput.getAttribute( "type" ) )
-            .to.be.a( "string" )
-            .that.equals( "text" );
+              expect( pairedInput )
+                .to.have.property( "type" )
+                .that.equals( value )
+                .and.equals( pairedInput.getAttribute( "type" ) );
+            });
+          });
         });
 
-        test( "can be removed via attribute", function() {
-          var pairedInput = document.createElement( "paired-input" );
+        suite( "set acceptable values via property", function() {
+          [
+            "text",
+            "password",
+            "email",
+            "tel",
+            "number",
+            "url",
+            "search"
+          ].forEach( function( value ) {
+            test( "can be set via property to: " + value, function() {
+              var pairedInput = document.createElement( "paired-input" );
 
-          pairedInput.setAttribute( "type", "something" );
-          pairedInput.removeAttribute( "type" );
+              pairedInput.type = value;
 
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input></paired-input>" );
+              expect( pairedInput )
+                .to.have.property( "type" )
+                .that.equals( value )
+                .and.equals( pairedInput.getAttribute( "type" ) );
+            });
+          });
+
+          [
+            "text",
+            "password",
+            "email",
+            "tel",
+            "number",
+            "url",
+            "search"
+          ].forEach( function( value ) {
+            test( "setting via " + value + " reflects to attribute", function() {
+              var pairedInput = document.createElement( "paired-input" );
+
+              pairedInput.type = value;
+
+              expect( pairedInput.getAttribute( "type" ) )
+                .to.be.a( "string" )
+                .that.equals( value );
+            });
+          });
         });
-
       });
+
       // Tests for placeholder
       suite( "placeholder", function() {
 
