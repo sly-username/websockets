@@ -88,6 +88,9 @@ paths.vendor = {
 /*** SYMLINK ***/
 paths.symlink = {
   src: [
+    // link these
+    join( paths.client, "**", "*.*" ),
+
     // don't link these
     // less, markdown, es6 js, test html,
     join( "!**", "*.less" ),
@@ -96,10 +99,7 @@ paths.symlink = {
     join( "!" + paths.client, "domain", "**", "*.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
-    join( "!**", ".new" ),
-
-    // link these (everything else)
-    join( paths.client, "**", "*.*" )
+    join( "!**", ".new" )
   ],
   tests: [
     join( paths.client, "**", "*.tests.html" ),
@@ -124,14 +124,16 @@ paths.less = {
     join( "**", "fonts", "*.less" )
   ].map( s => join( paths.client, s ) )
 };
-paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
+paths.less.compile = paths.less.included
+  .map( s => join( "!", s ) )
+  .concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
   all:            [
+    join( paths.root, "**", "*.js" ),
     join( "!", paths.bowerComponents ),
-    join( "!", paths.nodeModules ),
-    join( paths.root, "**", "*.js" )
+    join( "!", paths.nodeModules )
   ],
   client: join( paths.client, "**", "*.js" ),
   tasks: join( paths.tasks, "**", "*.js" ),
