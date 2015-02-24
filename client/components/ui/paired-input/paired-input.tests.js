@@ -52,7 +52,8 @@
     });
 
     suite( "Attributes and Properties", function() {
-      // Tests for Type
+
+      /** Tests for Type **/
       suite( "type", function() {
         suite( "default values", function() {
           test( "default value is \"text\"", function() {
@@ -236,13 +237,8 @@
         });
       });
 
-      // Tests for placeholder
+      /** Tests for placeholder **/
       suite( "placeholder", function() {
-
-        // set placeholder
-        // expect( elem.$.primaryBox ).has( "placeholder" ).equals( "set" )
-        // expect( elem.$.confirmBox ).has( "placeholder" ).equals( "Confirm" + "set" )
-
         test( "can be set via \"setAttribute\"", function() {
           var pairedInput = document.createElement( "paired-input" ),
               setTo = "Set via Attribute";
@@ -257,10 +253,10 @@
 
           expect( pairedInput )
             .to.have.property( "outerHTML" )
-            .that.equals( "<paired-input placeholder=\" + setTo + \"></paired-input>" );
+            .that.equals( "<paired-input placeholder=\"" + setTo + "\"></paired-input>" );
         });
 
-        test( "can be removed via attribute", function() {
+        test( "can be removed via removeAttribute", function() {
           var pairedInput = document.createElement( "paired-input" );
 
           pairedInput.setAttribute( "placeholder", "something" );
@@ -272,19 +268,45 @@
             .and.equals( "<paired-input></paired-input>" );
         });
 
-        test( "the placeholder value for the confirm box should read \"confirm placeholder.value\"",
+        test( "when set via setAttribute, placeholder value should reflect to shadowDom",
           function() {
-            var pairedInput = document.createElement( "confirm-input" );
+            var pairedInput = document.createElement( "paired-input" ),
+                setTo = "Set via Attribute";
 
-            pairedInput.setAttribute( "placeholder", "something" );
-            pairedInput.removeAttribute( "placeholder" );
+            pairedInput.setAttribute( "placeholder", setTo );
 
-            expect( pairedInput )
-              .to.have.property( "outerHTML" )
-              .that.is.a( "string" )
-              .and.equals( "<paired-input></paired-input>" );
+            expect( pairedInput.$.primaryBox.getAttribute( "placeholder" ) )
+              .to.be.a( "string" )
+              .that.equals( setTo );
+
+            console.log( pairedInput.$.confirmBox.getAttribute( "placeholder" ) );
+            expect( pairedInput.$.confirmBox.getAttribute( "placeholder" ) )
+              .to.be.a( "string" )
+              .that.equals( "Confirm " + setTo );
+
+            // expect( elem.$.primaryBox ).has( "placeholder" ).equals( "set" )
+            // expect( elem.$.confirmBox ).has( "placeholder" ).equals( "Confirm" + "set" )
+
+        });
+
+        test( "when set via property, placeholder value should reflect to shadowDom",
+          function() {
+            var pairedInput = document.createElement( "paired-input" ),
+                setTo = "Set via Attribute";
+
+            pairedInput.placeholder = setTo;
+
+            expect( pairedInput.$.primaryBox )
+              .to.have.property( "placeholder" )
+              .that.equals( setTo );
+
+            console.log( pairedInput.$.confirmBox.placeholder );
+            expect( pairedInput.$.confirmBox )
+              .to.have.property( "placeholder" )
+              .that.equals( "Confirm " + setTo );
           });
       });
+
       // Tests for pattern
       suite( "pattern", function() {
         test( "can be set via \"setAttribute\"", function() {
