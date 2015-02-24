@@ -90,13 +90,12 @@ gulp.task( "less:dev", function() {
 });
 
 // WATCH LESS COMPILE TO DEV
-gulp.task( "less:watch", [ "less:watch:dev" ]);
-gulp.task( "less:watch:dev", function() {
+gulp.task( "less:watch:dev", function( done ) {
   // regular watch included less, recompile all
-  gulp.watch( config.less.included, [ "less:dev" ]);
+  gulp.watch( config.less.included, gulp.series( "less:dev" ));
 
   // watch all non-include and compile per file
-  return gulp.watch( config.less.compile )
+  gulp.watch( config.less.compile )
     .on( "change", function( event ) {
       var destinationPath;
 
@@ -106,7 +105,9 @@ gulp.task( "less:watch:dev", function() {
         return runCompile( event.path, destinationPath, lessOptions );
       }
     });
+  done();
 });
+gulp.task( "less:watch", gulp.series( "less:watch:dev" ) );
 
 // COMPILE FOR PRODUCTION
 // TODO PRODUCTION OPTIMIZATIONS
@@ -116,4 +117,4 @@ gulp.task( "less:prod", function() {
   return runCompile( config.less.compile, config.less.out.prod, opts );
 });
 
-gulp.task( "less", [ "less:dev" ]);
+gulp.task( "less", gulp.series( "less:dev" ) );

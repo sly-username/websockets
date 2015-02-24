@@ -1,10 +1,22 @@
 {
   "name": "Eardish-Client-App",
-  "version": "0.0.1",
+  "title": "Eardish Client Application",
+  "version": "0.0.2",
   "private": true,
-  "description": "The Client for the Eardish Platform",
-  "author": "2014+ Eardish Corporation <ryan@eardish.com> (http://eardish.com)",
-  "maintainer": "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
+  "description": "The Client Application for the Eardish Platform",
+  "author": "Eardish Corp. <ryan@eardish.com> (https://eardish.com/)",
+  "maintainers": [
+    "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)"
+  ],
+  "contributors": [
+    "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
+    "Sylvia Hwang <shwang@eardish.com>",
+    "Khoa Ngo <kngo@eardish.com>"
+  ],
+  "license": {
+    "type": "To Be Decided"
+  },
+  "homepage": "https://github.com/eardish/clientapp",
   "repository": {
     "type": "git",
     "url": "https://github.com/eardish/clientapp.git"
@@ -12,7 +24,22 @@
   "bugs": {
     "url": "https://github.com/eardish/clientapp/issues"
   },
-  "homepage": "https://github.com/eardish/clientapp",
+  "directories": {
+    "doc": "./docs"
+  },
+  "badges": {
+    "travis": true,
+    "david": true,
+    "daviddev": true,
+    "waffleio": "todo",
+    "npm": false,
+    "npmdownloads": false,
+    "gittip": false,
+    "flattr": false,
+    "paypal": false,
+    "bitcoin": false,
+    "wishlist": false
+  },
   "engines": {
     "node": ">=0.12.0",
     "iojs": ">=1.2.0"
@@ -24,6 +51,8 @@
     "dev": "npm run-script gulp dev",
     "lint": "npm run-script gulp lint",
     "jscs": "npm run-script gulp jscs",
+    "projectz": "projectz compile",
+    "docs": "npm run-script gulp docs",
     "gulp": "node --harmony --harmony_arrow_functions node_modules/gulp/bin/gulp.js"
   },
   "engineStrict": true,
@@ -33,16 +62,18 @@
   ],
   "devDependencies": {
     "bower": "=1.3.12",
-    "chai": "=2.0.0",
+    "chai": "=2.1.0",
     "chai-as-promised": "=4.2.0",
     "del": "=1.1.1",
+    "dgeni": "=0.4.1",
+    "dgeni-packages": "=0.10.10",
     "dotenv": "=0.5.1",
-    "gulp": "=3.8.10",
-    "gulp-eslint": "=0.2.2",
+    "gulp": "git://github.com/gulpjs/gulp.git#4.0",
+    "gulp-eslint": "=0.5.0",
     "gulp-jscs": "=1.4.0",
     "gulp-plumber": "=0.6.6",
     "gulp-symlink": "=2.1.0",
-    "gulp-util": "=3.0.2",
+    "gulp-util": "=3.0.3",
     "karma": "=0.12.31",
     "karma-chai": "=0.1.0",
     "karma-chai-plugins": "=0.2.4",
@@ -51,19 +82,20 @@
     "karma-coverage": "=0.2.7",
     "karma-mocha": "=0.1.10",
     "karma-mocha-reporter": "=1.0.0",
-    "koa": "=0.15.0",
+    "karma-nyan-reporter": "git://github.com/Ashwell/karma-nyan-reporter#562dbc1ea18c4b540675494329075fea9b587fbe",
+    "koa": "=0.18.0",
     "koa-send": "=1.3.1",
     "less": "=2.4.0",
     "livereload": "=0.3.6",
-    "lodash": "=3.2.0",
+    "lodash": "=3.3.0",
     "mocha": "=2.1.0",
+    "projectz": "=0.4.3",
     "requiredir": "=1.0.6",
-    "run-sequence": "=1.0.2",
     "sinon": "=1.12.2",
     "sinon-chai": "=2.7.0",
     "through2": "=0.6.3"
   },
   "dependencies": {
-    "traceur": "=0.0.81"
+    "traceur": "=0.0.85"
   }
 }

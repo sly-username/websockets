@@ -68,7 +68,7 @@ config.jscs.taskNames.forEach( function( property ) {
 });
 
 // jscs aliased to jscs:all
-gulp.task( "jscs", [ "jscs:all" ]);
+gulp.task( "jscs", gulp.series( "jscs:all" ) );
 
 // jscs:watch aliased to jscs:watch:client
-gulp.task( "jscs:watch", [ "jscs:watch:client" ]);
+gulp.task( "jscs:watch", gulp.series( "jscs:watch:client" ) );
