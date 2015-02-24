@@ -170,6 +170,28 @@
             .and.equals( 0 );
         });
 
+        // Testing Sinon stuff
+        test.skip( "setting \"value\" to null resets property to default value", function() {
+          var bar = document.createElement( "progress-bar" ),
+              stub = sinon.stub();
+
+          stub.withArgs( null ).returns( 0 );
+
+          bar.value = 5;
+
+          expect( bar )
+            .to.have.property( "value" )
+            .that.is.a( "number" )
+            .and.equals( 5 );
+
+          bar.value = null;
+
+          expect( bar )
+            .to.have.property( "value" )
+            .that.is.a( "number" )
+            .and.equals( 0 );
+        });
+
         // Omitted due to polymer ordering issue
         test.skip( "setting \"value\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );

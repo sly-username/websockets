@@ -23,7 +23,6 @@
         reflect: true
       }
     },
-    /*** PROPERTIES ***/
     // percentage
     get valuePercentage() {
       return this._valuePercentage;
@@ -32,8 +31,6 @@
       this._valuePercentage = value;
       return value;
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
     ready: function() {
       this.innerBar = this.shadowRoot.getElementsByClassName( "inner-bar" )[ 0 ];
       this.currentText = this.shadowRoot.getElementsByClassName( "current-text" )[ 0 ];
@@ -50,8 +47,6 @@
       }
       this.updatePercentage();
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
     attributeChanged: function( attrName, oldVal, newVal ) {
 
       if ( newVal == null && ( /^(value|max|direction)/ ).test( attrName ) ) {
@@ -91,6 +86,5 @@
       this.valuePercentage = Math.round( this.value * 100  / this.max );
       this.innerBar.style.width = this.valuePercentage + "%";
     }
-    /*** END FUNCTIONS ***/
   });
 })( window.Polymer );
