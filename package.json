@@ -1,5 +1,6 @@
 {
   "name": "Eardish-Client-App",
+  "title": "Eardish Client Application",
   "version": "0.0.2",
   "private": true,
   "description": "The Client Application for the Eardish Platform",
