@@ -9,9 +9,30 @@
 
 
 
-<!-- TITLE -->
-<!-- BADGES -->
-<!-- DESCRIPTION -->
+<!-- TITLE/ -->
+
+# Eardish Client Application
+
+<!-- /TITLE -->
+
+
+<!-- BADGES/ -->
+
+[![Build Status](https://img.shields.io/travis/eardish/Eardish-Client-App/master.svg)](http://travis-ci.org/eardish/Eardish-Client-App "Check this project's build status on TravisCI")
+[![Stories in Ready](https://badge.waffle.io/eardish/clientapp.png?label=todo)](http://waffle.io/eardish/clientapp)
+[![Dependency Status](https://img.shields.io/david/eardish/clientapp.svg)](https://david-dm.org/eardish/clientapp)
+[![Dev Dependency Status](https://img.shields.io/david/dev/eardish/clientapp.svg)](https://david-dm.org/eardish/clientapp#info=devDependencies)<br/>
+
+
+<!-- /BADGES -->
+
+
+<!-- DESCRIPTION/ -->
+
+The Client Application for the Eardish Platform
+
+<!-- /DESCRIPTION -->
+
 
 ### Things to Know ###
 
@@ -19,6 +40,31 @@
 [See Wiki Page](https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#folder-structure)
 
 
-<!-- HISTORY -->
-<!-- CONTRIBUTE -->
-<!-- LICENSE -->
+<!-- HISTORY/ -->
+
+## History
+[Discover the change history by heading on over to the `HISTORY.md` file.](https://github.com/eardish/Eardish-Client-App/blob/master/HISTORY.md#files)
+
+<!-- /HISTORY -->
+
+
+<!-- CONTRIBUTE/ -->
+
+## Contribute
+
+[Discover how you can contribute by heading on over to the `CONTRIBUTING.md` file.](https://github.com/eardish/Eardish-Client-App/blob/master/CONTRIBUTING.md#files)
+
+<!-- /CONTRIBUTE -->
+
+
+<!-- LICENSE/ -->
+
+## License
+
+Licensed under To Be Decided
+
+Copyright &copy; Eardish Corp. <ryan@eardish.com> (https://eardish.com/)
+
+<!-- /LICENSE -->
+
+

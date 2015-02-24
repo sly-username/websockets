@@ -31,7 +31,7 @@
     "travis": true,
     "david": true,
     "daviddev": true,
-    "waffleio": true,
+    "waffleio": "todo",
     "npm": false,
     "npmdownloads": false,
     "gittip": false,
