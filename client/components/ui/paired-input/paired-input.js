@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
   var copyableAttributes = [ "disabled", "required", "pattern", "placeholder" ],
     copyAttributes = function( elemFrom, elemsTo, attrs ) {

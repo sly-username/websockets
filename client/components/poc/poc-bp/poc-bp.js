@@ -1,13 +1,13 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "poc-bp", {
-    /*** LIFECYCLE ***/
+  polymer( "poc-bp", {
+    /* LIFECYCLE */
     ready: function() {},
     attached: function() {},
     detached: function() {},
     attributeChanged: function( attrName, oldVal, newVal ) {}
-    /*** PROPERTIES ***/
-    /*** METHODS ***/
+    /* PROPERTIES */
+    /* METHODS */
   });
 })( window.Polymer );

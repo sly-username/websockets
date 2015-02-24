@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
   var globalMap = {},
@@ -12,8 +12,8 @@
       );
     };
 
-  Polymer( "img-placeholder", {
-    /*** PROPERTIES ***/
+  polymer( "img-placeholder", {
+    /* PROPERTIES */
     get imageMap() {
       return globalMap;
     },
@@ -27,16 +27,16 @@
         this.fallBack.src = this.src || globalMap[ this.image ];
       }
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+    /* END PROPERTIES */
+    /* LIFECYCLE */
     ready: function() {
       this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[ 0 ];
     },
     attached: function() {
       this.updateSrc();
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
+    /* END LIFECYCLE */
+    /* FUNCTIONS */
     imageChanged: function( oldVal, newVal ) {
       this.image = newVal;
       this.updateSrc().setAttribute( "image", newVal );
@@ -59,6 +59,6 @@
         tmpImage.src = src;
       });
     }
-    /*** END FUNCTIONS ***/
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

@@ -2,7 +2,6 @@
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
-  run = require( "run-sequence" ),
   fs = require( "fs" ),
   requiredir = require( "requiredir" ),
   dotenv = require( "dotenv" ),
@@ -78,90 +77,68 @@ gulp.task( "start", function( done ) {
 
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
-      run( "dev", done );
+      gulp.series( "dev" )( done );
       break;
     case "PRODUCTION":
-      run( "prod", done );
+      gulp.series( "prod" )( done );
       break;
     case "QA":
       // do QA task ?
       gutil.log( "Task has not been created yet" );
-      done();
       break;
     default:
-      run( "build", done );
+      gulp.series( "build" )( done );
       break;
   }
 });
 
 /*** Watch all the things ***/
-gulp.task( "watch", function( done ) {
-  run(
-    [
-      "less:watch",
-      "jscs:watch",
-      "lint:watch",
-      "traceur:watch"
-    ],
-    done
-  );
-});
+gulp.task( "watch", gulp.parallel(
+  "less:watch",
+  "jscs:watch",
+  "lint:watch",
+  "traceur:watch"
+));
 
 /*** DEVELOPMENT BUILD TASK ***/
-gulp.task( "build:dev", function( done ) {
-  run(
-    "clean:dev",
-    [
-      "less:dev",
-      "symlink:dev",
-      "vendor:dev",
-      "traceur:dev"
-    ],
-    done
-  );
-});
-
-/*** MAIN DEVELOPMENT TASK ***/
-gulp.task( "dev", function( done ) {
-  run(
-    "build:dev",
-    "build:tests:only",
-    "server:dev",
-    "watch",
-    "jscs:client",
-    "lint:client",
-    "tdd",
-    done
-  );
-});
+gulp.task( "build:dev", gulp.series(
+  "clean:dev",
+  gulp.parallel(
+    "less:dev",
+    "symlink:dev",
+    "vendor:dev",
+    "traceur:dev"
+  )
+));
 
 /*** TESTING TASKS ***/
-gulp.task( "build:tests:only", function( done ) {
-  run(
-    [
-      "symlink:tests",
-      "vendor:tests",
-      "build:tests:index"
-    ],
-    done
-  );
-});
+gulp.task( "build:tests:only", gulp.parallel(
+  "clean:coverage",
+  "symlink:tests",
+  "vendor:tests",
+  "build:tests:index"
+));
 
-gulp.task( "build:tests", function( done ) {
-  run(
-    "build:dev",
-    "build:tests:only",
-    done
-  );
-});
+gulp.task( "build:tests", gulp.series(
+  "build:dev",
+  "build:tests:only"
+));
 
-gulp.task( "test", function( done ) {
-  run(
-    "build:tests",
-    "karma:once",
-    done
-  );
-});
+gulp.task( "test", gulp.series(
+  "build:tests",
+  "karma:once"
+));
+
+/*** MAIN DEVELOPMENT TASK ***/
+gulp.task( "dev", gulp.series(
+  "build:dev",
+  "build:tests:only",
+  "server:dev",
+  "watch",
+  "jscs:client",
+  "lint:client",
+  "tdd"
+));
 
 /*** PRODUCTION BUILD TASK ***/
 gulp.task( "build:prod", function( done ) {
@@ -170,12 +147,10 @@ gulp.task( "build:prod", function( done ) {
 });
 
 /*** MAIN PRODUCTION TASK ***/
-gulp.task( "prod", function( done ) {
-  run( "build:prod", done );
-});
+gulp.task( "prod", gulp.series( "build:prod" ));
 
 /*** BUILD ALL THE THINGS ***/
-gulp.task( "build", [ "build:dev", "build:prod" ]);
+gulp.task( "build", gulp.series( "build:dev", "build:prod" ) );
 
 /*** GULP DEFAULT IS START ***/
-gulp.task( "default", [ "start" ]);
+gulp.task( "default", gulp.series( "start" ) );
