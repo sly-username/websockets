@@ -3,32 +3,42 @@
   Polymer( "scroll-box-horizontal", {
 
     /*** PROPERTIES ***/
+    publish: {
+      disabled: {
+        value: false,
+        reflect: true
+      },
+      showArrows: {
+        value: false,
+        reflect: true
+      }
+    },
       // Disabled
-    get disabled() {
-      if ( !null ) {
-        return this._disabled;
-      }
-    },
-    set disabled( value ) {
-      if ( value !== null ) {
-        this.setAttribute( "disabled", value );
-
-        return ( this._disabled = value );
-      }
-    },
+//    get disabled() {
+//      if ( !null ) {
+//        return this._disabled;
+//      }
+//    },
+//    set disabled( value ) {
+//      if ( value !== null ) {
+//        this.setAttribute( "disabled", value );
+//
+//        return ( this._disabled = value );
+//      }
+//    },
     // Show Arrow
-    get showArrow() {
-      if ( !null ) {
-        return this._showArrow;
-      }
-    },
-    set showArrow( value ) {
-      if ( value !== null ) {
-        this.setAttribute( "show-arrows", value );
-
-        return ( this._showArrow = value );
-      }
-    },
+//    get showArrow() {
+//      if ( !null ) {
+//        return this._showArrow;
+//      }
+//    },
+//    set showArrow( value ) {
+//      if ( value !== null ) {
+//        this.setAttribute( "show-arrows", value );
+//
+//        return ( this._showArrow = value );
+//      }
+//    },
     /*** END PROPERTIES ***/
     /*** LIFECYCLE ***/
     ready: function() {
@@ -54,17 +64,23 @@
 
     // Listens for show-arrows, can't listen for disabled due to native disabled
     attributeChanged: function( attrName, oldVal, newVal ) {
-      switch ( attrName ) {
-        case "show-arrows":
-
-          if ( newVal !== null ) {
-            this.setAttribute( "show-arrows", newVal );
-          }
-          break;
-        default:
-          // do nothing
-          break;
+      if ( newVal == null && ( /^(disabled|show-arrows)/ ).test( attrName ) ) {
+        this[attrName] = this.publish[attrName].value;
+        return;
       }
+//      switch ( attrName ) {
+//        case "show-arrows":
+//
+//          if ( newVal !== null ) {
+//            this.setAttribute( "show-arrows", newVal );
+//          }
+//          break;
+//        case "disabled":
+//
+//        default:
+//          // do nothing
+//          break;
+//      }
     }
     /*** END FUNCTIONS ***/
 
