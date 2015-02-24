@@ -79,6 +79,10 @@ module.exports = function( config ) {
       ignoreSkipped: true
     },
 
+    nyanReporter: {
+      suppressStackTrace: true
+    },
+
     coverageReporter: {
       subdir: function( browser ) {
         return browser.toLowerCase().split( /[ /-]/ )[0];
