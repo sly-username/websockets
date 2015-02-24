@@ -1,10 +1,19 @@
 {
   "name": "Eardish-Client-App",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
-  "description": "The Client for the Eardish Platform",
-  "author": "",
-  "maintainer": "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
+  "description": "The Client Application for the Eardish Platform",
+  "author": "Eardish Corp. <ryan@eardish.com> (https://eardish.com/)",
+  "maintainers": [
+    "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)"
+  ],
+  "contributors": [
+    "Ryan Bogle <ryan@eardish.com> (https://github.com/Ashwell)",
+    "Sylvia Hwang <shwang@eardish.com>",
+    "Khoa Ngo <kngo@eardish.com>"
+  ],
+  "license": "To Be Decided",
+  "homepage": "https://github.com/eardish/clientapp",
   "repository": {
     "type": "git",
     "url": "https://github.com/eardish/clientapp.git"
@@ -12,14 +21,21 @@
   "bugs": {
     "url": "https://github.com/eardish/clientapp/issues"
   },
+  "directories":{
+    "doc": "./docs"
+  },
   "badges": {
     "travis": true,
     "david": true,
     "daviddev": true,
-    "npm": true,
-    "npmdownloads": true
+    "waffleio": true,
+    "npm": false,
+    "gittip": false,
+    "flattr": false,
+    "paypal": false,
+    "bitcoin": false,
+    "wishlist": false
   },
-  "homepage": "https://github.com/eardish/clientapp",
   "engines": {
     "node": ">=0.12.0",
     "iojs": ">=1.2.0"
@@ -76,12 +92,5 @@
   },
   "dependencies": {
     "traceur": "=0.0.81"
-  },
-  "maintainers": [
-    ""
-  ],
-  "contributors": [],
-  "license": {
-    "type": ""
   }
 }
