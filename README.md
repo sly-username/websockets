@@ -23,9 +23,7 @@ The Client Application for the Eardish Platform
 
 
 ### Things to Know ###
-
-#### [Folder Structure](https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#folder-structure) ####
-[See Wiki Page](https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#folder-structure)
+[Folder Structure](https://github.com/eardish/clientapp/wiki/Eardish-Client-Side-Code-Style-Guide#folder-structure)
 
 <!-- HISTORY/ -->
 
