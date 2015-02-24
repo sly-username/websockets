@@ -1,6 +1,6 @@
 ( function( Polymer ) {
   "use strict";
-  var copyableAttributes = [ "type", "disabled", "required", "pattern", "placeholder" ],
+  var copyableAttributes = [ "disabled", "required", "pattern", "placeholder" ],
     copyAttributes = function( elemFrom, elemsTo, attrs ) {
       attrs.forEach( function( attr ) {
         var value;
@@ -31,7 +31,7 @@
       disabled: {
         reflect: true
       },
-      singleline: {
+      singleLine: {
         reflect: true
       }
     },
@@ -94,6 +94,14 @@
     attributeChanged: function( attrName, oldVal, newVal ) {
       if ( copyableAttributes.some( function( value ) { return attrName === value; }) ) {
         copyAttributes( this, this.boxes, [ attrName ]);
+      } else if ( attrName === "type" ) {
+        if ( ( /text|password|email|tel|number|url|search/ ).test( newVal ) ) {
+          console.log( newVal.search( /text|password|email|tel|number|url|search/ ) );
+          this.type = newVal;
+        } else {
+          console.log( newVal );
+          this.type = "text";
+        }
       } else if ( attrName === "single-line" ) {
         if ( newVal == null ) {
           this.primaryBox.style.display = this.confirmBox.style.display = "block";
