@@ -1,7 +1,16 @@
 /*eslint no-process-env:0*/
 // Karma configuration
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
-var paths = require( "./config.paths.js" );
+var paths = require( "./config.paths.js" ),
+  avaliableReporters = [ "mocha", "nyan" ],
+  envReporter = process.env.KARMA_REPORTER,
+  reporterToUse;
+
+if ( envReporter && avaliableReporters.some( r => r === envReporter ) ) {
+  reporterToUse = envReporter;
+} else {
+  reporterToUse = process.env.GULP_ENVIRONMENT === "DEVELOPMENT" ? "nyan" : "mocha";
+}
 
 module.exports = function( config ) {
   "use strict";
@@ -32,6 +41,7 @@ module.exports = function( config ) {
       "karma-chrome-launcher",
       // Reporters
       "karma-mocha-reporter",
+      "karma-nyan-reporter",
       "karma-coverage"
     ],
 
@@ -60,13 +70,17 @@ module.exports = function( config ) {
     // possible values: "dots", "progress"
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      "mocha",
+      reporterToUse,
       "coverage"
     ],
 
     mochaReporter: {
       output: "noFailures",
       ignoreSkipped: true
+    },
+
+    nyanReporter: {
+      suppressStackTrace: true
     },
 
     coverageReporter: {
