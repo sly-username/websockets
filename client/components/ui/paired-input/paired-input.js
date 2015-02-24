@@ -61,6 +61,8 @@
           "Confirm " + this.getAttribute( "placeholder" )
         );
       }
+      console.log( this.confirmBox.placeholder );
+      console.log( this.confirmBox.getAttribute( "placeholder" ) );
 
       // TODO fix maybe?
       if ( this.primaryBox.hasAttribute( "single-line" ) ) {

@@ -280,6 +280,7 @@
               .that.equals( setTo );
 
             console.log( pairedInput.$.confirmBox.getAttribute( "placeholder" ) );
+            console.log( pairedInput.$.confirmBox );
             expect( pairedInput.$.confirmBox.getAttribute( "placeholder" ) )
               .to.be.a( "string" )
               .that.equals( "Confirm " + setTo );
@@ -300,6 +301,7 @@
               .to.have.property( "placeholder" )
               .that.equals( setTo );
 
+            console.log( pairedInput.$.confirmBox );
             console.log( pairedInput.$.confirmBox.placeholder );
             expect( pairedInput.$.confirmBox )
               .to.have.property( "placeholder" )
