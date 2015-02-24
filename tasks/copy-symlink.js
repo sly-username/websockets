@@ -14,7 +14,6 @@ runCopy = function( src, dest ) {
 runSymlink = function( src, toReplace, replaceWith ) {
   return gulp.src( src, { read: false } )
     .pipe( symlink( function( file ) {
-      console.log( file.path );
       return file.path.replace( toReplace, replaceWith );
     }));
 };
