@@ -194,16 +194,20 @@
             .and.equals( true );
         });
 
-        // Skipped to be reviewed for a new sinon method
-        test.skip( "can be set via property reflect attribute", function() {
-          var sbHort = document.createElement( "scroll-box-horizontal" );
+        test( "can be set via property reflect attribute", function() {
+          var sbHort = document.createElement( "scroll-box-horizontal" ),
+              observeFn = function( changes ) {
+                expect( sbHort.hasAttribute( "show-arrows" ) ).to.equal( true );
+                expect( sbHort.getAttribute( "show-arrows" ) )
+                  .to.be.a( "string" )
+                  .and.equals( "" );
+
+                Object.unobserve( sbHort, observeFn );
+              };
 
           sbHort.showArrows = true;
 
-          expect( sbHort.hasAttribute( "show-arrows" ) ).to.equal( true );
-          expect( sbHort.getAttribute( "show-arrows" ) )
-            .to.be.a( "string" )
-            .and.equals( "" );
+          Object.observe( sbHort, observeFn );
         });
 
         test( "can be removed via attribute", function() {
@@ -230,17 +234,21 @@
             .and.equals( "<scroll-box-horizontal></scroll-box-horizontal>" );
         });
 
-        // Skipped to be reviewed for a new sinon method
-        test.skip( "can be removed via property reflect attribute", function() {
-          var sbHort = document.createElement( "scroll-box-horizontal" );
+        test( "can be removed via property reflect attribute", function() {
+          var sbHort = document.createElement( "scroll-box-horizontal" ),
+              observeFn = function( changes ) {
+                expect( sbHort )
+                  .to.have.property( "outerHTML" )
+                  .that.is.a( "string" )
+                  .and.equals( "<scroll-box-horizontal></scroll-box-horizontal>" );
+
+                Object.unobserve( sbHort, observeFn );
+              };
 
           sbHort.setAttribute( "show-arrows", "" );
           sbHort.showArrows = false;
 
-          expect( sbHort )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<scroll-box-horizontal></scroll-box-horizontal>" );
+          Object.observe( sbHort, observeFn );
         });
       });
 
