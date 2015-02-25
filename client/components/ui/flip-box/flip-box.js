@@ -1,7 +1,7 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "flip-box", {
+  polymer( "flip-box", {
     publish: {
       trigger: {
         reflect: true
@@ -20,7 +20,7 @@
     set isFlipped( value ) {
       return this._isFlipped;
     },
-    /*** LIFECYCLE ***/
+    /* LIFECYCLE */
     ready: function() {
       this.eventList = [ "mousedown", "touchleave" ];
 
@@ -41,7 +41,7 @@
       this.animation = !( /vertical|horizontal/ ).test( this.animation ) ? "horizontal" : this.animation;
       this.rotation = !( /loop|toggle/ ).test( this.rotation ) ? "toggle" : this.rotation;
     },
-    /*** FUNCTIONS ***/
+    /* FUNCTIONS */
     flip: function() {
       this.flipBoxContainer.classList.remove( "no-transform" );
       this.flipBoxContainer.classList.add( "flipbox-transition" );
@@ -93,6 +93,6 @@
         this.rotation = newVal === "loop" ? newVal : "toggle";
       }
     }
-    /*** END FUNCTIONS ***/
+    /* END FUNCTIONS */
   });
 })( window.Polymer );

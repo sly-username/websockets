@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
   var copyAttributes = function( elemFrom, elemTo, attrs ) {
     attrs.forEach( function( attr ) {
@@ -10,7 +10,7 @@
     });
   };
 
-  Polymer( "on-off", {
+  polymer( "on-off", {
     publish: {
       "on-text": {
         value: "On",

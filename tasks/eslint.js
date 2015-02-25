@@ -51,7 +51,7 @@ config.eslint.taskNames.forEach( function( property ) {
 });
 
 // default lint task
-gulp.task( "lint", [ "lint:all" ]);
+gulp.task( "lint", gulp.series( "lint:all" ) );
 
 // default watch is "lint:watch:client"
-gulp.task( "lint:watch", [ "lint:watch:client" ]);
+gulp.task( "lint:watch", gulp.series( "lint:watch:client" ) );
