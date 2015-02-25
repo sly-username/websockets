@@ -445,7 +445,7 @@
           expect( pairedInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" required=\"\"></paired-input>" );
+            .and.equals( "<paired-input type=\"text\" required></paired-input>" );
         });
 
         test( "setting via setAttribute reflects to property", function() {
@@ -504,12 +504,23 @@
       });
 
       suite( "disabled", function() {
-        test( "can be set via attribute", function() {
+        test( "default value is false", function() {
+          var pairedInput = document.createElement( "paired-input" );
+
+          expect( pairedInput )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( false );
+        });
+
+        test( "can be set via setAttribute", function() {
           var pairedInput = document.createElement( "paired-input" );
 
           pairedInput.setAttribute( "disabled", "" );
 
-          expect( pairedInput.hasAttribute( "disabled" ) ).to.equal( true );
+          expect( pairedInput.hasAttribute( "disabled" ) )
+            .to.equal( true );
+
           expect( pairedInput.getAttribute( "disabled" ) )
             .to.be.a( "string" )
             .and.equals( "" );
@@ -517,10 +528,20 @@
           expect( pairedInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" disabled=\"\"></paired-input>" );
+            .and.equals( "<paired-input type=\"text\" disabled></paired-input>" );
         });
 
-        test( "can be removed via attribute", function() {
+        test( "setting via setAttribute reflects to property", function() {
+          var pairedInput = document.createElement( "paired-input" );
+
+          pairedInput.setAttribute( "disabled", "" );
+
+          expect( pairedInput )
+            .to.have.property( "disabled" )
+            .and.equals( true );
+        });
+
+        test( "can be removed via removeAttribute", function() {
           var pairedInput = document.createElement( "paired-input" );
 
           pairedInput.setAttribute( "disabled", "" );
@@ -532,20 +553,39 @@
             .and.equals( "<paired-input type=\"text\"></paired-input>" );
         });
 
-        test( "should not be able to input value with disable tag present", function() {
-          // pairedInput is defined as firstInput requires pairedInput and is used twice
-          var pairedInput = document.createElement( "paired-input" ),
-            firstInput = pairedInput.shadowRoot.getElementsByTagName( "input" )[ 0 ];
+        test( "can be set via property to disabled", function() {
+          var pairedInput = document.createElement( "paired-input" );
 
-          document.createElement( "paired-input" ).setAttribute( "disabled", "" );
-          firstInput.value = "random value";
+          pairedInput.disabled = true;
 
-          expect( firstInput )
-            .to.have.property( "value" )
-            .to.be.empty();
+          expect( pairedInput )
+            .to.have.property( "disabled" )
+            .that.is.a( "boolean" )
+            .and.equals( true );
+        });
+
+        test( "setting via property reflects to attribute", function() {
+          var pairedInput = document.createElement( "paired-input" );
+
+          pairedInput.disabled = true;
+
+          expect( pairedInput.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
+        });
+
+        test( "can be removed via property", function() {
+          var pairedInput = document.createElement( "paired-input" );
+
+          pairedInput.disabled = true;
+          pairedInput.disabled = false;
+
+          expect( pairedInput.hasAttribute( "disabled" ) )
+            .to.be.a( "boolean" )
+            .that.equals( false );
         });
       });
-      // Tests for valid
+
       suite( "valid", function() {
         test( "has default value: false", function() {
           expect( document.createElement( "paired-input" ) )
