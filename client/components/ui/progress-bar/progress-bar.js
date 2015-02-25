@@ -1,7 +1,7 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "progress-bar", {
+  polymer( "progress-bar", {
     showValue: true,
     publish: {
       value: {
