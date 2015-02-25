@@ -26,13 +26,16 @@
         reflect: true
       },
       required: {
-        reflect: true
+        reflect: true,
+        value: false
       },
       disabled: {
-        reflect: true
+        reflect: true,
+        value: false
       },
       singleLine: {
-        reflect: true
+        reflect: true,
+        value: false
       }
     },
     get primaryBox() {
@@ -61,8 +64,6 @@
           "Confirm " + this.getAttribute( "placeholder" )
         );
       }
-      console.log( this.confirmBox.placeholder );
-      console.log( this.confirmBox.getAttribute( "placeholder" ) );
 
       // TODO fix maybe?
       if ( this.primaryBox.hasAttribute( "single-line" ) ) {
@@ -71,6 +72,10 @@
 
       if ( this.hasAttribute( "type" ) && !( /text|password|email|tel|number|url|search/ )
         .test( this.attributes.type.value ) ) {
+        this.setAttribute( "type", "text" );
+      }
+
+      if ( !this.hasAttribute( "type" ) ) {
         this.setAttribute( "type", "text" );
       }
     },
