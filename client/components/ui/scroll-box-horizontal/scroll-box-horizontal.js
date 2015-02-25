@@ -37,7 +37,7 @@
       }
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      if ( newVal == null && ( /^(disabled)/ ).test( attrName ) ) {
+      if ( newVal == null && attrName === "disabled" ) {
         this[attrName] = this.publish[attrName].value;
         return;
       }
