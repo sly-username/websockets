@@ -2,6 +2,7 @@
   "use strict";
 
   Polymer( "progress-bar", {
+    showValue: true,
     publish: {
       value: {
         value: 0,
@@ -16,10 +17,6 @@
       },
       direction: {
         value: "RTL",
-        reflect: true
-      },
-      showValue: {
-        value: true,
         reflect: true
       }
     },
