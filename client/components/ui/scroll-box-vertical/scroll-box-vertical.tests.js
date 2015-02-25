@@ -194,16 +194,20 @@
             .and.equals( true );
         });
 
-        // need to refactor for sinon
-        test.skip( "can be set via property reflect attribute", function() {
-          var sbVert = document.createElement( "scroll-box-vertical" );
+        test( "can be set via property reflect attribute", function() {
+          var sbVert = document.createElement( "scroll-box-vertical" ),
+              observeFn = function( changes ) {
+                expect( sbVert.hasAttribute( "show-arrows" ) ).to.equal( true );
+                expect( sbVert.getAttribute( "show-arrows" ) )
+                  .to.be.a( "string" )
+                  .and.equals( "" );
+
+                Object.unobserve( sbVert, observeFn );
+              };
 
           sbVert.showArrows = true;
 
-          expect( sbVert.hasAttribute( "show-arrows" ) ).to.equal( true );
-          expect( sbVert.getAttribute( "show-arrows" ) )
-            .to.be.a( "string" )
-            .and.equals( "" );
+          Object.observe( sbVert, observeFn );
         });
 
         test( "can be removed via attribute", function() {
@@ -230,24 +234,36 @@
             .and.equals( "<scroll-box-vertical></scroll-box-vertical>" );
         });
 
-        // need to refactor for sinon
-        test.skip( "can be removed via property reflect attribute", function() {
-          var sbVert = document.createElement( "scroll-box-vertical" );
+        test( "can be removed via property reflect attribute", function() {
+          var sbVert = document.createElement( "scroll-box-vertical" ),
+              observeFn = function( changes ) {
+                expect( sbVert )
+                  .to.have.property( "outerHTML" )
+                  .that.is.a( "string" )
+                  .and.equals( "<scroll-box-vertical></scroll-box-vertical>" );
+
+                Object.unobserve( sbVert, observeFn );
+              };
 
           sbVert.setAttribute( "show-arrows", "" );
           sbVert.showArrows = false;
 
-          expect( sbVert )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<scroll-box-vertical></scroll-box-vertical>" );
+          Object.observe( sbVert, observeFn );
         });
       });
 
       suite( "scroll down", function() {
         test( "scrolls the inside bucket down", function() {
           var sbVert = document.createElement( "scroll-box-vertical" ),
-              image = document.createElement( "img" );
+              image = document.createElement( "img" ),
+              observeFn = function( changes ) {
+                expect( sbVert.shadowRoot.querySelector( ".inner-box" ) )
+                  .to.have.property( "scrollTop" )
+                  .that.is.a( "number" )
+                  .and.equals( 50 );
+
+                Object.unobserve( sbVert, observeFn );
+              };
 
           image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
           testingWrapper.appendChild( sbVert );
@@ -255,11 +271,7 @@
           sbVert.appendChild( image );
           sbVert.scrollDown( "50px" );
 
-          expect( sbVert.shadowRoot.querySelector( ".inner-box" ) )
-            .to.have.property( "scrollTop" )
-            .that.is.a( "number" )
-            .and.equals( 50 );
-
+          Object.observe( sbVert, observeFn );
           resetWrapper();
         });
       });
@@ -267,7 +279,15 @@
       suite( "scroll up", function() {
         test( "scrolls the inside bucket up", function() {
           var sbVert = document.createElement( "scroll-box-vertical" ),
-              image = document.createElement( "img" );
+              image = document.createElement( "img" ),
+              observeFn = function( changes ) {
+                expect( sbVert.shadowRoot.querySelector( ".inner-box" ) )
+                  .to.have.property( "scrollTop" )
+                  .that.is.a( "number" )
+                  .and.equals( 20 );
+
+                Object.unobserve( sbVert, observeFn );
+              };
 
           image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
           testingWrapper.appendChild( sbVert );
@@ -276,11 +296,7 @@
           sbVert.scrollDown( "50px" );
           sbVert.scrollUp( "30px" );
 
-          expect( sbVert.shadowRoot.querySelector( ".inner-box" ) )
-            .to.have.property( "scrollTop" )
-            .that.is.a( "number" )
-            .and.equals( 20 );
-
+          Object.unobserve( sbVert, observeFn );
           resetWrapper();
         });
       });
