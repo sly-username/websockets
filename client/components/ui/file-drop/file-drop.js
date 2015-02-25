@@ -1,30 +1,25 @@
 ( function( polymer ) {
   "use strict";
 
-  /**
-   * @name file-drop
-   * @description this is a file drop element
-   */
   polymer( "file-drop", {
     publish: {
       fill: {
+        value: "parent",
         reflect: true
       },
       accepts: {
         reflect: true
       },
       multiple: {
+        value: false,
         reflect: true
       }
     },
     fileList: null,
     fileArr: [],
-    /* PROPERTIES */
     get files() {
       return this.fileArr;
     },
-    /* END PROPERTIES */
-    /* LIFECYCLE */
     ready: function() {
       this.holder = this.shadowRoot.getElementById( "holder" );
     },
@@ -53,17 +48,25 @@
         this.formData.append( "userFiles", this.fileArr );
       }.bind( this ) );
     },
-    /* END LIFECYCLE */
-    /* FUNCTIONS */
     onDrop: function( callback ) {
       this.holder.addEventListener( "drop", callback );
     },
     onDragOver: function( callback ) {
       this.holder.addEventListener( "dragover", callback );
     },
+    fillChanged: function( oldVal, newVal ) {
+      this.setAttribute( "fill", newVal );
+    },
+    multipleChanged: function( oldVal, newVal ) {
+      if ( newVal ) {
+        this.setAttribute( "multiple", "" );
+      } else {
+        this.removeAttribute( "multiple" );
+      }
+    },
     attributeChanged: function( attrName, oldVal, newVal ) {
       this[ attrName ] = newVal;
+      this.multiple = this.hasAttribute( "multiple" );
     }
-    /* END FUNCTIONS */
   });
 })( window.Polymer );

@@ -116,12 +116,12 @@
         test( "setting via property \"fill\" reflects to attribute \"fill\"", function() {
           var fileDrop = document.createElement( "file-drop" );
 
-          fileDrop.fill = "parent";
+          fileDrop.fill = "window";
 
           expect( fileDrop.hasAttribute( "fill" ) ).to.equal( true );
           expect( fileDrop.getAttribute( "fill" ) )
             .to.be.a( "string" )
-            .that.equals( "parent" )
+            .that.equals( "window" )
             .and.equal( fileDrop.fill );
         });
       });
