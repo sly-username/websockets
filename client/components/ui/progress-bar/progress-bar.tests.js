@@ -147,36 +147,9 @@
             .and.equals( 0 );
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"value\" to null resets property to default value", function() {
+        test( "setting \"value\" to null resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
-          console.log( "setting to 5" );
-          bar.value = 5;
-          console.log( "set to 5" );
-
-          expect( bar )
-            .to.have.property( "value" )
-            .that.is.a( "number" )
-            .and.equals( 5 );
-
-          console.log( "setting to null" );
-          bar.value = null;
-          console.log( "been set to null" );
-
-          expect( bar )
-            .to.have.property( "value" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
-        });
-
-        // Testing Sinon stuff
-        test.skip( "setting \"value\" to null resets property to default value", function() {
-          var bar = document.createElement( "progress-bar" ),
-              stub = sinon.stub();
-
-          stub.withArgs( null ).returns( 0 );
-
           bar.value = 5;
 
           expect( bar )
@@ -186,14 +159,15 @@
 
           bar.value = null;
 
-          expect( bar )
-            .to.have.property( "value" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+          Object.observe( bar, function( changes ) {
+            expect( bar )
+              .to.have.property( "value" )
+              .that.is.a( "number" )
+              .and.equals( 0 );
+          });
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"value\" to undefined resets property to default value", function() {
+        test( "setting \"value\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
           bar.value = 5;
@@ -203,10 +177,12 @@
             .and.equals( 5 );
 
           bar.value = undefined;
-          expect( bar )
-            .to.have.property( "value" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+          Object.observe( bar, function( changes ) {
+            expect( bar )
+              .to.have.property( "value" )
+              .that.is.a( "number" )
+              .and.equals( 0 );
+          });
         });
       });
 
@@ -282,8 +258,7 @@
             .and.equals( 1 );
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"max\" to null resets property to default value", function() {
+        test( "setting \"max\" to null resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
           bar.max = 5;
@@ -293,14 +268,15 @@
             .and.equals( 5 );
 
           bar.max = null;
-          expect( bar )
-            .to.have.property( "max" )
-            .that.is.a( "number" )
-            .and.equals( 1 );
+          Object.observe( bar, function( changes ) {
+            expect( bar )
+              .to.have.property( "max" )
+              .that.is.a( "number" )
+              .and.equals( 1 );
+          });
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"max\" to undefined resets property to default value", function() {
+        test( "setting \"max\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
           bar.max = 5;
@@ -310,14 +286,15 @@
             .and.equals( 5 );
 
           bar.max = undefined;
-          expect( bar )
-            .to.have.property( "max" )
-            .that.is.a( "number" )
-            .and.equals( 1 );
+          Object.observe( bar, function( changes ) {
+            expect( bar )
+              .to.have.property( "max" )
+              .that.is.a( "number" )
+              .and.equals( 1 );
+          });
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"max\" to less than 1 resets property to default value", function() {
+        test( "setting \"max\" to less than 1 resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
           bar.max = 5;
@@ -327,10 +304,12 @@
             .and.equals( 5 );
 
           bar.max = -12;
-          expect( bar )
-            .to.have.property( "max" )
-            .that.is.a( "number" )
-            .and.equals( 1 );
+          Object.observe( bar, function( changes ) {
+            expect( bar )
+              .to.have.property( "max" )
+              .that.is.a( "number" )
+              .and.equals( 1 );
+          });
         });
       });
 
@@ -462,8 +441,7 @@
             .and.equals( "RTL" );
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"direction\" to null resets property to default value", function() {
+        test( "setting \"direction\" to null resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
           bar.direction = "LTR";
@@ -473,14 +451,15 @@
             .and.equals( "LTR" );
 
           bar.direction = null;
-          expect( bar )
-            .to.have.property( "direction" )
-            .that.is.a( "string" )
-            .and.equals( "RTL" );
+          Object.observe( bar, function( changes ) {
+            expect(bar)
+              .to.have.property( "direction" )
+              .that.is.a( "string" )
+              .and.equals( "RTL" );
+          });
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"direction\" to undefined resets property to default value", function() {
+        test( "setting \"direction\" to undefined resets property to default value", function() {
           var bar = document.createElement( "progress-bar" );
 
           bar.direction = "LTR";
@@ -490,27 +469,31 @@
             .and.equals( "LTR" );
 
           bar.direction = undefined;
-          expect( bar )
-            .to.have.property( "direction" )
-            .that.is.a( "string" )
-            .and.equals( "RTL" );
+          Object.observe( bar, function( changes ) {
+            expect( bar )
+              .to.have.property( "direction" )
+              .that.is.a( "string" )
+              .and.equals( "RTL" );
+          });
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting \"direction\" to other than RTL or LTR sets to default", function() {
+        test( "setting \"direction\" to other than RTL or LTR sets to default", function() {
           var bar = document.createElement( "progress-bar" );
 
-          bar.direction = "pie";
-          expect( bar )
-            .to.have.property( "direction" )
-            .that.is.a( "string" )
-            .and.equals( "RTL" );
+          Object.observe( bar, function( changes ) {
+            bar.direction = "pie";
+            expect( bar )
+              .to.have.property( "direction" )
+              .that.is.a( "string" )
+              .and.equals( "RTL" );
 
-          bar.direction = -12;
-          expect( bar )
-            .to.have.property( "direction" )
-            .that.is.a( "string" )
-            .and.equals( "RTL" );
+            bar.direction = -12;
+
+            expect( bar )
+              .to.have.property( "direction" )
+              .that.is.a( "string" )
+              .and.equals( "RTL" );
+          });
         });
       });
 
@@ -561,7 +544,6 @@
             .and.to.equal( false );
         });
 
-        // remove attribute sets to false
         test( "removing attribute reflects to attribute", function() {
           var bar = document.createElement( "progress-bar" );
 
@@ -577,29 +559,31 @@
             .and.equals( false );
         });
 
-        // Omitted due to polymer ordering issue
-        test.skip( "setting property to false removes attribute", function() {
+        test( "setting property to false removes attribute", function() {
           var bar = document.createElement( "progress-bar" );
 
-          bar.showValue = true;
-          expect( bar )
-            .to.have.property( "showValue" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
+          Object.observe( bar, function( changes ) {
+            bar.showValue = true;
+            expect( bar )
+              .to.have.property( "showValue" )
+              .that.is.a( "boolean" )
+              .and.equals( true );
 
-          expect( bar.hasAttribute( "show-value" ) )
-            .to.be.a( "boolean" )
-            .that.equals( true );
+            expect( bar.hasAttribute( "show-value" ) )
+              .to.be.a( "boolean" )
+              .that.equals( true );
 
-          bar.showValue = false;
-          expect( bar )
-            .to.have.property( "showValue" )
-            .that.is.a( "boolean" )
-            .and.equals( false );
+            bar.showValue = false;
 
-          expect( bar.hasAttribute( "show-value" ) )
-            .to.be.a( "boolean" )
-            .and.to.equal( false );
+            expect( bar )
+              .to.have.property( "showValue" )
+              .that.is.a( "boolean" )
+              .and.equals( false );
+
+            expect( bar.hasAttribute( "show-value" ) )
+              .to.be.a( "boolean" )
+              .and.to.equal( false );
+          });
         });
       });
     });
