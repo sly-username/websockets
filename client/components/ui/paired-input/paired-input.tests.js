@@ -1,5 +1,5 @@
 /*eslint-env mocha */
-( function( window, document, chai ) {
+( function( window, document, polymer, chai ) {
   "use strict";
   var expect = chai.expect,
       // get wrapper from document or for karma, create a new div and append it to the DOM
@@ -71,15 +71,16 @@
               .that.equals( "<paired-input type=\"text\"></paired-input>" );
           });
 
-          test( "setting via setAttribute, default value \"text\" reflects to property", function() {
-            var pairedInput = document.createElement( "paired-input" );
+          test( "setting via setAttribute, default value \"text\" reflects to property",
+            function() {
+              var pairedInput = document.createElement( "paired-input" );
 
-            pairedInput.setAttribute( "type", "default" );
+              pairedInput.setAttribute( "type", "default" );
 
-            expect( pairedInput )
-              .to.have.property( "type" )
-              .that.equals( "text" )
-              .and.equals( pairedInput.getAttribute( "type" ) );
+              expect( pairedInput )
+                .to.have.property( "type" )
+                .that.equals( "text" )
+                .and.equals( pairedInput.getAttribute( "type" ) );
           });
 
           test( "setting via property, default value \"text\" reflects to attribute", function() {
@@ -247,13 +248,13 @@
 
           expect( pairedInput )
             .to.have.property( "outerHTML" )
-            .that.equals( "<paired-input placeholder=\"type-name\"></paired-input>" );
+            .that.equals( "<paired-input type=\"text\" placeholder=\"type-name\"></paired-input>" );
         });
 
         test( "can be removed via removeAttribute", function() {
           var pairedInput = document.createElement( "paired-input" );
 
-          pairedInput.setAttribute( "placeholder", "something" );
+          pairedInput.setAttribute( "placeholder", "type-name" );
           pairedInput.removeAttribute( "placeholder" );
 
           expect( pairedInput )
@@ -264,36 +265,42 @@
 
         test( "when set via setAttribute, placeholder value should reflect to shadowDom",
           function() {
-            var pairedInput = document.createElement( "paired-input" );
+            var pairedInput = document.createElement( "paired-input" ),
+                observeFn = function( changes ) {
+                  expect( pairedInput.$.primaryBox.getAttribute( "placeholder" ) )
+                    .to.be.a( "string" )
+                    .that.equals( "type-name" );
+
+                  expect( pairedInput.$.confirmBox.getAttribute( "placeholder" ) )
+                    .to.be.a( "string" )
+                    .that.equals( "Confirm " + "type-name" );
+
+                  Object.unobserve( pairedInput, observeFn );
+                };
 
             pairedInput.setAttribute( "placeholder", "type-name" );
 
-            expect( pairedInput.$.primaryBox.getAttribute( "placeholder" ) )
-              .to.be.a( "string" )
-              .that.equals( "type-name" );
-
-            expect( pairedInput.$.confirmBox.getAttribute( "placeholder" ) )
-              .to.be.a( "string" )
-              .that.equals( "Confirm " + "type-name" );
-
-            // expect( elem.$.primaryBox ).has( "placeholder" ).equals( "set" )
-            // expect( elem.$.confirmBox ).has( "placeholder" ).equals( "Confirm" + "set" )
-
+            Object.unobserve( pairedInput, observeFn );
         });
 
         test( "when set via property, placeholder value should reflect to shadowDom",
           function() {
-            var pairedInput = document.createElement( "paired-input" );
+            var pairedInput = document.createElement( "paired-input" ),
+                observeFn = function( changes ) {
+                  expect( pairedInput.$.primaryBox )
+                    .to.have.property( "placeholder" )
+                    .that.equals( "type-name" );
+
+                  expect( pairedInput.$.confirmBox )
+                    .to.have.property( "placeholder" )
+                    .that.equals( "Confirm type-name" );
+
+                  Object.unobserve( pairedInput, observeFn );
+              };
 
             pairedInput.placeholder = "type-name";
 
-            expect( pairedInput.$.primaryBox )
-              .to.have.property( "placeholder" )
-              .that.equals( "type-name" );
-
-            expect( pairedInput.$.confirmBox )
-              .to.have.property( "placeholder" )
-              .that.equals( "Confirm type-name" );
+            Object.unobserve( pairedInput, observeFn );
           });
       });
 
@@ -384,11 +391,6 @@
           expect( pairedInput.getAttribute( "single-line" ) )
             .to.be.a( "string" )
             .that.equals( "" );
-
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" single-line></paired-input>" );
         });
 
         test( "can be removed via attribute", function() {
@@ -412,11 +414,6 @@
             .to.have.property( "singleLine" )
             .that.is.a( "boolean" )
             .and.equals( true );
-
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" single-line></paired-input>" );
         });
       });
 
@@ -428,6 +425,11 @@
             .to.have.property( "required" )
             .that.is.a( "boolean" )
             .and.equals( false );
+
+          expect( pairedInput )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<paired-input type=\"text\"></paired-input>" );
         });
 
         test( "can be set via setAttribute", function() {
@@ -441,11 +443,6 @@
           expect( pairedInput.getAttribute( "required" ) )
             .to.be.a( "string" )
             .and.equals( "" );
-
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" required></paired-input>" );
         });
 
         test( "setting via setAttribute reflects to property", function() {
@@ -479,11 +476,6 @@
             .to.have.property( "required" )
             .that.is.a( "boolean" )
             .and.equals( true );
-
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" required></paired-input>" );
         });
 
         test( "setting via property reflects to attribute", function() {
@@ -529,11 +521,6 @@
           expect( pairedInput.getAttribute( "disabled" ) )
             .to.be.a( "string" )
             .and.equals( "" );
-
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" disabled></paired-input>" );
         });
 
         test( "setting via setAttribute reflects to property", function() {
@@ -567,11 +554,6 @@
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( true );
-
-          expect( pairedInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<paired-input type=\"text\" disabled></paired-input>" );
         });
 
         test( "setting via property reflects to attribute", function() {
@@ -606,16 +588,18 @@
             .and.equals( false );
         });
 
-        test( "is true when input values match", function() {
+        test( "is true when input matches the pattern and both values match", function() {
           var pairedInput = document.createElement( "paired-input" );
 
           pairedInput.$.primaryBox.value = "input-text";
           pairedInput.$.confirmBox.value = "input-text";
 
-          expect( pairedInput )
-            .to.have.property( "isValid" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
+          if ( pairedInput.$.primaryBox.validity.valid ) {
+            expect( pairedInput )
+              .to.have.property( "isValid" )
+              .that.is.a( "boolean" )
+              .and.equals( true );
+          }
         });
       });
 
@@ -661,4 +645,4 @@
       });
     });
   });
-})( window, document, window.chai );
+})( window, document, window.Polymer, window.chai );

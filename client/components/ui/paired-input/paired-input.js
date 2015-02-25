@@ -1,18 +1,5 @@
 ( function( polymer ) {
   "use strict";
-  var copyableAttributes = [ "disabled", "required", "pattern", "placeholder" ],
-    copyAttributes = function( elemFrom, elemsTo, attrs ) {
-      attrs.forEach( function( attr ) {
-        var value;
-
-        if ( elemFrom.hasAttribute( attr ) ) {
-          value = elemFrom.getAttribute( attr );
-          elemsTo.forEach( function( elem ) { elem.setAttribute( attr, value ); });
-        } else {
-          elemsTo.forEach( function( elem ) { elem.removeAttribute( attr ); });
-        }
-      });
-    };
 
   Polymer( "paired-input", {
     publish: {
@@ -56,8 +43,6 @@
       this._errorDiv = this.shadowRoot.getElementById( "error" );
       this._boxes = [ this.primaryBox, this.confirmBox ];
 
-      copyAttributes( this, this.boxes, copyableAttributes );
-
       if ( this.hasAttribute( "placeholder" ) ) {
         this.confirmBox.setAttribute(
           "placeholder",
@@ -89,25 +74,22 @@
         this.confirmBox !== "" ? "fields are valid" : "fields are not valid";
     },
     get isValid() {
-      console.log( this.primaryBox.value );
       return this.primaryBox.validity.valid && this.primaryBox.value !== "" &&
         this.primaryBox.value === this.confirmBox.value;
     },
     get val() {
       if ( this.primaryBox.value !== this.confirmBox.value ) {
         return;
-      } else {
-        return this.primaryBox.value;
       }
+
+      return this.primaryBox.value;
     },
     set val( val ) {
       this.primaryBox.value = this.confirmBox.value = val;
       return true;
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      if ( copyableAttributes.some( function( value ) { return attrName === value; }) ) {
-        copyAttributes( this, this.boxes, [ attrName ]);
-      } else if ( attrName === "type" ) {
+      if ( attrName === "type" ) {
         if ( ( /text|password|email|tel|number|url|search/ ).test( newVal ) ) {
           this.type = newVal;
         } else {
