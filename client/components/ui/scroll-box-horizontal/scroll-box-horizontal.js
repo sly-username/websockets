@@ -1,42 +1,20 @@
 ( function( polymer ) {
   "use strict";
   polymer( "scroll-box-horizontal", {
-
-    /* PROPERTIES */
-      // Disabled
-    get disabled() {
-      if ( !null ) {
-        return this._disabled;
+    showArrows: false,
+    publish: {
+      disabled: {
+        value: false,
+        reflect: true
       }
     },
-    set disabled( value ) {
-      if ( value !== null ) {
-        this.setAttribute( "disabled", value );
-
-        return ( this._disabled = value );
-      }
-    },
-    // Show Arrow
-    get showArrow() {
-      if ( !null ) {
-        return this._showArrow;
-      }
-    },
-    set showArrow( value ) {
-      if ( value !== null ) {
-        this.setAttribute( "show-arrows", value );
-
-        return ( this._showArrow = value );
-      }
-    },
-    /* END PROPERTIES */
-    /* LIFECYCLE */
     ready: function() {
       this.innerBox = this.shadowRoot.getElementsByClassName( "inner-box" )[ 0 ];
+
+      if ( this.hasAttribute( "show-arrows" ) ) {
+        this.showArrows = true;
+      }
     },
-    /* END LIFECYCLE */
-    /* FUNCTIONS */
-    // Scroll Right
     scrollBoxRight: function( value ) {
       var currentPosition = this.innerBox.scrollLeft;
       this.innerBox.scrollLeft = currentPosition + parseInt( value, 10 );
@@ -51,21 +29,24 @@
       this.disabled = newVal;
       this.setAttribute( "disabled", newVal );
     },
-
-    // Listens for show-arrows, can't listen for disabled due to native disabled
+    showArrowsChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        this.setAttribute( "show-arrows", "" );
+      } else {
+        this.removeAttribute( "show-arrows" );
+      }
+    },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      switch ( attrName ) {
-        case "show-arrows":
+      if ( newVal == null && attrName === "disabled" ) {
+        this[attrName] = this.publish[attrName].value;
+        return;
+      }
 
-          if ( newVal !== null ) {
-            this.setAttribute( "show-arrows", newVal );
-          }
-          break;
-        default:
-          // do nothing
-          break;
+      if ( this.hasAttribute( "show-arrows" ) ) {
+        this.showArrows = true;
+      } else {
+        this.showArrows = false;
       }
     }
-    /* END FUNCTIONS */
   });
 })( window.Polymer );
