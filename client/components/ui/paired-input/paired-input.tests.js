@@ -81,7 +81,7 @@
                 .to.have.property( "type" )
                 .that.equals( "text" )
                 .and.equals( pairedInput.getAttribute( "type" ) );
-          });
+            });
 
           test( "setting via property, default value \"text\" reflects to attribute", function() {
             var pairedInput = document.createElement( "paired-input" );
@@ -281,7 +281,7 @@
             pairedInput.setAttribute( "placeholder", "type-name" );
 
             Object.unobserve( pairedInput, observeFn );
-        });
+          });
 
         test( "when set via property, placeholder value should reflect to shadowDom",
           function() {
@@ -296,7 +296,7 @@
                     .that.equals( "Confirm type-name" );
 
                   Object.unobserve( pairedInput, observeFn );
-              };
+                };
 
             pairedInput.placeholder = "type-name";
 
