@@ -48,6 +48,5 @@
         this.showArrows = false;
       }
     }
-    /* END FUNCTIONS */
   });
 })( window.Polymer );
