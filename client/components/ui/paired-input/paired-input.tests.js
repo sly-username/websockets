@@ -419,7 +419,7 @@
             .and.equals( "<paired-input type=\"text\" single-line></paired-input>" );
         });
       });
-      // Tests for required
+
       suite( "required", function() {
         test( "default value is false", function() {
           var pairedInput = document.createElement( "paired-input" );
@@ -479,6 +479,11 @@
             .to.have.property( "required" )
             .that.is.a( "boolean" )
             .and.equals( true );
+
+          expect( pairedInput )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<paired-input type=\"text\" required></paired-input>" );
         });
 
         test( "setting via property reflects to attribute", function() {
@@ -562,6 +567,11 @@
             .to.have.property( "disabled" )
             .that.is.a( "boolean" )
             .and.equals( true );
+
+          expect( pairedInput )
+            .to.have.property( "outerHTML" )
+            .that.is.a( "string" )
+            .and.equals( "<paired-input type=\"text\" disabled></paired-input>" );
         });
 
         test( "setting via property reflects to attribute", function() {
