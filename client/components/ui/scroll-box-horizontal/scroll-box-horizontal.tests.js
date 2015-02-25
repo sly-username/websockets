@@ -255,7 +255,13 @@
       suite( "scroll box right", function() {
         test( "scrolls the inside bucket right", function() {
           var sbHort = document.createElement( "scroll-box-horizontal" ),
-              image = document.createElement( "img" );
+              image = document.createElement( "img" ),
+              observeFn = function( changes ) {
+                expect( sbHort.shadowRoot.querySelector( ".inner-box" ) )
+                  .to.have.property( "scrollLeft" )
+                  .that.is.a( "number" )
+                  .and.equals( 50 );
+              };
 
           image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
           testingWrapper.appendChild( sbHort );
@@ -263,10 +269,7 @@
           sbHort.appendChild( image );
           sbHort.scrollBoxRight( "50px" );
 
-          expect( sbHort.shadowRoot.querySelector( ".inner-box" ) )
-            .to.have.property( "scrollLeft" )
-            .that.is.a( "number" )
-            .and.equals( 50 );
+          Object.unobserve( sbHort, observeFn );
 
           resetWrapper();
         });
@@ -275,7 +278,13 @@
       suite( "scroll box left", function() {
         test( "scrolls the inside bucket left", function() {
           var sbHort = document.createElement( "scroll-box-horizontal" ),
-              image = document.createElement( "img" );
+              image = document.createElement( "img" ),
+              observeFn = function( changes ) {
+                expect( sbHort.shadowRoot.querySelector( ".inner-box" ) )
+                  .to.have.property( "scrollLeft" )
+                  .that.is.a( "number" )
+                  .and.equals( 20 );
+              };
 
           image.src = "http://i2.kym-cdn.com/photos/images/newsfeed/000/117/814/are-you-wizard.jpg";
           testingWrapper.appendChild( sbHort );
@@ -284,10 +293,7 @@
           sbHort.scrollBoxRight( "50px" );
           sbHort.scrollBoxLeft( "30px" );
 
-          expect( sbHort.shadowRoot.querySelector( ".inner-box" ) )
-            .to.have.property( "scrollLeft" )
-            .that.is.a( "number" )
-            .and.equals( 20 );
+          Object.unobserve( sbHort, observeFn );
 
           resetWrapper();
         });
