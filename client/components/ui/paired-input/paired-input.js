@@ -94,7 +94,11 @@
         this.primaryBox.value === this.confirmBox.value;
     },
     get val() {
-      return [ this.primaryBox.value, this.confirmBox.value ];
+      if ( this.primaryBox.value !== this.confirmBox.value ) {
+        return;
+      } else {
+        return this.primaryBox.value;
+      }
     },
     set val( val ) {
       this.primaryBox.value = this.confirmBox.value = val;

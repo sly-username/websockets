@@ -609,44 +609,42 @@
         });
       });
 
-      suite( "value", function() {
+      suite( "val", function() {
         test( "returns undefined when element is not valid", function() {
           var pairedInput = document.createElement( "paired-input" );
 
-          pairedInput.shadowRoot.getElementsByTagName( "input" )[ 0 ].value = "first value";
-          pairedInput.shadowRoot.getElementsByTagName( "input" )[ 1 ].value = "second value";
+          pairedInput.$.primaryBox.value = "first value";
+          pairedInput.$.confirmBox.value = "second value";
 
           expect( pairedInput )
-            .to.have.property( "value" )
-            .to.be.undefined();
+            .to.have.property( "val" );
+
+          expect( pairedInput.val ).to.be.undefined;
         });
 
         test( "returns value if both input fields match", function() {
-          var pairedInput = document.createElement( "paired-input" ),
-              genericValue = "random test value";
+          var pairedInput = document.createElement( "paired-input" );
 
-          pairedInput.shadowRoot.getElementsByTagName( "input" )[ 0 ].value = genericValue;
-          pairedInput.shadowRoot.getElementsByTagName( "input" )[ 1 ].value = genericValue;
+          pairedInput.$.primaryBox.value = "input-text";
+          pairedInput.$.confirmBox.value = "input-text";
 
           expect( pairedInput )
-            .to.have.property( "value" )
+            .to.have.property( "val" )
             .to.be.a( "string" )
-            .that.equals( genericValue );
+            .that.equals( "input-text" );
         });
 
         test( "set value of both input fields via property", function() {
           var pairedInput = document.createElement( "paired-input" ),
               genericValue = "random test value";
 
-          pairedInput.value = genericValue;
+          pairedInput.val = genericValue;
 
-          expect( pairedInput.shadowRoot.getElementsByTagName( "input" )[ 0 ] )
-            .to.have.property( "value" )
+          expect( pairedInput.$.primaryBox.value )
             .to.be.a( "string" )
             .that.equals( genericValue );
 
-          expect( pairedInput.shadowRoot.getElementsByTagName( "input" )[ 1 ] )
-            .to.have.property( "value" )
+          expect( pairedInput.$.confirmBox.value )
             .to.be.a( "string" )
             .that.equals( genericValue );
         });
