@@ -89,7 +89,9 @@
         this.confirmBox !== "" ? "fields are valid" : "fields are not valid";
     },
     get isValid() {
-      return this.primaryBox.validity.valid && this.primaryBox.value === this.confirmBox.value;
+      console.log( this.primaryBox.value );
+      return this.primaryBox.validity.valid && this.primaryBox.value !== "" &&
+        this.primaryBox.value === this.confirmBox.value;
     },
     get val() {
       return [ this.primaryBox.value, this.confirmBox.value ];

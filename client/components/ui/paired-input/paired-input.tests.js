@@ -586,28 +586,29 @@
         });
       });
 
-      suite( "valid", function() {
-        test( "has default value: false", function() {
-          expect( document.createElement( "paired-input" ) )
-            .to.have.property( "valid" )
+      suite( "isValid", function() {
+        test( "default value is false", function() {
+          var pairedInput = document.createElement( "paired-input" );
+
+          expect( pairedInput )
+            .to.have.property( "isValid" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
         test( "is true when input values match", function() {
-          var pairedInput = document.createElement( "paired-input" ),
-              genericValue = "random test value";
+          var pairedInput = document.createElement( "paired-input" );
 
-          pairedInput.shadowRoot.getElementsByTagName( "input" )[ 0 ].value = genericValue;
-          pairedInput.shadowRoot.getElementsByTagName( "input" )[ 1 ].value = genericValue;
+          pairedInput.$.primaryBox.value = "input-text";
+          pairedInput.$.confirmBox.value = "input-text";
 
           expect( pairedInput )
-            .to.have.property( "valid" )
+            .to.have.property( "isValid" )
             .that.is.a( "boolean" )
             .and.equals( true );
         });
       });
-      // Tests for value
+
       suite( "value", function() {
         test( "returns undefined when element is not valid", function() {
           var pairedInput = document.createElement( "paired-input" );
