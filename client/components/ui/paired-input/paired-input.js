@@ -1,24 +1,30 @@
 ( function( polymer ) {
   "use strict";
-  var copyableAttributes = [ "type", "disabled", "required", "pattern", "placeholder" ],
-    copyAttributes = function( elemFrom, elemsTo, attrs ) {
-      attrs.forEach( function( attr ) {
-        var value;
 
-        if ( elemFrom.hasAttribute( attr ) ) {
-          value = elemFrom.getAttribute( attr );
-          elemsTo.forEach( function( elem ) { elem.setAttribute( attr, value ); });
-        } else {
-          elemsTo.forEach( function( elem ) { elem.removeAttribute( attr ); });
-        }
-      });
-    };
-
-  polymer( "paired-input", {
-    _primaryBox: null,
-    _confirmBox: null,
-    _errorDiv: null,
-    _boxes: [],
+  Polymer( "paired-input", {
+    publish: {
+      type: {
+        reflect: true
+      },
+      placeholder: {
+        reflect: true
+      },
+      pattern: {
+        reflect: true
+      },
+      required: {
+        reflect: true,
+        value: false
+      },
+      disabled: {
+        reflect: true,
+        value: false
+      },
+      singleLine: {
+        reflect: true,
+        value: false
+      }
+    },
     get primaryBox() {
       return this._primaryBox;
     },
@@ -37,8 +43,6 @@
       this._errorDiv = this.shadowRoot.getElementById( "error" );
       this._boxes = [ this.primaryBox, this.confirmBox ];
 
-      copyAttributes( this, this.boxes, copyableAttributes );
-
       if ( this.hasAttribute( "placeholder" ) ) {
         this.confirmBox.setAttribute(
           "placeholder",
@@ -51,12 +55,20 @@
         this.primaryBox.style.display = this.confirmBox.style.display = "inline";
       }
 
-      if ( this.attributes.type && !( /text|password|email|tel|number|url|search/ ).test( this.attributes.type.value ) ) {
+      if ( this.hasAttribute( "type" ) &&
+          !( /text|password|email|tel|number|url|search/ ).test( this.attributes.type.value ) ) {
+        this.setAttribute( "type", "text" );
+      }
+
+      if ( !this.hasAttribute( "type" ) ) {
         this.setAttribute( "type", "text" );
       }
     },
     attached: function() {
       this.addEventListener( "keyup", this.keyConfirm );
+    },
+    detached: function() {
+      this.removeEventListener( "keyup", this.keyConfirm );
     },
     keyConfirm: function() {
       this.errorDiv.innerHTML =
@@ -65,18 +77,27 @@
         this.confirmBox !== "" ? "fields are valid" : "fields are not valid";
     },
     get isValid() {
-      return this.primaryBox.validity.valid && this.primaryBox.value === this.confirmBox.value;
+      return this.primaryBox.validity.valid && this.primaryBox.value !== "" &&
+        this.primaryBox.value === this.confirmBox.value;
     },
     get val() {
-      return [ this.primaryBox.value, this.confirmBox.value ];
+      if ( this.primaryBox.value !== this.confirmBox.value ) {
+        return;
+      }
+
+      return this.primaryBox.value;
     },
     set val( val ) {
       this.primaryBox.value = this.confirmBox.value = val;
       return true;
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
-      if ( copyableAttributes.some( function( value ) { return attrName === value; }) ) {
-        copyAttributes( this, this.boxes, [ attrName ]);
+      if ( attrName === "type" ) {
+        if ( ( /text|password|email|tel|number|url|search/ ).test( newVal ) ) {
+          this.type = newVal;
+        } else {
+          this.type = "text";
+        }
       } else if ( attrName === "single-line" ) {
         if ( newVal == null ) {
           this.primaryBox.style.display = this.confirmBox.style.display = "block";
