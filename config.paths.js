@@ -231,6 +231,14 @@ paths.karma = {
         });
       });
 
+    // Load Domain Tests Files
+    files.push({
+      pattern: "domain/**/*.tests.js",
+      watched: true,
+      included: true,
+      served: true
+    });
+
     // load html tests files
     files.push({
       pattern: "**/*.tests.html",
