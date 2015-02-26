@@ -2,22 +2,24 @@
   "use strict";
 
   polymer( "ed-icon", {
-    /* PROPERTIES */
+    publish: {
+      rotation: {
+        value: 0,
+        reflect: true
+      },
+      name: {
+        reflect: true
+      }
+    },
     _nameList: [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ],
-    // nameList
     get nameList() {
       return this._nameList;
     },
-    /* END PROPERTIES */
-    /* FUNCTIONS */
-    nameChanged: function( oldVal, newVal ) {
-      this.name = newVal;
-      this.setAttribute( "name", newVal );
-    },
     rotationChanged: function( oldVal, newVal ) {
-      this.rotation = newVal;
-      this.setAttribute( "rotation", newVal );
+
+      if ( newVal !== 0 | 90 | 180 | 270 ) {
+        this.rotation = 0;
+      }
     }
-    /* END FUNCTIONS */
   });
 })( window.Polymer );
