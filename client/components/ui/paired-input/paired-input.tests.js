@@ -611,9 +611,8 @@
           pairedInput.$.confirmBox.value = "second value";
 
           expect( pairedInput )
-            .to.have.property( "val" );
-
-          expect( pairedInput.val ).to.be.undefined;
+            .to.have.property( "val" )
+            .and.equals( undefined );
         });
 
         test( "returns value if both input fields match", function() {
