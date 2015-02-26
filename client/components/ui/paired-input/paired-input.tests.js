@@ -1,53 +1,82 @@
 /*eslint-env mocha */
-( function( window, document, polymer, chai ) {
+( function( window, document, polymer, sinon, chai ) {
   "use strict";
   var expect = chai.expect,
-      // get wrapper from document or for karma, create a new div and append it to the DOM
-      testingWrapper = document.getElementById( "paired-input-test-wrapper" ) ||
-        ( function() {
-          var wrapper = document.createElement( "div" );
-          document.body.appendChild( wrapper );
-          return wrapper;
-        })(),
-      // original state to test against
-      originalWrapperOuterHTML = testingWrapper.outerHTML,
-      // re-sets wrapper to blank
-      resetWrapper = function() {
-        testingWrapper.innerHTML = "";
-      };
+    // get wrapper from document or for karma, create a new div and append it to the DOM
+    testingWrapper = document.getElementById( "paired-input-test-wrapper" ) ||
+      ( function() {
+        var wrapper = document.createElement( "div" );
+        document.body.appendChild( wrapper );
+        return wrapper;
+      })(),
+    // original state to test against
+    originalWrapperOuterHTML = testingWrapper.outerHTML,
+    // re-sets wrapper to blank
+    resetWrapper = function() {
+      testingWrapper.innerHTML = "";
+    },
+    acceptableTypeValues = [
+      "text",
+      "password",
+      "email",
+      "tel",
+      "number",
+      "url",
+      "search"
+    ];
 
   suite( "<paired-input>", function() {
     suite( "Life Cycle", function() {
+      teardown( function() {
+        resetWrapper();
+      });
+
       test( "ready: can create from document.createElement", function() {
+        var createdSpy = sinon.spy(
+          polymer.getRegisteredPrototype( "paired-input" ),
+          "ready"
+        );
+
         expect( document.createElement( "paired-input" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<paired-input type=\"text\"></paired-input>" );
+
+        expect( createdSpy ).to.have.callCount( 1 );
+        createdSpy.restore();
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        testingWrapper.appendChild( document.createElement( "paired-input" ) );
+        var pairedInput = document.createElement( "paired-input" ),
+          attachedSpy = sinon.spy( pairedInput, "attached" );
+
+        testingWrapper.appendChild( pairedInput );
+
+        expect( attachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<paired-input type=\"text\"></paired-input>" );
 
-        resetWrapper();
+        attachedSpy.restore();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var pairedInput = document.createElement( "paired-input" );
+        var pairedInput = document.createElement( "paired-input" ),
+          detachedSpy = sinon.spy( pairedInput, "detached" );
 
         testingWrapper.appendChild( pairedInput );
         testingWrapper.removeChild( pairedInput );
+
+        expect( detachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( originalWrapperOuterHTML );
 
-        resetWrapper();
+        detachedSpy.restore();
       });
     });
 
@@ -145,15 +174,7 @@
         });
 
         suite( "set acceptable values via setAttribute", function() {
-          [
-            "text",
-            "password",
-            "email",
-            "tel",
-            "number",
-            "url",
-            "search"
-          ].forEach( function( value ) {
+          acceptableTypeValues.forEach( function( value ) {
             test( "can be set via setAttribute to " + value, function() {
               var pairedInput = document.createElement( "paired-input" );
 
@@ -168,15 +189,7 @@
             });
           });
 
-          [
-            "text",
-            "password",
-            "email",
-            "tel",
-            "number",
-            "url",
-            "search"
-          ].forEach( function( value ) {
+          acceptableTypeValues.forEach( function( value ) {
             test( "setting via " + value + " reflects to property", function() {
               var pairedInput = document.createElement( "paired-input" );
 
@@ -191,15 +204,7 @@
         });
 
         suite( "set acceptable values via property", function() {
-          [
-            "text",
-            "password",
-            "email",
-            "tel",
-            "number",
-            "url",
-            "search"
-          ].forEach( function( value ) {
+          acceptableTypeValues.forEach( function( value ) {
             test( "can be set via property to " + value, function() {
               var pairedInput = document.createElement( "paired-input" );
 
@@ -212,15 +217,7 @@
             });
           });
 
-          [
-            "text",
-            "password",
-            "email",
-            "tel",
-            "number",
-            "url",
-            "search"
-          ].forEach( function( value ) {
+          acceptableTypeValues.forEach( function( value ) {
             test( "setting via " + value + " reflects to attribute", function() {
               var pairedInput = document.createElement( "paired-input" );
 
@@ -266,41 +263,41 @@
         test( "when set via setAttribute, placeholder value should reflect to shadowDom",
           function() {
             var pairedInput = document.createElement( "paired-input" ),
-                observeFn = function( changes ) {
-                  expect( pairedInput.$.primaryBox.getAttribute( "placeholder" ) )
-                    .to.be.a( "string" )
-                    .that.equals( "type-name" );
+              observeFn = function( changes ) {
+                expect( pairedInput.$.primaryBox.getAttribute( "placeholder" ) )
+                  .to.be.a( "string" )
+                  .that.equals( "type-name" );
 
-                  expect( pairedInput.$.confirmBox.getAttribute( "placeholder" ) )
-                    .to.be.a( "string" )
-                    .that.equals( "Confirm " + "type-name" );
+                expect( pairedInput.$.confirmBox.getAttribute( "placeholder" ) )
+                  .to.be.a( "string" )
+                  .that.equals( "Confirm " + "type-name" );
 
-                  Object.unobserve( pairedInput, observeFn );
-                };
+                Object.unobserve( pairedInput, observeFn );
+              };
 
             pairedInput.setAttribute( "placeholder", "type-name" );
 
-            Object.unobserve( pairedInput, observeFn );
+            Object.observe( pairedInput, observeFn );
           });
 
         test( "when set via property, placeholder value should reflect to shadowDom",
           function() {
             var pairedInput = document.createElement( "paired-input" ),
-                observeFn = function( changes ) {
-                  expect( pairedInput.$.primaryBox )
-                    .to.have.property( "placeholder" )
-                    .that.equals( "type-name" );
+              observeFn = function( changes ) {
+                expect( pairedInput.$.primaryBox )
+                  .to.have.property( "placeholder" )
+                  .that.equals( "type-name" );
 
-                  expect( pairedInput.$.confirmBox )
-                    .to.have.property( "placeholder" )
-                    .that.equals( "Confirm type-name" );
+                expect( pairedInput.$.confirmBox )
+                  .to.have.property( "placeholder" )
+                  .that.equals( "Confirm type-name" );
 
-                  Object.unobserve( pairedInput, observeFn );
-                };
+                Object.unobserve( pairedInput, observeFn );
+              };
 
             pairedInput.placeholder = "type-name";
 
-            Object.unobserve( pairedInput, observeFn );
+            Object.observe( pairedInput, observeFn );
           });
       });
 
@@ -644,4 +641,4 @@
       });
     });
   });
-})( window, document, window.Polymer, window.chai );
+})( window, document, window.Polymer, window.sinon, window.chai );

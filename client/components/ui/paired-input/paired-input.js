@@ -56,7 +56,7 @@
       }
 
       if ( this.hasAttribute( "type" ) &&
-        !( /text|password|email|tel|number|url|search/ ).test( this.attributes.type.value ) ) {
+          !( /text|password|email|tel|number|url|search/ ).test( this.attributes.type.value ) ) {
         this.setAttribute( "type", "text" );
       }
 
@@ -66,6 +66,9 @@
     },
     attached: function() {
       this.addEventListener( "keyup", this.keyConfirm );
+    },
+    detached: function() {
+      this.removeEventListener( "keyup", this.keyConfirm );
     },
     keyConfirm: function() {
       this.errorDiv.innerHTML =
