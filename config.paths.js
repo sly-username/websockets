@@ -89,10 +89,15 @@ paths.symlink = {
     join( "!**", "*.tests.js" ),
     join( "!**", ".new" )
   ],
-  tests: [
-    join( paths.client, "**", "*.tests.html" ),
-    join( paths.client, "**", "*.tests.js" )
-  ]
+  tests: {
+    component: [
+      join( paths.client, "**", "*.tests.html" ),
+      join( paths.client, "**", "*.tests.js" )
+    ],
+    domain: [
+      join( paths.tests, "domain", "**", "*.js" )
+    ]
+  }
 };
 
 /*** LESS ***/
