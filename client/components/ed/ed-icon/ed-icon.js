@@ -16,10 +16,15 @@
     get nameList() {
       return nameList;
     },
-    rotationChanged: function( oldVal, newVal ) {
-
-      if ( newVal !== 0 | 90 | 180 | 270 ) {
-        this.rotation = 0;
+    rotationChanged: function( oldValue, newValue ) {
+      switch ( newValue ) {
+        case 0:
+        case 90:
+        case 180:
+        case 270:
+          break;
+        default:
+          this.rotation = 0;
       }
     }
   });

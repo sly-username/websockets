@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  Polymer( "paired-input", {
+  polymer( "paired-input", {
     publish: {
       type: {
         reflect: true
@@ -107,4 +107,4 @@
       }
     }
   });
-})( Polymer );
+})( window.Polymer );

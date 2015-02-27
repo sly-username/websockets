@@ -1,4 +1,4 @@
-
+/*jshint strict:false */
 /**
  *  This file will be for creating a set of functions that are useful for
  *  knowing which breakpoint section the application is in via JS
