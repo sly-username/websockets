@@ -95,7 +95,8 @@ paths.symlink = {
       join( paths.client, "**", "*.tests.js" )
     ],
     domain: [
-      join( paths.tests, "domain", "**", "*.js" )
+      join( paths.tests, "domain", "**", "*.js" ),
+      join( paths.tests, "karma-tweaks.js" )
     ]
   }
 };
@@ -187,7 +188,10 @@ paths.testing = {
     js: join( paths.client, "**", "*.tests.js" ),
     html: join( paths.client, "**", "*.tests.html" )
   },
-  tests: join( paths.tests, "**", "*.js" )
+  tests: [
+    join( paths.tests, "**", "*.js" ),
+    join( "!", paths.tests, "karma-tweaks.js" )
+  ]
 };
 paths.testing.client.all = Object.keys( paths.testing.client )
   .map( prop => paths.testing.client[ prop ] );
@@ -210,6 +214,7 @@ paths.karma = {
     "**/.new/*.*",
     "**/ed-components.html",
     "**/ui-components.html",
+    "**/poc-components.html",
     "coverage/**"
   ],
   files: ( function() {
@@ -230,6 +235,13 @@ paths.karma = {
           served: true
         });
       });
+
+    files.push({
+      pattern: "karma-tweaks.js",
+      watched: true,
+      included: true,
+      served: true
+    });
 
     // Load Domain Tests Files
     files.push({
