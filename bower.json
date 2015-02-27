@@ -11,8 +11,8 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#~0.5.1",
-    "es6-module-loader": "=0.10.0",
-    "system.js": "=0.10.2",
+    "es6-module-loader": "=0.14.0",
+    "system.js": "=0.14.1",
     "director": "=1.2.8"
   },
   "license": "To Be Decided",
