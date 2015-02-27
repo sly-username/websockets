@@ -89,7 +89,7 @@
     "livereload": "=0.3.6",
     "lodash": "=3.3.0",
     "mocha": "=2.1.0",
-    "projectz": "=0.4.3",
+    "projectz": "=0.5.0",
     "requiredir": "=1.0.6",
     "sinon": "=1.12.2",
     "sinon-chai": "=2.7.0",
