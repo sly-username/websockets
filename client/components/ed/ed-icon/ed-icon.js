@@ -1,6 +1,8 @@
 ( function( polymer ) {
   "use strict";
 
+  var nameList = [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ];
+
   polymer( "ed-icon", {
     publish: {
       rotation: {
@@ -11,9 +13,8 @@
         reflect: true
       }
     },
-    _nameList: [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ],
     get nameList() {
-      return this._nameList;
+      return nameList;
     },
     rotationChanged: function( oldVal, newVal ) {
 
