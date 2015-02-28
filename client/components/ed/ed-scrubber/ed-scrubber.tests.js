@@ -1,54 +1,74 @@
 /*eslint-env mocha */
-/*eslint-env mocha */
-( function( window, document, chai ) {
+/*jscs:disable maximumLineLength*/
+( function( window, document, polymer, sinon, chai ) {
   "use strict";
   var expect = chai.expect,
-    // get wrapper from document or for karma, create a new div and append it to the DOM
+  // get wrapper from document or for karma, create a new div and append it to the DOM
     testingWrapper = document.getElementById( "ed-scrubber-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
         return wrapper;
       })(),
-    // original state to test against
+  // original state to test against
     originalWrapperOuterHTML = testingWrapper.outerHTML,
-    // re-sets wrapper to blank
+  // re-sets wrapper to blank
     resetWrapper = function() {
       testingWrapper.innerHTML = "";
     };
 
   suite( "<ed-scrubber>", function() {
     suite( "Life Cycle", function() {
+      teardown( function() {
+        resetWrapper();
+      });
+
       test( "ready: can create from document.createElement", function() {
+        var createdSpy = sinon.spy(
+          polymer.getRegisteredPrototype( "ed-scrubber" ),
+          "ready"
+        );
+
         expect( document.createElement( "ed-scrubber" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<ed-scrubber></ed-scrubber>" );
+
+        expect( createdSpy ).to.have.callCount( 1 );
+        createdSpy.restore();
       });
 
-      test( "attached: can be added to another DOM Element", function() {
-        testingWrapper.appendChild( document.createElement( "ed-scrubber" ) );
+      test.skip( "attached: can be added to another DOM Element", function() {
+        var newElement = document.createElement( "ed-scrubber" ),
+          attachedSpy = sinon.spy( newElement, "attached" );
+
+        testingWrapper.appendChild( newElement );
+
+        expect( attachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<ed-scrubber></ed-scrubber>" );
 
-        resetWrapper();
+        attachedSpy.restore();
       });
 
-      test( "detached: can be removed from another DOM element", function() {
-        var edScrubber = document.createElement( "ed-scrubber" );
+      test.skip( "detached: can be removed from another DOM element", function() {
+        var newElement = document.createElement( "ed-scrubber" ),
+          detachedSpy = sinon.spy( newElement, "detached" );
 
-        testingWrapper.appendChild( edScrubber );
-        testingWrapper.removeChild( edScrubber );
+        testingWrapper.appendChild( newElement );
+        testingWrapper.removeChild( newElement );
+
+        expect( detachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( originalWrapperOuterHTML );
 
-        resetWrapper();
+        detachedSpy.restore();
       });
     });
 
@@ -111,22 +131,33 @@
         });
 
         test( "removing attribute \"min\" sets property back to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber.hasAttribute( "min" ) ).to.equal( false );
+                expect( edScrubber )
+                  .to.have.property( "min" )
+                  .that.is.a( "number" )
+                  .and.equals( 0 );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.setAttribute( "min", "5" );
           expect( edScrubber.hasAttribute( "min" ) ).to.equal( true );
-
           edScrubber.removeAttribute( "min" );
-          expect( edScrubber.hasAttribute( "min" ) ).to.equal( false );
-
-          expect( edScrubber )
-            .to.have.property( "min" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"min\" to null resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "min" )
+                  .that.is.a( "number" )
+                  .and.equals( 0 );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.min = 5;
           expect( edScrubber )
@@ -135,14 +166,20 @@
             .and.equals( 5 );
 
           edScrubber.min = null;
-          expect( edScrubber )
-            .to.have.property( "min" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"min\" to undefined resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "min" )
+                  .that.is.a( "number" )
+                  .and.equals( 0 );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.min = 5;
           expect( edScrubber )
@@ -151,10 +188,8 @@
             .and.equals( 5 );
 
           edScrubber.min = undefined;
-          expect( edScrubber )
-            .to.have.property( "min" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+
+          Object.observe( edScrubber, observeFn );
         });
       });
 
@@ -199,8 +234,8 @@
 
           expect( edScrubber )
             .to.have.property( "max" )
-            .that.equals( 50 )
-            .and.equals( edScrubber.getAttribute( "max" ) );
+            .that.is.a( "number" )
+            .and.equals( 50 );
         });
 
         test( "setting via property \"max\" reflects to attribute \"max\"", function() {
@@ -216,22 +251,35 @@
         });
 
         test( "removing attribute \"max\" sets property back to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber.hasAttribute( "max" ) ).to.equal( false );
+                expect( edScrubber )
+                  .to.have.property( "max" )
+                  .that.is.a( "number" )
+                  .and.equals( 100 );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.setAttribute( "max", "50" );
           expect( edScrubber.hasAttribute( "max" ) ).to.equal( true );
 
           edScrubber.removeAttribute( "max" );
-          expect( edScrubber.hasAttribute( "max" ) ).to.equal( false );
 
-          expect( edScrubber )
-            .to.have.property( "max" )
-            .that.is.a( "number" )
-            .and.equals( 100 );
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"max\" to null resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "max" )
+                  .that.is.a( "number" )
+                  .and.equals( 100 );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.max = 50;
           expect( edScrubber )
@@ -240,14 +288,20 @@
             .and.equals( 50 );
 
           edScrubber.max = null;
-          expect( edScrubber )
-            .to.have.property( "max" )
-            .that.is.a( "number" )
-            .and.equals( 100 );
+
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"max\" to undefined resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "max" )
+                  .that.is.a( "number" )
+                  .and.equals( 100 );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.max = 50;
           expect( edScrubber )
@@ -256,10 +310,8 @@
             .and.equals( 50 );
 
           edScrubber.max = undefined;
-          expect( edScrubber )
-            .to.have.property( "max" )
-            .that.is.a( "number" )
-            .and.equals( 100 );
+
+          Object.observe( edScrubber, observeFn );
         });
       });
 
@@ -321,22 +373,35 @@
         });
 
         test( "removing attribute \"format\" sets property back to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber.hasAttribute( "format" ) ).to.equal( false );
+                expect( edScrubber )
+                  .to.have.property( "format" )
+                  .that.is.a( "string" )
+                  .and.equals( "percent" );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.setAttribute( "format", "time" );
           expect( edScrubber.hasAttribute( "format" ) ).to.equal( true );
 
           edScrubber.removeAttribute( "format" );
-          expect( edScrubber.hasAttribute( "format" ) ).to.equal( false );
 
-          expect( edScrubber )
-            .to.have.property( "format" )
-            .that.is.a( "string" )
-            .and.equals( "percent" );
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"format\" to null resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "format" )
+                  .that.is.a( "string" )
+                  .and.equals( "percent" );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.format = "time";
           expect( edScrubber )
@@ -345,14 +410,20 @@
             .and.equals( "time" );
 
           edScrubber.format = null;
-          expect( edScrubber )
-            .to.have.property( "format" )
-            .that.is.a( "string" )
-            .and.equals( "percent" );
+
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"format\" to undefined resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "format" )
+                  .that.is.a( "string" )
+                  .and.equals( "percent" );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.format = "time";
           expect( edScrubber )
@@ -361,10 +432,8 @@
             .and.equals( "time" );
 
           edScrubber.format = undefined;
-          expect( edScrubber )
-            .to.have.property( "format" )
-            .that.is.a( "string" )
-            .and.equals( "percent" );
+
+          Object.observe( edScrubber, observeFn );
         });
       });
 
@@ -426,22 +495,35 @@
         });
 
         test( "removing attribute \"type\" sets property back to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber.hasAttribute( "type" ) ).to.equal( false );
+                expect( edScrubber )
+                  .to.have.property( "type" )
+                  .that.is.a( "string" )
+                  .and.equals( "default" );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.setAttribute( "type", "fill" );
           expect( edScrubber.hasAttribute( "type" ) ).to.equal( true );
 
           edScrubber.removeAttribute( "type" );
-          expect( edScrubber.hasAttribute( "type" ) ).to.equal( false );
-
-          expect( edScrubber )
-            .to.have.property( "type" )
-            .that.is.a( "string" )
-            .and.equals( "default" );
+          
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"type\" to null resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+              observeFn = function( changes ) {
+                expect( edScrubber )
+                  .to.have.property( "type" )
+                  .that.is.a( "string" )
+                  .and.equals( "default" );
+
+                Object.unobserve( edScrubber, observeFn );
+              };
 
           edScrubber.type = "fill";
           expect( edScrubber )
@@ -450,14 +532,20 @@
             .and.equals( "fill" );
 
           edScrubber.type = null;
-          expect( edScrubber )
-            .to.have.property( "type" )
-            .that.is.a( "string" )
-            .and.equals( "default" );
+
+          Object.observe( edScrubber, observeFn );
         });
 
         test( "setting \"type\" to undefined resets property to default value", function() {
-          var edScrubber = document.createElement( "ed-scrubber" );
+          var edScrubber = document.createElement( "ed-scrubber" ),
+            observeFn = function( changes ) {
+              expect( edScrubber )
+                .to.have.property( "type" )
+                .that.is.a( "string" )
+                .and.equals( "default" );
+
+              Object.unobserve( edScrubber, observeFn );
+            };
 
           edScrubber.type = "fill";
           expect( edScrubber )
@@ -466,12 +554,10 @@
             .and.equals( "fill" );
 
           edScrubber.type = undefined;
-          expect( edScrubber )
-            .to.have.property( "type" )
-            .that.is.a( "string" )
-            .and.equals( "default" );
+
+          Object.observe( edScrubber, observeFn );
         });
       });
     });
   });
-})( window, document, window.chai );
+})( window, document, window.Polymer, window.sinon, window.chai );
