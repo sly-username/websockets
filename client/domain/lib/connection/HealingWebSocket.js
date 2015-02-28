@@ -1,5 +1,5 @@
-
-var socket = Symbol( "socket" );
+/* jshint strict:false */
+var socket = Symbol( "socket" ); // jshint ignore:line
 
 export default class HealingWebSocket {
   constructor( url, protocols ) {
