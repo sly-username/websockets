@@ -280,20 +280,25 @@
         test( "should not be able to input value with disable tag present", function() {
           // selectBox is defined as firstInput requires selectBox and is used twice
           var selectBox = document.createElement( "select-box" ),
-              myOption = document.createElement( "option" );
+              myOption = document.createElement( "option" ),
+              observeFn = function( changes ) {
+                myOption.value = "apples";
+                myOption.innerHTML = "Apples";
+                selectBox.appendChild( myOption );
 
-          myOption.value = "apples";
-          myOption.innerHTML = "Apples";
-          selectBox.appendChild( myOption );
+                testingWrapper.appendChild( selectBox );
 
-          testingWrapper.appendChild( selectBox );
+                selectBox.setAttribute( "disabled", "" );
+                selectBox.selectedIndex = 1;
 
-          selectBox.setAttribute( "disabled", "" );
-          selectBox.selectedIndex = 1;
+                expect( selectBox )
+                  .to.have.property( "selectedIndex" )
+                  .to.be.null();
 
-          expect( selectBox )
-            .to.have.property( "selectedIndex" )
-            .to.be.null();
+                Object.unobserve( selectBox, observeFn );
+              };
+
+          Object.observe( selectBox, observeFn );
 
           resetWrapper();
         });
@@ -331,39 +336,85 @@
       // Testing for selectedIndex
       suite( "selectedIndex", function() {
         test( "can be set via property \"selectedIndex\"", function() {
-          var selectBox = document.createElement( "select-box" );
+          var selectBox = document.createElement( "select-box" ),
+              myOption = document.createElement( "option" ),
+              observeFn = function( changes ) {
+                myOption.value = "apples";
+                myOption.innerHTML = "Apples";
+                selectBox.appendChild( myOption );
 
-          selectBox.selectedIndex = 5;
+                testingWrapper.appendChild( selectBox );
+                selectBox.selectedIndex = 1;
 
-          expect( selectBox )
-            .to.have.property( "selectedIndex" )
-            .that.is.a( "number" )
-            .that.equals( 5 );
+                expect( selectBox )
+                  .to.have.property( "selectedIndex" )
+                  .that.is.a( "number" )
+                  .that.equals( 1 );
+                Object.unobserve( selectBox, observeFn );
+              };
+
+          Object.observe( selectBox, observeFn );
+
+          resetWrapper();
         });
       });
       // Testing for value, default for 2 is "pears"
       suite( "value", function() {
         test( "can get value via property \"selectedIndex\"", function() {
-          var selectBox = document.createElement( "select-box" );
+          var selectBox = document.createElement( "select-box" ),
+              myOption = document.createElement( "option" ),
+              myOption2 = document.createElement( "option" ),
+              observeFn = function( changes ) {
+                myOption.value = "apples";
+                myOption.innerHTML = "Apples";
+                myOption2.value = "pears";
+                myOption2.innerHTML = "Pears";
+                selectBox.appendChild( myOption );
+                selectBox.appendChild( myOption2 );
 
-          selectBox.selectedIndex = 2;
+                testingWrapper.appendChild( selectBox );
+                selectBox.selectedIndex = 2;
 
-          expect( selectBox )
-            .to.have.property( "value" )
-            .that.is.a( "string" )
-            .that.equals( "pears" );
+                expect( selectBox )
+                  .to.have.property( "value" )
+                  .that.is.a( "string" )
+                  .that.equals( "pears" );
+
+                Object.unobserve( selectBox, observeFn );
+              };
+
+          Object.observe( selectBox, observeFn );
+
+          resetWrapper();
         });
 
         test( "value is a getter only", function() {
-          var selectBox = document.createElement( "select-box" );
+          var selectBox = document.createElement( "select-box" ),
+              myOption = document.createElement( "option" ),
+              myOption2 = document.createElement( "option" ),
+              observeFn = function( changes ) {
+                myOption.value = "apples";
+                myOption.innerHTML = "Apples";
+                myOption2.value = "pears";
+                myOption2.innerHTML = "Pears";
+                selectBox.appendChild( myOption );
+                selectBox.appendChild( myOption2 );
 
-          selectBox.selectedIndex = 2;
-          selectBox.value = "pie";
+                testingWrapper.appendChild( selectBox );
+                selectBox.selectedIndex = 2;
+                selectBox.value = "pie";
 
-          expect( selectBox )
-            .to.have.property( "value" )
-            .that.is.a( "string" )
-            .that.equals( "pears" );
+                expect( selectBox )
+                  .to.have.property( "value" )
+                  .that.is.a( "string" )
+                  .that.equals( "pears" );
+
+                Object.unobserve( selectBox, observeFn );
+              };
+
+          Object.observe( selectBox, observeFn );
+
+          resetWrapper();
         });
       });
     });
