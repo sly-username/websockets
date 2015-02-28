@@ -510,7 +510,7 @@
           expect( edScrubber.hasAttribute( "type" ) ).to.equal( true );
 
           edScrubber.removeAttribute( "type" );
-          
+
           Object.observe( edScrubber, observeFn );
         });
 
