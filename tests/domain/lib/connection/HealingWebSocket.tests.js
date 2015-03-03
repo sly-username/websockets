@@ -18,7 +18,6 @@
     });
 
     // Start Tests
-
     suite( "websocket creation", function() {
       test( "starts in non-open state when created", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
@@ -32,16 +31,6 @@
           .that.equals( false );
       });
 
-      test( "when websocket is closed, new websocket is opened", function() {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
-
-        if ( hws.readyState === WebSocket.CLOSED ) {
-          expect( hws )
-            .to.have.property( "isOpen" )
-            .that.equals( true );
-        }
-      });
-
       test( "when websocket is open, isOpen property is true", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
@@ -51,6 +40,39 @@
             .that.equals( true );
         }
       });
+
+      test( "when websocket is closed, new websocket is opened", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        if ( hws.readyState === WebSocket.CLOSED ) {
+          expect( hws )
+            .to.have.property( "isOpen" )
+            .that.equals( true );
+        }
+      });
+    });
+
+    suite( "attributes", function() {
+      test( "can set websocket's binary type via binaryType attribute", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            socketSym = Object.getOwnPropertySymbols( hws )[0];
+
+        hws[ socketSym ].binaryType = "blob";
+
+        expect( hws[socketSym] )
+         .to.have.property( "binaryType" )
+         .that.equals( "blob" );
+      });
+
+      test( "can retrieve bytes of data in queue via bufferedAmount attribute", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            socketSym = Object.getOwnPropertySymbols( hws )[0];
+
+        expect( hws[socketSym] )
+          .to.have.property( "bufferedAmount" )
+          .that.equals( 0 );
+        // not sure what the value should equal ...
+      });
     });
 
     suite( "data type testing", function() {
@@ -58,6 +80,7 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
+        // need to set socket to connected
         hws.on( "message", function( data ) {
           expect( data )
             .to.be.a( "string" )

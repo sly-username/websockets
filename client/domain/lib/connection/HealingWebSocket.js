@@ -9,7 +9,6 @@ export default class HealingWebSocket {
   }
 
   get isOpen() {
-    console.log( this[socket] );
     return this[socket].readyState === WebSocket.OPEN;
   }
 
@@ -23,6 +22,7 @@ export default class HealingWebSocket {
 
   set binaryType( value ) {
     this[socket].binaryType = value;
+    return value;
   }
 
   get bufferedAmount() {
@@ -35,6 +35,7 @@ export default class HealingWebSocket {
 
   set extensions( value ) {
     this[socket].extensions = value;
+    return value;
   }
 
   get protocol() {
@@ -43,6 +44,7 @@ export default class HealingWebSocket {
 
   set protocol( value ) {
     this[socket].protocol = value;
+    return value;
   }
 
   get url() {
@@ -53,8 +55,13 @@ export default class HealingWebSocket {
 
   }
 
-  send() {
-
+  send( data ) {
+    if ( this[socket].isOpen &&
+      ( data instanceof ArrayBuffer || data instanceof Blob ||  typeof data === "string" )) {
+      this[socket].send( data );
+    } else {
+      this[socket].send( JSON.stringify( data ));
+    }
   }
 
   on( event, handler ) {
