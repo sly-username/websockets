@@ -31,29 +31,55 @@
           .that.equals( false );
       });
 
-      test( "when websocket is open, isOpen property is true", function() {
+      test( "when websocket is open, isOpen property is true", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
-        if ( hws.readyState === WebSocket.OPEN ) {
+        hws.on( "open", function() {
           expect( hws )
             .to.have.property( "isOpen" )
             .that.equals( true );
-        }
+
+          done();
+        });
       });
 
-      test( "when websocket is closed, new websocket is opened", function() {
+      test( "when websocket is closed, new websocket is opened", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
-        if ( hws.readyState === WebSocket.CLOSED ) {
+        hws.on( "open", function() {
           expect( hws )
             .to.have.property( "isOpen" )
             .that.equals( true );
-        }
+        });
+
+        done();
       });
     });
 
     suite( "attributes", function() {
-      test( "can set websocket's binary type via binaryType attribute", function() {
+      test( "can get the value of the isOpen boolean", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        expect( hws )
+          .to.have.property( "isOpen" )
+          .that.is.a( "boolean" );
+      });
+
+      test( "can get the value of websocket's ready state", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        expect( hws )
+          .to.have.property( "readyState" );
+      });
+
+      test( "can get the type of binary data transmitted by the connection", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        expect( hws )
+          .to.have.property( "binaryType" );
+      });
+
+      test( "can set websocket's binary type via binaryType property", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             socketSym = Object.getOwnPropertySymbols( hws )[0];
 
@@ -64,14 +90,43 @@
          .that.equals( "blob" );
       });
 
-      test( "can retrieve bytes of data in queue via bufferedAmount attribute", function() {
+      test( "can get bytes of data in queue via bufferedAmount property", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             socketSym = Object.getOwnPropertySymbols( hws )[0];
 
         expect( hws[socketSym] )
           .to.have.property( "bufferedAmount" )
-          .that.equals( 0 );
-        // not sure what the value should equal ...
+          .that.is.a( "number" );
+      });
+
+      test( "can get extensions selected by the server", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        expect( hws )
+          .to.have.property( "extensions" );
+      });
+
+      test( "can set extensions via extensions property", function() {
+        // what should go here?
+      });
+
+      test( "can get name of the sub-protocol server selected", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        expect( hws )
+          .to.have.property( "protocol" )
+          .that.is.a( "string" );
+      });
+
+      test( "can set protocol via protocol property", function() {
+        // how about here?
+      });
+
+      test( "can get websocket's absolute url", function() {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+        expect( hws )
+          .to.have.property( "url" );
       });
     });
 

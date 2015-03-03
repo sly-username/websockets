@@ -56,11 +56,14 @@ export default class HealingWebSocket {
   }
 
   send( data ) {
-    if ( this[socket].isOpen &&
-      ( data instanceof ArrayBuffer || data instanceof Blob ||  typeof data === "string" )) {
+    if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
+      this[socket].send( JSON.stringify( data ));
+    }
+
+    if ( this[socket].isOpen ) {
       this[socket].send( data );
     } else {
-      this[socket].send( JSON.stringify( data ));
+      heal( data );
     }
   }
 
@@ -77,6 +80,10 @@ export default class HealingWebSocket {
       [ event + "listener" ].call( this, event );
       this.off( event, handler );
     });
+  }
+
+  heal( event, data ){
+
   }
 
 }
