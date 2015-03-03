@@ -38,7 +38,7 @@
         createdSpy.restore();
       });
 
-      test.skip( "attached: can be added to another DOM Element", function() {
+      test( "attached: can be added to another DOM Element", function() {
         var newElement = document.createElement( "checkbox-select" ),
           attachedSpy = sinon.spy( newElement, "attached" );
 
