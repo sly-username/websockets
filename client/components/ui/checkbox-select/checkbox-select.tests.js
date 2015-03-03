@@ -39,10 +39,10 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "checkbox-select" ),
-          attachedSpy = sinon.spy( newElement, "attached" );
+        var checkSelect = document.createElement( "checkbox-select" ),
+          attachedSpy = sinon.spy( checkSelect, "attached" );
 
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( checkSelect );
 
         expect( attachedSpy ).to.have.callCount( 1 );
 
@@ -55,11 +55,11 @@
       });
 
       test.skip( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "checkbox-select" ),
-          detachedSpy = sinon.spy( newElement, "detached" );
+        var checkSelect = document.createElement( "checkbox-select" ),
+          detachedSpy = sinon.spy( checkSelect, "detached" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( checkSelect );
+        testingWrapper.removeChild( checkSelect );
 
         expect( detachedSpy ).to.have.callCount( 1 );
 
