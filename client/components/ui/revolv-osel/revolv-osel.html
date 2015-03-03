@@ -1,7 +1,14 @@
 <polymer-element name="revolv-osel" attributes="loop pagination show-button visible">
   <template>
     <link rel="stylesheet" href="./revolv-osel.css">
-
+      <div class="carousel">
+        <div class="carousel-viewport">
+          <content></content>
+          <a class="carousel-nav carousel-nav_prev js-carousel-nav_prev"><span class="arrow arrow_left"></span></a>
+          <a class="carousel-nav carousel-nav_next js-carousel-nav_next"><span class="arrow arrow_right"></span></a>
+          <nav class="carousel-bulletNav"></nav>
+        </div>
+      </div>
   </template>
   <script src="revolv-osel.js"></script>
 </polymer-element>

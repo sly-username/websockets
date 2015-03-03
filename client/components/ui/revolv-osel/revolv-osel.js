@@ -2,6 +2,7 @@
   "use strict";
 
   polymer( "revolv-osel", {
+    _options: [],
     showButtons: false,
     publish: {
       loop: {
@@ -16,11 +17,16 @@
         reflect: true
       }
     },
-    ready: function() {},
+    ready: function() {
+    },
 
-    attributeChanged: function( attrName, oldValue, newValue ) {},
-
-    loopChanged: function( oldValue, newValue ) {},
-    visibileChange: function( oldValue, newValue ) {}
+    created: function() {
+      Array.prototype.forEach.call( this.children, function( elem ) {
+        this._options.push({
+          src: elem.src,
+          href: elem.href
+        });
+      }.bind( this ) );
+    }
   });
 })( window.Polymer );
