@@ -38,7 +38,7 @@
         createdSpy.restore();
       });
 
-      test.skip( "attached: can be added to another DOM Element", function() {
+      test( "attached: can be added to another DOM Element", function() {
         var newElement = document.createElement( "select-box" ),
           attachedSpy = sinon.spy( newElement, "attached" );
 
@@ -365,16 +365,8 @@
               myOption = document.createElement( "option" ),
               myOption2 = document.createElement( "option" ),
               observeFn = function( changes ) {
-                myOption.value = "apples";
-                myOption.innerHTML = "Apples";
-                myOption2.value = "pears";
-                myOption2.innerHTML = "Pears";
-                selectBox.appendChild( myOption );
-                selectBox.appendChild( myOption2 );
-
                 testingWrapper.appendChild( selectBox );
                 selectBox.selectedIndex = 2;
-
                 expect( selectBox )
                   .to.have.property( "value" )
                   .that.is.a( "string" )
@@ -382,6 +374,13 @@
 
                 Object.unobserve( selectBox, observeFn );
               };
+
+          myOption.value = "apples";
+          myOption.innerHTML = "Apples";
+          myOption2.value = "pears";
+          myOption2.innerHTML = "Pears";
+          selectBox.appendChild( myOption );
+          selectBox.appendChild( myOption2 );
 
           Object.observe( selectBox, observeFn );
 
@@ -393,13 +392,6 @@
               myOption = document.createElement( "option" ),
               myOption2 = document.createElement( "option" ),
               observeFn = function( changes ) {
-                myOption.value = "apples";
-                myOption.innerHTML = "Apples";
-                myOption2.value = "pears";
-                myOption2.innerHTML = "Pears";
-                selectBox.appendChild( myOption );
-                selectBox.appendChild( myOption2 );
-
                 testingWrapper.appendChild( selectBox );
                 selectBox.selectedIndex = 2;
                 selectBox.value = "pie";
@@ -411,6 +403,14 @@
 
                 Object.unobserve( selectBox, observeFn );
               };
+
+          myOption.value = "apples";
+          myOption.innerHTML = "Apples";
+          myOption2.value = "pears";
+          myOption2.innerHTML = "Pears";
+          selectBox.appendChild( myOption );
+          selectBox.appendChild( myOption2 );
+
 
           Object.observe( selectBox, observeFn );
 
