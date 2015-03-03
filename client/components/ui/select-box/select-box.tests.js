@@ -411,7 +411,6 @@
           selectBox.appendChild( myOption );
           selectBox.appendChild( myOption2 );
 
-
           Object.observe( selectBox, observeFn );
 
           resetWrapper();
