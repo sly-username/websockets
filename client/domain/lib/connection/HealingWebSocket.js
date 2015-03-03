@@ -9,10 +9,67 @@ export default class HealingWebSocket {
   }
 
   get isOpen() {
+    console.log( this[socket] );
     return this[socket].readyState === WebSocket.OPEN;
   }
 
   get readyState() {
     return this[socket].readyState;
   }
+
+  get binaryType() {
+    return this[socket].binaryType;
+  }
+
+  set binaryType( value ) {
+    this[socket].binaryType = value;
+  }
+
+  get bufferedAmount() {
+    return this[socket].bufferedAmount;
+  }
+
+  get extensions() {
+    return this[socket].extensions;
+  }
+
+  set extensions( value ) {
+    this[socket].extensions = value;
+  }
+
+  get protocol() {
+    return this[socket].protocol;
+  }
+
+  set protocol( value ) {
+    this[socket].protocol = value;
+  }
+
+  get url() {
+    return this[socket].url;
+  }
+
+  close() {
+
+  }
+
+  send() {
+
+  }
+
+  on( event, handler ) {
+    this[socket].addEventListener( event, handler );
+  }
+
+  off( event, handler ) {
+    this[socket].removeEventListener( event, handler );
+  }
+
+  one( event, handler ) {
+    this[socket].on( event, function( event ) {
+      [ event + "listener" ].call( this, event );
+      this.off( event, handler );
+    });
+  }
+
 }
