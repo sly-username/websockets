@@ -38,11 +38,11 @@
         createdSpy.restore();
       });
 
-      test.skip( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "ed-scrubber" ),
-          attachedSpy = sinon.spy( newElement, "attached" );
+      test( "attached: can be added to another DOM Element", function() {
+        var edScrubber = document.createElement( "ed-scrubber" ),
+          attachedSpy = sinon.spy( edScrubber, "attached" );
 
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( edScrubber );
 
         expect( attachedSpy ).to.have.callCount( 1 );
 
@@ -55,11 +55,11 @@
       });
 
       test.skip( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "ed-scrubber" ),
-          detachedSpy = sinon.spy( newElement, "detached" );
+        var edScrubber = document.createElement( "ed-scrubber" ),
+          detachedSpy = sinon.spy( edScrubber, "detached" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( edScrubber );
+        testingWrapper.removeChild( edScrubber );
 
         expect( detachedSpy ).to.have.callCount( 1 );
 
