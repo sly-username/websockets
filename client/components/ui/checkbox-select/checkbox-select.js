@@ -12,6 +12,17 @@
   };
 
   polymer( "checkbox-select", {
+    required: false,
+    disabled: false,
+    checked: false,
+    publish: {
+      value: {
+        reflect: true
+      },
+      name: {
+        reflect: true
+      }
+    },
     ready: function() {
       this.checkboxField = this.shadowRoot.getElementById( "checkbox-field" );
 
@@ -27,14 +38,27 @@
     },
     attached: function() {
       copyAttributes( this, this.checkboxField, [ "checked", "disabled", "required" ]);
+    },
+    requiredChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        this.setAttribute( "required", "" );
+      } else {
+        this.removeAttribute( "required" );
+      }
+    },
+    disabledChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        this.setAttribute( "disabled", "" );
+      } else {
+        this.removeAttribute( "disabled" );
+      }
+    },
+    checkedChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        this.setAttribute( "checked", "" );
+      } else {
+        this.removeAttribute( "checked" );
+      }
     }
   });
 })( Polymer );
-
-// script.js
-/**
- * @name helloWorld
- * @description This function returns a string.
- *
- * @returns {string} This string has the value 'Hello World'.
- */

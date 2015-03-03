@@ -12,13 +12,23 @@
   };
 
   polymer( "ed-scrubber", {
-    get format() {
-      return this._format;
-    },
-    set format( value ) {
-      this.attributes.format.value = value;
-      this._format = value;
-      return value;
+    publish: {
+      min: {
+        value: 0,
+        reflect: true
+      },
+      max: {
+        value: 100,
+        reflect: true
+      },
+      format: {
+        value: "percent",
+        reflect: true
+      },
+      type: {
+        value: "default",
+        reflect: true
+      }
     },
     ready: function() {
       this.scrubberWrapper = this.shadowRoot.getElementById( "scrubber-wrapper" );
@@ -32,12 +42,19 @@
     },
     showVal: function() {
       var inputValue = this.scrubberInput.value,
-          valPercent = parseInt( inputValue - this.scrubberInput.min /
-            ( this.scrubberInput.max - this.scrubberInput.min * 100 ), 10 ) + "%",
+          topVal = parseInt( ( inputValue - this.scrubberInput.min ), 10 ),
+          bottomVal = parseInt( ( this.scrubberInput.max - this.scrubberInput.min ), 10 ),
+          valPercent = parseInt( ( topVal / bottomVal ) * 100, 10 ) + "%",
           valTime = inputValue + " seconds";
 
       this.valBox.innerHTML = this.format === "percent" ? valPercent : valTime;
       this.backFill.style.width = valPercent;
+    },
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      if ( newVal == null && ( /^(min|max|format|type)/ ).test( attrName ) ) {
+        this[ attrName ] = this.publish[ attrName ].value;
+        return;
+      }
     }
   });
 })( window.Polymer );

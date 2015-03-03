@@ -80,7 +80,7 @@ module.exports = function( config ) {
     },
 
     nyanReporter: {
-      suppressStackTrace: true
+      suppressErrorReport: true
     },
 
     coverageReporter: {
