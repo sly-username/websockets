@@ -7,7 +7,7 @@
   width: inherit;
   overflow: hidden;
 }
-.carousel-list {
+ul {
   overflow: hidden;
   min-width: 2600px;
   padding: 0;
@@ -47,18 +47,18 @@
   -o-transition: all .35s ease-in-out;
   transition: all .35s ease-in-out;
 }
-.carousel-nav_prev {
+.carousel-nav-prev {
   left: -55px;
 }
-.carousel-nav_next {
+.carousel-nav-next {
   right: -55px;
 }
-.carousel-bulletNav {
+.pagination {
   text-align: center;
   overflow: hidden;
   list-style-type: none;
 }
-.carousel-bulletNav-control {
+.pagination-nav {
   display: inline-block;
   margin-right: 10px;
   width: 15px;
@@ -71,7 +71,7 @@
   border-radius: 50%;
   cursor: pointer;
 }
-.carousel-bulletNav-control:hover,.carousel-bulletNav-control:focus {
+.pagination-nav:hover,.pagination-nav:focus {
   background-color: #666666;
 }
 .arrow {
@@ -90,26 +90,26 @@
   content: " ";
   position: absolute;
 }
-.arrow_left {
+.arrow-left {
   left: 10px;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
   border-right: 12px solid #ff69b4;
 }
-.arrow_left:before {
+.arrow-left:before {
   top: -8px;
   left: 4px;
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
   border-right: 8px solid #fff;
 }
-.arrow_right {
+.arrow-right {
   left: 14px;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
   border-left: 12px solid #ff69b4;
 }
-.arrow_right:before {
+.arrow-right:before {
   top: -8px;
   left: -12px;
   border-top: 8px solid transparent;
