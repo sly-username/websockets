@@ -1,4 +1,4 @@
-
+"use strict";
 var config = require( "./config.paths.js" );
 
 module.exports = {

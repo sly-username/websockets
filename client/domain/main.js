@@ -1,3 +1,4 @@
+/*jshint strict:false */
 /**
  * Created by rj on 11/24/14.
  */
