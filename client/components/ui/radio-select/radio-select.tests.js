@@ -38,11 +38,11 @@
         createdSpy.restore();
       });
 
-      test.skip( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "radio-select" ),
-          attachedSpy = sinon.spy( newElement, "attached" );
+      test( "attached: can be added to another DOM Element", function() {
+        var radioSelect = document.createElement( "radio-select" ),
+          attachedSpy = sinon.spy( radioSelect, "attached" );
 
-        testingWrapper.appendChild( newElement );
+        testingWrapper.appendChild( radioSelect );
 
         expect( attachedSpy ).to.have.callCount( 1 );
 
@@ -55,11 +55,11 @@
       });
 
       test.skip( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "radio-select" ),
-          detachedSpy = sinon.spy( newElement, "detached" );
+        var radioSelect = document.createElement( "radio-select" ),
+          detachedSpy = sinon.spy( radioSelect, "detached" );
 
-        testingWrapper.appendChild( newElement );
-        testingWrapper.removeChild( newElement );
+        testingWrapper.appendChild( radioSelect );
+        testingWrapper.removeChild( radioSelect );
 
         expect( detachedSpy ).to.have.callCount( 1 );
 
