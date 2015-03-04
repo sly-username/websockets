@@ -41,10 +41,12 @@
       this.carouselListItems = this.querySelectorAll( "li" );
       this.paginationNav = this.shadowRoot.querySelector( ".pagination" );
       // builds the pagination
-      buildBulletNav(
-        this.shadowRoot.querySelector( ".pagination" ),
-        this.carouselListItems.length
-      );
+      if ( this.pagination === true ) {
+        buildBulletNav(
+          this.shadowRoot.querySelector( ".pagination" ),
+          this.carouselListItems.length
+        );
+      }
       // sets the first item as the selected Item
       this.carouselListItems[0].setAttribute( "class", "selected-item" );
       this.getIndex();
