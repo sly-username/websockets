@@ -355,11 +355,11 @@
 
           hws.one( "open", openListener );
 
-          expect( "open", addEventSpy )
+          expect( addEventSpy )
             .to.have.callCount( 1 )
             .to.have.been.calledWith( "open", openListener );
 
-          expect( "open", removeEventSpy )
+          expect( removeEventSpy )
             .to.have.callCount( 1 )
             .to.have.been.calledWith( "open", openListener );
 

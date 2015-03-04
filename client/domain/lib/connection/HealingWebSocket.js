@@ -64,10 +64,10 @@ export default class HealingWebSocket {
     }
 
     if ( this[socket].isOpen ) {
-      this[socket].send( data ).bind( this );
+      this[socket].send( data );
     } else {
-      this[socket].one( "open", ( event ) =>
-        this[socket].send( data ) ).bind( this );
+      this.one( "open", ( event ) =>
+        this[socket].send( data ));
     }
   }
 
@@ -80,9 +80,9 @@ export default class HealingWebSocket {
   }
 
   one( event, handler ) {
-    this[socket].on( event, ( event ) => {
-      this.event.call( this, event );
-      this[socket].off( event, handler );
+    this.on( event, ( event ) => {
+      handler.call( this, event );
+      this.off( event, handler );
     });
   }
 
