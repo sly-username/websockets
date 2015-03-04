@@ -345,20 +345,26 @@
 
         test( "one event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              oneListener = function() {},
+              openListener = function() {},
               socketSym = Object.getOwnPropertySymbols( hws )[0],
               addEventSpy,
               removeEventSpy;
 
           addEventSpy = sinon.spy( hws[socketSym], "addEventListener" );
           removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
-          hws.one( oneListener );
 
-          expect( addEventSpy )
+          hws.one( "open", openListener );
+
+          expect( "open", addEventSpy )
             .to.have.callCount( 1 )
-            .to.have.been.calledWith( "close", oneListener );
+            .to.have.been.calledWith( "open", openListener );
+
+          expect( "open", removeEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( "open", openListener );
 
           addEventSpy.restore();
+          removeEventSpy.restore();
         });
     });
 

@@ -1,5 +1,6 @@
 /* jshint strict:false */
-var socket = Symbol( "socket" ); // jshint ignore:line
+var socket = Symbol( "socket" ), // jshint ignore:line
+  heal = Symbol( "heal" ); // jshint ignore:line
 
 export default class HealingWebSocket {
   constructor( url, protocols ) {
@@ -65,8 +66,8 @@ export default class HealingWebSocket {
     if ( this[socket].isOpen ) {
       this[socket].send( data ).bind( this );
     } else {
-      this.one( "open", event =>
-        this.send( data ) )
+      this[socket].one( "open", ( event ) =>
+        this[socket].send( data ) ).bind( this );
     }
   }
 
@@ -80,18 +81,18 @@ export default class HealingWebSocket {
 
   one( event, handler ) {
     this[socket].on( event, ( event ) => {
-      event.call( this, event );
-      this.off( event, handler );
+      this.event.call( this, event );
+      this[socket].off( event, handler );
     });
   }
 
-  heal( data ) {
+  [heal]( data ) {
     this[socket] = this.oldProtocols != null ?
       new WebSocket( this.oldUrl, this.oldProtocols ) :
       new WebSocket( this.oldUrl );
 
-    this.one( "open", event =>
-      this.send( data ) )
+    this[socket].one( "open", event =>
+      this[socket].send( data ) )
   }
 
 }
