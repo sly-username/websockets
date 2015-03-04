@@ -59,6 +59,10 @@
         e.preventDefault();
         this.prevSlide();
       }.bind( this ) );
+      this.paginationNav.addEventListener( "click", function( e ) {
+        e.preventDefault();
+        console.log( e.toElement.attributes[ "data-index" ].value );
+      }.bind( this ) );
     },
     // gets the index of the selected item
     getIndex: function() {
