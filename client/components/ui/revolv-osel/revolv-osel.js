@@ -26,12 +26,13 @@
         reflect: true
       },
       visible: {
+        value: 1,
         reflect: true
       }
     },
     // retuns the value to slide the container
     get slideBy() {
-      return ( 650 * ( -1 * this.marker ) ) + "px";
+      return ( ( 650 / this.visible ) * ( -1 * this.marker ) ) + "px";
     },
     ready: function() {
       this.container = this.shadowRoot.querySelector( ".carousel" );
@@ -43,7 +44,7 @@
       // builds the pagination
       if ( this.pagination === true ) {
         buildBulletNav(
-          this.shadowRoot.querySelector( ".pagination" ),
+          this.paginationNav,
           this.carouselListItems.length
         );
       }
@@ -142,6 +143,20 @@
       this.updateMarkerBullet( index );
       this.marker = index;
       this.carouselList.style.marginLeft = this.slideBy;
+    },
+    paginationChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        buildBulletNav(
+          this.paginationNav,
+          this.carouselListItems.length
+        );
+      } else {
+        console.log( "trigger" );
+
+        while ( this.paginationNav.firstChild ) {
+          this.paginationNav.removeChild( this.paginationNav.firstChild );
+        }
+      }
     }
   });
 })( window.Polymer );
