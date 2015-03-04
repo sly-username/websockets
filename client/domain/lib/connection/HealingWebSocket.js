@@ -3,6 +3,8 @@ var socket = Symbol( "socket" ); // jshint ignore:line
 
 export default class HealingWebSocket {
   constructor( url, protocols ) {
+    this.oldUrl = url;
+    this.oldProtocols = protocols;
     this[socket] = protocols != null ?
       new WebSocket( url, protocols ) :
       new WebSocket( url );
@@ -52,18 +54,19 @@ export default class HealingWebSocket {
   }
 
   close() {
-
+    this[socket].close();
   }
 
   send( data ) {
     if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
-      this[socket].send( JSON.stringify( data ));
+      data = JSON.stringify( data );
     }
 
     if ( this[socket].isOpen ) {
-      this[socket].send( data );
+      this[socket].send( data ).bind( this );
     } else {
-      heal( data );
+      this.one( "open", event =>
+        this.send( data ) )
     }
   }
 
@@ -76,14 +79,19 @@ export default class HealingWebSocket {
   }
 
   one( event, handler ) {
-    this[socket].on( event, function( event ) {
-      [ event + "listener" ].call( this, event );
+    this[socket].on( event, ( event ) => {
+      event.call( this, event );
       this.off( event, handler );
     });
   }
 
-  heal( event, data ){
+  heal( data ) {
+    this[socket] = this.oldProtocols != null ?
+      new WebSocket( this.oldUrl, this.oldProtocols ) :
+      new WebSocket( this.oldUrl );
 
+    this.one( "open", event =>
+      this.send( data ) )
   }
 
 }

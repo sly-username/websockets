@@ -131,23 +131,20 @@
     });
 
     suite( "data type testing", function() {
-      test( "can send string", function( done ) {
+      test( "can receive string via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
-        // need to set socket to connected
         hws.on( "message", function( data ) {
           expect( data )
             .to.be.a( "string" )
             .and.equal( strData );
-
-          done();
         });
 
-        hws.send( strData );
+        done();
       });
 
-      test( "can send blob", function( done ) {
+      test( "can receive blob via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
             blobData = new Blob( blobArray );
@@ -156,14 +153,12 @@
           expect( data )
             .to.be.an.instanceOf( Blob )
             .and.equal( blobData );
-
-          done();
         });
 
-        hws.send( blobData );
+        done();
       });
 
-      test( "can send array buffer", function( done ) {
+      test( "can receive array buffer via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             arrayBufferLength = new ArrayBuffer( 256 );
 
@@ -171,17 +166,56 @@
           expect( data )
             .to.be.an.instanceOf( ArrayBuffer )
             .and.equal( arrayBufferLength );
-
-          done();
         });
 
-        hws.send( arrayBufferLength );
+        done();
+      });
+
+      test( "can send string via send method", function( done ) {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            strData = "string data";
+
+        hws.on( "open", function( data ) {
+          hws.send( strData );
+          expect( data )
+            .to.be.a( "string" )
+            .and.equal( strData );
+        });
+
+        done();
+      });
+
+      test( "can send blob via send method", function( done ) {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
+            blobData = new Blob( blobArray );
+
+        hws.on( "message", function( data ) {
+          expect( data )
+            .to.be.an.instanceOf( Blob )
+            .and.equal( blobData );
+        });
+
+        done();
+      });
+
+      test( "can send array buffer via send method", function( done ) {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            arrayBufferLength = new ArrayBuffer( 256 );
+
+        hws.on( "message", function( data ) {
+          expect( data )
+            .to.be.an.instanceOf( ArrayBuffer )
+            .and.equal( arrayBufferLength );
+        });
+
+        done();
       });
     });
 
     suite( "whether on method is properly calling addEventListener functions",
       function() {
-        test( "onmessage event listener", function() {
+        test( "add onmessage event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               messageListener = function() {},
               socketSym = Object.getOwnPropertySymbols( hws )[0],
@@ -197,7 +231,7 @@
           addEventSpy.restore();
       });
 
-        test( "onopen event listener", function() {
+        test( "add onopen event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               openListener = function() {},
               socketSym = Object.getOwnPropertySymbols( hws )[0],
@@ -213,7 +247,7 @@
           addEventSpy.restore();
         });
 
-        test( "onerror event listener", function() {
+        test( "add onerror event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               errorListener = function() {},
               socketSym = Object.getOwnPropertySymbols( hws )[0],
@@ -229,7 +263,7 @@
           addEventSpy.restore();
         });
 
-        test( "onclose event listener", function() {
+        test( "add onclose event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               closeListener = function() {},
               socketSym = Object.getOwnPropertySymbols( hws )[0],
@@ -245,13 +279,79 @@
           addEventSpy.restore();
         });
 
+        test( "remove onmessage event listener", function() {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              messageListener = function() {},
+              socketSym = Object.getOwnPropertySymbols( hws )[0],
+              removeEventSpy;
+
+          removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
+          hws.off( "message", messageListener );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( "message", messageListener );
+
+          removeEventSpy.restore();
+        });
+
+        test( "remove onopen event listener", function() {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              openListener = function() {},
+              socketSym = Object.getOwnPropertySymbols( hws )[0],
+              removeEventSpy;
+
+          removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
+          hws.off( "open", openListener );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( "open", openListener );
+
+          removeEventSpy.restore();
+        });
+
+        test( "remove onerror event listener", function() {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              errorListener = function() {},
+              socketSym = Object.getOwnPropertySymbols( hws )[0],
+              removeEventSpy;
+
+          removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
+          hws.off( "error", errorListener );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( "error", errorListener );
+
+          removeEventSpy.restore();
+        });
+
+        test( "remove onclose event listener", function() {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              closeListener = function() {},
+              socketSym = Object.getOwnPropertySymbols( hws )[0],
+              removeEventSpy;
+
+          removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
+          hws.off( "close", closeListener );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( "close", closeListener );
+
+          removeEventSpy.restore();
+        });
+
         test( "one event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               oneListener = function() {},
               socketSym = Object.getOwnPropertySymbols( hws )[0],
-              addEventSpy;
+              addEventSpy,
+              removeEventSpy;
 
           addEventSpy = sinon.spy( hws[socketSym], "addEventListener" );
+          removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
           hws.one( oneListener );
 
           expect( addEventSpy )
