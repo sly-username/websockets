@@ -38,7 +38,7 @@
         createdSpy.restore();
       });
 
-      test.skip( "attached: can be added to another DOM Element", function() {
+      test( "attached: can be added to another DOM Element", function() {
         var newElement = document.createElement( "revolv-osel" ),
           attachedSpy = sinon.spy( newElement, "attached" );
 
@@ -251,7 +251,7 @@
         });
       });
 
-      suite( "shoo-buttons", function() {
+      suite( "show-buttons", function() {
         test( "has default value: false", function() {
           var revolv = document.createElement( "revolv-osel" );
 
