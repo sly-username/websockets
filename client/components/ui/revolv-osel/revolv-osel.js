@@ -40,7 +40,6 @@
       this.carouselList = this.querySelector( "ul" );
       this.carouselListItems = this.querySelectorAll( "li" );
       this.paginationNav = this.shadowRoot.querySelector( ".pagination" );
-      this.getIndex();
       // builds the pagination
       buildBulletNav(
         this.shadowRoot.querySelector( ".pagination" ),
@@ -48,6 +47,7 @@
       );
       // sets the first item as the selected Item
       this.carouselListItems[0].setAttribute( "class", "selected-item" );
+      this.getIndex();
     },
     attached: function() {
       // Event listener when clicking the next button to switch slides
@@ -61,7 +61,7 @@
       }.bind( this ) );
       this.paginationNav.addEventListener( "click", function( e ) {
         e.preventDefault();
-        console.log( e.toElement.attributes[ "data-index" ].value );
+        this.bulletSlide( e.toElement.attributes[ "data-index" ].value );
       }.bind( this ) );
     },
     // gets the index of the selected item
@@ -90,6 +90,10 @@
     updateMarkerToLast: function() {
       this.carouselListItems[0].removeAttribute( "class" );
       this.carouselListItems[this.carouselListItems.length - 1].setAttribute( "class", "selected-item" );
+    },
+    updateMarkerBullet: function( index ) {
+      this.carouselListItems[this.marker].removeAttribute( "class" );
+      this.carouselListItems[index].setAttribute( "class", "selected-item" );
     },
     // tracks the position fo the carousel
     // goes the the first slide once at the end
@@ -131,6 +135,11 @@
         this.updateMarkerPrev();
         this.carouselList.style.marginLeft = this.slideBy;
       }
+    },
+    bulletSlide: function( index ) {
+      this.updateMarkerBullet( index );
+      this.marker = index;
+      this.carouselList.style.marginLeft = this.slideBy;
     }
   });
 })( window.Polymer );
