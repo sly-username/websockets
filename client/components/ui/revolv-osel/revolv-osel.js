@@ -48,6 +48,8 @@
           this.carouselListItems.length
         );
       }
+      // checks show-buttons
+      this.showButtons = this.hasAttribute( "show-buttons" );
       // sets the first item as the selected Item
       this.carouselListItems[0].setAttribute( "class", "selected-item" );
       this.getIndex();
@@ -151,12 +153,20 @@
           this.carouselListItems.length
         );
       } else {
-        console.log( "trigger" );
-
         while ( this.paginationNav.firstChild ) {
           this.paginationNav.removeChild( this.paginationNav.firstChild );
         }
       }
+    },
+    showButtonsChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        this.setAttribute( "show-buttons", "" );
+      } else {
+        this.removeAttribute( "show-buttons" );
+      }
+    },
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      this.showButtons = this.hasAttribute( "show-buttons" );
     }
   });
 })( window.Polymer );
