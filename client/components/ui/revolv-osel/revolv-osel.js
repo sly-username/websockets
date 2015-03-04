@@ -1,15 +1,16 @@
 ( function( polymer ) {
   "use strict";
-  var createPaginationBullet = function() {
+  var createPaginationBullet = function( index ) {
       var anchor = document.createElement( "a" );
       anchor.className = "pagination-nav";
+      anchor.setAttribute( "data-index", index );
       return anchor;
     },
     buildBulletNav = function( parent, numberOfItems ) {
       var i = 0;
 
       for ( ; i < numberOfItems; i++ ) {
-        parent.appendChild( createPaginationBullet() );
+        parent.appendChild( createPaginationBullet( i ) );
       }
     };
 
@@ -38,7 +39,8 @@
       this.triggerPrev = this.shadowRoot.querySelector( ".carousel-nav-prev" );
       this.carouselList = this.querySelector( "ul" );
       this.carouselListItems = this.querySelectorAll( "li" );
-      this.marker = this.getIndex();
+      this.paginationNav = this.shadowRoot.querySelector( ".pagination" );
+      this.getIndex();
       // builds the pagination
       buildBulletNav(
         this.shadowRoot.querySelector( ".pagination" ),
@@ -48,27 +50,15 @@
       this.carouselListItems[0].setAttribute( "class", "selected-item" );
     },
     attached: function() {
-      this.triggerPagination = this.shadowRoot.querySelectorAll( ".pagination-nav" );
       // Event listener when clicking the next button to switch slides
       this.triggerNext.addEventListener( "click", function( e ) {
         e.preventDefault();
         this.nextSlide();
-      });
+      }.bind( this ) );
       this.triggerPrev.addEventListener( "click", function( e ) {
         e.preventDefault();
         this.prevSlide();
-      });
-      this.bindPagination( this.triggerPagination, "click", function( e ) {
-        e.preventDefault();
-        console.log( e );
-      });
-    },
-    bindPagination: function( list, event, fn ) {
-      var i;
-
-      for ( i = 0; i < list.length; i++ ) {
-        list[i].addEventListener( event, fn, false );
-      }
+      }.bind( this ) );
     },
     // gets the index of the selected item
     getIndex: function() {
@@ -76,6 +66,7 @@
 
       for ( i = 0; i < this.carouselListItems.length; i++ ) {
         if ( this.carouselListItems[i].className === "selected-item" ) {
+          this.marker = i;
           return i;
         }
       }
@@ -119,10 +110,10 @@
 
       if ( this.marker < this.carouselListItems.length ) {
         this.updateMarkerNext();
-        this.carouselList.style.marginLeft === this.slideBy;
+        this.carouselList.style.marginLeft = this.slideBy;
       } else {
         this.updateMarkerToFirst();
-        this.carouselList.style.marginLeft === 0;
+        this.carouselList.style.marginLeft = 0;
       }
     },
     // go to previous slide
@@ -131,10 +122,10 @@
 
       if ( this.marker === ( this.carouselListItems.length - 1 ) ) {
         this.updateMarkerToLast();
-        this.carouselList.style.marginLeft === this.slideBy;
+        this.carouselList.style.marginLeft = this.slideBy;
       } else {
         this.updateMarkerPrev();
-        this.carouselList.style.marginLeft === this.slideBy;
+        this.carouselList.style.marginLeft = this.slideBy;
       }
     }
   });
