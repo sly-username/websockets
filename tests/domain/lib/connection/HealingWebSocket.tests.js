@@ -4,6 +4,7 @@
 
   suite( "HealingWebSocket", function() {
     var HealingWebSocket;
+    this.timeout( 15000 );
 
     suiteSetup( function( done ) {
       System.import( "domain/lib/connection/HealingWebSocket" )
@@ -189,14 +190,15 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
-        hws.on( "open", function( event ) {
-          var data = event.data;
-          expect( data )
-            .to.be.a( "string" )
-            .and.equal( strData );
-        });
+        hws.on( "open", function( something ) {
+          something.on( "message", function( data ) {
+            expect( data )
+              .to.be.a( "string" )
+              .and.equal( strData );
 
-        done();
+            done();
+          })
+        });
       });
 
       test( "can send blob via send method", function( done ) {
@@ -204,26 +206,51 @@
             blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
             blobData = new Blob( blobArray );
 
-        hws.on( "open", function( data ) {
-          expect( data )
-            .to.be.an.instanceOf( Blob )
-            .and.equal( blobData );
-        });
-
-        done();
+        //hws.on( "open", function( data ) {
+        //  expect( data )
+        //    .to.be.an.instanceOf( Blob )
+        //    .and.equal( blobData );
+        //
+        //  done();
+        //});
       });
 
       test( "can send array buffer via send method", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             arrayBufferLength = new ArrayBuffer( 256 );
 
-        hws.on( "open", function( data ) {
-          expect( data )
-            .to.be.an.instanceOf( ArrayBuffer )
-            .and.equal( arrayBufferLength );
+        //hws.on( "open", function( data ) {
+        //  expect( data )
+        //    .to.be.an.instanceOf( ArrayBuffer )
+        //    .and.equal( arrayBufferLength );
+        //
+        //  done();
+        //});
+      });
+
+      test( "can send other data types via send method", function( done ) {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            socketSym = Object.getOwnPropertySymbols( hws )[0],
+            data = {
+              artist: {
+                name: "Ryan",
+                genre: "indie in a coffeeshop"
+              }
+            },
+            dataSpy;
+
+        dataSpy = sinon.spy( hws[socketSym], "send" );
+
+        hws.on( "open", function() {
+          hws.send( data );
+          done();
         });
 
-        done();
+        expect( dataSpy )
+          .to.have.callCount( 1 )
+          .to.have.been.calledWith( JSON.stringify( data ));
+
+        dataSpy.restore();
       });
     });
 
@@ -357,9 +384,22 @@
           removeEventSpy.restore();
         });
 
-        test( "one event listener", function() {
+        test( "one event listener", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              openListener = function() {},
+              openListener = function() {
+                expect( addEventSpy )
+                  .to.have.callCount( 1 )
+                  .to.have.been.calledWith( "open" );
+
+                expect( removeEventSpy )
+                  .to.have.callCount( 1 )
+                  .to.have.been.calledWith( "open", openListener );
+
+                addEventSpy.restore();
+                removeEventSpy.restore();
+
+                done();
+              },
               socketSym = Object.getOwnPropertySymbols( hws )[0],
               addEventSpy,
               removeEventSpy;
@@ -369,16 +409,6 @@
 
           hws.one( "open", openListener );
 
-          expect( addEventSpy )
-            .to.have.callCount( 1 )
-            .to.have.been.calledWith( "open" );
-
-          expect( removeEventSpy )
-            .to.have.callCount( 1 )
-            .to.have.been.calledWith( "open", openListener );
-
-          addEventSpy.restore();
-          removeEventSpy.restore();
         });
     });
 

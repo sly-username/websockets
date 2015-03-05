@@ -4,11 +4,9 @@ var socket = Symbol( "socket" ), // jshint ignore:line
 
 export default class HealingWebSocket {
   constructor( url, protocols ) {
-    this.oldUrl = url;
-    this.oldProtocols = protocols;
-    this[socket] = protocols != null ?
-      new WebSocket( url, protocols ) :
-      new WebSocket( url );
+    this[socket] = protocols == null ?
+      new WebSocket( url ) :
+      new WebSocket( url, protocols );
   }
 
   get isOpen() {
@@ -66,8 +64,7 @@ export default class HealingWebSocket {
     if ( this[socket].isOpen ) {
       this[socket].send( data );
     } else {
-      this.one( "open", ( event ) =>
-        this[socket].send( data ));
+      this[heal]( data );
     }
   }
 
@@ -79,20 +76,19 @@ export default class HealingWebSocket {
     this[socket].removeEventListener( event, handler );
   }
 
-  one( event, handler ) {
-    //this.on( event, ( event ) => {
-      //handler();
-      this.off( event, handler );
-    //});
+  one( eventName, handler ) {
+    this.on( eventName, ( event ) => {
+      this.off( eventName, handler );
+      handler( event );
+    });
   }
 
   [heal]( data ) {
-    this[socket] = this.oldProtocols != null ?
-      new WebSocket( this.oldUrl, this.oldProtocols ) :
-      new WebSocket( this.oldUrl );
+    this[socket] = this[socket].protocols == null ?
+      new WebSocket( this[socket].url ) :
+      new WebSocket( this[socket].url, this[socket].protocols );
 
     this[socket].one( "open", event =>
       this[socket].send( data ) )
   }
-
 }
