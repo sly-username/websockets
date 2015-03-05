@@ -190,14 +190,15 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
-        hws.on( "open", function( something ) {
-          something.on( "message", function( data ) {
-            expect( data )
+        hws.on( "open", function() {
+          hws.send( strData );
+          hws.on( "message", function( event ) {
+            expect( event.data )
               .to.be.a( "string" )
               .and.equal( strData );
 
             done();
-          })
+          });
         });
       });
 
@@ -206,26 +207,32 @@
             blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
             blobData = new Blob( blobArray );
 
-        //hws.on( "open", function( data ) {
-        //  expect( data )
-        //    .to.be.an.instanceOf( Blob )
-        //    .and.equal( blobData );
-        //
-        //  done();
-        //});
+        hws.on( "open", function() {
+          hws.send( blobData );
+          hws.on( "message", function( event ) {
+            expect( event.data )
+              .to.be.an.instanceOf( Blob )
+              .and.equal( blobData );
+
+            done();
+          });
+        });
       });
 
       test( "can send array buffer via send method", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             arrayBufferLength = new ArrayBuffer( 256 );
 
-        //hws.on( "open", function( data ) {
-        //  expect( data )
-        //    .to.be.an.instanceOf( ArrayBuffer )
-        //    .and.equal( arrayBufferLength );
-        //
-        //  done();
-        //});
+        hws.on( "open", function() {
+          hws.send( arrayBufferLength );
+          hws.on( "message", function( event ) {
+            expect( event.data )
+              .to.be.an.instanceOf( ArrayBuffer )
+              .and.equal( arrayBufferLength );
+
+            done();
+          });
+        });
       });
 
       test( "can send other data types via send method", function( done ) {
@@ -243,12 +250,13 @@
 
         hws.on( "open", function() {
           hws.send( data );
-          done();
         });
 
         expect( dataSpy )
           .to.have.callCount( 1 )
           .to.have.been.calledWith( JSON.stringify( data ));
+
+        done();
 
         dataSpy.restore();
       });

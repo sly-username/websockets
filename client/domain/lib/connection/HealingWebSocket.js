@@ -88,7 +88,8 @@ export default class HealingWebSocket {
       new WebSocket( this[socket].url ) :
       new WebSocket( this[socket].url, this[socket].protocols );
 
-    this[socket].one( "open", event =>
-      this[socket].send( data ) )
+    this.one( "open", event =>
+      this[socket].send( data ));
   }
+
 }
