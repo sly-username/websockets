@@ -357,7 +357,7 @@
 
           expect( addEventSpy )
             .to.have.callCount( 1 )
-            .to.have.been.calledWith( "open", openListener );
+            .to.have.been.calledWith( "open" );
 
           expect( removeEventSpy )
             .to.have.callCount( 1 )

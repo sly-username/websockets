@@ -81,7 +81,7 @@ export default class HealingWebSocket {
 
   one( event, handler ) {
     this.on( event, ( event ) => {
-      handler.call( this, event );
+      handler();
       this.off( event, handler );
     });
   }
