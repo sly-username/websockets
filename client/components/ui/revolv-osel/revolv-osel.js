@@ -78,6 +78,8 @@
 
       if ( this.marker < ( this.carouselListItems.length - 1 ) ) {
         this.marker++;
+      } else if ( this.marker === ( this.carouselListItems.length - 1 ) && this.loop === false ) {
+        this.marker = this.carouselListItems.length - 1;
       } else {
         this.marker = 0;
       }
@@ -88,7 +90,9 @@
     prevSlide: function() {
       this.carouselListItems[this.marker].removeAttribute( "class" );
 
-      if ( this.marker === 0 ) {
+      if ( this.marker === 0 && this.loop === false ) {
+        this.marker = 0;
+      } else if ( this.marker === 0 ) {
         this.marker = this.carouselListItems.length - 1;
       } else {
         this.marker--;
@@ -119,6 +123,13 @@
         this.setAttribute( "show-buttons", "" );
       } else {
         this.removeAttribute( "show-buttons" );
+      }
+    },
+    loopChanged: function( oldValue, newValue ) {
+      if ( newValue ) {
+        this.setAttribute( "loop", "" );
+      } else {
+        this.removeAttribute( "loop" );
       }
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
