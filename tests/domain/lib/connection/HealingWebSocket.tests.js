@@ -131,7 +131,7 @@
     });
 
     suite( "data type testing", function() {
-      test( "can receive string via message event", function( done ) {
+      test( "can receive string data via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
@@ -139,9 +139,13 @@
           expect( data )
             .to.be.a( "string" )
             .and.equal( strData );
+
+          done();
         });
 
-        done();
+        hws.on( "open", function() {
+          hws.send( strData );
+        });
       });
 
       test( "can receive blob via message event", function( done ) {
@@ -149,33 +153,44 @@
             blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
             blobData = new Blob( blobArray );
 
+        hws.binaryType = "blob";
         hws.on( "message", function( data ) {
           expect( data )
             .to.be.an.instanceOf( Blob )
             .and.equal( blobData );
+
+          done();
         });
 
-        done();
+        hws.on( "open", function() {
+          hws.send( blobData );
+        });
       });
 
       test( "can receive array buffer via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             arrayBufferLength = new ArrayBuffer( 256 );
 
+        hws.binaryType = "arraybuffer";
         hws.on( "message", function( data ) {
           expect( data )
             .to.be.an.instanceOf( ArrayBuffer )
             .and.equal( arrayBufferLength );
+
+          done();
         });
 
-        done();
+        hws.on( "open", function() {
+          hws.send( arrayBufferLength );
+        });
       });
 
       test( "can send string via send method", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
-        hws.on( "open", function( data ) {
+        hws.on( "open", function( event ) {
+          var data = event.data;
           expect( data )
             .to.be.a( "string" )
             .and.equal( strData );
