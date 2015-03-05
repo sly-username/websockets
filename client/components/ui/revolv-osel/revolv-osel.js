@@ -53,7 +53,6 @@
       this.showButtons = this.hasAttribute( "show-buttons" );
     },
     attached: function() {
-      this.carouselListItems[0].setAttribute( "class", "selected-item" );
       // Event listener when clicking the next button to switch slides
       this.triggerNext.addEventListener( "click", function( e ) {
         e.preventDefault();
@@ -68,14 +67,8 @@
         this.bulletSlide( e.toElement.attributes[ "data-index" ].value );
       }.bind( this ) );
     },
-    updateMarkerBullet: function( index ) {
-      this.carouselListItems[this.marker].removeAttribute( "class" );
-      this.carouselListItems[index].setAttribute( "class", "selected-item" );
-    },
     // go to the next slide
     nextSlide: function() {
-      this.carouselListItems[this.marker].removeAttribute( "class" );
-
       if ( this.marker < ( this.carouselListItems.length - 1 ) ) {
         this.marker++;
       } else if ( this.marker === ( this.carouselListItems.length - 1 ) && this.loop === false ) {
@@ -83,13 +76,10 @@
       } else {
         this.marker = 0;
       }
-      this.carouselListItems[this.marker].setAttribute( "class", "selected-item" );
       this.carouselList.style.marginLeft = this.slideBy;
     },
     // go to previous slide
     prevSlide: function() {
-      this.carouselListItems[this.marker].removeAttribute( "class" );
-
       if ( this.marker === 0 && this.loop === false ) {
         this.marker = 0;
       } else if ( this.marker === 0 ) {
@@ -97,12 +87,9 @@
       } else {
         this.marker--;
       }
-
-      this.carouselListItems[this.marker].setAttribute( "class", "selected-item" );
       this.carouselList.style.marginLeft = this.slideBy;
     },
     bulletSlide: function( index ) {
-      this.updateMarkerBullet( index );
       this.marker = index;
       this.carouselList.style.marginLeft = this.slideBy;
     },
