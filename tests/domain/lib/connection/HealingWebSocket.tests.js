@@ -47,7 +47,7 @@
       test( "when websocket is closed, new websocket is opened", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
-        hws.on( "open", function() {
+        hws.on( "close", function() {
           expect( hws )
             .to.have.property( "isOpen" )
             .that.equals( true );
@@ -147,6 +147,8 @@
         hws.on( "open", function() {
           hws.send( strData );
         });
+
+        hws.close();
       });
 
       test( "can receive blob via message event", function( done ) {
@@ -237,28 +239,21 @@
 
       test( "can send other data types via send method", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            socketSym = Object.getOwnPropertySymbols( hws )[0],
             data = {
-              artist: {
-                name: "Ryan",
-                genre: "indie in a coffeeshop"
-              }
-            },
-            dataSpy;
-
-        dataSpy = sinon.spy( hws[socketSym], "send" );
+              name: "Ryan",
+              genre: "indie in a coffeeshop"
+            };
 
         hws.on( "open", function() {
           hws.send( data );
+          hws.on( "message", function( event ) {
+            expect( event.data )
+              .to.equal( JSON.stringify( data ));
+
+            done();
+          });
         });
 
-        expect( dataSpy )
-          .to.have.callCount( 1 )
-          .to.have.been.calledWith( JSON.stringify( data ));
-
-        done();
-
-        dataSpy.restore();
       });
     });
 
@@ -423,3 +418,4 @@
     // End Tests
   });
 })( window, document, window.System, window.sinon, window.chai.expect );
+
