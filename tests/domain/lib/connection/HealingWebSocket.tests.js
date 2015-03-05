@@ -176,7 +176,6 @@
             strData = "string data";
 
         hws.on( "open", function( data ) {
-          hws.send( strData );
           expect( data )
             .to.be.a( "string" )
             .and.equal( strData );
@@ -190,7 +189,7 @@
             blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
             blobData = new Blob( blobArray );
 
-        hws.on( "message", function( data ) {
+        hws.on( "open", function( data ) {
           expect( data )
             .to.be.an.instanceOf( Blob )
             .and.equal( blobData );
@@ -203,7 +202,7 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             arrayBufferLength = new ArrayBuffer( 256 );
 
-        hws.on( "message", function( data ) {
+        hws.on( "open", function( data ) {
           expect( data )
             .to.be.an.instanceOf( ArrayBuffer )
             .and.equal( arrayBufferLength );
