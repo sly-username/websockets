@@ -131,7 +131,96 @@
       });
     });
 
-    suite( "data type testing", function() {
+    suite( "methods", function() {
+      suite( "close method", function() {
+        test( "calling close method disconnects the websocket", function() {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+
+          hws.on( "close", function() {
+            expect( hws )
+              .to.have.property( "readyState" )
+              .that.equals( WebSocket.CLOSED );
+
+            expect( hws )
+              .to.have.property( "isOpen" )
+              .that.equals( false );
+          });
+        });
+      });
+
+      suite( "send method", function() {
+        test( "can send strings", function( done ) {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              strData = "string data";
+
+          hws.on( "open", function() {
+            hws.send( strData );
+            hws.on( "message", function( event ) {
+              expect( event.data )
+                .to.be.a( "string" )
+                .and.equal( strData );
+
+              done();
+            });
+          });
+        });
+
+        test( "can send blob data", function( done ) {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
+              blobData = new Blob( blobArray );
+
+          hws.on( "open", function() {
+            hws.send( blobData );
+            hws.on( "message", function( event ) {
+              expect( event.data )
+                .to.be.an.instanceOf( Blob )
+                .and.equal( blobData );
+
+              done();
+            });
+          });
+        });
+
+        test( "can send array buffer data", function( done ) {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              arrayBufferLength = new ArrayBuffer( 256 );
+
+          hws.on( "open", function() {
+            hws.send( arrayBufferLength );
+            hws.on( "message", function( event ) {
+              expect( event.data )
+                .to.be.an.instanceOf( ArrayBuffer )
+                .and.equal( arrayBufferLength );
+
+              done();
+            });
+          });
+        });
+
+        test( "can send other data types", function( done ) {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+              objectData = {
+                artist: {
+                  name: "Ryan",
+                  genre: "indie hipster in a coffeeshop"
+                }
+              };
+
+          hws.on( "open", function() {
+            hws.send( objectData );
+            hws.on( "message", function( event ) {
+              expect( event.data )
+                .to.equal( JSON.stringify( objectData ));
+
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    suite( "receiving messages", function() {
       test( "can receive string data via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
@@ -147,8 +236,6 @@
         hws.on( "open", function() {
           hws.send( strData );
         });
-
-        hws.close();
       });
 
       test( "can receive blob via message event", function( done ) {
@@ -187,77 +274,9 @@
           hws.send( arrayBufferLength );
         });
       });
-
-      test( "can send string via send method", function( done ) {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            strData = "string data";
-
-        hws.on( "open", function() {
-          hws.send( strData );
-          hws.on( "message", function( event ) {
-            expect( event.data )
-              .to.be.a( "string" )
-              .and.equal( strData );
-
-            done();
-          });
-        });
-      });
-
-      test( "can send blob via send method", function( done ) {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
-            blobData = new Blob( blobArray );
-
-        hws.on( "open", function() {
-          hws.send( blobData );
-          hws.on( "message", function( event ) {
-            expect( event.data )
-              .to.be.an.instanceOf( Blob )
-              .and.equal( blobData );
-
-            done();
-          });
-        });
-      });
-
-      test( "can send array buffer via send method", function( done ) {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            arrayBufferLength = new ArrayBuffer( 256 );
-
-        hws.on( "open", function() {
-          hws.send( arrayBufferLength );
-          hws.on( "message", function( event ) {
-            expect( event.data )
-              .to.be.an.instanceOf( ArrayBuffer )
-              .and.equal( arrayBufferLength );
-
-            done();
-          });
-        });
-      });
-
-      test( "can send other data types via send method", function( done ) {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            data = {
-              name: "Ryan",
-              genre: "indie in a coffeeshop"
-            };
-
-        hws.on( "open", function() {
-          hws.send( data );
-          hws.on( "message", function( event ) {
-            expect( event.data )
-              .to.equal( JSON.stringify( data ));
-
-            done();
-          });
-        });
-
-      });
     });
 
-    suite( "whether on method is properly calling addEventListener functions",
+    suite( "whether event listener is attaching or removing handler functions",
       function() {
         test( "add onmessage event listener", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
@@ -411,7 +430,6 @@
           removeEventSpy = sinon.spy( hws[socketSym], "removeEventListener" );
 
           hws.one( "open", openListener );
-
         });
     });
 
