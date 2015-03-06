@@ -38,9 +38,9 @@
     },
 
     ready: function() {
-      this.listItems = this.shadowRoot.getElementsByTagName( "li" );
+      this.listItems = this.shadowRoot.querySelectorAll( "li" );
       this.mainBox = this.shadowRoot.getElementById( "is-focus" );
-      this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[ 0 ];
+      this.getOptions = this.shadowRoot.querySelectorAll( ".options" )[ 0 ];
 
       if ( this.size > 0 ) {
         this.getOptions.style.maxHeight = this.size * 32.4 + "px";

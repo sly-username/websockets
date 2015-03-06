@@ -124,7 +124,7 @@
             .that.equals( "8" );
         });
 
-        test( "removing attribute \"size\" sets property back to default value", function() {
+        test( "removing attribute \"size\" sets property back to default value", function( done ) {
           var selectBox = document.createElement( "select-box" ),
             observeFn = function( changes ) {
               expect( selectBox )
@@ -133,18 +133,19 @@
                 .and.equals( 5 );
 
               Object.unobserve( selectBox, observeFn );
+              done();
             };
 
           selectBox.setAttribute( "size", "8" );
           expect( selectBox.hasAttribute( "size" ) ).to.equal( true );
 
+          Object.observe( selectBox, observeFn );
+
           selectBox.removeAttribute( "size" );
           expect( selectBox.hasAttribute( "size" ) ).to.equal( false );
-
-          Object.observe( selectBox, observeFn );
         });
 
-        test( "setting \"size\" to null resets property to default value", function() {
+        test( "setting \"size\" to null resets property to default value", function( done ) {
           var selectBox = document.createElement( "select-box" ),
             observeFn = function( changes ) {
               expect( selectBox )
@@ -153,20 +154,22 @@
                 .and.equals( 5 );
 
               Object.unobserve( selectBox, observeFn );
+              done();
             };
 
           selectBox.size = 8;
+
           expect( selectBox )
             .to.have.property( "size" )
             .that.is.a( "number" )
             .and.equals( 8 );
+
+          Object.observe( selectBox, observeFn );
 
           selectBox.size = null;
-
-          Object.observe( selectBox, observeFn );
         });
 
-        test( "setting \"size\" to undefined resets property to default value", function() {
+        test( "setting \"size\" to undefined resets property to default value", function( done ) {
           var selectBox = document.createElement( "select-box" ),
             observeFn = function( changes ) {
               expect( selectBox )
@@ -175,6 +178,7 @@
                 .and.equals( 5 );
 
               Object.unobserve( selectBox, observeFn );
+              done();
             };
 
           selectBox.size = 8;
@@ -183,9 +187,9 @@
             .that.is.a( "number" )
             .and.equals( 8 );
 
-          selectBox.size = undefined;
-
           Object.observe( selectBox, observeFn );
+
+          selectBox.size = undefined;
         });
       });
       // Testing for disabled
@@ -280,29 +284,27 @@
         test( "should not be able to input value with disable tag present", function() {
           // selectBox is defined as firstInput requires selectBox and is used twice
           var selectBox = document.createElement( "select-box" ),
-              myOption = document.createElement( "option" ),
-              observeFn = function( changes ) {
-                myOption.value = "apples";
-                myOption.innerHTML = "Apples";
-                selectBox.appendChild( myOption );
+            myOption = document.createElement( "option" );
 
-                testingWrapper.appendChild( selectBox );
+          myOption.value = "apples";
+          myOption.innerHTML = "Apples";
 
-                selectBox.setAttribute( "disabled", "" );
-                selectBox.selectedIndex = 1;
+          selectBox.appendChild( myOption );
 
-                expect( selectBox )
-                  .to.have.property( "selectedIndex" )
-                  .to.be.null();
+          testingWrapper.appendChild( selectBox );
 
-                Object.unobserve( selectBox, observeFn );
-              };
+          selectBox.setAttribute( "disabled", "" );
 
-          Object.observe( selectBox, observeFn );
+          selectBox.selectedIndex = 1;
+
+          expect( selectBox )
+            .to.have.property( "selectedIndex" )
+            .to.equal( null );
 
           resetWrapper();
         });
       });
+
       // Testing for required
       suite( "required", function() {
         test( "can be set via attribute", function() {
@@ -333,87 +335,89 @@
             .and.equals( "<select-box></select-box>" );
         });
       });
+
       // Testing for selectedIndex
       suite( "selectedIndex", function() {
         test( "can be set via property \"selectedIndex\"", function() {
           var selectBox = document.createElement( "select-box" ),
-              myOption = document.createElement( "option" ),
-              observeFn = function( changes ) {
-                myOption.value = "apples";
-                myOption.innerHTML = "Apples";
-                selectBox.appendChild( myOption );
+            myOption = document.createElement( "option" );
 
-                testingWrapper.appendChild( selectBox );
-                selectBox.selectedIndex = 1;
+          myOption.value = "apples";
+          myOption.innerHTML = "Apples";
 
-                expect( selectBox )
-                  .to.have.property( "selectedIndex" )
-                  .that.is.a( "number" )
-                  .that.equals( 1 );
-                Object.unobserve( selectBox, observeFn );
-              };
+          selectBox.appendChild( myOption );
 
-          Object.observe( selectBox, observeFn );
+          testingWrapper.appendChild( selectBox );
 
-          resetWrapper();
+          selectBox.selectedIndex = 0;
+
+          expect( selectBox )
+            .to.have.property( "selectedIndex" )
+            .that.is.a( "number" )
+            .that.equals( 0 );
         });
       });
+
       // Testing for value, default for 2 is "pears"
       suite( "value", function() {
         test( "can get value via property \"selectedIndex\"", function() {
           var selectBox = document.createElement( "select-box" ),
-              myOption = document.createElement( "option" ),
-              myOption2 = document.createElement( "option" ),
-              observeFn = function( changes ) {
-                testingWrapper.appendChild( selectBox );
-                selectBox.selectedIndex = 2;
-                expect( selectBox )
-                  .to.have.property( "value" )
-                  .that.is.a( "string" )
-                  .that.equals( "pears" );
-
-                Object.unobserve( selectBox, observeFn );
-              };
+            myOption = document.createElement( "option" ),
+            myOption2 = document.createElement( "option" );
 
           myOption.value = "apples";
           myOption.innerHTML = "Apples";
           myOption2.value = "pears";
           myOption2.innerHTML = "Pears";
+
           selectBox.appendChild( myOption );
           selectBox.appendChild( myOption2 );
 
-          Object.observe( selectBox, observeFn );
+          testingWrapper.appendChild( selectBox );
+
+          console.log( selectBox );
+          console.dir( selectBox );
+
+          selectBox.selectedIndex = 1;
+
+          expect( selectBox )
+            .to.have.property( "value" )
+            .that.is.a( "string" )
+            .that.equals( "pears" );
 
           resetWrapper();
         });
 
-        test( "value is a getter only", function() {
+        test( "value is a getter only", function( done ) {
           var selectBox = document.createElement( "select-box" ),
               myOption = document.createElement( "option" ),
               myOption2 = document.createElement( "option" ),
               observeFn = function( changes ) {
-                testingWrapper.appendChild( selectBox );
-                selectBox.selectedIndex = 2;
-                selectBox.value = "pie";
-
                 expect( selectBox )
                   .to.have.property( "value" )
                   .that.is.a( "string" )
                   .that.equals( "pears" );
 
                 Object.unobserve( selectBox, observeFn );
+
+                resetWrapper();
+                done();
               };
 
           myOption.value = "apples";
           myOption.innerHTML = "Apples";
           myOption2.value = "pears";
           myOption2.innerHTML = "Pears";
+
           selectBox.appendChild( myOption );
           selectBox.appendChild( myOption2 );
 
+          testingWrapper.appendChild( selectBox );
+
           Object.observe( selectBox, observeFn );
 
-          resetWrapper();
+          selectBox.selectedIndex = 2;
+          selectBox.value = "pie";
         });
       });
     });
