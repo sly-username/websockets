@@ -23,6 +23,7 @@ export default class LRUCache {
     };
     this.keyMap[key] = this[entry];
 
+    // login that links entry and tail to the object
     if ( this.tail ) {
       this.tail.newer = this[entry];
       this[entry].older = this.tail;
@@ -133,29 +134,41 @@ export default class LRUCache {
     this[size] = 0;
     this.keyMap = {};
   }
-  keys() {}
-  forEach( fun, context, desc ) {
+  keys() {
+    var keys = [],
+        i;
+
+    for ( i in this.keyMap ) {
+      keys.push( i );
+    }
+    return keys;
+  }
+  forEach( fn, context, startAtTail ) {
     if ( context === true ) {
-      desc = true; context = undefined;
+      startAtTail = true;
+      context = undefined;
     } else if ( typeof context !== "object" ) {
       context = self;
     }
 
-    if ( desc ) {
+    if ( startAtTail ) {
       this[entry] = this.tail;
 
       while ( this[entry] ) {
-        fun.call( context, this[entry].key, this[entry].value, this );
+        fn.call( context, this[entry].key, this[entry].value, this );
         this[entry] = this[entry].older;
       }
     } else {
       this[entry] = this.head;
 
       while ( this[entry] ) {
-        fun.call( context, this[entry].key, this[entry].value, this );
+        fn.call( context, this[entry].key, this[entry].value, this );
         this[entry] = this[entry].newer;
       }
     }
+  }
+  forEachReverse( fn, context ) {
+    this.forEach( fn, context, false );
   }
   toJSON() {
     var s = [];
