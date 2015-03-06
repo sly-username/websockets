@@ -1,3 +1,21 @@
-/**
- * Created by batman on 3/6/15.
- */
+export default class HealingWebSocket {
+  constructor( instanceObject, EventTarget ) {
+    Object.assign( this, instanceObject );
+  }
+
+  on ( eventName, callback ) {
+
+  }
+
+  off ( eventName, callback ) {
+
+  }
+
+  once ( eventName, callback ) {
+
+  }
+
+  dispatch( event ) {
+
+  }
+}
