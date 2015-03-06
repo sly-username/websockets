@@ -1,10 +1,11 @@
 /*eslint-env mocha*/
+/*global suite, test, console*/
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "HealingWebSocket", function() {
     var HealingWebSocket;
-    this.timeout( 15000 );
+    this.timeout( 5000 );
 
     suiteSetup( function( done ) {
       System.import( "domain/lib/connection/HealingWebSocket" )
@@ -57,7 +58,7 @@
       });
     });
 
-    suite( "attributes", function() {
+    suite( "properties", function() {
       test( "can get the value of the isOpen boolean", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
@@ -104,11 +105,8 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
         expect( hws )
-          .to.have.property( "extensions" );
-      });
-
-      test( "can set extensions via extensions property", function() {
-        // what should go here?
+          .to.have.property( "extensions" )
+          .and.to.equal( "" );
       });
 
       test( "can get name of the sub-protocol server selected", function() {
@@ -117,10 +115,6 @@
         expect( hws )
           .to.have.property( "protocol" )
           .that.is.a( "string" );
-      });
-
-      test( "can set protocol via protocol property", function() {
-        // how about here?
       });
 
       test( "can get websocket's absolute url", function() {
@@ -153,39 +147,52 @@
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               strData = "string data";
 
-          hws.on( "open", function() {
-            hws.send( strData );
-            hws.on( "message", function( event ) {
-              expect( event.data )
-                .to.be.a( "string" )
-                .and.equal( strData );
+          hws.on( "message", function( event ) {
+            expect( event.data )
+              .to.be.a( "string" )
+              .and.equal( strData );
 
-              done();
-            });
+            done();
           });
+
+          hws.send( strData );
         });
 
         test( "can send blob data", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
-              blobData = new Blob( blobArray );
-
-          hws.on( "open", function() {
-            hws.send( blobData );
-            hws.on( "message", function( event ) {
-              expect( event.data )
-                .to.be.an.instanceOf( Blob )
-                .and.equal( blobData );
-
-              done();
+            fileReader = new FileReader(),
+            blobString = "<a id=\"a\"><b id=\"b\">oh my blob</b></a>",
+            blobData = new Blob( [ blobString ], {
+              type: "text/html"
             });
+
+          hws.on( "message", function( event ) {
+//            console.dir( blobData );
+//            console.dir( event.data );
+            expect( event.data )
+              .to.be.an.instanceOf( Blob )
+//              .and.to.have.property( "type", blobData.type )
+              .and.to.have.property( "size", blobData.size );
+
+            fileReader.readAsText( event.data );
           });
+
+          fileReader.addEventListener( "loadend", function( event ) {
+            expect( fileReader.result )
+              .to.be.a( "string" )
+              .and.to.equal( blobString );
+
+            done();
+          });
+
+          hws.send( blobData );
         });
 
-        test( "can send array buffer data", function( done ) {
+        test.skip( "can send array buffer data", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
               arrayBufferLength = new ArrayBuffer( 256 );
 
+//          hws.binaryType = "arraybuffer";
           hws.on( "open", function() {
             hws.send( arrayBufferLength );
             hws.on( "message", function( event ) {
@@ -225,45 +232,52 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
-        hws.on( "message", function( data ) {
-          expect( data )
+        hws.on( "message", function( event ) {
+          expect( event.data )
             .to.be.a( "string" )
             .and.equal( strData );
 
           done();
         });
 
-        hws.on( "open", function() {
-          hws.send( strData );
-        });
+        hws.send( strData );
       });
 
-      test( "can receive blob via message event", function( done ) {
+      test( "can receive blob data via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            blobArray = [ "<a id=\"a\"><b id=\"b\">oh my blob</b></a>" ],
-            blobData = new Blob( blobArray );
+            fileReader = new FileReader(),
+            blobString = "<a id=\"a\"><b id=\"b\">oh my blob</b></a>",
+            blobData = new Blob( [ blobString ], {
+              type: "text/html"
+            });
 
-        hws.binaryType = "blob";
-        hws.on( "message", function( data ) {
-          expect( data )
+        hws.on( "message", function( event ) {
+          expect( event.data )
             .to.be.an.instanceOf( Blob )
-            .and.equal( blobData );
+            //              .and.to.have.property( "type", blobData.type )
+            .and.to.have.property( "size", blobData.size );
+
+          fileReader.readAsText( event.data );
+        });
+
+        fileReader.addEventListener( "loadend", function( event ) {
+          expect( fileReader.result )
+            .to.be.a( "string" )
+            .and.to.equal( blobString );
 
           done();
         });
 
-        hws.on( "open", function() {
-          hws.send( blobData );
-        });
+        hws.send( blobData );
       });
 
-      test( "can receive array buffer via message event", function( done ) {
+      test.skip( "can receive array buffer via message event", function( done ) {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             arrayBufferLength = new ArrayBuffer( 256 );
 
         hws.binaryType = "arraybuffer";
-        hws.on( "message", function( data ) {
-          expect( data )
+        hws.on( "message", function( event ) {
+          expect( event.data )
             .to.be.an.instanceOf( ArrayBuffer )
             .and.equal( arrayBufferLength );
 

@@ -34,18 +34,8 @@ export default class HealingWebSocket {
     return this[socket].extensions;
   }
 
-  set extensions( value ) {
-    this[socket].extensions = value;
-    return value;
-  }
-
   get protocol() {
     return this[socket].protocol;
-  }
-
-  set protocol( value ) {
-    this[socket].protocol = value;
-    return value;
   }
 
   get url() {
@@ -61,8 +51,14 @@ export default class HealingWebSocket {
       data = JSON.stringify( data );
     }
 
-    if ( this[socket].isOpen ) {
+//    console.log( "send called, %s - %o", this.readyState, data );
+
+    if ( this.isOpen ) {
       this[socket].send( data );
+    } else if ( this.readyState === WebSocket.CONNECTING ) {
+      this.one( "open", ( event ) => {
+        this.send( data );
+      });
     } else {
       this[heal]( data );
     }
@@ -79,17 +75,20 @@ export default class HealingWebSocket {
   one( eventName, handler ) {
     this.on( eventName, ( event ) => {
       this.off( eventName, handler );
-      handler( event );
+      handler.call( this, event );
     });
   }
 
   [heal]( data ) {
+    console.log( "healing: %o", this );
+
     this[socket] = this[socket].protocols == null ?
       new WebSocket( this[socket].url ) :
       new WebSocket( this[socket].url, this[socket].protocols );
 
-    this.one( "open", event =>
-      this[socket].send( data ));
+    this.one( "open", event => {
+      this.send( data )
+    });
   }
 
 }
