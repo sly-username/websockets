@@ -12,6 +12,17 @@
   };
 
   polymer( "radio-select", {
+    required: false,
+    disabled: false,
+    checked: false,
+    publish: {
+      value: {
+        reflect: true
+      },
+      name: {
+        reflect: true
+      }
+    },
     ready: function() {
       this.radioButton = this.shadowRoot.getElementById( "radioSelect" );
 

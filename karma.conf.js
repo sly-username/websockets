@@ -80,7 +80,7 @@ module.exports = function( config ) {
     },
 
     nyanReporter: {
-      suppressStackTrace: true
+      suppressErrorReport: true
     },
 
     coverageReporter: {
@@ -88,13 +88,12 @@ module.exports = function( config ) {
         return browser.toLowerCase().split( /[ /-]/ )[0];
       },
       reporters: [
-        {
-          type: "html",
-          dir: paths.karma.coverage.out.html
-        },
-        {
+        process.env.TRAVIS === "true" ? {
           type: "lcovonly",
           dir: paths.karma.coverage.out.lcov
+        } : {
+          type: "html",
+          dir: paths.karma.coverage.out.html
         }
       ]
     },

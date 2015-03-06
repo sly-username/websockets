@@ -1,56 +1,74 @@
 /*eslint-env mocha */
 /*jscs:disable maximumLineLength*/
-( function( window, document, chai ) {
+( function( window, document, polymer, sinon, chai ) {
   "use strict";
   var expect = chai.expect,
-    // get wrapper from document or for karma, create a new div and append it to the DOM
+  // get wrapper from document or for karma, create a new div and append it to the DOM
     testingWrapper = document.getElementById( "ed-icon-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
         return wrapper;
       })(),
-    // original state to test against
+  // original state to test against
     originalWrapperOuterHTML = testingWrapper.outerHTML,
-    // re-sets wrapper to blank
+  // re-sets wrapper to blank
     resetWrapper = function() {
       testingWrapper.innerHTML = "";
     };
 
   suite( "<ed-icon>", function() {
     suite( "Life Cycle", function() {
+      teardown( function() {
+        resetWrapper();
+      });
+
       test( "ready: can create from document.createElement", function() {
+        var createdSpy = sinon.spy(
+          polymer.getRegisteredPrototype( "ed-icon" ),
+          "ready"
+        );
+
         expect( document.createElement( "ed-icon" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<ed-icon></ed-icon>" );
+
+        expect( createdSpy ).to.have.callCount( 1 );
+        createdSpy.restore();
       });
 
-      test( "attached: can be added to another DOM Element", function() {
-        var edIcon = document.createElement( "ed-icon" );
+      test.skip( "attached: can be added to another DOM Element", function() {
+        var newElement = document.createElement( "ed-icon" ),
+          attachedSpy = sinon.spy( newElement, "attached" );
 
-        testingWrapper.appendChild( edIcon );
+        testingWrapper.appendChild( newElement );
+
+        expect( attachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<ed-icon></ed-icon>" );
 
-        resetWrapper();
+        attachedSpy.restore();
       });
 
-      test( "detached: can be removed from another DOM element", function() {
-        var edIcon = document.createElement( "ed-icon" );
+      test.skip( "detached: can be removed from another DOM element", function() {
+        var newElement = document.createElement( "ed-icon" ),
+          detachedSpy = sinon.spy( newElement, "detached" );
 
-        testingWrapper.appendChild( edIcon );
-        testingWrapper.removeChild( edIcon );
+        testingWrapper.appendChild( newElement );
+        testingWrapper.removeChild( newElement );
+
+        expect( detachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( originalWrapperOuterHTML );
 
-        resetWrapper();
+        detachedSpy.restore();
       });
     });
 
@@ -99,15 +117,20 @@
 
         test( "setting via property \"name\" reflects to attribute \"name\"", function() {
           var edIcon = document.createElement( "ed-icon" ),
-              setTo = "Set via Property";
+              setTo = "Set via Property",
+            observeFn = function( changes ) {
+              expect( edIcon.hasAttribute( "name" ) ).to.equal( true );
+              expect( edIcon.getAttribute( "name" ) )
+                .to.be.a( "string" )
+                .that.equals( setTo )
+                .and.equal( edIcon.name );
+
+              Object.unobserve( edIcon, observeFn );
+            };
 
           edIcon.name = setTo;
 
-          expect( edIcon.hasAttribute( "name" ) ).to.equal( true );
-          expect( edIcon.getAttribute( "name" ) )
-            .to.be.a( "string" )
-            .that.equals( setTo )
-            .and.equal( edIcon.name );
+          Object.observe( edIcon, observeFn );
         });
       });
 
@@ -172,30 +195,48 @@
         });
 
         test( "defaults to 0 if invalid when set via property", function() {
-          var edIcon = document.createElement( "ed-icon" );
+          var edIcon = document.createElement( "ed-icon" ),
+            observeFn = function( changes ) {
+              expect( edIcon )
+                .to.have.property( "rotation" )
+                .that.is.a( "number" )
+                .and.equal( 0 );
+
+              Object.unobserve( edIcon, observeFn );
+            };
 
           edIcon.rotation = 999999;
 
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "number" )
-            .and.equal( 0 );
+          Object.observe( edIcon, observeFn );
         });
 
         test( "defaults to 0 if invalid when set via attribute", function() {
-          var edIcon = document.createElement( "ed-icon" );
+          var edIcon = document.createElement( "ed-icon" ),
+            observeFn = function( changes ) {
+              expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
+              expect( edIcon.getAttribute( "rotation" ) )
+                .to.be.a( "string" )
+                .that.equals( "0" )
+                .and.equal( edIcon.rotation.toString() );
+
+              Object.unobserve( edIcon, observeFn );
+            };
 
           edIcon.setAttribute( "rotation", "pie" );
 
-          expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
-          expect( edIcon.getAttribute( "rotation" ) )
-            .to.be.a( "string" )
-            .that.equals( "0" )
-            .and.equal( edIcon.rotation.toString() );
+          Object.observe( edIcon, observeFn );
         });
 
         test( "removing attribute \"rotation\" sets property back to default value", function() {
-          var edIcon = document.createElement( "ed-icon" );
+          var edIcon = document.createElement( "ed-icon" ),
+            observeFn = function( changes ) {
+              expect( edIcon )
+                .to.have.property( "rotation" )
+                .that.is.a( "number" )
+                .and.equals( 0 );
+
+              Object.unobserve( edIcon, observeFn );
+            };
 
           edIcon.setAttribute( "rotation", "90" );
           expect( edIcon.hasAttribute( "rotation" ) ).to.equal( true );
@@ -203,14 +244,19 @@
           edIcon.removeAttribute( "rotation" );
           expect( edIcon.hasAttribute( "rotation" ) ).to.equal( false );
 
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+          Object.observe( edIcon, observeFn );
         });
 
         test( "setting \"rotation\" to null resets property to default value", function() {
-          var edIcon = document.createElement( "ed-icon" );
+          var edIcon = document.createElement( "ed-icon" ),
+            observeFn = function( changes ) {
+              expect( edIcon )
+                .to.have.property( "rotation" )
+                .that.is.a( "number" )
+                .and.equals( 0 );
+
+              Object.unobserve( edIcon, observeFn );
+            };
 
           edIcon.rotation = 90;
           expect( edIcon )
@@ -219,28 +265,31 @@
             .and.equals( 90 );
 
           edIcon.rotation = null;
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+
+          Object.observe( edIcon, observeFn );
         });
 
         test( "setting \"rotation\" to undefined resets property to default value", function() {
-          var edIcon = document.createElement( "ed-icon" );
+          var edIcon = document.createElement( "ed-icon" ),
+            observeFn = function( changes ) {
+              edIcon.rotation = 90;
+              expect( edIcon )
+                .to.have.property( "rotation" )
+                .that.is.a( "number" )
+                .and.equals( 0 );
 
-          edIcon.rotation = 90;
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+              edIcon.rotation = undefined;
+              expect( edIcon )
+                .to.have.property( "rotation" )
+                .that.is.a( "number" )
+                .and.equals( 0 );
 
-          edIcon.rotation = undefined;
-          expect( edIcon )
-            .to.have.property( "rotation" )
-            .that.is.a( "number" )
-            .and.equals( 0 );
+              Object.unobserve( edIcon, observeFn );
+            };
+
+          Object.observe( edIcon, observeFn );
         });
       });
     });
   });
-})( window, document, window.chai );
+})( window, document, window.Polymer, window.sinon, window.chai );
