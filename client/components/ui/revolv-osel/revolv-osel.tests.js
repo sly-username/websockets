@@ -113,18 +113,20 @@
             .and.equals( true );
         });
 
-        test( "setting via property reflects to attribute", function() {
+        test( "setting via property reflects to attribute", function( done ) {
           var revolv = document.createElement( "revolv-osel" ),
             observeFn = function( changes ) {
               expect( revolv.hasAttribute( "loop" ) )
                 .to.be.a( "boolean" )
                 .and.to.equal( true );
+
               Object.unobserve( revolv, observeFn );
+              done();
             };
 
-          revolv.loop = true;
-
           Object.observe( revolv, observeFn );
+
+          revolv.loop = true;
         });
 
         test( "removing attribute reflects to attribute", function() {
@@ -142,14 +144,9 @@
             .and.equals( false );
         });
 
-        test( "setting property to false removes attribute", function() {
+        test( "setting property to false removes attribute", function( done ) {
           var revolv = document.createElement( "revolv-osel" ),
             observeFn = function( changes ) {
-              expect( revolv.hasAttribute( "loop" ) )
-                .to.be.a( "boolean" )
-                .that.equals( true );
-
-              revolv.loop = false;
               expect( revolv )
                 .to.have.property( "loop" )
                 .that.is.a( "boolean" )
@@ -160,15 +157,17 @@
                 .and.to.equal( false );
 
               Object.unobserve( revolv, observeFn );
+              done();
             };
 
-          revolv.loop = true;
-          expect( revolv )
-            .to.have.property( "loop" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
-
           Object.observe( revolv, observeFn );
+
+          revolv.setAttribute( "loop", true );
+          expect( revolv.hasAttribute( "loop" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
+
+          revolv.loop = false;
         });
       });
 
@@ -212,18 +211,20 @@
             .and.equals( true );
         });
 
-        test( "setting via property reflects to attribute", function() {
+        test( "setting via property reflects to attribute", function( done ) {
           var revolv = document.createElement( "revolv-osel" ),
             observeFn = function( changes ) {
               expect( revolv.hasAttribute( "pagination" ) )
                 .to.be.a( "boolean" )
                 .and.to.equal( true );
+
               Object.unobserve( revolv, observeFn );
+              done();
             };
 
-          revolv.pagination = true;
-
           Object.observe( revolv, observeFn );
+
+          revolv.pagination = true;
         });
 
         test( "removing attribute reflects to attribute", function() {
@@ -241,14 +242,9 @@
             .and.equals( false );
         });
 
-        test( "setting property to false removes attribute", function() {
+        test( "setting property to false removes attribute", function( done ) {
           var revolv = document.createElement( "revolv-osel" ),
             observeFn = function( changes ) {
-              expect( revolv.hasAttribute( "pagination" ) )
-                .to.be.a( "boolean" )
-                .that.equals( true );
-
-              revolv.pagination = false;
               expect( revolv )
                 .to.have.property( "pagination" )
                 .that.is.a( "boolean" )
@@ -257,16 +253,19 @@
               expect( revolv.hasAttribute( "pagination" ) )
                 .to.be.a( "boolean" )
                 .and.to.equal( false );
+
               Object.unobserve( revolv, observeFn );
+              done();
             };
 
-          revolv.pagination = true;
-          expect( revolv )
-            .to.have.property( "pagination" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
+          revolv.setAttribute( "pagination", true );
+          expect( revolv.hasAttribute( "pagination" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true );
 
           Object.observe( revolv, observeFn );
+
+          revolv.pagination = false;
         });
       });
 
@@ -310,7 +309,7 @@
             .and.equals( true );
         });
 
-        test( "setting via property reflects to attribute", function() {
+        test( "setting via property reflects to attribute", function( done ) {
           var revolv = document.createElement( "revolv-osel" ),
             observeFn = function( changes ) {
               expect( revolv.hasAttribute( "show-buttons" ) )
@@ -318,11 +317,12 @@
                 .and.to.equal( true );
 
               Object.unobserve( revolv, observeFn );
+              done();
             };
 
-          revolv.showButtons = true;
-
           Object.observe( revolv, observeFn );
+
+          revolv.showButtons = true;
         });
 
         // remove attribute sets to false
@@ -341,33 +341,30 @@
             .and.equals( false );
         });
 
-        test( "setting property to false removes attribute", function() {
+        test( "setting property to false removes attribute", function( done ) {
           var revolv = document.createElement( "revolv-osel" ),
             observeFn = function( changes ) {
-              expect( revolv.hasAttribute( "show-buttons" ) )
-                .to.be.a( "boolean" )
-                .that.equals( true );
-
-              revolv.showButtons = false;
               expect( revolv )
                 .to.have.property( "showButtons" )
                 .that.is.a( "boolean" )
-                .and.equals( false );
+                .and.equals( false, "property: showButtons is false" );
 
               expect( revolv.hasAttribute( "show-buttons" ) )
                 .to.be.a( "boolean" )
-                .and.to.equal( false );
+                .and.to.equal( false, "show-buttons attribute has been removed" );
 
               Object.unobserve( revolv, observeFn );
+              done();
             };
 
-          revolv.showButtons = true;
-          expect( revolv )
-            .to.have.property( "showButtons" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
+          revolv.setAttribute( "show-buttons", true );
+          expect( revolv.hasAttribute( "show-buttons" ) )
+            .to.be.a( "boolean" )
+            .that.equals( true, "show-buttons attribute doesn't exist" );
 
           Object.observe( revolv, observeFn );
+
+          revolv.showButtons = false;
         });
       });
 
