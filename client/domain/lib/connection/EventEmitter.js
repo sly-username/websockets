@@ -1,17 +1,17 @@
-export default class HealingWebSocket {
+export default class EventEmitter {
   constructor( instanceObject, EventTarget ) {
     Object.assign( this, instanceObject );
   }
 
-  on ( eventName, callback ) {
+  on ( eventName, handler ) {
+    EventTarget.addEventListener( eventName, handler );
+  }
+
+  off ( eventName, handler ) {
 
   }
 
-  off ( eventName, callback ) {
-
-  }
-
-  once ( eventName, callback ) {
+  once ( eventName, handler ) {
 
   }
 

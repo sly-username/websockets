@@ -18,10 +18,16 @@
         });
     });
 
-    // And here are the tests
-    suite( "not sure how to start these tests", function() {
-      test( "test goes here", function() {
-        // this is a great test
+    // Tests begin
+    suite( "Instance Methods", function() {
+      test( "on should attach event handler", function() {
+            var eventName = "something",
+        eer = new EventEmitter( eventName, handler ),
+            eventTarget = this,
+            handler = "the handler";
+
+
+
       });
     });
   });
