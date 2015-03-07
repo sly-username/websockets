@@ -172,13 +172,13 @@ export default class LRUCache {
   }
   toJSON() {
     var s = [];
-    this[entry] = this.head;
 
-    while ( this[entry] ) {
+    while ( this.head ) {
       s.push({
-        key: this[entry].key.toJSON(), value: this[entry].value.toJSON()
-      } );
-      this[entry] = this[entry].newer;
+        key: JSON.stringify( this.head.key ),
+        value: JSON.stringify( this.head.value )
+      });
+      this.head = this.head.newer;
     }
     return s;
   }

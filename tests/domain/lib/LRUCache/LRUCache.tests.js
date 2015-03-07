@@ -8,7 +8,7 @@
     this.timeout( 5000 );
 
     suiteSetup( function( done ) {
-      System.import( "domain/lib/connection/LRUCache" )
+      System.import( "domain/lib/LRUCache/LRUCache" )
         .then( function( imported ) {
           LRUCache = imported.default;
           done();
@@ -111,7 +111,8 @@
         cache.put( "A", 1 );
         cache.put( "B", 2 );
         cache.put( "C", 3 );
-        expect( cache.keyMap ).to.equal( null );
+        cache.clear();
+        expect( cache.keyMap ).to.be.empty;
       });
       test( "Keys", function() {
         var cache = new LRUCache( 10 );
@@ -119,19 +120,40 @@
         cache.put( "B", 2 );
         cache.put( "C", 3 );
         expect( cache.keys() )
-          .to.be.an( "object" )
-          .that.equals( "A", "B", "C" );
+          .to.be.an( "array" );
+        expect( cache.keys()[0] )
+          .to.be.a( "string" )
+          .that.equals( "A" );
       });
-//      test( "ForEach", function() {
-//        var cache = new LRUCache( 10 ),
-//            expectedKeys = [ "A", "B", "C" ];
-//      });
-//      test( "ForEachReverse", function() {
-//      });
-//      test( "ToJSON", function() {
-//      });
-//      test( "ToString", function() {
-//      });
+      test( "ForEach", function() {
+        var cache = new LRUCache( 10 );
+        cache.put( "A", 1 );
+        cache.put( "B", 2 );
+        cache.put( "C", 3 );
+        cache.forEach( function( key ) {
+          cache.remove( key );
+        });
+        expect( cache.keyMap ).to.be.empty;
+      });
+      test( "ToJSON", function() {
+        var cache = new LRUCache( 10 );
+        cache.put( "A", 1 );
+        cache.put( "B", 2 );
+        cache.put( "C", 3 );
+        expect( cache.toJSON()[0] )
+          .to.be.an( "object" )
+          .that.has.property( "key" )
+          .that.equals( "\"A\"" );
+      });
+      test( "ToString", function() {
+        var cache = new LRUCache( 10 );
+        cache.put( "A", 1 );
+        cache.put( "B", 2 );
+        cache.put( "C", 3 );
+        expect( cache.toString() )
+          .to.be.a( "string" )
+          .that.equals( "A:1 < B:2 < C:3" );
+      });
     });
   });
 })( window, document, window.System, window.sinon, window.chai.expect );
