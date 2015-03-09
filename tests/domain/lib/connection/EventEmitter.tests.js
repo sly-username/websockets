@@ -20,13 +20,33 @@
 
     // Tests begin
     suite( "Instance Methods", function() {
-      test( "on should attach event handler", function() {
-            var eventName = "something",
+      test( "check handler map to see if it contains specified event", function() {
+
+      });
+
+      test( "if handler map doesn't include specified event, add it", function() {
+
+      });
+
+      test( "on method should attach handler array to the event", function() {
+        var eventName = "open",
         eer = new EventEmitter( eventName, handler ),
             eventTarget = this,
             handler = "the handler";
 
 
+
+      });
+
+      test( "off method should remove event from handler map", function() {
+
+      });
+
+      test( "once method should first run on and then off methods", function() {
+
+      });
+
+      test( "dispatch method should fire event handler", function() {
 
       });
     });
