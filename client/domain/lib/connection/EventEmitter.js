@@ -1,43 +1,30 @@
 /* jshint strict:false */
-// var handlerMap = Symbol( "handlerMap" ); // jshint ignore:line
+var handlerMap = Symbol( "handlerMap" ); // jshint ignore:line
 
 export default class EventEmitter {
   constructor( eventName ) {
-    this.handlerMap = {};
+    this[handlerMap] = {};
 
     if ( Array.isArray( eventName ) ) {
-      eventName.forEach( name => this.handlerMap[name] = [] );
+      eventName.forEach( name => this[handlerMap][name] = [] );
     }
-  }
-
-  isInHandlerMapArray( eventName ) {
-
-    if ( Array.isArray( this[eventName] ) ) {
-      return true;
-    }
-    return false;
-
-    var handlerMapArray = Object.keys( this.handlerMap );
-//    this.eventNameList.forEach( ( event ) => {
-    return ( handlerMapArray.indexOf( eventName ) > -1 );
-//    });
   }
 
   on( eventName, handler ) {
-    if ( Array.isArray( this.handlerMap[eventName] ) ) {
-      this.handlerMap[ eventName ].push( handler );
+    if ( Array.isArray( this[handlerMap][eventName] ) ) {
+      this[handlerMap][ eventName ].push( handler );
     } else {
-      this.handlerMap[ eventName ] = [ handler ];
+      this[handlerMap][ eventName ] = [ handler ];
     }
 
     return this;
   }
 
   off( eventName, handler ) {
-    var handlerArray = this.handlerMap[ eventName ];
+    var handlerArray = this[handlerMap][ eventName ];
 
     if ( handlerArray && handlerArray.length > 0 ) {
-      this.handlerMap[ eventName ] = handlerArray.filter( h => h !== handler );
+      this[handlerMap][ eventName ] = handlerArray.filter( h => h !== handler );
     }
 
     return this;
@@ -58,7 +45,5 @@ export default class EventEmitter {
     this[ handlerMap ][ event.name ].forEach( h => {
       h.apply( this, extraArgs.unshift( event ) );
     });
-    // needs to take event, not the string name
-    // iterate over array, calling each handler in sequence
   }
 }
