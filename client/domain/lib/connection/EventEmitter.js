@@ -7,20 +7,20 @@ export default class EventEmitter {
     this.handlerMap = {};
   }
 
-//  isInHandlerMapArray( eventName ) {
-//    var handlerMapArray = Object.keys( this.handlerMap );
+  isInHandlerMapArray( eventName ) {
+    var handlerMapArray = Object.keys( this.handlerMap );
 //    this.eventNameList.forEach( ( event ) => {
-//      return ( handlerMapArray.indexOf( eventName ) > -1 );
+    return ( handlerMapArray.indexOf( eventName ) > -1 );
 //    });
-//  }
+  }
 
   on( eventName, handler ) {
-//    if ( isInHandlerMapArray === true ) {
-//      this[ handlerMap ][ eventName ].push( handler );
-//    } else {
-//      this[ handlerMap ][ eventName ].push( eventName );
-    this.handlerMap[ eventName ].push( handler );
-//    }
+    if ( this.isInHandlerMapArray === true ) {
+      this[ handlerMap ][ eventName ].push( handler );
+    } else {
+      console.log( this.handlerMap );
+      this.handlerMap[ eventName ] = handler;
+    }
   }
 
   off( eventName, handler ) {
