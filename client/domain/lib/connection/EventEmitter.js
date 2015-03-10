@@ -3,7 +3,10 @@
 
 export default class EventEmitter {
   constructor( eventName ) {
-    this.handlerMap = {};
+    var openListener = function() {};
+    this.handlerMap = {
+      eventName: [ "test", "ok" ]
+    };
   }
 
 //  isInHandlerMapArray( eventName ) {
@@ -18,7 +21,7 @@ export default class EventEmitter {
 //      this[ handlerMap ][ eventName ].push( handler );
 //    } else {
 //      this[ handlerMap ][ eventName ].push( eventName );
-    this[ handlerMap ][ eventName ].push( handler );
+    this.handlerMap.eventName.push( handler );
 //    }
   }
 

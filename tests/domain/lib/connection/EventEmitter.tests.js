@@ -60,18 +60,17 @@
 
         this.handlerMap = {
           open: [
-            openListenerAgain
+            openListener
           ]
         };
-        console.log( this.handlerMap );
+
         addEventSpy = sinon.spy( this.handlerMap.open, "push" );
 
-        console.log( this[ handlerMap ][ open ]);
-        ever.on( "open", openListener );
+        ever.on( "open", openListenerAgain );
 
         expect( addEventSpy )
           .to.have.callCount( 1 )
-          .to.have.been.calledWith( "open", openListener );
+          .to.have.been.calledWith( "open", openListenerAgain );
 
         addEventSpy.restore();
       });
