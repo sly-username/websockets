@@ -3,11 +3,20 @@
 
 export default class EventEmitter {
   constructor( eventName ) {
-    var openListener = function() {};
     this.handlerMap = {};
+
+    if ( Array.isArray( eventName ) ) {
+      eventName.forEach( name => this.handlerMap[name] = [] );
+    }
   }
 
   isInHandlerMapArray( eventName ) {
+
+    if ( Array.isArray( this[eventName] ) ) {
+      return true;
+    }
+    return false;
+
     var handlerMapArray = Object.keys( this.handlerMap );
 //    this.eventNameList.forEach( ( event ) => {
     return ( handlerMapArray.indexOf( eventName ) > -1 );
@@ -15,19 +24,23 @@ export default class EventEmitter {
   }
 
   on( eventName, handler ) {
-    if ( this.isInHandlerMapArray === true ) {
+    if ( Array.isArray( this.handlerMap[eventName] ) ) {
       this.handlerMap[ eventName ].push( handler );
     } else {
-      this.handlerMap[ eventName ] = handler;
+      this.handlerMap[ eventName ] = [ handler ];
     }
+
+    return this;
   }
 
   off( eventName, handler ) {
-    if ( this.isInHandlerMapArray === true ) {
-      this.handlerMap[ eventName ] = this.handlerMap[ eventName ].filter( ( h ) =>
-      h === handler );
+    var handlerArray = this.handlerMap[ eventName ];
+
+    if ( handlerArray && handlerArray.length > 0 ) {
+      this.handlerMap[ eventName ] = handlerArray.filter( h => h !== handler );
     }
-    // filter out handler that has been passed in
+
+    return this;
   }
 
   once( eventName, handler ) {
@@ -36,11 +49,14 @@ export default class EventEmitter {
       this.off( eventName, handler );
       handler.call( this, event );
     });
+
+    return this;
   }
 
-  dispatch( event ) {
+  dispatch( event, ...extraArgs ) {
+    console.dir( extraArgs );
     this[ handlerMap ][ event.name ].forEach( h => {
-      h.call( this, event );
+      h.apply( this, extraArgs.unshift( event ) );
     });
     // needs to take event, not the string name
     // iterate over array, calling each handler in sequence

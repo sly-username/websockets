@@ -77,19 +77,15 @@
       test( "off method should remove event from handler map", function() {
         var ever = new EventEmitter( [ "open" ] ),
             openListener = function() {},
-            openListenerAgain = function() {},
             removeEventSpy;
 
-        this.handlerMap = {
-          open: [
-            openListener,
-            openListenerAgain
-          ]
-        };
+        console.dir( ever );
+
+        ever.on( "open", openListener );
 
         removeEventSpy = sinon.spy( this.handlerMap.open, "filter" );
 
-        ever.off( "open", openListenerAgain );
+        ever.off( "open", openListener );
 
         expect( removeEventSpy )
           .to.have.callCount( 1 )
