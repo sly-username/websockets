@@ -16,16 +16,17 @@ export default class EventEmitter {
 
   on( eventName, handler ) {
     if ( this.isInHandlerMapArray === true ) {
-      this[ handlerMap ][ eventName ].push( handler );
+      this.handlerMap[ eventName ].push( handler );
     } else {
-      console.log( this.handlerMap );
       this.handlerMap[ eventName ] = handler;
     }
   }
 
   off( eventName, handler ) {
-    this.handlerMap[ eventName ] = this.handlerMap[ eventName ].filter( ( h ) =>
+    if ( this.isInHandlerMapArray === true ) {
+      this.handlerMap[ eventName ] = this.handlerMap[ eventName ].filter( ( h ) =>
       h === handler );
+    }
     // filter out handler that has been passed in
   }
 

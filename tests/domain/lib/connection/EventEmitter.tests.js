@@ -20,35 +20,34 @@
 
     // Tests begin
     suite( "handlermap check", function() {
-//      test( "check handler map to see if it contains specified event", function() {
-//        var ever = new EventEmitter( [ "open" ] ),
-//            handlerMap = {
-//              open: [
-//                function() {}
-//              ]
-//            },
-//            test = ever.isInHandlerMapArray( handlerMap, [ "close", "open" ] );
-//
-//        test();
-//
-//        expect( test )
-//          .to.equal( true );
-//      });
-//
-//      test( "if handler map doesn't include specified event, add it", function() {
-//        var ever = new EventEmitter( [ "close" ] ),
-//            handlerMap = {
-//              open: [
-//                function() {}
-//              ]
-//            },
-//            test = ever.isInHandlerMap( handlerMap, [ "close" ] );
-//
-//        test();
-//
-//        expect( handlerMap )
-//          .to.include( "close" );
-//      });
+      test( "check handler map to see if it contains specified event", function() {
+        var ever = new EventEmitter( [ "open" ] ),
+            handlerMap = {
+              open: [
+                function() {}
+              ]
+            };
+
+        ever.isInHandlerMap( handlerMap, [ "close" ] );
+
+        expect( ever.isInHandlerMap )
+          .to.equal( false );
+      });
+
+      test( "if handler map doesn't include specified event, add it", function() {
+        var ever = new EventEmitter( [ "close" ] ),
+            handlerMap = {
+              open: [
+                function() {}
+              ]
+            },
+            test = ever.isInHandlerMap( handlerMap, [ "close" ] );
+
+        test();
+
+        expect( handlerMap )
+          .to.include( "close" );
+      });
     });
 
     suite( "Instance Methods", function() {
