@@ -1,0 +1,211 @@
+var size = Symbol( "size" ), // jshint ignore:line
+    tail = Symbol( "tail" ),
+    head = Symbol( "head" ),
+    keyMap = Symbol( "keyMap" );
+
+export class LRUNode {
+  constructor( key, data, newer, older ) {
+    this.key = key;
+    this.data = data;
+    this.newer = newer;
+    this.older = older;
+  }
+}
+
+export default class LRUCache {
+  constructor( limit ) {
+    Object.defineProperty( this, "limit", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: limit
+    });
+
+    this[keyMap] = {};
+    this[size] = 0;
+    this[tail] = null;
+    this[head] = null;
+  }
+  get size() {
+    return this[size];
+  }
+
+  set( key, data ) {
+    var myNode,
+        newNode = new LRUNode( key, data, null, null );
+
+    if ( this[tail] ) {
+      myNode =  new LRUNode( key, data, null, this[tail].key );
+      this[ keyMap ][ key ] = myNode;
+    } else {
+      this[ keyMap ][ key ] = newNode;
+    }
+
+    if ( this[tail] ) {
+      this[tail].newer = myNode;
+      myNode.older = this[tail];
+    } else {
+      this[head] = newNode;
+    }
+    this[tail] = this[tail] ? myNode : newNode;
+
+    if ( this[size] === this.limit ) {
+      return this.shift();
+    } else {
+      this[size]++;
+      return null;
+    }
+  }
+  get( key, returnEntry ) {
+    var myNode = new LRUNode( key, this[keyMap][key].data, null, this[tail].key );
+
+    myNode = this[keyMap][key];
+
+    if ( myNode === undefined ) {
+      return;
+    }
+
+    if ( myNode === this[tail] ) {
+      return returnEntry ? myNode : myNode.data;
+    }
+
+    if ( myNode.newer ) {
+      if ( myNode === this[head] ) {
+        this[head] = myNode.newer;
+      }
+      myNode.newer.older = myNode.older;
+    }
+
+    if ( myNode.older ) {
+      myNode.older.newer = myNode.newer;
+    }
+    myNode.newer = undefined;
+    myNode.older = this[tail];
+
+    if ( this[tail] ) {
+      this[tail].newer = myNode;
+    }
+    this[tail] = myNode;
+    return returnEntry ? myNode : myNode.data;
+  }
+  peek( key ) {
+    return this[keyMap][key];
+  }
+  has( key ) {
+    return this[keyMap][key] ? true : false;
+  }
+  shift() {
+    var oldHead;
+
+    if ( this[head] ) {
+      oldHead = this[head];
+
+      if ( this[head].newer ) {
+        this[head] = this[head].newer;
+        this[head].older = undefined;
+      } else {
+        this[head] = undefined;
+      }
+
+      delete this[keyMap][ oldHead.key ];
+    }
+
+    if ( this[keyMap] ) {
+      return oldHead;
+    } else {
+      return null;
+    }
+  }
+  remove( key ) {
+    var myNode = this[keyMap][key];
+
+    if ( !myNode ) {
+      return null;
+    }
+    delete this[keyMap][ myNode.key];
+
+    if ( myNode.newer && myNode.older ) {
+      myNode.older.newer = myNode.newer;
+      myNode.newer.older = myNode.older;
+    } else if ( myNode.newer ) {
+      myNode.newer.older = undefined;
+      this[head] = myNode.newer;
+    } else if ( myNode.older ) {
+      myNode.older.newer = undefined;
+      this[tail] = myNode.older;
+    } else {
+      this[head] = this[tail] = undefined;
+    }
+
+    this[size]--;
+    return myNode.data;
+  }
+  clear() {
+    this[head] = this[tail] = undefined;
+    this[size] = 0;
+    this[keyMap] = {};
+  }
+  keys() {
+    var keys = [],
+        i;
+
+    for ( i in this[keyMap] ) {
+      keys.push( i );
+    }
+    return keys;
+  }
+//  forEach( fn, context, startAtTail ) {
+//    var myNode = new LRUNode( key, data, null, null );
+//
+//    if ( context === true ) {
+//      startAtTail = true;
+//      context = undefined;
+//    } else if ( typeof context !== "object" ) {
+//      context = self;
+//    }
+//
+//    if ( startAtTail ) {
+//      myNode = this[tail];
+//
+//      while ( myNode ) {
+//        fn.call( context, myNode.key, myNode.data, this );
+//        myNode = myNode.older;
+//      }
+//    } else {
+//      myNode = this[head];
+//
+//      while ( myNode ) {
+//        fn.call( context, myNode.key, myNode.data, this );
+//        myNode = myNode.newer;
+//      }
+//    }
+//  }
+//  toArray() {
+//    var s = [];
+//
+//    while ( this[head] ) {
+//      s.push({
+//        key: JSON.stringify( this[head].key ),
+//        data: JSON.stringify( this[head].data )
+//      });
+//      this[head] = this[head].newer;
+//    }
+//    return s;
+//  }
+//  toString() {
+//    var s = "",
+//       myNode = new LRUNode( key, data, null, null );
+//
+//    myNode = this[head];
+//
+//    while ( myNode ) {
+//      s += String( myNode.key ) + ":" + myNode.data;
+//      myNode = myNode.newer;
+//
+//      if ( myNode ) {
+//        s += " < ";
+//      }
+//    }
+//    return s;
+//  }
+}
