@@ -19,23 +19,61 @@
     });
 
     // Tests begin
+    suite( "handlermap check", function() {
+//      test( "check handler map to see if it contains specified event", function() {
+//        var ever = new EventEmitter( [ "open" ] ),
+//            handlerMap = {
+//              open: [
+//                function() {}
+//              ]
+//            },
+//            test = ever.isInHandlerMapArray( handlerMap, [ "close", "open" ] );
+//
+//        test();
+//
+//        expect( test )
+//          .to.equal( true );
+//      });
+//
+//      test( "if handler map doesn't include specified event, add it", function() {
+//        var ever = new EventEmitter( [ "close" ] ),
+//            handlerMap = {
+//              open: [
+//                function() {}
+//              ]
+//            },
+//            test = ever.isInHandlerMap( handlerMap, [ "close" ] );
+//
+//        test();
+//
+//        expect( handlerMap )
+//          .to.include( "close" );
+//      });
+    });
+
     suite( "Instance Methods", function() {
-      test( "check handler map to see if it contains specified event", function() {
+      test( "on method should attach handler to the specified event", function() {
+        var ever = new EventEmitter( [ "open" ] ),
+            openListener = function() {},
+            openListenerAgain = function() {},
+            addEventSpy;
 
-      });
+        this.handlerMap = {
+          open: [
+            openListenerAgain
+          ]
+        };
+        console.log( this.handlerMap );
+        addEventSpy = sinon.spy( this.handlerMap.open, "push" );
 
-      test( "if handler map doesn't include specified event, add it", function() {
+        console.log( this[ handlerMap ][ open ]);
+        ever.on( "open", openListener );
 
-      });
+        expect( addEventSpy )
+          .to.have.callCount( 1 )
+          .to.have.been.calledWith( "open", openListener );
 
-      test( "on method should attach handler array to the event", function() {
-        var eventName = "open",
-        eer = new EventEmitter( eventName, handler ),
-            eventTarget = this,
-            handler = "the handler";
-
-
-
+        addEventSpy.restore();
       });
 
       test( "off method should remove event from handler map", function() {
