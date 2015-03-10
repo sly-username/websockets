@@ -76,10 +76,30 @@
       });
 
       test( "off method should remove event from handler map", function() {
+        var ever = new EventEmitter( [ "open" ] ),
+            openListener = function() {},
+            openListenerAgain = function() {},
+            removeEventSpy;
 
+        this.handlerMap = {
+          open: [
+            openListener,
+            openListenerAgain
+          ]
+        };
+
+        removeEventSpy = sinon.spy( this.handlerMap.open, "filter" );
+
+        ever.off( "open", openListenerAgain );
+
+        expect( removeEventSpy )
+          .to.have.callCount( 1 )
+          .to.have.been.calledWith( "open", openListenerAgain );
+
+        removeEventSpy.restore();
       });
 
-      test( "once method should first run on and then off methods", function() {
+      test( "once method should run on method first, and then off method", function() {
 
       });
 

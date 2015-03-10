@@ -4,9 +4,7 @@
 export default class EventEmitter {
   constructor( eventName ) {
     var openListener = function() {};
-    this.handlerMap = {
-      eventName: [ "test", "ok" ]
-    };
+    this.handlerMap = {};
   }
 
 //  isInHandlerMapArray( eventName ) {
@@ -21,12 +19,12 @@ export default class EventEmitter {
 //      this[ handlerMap ][ eventName ].push( handler );
 //    } else {
 //      this[ handlerMap ][ eventName ].push( eventName );
-    this.handlerMap.eventName.push( handler );
+    this.handlerMap[ eventName ].push( handler );
 //    }
   }
 
   off( eventName, handler ) {
-    this[ handlerMap ][ eventName ] = this[ handlerMap ][ eventName ].filter( ( h ) =>
+    this.handlerMap[ eventName ] = this.handlerMap[ eventName ].filter( ( h ) =>
       h === handler );
     // filter out handler that has been passed in
   }
