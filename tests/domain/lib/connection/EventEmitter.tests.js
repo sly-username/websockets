@@ -79,25 +79,85 @@
           expect( removeEventSpy )
             .to.have.callCount( 1 );
 
-//          expect( ever[handlerMapSym].open )
-//            .should.not.exist;
+          expect( ever[handlerMapSym].open )
+            .to.have.length( 0 );
 
           removeEventSpy.restore();
         });
       });
 
       suite( "once method", function() {
-        test( "once method runs on method, and immediately after runs off method", function() {
+        test( "if eventName array is found in handlerMap object", function() {
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              openListenerAgain = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
+              addEventSpy,
+              removeEventSpy;
 
+          ever[handlerMapSym] = {
+            open: [
+              openListener
+            ]
+          };
+
+          addEventSpy = sinon.spy( ever[handlerMapSym].open, "push" );
+          removeEventSpy = sinon.spy( ever[handlerMapSym].open, "filter" );
+
+          ever.on( "open", openListenerAgain );
+
+          expect( addEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( openListenerAgain );
+
+          ever.off( "open", openListenerAgain );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 );
+
+          addEventSpy.restore();
+          removeEventSpy.restore();
+        });
+
+        test( "if eventName array does not exist in handlerMap object", function() {
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              closeListener = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
+              removeEventSpy;
+
+          ever[handlerMapSym] = {
+            close: [
+              closeListener
+            ]
+          };
+
+          ever.on( "open", openListener );
+
+          expect( ever[handlerMapSym] )
+            .to.have.property( "open" )
+            .that.is.an( "array" );
+
+          removeEventSpy = sinon.spy( ever[handlerMapSym].open, "filter" );
+
+          ever.off( "open", openListener );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 );
+
+          expect( ever[handlerMapSym].open )
+            .to.have.length( 0 );
+
+          removeEventSpy.restore();
         });
       });
 
       suite( "clear method", function() {
-        test( "clear method should clear specified event handler", function() {
-
+        test( "if event name specified, clear method should remove all its handlers", function() {
+          
         });
 
-        test( "clear method should clear all event handlers, if not specified", function() {
+        test( "if not specified, clear method should remove all handlers for all events", function() {
 
         });
       });
