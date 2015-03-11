@@ -1,3 +1,4 @@
+/* jshint strict: false */
 var size = Symbol( "size" ), // jshint ignore:line
   tail = Symbol( "tail" ), // jshint ignore:line
   head = Symbol( "head" ), // jshint ignore:line
