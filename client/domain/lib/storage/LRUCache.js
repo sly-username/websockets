@@ -1,7 +1,7 @@
 var size = Symbol( "size" ), // jshint ignore:line
-    tail = Symbol( "tail" ),
-    head = Symbol( "head" ),
-    keyMap = Symbol( "keyMap" );
+  tail = Symbol( "tail" ), // jshint ignore:line
+  head = Symbol( "head" ), // jshint ignore:line
+  keyMap = Symbol( "keyMap" ); // jshint ignore:line
 
 export class LRUNode {
   constructor( key, data, newer, older ) {
@@ -12,6 +12,9 @@ export class LRUNode {
   }
 }
 
+/**
+ * @class LRUCache
+ */
 export default class LRUCache {
   constructor( limit ) {
     Object.defineProperty( this, "limit", {
@@ -21,51 +24,48 @@ export default class LRUCache {
       value: limit
     });
 
-    this[keyMap] = {};
-    this[size] = 0;
-    this[tail] = null;
-    this[head] = null;
+    this[ keyMap ] = {};
+    this[ size ] = 0;
+    this[ tail ] = null;
+    this[ head ] = null;
   }
+
   get size() {
-    return this[size];
+    return this[ size ];
   }
 
   set( key, data ) {
-    var myNode,
-        newNode = new LRUNode( key, data, null, null );
+    var newNode = new LRUNode( key, data, null, null );
 
-    if ( this[tail] ) {
-      myNode =  new LRUNode( key, data, null, this[tail].key );
-      this[ keyMap ][ key ] = myNode;
+    this[ keyMap ][ key ] = newNode;
+
+    if ( this[ tail ] ) {
+      this[ tail ].newer = newNode;
+      newNode.older = this[ tail ];
     } else {
-      this[ keyMap ][ key ] = newNode;
+      this[ head ] = newNode;
     }
 
-    if ( this[tail] ) {
-      this[tail].newer = myNode;
-      myNode.older = this[tail];
-    } else {
-      this[head] = newNode;
-    }
-    this[tail] = this[tail] ? myNode : newNode;
+    this[ tail ] = newNode;
 
-    if ( this[size] === this.limit ) {
+    if ( this[ size ] === this.limit ) {
       return this.shift();
-    } else {
-      this[size]++;
-      return null;
     }
-  }
-  get( key ) {
-    var node = this[keyMap][key];
 
-    if ( node === undefined ) {
+    this[ size ] += 1;
+    return null;
+  }
+
+  get( key ) {
+    var node = this[ keyMap ][ key ];
+
+    if ( node == null ) {
       return null;
     }
 
     if ( node.newer ) {
-      if ( node === this[head] ) {
-        this[head] = node.newer;
+      if ( node === this[ head ] ) {
+        this[ head ] = node.newer;
       }
       node.newer.older = node.older;
     }
@@ -73,88 +73,105 @@ export default class LRUCache {
     if ( node.older ) {
       node.older.newer = node.newer;
     }
-    node.newer = undefined;
-    node.older = this[tail];
 
-    if ( this[tail] ) {
-      this[tail].newer = node;
+    node.newer = null;
+    node.older = this[ tail ];
+
+    if ( this[ tail ] ) {
+      this[ tail ].newer = node;
     }
-    this[tail] = node;
+
+    this[ tail ] = node;
     return node.data;
   }
+
   peek( key ) {
-    return this[keyMap][key] ? this[keyMap][key] : null;
+    return this[ keyMap ].hasOwnProperty( key ) ? this[ keyMap ][ key ].data : null;
   }
+
   has( key ) {
-    return this[keyMap].hasOwnProperty( key );
+    return this[ keyMap ].hasOwnProperty( key );
   }
+
   shift() {
-    var oldHead;
+    var oldHead = this[ head ];
 
-    if ( this[head] ) {
-      oldHead = this[head];
-
-      if ( this[head].newer ) {
-        this[head] = this[head].newer;
-        this[head].older = undefined;
-      } else {
-        this[head] = undefined;
-      }
-
-      delete this[keyMap][ oldHead.key ];
-    }
-
-    if ( this[keyMap] ) {
-      return oldHead;
+    if ( oldHead && oldHead.newer ) {
+      this[ head ] = this[ head ].newer;
+      this[ head ].older = null;
     } else {
-      return null;
+      this[ head ] = null;
     }
+
+    if ( oldHead != null ) {
+      delete this[ keyMap ][ oldHead.key ];
+      this[ size ] -= 1;
+      return oldHead.data;
+    }
+
+    return null;
   }
+
   remove( key ) {
-    var myNode = this[keyMap][key];
+    var toRemove = this[ keyMap ][ key ];
 
-    if ( !myNode ) {
+    if ( toRemove == null ) {
       return null;
     }
-    delete this[keyMap][ myNode.key];
 
-    if ( myNode.newer && myNode.older ) {
-      myNode.older.newer = myNode.newer;
-      myNode.newer.older = myNode.older;
-    } else if ( myNode.newer ) {
-      myNode.newer.older = undefined;
-      this[head] = myNode.newer;
-    } else if ( myNode.older ) {
-      myNode.older.newer = undefined;
-      this[tail] = myNode.older;
+    delete this[ keyMap ][ toRemove.key ];
+
+    if ( toRemove.newer && toRemove.older ) {
+      toRemove.older.newer = toRemove.newer;
+      toRemove.newer.older = toRemove.older;
+    } else if ( toRemove.newer ) {
+      toRemove.newer.older = null;
+      this[ head ] = toRemove.newer;
+    } else if ( toRemove.older ) {
+      toRemove.older.newer = null;
+      this[ tail ] = toRemove.older;
     } else {
-      this[head] = this[tail] = undefined;
+      this[ head ] = this[ tail ] = null;
     }
 
-    this[size]--;
-    return myNode.data;
+    this[ size ] -= 1;
+    return toRemove.data;
   }
+
   clear() {
-    this[head] = this[tail] = undefined;
-    this[size] = 0;
-    this[keyMap] = {};
+    this[ head ] = this[ tail ] = null;
+    this[ size ] = 0;
+    this[ keyMap ] = {};
   }
+
   keys() {
     var keys = [],
-        i;
+      key;
 
-    for ( i in this[keyMap] ) {
-      keys.push( i );
+    if ( typeof Object.keys === "function" ) {
+      return Object.keys( this[ keyMap ] );
     }
+
+    for ( key in this[ keyMap ] ) {
+      if ( this[ keyMap ].hasOwnProperty( key ) ) {
+        keys.push( key );
+      }
+    }
+
     return keys;
   }
-  forEach( fn, context, startAtTail ) {
-    var iterator = startAtTail === true ? this.reverse : this;
 
-    for ( let [ key, data ] of iterator ) {
+  forEach( fn, context=undefined, startAtTail=false ) {
+    if ( typeof context === "boolean" ) {
+      startAtTail = context;
+      context = undefined;
+    }
+
+    for ( let [ key, data ] of startAtTail ? this.reverseOf : this ) {
       fn.call( context, key, data, this );
     }
   }
+
   toArray() {
     var s = [];
 
@@ -162,20 +179,23 @@ export default class LRUCache {
       s.push({
         key,
         data
-      })
+      });
     }
+
     return s;
   }
+
   toString() {
-    var s = "";
+    var str = "";
 
     for ( let [ key, data ] of this ) {
-      s += key + ":" + data;
-      s += " < ";
+      str += key + ":" + data + ( key === this[ tail ].key ? "" : " < " );
     }
-    return s;
+
+    return str;
   }
-  * [Symbol.iterator]() {
+
+  * [ Symbol.iterator ]() {
     var currentNode = this[ head ];
 
     while ( currentNode ) {
@@ -183,15 +203,20 @@ export default class LRUCache {
       currentNode = currentNode.newer;
     }
   }
-  get reverse() {
-    var self = this;
-    return function* () {
-      var currentNode = self[ tail ];
 
-      while ( currentNode ) {
-        yield [ currentNode.key, currentNode.data ];
-        currentNode = currentNode.older;
-      }
-    };
+  * reverse() {
+    var currentNode = this[ tail ];
+
+    while ( currentNode ) {
+      yield [ currentNode.key, currentNode.data ];
+      currentNode = currentNode.older;
+    }
+  }
+
+  get reverseOf() {
+    var rtn = {};
+    rtn[ Symbol.iterator ] = this.reverse.bind( this );
+
+    return rtn;
   }
 }
