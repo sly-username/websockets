@@ -64,8 +64,8 @@
       });
 
       suite( "off method", function() {
-        test( "off method should remove event from handler map", function() {
-          var ever = new EventEmitter( [ "open" ] ),
+        test( "off method can remove event from handler map", function() {
+          var ever = new EventEmitter( "open" ),
               openListener = function() {},
               handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
               removeEventSpy;
@@ -77,27 +77,35 @@
           ever.off( "open", openListener );
 
           expect( removeEventSpy )
-            .to.have.callCount( 1 )
-            .to.have.been.calledWith( "open", openListenerAgain );
+            .to.have.callCount( 1 );
+
+//          expect( ever[handlerMapSym].open )
+//            .should.not.exist;
 
           removeEventSpy.restore();
         });
       });
 
-      test( "once method should run on method first, and then off method", function() {
+      suite( "once method", function() {
+        test( "once method runs on method, and immediately after runs off method", function() {
 
+        });
       });
 
-      test( "clear method should clear specified event handler", function() {
+      suite( "clear method", function() {
+        test( "clear method should clear specified event handler", function() {
 
+        });
+
+        test( "clear method should clear all event handlers, if not specified", function() {
+
+        });
       });
 
-      test( "clear method should clear all event handlers, if not specified", function() {
+      suite( "dispatch method", function() {
+        test( "dispatch method should fire event handler", function() {
 
-      });
-
-      test( "dispatch method should fire event handler", function() {
-
+        });
       });
     });
   });
