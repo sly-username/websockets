@@ -154,16 +154,52 @@
 
       suite( "clear method", function() {
         test( "if event name specified, clear method should remove all its handlers", function() {
-          
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
+
+          ever[handlerMapSym] = {
+            open: [
+              openListener
+            ]
+          };
+
+          ever.clear( "open" );
+
+          expect( ever[handlerMapSym].open )
+            .to.have.length( 0 );
         });
 
         test( "if not specified, clear method should remove all handlers for all events", function() {
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              closeListener = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
 
+          ever[handlerMapSym] = {
+            open: [
+              openListener
+            ],
+            close: [
+              closeListener
+            ]
+          };
+
+          ever.clear();
+
+          expect( ever[handlerMapSym].open )
+            .to.have.length( 0 );
+
+          expect( ever[handlerMapSym].close )
+            .to.have.length( 0 );
         });
       });
 
       suite( "dispatch method", function() {
         test( "dispatch method should fire event handler", function() {
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
 
         });
       });

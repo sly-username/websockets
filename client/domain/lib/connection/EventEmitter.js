@@ -39,8 +39,9 @@ export default class EventEmitter {
     return this;
   }
 
-  clear() {
-    return this;
+  clear( eventName ) {
+
+//    return this;
   }
 
   dispatch( event, ...extraArgs ) {
@@ -48,5 +49,7 @@ export default class EventEmitter {
     this[ handlerMap ][ event.name ].forEach( h => {
       h.apply( this, extraArgs.unshift( event ) );
     });
+
+    return this;
   }
 }
