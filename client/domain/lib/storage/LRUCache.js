@@ -170,7 +170,7 @@ export default class LRUCache {
     var s = "";
 
     for ( let [ key, data ] of this ) {
-      s += String( key ) + ":" + data;
+      s += key + ":" + data;
       s += " < ";
     }
     return s;
