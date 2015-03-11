@@ -82,6 +82,9 @@
           expect( ever[handlerMapSym].open )
             .to.have.length( 0 );
 
+//          expect( ever[handlerMapSym].hasOwnProperty( open ))
+//            .to.be( false );
+
           removeEventSpy.restore();
         });
       });

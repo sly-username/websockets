@@ -5,13 +5,13 @@ export default class EventEmitter {
   constructor( eventName ) {
     this[handlerMap] = {};
 
-    if ( Array.isArray( eventName ) ) {
+    if ( Array.isArray( eventName )) {
       eventName.forEach( name => this[handlerMap][name] = [] );
     }
   }
 
   on( eventName, handler ) {
-    if ( Array.isArray( this[handlerMap][eventName] ) ) {
+    if ( Array.isArray( this[handlerMap][eventName] )) {
       this[handlerMap][ eventName ].push( handler );
     } else {
       this[handlerMap][ eventName ] = [ handler ];
@@ -21,10 +21,10 @@ export default class EventEmitter {
   }
 
   off( eventName, handler ) {
-    var handlerArray = this[handlerMap][ eventName ];
+    var handlerArray = this[handlerMap][eventName];
 
     if ( handlerArray && handlerArray.length > 0 ) {
-      this[handlerMap][ eventName ] = handlerArray.filter( h => h !== handler );
+      this[handlerMap][eventName] = handlerArray.filter( h => h !== handler );
     }
 
     return this;
@@ -40,8 +40,17 @@ export default class EventEmitter {
   }
 
   clear( eventName ) {
+    if ( eventName ) {
+      this[handlerMap][eventName].forEach( h => {
+        this.off( eventName, h );
+      });
+    } else {
+      Object.keys( this[handlerMap] ).forEach( evt => {
+        this[handlerMap][evt] = [];
+      });
+    }
 
-//    return this;
+    return this;
   }
 
   dispatch( event, ...extraArgs ) {
