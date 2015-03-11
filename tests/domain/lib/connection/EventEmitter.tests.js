@@ -202,8 +202,22 @@
         test( "dispatch method should fire event handler", function() {
           var ever = new EventEmitter( "open" ),
               openListener = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
+              openListenerAgain = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
+              addEventSpy;
 
+          ever[handlerMapSym] = {
+            open: [
+              openListener,
+              openListenerAgain
+            ]
+          };
+          addEventSpy = sinon.spy( ever[handlerMapSym].open, "push" );
+
+          ever.dispatch( ever[handlerMapSym].open );
+
+          expect( addEventSpy )
+            .to.have.callCount( 1 );
         });
       });
     });

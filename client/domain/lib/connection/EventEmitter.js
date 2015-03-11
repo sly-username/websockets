@@ -56,7 +56,7 @@ export default class EventEmitter {
   dispatch( event, ...extraArgs ) {
     console.dir( extraArgs );
     this[ handlerMap ][ event.name ].forEach( h => {
-      h.apply( this, extraArgs.unshift( event ) );
+      h.apply( this, extraArgs.unshift( event ));
     });
 
     return this;
