@@ -31,12 +31,15 @@ export default class EventEmitter {
   }
 
   once( eventName, handler ) {
-    // once = on + off. math.
     this.on( eventName, ( event ) => {
       this.off( eventName, handler );
       handler.call( this, event );
     });
 
+    return this;
+  }
+
+  clear() {
     return this;
   }
 

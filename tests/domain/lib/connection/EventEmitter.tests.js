@@ -19,82 +19,80 @@
     });
 
     // Tests begin
-    suite( "handlermap check", function() {
-      test( "check handler map to see if it contains specified event", function() {
-        var ever = new EventEmitter( [ "open" ] ),
-            handlerMap = {
-              open: [
-                function() {}
-              ]
-            };
-
-        ever.isInHandlerMap( handlerMap, [ "close" ] );
-
-        expect( ever.isInHandlerMap )
-          .to.equal( false );
-      });
-
-      test( "if handler map doesn't include specified event, add it", function() {
-        var ever = new EventEmitter( [ "close" ] ),
-            handlerMap = {
-              open: [
-                function() {}
-              ]
-            },
-            test = ever.isInHandlerMap( handlerMap, [ "close" ] );
-
-        test();
-
-        expect( handlerMap )
-          .to.include( "close" );
-      });
-    });
-
     suite( "Instance Methods", function() {
-      test( "on method should attach handler to the specified event", function() {
-        var ever = new EventEmitter( [ "open" ] ),
-            openListener = function() {},
-            openListenerAgain = function() {},
-            addEventSpy;
+      suite( "on method", function() {
+        test( "on method can attach handler to the specified event", function() {
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              openListenerAgain = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
+              addEventSpy;
 
-        this.handlerMap = {
-          open: [
-            openListener
-          ]
-        };
+          ever[handlerMapSym] = {
+            open: [
+              openListener
+            ]
+          };
 
-        addEventSpy = sinon.spy( this.handlerMap.open, "push" );
+          addEventSpy = sinon.spy( ever[handlerMapSym].open, "push" );
 
-        ever.on( "open", openListenerAgain );
+          ever.on( "open", openListenerAgain );
 
-        expect( addEventSpy )
-          .to.have.callCount( 1 )
-          .to.have.been.calledWith( "open", openListenerAgain );
+          expect( addEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( openListenerAgain );
+        });
 
-        addEventSpy.restore();
+        test( "on method will add property to handlerMap if eventName does not exist", function() {
+          var ever = new EventEmitter( "open" ),
+              openListener = function() {},
+              closeListener = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
+
+          ever[handlerMapSym] = {
+            close: [
+              closeListener
+            ]
+          };
+
+          ever.on( "open", openListener );
+
+          expect( ever[handlerMapSym] )
+            .to.have.property( "open" )
+            .that.is.an( "array" );
+        });
       });
 
-      test( "off method should remove event from handler map", function() {
-        var ever = new EventEmitter( [ "open" ] ),
-            openListener = function() {},
-            removeEventSpy;
+      suite( "off method", function() {
+        test( "off method should remove event from handler map", function() {
+          var ever = new EventEmitter( [ "open" ] ),
+              openListener = function() {},
+              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
+              removeEventSpy;
 
-        console.dir( ever );
+          ever.on( "open", openListener );
 
-        ever.on( "open", openListener );
+          removeEventSpy = sinon.spy( ever[handlerMapSym].open, "filter" );
 
-        removeEventSpy = sinon.spy( this.handlerMap.open, "filter" );
+          ever.off( "open", openListener );
 
-        ever.off( "open", openListener );
+          expect( removeEventSpy )
+            .to.have.callCount( 1 )
+            .to.have.been.calledWith( "open", openListenerAgain );
 
-        expect( removeEventSpy )
-          .to.have.callCount( 1 )
-          .to.have.been.calledWith( "open", openListenerAgain );
-
-        removeEventSpy.restore();
+          removeEventSpy.restore();
+        });
       });
 
       test( "once method should run on method first, and then off method", function() {
+
+      });
+
+      test( "clear method should clear specified event handler", function() {
+
+      });
+
+      test( "clear method should clear all event handlers, if not specified", function() {
 
       });
 
