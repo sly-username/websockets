@@ -110,6 +110,10 @@
           .that.has.property( "key" )
           .and.equals( "B" );
       });
+      test( "Peek to return null when there is no key", function() {
+        var cache = new LRUCache( 10 );
+        expect( cache.peek( "B" ) ).to.be.equals( null );
+      });
       test( "Has returns boolean if item exists", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
@@ -150,12 +154,13 @@
         expect( cache.remove( "B" ) ).to.be.equals( 2 );
       });
       test( "Clear", function() {
-        var cache = new LRUCache( 10 );
+        var cache = new LRUCache( 10 ),
+          keyMap = Object.getOwnPropertySymbols( cache )[0];
         cache.set( "A", 1 );
         cache.set( "B", 2 );
         cache.set( "C", 3 );
         cache.clear();
-        expect( cache.keyMap ).to.be.empty;
+        expect( cache[ keyMap ] ).to.be.empty;
       });
       test( "Keys returns an array of stored keys in the map", function() {
         var cache = new LRUCache( 10 );
@@ -176,14 +181,15 @@
           .that.equals( "C" );
       });
       test( "ForEach to remove content from cache", function() {
-        var cache = new LRUCache( 10 );
+        var cache = new LRUCache( 10 ),
+          keyMap = Object.getOwnPropertySymbols( cache )[0];
         cache.set( "A", 1 );
         cache.set( "B", 2 );
         cache.set( "C", 3 );
         cache.forEach( function( key ) {
           cache.remove( key );
         });
-        expect( cache.keyMap ).to.be.empty;
+        expect( cache[ keyMap ] ).to.be.empty;
         expect( cache.has( "A" ) )
           .to.be.a( "boolean" )
           .that.equals( false );
@@ -193,6 +199,20 @@
         expect( cache.has( "C" ) )
           .to.be.a( "boolean" )
           .that.equals( false );
+      });
+      test( "ForEach to get content from the cache in reverse", function() {
+        var cache = new LRUCache( 10 ),
+          tail = Object.getOwnPropertySymbols( cache )[2];
+        cache.set( "A", 1 );
+        cache.set( "B", 2 );
+        cache.set( "C", 3 );
+        cache.forEach( function( key ) {
+          cache.get( key );
+        }, false );
+        expect( cache[ tail ] )
+          .to.be.a( "object" )
+          .that.has.property( "key" )
+          .to.equal( "A" );
       });
       test( "ToArray to return an array containing data objects", function() {
         var cache = new LRUCache( 10 );
