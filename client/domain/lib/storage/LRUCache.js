@@ -178,7 +178,6 @@ export default class LRUCache {
         data
       })
     }
-//    console.log( s );
     return s;
   }
   toString() {

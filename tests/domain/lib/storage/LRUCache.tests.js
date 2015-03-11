@@ -100,7 +100,7 @@
           .to.be.a( "string" )
           .that.equals( "C" );
       });
-      test( "Peek", function() {
+      test( "Peek to return the data object", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
@@ -110,14 +110,14 @@
           .that.has.property( "key" )
           .and.equals( "B" );
       });
-      test( "Has", function() {
+      test( "Has returns boolean if item exists", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         expect( cache.has( "A" ) )
           .to.be.a( "boolean" )
           .that.equals( true );
       });
-      test( "Shift", function() {
+      test( "Shift, pops off the head node and returns removed node", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
@@ -131,7 +131,7 @@
           .to.be.a( "boolean" )
           .that.equals( false );
       });
-      test( "Remove", function() {
+      test( "Remove, takes node out of cache", function() {
         var cache = new LRUCache( 10 );
         cache.set( "B", 2 );
         cache.remove( "B" );
@@ -163,10 +163,8 @@
         cache.set( "B", 2 );
         cache.set( "C", 3 );
         expect( cache.keys() )
-          .to.be.an( "array" );
-        // tests errors saying expected [ 'A', 'B', 'C' ] to equal [ 'A', 'B', 'C' ]
-        // for the following commented out code
-        //  .that.equals([ 'A', 'B', 'C' ]);
+          .to.be.an( "array" )
+          .that.deep.equals([ "A", "B", "C" ]);
         expect( cache.keys()[0] )
           .to.be.a( "string" )
           .that.equals( "A" );
@@ -177,7 +175,7 @@
           .to.be.a( "string" )
           .that.equals( "C" );
       });
-      test( "ForEach", function() {
+      test( "ForEach to remove content from cache", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
@@ -186,26 +184,33 @@
           cache.remove( key );
         });
         expect( cache.keyMap ).to.be.empty;
+        expect( cache.has( "A" ) )
+          .to.be.a( "boolean" )
+          .that.equals( false );
+        expect( cache.has( "B" ) )
+          .to.be.a( "boolean" )
+          .that.equals( false );
+        expect( cache.has( "C" ) )
+          .to.be.a( "boolean" )
+          .that.equals( false );
       });
-      test( "ToArray", function() {
+      test( "ToArray to return an array containing data objects", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
         cache.set( "C", 3 );
         expect( cache.toArray() )
+        expect( cache.toArray() )
           .to.be.an( "array" )
-          .that.contain.any.keys({"key":"A"});
-//        expect( cache.toArray() )
-//          .to.be.an( "array" )
-//          .that.equals([ {
-//            key: "A", data: 1
-//          }, {
-//            key: "B", data: 2
-//          }, {
-//            key: "C", data: 3
-//          } ]);
+          .that.deep.equals([ {
+            key: "A", data: 1
+          }, {
+            key: "B", data: 2
+          }, {
+            key: "C", data: 3
+          } ]);
       });
-      test( "ToString", function() {
+      test( "ToString to return a string on the objects", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
