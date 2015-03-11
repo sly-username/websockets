@@ -56,43 +56,37 @@ export default class LRUCache {
       return null;
     }
   }
-  get( key, returnEntry ) {
-    var myNode = new LRUNode( key, this[keyMap][key].data, null, this[tail].key );
+  get( key ) {
+    var node = this[keyMap][key];
 
-    myNode = this[keyMap][key];
-
-    if ( myNode === undefined ) {
-      return;
+    if ( node === undefined ) {
+      return null;
     }
 
-    if ( myNode === this[tail] ) {
-      return returnEntry ? myNode : myNode.data;
-    }
-
-    if ( myNode.newer ) {
-      if ( myNode === this[head] ) {
-        this[head] = myNode.newer;
+    if ( node.newer ) {
+      if ( node === this[head] ) {
+        this[head] = node.newer;
       }
-      myNode.newer.older = myNode.older;
+      node.newer.older = node.older;
     }
 
-    if ( myNode.older ) {
-      myNode.older.newer = myNode.newer;
+    if ( node.older ) {
+      node.older.newer = node.newer;
     }
-    myNode.newer = undefined;
-    myNode.older = this[tail];
+    node.newer = undefined;
+    node.older = this[tail];
 
     if ( this[tail] ) {
-      this[tail].newer = myNode;
+      this[tail].newer = node;
     }
-    this[tail] = myNode;
-    return returnEntry ? myNode : myNode.data;
+    this[tail] = node;
+    return node.data;
   }
   peek( key ) {
-    return this[keyMap][key];
+    return this[keyMap][key] ? this[keyMap][key] : null;
   }
   has( key ) {
-    return this[keyMap][key] ? true : false;
+    return this[keyMap].hasOwnProperty( key );
   }
   shift() {
     var oldHead;
@@ -157,17 +151,9 @@ export default class LRUCache {
   forEach( fn, context, startAtTail ) {
     var iterator = startAtTail === true ? this.reverse : this;
 
-    if ( context === true ) {
-      startAtTail = true;
-      context = undefined;
-    } else if ( typeof context !== "object" ) {
-      context = self;
-    }
-
     for ( let [ key, data ] of iterator ) {
-      fn.call( context || undefined, key, data, this );
+      fn.call( context, key, data, this );
     }
-
   }
   toArray() {
     var s = [];
