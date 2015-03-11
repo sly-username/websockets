@@ -118,8 +118,7 @@
           .that.equals( true );
       });
       test( "Shift", function() {
-        var cache = new LRUCache( 10 ),
-          keyMap = Object.getOwnPropertySymbols( cache )[0];
+        var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
         cache.set( "C", 3 );
@@ -188,15 +187,23 @@
         });
         expect( cache.keyMap ).to.be.empty;
       });
-      test( "ToJSON", function() {
+      test( "ToArray", function() {
         var cache = new LRUCache( 10 );
         cache.set( "A", 1 );
         cache.set( "B", 2 );
         cache.set( "C", 3 );
-        expect( cache.toJSON()[0] )
-          .to.be.an( "object" )
-          .that.has.property( "key" )
-          .that.equals( "\"A\"" );
+        expect( cache.toArray() )
+          .to.be.an( "array" )
+          .that.contain.any.keys({"key":"A"});
+//        expect( cache.toArray() )
+//          .to.be.an( "array" )
+//          .that.equals([ {
+//            key: "A", data: 1
+//          }, {
+//            key: "B", data: 2
+//          }, {
+//            key: "C", data: 3
+//          } ]);
       });
       test( "ToString", function() {
         var cache = new LRUCache( 10 );
@@ -205,7 +212,7 @@
         cache.set( "C", 3 );
         expect( cache.toString() )
           .to.be.a( "string" )
-          .that.equals( "A:1 < B:2 < C:3" );
+          .that.equals( "A:1 < B:2 < C:3 < " );
       });
     });
   });

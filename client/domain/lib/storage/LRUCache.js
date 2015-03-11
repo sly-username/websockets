@@ -154,58 +154,59 @@ export default class LRUCache {
     }
     return keys;
   }
-//  forEach( fn, context, startAtTail ) {
-//    var myNode = new LRUNode( key, data, null, null );
-//
-//    if ( context === true ) {
-//      startAtTail = true;
-//      context = undefined;
-//    } else if ( typeof context !== "object" ) {
-//      context = self;
-//    }
-//
-//    if ( startAtTail ) {
-//      myNode = this[tail];
-//
-//      while ( myNode ) {
-//        fn.call( context, myNode.key, myNode.data, this );
-//        myNode = myNode.older;
-//      }
-//    } else {
-//      myNode = this[head];
-//
-//      while ( myNode ) {
-//        fn.call( context, myNode.key, myNode.data, this );
-//        myNode = myNode.newer;
-//      }
-//    }
-//  }
-//  toArray() {
-//    var s = [];
-//
-//    while ( this[head] ) {
-//      s.push({
-//        key: JSON.stringify( this[head].key ),
-//        data: JSON.stringify( this[head].data )
-//      });
-//      this[head] = this[head].newer;
-//    }
-//    return s;
-//  }
-//  toString() {
-//    var s = "",
-//       myNode = new LRUNode( key, data, null, null );
-//
-//    myNode = this[head];
-//
-//    while ( myNode ) {
-//      s += String( myNode.key ) + ":" + myNode.data;
-//      myNode = myNode.newer;
-//
-//      if ( myNode ) {
-//        s += " < ";
-//      }
-//    }
-//    return s;
-//  }
+  forEach( fn, context, startAtTail ) {
+    var iterator = startAtTail === true ? this.reverse : this;
+
+    if ( context === true ) {
+      startAtTail = true;
+      context = undefined;
+    } else if ( typeof context !== "object" ) {
+      context = self;
+    }
+
+    for ( let [ key, data ] of iterator ) {
+      fn.call( context || undefined, key, data, this );
+    }
+
+  }
+  toArray() {
+    var s = [];
+
+    for ( let [ key, data ] of this ) {
+      s.push({
+        key,
+        data
+      })
+    }
+//    console.log( s );
+    return s;
+  }
+  toString() {
+    var s = "";
+
+    for ( let [ key, data ] of this ) {
+      s += String( key ) + ":" + data;
+      s += " < ";
+    }
+    return s;
+  }
+  * [Symbol.iterator]() {
+    var currentNode = this[ head ];
+
+    while ( currentNode ) {
+      yield [ currentNode.key, currentNode.data ];
+      currentNode = currentNode.newer;
+    }
+  }
+  get reverse() {
+    var self = this;
+    return function* () {
+      var currentNode = self[ tail ];
+
+      while ( currentNode ) {
+        yield [ currentNode.key, currentNode.data ];
+        currentNode = currentNode.older;
+      }
+    };
+  }
 }
