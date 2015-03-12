@@ -58,6 +58,14 @@
             .to.be.instanceof( Array )
             .to.contain( openListener );
         });
+
+        test( "on method is chainable", function() {
+          var emitter = new EventEmitter( "open" ),
+            openListener = function() {};
+
+          expect( emitter.on( "open", openListener ) )
+            .to.equal( emitter );
+        });
       });
 
       suite( "off method", function() {
@@ -82,6 +90,14 @@
             .to.have.length( 0 );
 
           removeEventSpy.restore();
+        });
+
+        test( "off method is chainable", function() {
+          var emitter = new EventEmitter( "open" ),
+            openListener = function() {};
+
+          expect( emitter.off( "open", openListener ))
+            .to.equal( emitter );
         });
       });
 
@@ -203,39 +219,102 @@
         });
       });
 
-      suite( "bindToEvenHandler method", function() {
+      suite( "bindToEventHandler method", function() {
         test( "should add event listeners to eventTarget", function() {
           var ever = new EventEmitter( "open" ),
-             eventTarget = document.createElement( "button" ),
-             openListener = function() {},
-             eventNames = {
-              open: openListener
-             };
+              eventTarget = document.createElement( "button" ),
+              eventNames = [
+                "click",
+                "focus"
+              ],
+              addEventSpy;
 
-//          addEventSpy = sinon.spy( eventTarget, "addEventListener" );
+          addEventSpy = sinon.spy( eventTarget, "addEventListener" );
 
-          ever.bindToEventTarget( ever, eventTarget, eventNames );
+          EventEmitter.bindToEventTarget( ever, eventTarget, eventNames );
 
-//          expect( addEventSpy )
-//            .to.have.callCount( eventList.length );
+          expect( addEventSpy )
+            .to.have.callCount( eventNames.length );
 
-//          addEventSpy.restore();
+          addEventSpy.restore();
         });
 
-        test( "should dispatch emitterInstance's events", function(){
+        test( "should add unbindEventEmitter to eventTarget", function() {
+          var emitter = new EventEmitter( "click" ),
+            eventTarget = document.createElement( "button" ),
+            eventNames = [
+              "click"
+            ];
+
+          EventEmitter.bindToEventTarget( emitter, eventTarget, eventNames );
+
+          console.dir( eventTarget );
+
+          expect( eventTarget )
+            .to.have.property( "unbindEventEmitter" )
+            .that.is.a( "function" );
+        });
+
+        test( "should dispatch emitterInstance's events", function() {
           var ever = new EventEmitter( "open" ),
-              eventNames = [ open ],
-              eventList = Object.keys( eventObj ),
+              eventTarget = document.createElement( "button" ),
               openListener = sinon.spy(),
+              mouseEvent = new MouseEvent( "click" ),
+              eventNames = [
+                "click"
+              ],
               dispatchSpy = sinon.spy( ever, "dispatch" );
 
-          ever.bindToEventTarget( ever, eventTarget, eventNames );
+          EventEmitter.bindToEventTarget( ever, eventTarget, eventNames );
+
+          ever.on( "click", openListener );
+
+          eventTarget.dispatchEvent( mouseEvent );
+
+          expect( openListener )
+            .to.have.callCount( 1 )
+            .and.calledWith( mouseEvent );
 
           expect( dispatchSpy )
-            .to.have.callCount( eventList.length )
-            .and.calledWith( eventObj, 1, 2, 3 );
+            .to.have.callCount( 1 )
+            .and.calledWith( mouseEvent );
 
           dispatchSpy.restore();
+        });
+
+        test( "initializing unbindEventEmitter should remove event listeners from eventTarget", function() {
+          var emitter = new EventEmitter( "click" ),
+            eventTarget = document.createElement( "button" ),
+            openListener = sinon.spy(),
+            mouseEvent = new MouseEvent( "click" ),
+            eventNames = [
+              "click"
+            ],
+            removeEventSpy = sinon.spy( eventTarget, "removeEventListener" );
+
+          EventEmitter.bindToEventTarget( emitter, eventTarget, eventNames );
+
+          emitter.on( "click", openListener );
+
+          expect( eventTarget )
+            .has.property( "unbindEventEmitter" )
+            .and.is.a( "function" );
+
+          eventTarget.unbindEventEmitter();
+
+          expect( eventTarget )
+            .to.not.have.property( "unbindEventEmitter" );
+
+          eventTarget.dispatchEvent( mouseEvent );
+
+          expect( openListener )
+            .to.have.callCount( 0 );
+
+          expect( removeEventSpy )
+            .to.have.callCount( 1 )
+            .and.calledWith( "click" );
+
+          removeEventSpy.restore();
         });
 
       });
