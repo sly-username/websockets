@@ -96,14 +96,14 @@
             onSpy = sinon.spy( ever, "on" ),
             offSpy = sinon.spy( ever, "off" );
 
-//          ever.on( "open", openListener );
+          ever.on( "open", openListener );
 
           ever.once( "open", openListenerAgain );
 
           ever.dispatch( eventObj );
 
           expect( onSpy )
-            .to.have.callCount( 1 );
+            .to.have.callCount( 2 );
 
           expect( offSpy )
             .to.have.callCount( 1 );
