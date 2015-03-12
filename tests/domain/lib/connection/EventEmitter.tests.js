@@ -202,6 +202,43 @@
             .and.calledWith( eventObj, 4, 5, 6 );
         });
       });
+
+      suite( "bindToEvenHandler method", function() {
+        test( "should add event listeners to eventTarget", function() {
+          var ever = new EventEmitter( "open" ),
+             eventTarget = document.createElement( "button" ),
+             openListener = function() {},
+             eventNames = {
+              open: openListener
+             };
+
+//          addEventSpy = sinon.spy( eventTarget, "addEventListener" );
+
+          ever.bindToEventTarget( ever, eventTarget, eventNames );
+
+//          expect( addEventSpy )
+//            .to.have.callCount( eventList.length );
+
+//          addEventSpy.restore();
+        });
+
+        test( "should dispatch emitterInstance's events", function(){
+          var ever = new EventEmitter( "open" ),
+              eventNames = [ open ],
+              eventList = Object.keys( eventObj ),
+              openListener = sinon.spy(),
+              dispatchSpy = sinon.spy( ever, "dispatch" );
+
+          ever.bindToEventTarget( ever, eventTarget, eventNames );
+
+          expect( dispatchSpy )
+            .to.have.callCount( eventList.length )
+            .and.calledWith( eventObj, 1, 2, 3 );
+
+          dispatchSpy.restore();
+        });
+
+      });
     });
   });
 
