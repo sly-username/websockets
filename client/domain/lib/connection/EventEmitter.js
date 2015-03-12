@@ -2,11 +2,11 @@
 var handlerMap = Symbol( "handlerMap" ); // jshint ignore:line
 
 export default class EventEmitter {
-  constructor( eventName ) {
+  constructor( eventNames ) {
     this[handlerMap] = {};
 
-    if ( Array.isArray( eventName )) {
-      eventName.forEach( name => this[handlerMap][name] = [] );
+    if ( Array.isArray( eventNames )) {
+      eventNames.forEach( name => this[handlerMap][name] = [] );
     }
   }
 
@@ -55,10 +55,37 @@ export default class EventEmitter {
 
   dispatch( event, ...extraArgs ) {
     console.dir( extraArgs );
-    this[ handlerMap ][ event.name ].forEach( h => {
-      h.apply( this, extraArgs.unshift( event ));
+    console.log( "this[ handlerMap ]", this[ handlerMap ] );
+
+    if ( !( event instanceof CustomEvent ) ) {
+      console.log( "not a true event" );
+    }
+
+    extraArgs.unshift( event );
+
+    this[ handlerMap ][ event.type ].forEach( h => {
+      h.apply( this, extraArgs );
     });
 
     return this;
+  }
+
+  static bindToEventTarget( emitterInstance, eventTarget, eventNames ) {
+    var listeners = eventNames.map( function( name ) {
+      return function( event ) {
+        emitterInstance.dispatch( event );
+      };
+    });
+
+    eventNames.forEach( function( name, index ) {
+      eventTarget.addEventListener( name, listeners[ index ] );
+    });
+
+    eventTarget.unbindEventEmitter = function() {
+      eventNames.forEach( function( name, index ) {
+        eventTarget.removeEventListener( name, listeners[ index ] );
+      });
+      delete eventTarget.unbindEventEmitter;
+    };
   }
 }

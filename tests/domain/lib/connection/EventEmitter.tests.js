@@ -4,12 +4,15 @@
   "use strict";
 
   suite( "EventEmitter", function() {
-    var EventEmitter;
+    var EventEmitter, handlerMapSym;
 
     suiteSetup( function( done ) {
       System.import( "domain/lib/connection/EventEmitter" )
         .then( function( imported ) {
           EventEmitter = imported.default;
+
+          handlerMapSym = Object.getOwnPropertySymbols( new EventEmitter( [ "open" ] ) )[0];
+
           done();
         }, function( error ) {
           console.warn( "Could not import 'EventEmitter' for testing: ", error.message );
@@ -20,12 +23,12 @@
 
     // Tests begin
     suite( "Instance Methods", function() {
+
       suite( "on method", function() {
         test( "on method can attach handler to the specified event", function() {
           var ever = new EventEmitter( "open" ),
               openListener = function() {},
               openListenerAgain = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
               addEventSpy;
 
           ever[handlerMapSym] = {
@@ -46,14 +49,9 @@
         test( "on method will add property to handlerMap if eventName does not exist", function() {
           var ever = new EventEmitter( "open" ),
               openListener = function() {},
-              closeListener = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
+              closeListener = function() {};
 
-          ever[handlerMapSym] = {
-            close: [
-              closeListener
-            ]
-          };
+          ever.on( "close", closeListener );
 
           ever.on( "open", openListener );
 
@@ -67,10 +65,12 @@
         test( "off method can remove event from handler map", function() {
           var ever = new EventEmitter( "open" ),
               openListener = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
               removeEventSpy;
 
           ever.on( "open", openListener );
+
+          expect( ever[handlerMapSym].open )
+            .to.have.length( 1 );
 
           removeEventSpy = sinon.spy( ever[handlerMapSym].open, "filter" );
 
@@ -81,9 +81,6 @@
 
           expect( ever[handlerMapSym].open )
             .to.have.length( 0 );
-
-//          expect( ever[handlerMapSym].hasOwnProperty( open ))
-//            .to.be( false );
 
           removeEventSpy.restore();
         });
@@ -92,48 +89,35 @@
       suite( "once method", function() {
         test( "if eventName array is found in handlerMap object", function() {
           var ever = new EventEmitter( "open" ),
-              openListener = function() {},
-              openListenerAgain = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
-              addEventSpy,
-              removeEventSpy;
+            openListener = sinon.spy(),
+            eventObj = {
+              type: "open"
+            },
+            onSpy = sinon.spy( ever, "on" ),
+            offSpy = sinon.spy( ever, "off" );
 
-          ever[handlerMapSym] = {
-            open: [
-              openListener
-            ]
-          };
+          ever.once( "open", openListener );
 
-          addEventSpy = sinon.spy( ever[handlerMapSym].open, "push" );
-          removeEventSpy = sinon.spy( ever[handlerMapSym].open, "filter" );
+          ever.dispatch( eventObj );
 
-          ever.on( "open", openListenerAgain );
-
-          expect( addEventSpy )
-            .to.have.callCount( 1 )
-            .to.have.been.calledWith( openListenerAgain );
-
-          ever.off( "open", openListenerAgain );
-
-          expect( removeEventSpy )
+          expect( onSpy )
             .to.have.callCount( 1 );
 
-          addEventSpy.restore();
-          removeEventSpy.restore();
+          expect( offSpy )
+            .to.have.callCount( 1 );
+
+          expect( openListener )
+            .to.have.callCount( 1 )
+            .and.calledWith( eventObj );
+
+          onSpy.restore();
+          offSpy.restore();
         });
 
         test( "if eventName array does not exist in handlerMap object", function() {
           var ever = new EventEmitter( "open" ),
-              openListener = function() {},
-              closeListener = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
-              removeEventSpy;
-
-          ever[handlerMapSym] = {
-            close: [
-              closeListener
-            ]
-          };
+              openListener = sinon.spy(),
+              offSpy = sinon.spy( ever, "off" );
 
           ever.on( "open", openListener );
 
@@ -141,31 +125,24 @@
             .to.have.property( "open" )
             .that.is.an( "array" );
 
-          removeEventSpy = sinon.spy( ever[handlerMapSym].open, "filter" );
-
           ever.off( "open", openListener );
 
-          expect( removeEventSpy )
+          expect( offSpy )
             .to.have.callCount( 1 );
 
           expect( ever[handlerMapSym].open )
             .to.have.length( 0 );
 
-          removeEventSpy.restore();
+          offSpy.restore();
         });
       });
 
       suite( "clear method", function() {
         test( "if event name specified, clear method should remove all its handlers", function() {
           var ever = new EventEmitter( "open" ),
-              openListener = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
+              openListener = function() {};
 
-          ever[handlerMapSym] = {
-            open: [
-              openListener
-            ]
-          };
+          ever.on( "open", openListener );
 
           ever.clear( "open" );
 
@@ -175,18 +152,17 @@
 
         test( "if not specified, clear method should remove all handlers for all events", function() {
           var ever = new EventEmitter( "open" ),
-              openListener = function() {},
-              closeListener = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0];
+              openListener = sinon.spy(),
+              closeListener = sinon.spy();
 
-          ever[handlerMapSym] = {
-            open: [
-              openListener
-            ],
-            close: [
-              closeListener
-            ]
-          };
+          ever.on( "open", openListener );
+          ever.on( "close", closeListener );
+
+          expect( openListener )
+            .to.have.callCount( 1 );
+
+          expect( closeListener )
+            .to.have.callCount( 1 );
 
           ever.clear();
 
@@ -201,23 +177,28 @@
       suite( "dispatch method", function() {
         test( "dispatch method should fire event handler", function() {
           var ever = new EventEmitter( "open" ),
-              openListener = function() {},
-              openListenerAgain = function() {},
-              handlerMapSym = Object.getOwnPropertySymbols( ever )[0],
-              addEventSpy;
+              eventObj = {
+                type: "open"
+              },
+              openListener = sinon.spy(),
+              openListenerAgain = sinon.spy();
 
-          ever[handlerMapSym] = {
-            open: [
-              openListener,
-              openListenerAgain
-            ]
-          };
-          addEventSpy = sinon.spy( ever[handlerMapSym].open, "push" );
+          ever.on( "open", openListener );
 
-          ever.dispatch( ever[handlerMapSym].open );
+          ever.dispatch( eventObj, 1, 2, 3 );
 
-          expect( addEventSpy )
-            .to.have.callCount( 1 );
+          ever.on( "open", openListenerAgain );
+
+          ever.dispatch( eventObj, 4, 5, 6 );
+
+          expect( openListener )
+            .to.have.callCount( 2 )
+            .and.calledWith( eventObj, 1, 2, 3 )
+            .and.calledWith( eventObj, 4, 5, 6 );
+
+          expect( openListenerAgain )
+            .to.have.callCount( 1 )
+            .and.calledWith( eventObj, 4, 5, 6 );
         });
       });
     });
