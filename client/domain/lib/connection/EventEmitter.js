@@ -54,9 +54,6 @@ export default class EventEmitter {
   }
 
   dispatch( event, ...extraArgs ) {
-    console.dir( extraArgs );
-    console.log( "this[ handlerMap ]", this[ handlerMap ] );
-
     if ( !( event instanceof CustomEvent ) ) {
       console.log( "not a true event" );
     }
