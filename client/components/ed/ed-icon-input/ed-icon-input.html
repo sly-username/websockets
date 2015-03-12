@@ -1,0 +1,14 @@
+<polymer-element name="ed-icon-input" attributes="icon type placeholder">
+  <template>
+    <link rel="stylesheet" href="./ed-icon-input.css">
+
+    <div class="wrapper">
+      <ed-icon class="inner-icon" name="{{icon}}"></ed-icon>
+      <div class="arrow-box">
+        <span class="arrow"></span>
+      </div>
+      <input class="from-input" type="{{type}}" placeholder="{{placeholder}}" />
+    </div>
+  </template>
+  <script src="ed-icon-input.js"></script>
+</polymer-element>
