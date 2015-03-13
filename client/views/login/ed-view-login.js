@@ -10,5 +10,4 @@
     /* PROPERTIES */
     /* METHODS */
   });
-
 })( window.Polymer );

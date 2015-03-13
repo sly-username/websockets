@@ -1,8 +1,32 @@
 @import "../styles/ed/buttons.mixin.less";
+@import "../styles/ed/colors.vars.less";
+
+.login-container {
+  background-color: @darkPurple3;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ed-login-body {
+  margin-top: 20rem;
+}
 
 #login-submit {
   .edButton();
 }
 #sign-up-button {
   .edButton( double-line );
+  span {
+    display: block;
+  }
+}
+
+#login-forgot-password {
+  text-decoration: none;
+  font-size: 2.7rem;
+  color: #FFFFFF;
+  opacity: .5;
+  text-align: center;
+  display: block;
+  margin: 3rem 0 3rem 0;
 }
