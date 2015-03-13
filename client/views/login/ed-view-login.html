@@ -1,28 +1,24 @@
 <polymer-element name="ed-view-login" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-view-login.css">
-
-    <div class="wrapper">
-      <div class="login-container">
-        <!-- placeholder logo, to be replace when assets arrive -->
-        <div class="ed-logo-header" style="color:white; font-size: 14rem;">Placeholder Logo</div>
-        <div class="ed-login-body">
-          <form id="login-form" method="post" role="form" action="#">
-            <fieldset>
-              <ed-icon-input type="email" placeholder="Your Email" icon="add189"></ed-icon-input>
-              <ed-icon-input type="password" placeholder="Password" icon="alarm52"></ed-icon-input>
-            </fieldset>
-            <a id="login-forgot-password" href="#">Forgot Password?</a>
-            <button id="login-submit" type="submit">Login</button>
-          </form>
-          <button id="sign-up-button" type="button" href="#">
-            <span class="small-text">Don't have an account?</span>
-            <span>Sign Up Here</span>
-          </button>
-        </div>
+    <div class="login-container">
+      <!-- placeholder logo, to be replace when assets arrive -->
+      <div class="ed-logo-header" style="color:white; ">Placeholder</div>
+      <div class="ed-login-body">
+        <form id="login-form" method="post" role="form" action="#">
+          <fieldset>
+            <ed-icon-input type="email" placeholder="Your Email" icon="add189"></ed-icon-input>
+            <ed-icon-input type="password" placeholder="Password" icon="alarm52"></ed-icon-input>
+          </fieldset>
+          <a id="login-forgot-password" href="#">Forgot Password?</a>
+          <button id="login-submit" type="submit">Login</button>
+        </form>
+        <button id="sign-up-button" type="button" href="#">
+          <span class="small-text">Don't have an account?</span>
+          <span>Sign Up Here</span>
+        </button>
       </div>
     </div>
-
   </template>
   <script src="ed-view-login.js"></script>
 </polymer-element>
