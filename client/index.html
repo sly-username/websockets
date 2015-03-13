@@ -24,6 +24,9 @@
   <!-- Eardish WebComponents -->
   <link rel="import" href="components/ed/ed-components.html" />
 
+  <!-- Eardish Views -->
+  <link rel="import" href="views/views.html" />
+
   <!-- REMOVE FOR PRODUCTION -->
   <!-- POC WebComponents -->
   <link rel="import" href="components/poc/poc-elements.html" />
@@ -32,11 +35,13 @@
 
 <body unresolved>
 
-<poc-viewer class="left" element-name="ed-icon-input" path="ed/ed-icon-input"></poc-viewer>
+<ed-view-login></ed-view-login>
 
-<div class="left">
-  <poc-bp></poc-bp>
-</div>
+<!--<poc-viewer class="left" element-name="poc-mixins" path="poc/poc-mixins"></poc-viewer>-->
+
+<!--<div class="left">-->
+  <!--<poc-bp></poc-bp>-->
+<!--</div>-->
 
 <!-- REMOVE FOR PRODUCTION -->
 <script id="reload-tag" type="text/javascript">
