@@ -57,7 +57,7 @@
               .to.have.property( "open" )
               .to.be.instanceof( Array )
               .to.contain( openListener );
-        });
+          });
 
         test( "on method should be chainable", function() {
           var emitter = new EventEmitter( "open" ),
@@ -108,7 +108,10 @@
             openListenerAgain = function() {},
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" ),
-            eventObj = new CustomEvent( "open", { type: "open" });
+            eventObj = new CustomEvent( "open",
+              {
+                type: "open"
+              });
 
           emitter.on( "open", openListener );
 
@@ -129,7 +132,9 @@
         test( "if eventName array does not exist in handlerMap object", function() {
           var emitter = new EventEmitter( "open" ),
             openListener = sinon.spy(),
-            eventObj = new CustomEvent( "open", { type: "open" }),
+            eventObj = new CustomEvent( "open", {
+              type: "open"
+            }),
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" );
 
@@ -173,22 +178,24 @@
             .to.have.length( 0 );
         });
 
-        test( "if not specified, clear method should remove all handlers for all events", function() {
-          var emitter = new EventEmitter( "open" ),
-            openListener = function() {},
-            closeListener = function() {};
+        test( "if not specified, clear method should remove all handlers for all events",
+          function() {
+            var emitter = new EventEmitter( "open" ),
+              openListener = function() {},
+              closeListener = function() {};
 
-          emitter.on( "open", openListener );
-          emitter.on( "close", closeListener );
+            emitter.on( "open", openListener );
 
-          emitter.clear();
+            emitter.on( "close", closeListener );
 
-          expect( emitter[handlerMapSym].open )
-            .to.have.length( 0 );
+            emitter.clear();
 
-          expect( emitter[handlerMapSym].close )
-            .to.have.length( 0 );
-        });
+            expect( emitter[handlerMapSym].open )
+              .to.have.length( 0 );
+
+            expect( emitter[handlerMapSym].close )
+              .to.have.length( 0 );
+          });
 
         test( "clear method should be chainable", function() {
           var emitter = new EventEmitter( "open" ),
@@ -203,7 +210,9 @@
       suite( "dispatch method", function() {
         test( "dispatch method should fire event handler", function() {
           var emitter = new EventEmitter( "open" ),
-            eventObj = new CustomEvent( "open", { type: "open" }),
+            eventObj = new CustomEvent( "open", {
+              type: "open"
+            }),
             openListener = sinon.spy(),
             openListenerAgain = sinon.spy();
 
@@ -227,7 +236,9 @@
 
         test( "dispatch method should be chainable", function() {
           var emitter = new EventEmitter( "open" ),
-            eventObj = new CustomEvent( "open", { type: "open" }),
+            eventObj = new CustomEvent( "open", {
+              type: "open"
+            }),
             openListener = sinon.spy();
 
           emitter.on( "open", openListener );
@@ -362,7 +373,7 @@
               .and.calledWith( "click" );
 
             removeEventSpy.restore();
-        });
+          });
       });
     });
   });

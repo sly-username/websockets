@@ -55,7 +55,6 @@ export default class EventEmitter {
 
   dispatch( event, ...extraArgs ) {
     if ( !( event instanceof CustomEvent || event instanceof MouseEvent ) ) {
-      console.log( "not a true event" );
       throw new TypeError( "Dispatch was not called with proper Event object" );
     }
 
