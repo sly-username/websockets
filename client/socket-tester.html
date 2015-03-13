@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="WebSocketTester">
+<head>
+  <meta charset="UTF-8">
+  <base href="/" />
+  <title>WebSocket Testing</title>
+  <meta name="viewport" content="initial-scale=1" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <style>
+    fieldset {
+      margin: 5px;
+    }
+
+    label {
+      float: left;
+      clear: both;
+      margin: 5px;
+    }
+
+    input, span {
+      float: left;
+      clear: none;
+      margin: 5px;
+    }
+
+    pre {
+      float: left;
+      clear: both;
+      margin: 5px;
+    }
+
+    pre + span {
+      clear: both;
+    }
+
+    input[type=radio] {
+      clear: left;
+    }
+
+    input[type=radio] + label {
+      clear: none;
+    }
+
+    textarea {
+      float: left;
+      clear: both;
+      margin: 5px 5px 5px 20px;
+    }
+
+    button {
+      float: left;
+      clear: both;
+      margin: 5px;
+    }
+
+    .no-clear {
+      clear: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<form name="socketTester" ng-controller="FormController">
+  <fieldset name="constructor">
+    <legend>Constructor Values</legend>
+    <label for="socket-url">URL: </label>
+    <input id="socket-url" type="text" ng-model="data.url" />
+
+    <label for="socket-protocols">Socket Protocols:</label>
+    <input id="socket-protocols" type="text" ng-model="data.protocolsRaw" placeholder="protocol1, protocol2, proto..." />
+
+    <button ng-click="createSocket($event)">Create new WebSocket</button>
+  </fieldset>
+
+  <fieldset name="status">
+    <legend>Status</legend>
+    <span class="curr-state">Current State: {{getState(ws)}}</span>
+    <button class="no-clear" ng-click="refreshState($event)">Refresh State</button>
+  </fieldset>
+
+  <fieldset name="data">
+    <legend>Data (Send)</legend>
+
+    <input type="radio" id="send-string" name="data-to-send" checked />
+    <label for="send-string">Send a String:</label>
+    <textarea id="data-string" cols="30" rows="10" ng-model="data.stringData" placeholder="String data to send"></textarea>
+
+    <input id="send-json" name="data-to-send" type="radio" />
+    <label for="send-json">Send a JSON String:</label>
+    <textarea id="data-json" cols="30" rows="10" ng-model="data.jsonString" placeholder="JSON data to send"></textarea>
+
+    <!--TODO: Add ArrayBuffer Send-ability-->
+    <!--<input id="send-buffer" name="data-to-send" type="radio" />-->
+    <!--<label for="send-buffer">Send an ArrayBuffer</label>-->
+
+    <input id="send-blob" name="data-to-send" type="radio" />
+    <label for="send-blob">Send a Blob (of file):</label>
+    <input id="data-blob" type="file"/>
+  </fieldset>
+
+  <fieldset name="output">
+    <legend>Response</legend>
+    <span>Output:</span>
+    <pre id="output"></pre>
+
+    <span>Raw Output:</span>
+    <pre id="output-raw"></pre>
+  </fieldset>
+
+  <fieldset name="action" class="buttons">
+    <legend>Do the thing!</legend>
+    <button ng-click="sendData($event)" class="no-clear">Send</button>
+    <button ng-click="closeSocket($event)" class="no-clear">Close Socket</button>
+    <button ng-click="logSocket($event)" class="no-clear">Dump WS to Console</button>
+  </fieldset>
+</form>
+
+<script>
+  (function( angular ){
+    var app = angular.module( "WebSocketTester", [] ),
+      elms = {
+        output: document.getElementById("output"),
+        rawOutput: document.getElementById("output-raw"),
+        radios: {
+          string: document.getElementById("send-string"),
+          json: document.getElementById("send-json"),
+//          buffer: document.getElementById("send-buffer"),
+          blob: document.getElementById("send-blob")
+        }
+      };
+
+    app.controller("FormController", ["$scope", function($scope){
+      // start form controller nonsense
+      var setUpSocket = function( socket ) {
+
+        socket.onopen = function( event ) {
+          console.group( "opened:" );
+          console.dir( event );
+          console.groupEnd();
+
+          $scope.refreshState();
+        };
+
+        socket.onmessage = function( event ) {
+          var data;
+          try {
+            data = JSON.parse(event.data);
+          } catch (e) {
+            data = event.data;
+          }
+
+          console.group( "message received:" );
+          console.dir( event );
+          console.dir( data );
+          console.groupEnd();
+
+          elms.output.innerHTML = JSON.stringify(data);
+          elms.rawOutput.innerHTML = event.data;
+        };
+
+        socket.onclose = function( event ) {
+          console.group( "closed:" );
+          console.dir( event );
+          console.groupEnd();
+
+          $scope.refreshState();
+        };
+
+        socket.onerror = function( event ) {
+          console.group( "error:" );
+          console.dir( event );
+          console.groupEnd();
+
+          $scope.refreshState();
+        }
+      };
+
+      $scope.ws = {};
+
+      $scope.data = {
+        url: "wss://127.0.0.1:8080"
+      };
+
+      $scope.refreshState = function(){
+        $scope.$applyAsync();
+      };
+
+      $scope.createSocket = function( $event ) {
+        console.dir( $scope );
+        $scope.$applyAsync(function(){
+          var protocols;
+          if( $scope.data.protocolsRaw ) {
+            protocols = $scope.data.protocolsRaw.split(",").map(function(str){
+              return str.trim();
+            });
+            if( protocols.length > 0 ) {
+              $scope.ws = new WebSocket( $scope.data.url, protocols );
+              setUpSocket( $scope.ws );
+              return;
+            }
+          }
+
+          $scope.ws = new WebSocket( $scope.data.url );
+          setUpSocket( $scope.ws );
+        });
+      };
+
+      $scope.getState = function( socket ) {
+        switch( socket.readyState ) {
+          case WebSocket.CONNECTING:
+            return "connecting";
+          case WebSocket.OPEN:
+            return "open";
+          case WebSocket.CLOSING:
+            return "closing";
+          case WebSocket.CLOSED:
+            return "closed";
+        }
+
+        return "unknown";
+      };
+
+      $scope.sendData = function( $event ) {
+
+        if( elms.radios.string.checked ) {
+
+          console.log( "send: ", $scope.data.stringData );
+          $scope.ws.send( $scope.data.stringData );
+
+        } else if ( elms.radios.json.checked ) {
+
+          console.log( "send: ", $scope.data.jsonString );
+          $scope.ws.send( $scope.data.jsonString );
+
+//        } else if ( elms.radios.buffer.checked ) {
+
+//          console.log( "send: ", $scope.data.buffer );
+//          $scope.ws.send( data.buffer );
+
+        } else if ( elms.radios.blob.checked ) {
+
+          console.log( "send: blob..." );
+//          $scope.ws.send( $scope.data.blobData );
+        }
+
+      };
+
+      $scope.closeSocket = function( $event ) {
+        $scope.ws.close();
+      };
+
+      $scope.logSocket = function( $event ) {
+        console.dir( $scope.ws );
+      };
+
+    }]);
+  })( angular );
+</script>
+
+<!-- REMOVE FOR PRODUCTION -->
+<script id="reload-tag" type="text/javascript">
+  (function( window, document ){
+    // Live Reload Script
+    if( ( /^local.eardish|localhost|:5115/g ).test( location.host ) ) {
+      document.write(
+          "<script src=\"http://" +
+          ( location.host || "localhost" ).split( ":" )[0] +
+          ":35729/livereload.js\"></" +
+          "script>"
+      );
+    }
+
+    // Remove this script tag
+    window.setTimeout(function(){
+      document.body.removeChild(this);
+    }.bind( document.getElementById( "reload-tag" ) ), 200);
+  })( window, document );
+</script>
+<!--END REMOVE FOR PRODUCTION -->
+
+</body>
+</html>
