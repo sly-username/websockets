@@ -8,7 +8,6 @@
     border-color: #100A16;
     margin: 0 auto;
     .align {
-
       margin-top: 3.3rem;
     }
     .inner-icon {
@@ -44,16 +43,17 @@
     }
   }
 }
+
 :host([type="date"]){
-  .arrow-box {
-    top: .7rem;
-    left: 57.6rem;
-    position: absolute;
-    height: 9.7rem;
-    width: 9.7rem;
-    background-color: #FFFFFF;
-    pointer-events: none;
-    opacity: .5;
+  .wrapper {
+    .arrow-box {
+      margin: .6rem;
+      float:right;
+      height: 9.7rem;
+      width: 9.7rem;
+      background-color: #FFFFFF;
+      pointer-events: none;
+      opacity: .5;
+    }
   }
 }
-

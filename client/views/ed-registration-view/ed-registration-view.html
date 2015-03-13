@@ -1,0 +1,29 @@
+<polymer-element name="ed-registration-view" attributes="">
+  <template>
+    <link rel="stylesheet" href="./ed-registration-view.css">
+    <div class="registration-container">
+      <!-- placeholder logo, to be replace when assets arrive -->
+      <div class="ed-logo-header" style="color:white; ">Placeholder</div>
+      <div class="ed-registration-body">
+        <form id="registration-form" method="post" role="form" action="#">
+          <fieldset>
+            <ed-icon-input type="text" placeholder="First Name" icon="add189"></ed-icon-input>
+            <ed-icon-input type="text" placeholder="Last Name" icon="add189"></ed-icon-input>
+            <ed-icon-input type="email" placeholder="Your Email" icon="add189"></ed-icon-input>
+            <ed-icon-input type="date" icon="alarm52"></ed-icon-input>
+            <ed-icon-input type="text" placeholder="Zip Code" icon="add189"></ed-icon-input>
+            <ed-icon-input type="password" placeholder="Select Password" icon="alarm52"></ed-icon-input>
+            <ed-icon-input type="password" placeholder="Type Password Again" icon="add189"></ed-icon-input>
+            <ed-icon-input id="promo-code" type="email" placeholder="Your Email" icon="add189"></ed-icon-input>
+          </fieldset>
+          <button id="registration-submit" type="submit">Sign Up!</button>
+        </form>
+        <button id="sign-up-button" type="button" href="#">
+          <span class="small-text">Have an account already?</span>
+          <span>Login Here</span>
+        </button>
+      </div>
+    </div>
+  </template>
+  <script src="ed-registration-view.js"></script>
+</polymer-element>
