@@ -106,11 +106,9 @@
           var emitter = new EventEmitter( "open" ),
             openListener = function() {},
             openListenerAgain = function() {},
-            eventObj = {
-              type: "open"
-            },
             onSpy = sinon.spy( emitter, "on" ),
-            offSpy = sinon.spy( emitter, "off" );
+            offSpy = sinon.spy( emitter, "off" ),
+            eventObj = new CustomEvent( "open", { type: "open" });
 
           emitter.on( "open", openListener );
 
@@ -131,9 +129,7 @@
         test( "if eventName array does not exist in handlerMap object", function() {
           var emitter = new EventEmitter( "open" ),
             openListener = sinon.spy(),
-            eventObj = {
-              type: "open"
-            },
+            eventObj = new CustomEvent( "open", { type: "open" }),
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" );
 
@@ -207,9 +203,7 @@
       suite( "dispatch method", function() {
         test( "dispatch method should fire event handler", function() {
           var emitter = new EventEmitter( "open" ),
-            eventObj = {
-              type: "open"
-            },
+            eventObj = new CustomEvent( "open", { type: "open" }),
             openListener = sinon.spy(),
             openListenerAgain = sinon.spy();
 
@@ -233,9 +227,7 @@
 
         test( "dispatch method should be chainable", function() {
           var emitter = new EventEmitter( "open" ),
-            eventObj = {
-              type: "open"
-            },
+            eventObj = new CustomEvent( "open", { type: "open" }),
             openListener = sinon.spy();
 
           emitter.on( "open", openListener );
