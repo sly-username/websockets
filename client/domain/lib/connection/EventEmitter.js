@@ -54,10 +54,10 @@ export default class EventEmitter {
   }
 
   dispatch( event, ...extraArgs ) {
-    if ( !( event instanceof CustomEvent ) ) {
-      console.log( "not a true event" );
-      throw new TypeError( "Dispatch was not called with proper Event object" );
-    }
+//    if ( !( event instanceof CustomEvent ) ) {
+//      console.log( "not a true event" );
+//      throw new TypeError( "Dispatch was not called with proper Event object" );
+//    }
 
     extraArgs.unshift( event );
 
@@ -68,10 +68,11 @@ export default class EventEmitter {
     return this;
   }
 
-  static bindToEventTarget( emitterInstance, eventTarget, eventNames ) {
+  static bindToEventTarget( emitterInstance, eventTarget, eventNames, ...extraArgs ) {
     var listeners = eventNames.map( function( name ) {
       return function( event ) {
-        emitterInstance.dispatch( event );
+        emitterInstance.dispatch( event, ...extraArgs );
+        extraArgs.unshift( event );
       };
     });
 
