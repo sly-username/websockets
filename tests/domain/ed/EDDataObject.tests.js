@@ -19,7 +19,7 @@
     });
 
     suite( "EDDataObject creation", function() {
-      test( "Constructor functional", function() {
+      test( "Constructor has expected property", function() {
         var data = {
             id: "test",
             type: "object"
@@ -34,6 +34,16 @@
           .to.have.property( "type" )
           .to.be.a( "string" )
           .that.equals( "object" );
+      });
+
+      test( "Constructor toStringTag functional", function() {
+        var data = {
+            id: "test",
+            type: "object"
+          },
+          edData = new EDDataObject( data );
+
+        expect( edData.toString() ).to.equals( "[object EDDataObject]" );
       });
     });
   });
