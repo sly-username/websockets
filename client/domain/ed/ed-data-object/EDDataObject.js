@@ -1,20 +1,15 @@
 import define from "domain/ed/define-properties";
+import EventEmitter from "domain/lib/connection/EventEmitter";
 
-var toStringTag = Symbol( "toStringTag" ); // jshint ignore:line
-
-export default class EDDataObject {
-  constructor( args, id, type ) {
-    this.args = args;
-    args.id = id;
-    args.type = type;
-  }
-}
-
-export class EDDataObject extends EventEmitter {
+export default class EDDataObject extends EventEmitter {
   constructor( args ) {
-    define.readOnly( this, [ "id", "name" ], args );
-    define.readOnly( this, [ "type", "object" ], args );
-
+    define.readOnly( this, [ "id", "type" ], args );
     this[ toStringTag ] = args;
   }
+
+  * [ Symbol.toStringTag ]() {
+    return "EDDataObject";
+  }
 }
+
+
