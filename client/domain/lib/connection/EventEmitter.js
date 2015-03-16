@@ -31,16 +31,9 @@ export default class EventEmitter {
   }
 
   once( eventName, handler ) {
-    console.log( "is once working?" );
-    console.log( eventName );
     this.on( eventName, ( event ) => {
-      console.log( "are you getting here?" );
-      console.log( handler );
       this.off( eventName, handler );
-      console.log( "did you call off?" );
-      console.log( handler );
       handler.call( this, event );
-      console.log( "did you fire the handler?" );
     });
 
     return this;
