@@ -2,3 +2,52 @@
   display: block;
 }
 
+.confirm-container {
+  margin-top: 1rem;
+}
+
+.container {
+  padding: 0 .7rem;
+  .wrapper {
+    height: 10.9rem;
+    width: 100%;
+    max-width: 59.6rem;
+    background-color: #150D1C;
+    border-color: #100A16;
+    margin: 0 auto;
+    .align {
+      margin-top: 3.3rem;
+    }
+    .inner-icon {
+      padding: 1rem;
+      pointer-events: none;
+      left: 0rem;
+      top: 3.3rem;
+      float: left;
+    }
+    input {
+      font-size: 3.6rem;
+      color: #FFFFFF;
+      float: left;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      &::-webkit-input-placeholder {
+        color: #FFFFFF;
+        font-size: 3.6rem;
+        opacity: .33;
+      }
+      &:-moz-placeholder {
+        /* Firefox 18- */
+        color: #FFFFFF;
+      }
+      &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: #FFFFFF;
+      }
+      &:-ms-input-placeholder {
+        color: #FFFFFF;
+      }
+    }
+  }
+}

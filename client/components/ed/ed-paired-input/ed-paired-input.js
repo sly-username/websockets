@@ -46,7 +46,7 @@
       if ( this.hasAttribute( "placeholder" ) ) {
         this.confirmBox.setAttribute(
           "placeholder",
-          "Confirm " + this.getAttribute( "placeholder" )
+          "Type " + this.getAttribute( "placeholder" ) + " Again"
         );
       }
 
