@@ -208,7 +208,7 @@
       });
 
       suite( "dispatch method", function() {
-        test( "dispatch method should fire event handler", function() {
+        test( "should fire event handler", function() {
           var emitter = new EventEmitter( "open" ),
             eventObj = new CustomEvent( "open", {
               type: "open"
@@ -232,6 +232,23 @@
           expect( openListenerAgain )
             .to.have.callCount( 1 )
             .and.calledWith( eventObj, 4, 5, 6 );
+        });
+
+        test( "should throw error if valid Event is not passed", function() {
+          var emitter = new EventEmitter( "open" ),
+              eventObj = new CustomEvent( "open", {
+                type: "open"
+              }),
+              openListener = sinon.spy(),
+              openListenerAgain = sinon.spy();
+
+          emitter.on( "open", openListener );
+
+          emitter.dispatch( eventObj, 1, 2, 3 );
+
+          emitter.on( "open", openListenerAgain );
+
+          emitter.dispatch( eventObj, 4, 5, 6 );
         });
 
         test( "dispatch method should be chainable", function() {

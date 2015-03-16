@@ -54,7 +54,7 @@ export default class EventEmitter {
   }
 
   dispatch( event, ...extraArgs ) {
-    if ( !( event instanceof CustomEvent || event instanceof MouseEvent ) ) {
+    if ( !( event instanceof Event ) || event.type == null ) {
       throw new TypeError( "Dispatch was not called with proper Event object" );
     }
 
