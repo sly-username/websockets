@@ -1,0 +1,9 @@
+<polymer-element name="ed-paired-input">
+  <template>
+    <link rel="stylesheet" href="ed-paired-input.css">
+    <input id="primaryBox" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
+    <input id="confirmBox" type="{{type}}" placeholder="Confirm {{placeholder}}" />
+    <div id="error"></div>
+  </template>
+  <script src="ed-paired-input.js"></script>
+</polymer-element>
