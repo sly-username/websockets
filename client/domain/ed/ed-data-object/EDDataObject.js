@@ -6,7 +6,7 @@ export default class EDDataObject extends EventEmitter {
     define.readOnly( this, [ "id", "type" ], args );
   }
 
-  * [ Symbol.toStringTag ]() {
+  get [ Symbol.toStringTag ]() {
     return "EDDataObject";
   }
 }
