@@ -31,9 +31,16 @@ export default class EventEmitter {
   }
 
   once( eventName, handler ) {
+    console.log( "is once working?" );
+    console.log( eventName );
     this.on( eventName, ( event ) => {
+      console.log( "are you getting here?" );
+      console.log( handler );
       this.off( eventName, handler );
+      console.log( "did you call off?" );
+      console.log( handler );
       handler.call( this, event );
+      console.log( "did you fire the handler?" );
     });
 
     return this;
@@ -41,12 +48,10 @@ export default class EventEmitter {
 
   clear( eventName ) {
     if ( eventName ) {
-      this[handlerMap][eventName].forEach( h => {
-        this.off( eventName, h );
-      });
+      this[handlerMap][eventName] = [];
     } else {
       Object.keys( this[handlerMap] ).forEach( evt => {
-        this[handlerMap][evt] = [];
+        this[handlerMap] = {};
       });
     }
 

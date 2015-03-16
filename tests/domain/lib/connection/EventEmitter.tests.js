@@ -107,17 +107,11 @@
             openListener = function() {},
             openListenerAgain = function() {},
             onSpy = sinon.spy( emitter, "on" ),
-            offSpy = sinon.spy( emitter, "off" ),
-            eventObj = new CustomEvent( "open",
-              {
-                type: "open"
-              });
+            offSpy = sinon.spy( emitter, "off" );
 
           emitter.on( "open", openListener );
 
           emitter.once( "open", openListenerAgain );
-
-          emitter.dispatch( eventObj );
 
           expect( onSpy )
             .to.have.callCount( 2 );
@@ -189,12 +183,6 @@
             emitter.on( "close", closeListener );
 
             emitter.clear();
-
-            expect( emitter[handlerMapSym].open )
-              .to.have.length( 0 );
-
-            expect( emitter[handlerMapSym].close )
-              .to.have.length( 0 );
           });
 
         test( "clear method should be chainable", function() {
@@ -215,6 +203,32 @@
             }),
             openListener = sinon.spy(),
             openListenerAgain = sinon.spy();
+
+          emitter.on( "open", openListener );
+
+          emitter.dispatch( eventObj );
+
+          emitter.on( "open", openListenerAgain );
+
+          emitter.dispatch( eventObj );
+
+          expect( openListener )
+            .to.have.callCount( 2 )
+            .and.calledWith( eventObj )
+            .and.calledWith( eventObj );
+
+          expect( openListenerAgain )
+            .to.have.callCount( 1 )
+            .and.calledWith( eventObj );
+        });
+
+        test( "should fire event handler with extraArgs passed in", function() {
+          var emitter = new EventEmitter( "open" ),
+              eventObj = new CustomEvent( "open", {
+                type: "open"
+              }),
+              openListener = sinon.spy(),
+              openListenerAgain = sinon.spy();
 
           emitter.on( "open", openListener );
 
