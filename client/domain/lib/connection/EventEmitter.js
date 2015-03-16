@@ -50,9 +50,7 @@ export default class EventEmitter {
     if ( eventName ) {
       this[handlerMap][eventName] = [];
     } else {
-      Object.keys( this[handlerMap] ).forEach( evt => {
-        this[handlerMap] = {};
-      });
+      this[handlerMap] = {};
     }
 
     return this;
