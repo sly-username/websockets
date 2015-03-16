@@ -1,19 +1,15 @@
-<polymer-element name="ed-paired-input" attributes="icon">
+<polymer-element name="ed-paired-input" attributes="icon type pattern placeholder">
   <template>
     <link rel="stylesheet" href="ed-paired-input.css">
 
-    <div class="container">
       <div class="wrapper">
         <ed-icon class="inner-icon align" name="{{icon}}"></ed-icon>
-        <input class="align" id="primaryBox" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
+        <input class="align" id="primary-box" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
       </div>
-    </div>
-    <div class="container confirm-container">
-      <div class="wrapper">
+      <div class="wrapper confirm-container">
         <ed-icon class="inner-icon align" name="{{icon}}"></ed-icon>
-        <input class="align" id="confirmBox" type="{{type}}" placeholder="Type {{placeholder}} Again" />
+        <input class="align" id="confirm-box" type="{{type}}" placeholder="Type {{placeholder}} Again" />
       </div>
-    </div>
   </template>
   <script src="ed-paired-input.js"></script>
 </polymer-element>

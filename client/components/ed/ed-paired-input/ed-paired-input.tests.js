@@ -40,7 +40,7 @@
         expect( document.createElement( "ed-paired-input" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+          .and.equals( "<ed-paired-input></ed-paired-input>" );
 
         expect( createdSpy ).to.have.callCount( 1 );
         createdSpy.restore();
@@ -57,7 +57,7 @@
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+          .and.equals( "<ed-paired-input></ed-paired-input>" );
 
         attachedSpy.restore();
       });
@@ -245,7 +245,7 @@
 
           expect( edInput )
             .to.have.property( "outerHTML" )
-            .that.equals( "<ed-paired-input type=\"text\" placeholder=\"type-name\"></ed-paired-input>" );
+            .that.equals( "<ed-paired-input placeholder=\"type-name\"></ed-paired-input>" );
         });
 
         test( "can be removed via removeAttribute", function() {
@@ -257,7 +257,7 @@
           expect( edInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+            .and.equals( "<ed-paired-input></ed-paired-input>" );
         });
 
         test( "when set via setAttribute, placeholder value should reflect to shadowDom",
@@ -315,7 +315,7 @@
 
           expect( edInput )
             .to.have.property( "outerHTML" )
-            .that.equals( "<ed-paired-input type=\"text\" pattern=\"regex\"></ed-paired-input>" );
+            .that.equals( "<ed-paired-input pattern=\"regex\"></ed-paired-input>" );
         });
 
         test( "can be removed via removeAttribute", function() {
@@ -327,7 +327,7 @@
           expect( edInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+            .and.equals( "<ed-paired-input></ed-paired-input>" );
         });
 
         test( "setting via setAttribute reflects to property", function() {
@@ -353,7 +353,7 @@
 
           expect( edInput )
             .to.have.property( "outerHTML" )
-            .that.equals( "<ed-paired-input type=\"text\" pattern=\"regex\"></ed-paired-input>" );
+            .that.equals( "<ed-paired-input pattern=\"regex\"></ed-paired-input>" );
         });
 
         test( "setting via property reflects to attribute", function() {
@@ -367,52 +367,6 @@
         });
       });
 
-      suite( "single-line", function() {
-        test( "default value is false", function() {
-          var edInput = document.createElement( "ed-paired-input" );
-
-          expect( edInput )
-            .to.have.property( "singleLine" )
-            .that.is.a( "boolean" )
-            .and.equals( false );
-        });
-
-        test( "can be set via attribute", function() {
-          var edInput = document.createElement( "ed-paired-input" );
-
-          edInput.setAttribute( "single-line", "" );
-
-          expect( edInput.hasAttribute( "single-line" ) )
-            .to.equal( true );
-
-          expect( edInput.getAttribute( "single-line" ) )
-            .to.be.a( "string" )
-            .that.equals( "" );
-        });
-
-        test( "can be removed via attribute", function() {
-          var edInput = document.createElement( "ed-paired-input" );
-
-          edInput.setAttribute( "single-line", "" );
-          edInput.removeAttribute( "single-line" );
-
-          expect( edInput )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
-        });
-
-        test( "can be set via property to single-line", function() {
-          var edInput = document.createElement( "ed-paired-input" );
-
-          edInput.singleLine = true;
-
-          expect( edInput )
-            .to.have.property( "singleLine" )
-            .that.is.a( "boolean" )
-            .and.equals( true );
-        });
-      });
 
       suite( "required", function() {
         test( "default value is false", function() {
@@ -426,7 +380,7 @@
           expect( edInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+            .and.equals( "<ed-paired-input></ed-paired-input>" );
         });
 
         test( "can be set via setAttribute", function() {
@@ -461,7 +415,7 @@
           expect( edInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+            .and.equals( "<ed-paired-input></ed-paired-input>" );
         });
 
         test( "can be set via property to required", function() {
@@ -539,7 +493,7 @@
           expect( edInput )
             .to.have.property( "outerHTML" )
             .that.is.a( "string" )
-            .and.equals( "<ed-paired-input type=\"text\"></ed-paired-input>" );
+            .and.equals( "<ed-paired-input></ed-paired-input>" );
         });
 
         test( "can be set via property to disabled", function() {
@@ -588,10 +542,10 @@
         test( "is true when input matches the pattern and both values match", function() {
           var edInput = document.createElement( "ed-paired-input" );
 
-          edInput.$.primaryBox.value = "input-text";
-          edInput.$.confirmBox.value = "input-text";
+          edInput.primaryBox.value = "input-text";
+          edInput.confirmBox.value = "input-text";
 
-          if ( edInput.$.primaryBox.validity.valid ) {
+          if ( edInput.primaryBox.validity.valid ) {
             expect( edInput )
               .to.have.property( "isValid" )
               .that.is.a( "boolean" )
@@ -604,8 +558,9 @@
         test( "returns undefined when element is not valid", function() {
           var edInput = document.createElement( "ed-paired-input" );
 
-          edInput.$.primaryBox.value = "first value";
-          edInput.$.confirmBox.value = "second value";
+
+          edInput.primaryBox.value = "first value";
+          edInput.confirmBox.value = "second value";
 
           expect( edInput )
             .to.have.property( "val" )
@@ -615,8 +570,8 @@
         test( "returns value if both input fields match", function() {
           var edInput = document.createElement( "ed-paired-input" );
 
-          edInput.$.primaryBox.value = "input-text";
-          edInput.$.confirmBox.value = "input-text";
+          edInput.primaryBox.value = "input-text";
+          edInput.confirmBox.value = "input-text";
 
           expect( edInput )
             .to.have.property( "val" )
@@ -630,11 +585,11 @@
 
           edInput.val = genericValue;
 
-          expect( edInput.$.primaryBox.value )
+          expect( edInput.primaryBox.value )
             .to.be.a( "string" )
             .that.equals( genericValue );
 
-          expect( edInput.$.confirmBox.value )
+          expect( edInput.confirmBox.value )
             .to.be.a( "string" )
             .that.equals( genericValue );
         });
