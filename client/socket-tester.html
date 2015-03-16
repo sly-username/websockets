@@ -118,6 +118,9 @@
 
 <script>
   (function( angular ){
+   // Create angular app module, 'WebSocketTester'
+   //  also create a store of useful elements,
+   //  oh, and a FileReader for blob stuff
     var app = angular.module( "WebSocketTester", [] ),
       elms = {
         output: document.getElementById("output"),
@@ -127,13 +130,18 @@
           json: document.getElementById("send-json"),
 //          buffer: document.getElementById("send-buffer"),
           blob: document.getElementById("send-blob")
-        }
-      };
+        },
+        fileInput: document.getElementById("data-blob")
+      },
+      fileReader = new FileReader();
 
+    // All we need is one fancy controller
     app.controller("FormController", ["$scope", function($scope){
-      // start form controller nonsense
+      // a handy function for attaching event listeners
+      // when a new socket is created.
       var setUpSocket = function( socket ) {
 
+        // OPEN
         socket.onopen = function( event ) {
           console.group( "opened:" );
           console.dir( event );
@@ -142,23 +150,45 @@
           $scope.refreshState();
         };
 
+        // YOU'VE GOT MAIL
         socket.onmessage = function( event ) {
-          var data;
-          try {
-            data = JSON.parse(event.data);
-          } catch (e) {
-            data = event.data;
+          var data = event.data;
+
+          // Parse if it is json
+          // pretend it is an image if it is a Blob
+          if ( elms.radios.json.checked ) {
+            try {
+              data = JSON.parse(event.data);
+            } catch (e) {
+              data = event.data;
+            }
+          } else if ( elms.radios.blob.checked ) {
+            data = new Image();
+
+            fileReader.onloadend = function( event ) {
+              data.src = fileReader.result;
+            };
+
+            fileReader.readAsDataURL(event.data);
           }
 
           console.group( "message received:" );
           console.dir( event );
-          console.dir( data );
+          console.dir( event.data );
           console.groupEnd();
 
-          elms.output.innerHTML = JSON.stringify(data);
+          // to append or to string dump, that is the question
+          if ( data instanceof Element ) {
+            elms.output.innerHTML = "";
+            elms.output.appendChild( data );
+          } else {
+            elms.output.innerHTML = JSON.stringify(data);
+          }
+
           elms.rawOutput.innerHTML = event.data;
         };
 
+        // CLOSED!
         socket.onclose = function( event ) {
           console.group( "closed:" );
           console.dir( event );
@@ -167,6 +197,7 @@
           $scope.refreshState();
         };
 
+        // derp derp error derp
         socket.onerror = function( event ) {
           console.group( "error:" );
           console.dir( event );
@@ -176,18 +207,21 @@
         }
       };
 
+      // Make an empty thing so angular doesn't freak out
       $scope.ws = {};
 
+      // Starting URL & Protocols
       $scope.data = {
         url: "wss://127.0.0.1:8080"
       };
 
+      // Update view without having to wrap everything in an $apply
       $scope.refreshState = function(){
         $scope.$applyAsync();
       };
 
+      // Make a socket button
       $scope.createSocket = function( $event ) {
-        console.dir( $scope );
         $scope.$applyAsync(function(){
           var protocols;
           if( $scope.data.protocolsRaw ) {
@@ -206,6 +240,7 @@
         });
       };
 
+      // Translate WS.readyState enumb
       $scope.getState = function( socket ) {
         switch( socket.readyState ) {
           case WebSocket.CONNECTING:
@@ -221,35 +256,39 @@
         return "unknown";
       };
 
+      // No Whammy, No Whammy, STOP!
       $scope.sendData = function( $event ) {
+        console.group( "sending: " );
 
         if( elms.radios.string.checked ) {
 
-          console.log( "send: ", $scope.data.stringData );
+          console.dir( $scope.data.stringData );
           $scope.ws.send( $scope.data.stringData );
 
         } else if ( elms.radios.json.checked ) {
 
-          console.log( "send: ", $scope.data.jsonString );
+          console.dir( $scope.data.jsonString );
           $scope.ws.send( $scope.data.jsonString );
 
 //        } else if ( elms.radios.buffer.checked ) {
 
-//          console.log( "send: ", $scope.data.buffer );
+//          console.dir( $scope.data.buffer );
 //          $scope.ws.send( data.buffer );
 
         } else if ( elms.radios.blob.checked ) {
-
-          console.log( "send: blob..." );
-//          $scope.ws.send( $scope.data.blobData );
+          console.dir( elms.fileInput.files[0] );
+          $scope.ws.send( elms.fileInput.files[0] );
         }
 
+        console.groupEnd();
       };
 
+      // Done for business
       $scope.closeSocket = function( $event ) {
         $scope.ws.close();
       };
 
+      // Dump that B!
       $scope.logSocket = function( $event ) {
         console.dir( $scope.ws );
       };
@@ -257,27 +296,5 @@
     }]);
   })( angular );
 </script>
-
-<!-- REMOVE FOR PRODUCTION -->
-<script id="reload-tag" type="text/javascript">
-  (function( window, document ){
-    // Live Reload Script
-    if( ( /^local.eardish|localhost|:5115/g ).test( location.host ) ) {
-      document.write(
-          "<script src=\"http://" +
-          ( location.host || "localhost" ).split( ":" )[0] +
-          ":35729/livereload.js\"></" +
-          "script>"
-      );
-    }
-
-    // Remove this script tag
-    window.setTimeout(function(){
-      document.body.removeChild(this);
-    }.bind( document.getElementById( "reload-tag" ) ), 200);
-  })( window, document );
-</script>
-<!--END REMOVE FOR PRODUCTION -->
-
 </body>
 </html>
