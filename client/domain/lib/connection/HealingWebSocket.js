@@ -65,8 +65,6 @@ export default class HealingWebSocket extends EventEmitter {
       data = JSON.stringify( data );
     }
 
-//    console.log( "send called, %s - %o", this.readyState, data );
-
     if ( this.isOpen ) {
       this[socket].send( data );
     } else if ( this.readyState === WebSocket.CONNECTING ) {
@@ -77,26 +75,6 @@ export default class HealingWebSocket extends EventEmitter {
       this[heal]( data );
     }
   }
-
-//  on( eventName, handler ) {
-//    return super.on( eventName, handler );
-//  }
-//
-//  off( eventName, handler ) {
-//    return super.on( eventName, handler );
-//  }
-//
-//  once( eventName ) {
-//    return super.on( eventName, handler );
-//  }
-//
-//  clear( eventName, handler ) {
-//    return super.on( eventName, handler );
-//  }
-//
-//  dispatch( event, ...extraArgs ) {
-//    return super.on( eventName, handler );
-//  }
 
   [heal]( data ) {
     console.log( "healing: %o", this );
