@@ -22,16 +22,30 @@ input[type="checkbox"] {
   }
 }
 
-.ed-bubble {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  max-height: 34.2rem;
+.wrapper {
   max-width: 34.2rem;
-  background-color: @originalPurple;
-  text-align: center;
-  font-size: 2.3rem;
-  color: #FFFFFF;
-  line-height: 34.2rem;
 }
 
+.ed-bubble {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 100%;
+  width: 100%;
+  padding-top: 100%;
+  background: @originalPurple;
+}
+
+.inner-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 2.3rem;
+  color: @fontWhite;
+  padding: 3.19rem;
+  margin-top: 50%;
+  transform: translatey(-50%);
+  -o-transform: translatey(-50%);
+  -webkit-transform: translatey(-50%);
+  text-align: center;
+}
