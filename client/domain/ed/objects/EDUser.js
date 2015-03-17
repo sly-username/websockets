@@ -1,7 +1,8 @@
+
 import define from "domain/ed/define-properties";
+import EDDataObject from "domain/ed/objects/EDDataObject";
 
-var toStringTag = Symbol( "toStringTag" );
-
+// DELETE ME
 export default class EDUser {
   constructor( args, username, email, name, firstName, middleName, lastName, prefix, postfix, birthday ) {
     this.args = args
@@ -16,12 +17,15 @@ export default class EDUser {
     args.birthday = birthday;
   }
 }
+// END DELETE ME
 
-export default class EDDataObject extends EventEmitter {
+export default class EDUser extends EDDataObject {
+  static get TYPE() {
+    return "user";
+  }
+
   constructor( args ) {
-    define.readOnly( this, [ "id", "name" ], args );
-    define.readOnly( this, [ "type", "user" ], args );
-    define.readOnly( this, [ "username", "username" ], args );
+    super();
     define.readOnly( this, [ "email", "email" ], args );
   }
 }
