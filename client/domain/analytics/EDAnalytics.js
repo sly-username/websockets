@@ -62,6 +62,8 @@ export default class EDAnalytics {
 
     });
 
+    console.log( "cb", cb );
+
     return cb.location;
 
   }
@@ -72,7 +74,7 @@ export default class EDAnalytics {
   }
 
   static get time() {
-    var date = new Date(),
+    let date = new Date(),
       dd = date.getDate(),
       mm = date.getMonth()+1,
       yyyy = date.getFullYear(),
@@ -102,7 +104,8 @@ export default class EDAnalytics {
   static send( edEvent ) {
     var json = this.analyticsObj;
     edEvent.commonBlock =  json.common;
-    //return undefined;
+
+    return;
   }
 
   static createEvent( eventName, constructorArgs ) {
