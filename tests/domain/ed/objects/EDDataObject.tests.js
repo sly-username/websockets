@@ -7,7 +7,7 @@
     var EDDataObject;
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/ed-data-object/EDDataObject" )
+      System.import( "domain/ed/objects/EDDataObject" )
         .then( function( imported ) {
           EDDataObject = imported.default;
           done();
@@ -29,21 +29,24 @@
         expect( edData )
           .to.have.property( "id" )
           .to.be.a( "string" )
-          .that.equals( "test" );
+          .that.equals( data.id );
+
         expect( edData )
           .to.have.property( "type" )
           .to.be.a( "string" )
-          .that.equals( "object" );
+          .that.equals( data.type );
       });
 
-      test( "Constructor toStringTag functional", function() {
+      // Skip until browsers support @@toStringTag
+      test.skip( "Constructor toStringTag functional", function() {
         var data = {
             id: "test",
             type: "object"
           },
           edData = new EDDataObject( data );
 
-        expect( edData.toString() ).to.equals( "[object EDDataObject]" );
+        expect( edData.toString() )
+          .to.equal( "[object EDDataObject]" );
       });
     });
   });
