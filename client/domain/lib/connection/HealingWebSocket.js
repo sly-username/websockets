@@ -1,12 +1,24 @@
 /* jshint strict:false */
-var socket = Symbol( "socket" ), // jshint ignore:line
-    heal = Symbol( "heal" ); // jshint ignore:line
 
-export default class HealingWebSocket {
-  constructor( url, protocols ) {
+import EventEmitter from "domain/lib/event/EventEmitter";
+
+var socket = Symbol( "socket" ), // jshint ignore:line
+  heal = Symbol( "heal" ), // jshint ignore:line
+  socketEvents = [ "open", "close", "message", "error" ],
+  createSocket = function( url, protocols ) {
+    // TODO MAKE ACUTALLY WORK
     this[socket] = protocols == null ?
       new WebSocket( url ) :
       new WebSocket( url, protocols );
+
+    EventEmitter.bindToEventTarget( this, this[ socket ], socketEvents );
+  };
+
+export default class HealingWebSocket extends EventEmitter {
+  constructor( url, protocols ) {
+    super( [ "heal", ...socketEvents ] );
+
+    createSocket.call( this, url, protocols );
   }
 
   get isOpen() {
@@ -62,21 +74,6 @@ export default class HealingWebSocket {
     } else {
       this[heal]( data );
     }
-  }
-
-  on( event, handler ) {
-    this[socket].addEventListener( event, handler );
-  }
-
-  off( event, handler ) {
-    this[socket].removeEventListener( event, handler );
-  }
-
-  one( eventName, handler ) {
-    this.on( eventName, ( event ) => {
-      this.off( eventName, handler );
-      handler.call( this, event );
-    });
   }
 
   [heal]( data ) {
