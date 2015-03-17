@@ -7,7 +7,7 @@
     var EventEmitter, handlerMapSym;
 
     suiteSetup( function( done ) {
-      System.import( "domain/lib/connection/EventEmitter" )
+      System.import( "domain/lib/event/EventEmitter" )
         .then( function( imported ) {
           EventEmitter = imported.default;
 
@@ -27,15 +27,10 @@
         test( "on method can attach handler to the specified event", function() {
           var emitter = new EventEmitter( [ "open" ] ),
             openListener = function() {},
-            openListenerAgain = function() {},
-            onSpy = sinon.spy( emitter, "on" );
+            openListenerAgain = function() {};
 
           emitter.on( "open", openListener );
-
           emitter.on( "open", openListenerAgain );
-
-          expect( onSpy )
-            .to.have.callCount( 2 );
 
           expect( emitter[handlerMapSym].open )
             .to.be.instanceof( Array )
@@ -43,20 +38,17 @@
             .to.contain( openListenerAgain );
         });
 
-        test( "on method will add property to handlerMap if eventName does already not exist",
+        test( "on method will add handler to handlerMap if eventName does not already exist",
           function() {
-            var emitter = new EventEmitter( [ "open" ] ),
-                openListener = function() {},
+            var emitter = new EventEmitter(),
               closeListener = function() {};
 
             emitter.on( "close", closeListener );
 
-            emitter.on( "open", openListener );
-
             expect( emitter[handlerMapSym] )
-              .to.have.property( "open" )
+              .to.have.property( "close" )
               .to.be.instanceof( Array )
-              .to.contain( openListener );
+              .to.contain( closeListener );
           });
 
         test( "on method should be chainable", function() {
@@ -76,17 +68,18 @@
 
           emitter.on( "open", openListener );
 
-          expect( emitter[handlerMapSym].open )
-            .to.have.length( 1 );
+          expect( emitter[ handlerMapSym ].open )
+            .to.have.length( 1 )
+            .and.to.contain( openListener );
 
-          removeEventSpy = sinon.spy( emitter[handlerMapSym].open, "filter" );
+          removeEventSpy = sinon.spy( emitter[ handlerMapSym ].open, "filter" );
 
           emitter.off( "open", openListener );
 
           expect( removeEventSpy )
             .to.have.callCount( 1 );
 
-          expect( emitter[handlerMapSym].open )
+          expect( emitter[ handlerMapSym ].open )
             .to.have.length( 0 );
 
           removeEventSpy.restore();
@@ -102,40 +95,41 @@
       });
 
       suite( "once method", function() {
-        test( "if eventName array is found in handlerMap object", function() {
+        test( "if eventName array is already initialized", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-            openListener = function() {},
+            openListener = sinon.spy(),
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" ),
-            eventObj = new CustomEvent( "open",
-              {
-                type: "open"
-              });
+            eventObj = new CustomEvent( "open" );
 
           expect( emitter[ handlerMapSym ].open )
-            .to.be.an.instanceof( Array )
-            .to.have.length( 0 );
+            .to.have.length( 0 )
+            .and.to.be.an.instanceof( Array );
 
           emitter.once( "open", openListener );
 
           emitter.dispatch( eventObj );
 
           expect( onSpy )
-            .to.have.callCount( 2 );
+            .to.have.callCount( 1 );
 
           expect( offSpy )
             .to.have.callCount( 1 );
+
+          emitter.dispatch( eventObj );
+
+          expect( openListener )
+            .to.have.callCount( 1 )
+            .and.calledWith( eventObj );
 
           onSpy.restore();
           offSpy.restore();
         });
 
         test( "if eventName array does not exist in handlerMap object", function() {
-          var emitter = new EventEmitter( [ "open" ] ),
+          var emitter = new EventEmitter(),
             openListener = sinon.spy(),
-            eventObj = new CustomEvent( "open", {
-              type: "open"
-            }),
+            eventObj = new CustomEvent( "open" ),
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" );
 
@@ -148,6 +142,8 @@
 
           expect( offSpy )
             .to.have.callCount( 1 );
+
+          emitter.dispatch( eventObj );
 
           expect( openListener )
             .to.have.callCount( 1 )
@@ -167,30 +163,35 @@
       });
 
       suite( "clear method", function() {
-        test( "if event name specified, clear method should remove all its handlers", function() {
-          var emitter = new EventEmitter( [ "open" ] ),
-            openListener = function() {};
+        test( "if event name specified, clear method should remove all handlers for specified event type",
+          function() {
+            var emitter = new EventEmitter( [ "open" ] ),
+              openListener = function() {};
 
-          emitter.on( "open", openListener );
+            emitter.on( "open", openListener );
 
-          emitter.clear( "open" );
+            emitter.clear( "open" );
 
-          expect( emitter[handlerMapSym].open )
-            .to.have.length( 0 );
-        });
+            expect( emitter[ handlerMapSym ].open )
+              .to.have.length( 0 );
+          }
+        );
 
         test( "if not specified, clear method should remove all handlers for all events",
           function() {
-            var emitter = new EventEmitter( [ "open" ] ),
+            var emitter = new EventEmitter( [ "open", "close" ] ),
               openListener = function() {},
               closeListener = function() {};
 
             emitter.on( "open", openListener );
-
             emitter.on( "close", closeListener );
 
             emitter.clear();
-          });
+
+            expect( emitter[ handlerMapSym ] )
+              .to.be.eql( {} );
+          }
+        );
 
         test( "clear method should be chainable", function() {
           var emitter = new EventEmitter( [ "open" ] ),
@@ -205,9 +206,7 @@
       suite( "dispatch method", function() {
         test( "should fire event handler", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-            eventObj = new CustomEvent( "open", {
-              type: "open"
-            }),
+            eventObj = new CustomEvent( "open" ),
             openListener = sinon.spy(),
             openListenerAgain = sinon.spy();
 
@@ -221,8 +220,7 @@
 
           expect( openListener )
             .to.have.callCount( 2 )
-            .and.calledWith( eventObj )
-            .and.calledWith( eventObj );
+            .and.to.have.always.been.calledWith( eventObj );
 
           expect( openListenerAgain )
             .to.have.callCount( 1 )
@@ -231,11 +229,9 @@
 
         test( "should fire event handler with extraArgs passed in", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-              eventObj = new CustomEvent( "open", {
-                type: "open"
-              }),
-              openListener = sinon.spy(),
-              openListenerAgain = sinon.spy();
+            eventObj = new CustomEvent( "open" ),
+            openListener = sinon.spy(),
+            openListenerAgain = sinon.spy();
 
           emitter.on( "open", openListener );
 
@@ -255,33 +251,51 @@
             .and.calledWith( eventObj, 4, 5, 6 );
         });
 
-        test( "should throw error if valid Event is not passed", function() {
+        test( "should properly bind this reference in handler", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-              eventObj = new CustomEvent( "open", {
-                type: "open"
-              }),
-              openListener = sinon.spy(),
-              openListenerAgain = sinon.spy();
-
-          emitter.on( "open", openListener );
-
-          emitter.dispatch( eventObj, 1, 2, 3 );
-
-          emitter.on( "open", openListenerAgain );
-
-          emitter.dispatch( eventObj, 4, 5, 6 );
-        });
-
-        test( "dispatch method should be chainable", function() {
-          var emitter = new EventEmitter( [ "open" ] ),
-            eventObj = new CustomEvent( "open", {
-              type: "open"
-            }),
+            eventObj = new CustomEvent( "open" ),
             openListener = sinon.spy();
 
           emitter.on( "open", openListener );
 
           emitter.dispatch( eventObj );
+
+          expect( openListener )
+            .to.have.callCount( 1 )
+            .and.calledWith( eventObj )
+            .and.calledOn( emitter );
+        });
+
+        test( "should throw error if valid Event is not passed", function() {
+          var emitter = new EventEmitter( [ "open" ] ),
+            eventObj = {
+              event: "open"
+            },
+            openListener = sinon.spy(),
+            dispatchSpy;
+
+          dispatchSpy = sinon.spy( emitter, "dispatch" );
+
+          emitter.on( "open", openListener );
+
+          expect( emitter.dispatch )
+            .to.throw( TypeError );
+
+          expect( dispatchSpy )
+            .to.have.thrown( "TypeError" );
+
+          dispatchSpy.restore();
+        });
+
+        test( "dispatch method should be chainable", function() {
+          var emitter = new EventEmitter( [ "open" ] ),
+            eventObj = new CustomEvent( "open" ),
+            openListener = sinon.spy();
+
+          emitter.on( "open", openListener );
+
+          expect( emitter.dispatch( eventObj ) )
+            .to.equal( emitter );
 
           expect( openListener )
             .to.have.callCount( 1 )
@@ -321,6 +335,25 @@
           expect( eventTarget )
             .to.have.property( "unbindEventEmitter" )
             .that.is.a( "function" );
+        });
+
+        test( "unbindEventEmitter should remove itself from eventTarget", function() {
+          var emitter = new EventEmitter( [ "click" ] ),
+            eventTarget = document.createElement( "button" ),
+            eventNames = [
+              "click"
+            ];
+
+          EventEmitter.bindToEventTarget( emitter, eventTarget, eventNames );
+
+          expect( eventTarget )
+            .to.have.property( "unbindEventEmitter" )
+            .that.is.a( "function" );
+
+          eventTarget.unbindEventEmitter();
+
+          expect( eventTarget )
+            .to.not.have.property( "unbindEventEmitter" );
         });
 
         test( "should dispatch emitterInstance's events", function() {
@@ -372,7 +405,7 @@
 
           expect( dispatchSpy )
             .to.have.callCount( 1 )
-            .and.calledWith( mouseEvent );
+            .and.calledWith( mouseEvent, 1, 2, 3 );
 
           dispatchSpy.restore();
         });
