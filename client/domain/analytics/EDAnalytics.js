@@ -78,13 +78,15 @@ export default class EDAnalytics {
       dd = date.getDate(),
       mm = date.getMonth()+1,
       yyyy = date.getFullYear(),
+      hh = date.getHours(),
+      min = date.getMinutes(),
+      ss = date.getSeconds(),
       now;
 
     if( dd < 10 ) dd = '0' + dd;
     if( mm < 10 ) mm = '0' + mm;
 
-    //TODO add hh:mins:ss
-    now = `${yyyy}-${mm}-${dd}`;
+    now = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 
     return now;
   }
