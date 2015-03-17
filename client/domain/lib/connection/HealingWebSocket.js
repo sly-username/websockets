@@ -12,6 +12,8 @@ var socket = Symbol( "socket" ), // jshint ignore:line
       new WebSocket( url, protocols );
 
     EventEmitter.bindToEventTarget( this, this[ socket ], socketEvents );
+
+    return createSocket;
   };
 
 export default class HealingWebSocket extends EventEmitter {
@@ -68,7 +70,7 @@ export default class HealingWebSocket extends EventEmitter {
     if ( this.isOpen ) {
       this[socket].send( data );
     } else if ( this.readyState === WebSocket.CONNECTING ) {
-      this.one( "open", ( event ) => {
+      super.once( "open", ( event ) => {
         this.send( data );
       });
     } else {
@@ -83,7 +85,7 @@ export default class HealingWebSocket extends EventEmitter {
       new WebSocket( this[socket].url ) :
       new WebSocket( this[socket].url, this[socket].protocols );
 
-    this.one( "open", event => {
+    super.once( "open", event => {
       this.send( data )
     });
   }
