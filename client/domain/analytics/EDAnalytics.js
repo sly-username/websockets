@@ -52,18 +52,20 @@ export default class EDAnalytics {
   }
 
   static get locationBlock() {
-    var cb = this.analyticsObj.common,
-      navigator = window.navigator;
+    var cb = this.analyticsObj.common;
 
-    navigator.geolocation.getCurrentPosition(function(pos) {
+    navigator.geolocation.getCurrentPosition (function ( pos ) {
       var coords = pos.coords;
 
       cb.location.lat = coords.latitude;
       cb.location.lon = coords.longitude;
+
     });
 
-    console.log( "location", cb );
+    console.log( cb );
     return cb.location;
+
+
   }
 
   static get version() {
@@ -99,8 +101,7 @@ export default class EDAnalytics {
 
   static send( edEvent ) {
     var json = this.analyticsObj;
-
-    json
+    edEvent.commonBlock =  json.common;
     //return undefined;
   }
 
