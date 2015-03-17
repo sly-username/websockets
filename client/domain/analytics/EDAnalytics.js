@@ -62,9 +62,7 @@ export default class EDAnalytics {
 
     });
 
-    console.log( cb );
     return cb.location;
-
 
   }
 
