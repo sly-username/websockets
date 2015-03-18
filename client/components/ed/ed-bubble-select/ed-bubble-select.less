@@ -1,10 +1,16 @@
 @import "../styles/ed/colors.vars.less";
+@import "mixins/prefixes/transforms.less";
 
-:host ::content * {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
+:host {
+  float: left;
+  max-width: 34.2rem;
+  width: 33.3%
+}
+
+:host([checked]) {
+  .ed-bubble {
+    background-image: linear-gradient(to bottom, rgba(0, 164, 158, 0.5) 0%, rgba(0, 164, 158, 0.5) 100%), url( http://i.imgur.com/gdkaI.jpg );
+  }
 }
 
 input[type="checkbox"] {
@@ -12,35 +18,27 @@ input[type="checkbox"] {
   margin: 0;
   padding: 0;
   opacity: 1;
-  &:checked + content[select="*"]::content * {
-    opacity: 1;
-  }
 }
 
 .wrapper {
-  max-width: 34.2rem;
+  position: relative;
+  width: 100%;
+  float: left;
 }
 
 .ed-bubble {
   position: relative;
-  box-sizing: border-box;
-  border-radius: 100%;
+  display: inline-block;
   width: 100%;
-  padding-top: 100%;
+  height: 0;
+  padding: 50% 0;
+  border-radius: 50%;
+  line-height: 0;
   background: @originalPurple;
+  color: @fontWhite;
+  text-align: center;
+  font-size: 2.3rem;
+  .transform( rotate(-30deg) );
 }
 
-.inner-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  font-size: 2.3rem;
-  color: @fontWhite;
-  padding: 3.19rem;
-  margin-top: 50%;
-  transform: translatey(-50%);
-  -o-transform: translatey(-50%);
-  -webkit-transform: translatey(-50%);
-  text-align: center;
-}
+

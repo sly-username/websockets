@@ -2,15 +2,12 @@
   <template>
     <link rel="stylesheet" href="./ed-bubble-select.css">
     <div class="wrapper">
-      <div class="ed-bubble">
-        <div class="inner-text">test</div>
-          <input id="checkbox-field" type="checkbox"
-            name={{name}} value={{value}}
-            disabled?="{{disabled}}"
-            required?="{{required}}"
-            checked?="{{checked}}"/>
-        <content select="*"></content>
-      </div>
+      <div class="ed-bubble"><content></content></div>
+        <input id="checkbox-field" type="checkbox"
+          name={{name}} value={{value}}
+          disabled?="{{disabled}}"
+          required?="{{required}}"
+          checked?="{{checked}}"/>
     </div>
   </template>
   <script src="ed-bubble-select.js"></script>
