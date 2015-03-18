@@ -6,7 +6,6 @@ var socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
   socketEvents = [ "open", "close", "message", "error" ],
   createSocket = function( url, protocols ) {
-    // TODO MAKE ACTUALLY WORK
     this[socket] = protocols == null ?
       new WebSocket( url ) :
       new WebSocket( url, protocols );

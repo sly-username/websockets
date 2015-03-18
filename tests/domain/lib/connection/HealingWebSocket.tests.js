@@ -89,7 +89,7 @@
 
       test( "can set websocket's binary type via binaryType property", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            socketSym = Object.getOwnPropertySymbols( hws )[1];
+          socketSym = Object.getOwnPropertySymbols( hws )[1];
 
         // TODO this test is stupid. mostly like wrong
         hws[ socketSym ].binaryType = "blob";
@@ -101,7 +101,7 @@
 
       test( "can get bytes of data in queue via bufferedAmount property", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            socketSym = Object.getOwnPropertySymbols( hws )[1];
+          socketSym = Object.getOwnPropertySymbols( hws )[1];
 
         expect( hws[socketSym] )
           .to.have.property( "bufferedAmount" )
@@ -134,7 +134,7 @@
 
     suite( "methods", function() {
       suite( "close method", function() {
-        test( "calling close method disconnects the websocket", function() {
+        test( "calling close disconnects the websocket", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
           hws.on( "close", function() {
@@ -147,12 +147,20 @@
               .that.equals( false );
           });
         });
+
+//        test( "exit code", function() {
+//
+//        });
+//
+//        test( "reason", function() {
+//
+//        });
       });
 
       suite( "send method", function() {
         test( "can send strings", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              strData = "string data";
+            strData = "string data";
 
           hws.on( "message", function( event ) {
             expect( event.data )
@@ -197,9 +205,9 @@
 
         test.skip( "can send array buffer data", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              arrayBufferLength = new ArrayBuffer( 256 );
+            arrayBufferLength = new ArrayBuffer( 256 );
 
-//          hws.binaryType = "arraybuffer";
+          hws.binaryType = "arraybuffer";
 
           hws.on( "message", function( event ) {
             expect( event.data )
@@ -214,12 +222,12 @@
 
         test( "can send other data types", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              objectData = {
-                artist: {
-                  name: "Ryan",
-                  genre: "indie hipster in a coffeeshop"
-                }
-              };
+            objectData = {
+              artist: {
+                name: "Ryan",
+                genre: "indie hipster in a coffeeshop"
+              }
+            };
 
           hws.on( "open", function() {
             hws.send( objectData );
@@ -234,7 +242,7 @@
 
         test( "can receive string data via message event", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              strData = "string data";
+            strData = "string data";
 
           hws.on( "message", function( eventName ) {
             expect( eventName.data )
@@ -249,11 +257,11 @@
 
         test( "can receive blob data via message event", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              fileReader = new FileReader(),
-              blobString = "<a id=\"a\"><b id=\"b\">oh my blob</b></a>",
-              blobData = new Blob( [ blobString ], {
-                type: "text/html"
-              });
+            fileReader = new FileReader(),
+            blobString = "<a id=\"a\"><b id=\"b\">oh my blob</b></a>",
+            blobData = new Blob( [ blobString ], {
+              type: "text/html"
+            });
 
           hws.on( "message", function( event ) {
             expect( event.data )
@@ -277,7 +285,7 @@
 
         test.skip( "can receive array buffer via message event", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-              arrayBufferLength = new ArrayBuffer( 256 );
+            arrayBufferLength = new ArrayBuffer( 256 );
 
           hws.binaryType = "arraybuffer";
           hws.on( "message", function( event ) {
@@ -344,22 +352,48 @@
     });
 
     suite( "events", function() {
-      suite( "should inherit WebSocket's events", function() {
-        test( "open", function() {
+      suite( "should inherit WebSocket's events", function( done ) {
+        test( "heal event fires when socket is healed", function() {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            socketSym = Object.getOwnPropertySymbols( hws )[1];
 
+          hws.on( "heal", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .to.have.property( "target", hws[socketSym] );
+
+            expect( event )
+              .to.have.property( "type", "heal" );
+
+            done(); 
+          });
+
+          hws[socketSym].dispatchEvent( new CustomEvent( "heal" ) );
+
+//          test( "on event fires when clicked", function( done ) {
+//            var onOff = document.createElement( "on-off" );
+//
+//            onOff.checked = false;
+//            onOff.disabled = false;
+//
+//            onOff.addEventListener( "on", function( event ) {
+//              expect( event )
+//                .to.be.an.instanceof( CustomEvent )
+//                .and.to.have.property( "target", onOff );
+//
+//              expect( event )
+//                .to.have.property( "type", "on" );
+//
+//              expect( event )
+//                .to.have.deep.property( "detail.msg", "on" );
+//
+//              done();
+//            });
+//
+//            onOff.shadowRoot.getElementById( "checkbox" )
+//              .dispatchEvent( new MouseEvent( "click" ) );
+//          });
         });
-        test( "message", function() {
-
-        });
-        test( "error", function() {
-
-        });
-        test( "close", function() {
-
-        });
-      });
-      test( "heal event", function() {
-
       });
     });
     // End Tests
