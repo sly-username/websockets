@@ -154,10 +154,14 @@
     suite( "send method", function() {
       test( "calls the send method", function() {
         var edEvent = {
-            "event": {
-              "type": "play"
+            "eventBlock": {
+              "type": "play",
+              "value": {
+                "key": "value"
+              }
             }
           },
+
           sendStub;
 
         sendStub = sinon.spy( EDAnalytics, "send" );

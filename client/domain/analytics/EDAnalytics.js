@@ -1,77 +1,76 @@
+var EDApp = {
+    version: "001"
+  },
+  edSessionService = {
+    currentId: 0
+  },
+  routeProvider = {
+    currentRoute: ""
+  };
+
 export default class EDAnalytics {
 
   static get commonBlock() {
-    var analyticsObj = {
-      "common": {
-        "device": {
-          "type": "",
-          "make": "",
-          "model": "",
-          "carrier": "",
-          "OS": ""
-        },
-        "client-version": "001",
-        "location": {
-          "lat": 34.136620799999996,
-          "lon": -118.39963999999999
-        },
-        "time": "",
-        "user": 0,
-        "view-route": "",
-        "view-state": {
-          "player-state": {
-            "song-id": 0,
-            "playing": true,
-            "timecode": ""
-          }
-        },
-        "session": {
-          "duration": 0
-        }
-      }
-    };
-
-    this.analyticsObj = analyticsObj;
-    return analyticsObj.common;
-
+    return {
+      device: this.deviceBlock,
+      "client-version": EDApp.version,
+      location: this.locationBlock,
+      time: this.formattedTime,
+      user: edSessionService.currentId,
+      "view-route": routeProvider.currentRoute,
+      "view-state": this.viewStateBlock,
+      session: this.sessionBlock
+    }
   }
 
   static get deviceBlock() {
-    var cb = this.analyticsObj.common;
-    return cb.device;
+    return {
+      "type": "",
+      "make": "",
+      "model": "",
+      "carrier": "",
+      "OS": ""
+    };
   }
 
   static get viewStateBlock() {
-    var cb = this.analyticsObj.common;
-    return cb["view-state"];
+    return {
+      "player-state": {
+        "song-id": 0,
+        "playing": true,
+        "timecode": ""
+      }
+    };
   }
 
   static get sessionBlock() {
-    var cb = this.analyticsObj.common;
-    return cb.session;
+    //TODO use session service for this
+    return {
+      duration: 0
+    };
   }
 
   static get locationBlock() {
-    var cb = this.analyticsObj.common;
-
+    let loc = {
+      "lat": 0,
+      "lon": 0
+    };
 
     if( navigator.geolocation ) {
       navigator.geolocation.getCurrentPosition(function ( pos ) {
         var coords = pos.coords;
 
-        cb.location.lat = parseFloat( coords.latitude );
-        cb.location.lon = parseFloat( coords.longitude );
-
+        loc.lat = coords.latitude;
+        loc.lon = coords.longitude;
       });
     }
 
-    return cb.location;
+    return loc;
 
   }
 
   static get version() {
-    var cb = this.analyticsObj.common;
-    return cb["client-version"];
+    return EDApp.version;
   }
 
   static get time() {
@@ -84,8 +83,13 @@ export default class EDAnalytics {
       ss = date.getSeconds(),
       now;
 
-    if( dd < 10 ) dd = '0' + dd;
-    if( mm < 10 ) mm = '0' + mm;
+    if( dd < 10 ) {
+      dd = '0' + dd;
+    }
+
+    if( mm < 10 ) {
+      mm = '0' + mm;
+    }
 
     now = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 
@@ -93,27 +97,25 @@ export default class EDAnalytics {
   }
 
   static get user() {
-    var cb = this.analyticsObj.common;
-    return cb.user;
+    return edSessionService.currentId;
   }
 
   static get route() {
-    var cb = this.analyticsObj.common;
-    return cb["view-route"];
+    return routeProvider.currentRoute;
   }
 
   static send( edEvent ) {
-    var json = this.analyticsObj,
-      analyticsEvent;
+    var json = {
+      "common": this.commonBlock,
+      "event": edEvent.eventBlock
+    };
 
-    edEvent.commonBlock =  json.common;
-    //analyticsEvent = new EDAnalyticsEvent( edEvent.event.type, edEvent );
+    console.log( json );
 
     return;
   }
 
   static createEvent( eventName, constructorArgs ) {
-
     //TODO create custom event method
     //by passing in an eventName and constructors arguments
   }
