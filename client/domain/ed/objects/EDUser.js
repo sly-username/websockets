@@ -8,7 +8,8 @@ export default class EDUser extends EDDataObject {
   }
 
   constructor( args ) {
-    super();
-    define.readOnly( this, [ "username", "email" ], args );
+    super( args );
+    define.readOnly( this, [ "username", "email", "birthday" ], args );
+    define.readOnlyDeep( this, [ "name" ], args );
   }
 }

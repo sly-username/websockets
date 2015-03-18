@@ -7,8 +7,8 @@ var readOnly = function( value ) {
     };
   },
   readOnlySealObjects = function( value ) {
-      value = typeof value === "object" ? Object.freeze( value ) : value;
-      return readOnly( value );
+    value = typeof value === "object" ? Object.freeze( value ) : value;
+    return readOnly( value );
   },
   enumRO = function( value ) {
     return {
@@ -55,21 +55,12 @@ export default {
     defineViaReduceWithFunction( self, keys, valueMap, readOnlySealObjects );
   },
   enumReadOnly( self, keys, valueMap ) {
-    Object.defineProperties( self, keys.reduce(( props, key ) => {
-      props[ key ] = enumRO( valueMap[ key ] );
-      return props
-    }, {}));
+    defineViaReduceWithFunction( self, keys, valueMap, enumRO );
   },
   configReadOnly( self, keys, valueMap ) {
-    Object.defineProperties( self, keys.reduce(( props, key ) => {
-      props[ key ] = configRO( valueMap[ key ] );
-      return props;
-    }, {}));
+    defineViaReduceWithFunction( self, keys, valueMap, configRO );
   },
   configEnumReadOnly( self, keys, valueMap ) {
-    Object.defineProperties( self, keys.reduce(( props, key ) => {
-      props[ key ] = configEnumRO( valueMap[ key ] );
-      return props;
-    }, {}));
+    defineViaReduceWithFunction( self, keys, valueMap, configEnumRO );
   }
 };

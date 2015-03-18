@@ -37,6 +37,21 @@
           .that.equals( data.type );
       });
 
+      test( "Constructor has deep properties", function() {
+        var data = {
+            id: "test",
+            type: "user",
+            name: {
+              first: "Khoa"
+            }
+          },
+          edData = new EDUser( data );
+
+        expect( edData )
+          .to.have.property( "name" )
+          .to.deep.equals( data.name );
+      });
+
       // Skip until browsers support @@toStringTag
       test.skip( "Constructor toStringTag functional", function() {
         var data = {
