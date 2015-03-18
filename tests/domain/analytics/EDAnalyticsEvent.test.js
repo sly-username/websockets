@@ -23,7 +23,7 @@
 
     // Start Testing
     suite( "EDAnalyticsEvent creation", function() {
-      test("starts with appropriate properties", function( ){
+      test("starts with appropriate properties", function(){
         var event = {
             "type": "play",
             "eventBlock": {},
@@ -40,6 +40,23 @@
           .to.have.property( "eventBlock" )
           .to.be.an("object")
           .that.equals( event.eventBlock );
+
+      });
+    });
+
+    suite( "EDAnalyticsEvent invoked", function() {
+      test("returns an event instance", function(){
+        var event = {
+            "type": "play",
+            "eventBlock": {},
+            "common": {}
+          },
+          analyticsEvent;
+
+        analyticsEvent = new EDAnalyticsEvent( event );
+
+        expect( analyticsEvent )
+          .to.be.an.instanceof( EDAnalyticsEvent );
 
       });
 
