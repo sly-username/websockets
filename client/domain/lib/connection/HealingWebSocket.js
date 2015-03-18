@@ -12,6 +12,7 @@ var socket = Symbol( "socket" ), // jshint ignore:line
 
     EventEmitter.bindToEventTarget( this, this[ socket ], socketEvents );
 
+    this.oldSocket = this[ socket ];
     return createSocket;
   };
 
@@ -23,40 +24,40 @@ export default class HealingWebSocket extends EventEmitter {
   }
 
   get isOpen() {
-    return this[socket].readyState === WebSocket.OPEN;
+    return this[ socket ].readyState === WebSocket.OPEN;
   }
 
   get readyState() {
-    return this[socket].readyState;
+    return this[ socket ].readyState;
   }
 
   get binaryType() {
-    return this[socket].binaryType;
+    return this[ socket ].binaryType;
   }
 
   set binaryType( value ) {
-    this[socket].binaryType = value;
+    this[ socket ].binaryType = value;
     return value;
   }
 
   get bufferedAmount() {
-    return this[socket].bufferedAmount;
+    return this[ socket ].bufferedAmount;
   }
 
   get extensions() {
-    return this[socket].extensions;
+    return this[ socket ].extensions;
   }
 
   get protocol() {
-    return this[socket].protocol;
+    return this[ socket ].protocol;
   }
 
   get url() {
-    return this[socket].url;
+    return this[ socket ].url;
   }
 
   close() {
-    this[socket].close();
+    this[ socket ].close();
   }
 
   send( data ) {
@@ -65,22 +66,28 @@ export default class HealingWebSocket extends EventEmitter {
     }
 
     if ( this.isOpen ) {
-      this[socket].send( data );
+      this[ socket ].send( data );
     } else if ( this.readyState === WebSocket.CONNECTING ) {
       super.once( "open", ( event ) => {
         this.send( data );
       });
     } else {
-      this[heal]( data );
+      this[ heal ]( data );
     }
   }
 
   [heal]( data ) {
-    console.log( "healing: %o", this );
+    var healObj = new CustomEvent ( "heal" );
 
-    this[socket] = this[socket].protocols == null ?
-      new WebSocket( this[socket].url ) :
-      new WebSocket( this[socket].url, this[socket].protocols );
+    this[ socket ] = this[ socket ].protocols == null ?
+      new WebSocket( this[ socket ].url ) :
+      new WebSocket( this[ socket ].url, this[ socket ].protocols );
+
+    super.on( "heal", event => {
+      return this.oldSocket;
+    });
+
+    super.dispatch( healObj );
 
     super.once( "open", event => {
       this.send( data )

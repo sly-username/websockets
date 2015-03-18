@@ -5,7 +5,9 @@
 
   suite( "HealingWebSocket", function() {
     var HealingWebSocket,
-      EventEmitter;
+      EventEmitter,
+      socketSym,
+      healSym;
 
     this.timeout( 5000 );
 
@@ -13,9 +15,15 @@
       Promise.all([
         System.import( "domain/lib/connection/HealingWebSocket" ),
         System.import( "domain/lib/event/EventEmitter" )
-      ]).then( function( imported ) {
-          HealingWebSocket = imported[0].default;
-          EventEmitter = imported[1].default;
+      ])
+        .then( function( imported ) {
+          var hws;
+          HealingWebSocket = imported[ 0 ].default;
+          EventEmitter = imported[ 1 ].default;
+
+          hws = new HealingWebSocket( "wss://echo.websocket.org" );
+          socketSym = Object.getOwnPropertySymbols( hws )[ 1 ];
+          healSym = Object.getOwnPropertySymbols( Object.getPrototypeOf( hws ))[ 0 ];
 
           done();
         }, function( error ) {
@@ -88,22 +96,19 @@
       });
 
       test( "can set websocket's binary type via binaryType property", function() {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-          socketSym = Object.getOwnPropertySymbols( hws )[1];
-
-        // TODO this test is stupid. mostly like wrong
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+        
         hws[ socketSym ].binaryType = "blob";
 
-        expect( hws[socketSym] )
+        expect( hws[ socketSym ] )
          .to.have.property( "binaryType" )
          .that.equals( "blob" );
       });
 
       test( "can get bytes of data in queue via bufferedAmount property", function() {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-          socketSym = Object.getOwnPropertySymbols( hws )[1];
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
-        expect( hws[socketSym] )
+        expect( hws[ socketSym ] )
           .to.have.property( "bufferedAmount" )
           .that.is.a( "number" );
       });
@@ -147,14 +152,6 @@
               .that.equals( false );
           });
         });
-
-//        test( "exit code", function() {
-//
-//        });
-//
-//        test( "reason", function() {
-//
-//        });
       });
 
       suite( "send method", function() {
@@ -182,11 +179,8 @@
             });
 
           hws.on( "message", function( event ) {
-//            console.dir( blobData );
-//            console.dir( event.data );
             expect( event.data )
               .to.be.an.instanceOf( Blob )
-//              .and.to.have.property( "type", blobData.type )
               .and.to.have.property( "size", blobData.size );
 
             fileReader.readAsText( event.data );
@@ -266,7 +260,6 @@
           hws.on( "message", function( event ) {
             expect( event.data )
               .to.be.an.instanceOf( Blob )
-              //              .and.to.have.property( "type", blobData.type )
               .and.to.have.property( "size", blobData.size );
 
             fileReader.readAsText( event.data );
@@ -352,48 +345,18 @@
     });
 
     suite( "events", function() {
-      suite( "should inherit WebSocket's events", function( done ) {
-        test( "heal event fires when socket is healed", function() {
-          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            socketSym = Object.getOwnPropertySymbols( hws )[1];
+      test( "heal event fires when socket is healed", function( done ) {
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
-          hws.on( "heal", function( event ) {
-            expect( event )
-              .to.be.an.instanceof( CustomEvent )
-              .to.have.property( "target", hws[socketSym] );
+        hws.on( "heal", function( event ) {
+          expect( event )
+            .to.be.an.instanceof( CustomEvent )
+            .to.have.property( "type", "heal" );
 
-            expect( event )
-              .to.have.property( "type", "heal" );
-
-            done(); 
-          });
-
-          hws[socketSym].dispatchEvent( new CustomEvent( "heal" ) );
-
-//          test( "on event fires when clicked", function( done ) {
-//            var onOff = document.createElement( "on-off" );
-//
-//            onOff.checked = false;
-//            onOff.disabled = false;
-//
-//            onOff.addEventListener( "on", function( event ) {
-//              expect( event )
-//                .to.be.an.instanceof( CustomEvent )
-//                .and.to.have.property( "target", onOff );
-//
-//              expect( event )
-//                .to.have.property( "type", "on" );
-//
-//              expect( event )
-//                .to.have.deep.property( "detail.msg", "on" );
-//
-//              done();
-//            });
-//
-//            onOff.shadowRoot.getElementById( "checkbox" )
-//              .dispatchEvent( new MouseEvent( "click" ) );
-//          });
+          done();
         });
+
+        hws[ healSym ]( "data" );
       });
     });
     // End Tests
