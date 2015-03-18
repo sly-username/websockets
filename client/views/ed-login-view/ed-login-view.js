@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-view-login", {
+  polymer( "ed-login-view", {
     /* LIFECYCLE */
     ready: function() {},
     attached: function() {},
