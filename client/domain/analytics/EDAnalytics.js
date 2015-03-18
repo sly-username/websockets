@@ -6,11 +6,11 @@ var EDApp = {
   },
   routeProvider = {
     currentRoute: ""
-  };
+  },
+  edAnalyticsService;
 
-export default class EDAnalytics {
-
-  static get commonBlock() {
+export default edAnalyticsService = {
+  get commonBlock() {
     return {
       device: this.deviceBlock,
       "client-version": EDApp.version,
@@ -20,103 +20,89 @@ export default class EDAnalytics {
       "view-route": routeProvider.currentRoute,
       "view-state": this.viewStateBlock,
       session: this.sessionBlock
-    }
-  }
-
-  static get deviceBlock() {
-    return {
-      "type": "",
-      "make": "",
-      "model": "",
-      "carrier": "",
-      "OS": ""
     };
-  }
+  },
 
-  static get viewStateBlock() {
+  get deviceBlock() {
+    // TODO to be pulled in by cordova
+    return {
+      type: "",
+      make: "",
+      model: "",
+      carrier: "",
+      OS: ""
+    };
+  },
+
+  get viewStateBlock() {
     return {
       "player-state": {
         "song-id": 0,
-        "playing": true,
-        "timecode": ""
+        playing: true,
+        timecode: ""
       }
     };
-  }
+  },
 
-  static get sessionBlock() {
-    //TODO use session service for this
+  get sessionBlock() {
+    // TODO use session service for this
     return {
       duration: 0
     };
-  }
+  },
 
-  static get locationBlock() {
+  get locationBlock() {
     let loc = {
-      "lat": 0,
-      "lon": 0
+      lat: 0,
+      lon: 0
     };
 
-    if( navigator.geolocation ) {
-      navigator.geolocation.getCurrentPosition(function ( pos ) {
+    if ( navigator.geolocation ) {
+      navigator.geolocation.getCurrentPosition( function( pos ) {
         var coords = pos.coords;
 
         loc.lat = coords.latitude;
         loc.lon = coords.longitude;
-      });
+      } );
     }
 
     return loc;
+  },
 
-  }
-
-  static get version() {
+  get version() {
     return EDApp.version;
-  }
+  },
 
-  static get time() {
+  get time() {
     let date = new Date(),
       dd = date.getDate(),
-      mm = date.getMonth()+1,
+      mm = date.getMonth() + 1,
       yyyy = date.getFullYear(),
       hh = date.getHours(),
       min = date.getMinutes(),
-      ss = date.getSeconds(),
-      now;
+      ss = date.getSeconds();
 
-    if( dd < 10 ) {
-      dd = '0' + dd;
+    if ( dd < 10 ) {
+      dd = "0" + dd;
     }
 
-    if( mm < 10 ) {
-      mm = '0' + mm;
+    if ( mm < 10 ) {
+      mm = "0" + mm;
     }
 
-    now = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+  },
 
-    return now;
-  }
-
-  static get user() {
-    return edSessionService.currentId;
-  }
-
-  static get route() {
-    return routeProvider.currentRoute;
-  }
-
-  static send( edEvent ) {
+  send( edEvent ) {
     var json = {
-      "common": this.commonBlock,
-      "event": edEvent.eventBlock
+      common: this.commonBlock,
+      event: edEvent.eventBlock
     };
 
-    console.log( json );
-
     return;
-  }
+  },
 
-  static createEvent( eventName, constructorArgs ) {
-    //TODO create custom event method
-    //by passing in an eventName and constructors arguments
+  createEvent( eventName, constructorArgs ) {
+    // TODO create custom event method
   }
-}
+};

@@ -43,12 +43,6 @@
         expect( EDAnalytics.time )
           .to.be.an( "string" );
 
-        expect( EDAnalytics.user )
-          .to.be.an( "number" );
-
-        expect( EDAnalytics.route )
-          .to.be.an( "string" );
-
       });
 
     });
@@ -132,23 +126,6 @@
           .to.be.an( "string" );
 
       });
-
-      test("can get user id", function(){
-        var user = EDAnalytics.user;
-
-        expect( user )
-          .to.be.an( "number" );
-
-      });
-
-      test("can get current route value", function(){
-        var route = EDAnalytics.route;
-
-        expect( route )
-          .to.be.an( "string" );
-
-      });
-
     });
 
     suite( "send method", function() {
