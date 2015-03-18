@@ -12,8 +12,8 @@ export default class EDAnalytics {
         },
         "client-version": "001",
         "location": {
-          "lat": 0,
-          "lon": 0
+          "lat": 34.136620799999996,
+          "lon": -118.39963999999999
         },
         "time": "",
         "user": 0,
@@ -54,15 +54,16 @@ export default class EDAnalytics {
   static get locationBlock() {
     var cb = this.analyticsObj.common;
 
-    navigator.geolocation.getCurrentPosition (function ( pos ) {
-      var coords = pos.coords;
 
-      cb.location.lat = coords.latitude;
-      cb.location.lon = coords.longitude;
+    if( navigator.geolocation ) {
+      navigator.geolocation.getCurrentPosition(function ( pos ) {
+        var coords = pos.coords;
 
-    });
+        cb.location.lat = parseFloat( coords.latitude );
+        cb.location.lon = parseFloat( coords.longitude );
 
-    console.log( "cb", cb );
+      });
+    }
 
     return cb.location;
 
@@ -102,14 +103,18 @@ export default class EDAnalytics {
   }
 
   static send( edEvent ) {
-    var json = this.analyticsObj;
+    var json = this.analyticsObj,
+      analyticsEvent;
+
     edEvent.commonBlock =  json.common;
+    //analyticsEvent = new EDAnalyticsEvent( edEvent.event.type, edEvent );
 
     return;
   }
 
   static createEvent( eventName, constructorArgs ) {
 
+    //TODO create custom event method
+    //by passing in an eventName and constructors arguments
   }
-
 }

@@ -23,7 +23,7 @@
 
     // Start Testing
     suite( "EDAnalytics creation", function() {
-      test("starts with appropiate properties", function( ){
+      test("starts with appropiate properties", function(){
 
         expect( EDAnalytics.commonBlock )
           .to.be.an( "object" );
@@ -74,6 +74,7 @@
       test("can get value of deviceBlock object", function(){
         var deviceObj = EDAnalytics.deviceBlock;
 
+        //TODO use cordova plugins to grab data
         expect( deviceObj )
           .to.be.an( "object" )
           .to.have.all.keys([
@@ -94,12 +95,25 @@
 
       });
 
-      test("can get value of locationBlock object", function(){
-        var locationObj = EDAnalytics.locationBlock;
+      test("can get value of locationBlock object", function( done ){
+        var locationObj, latitude, longitude;
+
+        locationObj = EDAnalytics.locationBlock;
+        latitude = locationObj.lat;
+        longitude = locationObj.lon ;
 
         expect( locationObj )
           .to.be.an( "object" )
           .to.have.all.keys( ["lat", "lon"] );
+
+        expect( latitude )
+          .to.be.a( "number" );
+
+        expect( longitude )
+          .to.be.a( "number" );
+
+        done();
+
       });
 
       test("can get value of version", function(){
@@ -155,10 +169,25 @@
         sendStub.restore();
       });
 
+      test( "returns undefined", function() {
+        var edEvent = {
+            "event": {
+              "type": "play"
+            }
+          },
+          invokeEvt;
+
+        invokeEvt = EDAnalytics.send( edEvent );
+
+        expect( invokeEvt )
+          .to.be.an( "undefined" );
+
+      });
+
     });
 
     suite( "createEvent method", function() {
-      test( "calls the createEvent method", function() {
+      test.skip( "calls the createEvent method", function() {
 
       });
 
