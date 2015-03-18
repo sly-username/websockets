@@ -6,6 +6,10 @@ var readOnly = function( value ) {
       value
     };
   },
+  readOnlySealObjects = function( value ) {
+    value = typeof value === "object" ? Object.freeze( value ) : value;
+    return readOnly( value );
+  },
   enumRO = function( value ) {
     return {
       configurable: false,
@@ -29,31 +33,34 @@ var readOnly = function( value ) {
       writeable: false,
       value
     };
+  },
+  defineViaReduceWithFunction = function( self, keys, valueMap, configCreator ) {
+    Object.defineProperties( self, keys.reduce(( props, key ) => {
+      props[ key ] = configCreator( valueMap[ key ] );
+      return props;
+    }, {}));
   };
 
 export default {
   readOnly( self, keys, valueMap ) {
+    defineViaReduceWithFunction( self, keys, valueMap, readOnly );
+    /*
     Object.defineProperties( self, keys.reduce(( props, key ) => {
       props[ key ] = readOnly( valueMap[ key ] );
       return props;
     }, {}));
+    */
+  },
+  readOnlyDeep( self, keys, valueMap ) {
+    defineViaReduceWithFunction( self, keys, valueMap, readOnlySealObjects );
   },
   enumReadOnly( self, keys, valueMap ) {
-    Object.defineProperties( self, keys.reduce(( props, key ) => {
-      props[ key ] = enumRO( valueMap[ key ] );
-      return props
-    }, {}));
+    defineViaReduceWithFunction( self, keys, valueMap, enumRO );
   },
   configReadOnly( self, keys, valueMap ) {
-    Object.defineProperties( self, keys.reduce(( props, key ) => {
-      props[ key ] = configRO( valueMap[ key ] );
-      return props;
-    }, {}));
+    defineViaReduceWithFunction( self, keys, valueMap, configRO );
   },
   configEnumReadOnly( self, keys, valueMap ) {
-    Object.defineProperties( self, keys.reduce(( props, key ) => {
-      props[ key ] = configEnumRO( valueMap[ key ] );
-      return props;
-    }, {}));
+    defineViaReduceWithFunction( self, keys, valueMap, configEnumRO );
   }
 };
