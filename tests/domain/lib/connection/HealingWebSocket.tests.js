@@ -134,6 +134,7 @@
           var hws = new HealingWebSocket( "wss://echo.websocket.org" );
 
           hws.on( "close", function() {
+            console.log( on );
             expect( hws )
               .to.have.property( "readyState" )
               .that.equals( WebSocket.CLOSED );
@@ -235,8 +236,8 @@
         var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
             strData = "string data";
 
-        hws.on( "message", function( event ) {
-          expect( event.data )
+        hws.on( "message", function( eventName ) {
+          expect( eventName.data )
             .to.be.a( "string" )
             .and.equal( strData );
 

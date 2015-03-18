@@ -78,9 +78,25 @@ export default class HealingWebSocket extends EventEmitter {
     }
   }
 
-  on( eventName, handler ) {
-    return super.on( eventName, handler );
-  }
+//  on( eventName, handler ) {
+//    return super.on( eventName, handler );
+//  }
+//
+//  off( eventName, handler ) {
+//    return super.on( eventName, handler );
+//  }
+//
+//  once( eventName ) {
+//    return super.on( eventName, handler );
+//  }
+//
+//  clear( eventName, handler ) {
+//    return super.on( eventName, handler );
+//  }
+//
+//  dispatch( event, ...extraArgs ) {
+//    return super.on( eventName, handler );
+//  }
 
   [heal]( data ) {
     console.log( "healing: %o", this );
