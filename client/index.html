@@ -16,7 +16,7 @@
   <script src="vendor/traceur-runtime.js"></script>
   <script src="vendor/es6-module-loader.js"></script>
   <script src="vendor/system.js"></script>
-  <script src="vendor/director.js"></script>
+  <link rel="import" href="vendor/app-router.html" />
 
   <!-- UI WebComponents -->
   <link rel="import" href="components/ui/ui-components.html" />
@@ -37,6 +37,14 @@
 <div class="left">
   <poc-bp></poc-bp>
 </div>
+
+<app-router>
+  <app-route path="/home">
+    <template>
+      <h1>Testing, is this thing on? You are home now.</h1>
+    </template>
+  </app-route>
+</app-router>
 
 <!-- REMOVE FOR PRODUCTION -->
 <script id="reload-tag" type="text/javascript">
