@@ -53,12 +53,13 @@ paths.vendor = {
     join( paths.bowerComponents, "system.js", "dist", "system.js" ),
 //    join( paths.bowerComponents, "system.js", "dist", "system.src.js" ),
     join( paths.bowerComponents, "system.js", "dist", "system.js.map" ),
-    join( paths.bowerComponents, "director", "build", "director.js" )
+//    join( paths.bowerComponents, "director", "build", "director.js" ),
+    join( paths.bowerComponents, "app-router", "app-router.html" )
   ],
   minMap: {
     "webcomponents.js": "webcomponents.min.js",
-    "polymer.js": "polymer.min.js",
-    "director.js": "director.min.js"
+    "polymer.js": "polymer.min.js"
+//    "director.js": "director.min.js"
   }
 };
 // Create min source paths from minMap and src

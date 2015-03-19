@@ -23,7 +23,7 @@
 
     // Start Testing
     suite( "EDAnalytics creation", function() {
-      test("starts with appropiate properties", function( ){
+      test("starts with appropiate properties", function(){
 
         expect( EDAnalytics.commonBlock )
           .to.be.an( "object" );
@@ -43,34 +43,102 @@
         expect( EDAnalytics.time )
           .to.be.an( "string" );
 
-        expect( EDAnalytics.user )
-          .to.be.an( "number" );
+      });
 
-        expect( EDAnalytics.route )
+    });
+
+    suite( "Property Functions", function() {
+      test("can get value of commonBlock object", function(){
+        var commonObj = EDAnalytics.commonBlock;
+
+        expect( commonObj )
+          .to.be.an( "object" )
+          .to.have.all.keys([
+                              "device",
+                              "client-version",
+                              "location",
+                              "time",
+                              "user",
+                              "view-route",
+                              "view-state",
+                              "session"
+                            ]);
+      });
+
+      test("can get value of deviceBlock object", function(){
+        var deviceObj = EDAnalytics.deviceBlock;
+
+        //TODO use cordova plugins to grab data
+        expect( deviceObj )
+          .to.be.an( "object" )
+          .to.have.all.keys([
+                              "type",
+                              "make",
+                              "model",
+                              "carrier",
+                              "OS"
+                            ]);
+      });
+
+      test("can get value of sessionBlock object", function(){
+        var sessionObj = EDAnalytics.sessionBlock;
+
+        expect( sessionObj )
+          .to.be.an( "object" )
+          .to.have.all.keys( ["duration"] );
+
+      });
+
+      test("can get value of locationBlock object", function( done ){
+        var locationObj, latitude, longitude;
+
+        locationObj = EDAnalytics.locationBlock;
+        latitude = locationObj.lat;
+        longitude = locationObj.lon ;
+
+        expect( locationObj )
+          .to.be.an( "object" )
+          .to.have.all.keys( ["lat", "lon"] );
+
+        expect( latitude )
+          .to.be.a( "number" );
+
+        expect( longitude )
+          .to.be.a( "number" );
+
+        done();
+
+      });
+
+      test("can get value of version", function(){
+        var version = EDAnalytics.version;
+
+        expect( version )
+          .to.be.an( "string" )
+          .and.to.equal("001");
+
+      });
+
+      test("can get time value", function(){
+        var time = EDAnalytics.time;
+
+        expect( time )
           .to.be.an( "string" );
 
       });
-
-      test("initiates the common block", function(){
-        //var initEvent = sinon.spy(EDAnalytics, "commonBlock" );
-        //sinon.stub( EDAnalytics, "commonBlock" );
-
-        expect( EDAnalytics[ "commonBlock" ] )
-          .to.exist;
-
-        //initEvent.restore();
-      });
     });
-
-
 
     suite( "send method", function() {
       test( "calls the send method", function() {
-
         var edEvent = {
-            "type": "play",
-            "eventBlock": {}
+            "eventBlock": {
+              "type": "play",
+              "value": {
+                "key": "value"
+              }
+            }
           },
+
           sendStub;
 
         sendStub = sinon.spy( EDAnalytics, "send" );
@@ -82,10 +150,25 @@
         sendStub.restore();
       });
 
+      test( "returns undefined", function() {
+        var edEvent = {
+            "event": {
+              "type": "play"
+            }
+          },
+          invokeEvt;
+
+        invokeEvt = EDAnalytics.send( edEvent );
+
+        expect( invokeEvt )
+          .to.be.an( "undefined" );
+
+      });
+
     });
 
     suite( "createEvent method", function() {
-      test( "calls on the send method", function() {
+      test.skip( "calls the createEvent method", function() {
 
       });
 

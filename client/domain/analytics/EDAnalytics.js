@@ -1,112 +1,108 @@
-export default class EDAnalytics {
+var EDApp = {
+    version: "001"
+  },
+  edSessionService = {
+    currentId: 0
+  },
+  routeProvider = {
+    currentRoute: ""
+  },
+  edAnalyticsService;
 
-  static get commonBlock() {
-    var analyticsObj = {
-      "common": {
-        "device": {
-          "type": "",
-          "make": "",
-          "model": "",
-          "carrier": "",
-          "OS": ""
-        },
-        "client-version": "001",
-        "location": {
-          "lat": 0,
-          "lon": 0
-        },
-        "time": "",
-        "user": 0,
-        "view-route": "",
-        "view-state": {
-          "player-state": {
-            "song-id": 0,
-            "playing": true,
-            "timecode": ""
-          }
-        },
-        "session": {
-          "duration": 0
-        }
+export default edAnalyticsService = {
+  get commonBlock() {
+    return {
+      device: this.deviceBlock,
+      "client-version": EDApp.version,
+      location: this.locationBlock,
+      time: this.formattedTime,
+      user: edSessionService.currentId,
+      "view-route": routeProvider.currentRoute,
+      "view-state": this.viewStateBlock,
+      session: this.sessionBlock
+    };
+  },
+
+  get deviceBlock() {
+    // TODO to be pulled in by cordova
+    return {
+      type: "",
+      make: "",
+      model: "",
+      carrier: "",
+      OS: ""
+    };
+  },
+
+  get viewStateBlock() {
+    return {
+      "player-state": {
+        "song-id": 0,
+        playing: true,
+        timecode: ""
       }
     };
+  },
 
-    this.analyticsObj = analyticsObj;
-    return analyticsObj.common;
+  get sessionBlock() {
+    // TODO use session service for this
+    return {
+      duration: 0
+    };
+  },
 
-  }
+  get locationBlock() {
+    let loc = {
+      lat: 0,
+      lon: 0
+    };
 
-  static get deviceBlock() {
-    var cb = this.analyticsObj.common;
-    return cb.device;
-  }
+    if ( navigator.geolocation ) {
+      navigator.geolocation.getCurrentPosition( function( pos ) {
+        var coords = pos.coords;
 
-  static get viewStateBlock() {
-    var cb = this.analyticsObj.common;
-    return cb["view-state"];
-  }
+        loc.lat = coords.latitude;
+        loc.lon = coords.longitude;
+      } );
+    }
 
-  static get sessionBlock() {
-    var cb = this.analyticsObj.common;
-    return cb.session;
-  }
+    return loc;
+  },
 
-  static get locationBlock() {
-    var cb = this.analyticsObj.common;
+  get version() {
+    return EDApp.version;
+  },
 
-    navigator.geolocation.getCurrentPosition (function ( pos ) {
-      var coords = pos.coords;
-
-      cb.location.lat = coords.latitude;
-      cb.location.lon = coords.longitude;
-
-    });
-
-    return cb.location;
-
-  }
-
-  static get version() {
-    var cb = this.analyticsObj.common;
-    return cb["client-version"];
-  }
-
-  static get time() {
-    var date = new Date(),
+  get time() {
+    let date = new Date(),
       dd = date.getDate(),
-      mm = date.getMonth()+1,
+      mm = date.getMonth() + 1,
       yyyy = date.getFullYear(),
       hh = date.getHours(),
       min = date.getMinutes(),
-      ss = date.getSeconds(),
-      now;
+      ss = date.getSeconds();
 
-    if( dd < 10 ) dd = '0' + dd;
-    if( mm < 10 ) mm = '0' + mm;
+    if ( dd < 10 ) {
+      dd = "0" + dd;
+    }
 
-    now = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+    if ( mm < 10 ) {
+      mm = "0" + mm;
+    }
 
-    return now;
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+  },
+
+  send( edEvent ) {
+    var json = {
+      common: this.commonBlock,
+      event: edEvent.eventBlock
+    };
+
+    return;
+  },
+
+  createEvent( eventName, constructorArgs ) {
+    // TODO create custom event method
   }
-
-  static get user() {
-    var cb = this.analyticsObj.common;
-    return cb.user;
-  }
-
-  static get route() {
-    var cb = this.analyticsObj.common;
-    return cb["view-route"];
-  }
-
-  static send( edEvent ) {
-    var json = this.analyticsObj;
-    edEvent.commonBlock =  json.common;
-    //return undefined;
-  }
-
-  static createEvent( eventName, constructorArgs ) {
-
-  }
-
-}
+};
