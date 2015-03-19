@@ -5,22 +5,30 @@ import EventEmitter from "domain/lib/event/EventEmitter";
 var socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
   socketEvents = [ "open", "close", "message", "error" ],
-  createSocket = function( url, protocols ) {
-    this[socket] = protocols == null ?
+  /**
+   *
+   * @param self { HealingWebSocket }
+   * @param url { String }
+   * @param protocols { Array<String> }
+   * @returns { WebSocket }
+   */
+  createSocket = function( self, url, protocols ) {
+    var oldSocket = self[ socket ];
+
+    self[ socket ] = ( protocols == null ) ?
       new WebSocket( url ) :
       new WebSocket( url, protocols );
 
-    EventEmitter.bindToEventTarget( this, this[ socket ], socketEvents );
+    EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
 
-    this.oldSocket = this[ socket ];
-    return createSocket;
+    return oldSocket;
   };
 
 export default class HealingWebSocket extends EventEmitter {
   constructor( url, protocols ) {
     super( [ "heal", ...socketEvents ] );
 
-    createSocket.call( this, url, protocols );
+    createSocket( this, url, protocols );
   }
 
   get isOpen() {
@@ -56,8 +64,8 @@ export default class HealingWebSocket extends EventEmitter {
     return this[ socket ].url;
   }
 
-  close() {
-    this[ socket ].close();
+  close( code=1000, reason="" ) {
+    return this[ socket ].close( code, reason );
   }
 
   send( data ) {
@@ -68,7 +76,7 @@ export default class HealingWebSocket extends EventEmitter {
     if ( this.isOpen ) {
       this[ socket ].send( data );
     } else if ( this.readyState === WebSocket.CONNECTING ) {
-      super.once( "open", ( event ) => {
+      this.once( "open", ( event ) => {
         this.send( data );
       });
     } else {
@@ -76,22 +84,21 @@ export default class HealingWebSocket extends EventEmitter {
     }
   }
 
-  [heal]( data ) {
-    var healObj = new CustomEvent ( "heal" );
+  [ heal ]( data ) {
+    var oldSocket = createSocket( this, this.url, this.protocol !== "" ? [ this.protocol ] : null ),
+      healEvent = new CustomEvent( "heal", {
+        detail: {
+          oldSocket
+        }
+      });
 
-    this[ socket ] = this[ socket ].protocols == null ?
-      new WebSocket( this[ socket ].url ) :
-      new WebSocket( this[ socket ].url, this[ socket ].protocols );
+    this.dispatch( healEvent );
 
-    super.on( "heal", event => {
-      return this.oldSocket;
-    });
-
-    super.dispatch( healObj );
-
-    super.once( "open", event => {
-      this.send( data )
-    });
+    if ( data ) {
+      this.once( "open", event => {
+        this.send( data );
+      });
+    }
   }
 
 }

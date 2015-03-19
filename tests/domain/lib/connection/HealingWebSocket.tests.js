@@ -97,7 +97,7 @@
 
       test( "can set websocket's binary type via binaryType property", function() {
         var hws = new HealingWebSocket( "wss://echo.websocket.org" );
-        
+
         hws[ socketSym ].binaryType = "blob";
 
         expect( hws[ socketSym ] )
@@ -223,15 +223,14 @@
               }
             };
 
-          hws.on( "open", function() {
-            hws.send( objectData );
-            hws.on( "message", function( event ) {
-              expect( event.data )
-                .to.equal( JSON.stringify( objectData ));
+          hws.on( "message", function( event ) {
+            expect( event.data )
+              .to.equal( JSON.stringify( objectData ));
 
-              done();
-            });
+            done();
           });
+
+          hws.send( objectData );
         });
 
         test( "can receive string data via message event", function( done ) {
@@ -278,22 +277,65 @@
 
         test.skip( "can receive array buffer via message event", function( done ) {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
-            arrayBufferLength = new ArrayBuffer( 256 );
+            arrayBuffer = new ArrayBuffer( 256 );
 
           hws.binaryType = "arraybuffer";
+
           hws.on( "message", function( event ) {
             expect( event.data )
               .to.be.an.instanceOf( ArrayBuffer )
-              .and.equal( arrayBufferLength );
+              .and.equal( arrayBuffer );
 
             done();
           });
 
-          hws.on( "open", function() {
-            hws.send( arrayBufferLength );
+          hws.send( arrayBuffer );
+        });
+      });
+
+      suite( "Symbol(heal) method", function() {
+        test( "heal should be called if socket is closed and new data is sent", function( done ) {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            healSpy = sinon.spy( hws, healSym ),
+            sendData = "Should Re-open Socket";
+
+          hws.once( "open", function() {
+            hws.close();
+            hws.send( sendData );
+
+            hws.once( "open", function() {
+              expect( healSpy )
+                .to.have.callCount( 1 )
+                .and.to.have.been.calledWith( sendData );
+
+              healSpy.restore();
+              done();
+            });
+          });
+        });
+
+        test( "heal creates a new WebSocket internally", function( done ) {
+          var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+            oldSocket = hws[ socketSym ];
+
+          hws.once( "open", function() {
+            hws.close();
+
+            expect( oldSocket )
+              .to.have.property( "readyState" )
+              .that.is.within( WebSocket.CLOSING, WebSocket.CLOSED );
+
+            hws.send( "Reopen Socket" );
+
+            expect( hws )
+              .to.have.property( socketSym )
+              .to.not.equal( oldSocket );
+
+            done();
           });
         });
       });
+
       suite( "should inherit EventEmitter's methods", function() {
         test( "should be an instance of EventEmitter", function() {
           var hws = new HealingWebSocket( "wss://echo.websocket.org" );
@@ -346,17 +388,27 @@
 
     suite( "events", function() {
       test( "heal event fires when socket is healed", function( done ) {
-        var hws = new HealingWebSocket( "wss://echo.websocket.org" );
+        var hws = new HealingWebSocket( "wss://echo.websocket.org" ),
+          oldSocket = hws[ socketSym ];
 
         hws.on( "heal", function( event ) {
           expect( event )
             .to.be.an.instanceof( CustomEvent )
             .to.have.property( "type", "heal" );
 
+          expect( event )
+            .to.have.property( "detail" )
+            .to.deep.equal({
+              oldSocket: oldSocket
+            });
+
           done();
         });
 
-        hws[ healSym ]( "data" );
+        hws.once( "open", function() {
+          hws.close();
+          hws.send( "Heal should be called" );
+        });
       });
     });
     // End Tests
