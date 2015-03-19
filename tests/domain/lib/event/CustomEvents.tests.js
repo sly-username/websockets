@@ -1,26 +1,44 @@
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
-  suite( "EventEmitter", function() {
-    var EventEmitter, handlerMapSym;
+  suite( "CustomEvents", function() {
+    var CustomEvents;
 
-    suiteSetup( function() {
+    suiteSetup( function( done ) {
       System.import( "domain/lib/event/CustomEvents" )
         .then( function( imported ) {
-                 //var hws;
-                 //HealingWebSocket = imported[ 0 ].default;
-                 //EventEmitter = imported[ 1 ].default;
-               }, function( error ) {
-                 console.warn( "Could not import 'CustomEvents' for testing: ", error.message );
-                 console.error( error.stack );
-                 done( error );
-               });
+          CustomEvents = imported.default;
+        }, function( error ) {
+          console.warn( "Could not import 'CustomEvents' for testing: ", error.message );
+          console.error( error.stack );
+          done( error );
+        });
     });
 
     // Tests begin
-    suite( "first category", function() {
-      tests( "first test in first category", function() {
-        
+    suite( "browser support", function() {
+      test( "if browser doesn't support CustomEvent constructor, deprecated createEvent constructor is used, ", function() {
+        var event = new CustomEvents( "parameters" );
+
+
+      });
+
+      test( "if browser doesn't support CustomEvent constructor, error is thrown, ", function() {
+        var event = new CustomEvents( "parameters" );
+
+
+      });
+
+      test( "if browser supports CustomEvent constructor, that constructor is used, ", function() {
+        var event = new CustomEvents( "parameters" );
+
+
+      });
+    });
+
+    suite( "second category", function() {
+      test( "are there any other tests that are needed?", function() {
+
       });
     });
   });
