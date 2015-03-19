@@ -1,11 +1,20 @@
 <polymer-element name="ed-liked-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-liked-view.css">
-    <div class="login-container">
-      <div class="header" ></div>
-      <div class="ed-genre-body">
-
-
+    <div class="genre-container">
+      <div class="header" >
+        <span>Tap up to 3 genres</span>
+        <span>you want to hear</span>
+      </div>
+      <div class="ed-genre-bubbles">
+        <ed-bubble-select>What</ed-bubble-select>
+        <ed-bubble-select>the</ed-bubble-select>
+        <ed-bubble-select>Monkey</ed-bubble-select>
+      </div>
+      <div class="alternate-bubbles">
+        <ed-bubble-select>Balls</ed-bubble-select>
+        <ed-bubble-select>What</ed-bubble-select>
+        <ed-bubble-select>the</ed-bubble-select>
       </div>
       <button id="next-button" type="button" href="#">
         Next
