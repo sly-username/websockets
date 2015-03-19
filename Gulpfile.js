@@ -10,7 +10,7 @@ var gulp = require( "gulp" ),
   currentTasks;
 
 // load .env file into process.env
-dotenv.load();
+dotenv.config();
 
 // get array of currently running tasks
 currentTasks = process.argv.reduce(
