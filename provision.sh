@@ -30,6 +30,7 @@ sudo apt-get -y install google-chrome-stable
 echo "" >> ~/.profile
 echo "# Added during provision" >> ~/.profile
 echo "source ~/clientapp/helpers.sh" >> ~/.profile
+echo "ulimit -n 4000" >> ~/.profile
 source ~/.profile
 
 #echo "$ED_PROJECT_PATH"
