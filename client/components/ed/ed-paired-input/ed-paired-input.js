@@ -79,10 +79,6 @@
         this.errorDiv.innerHTML = "Passwords must match";
         this.setAttribute( "invalid-confirm", "" );
       }
-//      this.errorDiv.innerHTML =
-//        this.isValid &&
-//        this.primaryBox !== "" &&
-//        this.confirmBox !== "" ? "" : "Passwords must match";
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
       if ( attrName === "type" ) {
