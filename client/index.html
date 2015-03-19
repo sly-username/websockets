@@ -50,7 +50,8 @@
   <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view"></app-route>
 
   <!-- ONBOARDING -->
-  <app-route path="/onboarding" element="ed-onboarding-view"></app-route>
+  <app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>
+  <app-route path="/onboarding" redirect="/onboarding/like"></app-route>
 
   <!--<app-route path=""-->
   <!-- REMOVE FOR PRODUCTION -->
