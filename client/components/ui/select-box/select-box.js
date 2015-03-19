@@ -1,23 +1,19 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "select-box", {
+  polymer( "select-box", {
+    publish: {
+      size: {
+        value: 5,
+        reflect: true
+      },
+      disabled: {
+        value: false,
+        reflect: true
+      }
+    },
     _options: [],
-    /*** PROPERTIES ***/
-    // Disabled
-    get disabled() {
-      if ( !null ) {
-        return this._disabled;
-      }
-    },
-    set disabled( value ) {
-      if ( value !== null ) {
-        this.setAttribute( "disabled", value );
 
-        return this._disabled = value;
-      }
-    },
-    // selectedIndex
     get selectedIndex() {
       var i;
 
@@ -30,7 +26,7 @@
     set selectedIndex( value ) {
       this.listItems[ parseInt( value, 10 ) ].children[ 0 ].checked = true;
     },
-    // value
+
     get value() {
       var i;
 
@@ -40,24 +36,23 @@
         }
       }
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
+
     ready: function() {
-      this.listItems = this.shadowRoot.getElementsByTagName( "li" );
+      this.listItems = this.shadowRoot.querySelectorAll( "li" );
       this.mainBox = this.shadowRoot.getElementById( "is-focus" );
-      this.getOptions = this.shadowRoot.getElementsByClassName( "options" )[ 0 ];
+      this.getOptions = this.shadowRoot.querySelectorAll( ".options" )[ 0 ];
 
       if ( this.size > 0 ) {
         this.getOptions.style.maxHeight = this.size * 32.4 + "px";
       }
-      // required attribute
+
       if ( this.hasAttribute( "required" ) ) {
         this.mainBox.setAttribute( "required", this.getAttribute( "required" ) );
       } else {
         this.mainBox.removeAttribute( "required" );
       }
     },
-    created: function() {
+    attached: function() {
       Array.prototype.forEach.call( this.children, function( elem ) {
         this._options.push({
           value: elem.value,
@@ -66,8 +61,6 @@
         });
       }.bind( this ) );
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
     sizeChanged: function( oldVal, newVal ) {
       if ( this.size > 0 ) {
         this.size = newVal;
@@ -77,10 +70,12 @@
         this.getOptions.style.maxHeight = 5 * 32 + "px";
       }
     },
-    // Listens for disabled
     disabledChanged: function( oldVal, newVal ) {
-      this._disabled = newVal;
-      this.setAttribute( "disabled", newVal );
+      if ( newVal ) {
+        this.setAttribute( "disabled", newVal );
+      } else {
+        this.removeAttribute( "disabled" );
+      }
     },
     // Listens for required
     attributeChanged: function( attrName, oldVal, newVal ) {
@@ -93,6 +88,5 @@
           break;
       }
     }
-    /*** END FUNCTIONS ***/
   });
 })( window.Polymer );

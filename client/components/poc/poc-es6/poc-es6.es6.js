@@ -1,6 +1,6 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
-  Polymer( "poc-es6", {
+  polymer( "poc-es6", {
     attached() {
       System.import( "domain/main" ).then( hello => {
         this.addEventListener( "click", () => {

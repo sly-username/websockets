@@ -373,3 +373,17 @@ Example:
   y-axis: top | center | bottom | <length> | <percent>
   z-axis: <length>
 ```
+
+## User-select property mixin
+* **.userSelect();**
+
+* **Description:** Method of preventing text/element selection using CSS.
+
+Example:
+```less
+.userSelect( none );
+```
+* This mixin takes in the following parameter
+```sh
+ @select: <none> | <text> | <all> | <element>
+```

@@ -1,23 +1,31 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
-  Polymer( "ed-icon", {
-    /*** PROPERTIES ***/
-    _nameList: [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ],
-    // nameList
+  var nameList = [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ];
+
+  polymer( "ed-icon", {
+    publish: {
+      rotation: {
+        value: 0,
+        reflect: true
+      },
+      name: {
+        reflect: true
+      }
+    },
     get nameList() {
-      return this._nameList;
+      return nameList;
     },
-    /*** END PROPERTIES ***/
-    /*** FUNCTIONS ***/
-    nameChanged: function( oldVal, newVal ) {
-      this.name = newVal;
-      this.setAttribute( "name", newVal );
-    },
-    rotationChanged: function( oldVal, newVal ) {
-      this.rotation = newVal;
-      this.setAttribute( "rotation", newVal );
+    rotationChanged: function( oldValue, newValue ) {
+      switch ( newValue ) {
+        case 0:
+        case 90:
+        case 180:
+        case 270:
+          break;
+        default:
+          this.rotation = 0;
+      }
     }
-    /*** END FUNCTIONS ***/
   });
 })( window.Polymer );

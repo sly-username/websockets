@@ -11,7 +11,7 @@ ED_MODULES_BIN="$ED_MODULES_PATH/.bin"
 PATH="$PATH:$ED_MODULES_BIN"
 
 # Alias gulp so that it uses harmony (only works in vagrant not through ssh -c command)
-alias gulp="node --harmony $ED_MODULES_PATH/gulp/bin/gulp.js"
+alias gulp="node --harmony --harmony_arrow_functions $ED_MODULES_PATH/gulp/bin/gulp.js"
 
 # PhantomJS Path
 #PHANTOMJS_BIN=`command -v phantomjs`
@@ -127,6 +127,7 @@ copy-element ()
   for file in ./*; do
     sed -i -e "s/new-element/$2/g" "${file}" && echo "rewrote tag style names"
     sed -i -e "s/newElement/${varname}/g" "${file}" && echo "rewrote variable name"
+    # TODO only move if filename contains "new-element"
     mv "${file}" "${file/new-element/$2}" && echo "renamed ${file} -> ${file/new-element/$2}"
   done
 

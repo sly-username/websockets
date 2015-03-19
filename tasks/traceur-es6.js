@@ -70,16 +70,17 @@ gulp.task( "traceur:dev", function() {
 });
 
 /* watch task */
-gulp.task( "traceur:watch", [ "traceur:watch:dev" ] );
-gulp.task( "traceur:watch:dev", function() {
-  return gulp.watch( config.traceur.src )
+gulp.task( "traceur:watch:dev", function( done ) {
+  gulp.watch( config.traceur.src )
     .on( "change", function( event ) {
       if ( event.type !== "deleted" ) {
         gutil.log( "Traceur Watch saw a change" );
         return runCompileFromToWithOptions( event.path, config.traceur.out.dev, traceurOptions );
       }
     });
+  done();
 });
+gulp.task( "traceur:watch", gulp.series( "traceur:watch:dev" ) );
 
 // TODO prod task
 gulp.task( "traceur:prod", function() {

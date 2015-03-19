@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
   var copyAttributes = function( elemFrom, elemTo, attrs ) {
@@ -11,7 +11,18 @@
     });
   };
 
-  Polymer( "radio-select", {
+  polymer( "radio-select", {
+    required: false,
+    disabled: false,
+    checked: false,
+    publish: {
+      value: {
+        reflect: true
+      },
+      name: {
+        reflect: true
+      }
+    },
     ready: function() {
       this.radioButton = this.shadowRoot.getElementById( "radioSelect" );
 

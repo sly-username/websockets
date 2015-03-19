@@ -1,18 +1,22 @@
 /*global __dirname*/
 /*eslint strict:0, key-spacing:0*/
 // jscs:disable maximumLineLength
+"use strict";
 /***
  * This file contains paths for all the different files in the codebase.
  * Everything is absolute path'd starting from the __dirname of this file, which should
  * be at the root of the project directory
  ***/
 
-var join = require( "path" ).join,
+var path = require( "path" ),
+  join = path.join,
   paths = {
     root:             __dirname,
     client:           join( __dirname, "client" ),
     tests:            join( __dirname, "tests" ),
     build:            join( __dirname, "build" ),
+    dgeni:            join( __dirname, "dgeni" ),
+    docs:             join( __dirname, "docs" ),
     logs:             join( __dirname, "logs" ),
     tasks:            join( __dirname, "tasks" ),
     server:           join( __dirname, "server" ),
@@ -22,6 +26,7 @@ var join = require( "path" ).join,
 
 paths.dev = join( paths.build, "www" );
 paths.prod = join( paths.build, "prod" );
+paths.coverage = join( paths.build, "coverage" );
 
 /*** VENDOR SCRIPTS ***/
 paths.vendor = {
@@ -29,61 +34,52 @@ paths.vendor = {
     dev: join( paths.dev, "vendor" ),
     prod: join( paths.prod, "vendor" )
   },
-  src: [
-      // Stuff in bower_components
-      // Web Components Shim
-      join( "webcomponentsjs", "webcomponents.js" ),
-
-      // Polymer
-      join( "polymer", "polymer.js" ),
-
-      // SystemJS + source map
-      join( "system.js", "dist", "system.js" ),
-//      join( "system.js", "dist", "system.src.js" ),
-      join( "system.js", "dist", "system.js.map" ),
-
-      // ES6-Module-Loader + source map
-      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-//      join( "es6-module-loader", "dist", "es6-module-loader.src.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
-
-      // Director (Routing)
-      join( "director", "build", "director.js" )
-    ].map( function( s ) { return join( paths.bowerComponents, s ); }
-    ).concat([
-      // Stuff in node_modules
-      join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
-  min: [
-      // Stuff in bower_components
-      join( "webcomponentsjs", "webcomponents.min.js" ),
-      join( "polymer", "polymer.min.js" ),
-      join( "system.js", "dist", "system.js" ),
-      join( "system.js", "dist", "system.js.map" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js" ),
-      join( "es6-module-loader", "dist", "es6-module-loader.js.map" ),
-      join( "director", "build", "director.min.js" )
-    ].map( function( s ) { return join( paths.bowerComponents, s ); }
-    ).concat([
-      // Stuff in node_modules
-      join( "traceur", "bin", "traceur-runtime.js" )
-    ].map( function( s ) { return join( paths.nodeModules, s ); } ) ),
   tests: [
     // in node_modules
-    join( "mocha", "mocha.js" ),
     join( "mocha", "mocha.css" ),
+    join( "mocha", "mocha.js" ),
     join( "chai", "chai.js" ),
-    join( "chai-as-promised", "lib", "chai-as-promised.js" ),
     join( "sinon", "pkg", "sinon.js" ),
+    join( "chai-as-promised", "lib", "chai-as-promised.js" ),
     join( "sinon-chai", "lib", "sinon-chai.js" )
-  ].map( function( p ) { return join( paths.nodeModules, p ); } )
+  ].map( p => join( paths.nodeModules, p ) ),
+  src: [
+    join( paths.bowerComponents, "webcomponentsjs", "webcomponents.js" ),
+    join( paths.bowerComponents, "polymer", "polymer.js" ),
+    join( paths.nodeModules, "traceur", "bin", "traceur-runtime.js" ),
+    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.js" ),
+//    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.src.js" ),
+    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+    join( paths.bowerComponents, "system.js", "dist", "system.js" ),
+//    join( paths.bowerComponents, "system.js", "dist", "system.src.js" ),
+    join( paths.bowerComponents, "system.js", "dist", "system.js.map" ),
+//    join( paths.bowerComponents, "director", "build", "director.js" ),
+    join( paths.bowerComponents, "app-router", "app-router.html" )
+  ],
+  minMap: {
+    "webcomponents.js": "webcomponents.min.js",
+    "polymer.js": "polymer.min.js"
+//    "director.js": "director.min.js"
+  }
 };
+// Create min source paths from minMap and src
+paths.vendor.min = paths.vendor.src.map( source => {
+  var base = path.basename( source );
+
+  if ( paths.vendor.minMap.hasOwnProperty( base ) ) {
+    return source.replace( base, paths.vendor.minMap[base] );
+  }
+  return source;
+});
 
 /*** TODO COPY (FOR PROD) ***/
 
 /*** SYMLINK ***/
 paths.symlink = {
   src: [
+    // link these
+    join( paths.client, "**", "*.*" ),
+
     // don't link these
     // less, markdown, es6 js, test html,
     join( "!**", "*.less" ),
@@ -92,15 +88,18 @@ paths.symlink = {
     join( "!" + paths.client, "domain", "**", "*.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
-    join( "!**", ".new" ),
-
-    // link these (everything else)
-    join( paths.client, "**", "*.*" )
+    join( "!**", ".new" )
   ],
-  tests: [
-    join( paths.client, "**", "*.tests.html" ),
-    join( paths.client, "**", "*.tests.js" )
-  ]
+  tests: {
+    component: [
+      join( paths.client, "**", "*.tests.html" ),
+      join( paths.client, "**", "*.tests.js" )
+    ],
+    domain: [
+      join( paths.tests, "domain", "**", "*.js" ),
+      join( paths.tests, "karma-tweaks.js" )
+    ]
+  }
 };
 
 /*** LESS ***/
@@ -118,17 +117,18 @@ paths.less = {
     join( "**", "*.mixin.less" ),
     join( "**", "*.include.less" ),
     join( "**", "fonts", "*.less" )
-  ].map( function( s ) { return join( paths.client, s ); })
+  ].map( s => join( paths.client, s ) )
 };
-paths.less.compile = paths.less.included.map( function( s ) { return join( "!", s ); }).concat( paths.less.src );
-// paths.less.compile = paths.less.included.map( s => join( "!", s ) ).concat( paths.less.src );
+paths.less.compile = paths.less.included
+  .map( s => join( "!", s ) )
+  .concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
 paths.scripts = {
   all:            [
+    join( paths.root, "**", "*.js" ),
     join( "!", paths.bowerComponents ),
-    join( "!", paths.nodeModules ),
-    join( paths.root, "**", "*.js" )
+    join( "!", paths.nodeModules )
   ],
   client: join( paths.client, "**", "*.js" ),
   tasks: join( paths.tasks, "**", "*.js" ),
@@ -152,7 +152,7 @@ paths.jscs = {
   tasks:  paths.scripts.tasks,
   tests:  paths.scripts.tests,
   server: paths.scripts.server,
-  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( function( s ) { return join( paths.root, s ); }),
+  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( s => join( paths.root, s ) ),
   taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
 };
 
@@ -189,17 +189,35 @@ paths.testing = {
     js: join( paths.client, "**", "*.tests.js" ),
     html: join( paths.client, "**", "*.tests.html" )
   },
-  tests: join( paths.tests, "**", "*.js" )
+  tests: [
+    join( paths.tests, "**", "*.js" ),
+    join( "!", paths.tests, "karma-tweaks.js" )
+  ]
 };
-paths.testing.client.all = Object.keys( paths.testing.client ).map( function( prop ) {
-  return paths.testing.client[ prop ];
-});
+paths.testing.client.all = Object.keys( paths.testing.client )
+  .map( prop => paths.testing.client[ prop ] );
 
 /*** KARMA ***/
 paths.karma = {
   rc: join( paths.root, "karma.conf.js" ),
   base: paths.dev,
   port: 9876,
+  coverage: {
+    src: "**/!(vendor)/!(*.tests).js",
+    out: {
+      html: join( paths.dev, "coverage" ),
+      lcov: join( paths.build, "coverage" )
+    }
+  },
+  exclude: [
+    "index.html",
+    "tests.html",
+    "**/.new/*.*",
+    "**/ed-components.html",
+    "**/ui-components.html",
+    "**/poc-components.html",
+    "coverage/**"
+  ],
   files: ( function() {
     var files = [];
 
@@ -218,6 +236,21 @@ paths.karma = {
           served: true
         });
       });
+
+    files.push({
+      pattern: "karma-tweaks.js",
+      watched: true,
+      included: true,
+      served: true
+    });
+
+    // Load Domain Tests Files
+    files.push({
+      pattern: "domain/**/*.tests.js",
+      watched: true,
+      included: true,
+      served: true
+    });
 
     // load html tests files
     files.push({
@@ -252,14 +285,7 @@ paths.karma = {
     });
 
     return files;
-  })(),
-  exclude: [
-    "index.html",
-    "tests.html",
-    "**/.new/*.*",
-    "**/ed-components.html",
-    "**/ui-components.html"
-  ]
+  })()
 };
 
 /*** LOGGING ***/
@@ -289,6 +315,27 @@ paths.server = {
     prod: join( paths.prod, "index.html" )
   },
   watch: paths.dev
+};
+
+/*** DGENI PATHS ***/
+paths.dgeni = {
+  components: {
+    basePath: paths.dgeni,
+    src: [
+      {
+        include: join( paths.client, "components", "**", "*.js" ),
+        exclude: [
+          join( paths.client, "components", ".new", "*.*" ),
+          join( paths.client, "components", "**", "*.tests.js" ),
+          join( paths.client, "components", "**", "*.es6.js" )
+        ],
+        basePath: "components"
+      }
+    ],
+    templateFolder: join( paths.dgeni, "templates" ),
+    templatePattern: "components.template.html",
+    outputFolder: join( paths.docs, "components" )
+  }
 };
 
 /*** TODO ***/

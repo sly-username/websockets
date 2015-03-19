@@ -1,4 +1,6 @@
 @import "mixins/all-prefixes.less";
+@import "ed/buttons.mixin.less";
+@import "ed/colors.vars.less";
 
 // Animation Tests
 #less-test-animation {
@@ -186,4 +188,23 @@
   background-color: lightgrey;
   .transform( rotate(45deg) );
   .transformOrigin( 20% 40% );
+}
+
+// User select
+
+#less-test-user-select {
+  background: lightslategray;
+  height: 200px;
+  width: 200px;
+  .userSelect( none );
+}
+
+// Button
+
+#purpleButton {
+  .edButton( single-line );
+}
+
+#darkButton {
+  .edButton( double-line );
 }

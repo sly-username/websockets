@@ -1,4 +1,4 @@
-( function( Polymer ) {
+( function( polymer ) {
   "use strict";
 
   var globalMap = {},
@@ -12,8 +12,12 @@
       );
     };
 
-  Polymer( "img-placeholder", {
-    /*** PROPERTIES ***/
+  polymer( "img-placeholder", {
+    published: {
+      image: {
+        reflect: true
+      }
+    },
     get imageMap() {
       return globalMap;
     },
@@ -27,18 +31,13 @@
         this.fallBack.src = this.src || globalMap[ this.image ];
       }
     },
-    /*** END PROPERTIES ***/
-    /*** LIFECYCLE ***/
     ready: function() {
       this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[ 0 ];
     },
     attached: function() {
       this.updateSrc();
     },
-    /*** END LIFECYCLE ***/
-    /*** FUNCTIONS ***/
     imageChanged: function( oldVal, newVal ) {
-      this.image = newVal;
       this.updateSrc().setAttribute( "image", newVal );
     },
     updateSrc: function() {
@@ -59,6 +58,5 @@
         tmpImage.src = src;
       });
     }
-    /*** END FUNCTIONS ***/
   });
 })( window.Polymer );

@@ -1,53 +1,74 @@
 /*eslint-env mocha */
-( function( window, document, chai ) {
+/*jscs:disable maximumLineLength*/
+( function( window, document, polymer, sinon, chai ) {
   "use strict";
   var expect = chai.expect,
-    // get wrapper from document or for karma, create a new div and append it to the DOM
+  // get wrapper from document or for karma, create a new div and append it to the DOM
     testingWrapper = document.getElementById( "checkbox-select-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
         return wrapper;
       })(),
-    // original state to test against
+  // original state to test against
     originalWrapperOuterHTML = testingWrapper.outerHTML,
-    // re-sets wrapper to blank
+  // re-sets wrapper to blank
     resetWrapper = function() {
       testingWrapper.innerHTML = "";
     };
 
   suite( "<checkbox-select>", function() {
     suite( "Life Cycle", function() {
+      teardown( function() {
+        resetWrapper();
+      });
+
       test( "ready: can create from document.createElement", function() {
+        var createdSpy = sinon.spy(
+          polymer.getRegisteredPrototype( "checkbox-select" ),
+          "ready"
+        );
+
         expect( document.createElement( "checkbox-select" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<checkbox-select></checkbox-select>" );
+
+        expect( createdSpy ).to.have.callCount( 1 );
+        createdSpy.restore();
       });
 
-      test( "attached: can be added to the DOM", function() {
-        testingWrapper.appendChild( document.createElement( "checkbox-select" ) );
+      test( "attached: can be added to another DOM Element", function() {
+        var checkSelect = document.createElement( "checkbox-select" ),
+          attachedSpy = sinon.spy( checkSelect, "attached" );
+
+        testingWrapper.appendChild( checkSelect );
+
+        expect( attachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
           .and.equals( "<checkbox-select></checkbox-select>" );
 
-        resetWrapper();
+        attachedSpy.restore();
       });
 
-      test( "detached: can be removed from another Dom element", function() {
-        var checkSelect = document.createElement( "checkbox-select" );
+      test.skip( "detached: can be removed from another DOM element", function() {
+        var checkSelect = document.createElement( "checkbox-select" ),
+          detachedSpy = sinon.spy( checkSelect, "detached" );
 
         testingWrapper.appendChild( checkSelect );
         testingWrapper.removeChild( checkSelect );
+
+        expect( detachedSpy ).to.have.callCount( 1 );
 
         expect( testingWrapper )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( originalWrapperOuterHTML );
 
-        resetWrapper();
+        detachedSpy.restore();
       });
     });
 
@@ -201,14 +222,19 @@
         });
 
         test( "can be set via property reflect attribute", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
+          var checkSelect = document.createElement( "checkbox-select" ),
+              observeFn = function( changes ) {
+                expect( checkSelect.hasAttribute( "required" ) ).to.equal( true );
+                expect( checkSelect.getAttribute( "required" ) )
+                  .to.be.a( "string" )
+                  .and.equals( "" );
+
+                Object.unobserve( checkSelect, observeFn );
+              };
 
           checkSelect.required = true;
 
-          expect( checkSelect.hasAttribute( "required" ) ).to.equal( true );
-          expect( checkSelect.getAttribute( "required" ) )
-            .to.be.a( "string" )
-            .and.equals( "" );
+          Object.observe( checkSelect, observeFn );
         });
 
         test( "can be removed via attribute", function() {
@@ -236,15 +262,20 @@
         });
 
         test( "can be removed via property reflect attribute", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
+          var checkSelect = document.createElement( "checkbox-select" ),
+            observeFn = function( changes ) {
+              expect( checkSelect )
+                .to.have.property( "outerHTML" )
+                .that.is.a( "string" )
+                .and.equals( "<checkbox-select></checkbox-select>" );
+
+              Object.unobserve( checkSelect, observeFn );
+            };
 
           checkSelect.setAttribute( "required", "" );
           checkSelect.required = false;
 
-          expect( checkSelect )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<checkbox-select></checkbox-select>" );
+          Object.observe( checkSelect, observeFn );
         });
       });
 
@@ -285,14 +316,19 @@
         });
 
         test( "can be set via property reflect attribute", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
+          var checkSelect = document.createElement( "checkbox-select" ),
+              observeFn = function( changes ) {
+                expect( checkSelect.hasAttribute( "checked" ) ).to.equal( true );
+                expect( checkSelect.getAttribute( "checked" ) )
+                  .to.be.a( "string" )
+                  .and.equals( "" );
+
+                Object.unobserve( checkSelect, observeFn );
+              };
 
           checkSelect.checked = true;
 
-          expect( checkSelect.hasAttribute( "checked" ) ).to.equal( true );
-          expect( checkSelect.getAttribute( "checked" ) )
-            .to.be.a( "string" )
-            .and.equals( "" );
+          Object.observe( checkSelect, observeFn );
         });
 
         test( "can be removed via attribute", function() {
@@ -320,15 +356,20 @@
         });
 
         test( "can be removed via property reflect attribute", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
+          var checkSelect = document.createElement( "checkbox-select" ),
+              observeFn = function( changes ) {
+                expect( checkSelect )
+                  .to.have.property( "outerHTML" )
+                  .that.is.a( "string" )
+                  .and.equals( "<checkbox-select></checkbox-select>" );
+
+                Object.unobserve( checkSelect, observeFn );
+              };
 
           checkSelect.setAttribute( "checked", "" );
           checkSelect.checked = false;
 
-          expect( checkSelect )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<checkbox-select></checkbox-select>" );
+          Object.observe( checkSelect, observeFn );
         });
       });
 
@@ -369,14 +410,19 @@
         });
 
         test( "can be set via property reflect attribute", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
+          var checkSelect = document.createElement( "checkbox-select" ),
+              observeFn = function( changes ) {
+                expect( checkSelect.hasAttribute( "disabled" ) ).to.equal( true );
+                expect( checkSelect.getAttribute( "disabled" ) )
+                  .to.be.a( "string" )
+                  .and.equals( "" );
+
+                Object.unobserve( checkSelect, observeFn );
+              };
 
           checkSelect.disabled = true;
 
-          expect( checkSelect.hasAttribute( "disabled" ) ).to.equal( true );
-          expect( checkSelect.getAttribute( "disabled" ) )
-            .to.be.a( "string" )
-            .and.equals( "" );
+          Object.observe( checkSelect, observeFn );
         });
 
         test( "can be removed via attribute", function() {
@@ -404,17 +450,22 @@
         });
 
         test( "can be removed via property reflect attribute", function() {
-          var checkSelect = document.createElement( "checkbox-select" );
+          var checkSelect = document.createElement( "checkbox-select" ),
+              observeFn = function( changes ) {
+                expect( checkSelect )
+                  .to.have.property( "outerHTML" )
+                  .that.is.a( "string" )
+                  .and.equals( "<checkbox-select></checkbox-select>" );
+
+                Object.unobserve( checkSelect, observeFn );
+              };
 
           checkSelect.setAttribute( "disabled", "" );
           checkSelect.disabled = false;
 
-          expect( checkSelect )
-            .to.have.property( "outerHTML" )
-            .that.is.a( "string" )
-            .and.equals( "<checkbox-select></checkbox-select>" );
+          Object.observe( checkSelect, observeFn );
         });
       });
     });
   });
-})( window, document, window.chai );
+})( window, document, window.Polymer, window.sinon, window.chai );
