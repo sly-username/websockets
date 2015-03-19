@@ -1,5 +1,14 @@
+@import "../styles/ed/colors.vars.less";
+@import "mixins/prefixes/placeholder.less";
+
+
 #primaryBox, #confirmBox {
   display: block;
+}
+
+#error {
+  color: @originalTeal;
+  font-size: 2.7rem;
 }
 
 .wrapper {
@@ -26,25 +35,12 @@
     background: transparent;
     border: 0;
     outline: 0;
-    &::-webkit-input-placeholder {
-      color: #FFFFFF;
-      font-size: 3.6rem;
-      opacity: .33;
-    }
-    &:-moz-placeholder {
-      /* Firefox 18- */
-      color: #FFFFFF;
-    }
-    &::-moz-placeholder {
-      /* Firefox 19+ */
-      color: #FFFFFF;
-    }
-    &:-ms-input-placeholder {
-      color: #FFFFFF;
-    }
+    .input-placeholder( { color: #FFFFFF; font-size: 3.6rem; opacity: .33; } );
   }
   &.confirm-container {
     margin-top: 1rem;
   }
 }
+
+
 

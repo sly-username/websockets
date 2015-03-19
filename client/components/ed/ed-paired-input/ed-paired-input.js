@@ -55,16 +55,25 @@
       this._boxes = [ this.primaryBox, this.confirmBox ];
     },
     attached: function() {
-      this.addEventListener( "keyup", this.keyConfirm );
+      this._primaryBox.addEventListener( "blur", this.regexCheck.bind( this ) );
+      this._confirmBox.addEventListener( "blur", this.keyConfirm.bind( this ) );
     },
     detached: function() {
-      this.removeEventListener( "keyup", this.keyConfirm );
+      this._primaryBox.removeEventListener( "blur", this.regexCheck.bind( this ) );
+      this._confirmBox.removeEventListener( "blur", this.keyConfirm.bind( this ) );
+    },
+    regexCheck: function() {
+      if ( this.primaryBox.validity.valid ) {
+        this.errorDiv.innerHTML = "";
+      } else {
+        this.errorDiv.innerHTML = "Password is not 8 characters long";
+      }
     },
     keyConfirm: function() {
       this.errorDiv.innerHTML =
         this.isValid &&
         this.primaryBox !== "" &&
-        this.confirmBox !== "" ? "fields are valid" : "fields are not valid";
+        this.confirmBox !== "" ? "" : "Passwords must match";
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
       if ( attrName === "type" ) {

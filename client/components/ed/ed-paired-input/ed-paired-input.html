@@ -1,10 +1,12 @@
-<polymer-element name="ed-paired-input" attributes="icon type pattern placeholder">
+<polymer-element name="ed-paired-input" attributes="icon type placeholder">
   <template>
     <link rel="stylesheet" href="ed-paired-input.css">
-
+      <div id="error"></div>
       <div class="wrapper">
         <ed-icon class="inner-icon align" name="{{icon}}"></ed-icon>
-        <input class="align" id="primary-box" type="{{type}}" pattern="{{pattern}}" placeholder="{{placeholder}}" />
+        <input class="align" id="primary-box" type="{{type}}"
+               pattern="^\w{8,}"
+               placeholder="{{placeholder}}" />
       </div>
       <div class="wrapper confirm-container">
         <ed-icon class="inner-icon align" name="{{icon}}"></ed-icon>
