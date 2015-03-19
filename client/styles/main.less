@@ -4,12 +4,17 @@
 @import "test.mixin.less";
 @import "mixins/hidden.less";
 @import "fonts/icons.less";
+@import "fonts/ubuntu.less";
 @import "mixins/breakpoints/mixins.less";
 
 @color: white;
 
-body{
-  font-family: "Helvetica", "Arial", sans-serif;
+html {
+  font-size: 10px;
+  font-family: "Ubuntu-Regular";
+}
+
+body {
   background-color: @color;
   .cool(cyan);
   & > .left {
