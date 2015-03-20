@@ -8,6 +8,7 @@
       System.import( "domain/lib/event/CustomEvents" )
         .then( function( imported ) {
           CustomEvents = imported.default;
+          done();
         }, function( error ) {
           console.warn( "Could not import 'CustomEvents' for testing: ", error.message );
           console.error( error.stack );
@@ -17,25 +18,35 @@
 
     // Tests begin
     suite( "browser support", function() {
-      test( "if browser doesn't support CustomEvent constructor, deprecated createEvent constructor is used, ", function() {
-        var event = new CustomEvents( "parameters" );
+      test( "when browser doesn't support CustomEvent constructor", function() {
+        var descriptor = {
+            detail: "something"
+          },
+          event = new CustomEvents( "open", descriptor );
 
+        event.CustomEvent = undefined;
+
+        expect( event.constructor )
+          .to.equal( CustomEvents );
+
+        expect( event )
+          .to.be.an.instanceOf( Event );
+        expect( event )
+
+          .to.throw( err );
       });
 
-      test( "if browser doesn't support CustomEvent constructor, error is thrown, ", function() {
-        var event = new CustomEvents( "parameters" );
+      test( "when browser supports CustomEvent constructor", function() {
+        var descriptor = {
+            detail: "something"
+          },
+          event = new CustomEvents( "open", descriptor );
 
-      });
+        expect( event.constructor )
+          .to.equal( CustomEvents );
 
-      test( "if browser supports CustomEvent constructor, that constructor is used, ", function() {
-        var event = new CustomEvents( "parameters" );
-
-      });
-    });
-
-    suite( "second category", function() {
-      test( "are there any other tests that are needed?", function() {
-
+        expect( event )
+          .to.be.an.instanceOf( Event );
       });
     });
   });

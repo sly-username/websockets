@@ -1,20 +1,34 @@
-export function CustomEvents( eventName, eventType, description, ...extraParams ) {
+/**
+ *
+ * @param name
+ * @param descriptor
+ * @returns {*|Event}
+ * @constructor
+ */
 
-  //check if supported. use try/catch
+  // check if supported via try/catch
+export default function CustomEvents( name, descriptor ) {
+  descriptor = {};
+  var event;
+
   try {
-    //if ( window["CustomEvent"] === undefined ); not sure what to write here
-  } catch( err ) {
-    throw new TypeError( "Dispatch was not called with proper Event object" );
+    if ( window.CustomEvent === undefined ) {
+      throw "Dispatch was not called with proper Event object";
+    }
+  } catch ( err ) {
+    // not sure what is supposed to go here
+    console.log( err );
   }
 
-  extraParams = { bubbles=false, cancelable=false, detail=undefined };
-
-  if ( window["CustomEvent"] === undefined ) {
-    eventName = document.createEvent( eventType );
-    eventName.initEvent( name, bubbles, ...extraParams );
-    return eventName;
+  if ( window.CustomEvent === undefined ) {
+    function CustomEvent( name, bubbles = false, cancelable = false, detail = undefined ) {
+      event = document.createEvent( CustomEvent );
+      event.initCustomEvent( name, bubbles, cancelable, detail );
+      return event;
+    }
+    CustomEvent.prototype = this.Event.prototype;
+    this.CustomEvent = CustomEvent;
   } else {
-    eventName = new CustomEvent( eventType, description );
+    event = new CustomEvent( name, descriptor );
   }
-
-}
+};
