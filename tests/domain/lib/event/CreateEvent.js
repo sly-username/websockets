@@ -6,7 +6,7 @@
     var createEvent;
 
     suiteSetup( function( done ) {
-      System.import( "domain/lib/event/CustomEvents" )
+      System.import( "domain/lib/event/CreateEvent" )
         .then( function( imported ) {
           createEvent = imported.default;
           done();
@@ -21,7 +21,7 @@
     suite( "Properties", function() {
       // instanceof Event
       test( "instance of Event", function() {
-        
+
       });
       // passing detail, makes detail on event obj
       // passing bubbles false, makes event.bubbles = false

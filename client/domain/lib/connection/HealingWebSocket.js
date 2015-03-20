@@ -1,7 +1,7 @@
 /* jshint strict:false */
 
 import EventEmitter from "domain/lib/event/EventEmitter";
-import createEvent from "../event/CustomEvents";
+import createEvent from "../event/CreateEvent";
 
 var socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
