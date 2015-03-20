@@ -1,0 +1,30 @@
+<polymer-element name="ed-forgot-view" attributes="">
+  <template>
+    <link rel="stylesheet" href="./ed-forgot-view.css">
+    <div class="forgot-container">
+      <!-- placeholder logo, to be replace when assets arrive -->
+      <div class="ed-logo-header">Placeholder</div>
+      <div class="ed-forgot-body">
+        <div class="forgot-text">
+          <span>Enter your email address that</span>
+          <span> you used to register.</span>
+        </div>
+        <div class="forgot-second-text">
+          <span>We'll send you an email with</span>
+          <span>your username and a link to</span>
+          <span>reset your password.</span>
+        </div>
+        <form id="forgot-form" method="post" role="form" action="#">
+          <fieldset>
+            <ed-icon-input type="email" placeholder="Your Email" icon="add189"></ed-icon-input>
+          </fieldset>
+          <button id="forgot-submit" type="submit">Submit</button>
+        </form>
+        <button id="back-button" type="button" href="#">
+          back
+        </button>
+      </div>
+    </div>
+  </template>
+  <script src="ed-forgot-view.js"></script>
+</polymer-element>

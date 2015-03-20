@@ -35,68 +35,70 @@
 
 <body unresolved>
 
-<app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
-  <app-route path="/home">
-    <template>
-      <h1>Testing, is this thing on? You are home now.</h1>
-      <a href="#/">Go Back to Main</a>
-    </template>
-  </app-route>
+<ed-forgot-view></ed-forgot-view>
 
-  <!-- LOGIN -->
-  <app-route path="/login" element="ed-login-view"></app-route>
+<!--<app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">-->
+  <!--<app-route path="/home">-->
+    <!--<template>-->
+      <!--<h1>Testing, is this thing on? You are home now.</h1>-->
+      <!--<a href="#/">Go Back to Main</a>-->
+    <!--</template>-->
+  <!--</app-route>-->
 
-  <!-- REGISTRATION -->
-  <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view"></app-route>
+  <!--&lt;!&ndash; LOGIN &ndash;&gt;-->
+  <!--<app-route path="/login" element="ed-login-view"></app-route>-->
 
-  <!-- ONBOARDING -->
-  <app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>
-  <app-route path="/onboarding" redirect="/onboarding/like"></app-route>
+  <!--&lt;!&ndash; REGISTRATION &ndash;&gt;-->
+  <!--<app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view"></app-route>-->
 
-  <!--<app-route path=""-->
-  <!-- REMOVE FOR PRODUCTION -->
-  <!-- POC Viewer page -->
-  <app-route path="/poc">
-    <template>
-      <poc-viewer class="left" element-name="poc-mixins" path="poc/poc-mixins"></poc-viewer>
-    </template>
-  </app-route>
+  <!--&lt;!&ndash; ONBOARDING &ndash;&gt;-->
+  <!--<app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>-->
+  <!--<app-route path="/onboarding" redirect="/onboarding/like"></app-route>-->
 
-  <!-- Breakpoints POC page -->
-  <app-route path="/poc-bp">
-    <template>
-      <poc-bp style="display:block; float: left; clear: both; margin: 20px;"></poc-bp>
-    </template>
-  </app-route>
-  <!-- END REMOVE FOR PRODUCTION -->
+  <!--&lt;!&ndash;<app-route path=""&ndash;&gt;-->
+  <!--&lt;!&ndash; REMOVE FOR PRODUCTION &ndash;&gt;-->
+  <!--&lt;!&ndash; POC Viewer page &ndash;&gt;-->
+  <!--<app-route path="/poc">-->
+    <!--<template>-->
+      <!--<poc-viewer class="left" element-name="poc-mixins" path="poc/poc-mixins"></poc-viewer>-->
+    <!--</template>-->
+  <!--</app-route>-->
 
-  <!-- catch all route, 404 page? or redirect... -->
-  <app-route path="*">
-    <template>
-      <style>
-        nav {
-          font-size: 1.5rem;
-          margin: 20px;
-        }
+  <!--&lt;!&ndash; Breakpoints POC page &ndash;&gt;-->
+  <!--<app-route path="/poc-bp">-->
+    <!--<template>-->
+      <!--<poc-bp style="display:block; float: left; clear: both; margin: 20px;"></poc-bp>-->
+    <!--</template>-->
+  <!--</app-route>-->
+  <!--&lt;!&ndash; END REMOVE FOR PRODUCTION &ndash;&gt;-->
 
-        nav > a {
-          float: left;
-          clear: both;
-        }
-      </style>
-      <h1>Routes</h1>
-      <nav>
-        <a href="#/home">Home</a>
-        <a href="#/login">Login</a>
-        <a href="#/register">Register (/register)</a>
-        <a href="#/registration">Register (/registration)</a>
-        <a href="#/onboarding">Onboarding</a>
-        <a href="#/poc">POC Viewer Page</a>
-        <a href="#/poc-bp">POC Breakpoint Page</a>
-      </nav>
-    </template>
-  </app-route>
-</app-router>
+  <!--&lt;!&ndash; catch all route, 404 page? or redirect... &ndash;&gt;-->
+  <!--<app-route path="*">-->
+    <!--<template>-->
+      <!--<style>-->
+        <!--nav {-->
+          <!--font-size: 1.5rem;-->
+          <!--margin: 20px;-->
+        <!--}-->
+
+        <!--nav > a {-->
+          <!--float: left;-->
+          <!--clear: both;-->
+        <!--}-->
+      <!--</style>-->
+      <!--<h1>Routes</h1>-->
+      <!--<nav>-->
+        <!--<a href="#/home">Home</a>-->
+        <!--<a href="#/login">Login</a>-->
+        <!--<a href="#/register">Register (/register)</a>-->
+        <!--<a href="#/registration">Register (/registration)</a>-->
+        <!--<a href="#/onboarding">Onboarding</a>-->
+        <!--<a href="#/poc">POC Viewer Page</a>-->
+        <!--<a href="#/poc-bp">POC Breakpoint Page</a>-->
+      <!--</nav>-->
+    <!--</template>-->
+  <!--</app-route>-->
+<!--</app-router>-->
 
 <!-- REMOVE FOR PRODUCTION -->
 <script id="reload-tag" type="text/javascript">
