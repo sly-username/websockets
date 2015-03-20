@@ -1,3 +1,4 @@
+/*eslint strict: [ 2, "global"], no-sync: 0*/
 "use strict";
 var koa = require( "koa" ),
   send = require( "koa-send" ),

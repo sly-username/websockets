@@ -18,7 +18,7 @@
     "destructuring": true,
     "forOf": true,
     "generators": true,
-//    "modules": true,
+//    "modules": true, // <-- also contributes to breaking "strict" rule
     "objectLiteralComputedProperties": true,
     "objectLiteralDuplicateProperties": true,
     "objectLiteralShorthandMethods": true,

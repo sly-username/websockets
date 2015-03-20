@@ -1,3 +1,4 @@
+/*eslint strict: [2, "global"]*/
 "use strict";
 var config = require( "./config.paths.js" );
 
