@@ -1,3 +1,4 @@
+/*eslint consistent-this: 0 */
 var readOnly = function( value ) {
     return {
       configurable: false,

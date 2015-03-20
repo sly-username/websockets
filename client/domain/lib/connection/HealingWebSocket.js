@@ -1,28 +1,30 @@
-/* jshint strict:false */
+/*eslint no-inline-comments: 0, consistent-this: 0*/
+var
+  socket = Symbol( "socket" ), // jshint ignore:line
+  heal = Symbol( "heal" ), // jshint ignore:line
+  socketEvents = [ "open", "close", "message", "error" ],
+  createSocket;
 
 import EventEmitter from "domain/lib/event/EventEmitter";
 
-var socket = Symbol( "socket" ), // jshint ignore:line
-  heal = Symbol( "heal" ), // jshint ignore:line
-  socketEvents = [ "open", "close", "message", "error" ],
-  /**
-   *
-   * @param self { HealingWebSocket }
-   * @param url { String }
-   * @param protocols { Array<String> }
-   * @returns { WebSocket }
-   */
-  createSocket = function( self, url, protocols ) {
-    var oldSocket = self[ socket ];
+/**
+ *
+ * @param self { HealingWebSocket }
+ * @param url { String }
+ * @param protocols { Array<String> }
+ * @returns { WebSocket }
+ */
+createSocket = function( self, url, protocols ) {
+  var oldSocket = self[ socket ];
 
-    self[ socket ] = ( protocols == null ) ?
-      new WebSocket( url ) :
-      new WebSocket( url, protocols );
+  self[ socket ] = protocols == null ?
+    new WebSocket( url ) :
+    new WebSocket( url, protocols );
 
-    EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
+  EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
 
-    return oldSocket;
-  };
+  return oldSocket;
+};
 
 export default class HealingWebSocket extends EventEmitter {
   constructor( url, protocols ) {
