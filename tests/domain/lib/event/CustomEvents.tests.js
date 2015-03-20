@@ -20,18 +20,15 @@
       test( "if browser doesn't support CustomEvent constructor, deprecated createEvent constructor is used, ", function() {
         var event = new CustomEvents( "parameters" );
 
-
       });
 
       test( "if browser doesn't support CustomEvent constructor, error is thrown, ", function() {
         var event = new CustomEvents( "parameters" );
 
-
       });
 
       test( "if browser supports CustomEvent constructor, that constructor is used, ", function() {
         var event = new CustomEvents( "parameters" );
-
 
       });
     });

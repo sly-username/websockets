@@ -1,23 +1,20 @@
-export default class CustomEvents {
-  constructor( name, description ) {
+export function CustomEvents( eventName, eventType, description, ...extraParams ) {
 
+  //check if supported. use try/catch
+  try {
+    //if ( window["CustomEvent"] === undefined ); not sure what to write here
+  } catch( err ) {
+    throw new TypeError( "Dispatch was not called with proper Event object" );
   }
 
-  createEvent( eventName, name, description, ...extraParams ) {
-    // check if supported. use try/catch
-    // try {
-    //  /* if browser supports customEvent */
-    // } catch( err ) {
-    //  throw new TypeError( "Dispatch was not called with proper Event object" );
-    // }
+  extraParams = { bubbles=false, cancelable=false, detail=undefined };
 
-    // extraParams = { bubbles=false, cancelable=false, detail=undefined };
-
-    //if ( window["CustomEvent"] === undefined ) {
-    //  eventName = document.createEvent( "Event" );
-    //  eventName.initEvent( name, bubbles, cancelable )
-    //} else {
-    //  eventName = new CustomEvent( name, "description" );
-    //}
+  if ( window["CustomEvent"] === undefined ) {
+    eventName = document.createEvent( eventType );
+    eventName.initEvent( name, bubbles, ...extraParams );
+    return eventName;
+  } else {
+    eventName = new CustomEvent( eventType, description );
   }
+
 }
