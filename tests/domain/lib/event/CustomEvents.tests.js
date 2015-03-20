@@ -35,12 +35,13 @@
 
       test( "when browser supports CustomEvent constructor", function() {
         var descriptor = {
-            detail: "something"
+            detail: {
+              something: true
+            }
           },
           event = new CustomEvents( "open", descriptor );
 
-        console.log( event.constructor );
-
+        console.log( event );
         expect( event )
           .to.be.an.instanceOf( Event );
       });
