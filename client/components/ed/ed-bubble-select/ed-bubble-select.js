@@ -25,6 +25,7 @@
     },
     ready: function() {
       this.checkboxField = this.shadowRoot.getElementById( "checkbox-field" );
+      this.bubbleSelect = this.shadowRoot.getElementById( "ed-bubble" );
 
       this.addEventListener( "click", function() {
         if ( this.hasAttribute( "disabled" ) ) {
@@ -33,8 +34,11 @@
 
         this.checked = !this.checked;
         this[ this.checked ? "setAttribute" : "removeAttribute" ]( "checked", "" );
-        this.children[ 0 ].style.transform = "scale(1)";
       });
+
+      if ( this.hasAttribute( "checked" ) && this.hasAttribute( "image" ) ) {
+        this.bubbleSelect.style.backgroundImage = "url(\"" + this.getAttribute( "image" ) + "\");";
+      }
     },
     attached: function() {
       copyAttributes( this, this.checkboxField, [ "checked", "disabled", "required" ]);
