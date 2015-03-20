@@ -1,8 +1,8 @@
-<polymer-element name="ed-bubble-select" attributes="name value disabled required checked">
+<polymer-element name="ed-bubble-select" attributes="name view-type genre image value disabled required checked">
   <template>
     <link rel="stylesheet" href="./ed-bubble-select.css">
     <div class="wrapper">
-      <div class="ed-bubble"><content></content></div>
+      <div class="ed-bubble {{genre}}"><content></content></div>
         <input id="checkbox-field" type="checkbox"
           name={{name}} value={{value}}
           disabled?="{{disabled}}"

@@ -1,15 +1,72 @@
 @import "../styles/ed/colors.vars.less";
 @import "mixins/prefixes/transforms.less";
 
+
 :host {
   float: left;
   max-width: 34.2rem;
   width: 33.3%
 }
 
-:host([checked]) {
+.tealGradient( @image ) {
+  background-image: linear-gradient(to bottom, rgba(0, 164, 158, 0.5) 0%, rgba(0, 164, 158, 0.5) 100%), @image;
+}
+
+.redGradient( @image ) {
+  background-image: linear-gradient(to bottom, rgba(223, 0, 41, 0.5) 0%, rgba(223, 0, 41, 0.5) 100%), @image;
+}
+
+:host([checked][view-type="like"]) {
+  .rock {
+    .tealGradient( url( "http://i.imgur.com/gdkaI.jpg" ) );
+  }
+  .pop {
+    .tealGradient( url( "http://i.imgur.com/zKrqcZG.jpg" ) );
+  }
+  .alternative {
+    .tealGradient( url( "http://i.imgur.com/qx0x61Y.jpg" ) );
+  }
+  .country {
+    .tealGradient( url( "http://i.imgur.com/Erh7Qos.jpg" ) );
+  }
+  .hip-hop {
+    .tealGradient( url( "http://i.imgur.com/ZdGQlue.jpg" ) );
+  }
+  .dance {
+    .tealGradient( url( "http://i.imgur.com/51iyLhE.jpg" ) );
+  }
+}
+
+:host([checked][view-type="dislike"]) {
+  .rock {
+    .redGradient( url( "http://i.imgur.com/gdkaI.jpg" ) );
+  }
+  .pop {
+    .redGradient( url( "http://i.imgur.com/zKrqcZG.jpg" ) );
+  }
+  .alternative {
+    .redGradient( url( "http://i.imgur.com/qx0x61Y.jpg" ) );
+  }
+  .country {
+    .redGradient( url( "http://i.imgur.com/Erh7Qos.jpg" ) );
+  }
+  .hip-hop {
+    .redGradient( url( "http://i.imgur.com/ZdGQlue.jpg" ) );
+  }
+  .dance {
+    .redGradient( url( "http://i.imgur.com/51iyLhE.jpg" ) );
+  }
+}
+
+:host([view-type="dislike"]) {
   .ed-bubble {
-    background-image: linear-gradient(to bottom, rgba(0, 164, 158, 0.5) 0%, rgba(0, 164, 158, 0.5) 100%), url( http://i.imgur.com/gdkaI.jpg );
+    background: @darkOrange1;
+  }
+}
+
+:host([view-type="like"]) {
+  .ed-bubble {
+    background: @originalPurple;
   }
 }
 
@@ -34,7 +91,6 @@ input[type="checkbox"] {
   padding: 50% 0;
   border-radius: 50%;
   line-height: 0;
-  background: @originalPurple;
   color: @white;
   text-align: center;
   font-size: 2.3rem;
