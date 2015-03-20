@@ -6,25 +6,33 @@
  * @constructor
  */
 
-  // check if supported via try/catch
-export default function( name, descriptor ) {
-  descriptor = {};
-  var event;
+var tmpEvent, createEvent,
+  createWithConstructor = function( name, descriptor ) {
+    return new CustomEvent( name, descriptor );
+  },
+  createWithInit = function( name, descriptor ) {
+    var event = document.createEvent( "CustomEvent" );
+    descriptor = descriptor || {};
 
+    event.initCustomEvent(
+      name,
+      descriptor.bubbles || false,
+      descriptor.cancelable || false,
+      descriptor.detail || {}
+    );
+
+    return event;
+  };
+
+if ( window ) {
   try {
-    if ( window.CustomEvent === undefined ) {
-      throw "Dispatch was not called with proper Event object";
-    }
-  } catch ( err ) {
-    console.log( err );
-  }
-
-  if ( window.CustomEvent === undefined ) {
-    event = document.createEvent( "CustomEvent" );
-    event.initCustomEvent( name, false, false, undefined );
-    return event;
-  } else {
-    event = new CustomEvent( name, descriptor );
-    return event;
+    tmpEvent = new CustomEvent( "test" );
+    createEvent = createWithConstructor;
+  } catch ( error ) {
+    // use fallback method
+    createEvent = createWithInit;
   }
 }
+
+// check if supported via try/catch
+export default createEvent;

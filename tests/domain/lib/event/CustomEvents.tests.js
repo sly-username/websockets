@@ -1,37 +1,62 @@
+/*eslint env:"mocha"*/
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "CustomEvents", function() {
-    var CustomEvents;
+    var createEvent;
 
     suiteSetup( function( done ) {
       System.import( "domain/lib/event/CustomEvents" )
         .then( function( imported ) {
-          CustomEvents = imported.default;
+          createEvent = imported.default;
           done();
         }, function( error ) {
-          console.warn( "Could not import 'CustomEvents' for testing: ", error.message );
+          console.warn( "Could not import 'createEvent' for testing: ", error.message );
           console.error( error.stack );
           done( error );
         });
     });
 
     // Tests begin
-    suite( "browser support", function() {
+    suite( "Properties", function() {
+      // instanceof Event
+      test( "instance of Event", function() {
+        
+      });
+      // passing detail, makes detail on event obj
+      // passing bubbles false, makes event.bubbles = false
+      // cancelable
+    });
+
+    suite( "Acts like Native Event", function() {
+      test( "can bubble through DOM", function() {
+        // create event
+        // add listener(spy) for event on window
+        // dispatchEvent on some element
+        // make sure window handler was calledOnce
+      });
+      // cancelable
+        // create event
+        // add listener to body that calls event.stopPropagation()
+        // add listener(spy) to window
+        // dispatch event on body
+        // assert that window spy was not called
+    });
+
+    suite.skip( "browser support", function() {
       test( "when browser doesn't support CustomEvent constructor", function() {
         var descriptor = {
             detail: "something"
           },
-          event = new CustomEvents( "open", descriptor );
-
-        window.CustomEvent = undefined;
-        console.log( window.CustomEvent === undefined );
+          stub = sinon.stub( window, "CustomEvent", function() {
+            throw new Error( "Throw all the things" );
+          }),
+          event = createEvent( "open", descriptor );
 
         expect( event )
           .to.be.an.instanceOf( Event );
 
-        //expect( event )
-        //  .to.throw( err );
+        stub.restore();
       });
 
       test( "when browser supports CustomEvent constructor", function() {
@@ -40,11 +65,7 @@
               something: true
             }
           },
-          event;
-
-        console.log( window.CustomEvent === undefined );
-
-        event = new CustomEvents( "open", descriptor );
+          event = createEvent( "open", descriptor );
 
         expect( event )
           .to.be.an.instanceOf( Event );

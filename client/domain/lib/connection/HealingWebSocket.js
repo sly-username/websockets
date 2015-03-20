@@ -1,7 +1,7 @@
 /* jshint strict:false */
 
 import EventEmitter from "domain/lib/event/EventEmitter";
-import CustomizedEvent from "../event/CustomEvents";
+import createEvent from "../event/CustomEvents";
 
 var socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
@@ -92,7 +92,7 @@ export default class HealingWebSocket extends EventEmitter {
           oldSocket: oldSocket
         }
       },
-      healEvent = new CustomizedEvent( "heal", descriptor );
+      healEvent = createEvent( "heal", descriptor );
 
     this.dispatch( healEvent );
 
