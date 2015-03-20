@@ -6,19 +6,21 @@
         <span>Tap up to 3 genres</span>
         <span>you want to hear</span>
       </div>
-      <div class="ed-genre-bubbles">
-        <ed-bubble-select view-type="like" genre="pop">pop</ed-bubble-select>
-        <ed-bubble-select view-type="like" genre="rock">rock</ed-bubble-select>
-        <ed-bubble-select view-type="like" genre="alternative">alternative</ed-bubble-select>
-      </div>
-      <div class="alternate-bubbles">
-        <ed-bubble-select view-type="like" genre="hip-hop">hip-hop</ed-bubble-select>
-        <ed-bubble-select view-type="like" genre="country">country</ed-bubble-select>
-        <ed-bubble-select view-type="like" genre="dance">dance</ed-bubble-select>
-      </div>
-      <button id="next-button" type="button" href="#">
-        Next
-      </button>
+      <form>
+        <div class="ed-genre-bubbles">
+          <ed-bubble-select view-type="like" genre="pop">pop</ed-bubble-select>
+          <ed-bubble-select view-type="like" genre="rock">rock</ed-bubble-select>
+          <ed-bubble-select view-type="like" genre="alternative">alternative</ed-bubble-select>
+        </div>
+        <div class="alternate-bubbles">
+          <ed-bubble-select view-type="like" genre="hip-hop">hip-hop</ed-bubble-select>
+          <ed-bubble-select view-type="like" genre="country">country</ed-bubble-select>
+          <ed-bubble-select view-type="like" genre="dance">dance</ed-bubble-select>
+        </div>
+        <button id="next-button" type="submit" href="#">
+          Next
+        </button>
+      </form>
     </div>
   </template>
   <script src="ed-liked-view.js"></script>
