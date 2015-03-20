@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-forgot2-view", {
+  polymer( "ed-forgot-sent-view", {
     /* LIFECYCLE */
     ready: function() {
       this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
@@ -17,10 +17,6 @@
       } else {
         this.submitButton.setAttribute( "disabled", "" );
       }
-    },
-    detached: function() {},
-    attributeChanged: function( attrName, oldValue, newValue ) {}
-    /* PROPERTIES */
-    /* METHODS */
+    }
   });
 })( window.Polymer );
