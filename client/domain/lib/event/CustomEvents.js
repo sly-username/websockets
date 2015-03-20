@@ -22,11 +22,9 @@ export default function( name, descriptor ) {
   if ( window.CustomEvent === undefined ) {
     event = document.createEvent( "CustomEvent" );
     event.initCustomEvent( name, false, false, undefined );
-    console.log( event );
     return event;
   } else {
     event = new CustomEvent( name, descriptor );
-    console.log( event );
     return event;
   }
 }

@@ -392,6 +392,7 @@
           oldSocket = hws[ socketSym ];
 
         hws.on( "heal", function( event ) {
+
           expect( event )
             .to.be.an.instanceof( CustomEvent )
             .to.have.property( "type", "heal" );

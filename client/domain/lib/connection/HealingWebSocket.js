@@ -92,14 +92,7 @@ export default class HealingWebSocket extends EventEmitter {
           oldSocket: oldSocket
         }
       },
-      healEvent = new CustomizedEvent( "heal", {
-        detail: {
-          oldSocket: oldSocket
-        }
-      } );
-
-    console.log( "are you getting here?", descriptor );
-    console.log( healEvent );
+      healEvent = new CustomizedEvent( "heal", descriptor );
 
     this.dispatch( healEvent );
 
