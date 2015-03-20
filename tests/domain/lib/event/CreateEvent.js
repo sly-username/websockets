@@ -2,7 +2,7 @@
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
-  suite( "CustomEvents", function() {
+  suite( "CreateEvent", function() {
     var createEvent;
 
     suiteSetup( function( done ) {
@@ -11,7 +11,7 @@
           createEvent = imported.default;
           done();
         }, function( error ) {
-          console.warn( "Could not import 'createEvent' for testing: ", error.message );
+          console.warn( "Could not import 'CreateEvent' for testing: ", error.message );
           console.error( error.stack );
           done( error );
         });
@@ -21,9 +21,16 @@
     suite( "Properties", function() {
       // instanceof Event
       test( "instance of Event", function() {
+        var event = createEvent( "open", descriptor );
+
+        expect( event )
+          .to.be.an.instanceOf( Event );
 
       });
       // passing detail, makes detail on event obj
+      test( "", function() {
+
+      });
       // passing bubbles false, makes event.bubbles = false
       // cancelable
     });
