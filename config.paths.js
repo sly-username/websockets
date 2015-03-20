@@ -338,6 +338,13 @@ paths.dgeni = {
   }
 };
 
+/*** ENVBUILD PATHS ***/
+paths.envBuild = {
+  src: [
+    join( paths.client, "domain/ed/urls", "*.js" )
+  ]
+};
+
 /*** TODO ***/
 
 // Export!
