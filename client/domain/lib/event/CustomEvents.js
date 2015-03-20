@@ -7,28 +7,27 @@
  */
 
   // check if supported via try/catch
-export default function CustomEvents( name, descriptor ) {
+export default function( name, descriptor ) {
   descriptor = {};
-  var event;
+  var event,
+    ourEvent = function( name, bubbles = false, cancelable = false, detail = undefined ) {
+      event = document.createEvent( "CustomEvent" );
+      event.initCustomEvent( name, bubbles, cancelable, detail );
+      return event;
+    };
 
   try {
     if ( window.CustomEvent === undefined ) {
       throw "Dispatch was not called with proper Event object";
     }
   } catch ( err ) {
-    // not sure what is supposed to go here
     console.log( err );
   }
 
   if ( window.CustomEvent === undefined ) {
-    function CustomEvent( name, bubbles = false, cancelable = false, detail = undefined ) {
-      event = document.createEvent( CustomEvent );
-      event.initCustomEvent( name, bubbles, cancelable, detail );
-      return event;
-    }
-    CustomEvent.prototype = this.Event.prototype;
-    this.CustomEvent = CustomEvent;
+    ourEvent.prototype = window.Event.prototype;
+    window.CustomEvent = ourEvent;
   } else {
     event = new CustomEvent( name, descriptor );
   }
-};
+}

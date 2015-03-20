@@ -1,6 +1,4 @@
 /* jshint strict:false */
-import CustomEvents from "domain/lib/event/CustomEvents";
-
 var handlerMap = Symbol( "handlerMap" ); // jshint ignore:line
 
 /** @class EventEmitter */
