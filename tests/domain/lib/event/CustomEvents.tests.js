@@ -24,17 +24,13 @@
           },
           event = new CustomEvents( "open", descriptor );
 
-        console.log( "are you getting here?" );
         window.CustomEvent = undefined;
-
-        expect( event.constructor )
-          .to.equal( CustomEvents );
 
         expect( event )
           .to.be.an.instanceOf( Event );
 
-        //expect( event )
-        //  .to.throw( err );
+        expect( event )
+          .to.throw( err );
       });
 
       test( "when browser supports CustomEvent constructor", function() {
@@ -43,8 +39,7 @@
           },
           event = new CustomEvents( "open", descriptor );
 
-        expect( event.constructor )
-          .to.equal( CustomEvents );
+        console.log( event.constructor );
 
         expect( event )
           .to.be.an.instanceOf( Event );

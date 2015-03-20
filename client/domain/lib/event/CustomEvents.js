@@ -9,12 +9,7 @@
   // check if supported via try/catch
 export default function( name, descriptor ) {
   descriptor = {};
-  var event,
-    ourEvent = function( name, bubbles = false, cancelable = false, detail = undefined ) {
-      event = document.createEvent( "CustomEvent" );
-      event.initCustomEvent( name, bubbles, cancelable, detail );
-      return event;
-    };
+  var event;
 
   try {
     if ( window.CustomEvent === undefined ) {
@@ -25,9 +20,11 @@ export default function( name, descriptor ) {
   }
 
   if ( window.CustomEvent === undefined ) {
-    ourEvent.prototype = window.Event.prototype;
-    window.CustomEvent = ourEvent;
+    event = document.createEvent( "CustomEvent" );
+    event.initCustomEvent( name, false, false, undefined );
   } else {
     event = new CustomEvent( name, descriptor );
   }
+
+  return event;
 }
