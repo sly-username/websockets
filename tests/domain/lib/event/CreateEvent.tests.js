@@ -19,20 +19,51 @@
 
     // Tests begin
     suite( "Properties", function() {
-      // instanceof Event
+
       test( "instance of Event", function() {
-        var event = createEvent( "open", descriptor );
+        var descriptor = {},
+          event = createEvent( "open", descriptor );
 
         expect( event )
           .to.be.an.instanceOf( Event );
-
       });
-      // passing detail, makes detail on event obj
-      test( "", function() {
 
+      test( "passing descriptor parameter creates detail property on event object", function() {
+        var descriptor = {
+            detail: {
+              something: "for nothing"
+            }
+          },
+          event = createEvent( "open", descriptor );
+
+        expect( event )
+          .to.have.property( "detail" )
+          .to.deep.equal({
+          something: "for nothing"
+            });
       });
-      // passing bubbles false, makes event.bubbles = false
-      // cancelable
+
+      test( "setting bubbles to true, makes event.bubbles = true", function() {
+        var descriptor = {
+            bubbles: true
+          },
+          event = createEvent( "open", descriptor );
+
+        expect( event )
+          .to.have.property( "bubbles" )
+          .to.deep.equal( true );
+      });
+
+      test( "setting cancelable to true, makes event.cancelable = true", function() {
+        var descriptor = {
+            cancelable: true
+          },
+          event = createEvent( "open", descriptor );
+
+        expect( event )
+          .to.have.property( "cancelable" )
+          .to.deep.equal( true );
+      });
     });
 
     suite( "Acts like Native Event", function() {
@@ -41,6 +72,22 @@
         // add listener(spy) for event on window
         // dispatchEvent on some element
         // make sure window handler was calledOnce
+        var eventTarget = document.createElement( "button" ),
+          descriptor = {
+            bubbles: true
+          },
+          event = createEvent( "click", descriptor ),
+          eventHandler = function() {},
+          windowSpy = sinon.spy( window, eventHandler );
+
+        eventTarget.addEventListener( event, eventHandler );
+        eventTarget.dispatchEvent( event );
+
+        expect( windowSpy )
+          .to.have.callCount( 1 )
+          .and.to.have.been.calledWith( event );
+
+        windowSpy.restore();
       });
       // cancelable
         // create event
@@ -48,6 +95,25 @@
         // add listener(spy) to window
         // dispatch event on body
         // assert that window spy was not called
+      test( "cancelable calls stopPropagation and prevents bubbling", function() {
+        var descriptor = {
+            cancelable: true
+          },
+          event = createEvent( "click", descriptor ),
+          eventHandler = function() {},
+          cancelHandler = event.stopPropagation(),
+          windowSpy = sinon.spy( window, eventHandler ),
+          body;
+
+        body.addEventListener( event, cancelHandler );
+        body.addEventListener( event, eventHandler );
+        body.dispatchEvent( event );
+
+        expect( windowSpy )
+          .to.have.callCount( 0 );
+
+        windowSpy.restore();
+      });
     });
 
     suite.skip( "browser support", function() {

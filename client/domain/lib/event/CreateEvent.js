@@ -1,11 +1,3 @@
-/**
- *
- * @param name
- * @param descriptor
- * @returns {*|Event}
- * @constructor
- */
-
 var tmpEvent, createEvent,
   createWithConstructor = function( name, descriptor ) {
     return new CustomEvent( name, descriptor );
