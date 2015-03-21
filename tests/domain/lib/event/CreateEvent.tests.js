@@ -72,30 +72,36 @@
         // add listener(spy) for event on window
         // dispatchEvent on some element
         // make sure window handler was calledOnce
-        var eventTarget = document.createElement( "button" ),
-          descriptor = {
+        var descriptor = {
             bubbles: true
           },
-          event = createEvent( "click", descriptor ),
-          eventHandler = function() {},
-          windowSpy = sinon.spy( window, eventHandler );
+          event = createEvent( "tesst", descriptor ),
+          bodyHandler = function() {
+            return;
+          },
+          windowHandler = function() {},
+          windowSpy;
 
-        eventTarget.addEventListener( event, eventHandler );
-        eventTarget.dispatchEvent( event );
+        window.addEventListener( event, windowHandler );
+
+        windowSpy = sinon.spy( window, "" );
+
+        document.addEventListener( event, bodyHandler );
+        document.dispatchEvent( event );
 
         expect( windowSpy )
           .to.have.callCount( 1 )
-          .and.to.have.been.calledWith( event );
+          .and.to.have.been.calledWith( windowHandler );
 
         windowSpy.restore();
       });
-      // cancelable
-        // create event
-        // add listener to body that calls event.stopPropagation()
-        // add listener(spy) to window
-        // dispatch event on body
-        // assert that window spy was not called
       test( "cancelable calls stopPropagation and prevents bubbling", function() {
+        // cancelable
+          // create event
+          // add listener to body that calls event.stopPropagation()
+          // add listener(spy) to window
+          // dispatch event on body
+          // assert that window spy was not called
         var descriptor = {
             cancelable: true
           },
