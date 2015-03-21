@@ -67,34 +67,31 @@
     });
 
     suite( "Acts like Native Event", function() {
-      test( "can bubble through DOM", function() {
+      test( "can bubble through DOM", function( done ) {
         // create event
         // add listener(spy) for event on window
         // dispatchEvent on some element
         // make sure window handler was calledOnce
         var descriptor = {
-            bubbles: true
+            bubbles: true,
+            detail: {
+              hey: true
+            }
           },
-          event = createEvent( "tesst", descriptor ),
-          bodyHandler = function() {
-            return;
-          },
-          windowHandler = function() {},
-          windowSpy;
+          event = createEvent( "open", descriptor ),
+          windowHandler = function( bubbledEvent ) {
+            expect( bubbledEvent )
+              .to.have.property( "detail" )
+              .that.equals( descriptor.detail );
 
-        window.addEventListener( event, windowHandler );
+            done();
+          };
 
-        windowSpy = sinon.spy( window, "" );
+        window.addEventListener( "open", windowHandler );
 
-        document.addEventListener( event, bodyHandler );
-        document.dispatchEvent( event );
-
-        expect( windowSpy )
-          .to.have.callCount( 1 )
-          .and.to.have.been.calledWith( windowHandler );
-
-        windowSpy.restore();
+        document.body.dispatchEvent( event );
       });
+      
       test( "cancelable calls stopPropagation and prevents bubbling", function() {
         // cancelable
           // create event
@@ -108,12 +105,11 @@
           event = createEvent( "click", descriptor ),
           eventHandler = function() {},
           cancelHandler = event.stopPropagation(),
-          windowSpy = sinon.spy( window, eventHandler ),
-          body;
+          windowSpy = sinon.spy( window, eventHandler );
 
-        body.addEventListener( event, cancelHandler );
-        body.addEventListener( event, eventHandler );
-        body.dispatchEvent( event );
+        document.addEventListener( event, cancelHandler );
+        document.addEventListener( event, eventHandler );
+        document.dispatchEvent( event );
 
         expect( windowSpy )
           .to.have.callCount( 0 );
