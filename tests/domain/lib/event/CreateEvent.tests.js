@@ -136,32 +136,6 @@
         document.body.dispatchEvent( event );
       });
 
-      //test( "calling defaultPrevented prevents the event's default action will not occur", function() {
-      //  var descriptor = {
-      //      cancelable: true
-      //
-      //    },
-      //    event = createEvent( "click", descriptor ),
-      //    checkbox = document.createElement( "input" ),
-      //    preventHandler = function() {
-      //      event.defaultPrevented();
-      //    },
-      //      clickHandler = sinon.spy();
-      //
-      //    // TODO does this test need to use a websocket event?
-      //    // (fyi - message does not have a default action, does not bubble, is not cancelable)
-      //    // is this different than preventDefault?
-      //
-      //  document.body.appendChild( checkbox );
-      //  checkbox.addEventListener( "click", preventHandler );
-      //  checkbox.addEventListener( "click", clickHandler );
-      //
-      //  checkbox.dispatchEvent( event );
-      //
-      //  expect( clickHandler )
-      //    .to.have.callCount( 0 );
-      //});
-
       // TODO are we able to test this??
       test( "target should identify the element on which the event occurred", function() {
         var descriptor = {},
