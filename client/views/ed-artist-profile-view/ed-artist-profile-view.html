@@ -1,0 +1,41 @@
+<polymer-element name="ed-artist-profile-view" attributes="">
+  <template>
+    <link rel="stylesheet" href="./new-element.css">
+    <div class="wrapper">
+      <div class="rank-bar">
+        <div class="songs-rated-box"></div>
+        <div class="rank-box"></div>
+      </div>
+      <div class="image-wrapper">
+        <div class="profile-name">
+          <span></span>
+        </div>
+        <div class="profile-image"></div>
+      </div>
+      <div class="icon-section">
+        <div class="icon-header"></div>
+        <div class="icon-bar-wrapper">
+
+          <!-- icons go here -->
+        </div>
+      </div>
+
+      <template if="{{}}">
+        <div class="bio-section">
+          <div class="bio-header"></div>
+          <div class="bio-body">
+            <content></content>
+          </div>
+        </div>
+      </template>
+      <template if="{{}}">
+        <div class="bio-section">
+          <div class="bio-header"></div>
+          <div class="bio-ad"></div>
+        </div>
+      </template>
+
+    </div>
+  </template>
+  <script src="ed-artist-profile-view.js"></script>
+</polymer-element>
