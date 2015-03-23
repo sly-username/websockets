@@ -92,24 +92,21 @@
         document.body.dispatchEvent( event );
       });
 
-      test( "cancelable calls stopPropagation and prevents bubbling", function() {
-        // cancelable
-          // create event
-          // add listener to body that calls event.stopPropagation()
-          // add listener(spy) to window
-          // dispatch event on body
-          // assert that window spy was not called
+      test( "if event is cancelable, stopPropagation will prevent bubbling", function() {
         var descriptor = {
-            cancelable: true
+            bubbles: true,
+            cancelable: true,
+            detail: {
+              batman: "no parents"
+            }
           },
-          event = createEvent( "close", descriptor ),
+          event = createEvent( "open", descriptor ),
           stopHandler = event.stopPropagation(),
-          bodyHandler = function() {},
           windowHandler = sinon.spy();
 
-        document.body.addEventListener( "close", bodyHandler );
-        document.body.addEventListener( "close", stopHandler );
-        window.addEventListener( "close", windowHandler );
+        document.body.addEventListener( "open", stopHandler );
+
+        window.addEventListener( "open", windowHandler );
 
         document.body.dispatchEvent( event );
 
@@ -117,9 +114,36 @@
           .to.have.callCount( 0 );
       });
 
-      test( "calling preventDefault prevents the event's default action will not occur", function() {
+      test( "if event is not cancelable, calling stopPropagation will not prevent bubbling", function( done ) {
+        var descriptor = {
+            bubbles: true,
+            cancelable: false,
+            detail: {
+              batman: "no parents"
+            }
+          },
+          event = createEvent( "open", descriptor ),
+          stopHandler = event.stopPropagation(),
+          windowHandler = function( bubbledEvent ) {
+            expect( bubbledEvent )
+              .to.have.property( "detail" )
+              .that.equals( descriptor.detail );
+
+            done();
+          };
+
+        document.body.addEventListener( "open", stopHandler );
+        done();
+
+        window.addEventListener( "open", windowHandler );
+
+        document.body.dispatchEvent( event );
+      });
+
+      test( "calling defaultPrevented prevents the event's default action will not occur", function() {
         var descriptor = {
             cancelable: true
+
           },
           event = createEvent( "click", descriptor ),
           checkbox = document.createElement( "input" ),
@@ -129,7 +153,8 @@
             clickHandler = sinon.spy();
 
           // TODO does this test need to use a websocket event?
-          // (fyi - message does not have a default action, does not bubble, is not cancelable
+          // (fyi - message does not have a default action, does not bubble, is not cancelable)
+          // is this different than preventDefault?
 
         document.body.appendChild( checkbox );
         checkbox.addEventListener( "click", preventHandler );
@@ -141,8 +166,31 @@
           .to.have.callCount( 0 );
       });
 
-      test( "", function() {
-        
+      // TODO are we able to test this??
+      //test( "target should identify the element on which the event occurred", function() {
+      //  var descriptor = {},
+      //    event = createEvent( "click", descriptor ),
+      //    checkbox = document.createElement( "input" ),
+      //    clickHandler = sinon.spy();
+      //
+      //  document.body.appendChild( checkbox );
+      //  checkbox.addEventListener( "click", clickHandler );
+      //
+      //  document.body.dispatchEvent( event );
+      //
+        //expect( event )
+        //  .to.have.property( "target" )
+        //  .that.equals( checkbox );
+      //});
+
+      // TODO and this?
+      //test( "currentTarget should identify the current target for the event", function() {
+      //
+      //});
+
+      test( "detail property should return additional numerical information about the event", function() {
+        var descriptor = {},
+          event = createEvent( "click", descriptor );
       });
     });
 
