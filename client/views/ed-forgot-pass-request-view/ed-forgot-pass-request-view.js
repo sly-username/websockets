@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-retrieve-password-view", {
+  polymer( "ed-forgot-pass-request-view", {
     /* LIFECYCLE */
     ready: function() {},
     attached: function() {},

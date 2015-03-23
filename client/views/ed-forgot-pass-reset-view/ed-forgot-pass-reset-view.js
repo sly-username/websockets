@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-forgot-sent-view", {
+  polymer( "ed-forgot-pass-reset-view", {
     /* LIFECYCLE */
     ready: function() {
       this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
