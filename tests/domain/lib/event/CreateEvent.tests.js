@@ -19,7 +19,6 @@
 
     // Tests begin
     suite( "Properties", function() {
-
       test( "instance of Event", function() {
         var descriptor = {},
           event = createEvent( "open", descriptor );
@@ -63,6 +62,44 @@
         expect( event )
           .to.have.property( "cancelable" )
           .to.deep.equal( true );
+      });
+
+      test( "setting detail value, makes event.detail = detail.value", function() {
+        var descriptor = {
+            detail: {
+              benny: "spaceship"
+            }
+          },
+          event = createEvent( "click", descriptor ),
+          checkbox = document.createElement( "input" ),
+          clickHandler = function() {};
+
+        document.body.appendChild( checkbox );
+        checkbox.addEventListener( "click", clickHandler );
+
+        checkbox.dispatchEvent( event );
+
+        expect( event )
+          .to.have.property( "detail" )
+          .to.deep.equal({
+            benny: "spaceship"
+          });
+      });
+
+      test( "event.target should identify the element on which the event occurred", function() {
+        var descriptor = {},
+          event = createEvent( "click", descriptor ),
+          checkbox = document.createElement( "input" ),
+          clickHandler = sinon.spy();
+
+        document.body.appendChild( checkbox );
+        checkbox.addEventListener( "click", clickHandler );
+
+        checkbox.dispatchEvent( event );
+
+        expect( event )
+          .to.have.property( "target" )
+          .that.equals( checkbox );
       });
     });
 
@@ -135,47 +172,9 @@
 
         document.body.dispatchEvent( event );
       });
-
-      test( "target should identify the element on which the event occurred", function() {
-        var descriptor = {},
-          event = createEvent( "click", descriptor ),
-          checkbox = document.createElement( "input" ),
-          clickHandler = sinon.spy();
-
-        document.body.appendChild( checkbox );
-        checkbox.addEventListener( "click", clickHandler );
-
-        checkbox.dispatchEvent( event );
-
-        expect( event )
-          .to.have.property( "target" )
-          .that.equals( checkbox );
-      });
-
-      test( "detail property should return additional information about the event", function() {
-        var descriptor = {
-            detail: {
-              benny: "spaceship"
-            }
-          },
-          event = createEvent( "click", descriptor ),
-          checkbox = document.createElement( "input" ),
-          clickHandler = function() {};
-
-        document.body.appendChild( checkbox );
-        checkbox.addEventListener( "click", clickHandler );
-
-        checkbox.dispatchEvent( event );
-
-        expect( event )
-          .to.have.property( "detail" )
-          .to.deep.equal({
-             benny: "spaceship"
-           });
-      });
     });
 
-    suite.skip( "browser support", function() {
+    suite.skip( "Browser Support", function() {
       test( "when browser doesn't support CustomEvent constructor", function() {
         var descriptor = {
             detail: {
