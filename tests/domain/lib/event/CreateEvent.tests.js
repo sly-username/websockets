@@ -64,13 +64,6 @@
           .to.have.property( "cancelable" )
           .to.deep.equal( true );
       });
-
-      test( "calling preventDefault prevents the event's default action will not occur", function() {
-        var descriptor = {
-          cancelable: true
-        },
-          event = createEvent( "", descriptor );
-      });
     });
 
     suite( "Acts like Native Event", function() {
@@ -107,7 +100,7 @@
           // dispatch event on body
           // assert that window spy was not called
         var descriptor = {
-            cancelable: true,
+            cancelable: true
           },
           event = createEvent( "close", descriptor ),
           stopHandler = event.stopPropagation(),
@@ -122,6 +115,34 @@
 
         expect( windowHandler )
           .to.have.callCount( 0 );
+      });
+
+      test( "calling preventDefault prevents the event's default action will not occur", function() {
+        var descriptor = {
+            cancelable: true
+          },
+          event = createEvent( "click", descriptor ),
+          checkbox = document.createElement( "input" ),
+          preventHandler = function() {
+            event.defaultPrevented();
+          },
+            clickHandler = sinon.spy();
+
+          // TODO does this test need to use a websocket event?
+          // (fyi - message does not have a default action, does not bubble, is not cancelable
+
+        document.body.appendChild( checkbox );
+        checkbox.addEventListener( "click", preventHandler );
+        checkbox.addEventListener( "click", clickHandler );
+
+        document.body.dispatchEvent( event );
+
+        expect( clickHandler )
+          .to.have.callCount( 0 );
+      });
+
+      test( "", function() {
+        
       });
     });
 
