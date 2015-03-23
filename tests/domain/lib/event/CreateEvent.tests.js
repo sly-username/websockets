@@ -68,10 +68,6 @@
 
     suite( "Acts like Native Event", function() {
       test( "can bubble through DOM", function( done ) {
-        // create event
-        // add listener(spy) for event on window
-        // dispatchEvent on some element
-        // make sure window handler was calledOnce
         var descriptor = {
             bubbles: true,
             detail: {
@@ -97,7 +93,7 @@
             bubbles: true,
             cancelable: true,
             detail: {
-              batman: "no parents"
+              batman: "first try"
             }
           },
           event = createEvent( "open", descriptor ),
@@ -119,7 +115,7 @@
             bubbles: true,
             cancelable: false,
             detail: {
-              batman: "no parents"
+              batman: "i only work in black"
             }
           },
           event = createEvent( "open", descriptor ),
@@ -140,64 +136,78 @@
         document.body.dispatchEvent( event );
       });
 
-      test( "calling defaultPrevented prevents the event's default action will not occur", function() {
-        var descriptor = {
-            cancelable: true
+      //test( "calling defaultPrevented prevents the event's default action will not occur", function() {
+      //  var descriptor = {
+      //      cancelable: true
+      //
+      //    },
+      //    event = createEvent( "click", descriptor ),
+      //    checkbox = document.createElement( "input" ),
+      //    preventHandler = function() {
+      //      event.defaultPrevented();
+      //    },
+      //      clickHandler = sinon.spy();
+      //
+      //    // TODO does this test need to use a websocket event?
+      //    // (fyi - message does not have a default action, does not bubble, is not cancelable)
+      //    // is this different than preventDefault?
+      //
+      //  document.body.appendChild( checkbox );
+      //  checkbox.addEventListener( "click", preventHandler );
+      //  checkbox.addEventListener( "click", clickHandler );
+      //
+      //  checkbox.dispatchEvent( event );
+      //
+      //  expect( clickHandler )
+      //    .to.have.callCount( 0 );
+      //});
 
+      // TODO are we able to test this??
+      test( "target should identify the element on which the event occurred", function() {
+        var descriptor = {},
+          event = createEvent( "click", descriptor ),
+          checkbox = document.createElement( "input" ),
+          clickHandler = sinon.spy();
+
+        document.body.appendChild( checkbox );
+        checkbox.addEventListener( "click", clickHandler );
+
+        checkbox.dispatchEvent( event );
+
+        expect( event )
+          .to.have.property( "target" )
+          .that.equals( checkbox );
+      });
+
+      test( "detail property should return additional information about the event", function() {
+        var descriptor = {
+            detail: {
+              benny: "spaceship"
+            }
           },
           event = createEvent( "click", descriptor ),
           checkbox = document.createElement( "input" ),
-          preventHandler = function() {
-            event.defaultPrevented();
-          },
-            clickHandler = sinon.spy();
-
-          // TODO does this test need to use a websocket event?
-          // (fyi - message does not have a default action, does not bubble, is not cancelable)
-          // is this different than preventDefault?
+          clickHandler = function() {};
 
         document.body.appendChild( checkbox );
-        checkbox.addEventListener( "click", preventHandler );
         checkbox.addEventListener( "click", clickHandler );
 
-        document.body.dispatchEvent( event );
+        checkbox.dispatchEvent( event );
 
-        expect( clickHandler )
-          .to.have.callCount( 0 );
-      });
-
-      // TODO are we able to test this??
-      //test( "target should identify the element on which the event occurred", function() {
-      //  var descriptor = {},
-      //    event = createEvent( "click", descriptor ),
-      //    checkbox = document.createElement( "input" ),
-      //    clickHandler = sinon.spy();
-      //
-      //  document.body.appendChild( checkbox );
-      //  checkbox.addEventListener( "click", clickHandler );
-      //
-      //  document.body.dispatchEvent( event );
-      //
-        //expect( event )
-        //  .to.have.property( "target" )
-        //  .that.equals( checkbox );
-      //});
-
-      // TODO and this?
-      //test( "currentTarget should identify the current target for the event", function() {
-      //
-      //});
-
-      test( "detail property should return additional numerical information about the event", function() {
-        var descriptor = {},
-          event = createEvent( "click", descriptor );
+        expect( event )
+          .to.have.property( "detail" )
+          .to.deep.equal({
+             benny: "spaceship"
+           });
       });
     });
 
     suite.skip( "browser support", function() {
       test( "when browser doesn't support CustomEvent constructor", function() {
         var descriptor = {
-            detail: "something"
+            detail: {
+              wildstyle: "are you a dj"
+            }
           },
           stub = sinon.stub( window, "CustomEvent", function() {
             throw new Error( "Throw all the things" );
@@ -213,7 +223,7 @@
       test( "when browser supports CustomEvent constructor", function() {
         var descriptor = {
             detail: {
-              something: true
+              unikitty: "marry a marshmallow"
             }
           },
           event = createEvent( "open", descriptor );
@@ -224,7 +234,7 @@
         expect( event )
           .to.have.property( "detail" )
           .to.deep.equal({
-            something: true
+            unikitty: "marry a marshmallow"
           });
       });
     });
