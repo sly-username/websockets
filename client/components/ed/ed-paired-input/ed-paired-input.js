@@ -65,15 +65,20 @@
     regexCheck: function() {
       if ( this.primaryBox.validity.valid ) {
         this.errorDiv.innerHTML = "";
+        this.removeAttribute( "invalid-primary" );
       } else {
         this.errorDiv.innerHTML = "Password is not 8 characters long";
+        this.setAttribute( "invalid-primary", "" );
       }
     },
     keyConfirm: function() {
-      this.errorDiv.innerHTML =
-        this.isValid &&
-        this.primaryBox !== "" &&
-        this.confirmBox !== "" ? "" : "Passwords must match";
+      if ( this.isValid && this.primaryBox !== "" && this.confirmBox !== "" ) {
+        this.errorDiv.innerHTML = "";
+        this.removeAttribute( "invalid-confirm" );
+      } else {
+        this.errorDiv.innerHTML = "Passwords must match";
+        this.setAttribute( "invalid-confirm", "" );
+      }
     },
     attributeChanged: function( attrName, oldVal, newVal ) {
       if ( attrName === "type" ) {
