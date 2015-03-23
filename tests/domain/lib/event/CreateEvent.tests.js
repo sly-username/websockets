@@ -136,7 +136,6 @@
         document.body.dispatchEvent( event );
       });
 
-      // TODO are we able to test this??
       test( "target should identify the element on which the event occurred", function() {
         var descriptor = {},
           event = createEvent( "click", descriptor ),
