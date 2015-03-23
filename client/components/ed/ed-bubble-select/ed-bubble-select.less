@@ -1,6 +1,5 @@
-@import "../styles/ed/colors.vars.less";
-@import "mixins/prefixes/transforms.less";
-
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
 
 :host {
   float: left;
@@ -8,53 +7,31 @@
   width: 33.3%
 }
 
-.tealGradient( @image ) {
-  background-image: linear-gradient(to bottom, rgba(0, 164, 158, 0.5) 0%, rgba(0, 164, 158, 0.5) 100%), @image;
-}
-
-.redGradient( @image ) {
-  background-image: linear-gradient(to bottom, rgba(223, 0, 41, 0.5) 0%, rgba(223, 0, 41, 0.5) 100%), @image;
-}
-
-:host([checked][view-type="like"]) {
-  .rock {
-    .tealGradient( url( "http://i.imgur.com/gdkaI.jpg" ) );
-  }
-  .pop {
-    .tealGradient( url( "http://i.imgur.com/zKrqcZG.jpg" ) );
-  }
-  .alternative {
-    .tealGradient( url( "http://i.imgur.com/qx0x61Y.jpg" ) );
-  }
-  .country {
-    .tealGradient( url( "http://i.imgur.com/Erh7Qos.jpg" ) );
-  }
-  .hip-hop {
-    .tealGradient( url( "http://i.imgur.com/ZdGQlue.jpg" ) );
-  }
-  .dance {
-    .tealGradient( url( "http://i.imgur.com/51iyLhE.jpg" ) );
+:host([view-type="dislike"][checked]) {
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    padding: 50% 0;
+    border-radius: 50%;
+    background: @originalRed;
+    opacity: 0.5;
   }
 }
 
-:host([checked][view-type="dislike"]) {
-  .rock {
-    .redGradient( url( "http://i.imgur.com/gdkaI.jpg" ) );
-  }
-  .pop {
-    .redGradient( url( "http://i.imgur.com/zKrqcZG.jpg" ) );
-  }
-  .alternative {
-    .redGradient( url( "http://i.imgur.com/qx0x61Y.jpg" ) );
-  }
-  .country {
-    .redGradient( url( "http://i.imgur.com/Erh7Qos.jpg" ) );
-  }
-  .hip-hop {
-    .redGradient( url( "http://i.imgur.com/ZdGQlue.jpg" ) );
-  }
-  .dance {
-    .redGradient( url( "http://i.imgur.com/51iyLhE.jpg" ) );
+:host([view-type="like"][checked]) {
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    padding: 50% 0;
+    border-radius: 50%;
+    background: @originalTeal;
+    opacity: 0.5;
   }
 }
 
@@ -96,5 +73,4 @@ input[type="checkbox"] {
   font-size: 2.3rem;
   .transform( rotate(-30deg) );
 }
-
 
