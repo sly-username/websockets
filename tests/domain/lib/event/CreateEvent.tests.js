@@ -64,6 +64,13 @@
           .to.have.property( "cancelable" )
           .to.deep.equal( true );
       });
+
+      test( "calling preventDefault prevents the event's default action will not occur", function() {
+        var descriptor = {
+          cancelable: true
+        },
+          event = createEvent( "", descriptor );
+      });
     });
 
     suite( "Acts like Native Event", function() {
@@ -75,7 +82,7 @@
         var descriptor = {
             bubbles: true,
             detail: {
-              hey: true
+              batman: "no parents"
             }
           },
           event = createEvent( "open", descriptor ),
@@ -91,7 +98,7 @@
 
         document.body.dispatchEvent( event );
       });
-      
+
       test( "cancelable calls stopPropagation and prevents bubbling", function() {
         // cancelable
           // create event
@@ -100,21 +107,21 @@
           // dispatch event on body
           // assert that window spy was not called
         var descriptor = {
-            cancelable: true
+            cancelable: true,
           },
-          event = createEvent( "click", descriptor ),
-          eventHandler = function() {},
-          cancelHandler = event.stopPropagation(),
-          windowSpy = sinon.spy( window, eventHandler );
+          event = createEvent( "close", descriptor ),
+          stopHandler = event.stopPropagation(),
+          bodyHandler = function() {},
+          windowHandler = sinon.spy();
 
-        document.addEventListener( event, cancelHandler );
-        document.addEventListener( event, eventHandler );
-        document.dispatchEvent( event );
+        document.body.addEventListener( "close", bodyHandler );
+        document.body.addEventListener( "close", stopHandler );
+        window.addEventListener( "close", windowHandler );
 
-        expect( windowSpy )
+        document.body.dispatchEvent( event );
+
+        expect( windowHandler )
           .to.have.callCount( 0 );
-
-        windowSpy.restore();
       });
     });
 
@@ -150,7 +157,6 @@
           .to.deep.equal({
             something: true
           });
-
       });
     });
   });
