@@ -107,9 +107,9 @@ gulp.task( "build:dev", gulp.series(
     "less:dev",
     "symlink:dev",
     "vendor:dev",
-    "traceur:dev",
-    "envBuild:dev"
-  )
+    "traceur:dev"
+  ),
+  "envBuild:dev"
 ));
 
 /*** TESTING TASKS ***/

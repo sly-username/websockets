@@ -2,31 +2,30 @@
 var gulp = require( "gulp" ),
   symlink = require( "gulp-symlink" ),
   config = require( "../config.paths.js" ),
-  del = require( "del" );
+  runSymLinkEnv;
+
+runSymLinkEnv = function( src, env ) {
+  return gulp.src( src, { read: false } )
+    .pipe( symlink( function( file ) {
+      var oldPath = file.path.replace( "urls", "" ),
+        newPath = oldPath.replace( env, "urls" );
+      return newPath;
+    }));
+};
 
 gulp.task( "envBuild:dev", function() {
-  //return gulp.src( config.envBuild.src, { read: false } )
-  //  .pipe( symlink( function( file ) {
-  //    var newPath = file.path.replace( config.client, config.dev );
-  //    return newPath.replace( "urls", "" );
-  //  }));
-
-  return gulp.src( config.envBuild.src, { read: false } )
-    .pipe( gulp.dest( path.join( config.dev, "domain/ed" ) ) );
+  return runSymLinkEnv( config.envBuild.src.dev, "dev" );
 });
 
 gulp.task( "envBuild:prod", function() {
-  return gulp.src( config.envBuild.src, { read: false } )
-    .pipe( symlink( function( file ) {
-      var newPath = file.path.replace( config.client, config.prod );
-      return newPath.replace( "urls", "" );
-    }));
+  return runSymLinkEnv( config.envBuild.src.prod, "prod" );
 });
 
 gulp.task( "envBuild:qa", function() {
-  return gulp.src( config.envBuild.src, { read: false } )
+  return gulp.src( config.envBuild.src.qa, { read: false } )
     .pipe( symlink( function( file ) {
-      var newPath = file.path.replace( config.client, config.dev );
-      return newPath.replace( "urls", "" );
+      var oldPath = file.path.replace( "urls", "" ),
+        newPath = oldPath.replace( "qa", "urls" );
+      return newPath;
     }));
 });
