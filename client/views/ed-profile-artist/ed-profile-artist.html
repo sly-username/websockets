@@ -1,0 +1,60 @@
+<polymer-element name="ed-profile-artist" attributes="show-ad rated rank">
+  <template>
+    <link rel="stylesheet" href="./ed-profile-artist.css">
+    <div class="wrapper">
+      <div class="rank-bar">
+        <div class="back-icon">
+          <ed-icon name="add189"></ed-icon>
+        </div>
+        <div class="user-rank">
+          <div class="rank-text">Your
+            <span>rank</span>
+          </div>
+          <div class="rank-box">{{rank}}</div>
+        </div>
+        <div class="songs-rated">
+          <div class="songs-rated-text">Songs
+            <span>rated</span>
+          </div>
+          <div class="songs-rated-box">{{rated}}</div>
+        </div>
+      </div>
+      <div class="image-wrapper">
+        <div class="profile-name"> Toby Dogge
+          <span>Artist/Band</span>
+        </div>
+        <div class="profile-image">
+          <img src="http://i.imgur.com/6K8eazu.jpg"/>
+        </div>
+      </div>
+      <div class="icon-section">
+        <div class="icon-header">Rewards</div>
+        <hr>
+        <div class="icon-bar-wrapper">
+          <ed-icon name="add189"></ed-icon>
+          <ed-icon name="add189"></ed-icon>
+          <ed-icon name="add189"></ed-icon>
+          <ed-icon name="add189"></ed-icon>
+        </div>
+        <hr>
+      </div>
+
+      <template if="{{show-ad}}">
+        <div class="bio-section">
+          <div class="bio-header"></div>
+          <div class="bio-body">
+            <content></content>
+          </div>
+        </div>
+      </template>
+      <template if="{{!show-ad}}">
+        <div class="bio-section">
+          <div class="bio-header"></div>
+          <div class="bio-ad"></div>
+        </div>
+      </template>
+
+    </div>
+  </template>
+  <script src="ed-profile-artist.js"></script>
+</polymer-element>

@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-artist-profile-view", {
+  polymer( "ed-profile-artist", {
     /* LIFECYCLE */
     ready: function() {},
     attached: function() {},
