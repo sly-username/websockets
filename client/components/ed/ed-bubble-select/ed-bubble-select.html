@@ -1,0 +1,20 @@
+<polymer-element name="ed-bubble-select" attributes="name view-type image value disabled required checked">
+  <template>
+    <link rel="stylesheet" href="./ed-bubble-select.css">
+    <div class="wrapper">
+      <template if="{{checked}}">
+        <div class="ed-bubble" style="background-image: url({{image}});"><content></content></div>
+      </template>
+      <template if="{{!checked}}">
+        <div class="ed-bubble"><content></content></div>
+      </template>
+      <div class="overlay"></div>
+      <input id="checkbox-field" type="checkbox"
+          name={{name}} value={{value}}
+          disabled?="{{disabled}}"
+          required?="{{required}}"
+          checked?="{{checked}}"/>
+    </div>
+  </template>
+  <script src="ed-bubble-select.js"></script>
+</polymer-element>
