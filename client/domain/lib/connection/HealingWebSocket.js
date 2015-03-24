@@ -6,7 +6,7 @@ var
   createSocket;
 
 import EventEmitter from "domain/lib/event/EventEmitter";
-import createEvent from "domain/lib/event/CreateEvent";
+import createEvent from "domain/lib/event/create-event";
 
 /**
  *

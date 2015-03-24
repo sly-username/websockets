@@ -1,3 +1,4 @@
+/*globals suite, suiteSetup, test*/
 /*eslint env:"mocha"*/
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
@@ -6,12 +7,12 @@
     var createEvent;
 
     suiteSetup( function( done ) {
-      System.import( "domain/lib/event/CreateEvent" )
+      System.import( "domain/lib/event/create-event" )
         .then( function( imported ) {
           createEvent = imported.default;
           done();
         }, function( error ) {
-          console.warn( "Could not import 'CreateEvent' for testing: ", error.message );
+          console.warn( "Could not import 'create-event' for testing: ", error.message );
           console.error( error.stack );
           done( error );
         });

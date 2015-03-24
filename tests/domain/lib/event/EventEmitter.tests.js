@@ -9,7 +9,7 @@
     suiteSetup( function( done ) {
       Promise.all([
         System.import( "domain/lib/event/EventEmitter" ),
-        System.import( "domain/lib/event/CreateEvent" )
+        System.import( "domain/lib/event/create-event" )
       ])
         .then( function( imported ) {
           EventEmitter = imported[0].default;
