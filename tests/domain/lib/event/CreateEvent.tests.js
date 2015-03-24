@@ -84,6 +84,8 @@
           .to.deep.equal({
             benny: "spaceship"
           });
+
+        document.body.removeChild( checkbox );
       });
 
       test( "event.target should identify the element on which the event occurred", function() {
@@ -100,6 +102,8 @@
         expect( event )
           .to.have.property( "target" )
           .that.equals( checkbox );
+
+        document.body.removeChild( checkbox );
       });
     });
 
