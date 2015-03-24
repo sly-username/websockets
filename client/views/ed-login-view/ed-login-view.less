@@ -1,8 +1,11 @@
-@import "../styles/ed/buttons.mixin.less";
-@import "../styles/ed/colors.vars.less";
+@import "../../styles/ed/buttons.mixin.less";
+@import "../../styles/ed/colors.vars.less";
 
 * {
   font-family: "Ubuntu-Regular";
+}
+.ed-logo-header {
+  height: 30%;
 }
 
 .login-container {
@@ -15,7 +18,7 @@
 }
 
 .ed-login-body {
-  margin-top: 30rem;
+  margin-bottom: 13rem;
   fieldset {
     border: 0;
   }
@@ -27,10 +30,12 @@
 
 #login-submit {
   .edButton();
-  bottom: 0;
+  position: absolute;
+  bottom: 13rem;
 }
 #sign-up-button {
   .edButton( double-line );
+  position: absolute;
   bottom: 0;
   span {
     display: block;
