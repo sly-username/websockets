@@ -1,7 +1,7 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-icon-input", {
+  polymer( "ed-onboarding-view", {
     /* LIFECYCLE */
     ready: function() {},
     attached: function() {},

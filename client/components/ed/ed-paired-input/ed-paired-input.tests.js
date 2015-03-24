@@ -367,7 +367,6 @@
         });
       });
 
-
       suite( "required", function() {
         test( "default value is false", function() {
           var edInput = document.createElement( "ed-paired-input" );
@@ -557,7 +556,6 @@
       suite( "val", function() {
         test( "returns undefined when element is not valid", function() {
           var edInput = document.createElement( "ed-paired-input" );
-
 
           edInput.primaryBox.value = "first value";
           edInput.confirmBox.value = "second value";
