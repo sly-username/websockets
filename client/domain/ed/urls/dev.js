@@ -1,7 +1,5 @@
 export default {
-  get urls() {
-    return {
-      url: "https://www.google.com/#q=dev"
-    };
+  get path() {
+    return "wss://www.websocket.org/";
   }
 }

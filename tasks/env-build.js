@@ -2,6 +2,7 @@
 var gulp = require( "gulp" ),
   symlink = require( "gulp-symlink" ),
   config = require( "../config.paths.js" ),
+  del = require( "del" ),
   runSymLinkEnv;
 
 runSymLinkEnv = function( src, env ) {
@@ -11,6 +12,7 @@ runSymLinkEnv = function( src, env ) {
         newPath = oldPath.replace( env, "urls" );
       return newPath;
     }));
+    //.pipe( del( config.envBuild.remove[ env ],  ) );
 };
 
 gulp.task( "envBuild:dev", function() {
@@ -22,10 +24,5 @@ gulp.task( "envBuild:prod", function() {
 });
 
 gulp.task( "envBuild:qa", function() {
-  return gulp.src( config.envBuild.src.qa, { read: false } )
-    .pipe( symlink( function( file ) {
-      var oldPath = file.path.replace( "urls", "" ),
-        newPath = oldPath.replace( "qa", "urls" );
-      return newPath;
-    }));
+  return runSymLinkEnv( config.envBuild.src.prod, "qa" );
 });
