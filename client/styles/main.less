@@ -6,16 +6,24 @@
 @import "fonts/icons.less";
 @import "fonts/ubuntu.less";
 @import "mixins/breakpoints/mixins.less";
+@import "ed/colors.vars.less";
 
 @color: white;
 
 html {
-  font-size: 10px;
+  font-size: 62.5%;
   font-family: "Ubuntu-Regular";
+  height: 100%;
+  width: 100%;
+  background: @darkPurple3;
 }
 
 body {
   background-color: @color;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   .cool(cyan);
   & > .left {
     float: left;
