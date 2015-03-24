@@ -1,4 +1,5 @@
 /* jshint strict:false */
+/*eslint no-inline-comments: 0*/
 var handlerMap = Symbol( "handlerMap" ); // jshint ignore:line
 
 /** @class EventEmitter */

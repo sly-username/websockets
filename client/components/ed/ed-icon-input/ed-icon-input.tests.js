@@ -78,7 +78,7 @@
       });
     });
 
-    suite( "Events", function() {
+    suite.skip( "Events", function() {
       suite( "Event Name", function() {
         test( "customEvent", function( done ) {});
       });
