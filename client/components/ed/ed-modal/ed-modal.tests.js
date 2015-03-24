@@ -55,7 +55,7 @@
     suite( "Attributes and Properties", function() {
       /** trigger **/
       suite( "trigger", function() {
-        test( 'value can be set via "setAttribute"', function() {
+        test( "value can be set via \"setAttribute\"", function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Attribute";
 
@@ -83,7 +83,7 @@
             .that.equals( setTo );
         });
 
-        test( 'setting value via "setAttribute" reflects to property', function() {
+        test( "setting value via \"setAttribute\" reflects to property", function() {
           var edModal = document.createElement( "ed-modal" ),
               setTo = "Set via Attribute";
 
@@ -111,14 +111,14 @@
 
       /** clickoff **/
       suite( "clickoff", function() {
-        test( 'default value is "false"', function() {
+        test( "default value is \"false\"", function() {
           expect( document.createElement( "ed-modal" ) )
             .to.have.property( "clickoff" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
-        test( 'value can be set via "setAttribute"', function() {
+        test( "value can be set via \"setAttribute\"", function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.setAttribute( "clickoff", "" );
@@ -200,14 +200,14 @@
       });
       /** closebutton **/
       suite( "closebutton", function() {
-        test( 'default value is "false"', function() {
+        test( "default value is \"false\"", function() {
           expect( document.createElement( "ed-modal" ) )
             .to.have.property( "closebutton" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
-        test( 'value can be set via "setAttribute"', function() {
+        test( "value can be set via \"setAttribute\"", function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.setAttribute( "closebutton", "" );
@@ -287,14 +287,14 @@
       });
 
       suite( "isOpen", function() {
-        test( 'default value is "false"', function() {
+        test( "default value is \"false\"", function() {
           expect( document.createElement( "ed-modal" ) )
             .to.have.property( "isOpen" )
             .that.is.a( "boolean" )
             .and.equals( false );
         });
 
-        test( 'cannot be set via "isOpen" property', function() {
+        test( "cannot be set via \"isOpen\" property", function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.isOpen = true;
@@ -304,7 +304,7 @@
             .and.equals( false );
         });
 
-        test( 'invoking .open() method sets isOpen to "true"', function() {
+        test( "invoking .open() method sets isOpen to \"true\"", function() {
           var div = document.createElement( "div" ),
               edModal = document.createElement( "ed-modal" );
           div.appendChild( edModal );
@@ -316,7 +316,7 @@
             .and.equals( true );
         });
 
-        test( 'invoking .close() method sets isOpen to "false"', function() {
+        test( "invoking .close() method sets isOpen to \"false\"", function() {
           var edModal = document.createElement( "ed-modal" );
 
           edModal.close();
