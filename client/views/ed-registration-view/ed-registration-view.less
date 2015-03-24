@@ -31,6 +31,9 @@
 }
 
 #registration-submit {
+  &:disabled {
+    .edButton( @backgroundColor: @grey1; @activeColor: @grey2 );
+  }
   .edButton();
 }
 #sign-up-button {
