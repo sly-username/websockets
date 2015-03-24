@@ -1,10 +1,11 @@
+/*eslint strict: [ 2, "global"], no-sync: 0*/
 "use strict";
 var koa = require( "koa" ),
   send = require( "koa-send" ),
   fs = require( "fs" ),
   config = require( "../config.paths.js" ),
-  dev = koa(),
-  prod = koa(),
+  dev,
+  prod,
   serve;
 
 /* jshint -W071 */
@@ -26,20 +27,15 @@ serve = function( root, fallback ) {
   };
 };
 
-dev.use( serve( config.dev, config.server.fallback.dev ) );
-prod.use( serve( config.prod, config.server.fallback.prod ) );
-
 module.exports = {
   startDev: function() {
+    dev = koa();
+    dev.use( serve( config.dev, config.server.fallback.dev ) );
     return dev.listen( config.server.ports.dev );
   },
-  get dev() {
-    return dev;
-  },
   startProd: function() {
+    prod = koa();
+    prod.use( serve( config.prod, config.server.fallback.prod ) );
     return prod.listen( config.server.ports.prod );
-  },
-  get prod() {
-    return prod;
   }
 };

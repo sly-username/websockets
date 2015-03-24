@@ -1,34 +1,35 @@
-/* jshint strict:false */
-
-import EventEmitter from "domain/lib/event/EventEmitter";
-import createEvent from "../event/CreateEvent";
-
-var socket = Symbol( "socket" ), // jshint ignore:line
+/*eslint no-inline-comments: 0, consistent-this: 0*/
+var
+  socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
   socketEvents = [ "open", "close", "message", "error" ],
-  /**
-   *
-   * @param self { HealingWebSocket }
-   * @param url { String }
-   * @param protocols { Array<String> }
-   * @returns { WebSocket }
-   */
-  createSocket = function( self, url, protocols ) {
-    var oldSocket = self[ socket ];
+  createSocket;
 
-    self[ socket ] = ( protocols == null ) ?
-      new WebSocket( url ) :
-      new WebSocket( url, protocols );
+import EventEmitter from "domain/lib/event/EventEmitter";
+import createEvent from "domain/lib/event/create-event";
 
-    EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
+/**
+ *
+ * @param self { HealingWebSocket }
+ * @param url { String }
+ * @param protocols { Array<String> }
+ * @returns { WebSocket }
+ */
+createSocket = function( self, url, protocols ) {
+  var oldSocket = self[ socket ];
 
-    return oldSocket;
-  };
+  self[ socket ] = protocols == null ?
+    new WebSocket( url ) :
+    new WebSocket( url, protocols );
+
+  EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
+
+  return oldSocket;
+};
 
 export default class HealingWebSocket extends EventEmitter {
   constructor( url, protocols ) {
     super( [ "heal", ...socketEvents ] );
-
     createSocket( this, url, protocols );
   }
 
@@ -87,12 +88,11 @@ export default class HealingWebSocket extends EventEmitter {
 
   [ heal ]( data ) {
     var oldSocket = createSocket( this, this.url, this.protocol !== "" ? [ this.protocol ] : null ),
-      descriptor = {
+      healEvent = createEvent( "heal", {
         detail: {
-          oldSocket: oldSocket
+          oldSocket
         }
-      },
-      healEvent = createEvent( "heal", descriptor );
+      });
 
     this.dispatch( healEvent );
 
@@ -102,5 +102,4 @@ export default class HealingWebSocket extends EventEmitter {
       });
     }
   }
-
 }

@@ -1,4 +1,4 @@
-/*eslint no-process-env:0, valid-jsdoc:0, no-unused-vars:0*/
+/*eslint no-process-env:0, valid-jsdoc:0, no-unused-vars:0, strict: [2, "global"]*/
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),

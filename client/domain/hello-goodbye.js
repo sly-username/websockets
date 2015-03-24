@@ -2,16 +2,16 @@
 /**
  * Created by rj on 11/24/14.
  */
-
-System.map[ "hello-goodbye" ] = "domain/hello-goodbye";
-
-var hello = ( name ) => {
+var
+  hello = ( name ) => {
     console.log( "Hello " + name );
     return name;
   },
   goodbye = ( name ) => {
     console.log( "Goodbye " + name );
   };
+
+System.map[ "hello-goodbye" ] = "domain/hello-goodbye";
 
 export { hello, goodbye };
 

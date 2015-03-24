@@ -131,10 +131,10 @@
     suite( "send method", function() {
       test( "calls the send method", function() {
         var edEvent = {
-            "eventBlock": {
-              "type": "play",
-              "value": {
-                "key": "value"
+            eventBlock: {
+              type: "play",
+              value: {
+                key: "value"
               }
             }
           },
@@ -152,8 +152,8 @@
 
       test( "returns undefined", function() {
         var edEvent = {
-            "event": {
-              "type": "play"
+            event: {
+              type: "play"
             }
           },
           invokeEvt;
@@ -169,9 +169,7 @@
 
     suite( "createEvent method", function() {
       test.skip( "calls the createEvent method", function() {
-
       });
-
     });
   });
 })( window, document, window.System, window.sinon, window.chai.expect );
