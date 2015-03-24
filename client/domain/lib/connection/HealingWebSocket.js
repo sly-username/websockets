@@ -6,7 +6,7 @@ var
   createSocket;
 
 import EventEmitter from "domain/lib/event/EventEmitter";
-import createEvent from "../event/CreateEvent";
+import createEvent from "domain/lib/event/CreateEvent";
 
 /**
  *
@@ -30,7 +30,6 @@ createSocket = function( self, url, protocols ) {
 export default class HealingWebSocket extends EventEmitter {
   constructor( url, protocols ) {
     super( [ "heal", ...socketEvents ] );
-
     createSocket( this, url, protocols );
   }
 
@@ -89,12 +88,11 @@ export default class HealingWebSocket extends EventEmitter {
 
   [ heal ]( data ) {
     var oldSocket = createSocket( this, this.url, this.protocol !== "" ? [ this.protocol ] : null ),
-      descriptor = {
+      healEvent = createEvent( "heal", {
         detail: {
-          oldSocket: oldSocket
+          oldSocket
         }
-      },
-      healEvent = createEvent( "heal", descriptor );
+      });
 
     this.dispatch( healEvent );
 
@@ -104,5 +102,4 @@ export default class HealingWebSocket extends EventEmitter {
       });
     }
   }
-
 }
