@@ -344,7 +344,7 @@ paths.envBuild = {
   src: {
     dev:  join( paths.dev, "domain/ed/urls", "dev.js" ),
     prod: join( paths.prod, "domain/ed/urls", "prod.js" ),
-    qa:   join( paths.dev, "domain/ed/urls", "qa.js" )
+    qa:   join( paths.prod, "domain/ed/urls", "qa.js" )
   },
   out: {
     dev:  join( paths.dev, "domain/ed" ),

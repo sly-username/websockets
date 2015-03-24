@@ -1,5 +1,5 @@
 /*eslint no-inline-comments: 0, consistent-this: 0*/
-var
+var symbols,
   socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
   socketEvents = [ "open", "close", "message", "error" ],
@@ -25,6 +25,16 @@ createSocket = function( self, url, protocols ) {
   EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
 
   return oldSocket;
+};
+
+export symbols = {
+  get heal() {
+    return heal;
+  },
+
+  get socket() {
+    return socket;
+  }
 };
 
 export default class HealingWebSocket extends EventEmitter {
