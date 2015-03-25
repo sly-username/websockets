@@ -88,10 +88,6 @@
         test( "should NOT fire when login actions are silently performed by EDWebSocket re-authentication", function() {
 
         });
-
-        test( "should store authentication information for EDWebSocket re-authentication", function() {
-
-        });
       });
 
       suite( "edLogout", function () {
@@ -103,7 +99,11 @@
 
     suite( "Methods", function() {
       suite( "login", function() {
-        test("", function() {
+        test( "should store authentication information for EDWebSocket re-authentication", function() {
+
+        });
+
+        test( "should return EDUser object with successful login", function() {
 
         });
       });
