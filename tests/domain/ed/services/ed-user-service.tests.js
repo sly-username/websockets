@@ -1,26 +1,32 @@
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
-  suite( "userService", function() {
-    var userService;
+  suite( "EDUserService", function() {
+    var EventEmitter, edUserService;
 
     suiteSetup( function( done ) {
-      System.import( "domain/lib/event/user-service" )
+      Promise.all([
+        System.import( "domain/lib/event/EventEmitter" ),
+        System.import( "domain/ed/services/ed-user-service" )
+      ])
         .then( function( imported ) {
-                 userService = imported.default;
-                 done();
-               }, function( error ) {
-                 console.warn( "Could not import 'user-service' for testing: ", error.message );
-                 console.error( error.stack );
-                 done( error );
-               });
+          EventEmitter = imported[0].default;
+          edUserService = imported[1].default;
+          done();
+        }, function( error ) {
+          console.warn( "Could not import 'user-service' for testing: ", error.message );
+          console.error( error.stack );
+          done( error );
+        });
     });
 
 // Tests begin
     suite( "Properties", function() {
       suite( "currentUser", function() {
         test( "currentUser default value is null", function() {
-
+          expect( edUserService )
+            .to.have.property( "currentUser" )
+            .that.equals( null );
         });
 
         test( "currentUser returns currently logged in EDUser object", function() {
@@ -28,10 +34,8 @@
         });
 
         test( "cannot be set via \"currentUser\" property", function() {
-
-
-          userService.currentUser = "value";
-          expect( userService )
+          edUserService.currentUser = "value";
+          expect( edUserService )
             .to.have.property( "currentUser" )
             .that.equals( null );
         });
@@ -48,10 +52,8 @@
         });
 
         test( "cannot be set via \"isOpenSession\" property", function() {
-
-
-          userService.isOpenSession = true;
-          expect( userService )
+          edUserService.isOpenSession = true;
+          expect( edUserService )
             .to.have.property( "isOpenSession" )
             .that.is.a( "boolean" )
             .that.equals( false );
@@ -68,10 +70,8 @@
         });
 
         test( "cannot be set via \"hasOnboarded\" property", function() {
-
-
-          userService.hasOnboarded = true;
-          expect( userService )
+          edUserService.hasOnboarded = true;
+          expect( edUserService )
             .to.have.property( "hasOnboarded" )
             .that.is.a( "boolean" )
             .that.equals( false );
@@ -90,7 +90,7 @@
         });
       });
 
-      suite( "edLogout", function () {
+      suite( "edLogout", function() {
         test( "should fire when user logs out", function () {
 
         });
