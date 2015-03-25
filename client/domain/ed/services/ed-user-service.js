@@ -1,73 +1,87 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
+import edConnectionService from "domain/ed/services/ed-connection-service";
+import EDUser from "domain/ed/objects/EDUser";
+import edAnalyticsService from "domain/ed/analytics/edAnalyticsService";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   currentUser = null,
   isOpenSession = false,
-  hasOnboarded = false;
+  hasOnboarded = false,
+  sessionAuthJSON = null;
 
 Object.defineProperties( edUserService, {
   currentUser: {
     configurable: false,
     enumerable: false,
-    get: function() { return currentUser; },
-    set: function( value ) { return currentUser; }
+    get: function() {
+      return currentUser;
+    }
   },
   isOpenSession: {
     configurable: false,
     enumerable: false,
-    get: function() { return isOpenSession; },
-    set: function( value ) { return isOpenSession; }
+    get: function() {
+      return isOpenSession;
+    }
   },
   hasOnboarded: {
     configurable: false,
     enumerable: false,
-    get: function() { return hasOnboarded; },
-    set: function( value ) { return hasOnboarded; }
+    get: function() {
+      return hasOnboarded;
+    }
+  },
+  sessionAuthJSON: {
+    configurable: false,
+    enumerable: false,
+    get: function() {
+      return sessionAuthJSON;
+    }
   }
 });
 
 edUserService.login = function( email, password ) {
-  var userLoginPromise = new Promise(
-    function( resolve, reject ) {
-      if ( "logged in" ) {
-        resolve( "ok" );
-      } else {
-        reject( Error( "we were not able to log you in" ) );
-      }
-    }),
-    descriptor = {},
-    edLogoutEvent = createEvent( "edLogout", descriptor );
+  var json = {
+    action: {
+      route: "user/login",
+      priority: 10
+    },
+    auth: {
+      email,
+      password
+    }
+  };
 
-  userLoginPromise.then( function() {
-    return EDUser;
-  }, function( err ) {
-    console.log( err );
-  });
+  return edConnectionService.formattedRequest( json )
+    .then( raw => {
+      currentUser = new EDUser( raw.data );
+      isOpenSession = true;
+      sessionAuthJSON = json;
 
-  edUserService.dispatch( edLogoutEvent );
+      edUserService.dispatch( createEvent( "edLogin", {
+        detail: {
+          user: currentUser
+        }
+      }));
+
+      edAnalyticsService.send(
+        edAnalyticsService.createEvent( "login", {
+          timestamp: new Date()
+        })
+      );
+
+      return currentUser;
+    })
+    .catch( error => {
+      currentUser = null;
+      isOpenSession = false;
+      throw error;
+    });
 };
 
 edUserService.logout = function() {
-  var userLogoutPromise = new Promise (
-    function( resolve, reject ) {
-      if ( "logged out" ) {
-        resolve( true );
-      } else {
-        reject( Error( "please login to logout" ));
-      }
-    }
-  );
 
-  userLogoutPromise.then( function() {
-    // return true if successfully logged out
-  });
 };
-
-
-
-
-
-
 
 export default edUserService;

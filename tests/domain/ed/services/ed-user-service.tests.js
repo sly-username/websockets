@@ -86,11 +86,28 @@
 
     suite( "Events", function() {
       suite( "edLogin", function() {
-        test( "should fire when login method is called with valid username and password", function() {
-          edUserService.login();
+        test( "edLogin should fire when login method is called with valid email and password", function( done ) {
+          //var EDUser = {
+          //  user: "email",
+          //  password: "password"
+          //};
 
-          //expect( edUserService )
-            //.to.
+          edUserService.on( "edLogin", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .to.have.property( "type", "edLogin" );
+
+
+            expect( event )
+              .to.have.property( "detail" )
+              .to.deep.equal( {
+                user: EDUser
+              });
+          });
+
+          edUserService.login( "email", "password" );
+
+          done();
         });
 
         test( "should NOT fire when login actions are silently performed by EDWebSocket re-authentication", function() {
@@ -99,7 +116,7 @@
       });
 
       suite( "edLogout", function() {
-        test( "should fire when user logs out", function () {
+        test( "should fire when user logs out", function() {
 
         });
       });
