@@ -4,8 +4,7 @@ var koa = require( "koa" ),
   send = require( "koa-send" ),
   fs = require( "fs" ),
   config = require( "../config.paths.js" ),
-  dev,
-  prod,
+  createServer,
   serve;
 
 /* jshint -W071 */
@@ -27,15 +26,23 @@ serve = function( root, fallback ) {
   };
 };
 
+createServer = function( rootDir, fallbackFile, port ) {
+  var server = koa();
+  server.use( serve( rootDir, fallbackFile ) );
+  return server.listen( port );
+};
+
 module.exports = {
   startDev: function() {
-    dev = koa();
-    dev.use( serve( config.dev, config.server.fallback.dev ) );
-    return dev.listen( config.server.ports.dev );
+    return createServer( config.dev, config.server.fallback.dev, config.server.ports.dev );
+//    var dev = koa();
+//    dev.use( serve( config.dev, config.server.fallback.dev ) );
+//    return dev.listen( config.server.ports.dev );
   },
   startProd: function() {
-    prod = koa();
-    prod.use( serve( config.prod, config.server.fallback.prod ) );
-    return prod.listen( config.server.ports.prod );
+    return createServer( config.prod, config.server.fallback.prod, config.server.ports.prod );
+//    var prod = koa();
+//    prod.use( serve( config.prod, config.server.fallback.prod ) );
+//    return prod.listen( config.server.ports.prod );
   }
 };
