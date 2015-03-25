@@ -1,25 +1,34 @@
 <polymer-element name="ed-profile-edit" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-profile-edit.css">
-
-    <div class="wrapper">
-      <!-- navigation bar -->
-      <div class="nav">
-        <ed-icon name="add189"></ed-icon>
-        <div class="page-title"></div>
-      </div>
-      <!-- name edit field, place holder to be replaced with ed-id data -->
-      <div class="name-field">
-        <div class="input-title"></div>
-        <ed-icon-input icon="add189" placeholder="Jeff"></ed-icon-input>
-        <ed-icon-input icon="add189" placeholder="Lin"></ed-icon-input>
-      </div>
-      <!-- profile picture edit -->
-      <div class="photo-field">
-        <!-- not sure if going to be a separate component or-->
-      </div>
-    </div>
-
+    <!-- navigation bar -->
+    <header>
+      <ed-icon name="add189"></ed-icon>
+      <p>Edit Profile</p>
+    </header>
+    <!-- name edit field, place holder to be replaced with ed-id data -->
+    <form>
+      <p>NAME (First, Last)</p>
+      <ed-icon-input icon="add189" placeholder="Jeff"></ed-icon-input>
+      <ed-icon-input icon="add189" placeholder="Lin"></ed-icon-input>
+    </form>
+    <hr>
+    <!-- profile picture edit -->
+    <article>
+      <img src="" />
+      <p>Change Profile Photo</p>
+    </article>
+    <hr>
+    <!-- buttons -- >
+    <input type="file" accepts="image/*" />
+    <hr>
+    <input type="file" accept="image/*" capture="camera" />
+    <hr>
+    <p>Music Preferences</p>
+    <hr>
+    <button>
+      <ed-icon name="add189"></ed-icon>
+    </button>
   </template>
   <script src="ed-profile-edit.js"></script>
 </polymer-element>
