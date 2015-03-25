@@ -2,16 +2,18 @@
   "use strict";
 
   suite( "EDUserService", function() {
-    var EventEmitter, edUserService;
+    var edUserService, EventEmitter, createEvent;
 
     suiteSetup( function( done ) {
       Promise.all([
+        System.import( "domain/ed/services/ed-user-service" ),
         System.import( "domain/lib/event/EventEmitter" ),
-        System.import( "domain/ed/services/ed-user-service" )
+        System.import( "domain/lib/event/create-event" )
       ])
         .then( function( imported ) {
-          EventEmitter = imported[0].default;
-          edUserService = imported[1].default;
+          edUserService = imported[0].default;
+          EventEmitter = imported[1].default;
+          createEvent = imported[2].default;
           done();
         }, function( error ) {
           console.warn( "Could not import 'user-service' for testing: ", error.message );
@@ -30,7 +32,7 @@
         });
 
         test( "currentUser returns currently logged in EDUser object", function() {
-
+          // not sure how to write this test.
         });
 
         test( "cannot be set via \"currentUser\" property", function() {
@@ -41,14 +43,15 @@
         });
       });
 
-
       suite( "isOpenSession", function() {
         test( "isOpenSession default value is false", function() {
-
+          expect( edUserService )
+            .to.have.property( "isOpenSession" )
+            .that.equals( false );
         });
 
         test( "isOpenSession returns true if there is a user logged in", function() {
-
+          // not sure how you know if a user is logged in.
         });
 
         test( "cannot be set via \"isOpenSession\" property", function() {
@@ -62,11 +65,13 @@
 
       suite( "hasOnboarded", function() {
         test( "hasOnboarded default value is false", function() {
-
+          expect( edUserService )
+            .to.have.property( "hasOnboarded" )
+            .that.equals( false );
         });
 
         test( "hasOnboarded returns true if user has already registered", function() {
-
+          // how do we know if a user has already registered?
         });
 
         test( "cannot be set via \"hasOnboarded\" property", function() {
@@ -82,7 +87,10 @@
     suite( "Events", function() {
       suite( "edLogin", function() {
         test( "should fire when login method is called with valid username and password", function() {
+          edUserService.login();
 
+          //expect( edUserService )
+            //.to.
         });
 
         test( "should NOT fire when login actions are silently performed by EDWebSocket re-authentication", function() {
