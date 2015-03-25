@@ -1,5 +1,5 @@
 /*eslint no-inline-comments: 0, consistent-this: 0*/
-var symbols,
+var
   socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
   socketEvents = [ "open", "close", "message", "error" ],
@@ -27,11 +27,10 @@ createSocket = function( self, url, protocols ) {
   return oldSocket;
 };
 
-export symbols = {
+export var symbols = {
   get heal() {
     return heal;
   },
-
   get socket() {
     return socket;
   }

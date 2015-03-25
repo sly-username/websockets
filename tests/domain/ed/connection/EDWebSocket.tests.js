@@ -26,16 +26,48 @@
 
         expect( socket.isAuthenticated )
           .to.be.a( "boolean" );
+
+        expect( socket.request )
+          .to.be.a( "function" );
+
       });
     });
 
     suite( "Request Method", function() {
-      test( "appropriate data is passed through", function() {
+      test( "calling the request method", function( done ) {
         var socket = new EDWebSocket(),
-          socketData = "data";
+          socketData = {
+            action: {
+              route: "string",
+              priority: "string"
+            }
+          },
+          requestSpy;
 
-        expect( socket.request( socketData ) )
-          .to.be.a( "string" );
+        requestSpy = sinon.spy( socket, "request" );
+        socket.request( socketData );
+
+        expect( requestSpy )
+          .to.have.callCount( 1 );
+
+        requestSpy.restore();
+        done();
+      });
+
+      test( "assigns token number", function( done ) {
+        var socket = new EDWebSocket(),
+          socketData = {
+            action: {
+              route: "string",
+              priority: "string"
+            }
+          };
+        socket.request( socketData );
+
+        expect( socketData.action[ "request-token" ] )
+          .to.be.a( "number" );
+
+        done();
       });
     });
   });
