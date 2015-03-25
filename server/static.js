@@ -35,14 +35,8 @@ createServer = function( rootDir, fallbackFile, port ) {
 module.exports = {
   startDev: function() {
     return createServer( config.dev, config.server.fallback.dev, config.server.ports.dev );
-//    var dev = koa();
-//    dev.use( serve( config.dev, config.server.fallback.dev ) );
-//    return dev.listen( config.server.ports.dev );
   },
   startProd: function() {
     return createServer( config.prod, config.server.fallback.prod, config.server.ports.prod );
-//    var prod = koa();
-//    prod.use( serve( config.prod, config.server.fallback.prod ) );
-//    return prod.listen( config.server.ports.prod );
   }
 };
