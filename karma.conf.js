@@ -1,6 +1,8 @@
-/*eslint no-process-env:0*/
+/*eslint no-process-env:0, vars-on-top:0*/
 // Karma configuration
 // Generated on Thu Nov 06 2014 13:30:30 GMT-0800 (PST)
+require( "dotenv" ).config();
+
 var paths = require( "./config.paths.js" ),
   avaliableReporters = [ "mocha", "nyan" ],
   envReporter = process.env.KARMA_REPORTER,
