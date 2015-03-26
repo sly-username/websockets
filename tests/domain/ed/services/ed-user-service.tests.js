@@ -32,7 +32,7 @@
         });
 
         test( "currentUser returns currently logged in EDUser object", function() {
-          // not sure how to write this test.
+          // test getter
         });
 
         test( "cannot be set via \"currentUser\" property", function() {
@@ -51,7 +51,7 @@
         });
 
         test( "isOpenSession returns true if there is a user logged in", function() {
-          // not sure how you know if a user is logged in.
+          // test getter
         });
 
         test( "cannot be set via \"isOpenSession\" property", function() {
@@ -71,7 +71,7 @@
         });
 
         test( "hasOnboarded returns true if user has already registered", function() {
-          // how do we know if a user has already registered?
+          // test getter
         });
 
         test( "cannot be set via \"hasOnboarded\" property", function() {
@@ -86,50 +86,145 @@
 
     suite( "Events", function() {
       suite( "edLogin", function() {
-        test( "edLogin should fire when login method is called with valid email and password", function( done ) {
-          //var EDUser = {
-          //  user: "email",
-          //  password: "password"
-          //};
-
+        test( "edLogin should fire when login is successful", function( done ) {
+        // TODO again how do we show that login was successful?
           edUserService.on( "edLogin", function( event ) {
             expect( event )
               .to.be.an.instanceof( CustomEvent )
               .to.have.property( "type", "edLogin" );
 
-
             expect( event )
               .to.have.property( "detail" )
               .to.deep.equal( {
-                user: EDUser
+                user: currentUser
               });
+
+            done();
           });
 
           edUserService.login( "email", "password" );
-
-          done();
-        });
-
-        test( "should NOT fire when login actions are silently performed by EDWebSocket re-authentication", function() {
-
         });
       });
 
       suite( "edLogout", function() {
-        test( "should fire when user logs out", function() {
+        test( "edLogout should fire when user successfully logs out", function( done ) {
+          edUserService.on( "edLogout", function( event ) {
+            expect( event )
+              .to.be.an.instanceof( CustomEvent )
+              .to.have.property( "type", "edLogout" );
 
+            done();
+          });
+
+          edUserService.logout();
         });
       });
     });
 
     suite( "Methods", function() {
       suite( "login", function() {
-        test( "should store authentication information for EDWebSocket re-authentication", function() {
+        // TODO need to figure out how to make login successful for this test
+        suite( "successful login", function() {
+          test( "should return user object", function() {
+            var json = {
+              action: {
+                route: "user/login",
+                priority: 10
+              },
+              auth: {
+                email,
+                password
+              }
+            },
+            userServiceReturn = edUserService.login( json.auth.email, json.auth.password );
 
+            expect( userServiceReturn )
+              .to.be.an( "object" );
+          });
+
+          test( "", function() {
+            var json = {
+                action: {
+                  route: "user/login",
+                  priority: 10
+                },
+                auth: {
+                  email,
+                  password
+                }
+              };
+
+            edUserService.login( json.auth.email, json.auth.password );
+
+            expect( edUserService )
+              .to.have.property( "sessionAuthJSON" )
+              .that.equals( json );
+          });
+
+          test( "\"isOpen\" property should be set to true", function() {
+            var json = {
+                action: {
+                  route: "user/login",
+                  priority: 10
+                },
+                auth: {
+                  email,
+                  password
+                }
+              };
+
+            edUserService.login( json.auth.email, json.auth.password );
+
+            expect( edUserService )
+              .to.have.property( "isOpenSession" )
+              .that.is.a( "boolean" )
+              .that.equals( true );
+          });
         });
 
-        test( "should return EDUser object with successful login", function() {
+        suite( "unsuccessful login", function() {
+          test( "should set currentUser to null", function() {
+            var json = {
+              action: {
+                route: "user/login",
+                priority: 10
+              },
+              auth: {
+                email,
+                password
+              }
+            };
 
+            edUserService.login( json.auth.email, json.auth.password );
+
+            expect( edUserService )
+              .to.have.property( "currentUser" )
+              .that.equals( null );
+          });
+
+          test( "should set isOpenSession to false", function() {
+            var json = {
+              action: {
+                route: "user/login",
+                priority: 10
+              },
+              auth: {
+                email,
+                password
+              }
+            };
+
+            edUserService.login( json.auth.email, json.auth.password );
+
+            expect( edUserService )
+              .to.have.property( "isOpenSession" )
+              .that.is.a( "boolean" )
+              .that.equals( false );
+          });
+
+          test( "should throw an error", function() {
+
+          });
         });
       });
 

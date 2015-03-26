@@ -55,7 +55,7 @@ edUserService.login = function( email, password ) {
 
   return edConnectionService.formattedRequest( json )
     .then( raw => {
-      currentUser = new EDUser( raw.data );
+      currentUser = new EDUser( raw.auth );
       isOpenSession = true;
       sessionAuthJSON = json;
 
