@@ -47,6 +47,7 @@
   "scripts": {
     "postinstall": "bower install",
     "test": "npm run-script gulp test",
+    "tdd": "node --harmony --harmony_arrow_functions node_modules/karma/bin/karma start",
     "start": "npm run-script gulp start",
     "dev": "npm run-script gulp dev",
     "lint": "npm run-script gulp lint",
