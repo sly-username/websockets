@@ -135,7 +135,7 @@
               .to.be.an( "object" );
           });
 
-          test( "", function() {
+          test( "sessionAuthJSON property should store authentication information", function() {
             var json = {
                 action: {
                   route: "user/login",
