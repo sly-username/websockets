@@ -130,7 +130,7 @@
     suite( "Methods", function() {
       suite( "login", function() {
         // TODO need to figure out how to make login successful for this test
-        suite( "successful login", function() {
+        suite( "on a successful login", function() {
           test( "should return user object", function() {
             var json = {
               action: {
@@ -188,7 +188,7 @@
           });
         });
 
-        suite( "unsuccessful login", function() {
+        suite( "when login is not successful", function() {
           test( "should set currentUser to null", function() {
             var json = {
               action: {
@@ -235,19 +235,38 @@
       });
 
       suite( "logout", function() {
-        suite( "successful logout", function() {
-          test( "when fired, should reset properties to default values", function() {
+        suite( "on successful logout", function() {
+          test( "should reset properties to default values", function() {
+            edUserService.logout();
 
+            expect( edUserService )
+              .to.have.property( "isOpenSession" )
+              .that.is.a( "boolean" )
+              .that.equals( false );
+
+            expect( edUserService )
+              .to.have.property( "currentUser" )
+              .that.equals( null );
+
+            expect( edUserService )
+              .to.have.property( "sessionAuthJSON" )
+              .that.equals( null );
           });
 
           test( "returns true", function() {
+            var edLogoutReturn = edUserService.logout();
 
+            expect( edLogoutReturn )
+              .to.equal( true );
           });
         });
 
-        suite( "unsuccessful logout", function() {
-          test( "returns false if user is still logged in", function() {
+        suite( "when logout is not successful", function() {
+          test( "returns false", function() {
+            var edLogoutReturn = edUserService.logout();
 
+            expect( edLogoutReturn )
+              .to.equal( false );
           });
         });
       });

@@ -109,7 +109,8 @@ edUserService.logout = function() {
       return true;
     })
     .catch( error => {
-      // do nothing
+      // the person is still logged in
+      // not sure what is needed besides throwing an error
       throw error;
     });
 };
