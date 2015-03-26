@@ -27,11 +27,11 @@ header {
   }
 }
 
-.name-field {
-  padding: 0 2%;
+#name-field {
   p {
     .headingXSmall();
     color: @originalTeal;
+    padding: 0 2%;
   }
   ed-icon-input {
     margin: 2%;
@@ -56,13 +56,21 @@ header {
   }
 }
 
-.upload-field {
-  button {
-    .edButton();
-    color: @grey2;
-    text-align: left;
-    background: transparent;
-    text-transform: capitalize;
+#upload-field {
+  .upload-button {
+    input {
+      .edButton();
+      opacity: 0;
+      position: absolute;
+    }
+    button {
+      .edButton();
+      background: transparent;
+      color: @grey2;
+      text-align: left;
+      text-transform: capitalize;
+      pointer-events: none;
+    }
   }
 }
 

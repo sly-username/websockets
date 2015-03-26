@@ -8,23 +8,31 @@
         </button>
         <p>Edit Profile</p>
       </header>
-      <form class="name-field">
-        <p>NAME (First, Last)</p>
-        <ed-icon-input icon="add189" placeholder="Jeff"></ed-icon-input>
-        <ed-icon-input icon="add189" placeholder="Lin"></ed-icon-input>
-      </form>
-      <hr>
-      <section class="image-field">
-        <div class="image-container">
-          <img src="http://i.imgur.com/N8BPuki.jpg" />
+      <form id="edit-form">
+        <div id="name-field">
+          <p>NAME (First, Last)</p>
+          <ed-icon-input id="first-name" icon="add189" placeholder="Jeff"></ed-icon-input>
+          <ed-icon-input id="last-name" icon="add189" placeholder="Lin"></ed-icon-input>
         </div>
-        <p>Change Profile Photo</p>
-      </section>
-      <hr>
-      <form class="upload-field">
-        <button type="file" accept="image/*" >Choose Existing Photo</button>
         <hr>
-        <button type="file" accept="image/*" capture="camera">Take A Photo</button>
+        <section class="image-field">
+          <div class="image-container">
+            <img src="http://i.imgur.com/N8BPuki.jpg" />
+          </div>
+          <p>Change Profile Photo</p>
+        </section>
+        <hr>
+        <div id="upload-field">
+          <div class="upload-button">
+            <input id="choose-photo" type="file" accept="image/*" >
+            <button>Choose Existing Photo</button>
+          </div>
+          <hr>
+          <div class="upload-button">
+            <input id="take-photo" type="file" accept="image/*" capture="camera">
+            <button>Take A Photo</button>
+          </div>
+        </div>
       </form>
       <hr>
       <section class="edit-onboarding">
