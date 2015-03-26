@@ -31,15 +31,10 @@
             .that.equals( null );
         });
 
-        test( "currentUser returns currently logged in EDUser object", function() {
-          // test getter
-        });
-
         test( "cannot be set via \"currentUser\" property", function() {
           edUserService.currentUser = "value";
           expect( edUserService )
-            .to.have.property( "currentUser" )
-            .that.equals( null );
+            .to.throw( Error );
         });
       });
 
@@ -50,16 +45,10 @@
             .that.equals( false );
         });
 
-        test( "isOpenSession returns true if there is a user logged in", function() {
-          // test getter
-        });
-
         test( "cannot be set via \"isOpenSession\" property", function() {
           edUserService.isOpenSession = true;
           expect( edUserService )
-            .to.have.property( "isOpenSession" )
-            .that.is.a( "boolean" )
-            .that.equals( false );
+            .to.throw( Error );
         });
       });
 
@@ -77,9 +66,7 @@
         test( "cannot be set via \"hasOnboarded\" property", function() {
           edUserService.hasOnboarded = true;
           expect( edUserService )
-            .to.have.property( "hasOnboarded" )
-            .that.is.a( "boolean" )
-            .that.equals( false );
+            .to.throw( Error );
         });
       });
     });
