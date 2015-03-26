@@ -77,6 +77,7 @@ edUserService.login = function( email, password ) {
       currentUser = null;
       isOpenSession = false;
       throw error;
+      // TODO if error messages are needed, ex: toasts
     });
 };
 
@@ -84,9 +85,10 @@ edUserService.logout = function() {
   var json = {
     action: {
       route: "user/logout",
-      priority: 10 // TODO what should the value actually be??
+      priority: 10 // TODO
     }
-  };
+  },
+    oldUser = currentUser;
 
   return edConnectionService.formattedRequest( json )
     .then( () => {
@@ -96,7 +98,7 @@ edUserService.logout = function() {
 
       edUserService.dispatch( createEvent( "edLogout", {
        detail: {
-         user: null
+         user: oldUser
        }
       }));
 
@@ -114,7 +116,44 @@ edUserService.logout = function() {
 };
 
 edUserService.changeProfileImage = function() {
-  
+  // will be sending blob data, not JSON
+  // ws.binaryType = "blob"; OR
+  var pictureBlob;
+  pictureBlob = instanceof Blob;
+
+  // then sends the information to change profile picture
+  // how do we send the server blob data?
+
+  return edConnectionService.formattedRequest( pictureBlob )
+    .then( () => {
+
+    })
+    .catch( () => {
+
+    });
+};
+
+edUserService.register = function( registrationInfoObj = {
+  email: "email",
+  password: "password",
+  name: {
+    first: "firstName",
+    last: "lasName"
+    },
+  birthday: "birthday",
+  zipCode: "zipCode",
+  promoCode: "promoCode" } )
+{
+  return edConnectionService.formattedRequest( registrationInfoObj )
+    .then( () => {
+      hasOnboarded = true;
+      return true;
+    })
+    .catch( error => {
+      hasOnboarded = false;
+      throw error;
+      // TODO throw proper error object
+    });
 };
 
 export default edUserService;
