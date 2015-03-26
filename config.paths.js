@@ -88,7 +88,8 @@ paths.symlink = {
     join( "!" + paths.client, "domain", "**", "*.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
-    join( "!**", ".new" )
+    join( "!**", ".new" ),
+    join( "!**", "assets", "icons", "svg", "**" )
   ],
   tests: {
     component: [
@@ -336,6 +337,12 @@ paths.dgeni = {
     templatePattern: "components.template.html",
     outputFolder: join( paths.docs, "components" )
   }
+};
+
+/*** SVGSTORE PATHS ***/
+paths.svgstore = {
+  src: join( paths.client, "assets", "icons", "svg", "*.svg" ),
+  out: join( paths.dev, "assets", "icons" )
 };
 
 /*** TODO ***/

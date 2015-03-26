@@ -103,6 +103,7 @@ gulp.task( "watch", gulp.parallel(
 /*** DEVELOPMENT BUILD TASK ***/
 gulp.task( "build:dev", gulp.series(
   "clean:dev",
+  "svgstore:dev",
   gulp.parallel(
     "less:dev",
     "symlink:dev",
