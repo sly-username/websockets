@@ -96,7 +96,7 @@ edUserService.logout = function() {
 
       edUserService.dispatch( createEvent( "edLogout", {
        detail: {
-         user: currentUser
+         user: null
        }
       }));
 
@@ -108,11 +108,13 @@ edUserService.logout = function() {
 
       return true;
     })
-    .catch( error => {
-      // the person is still logged in
-      // not sure what is needed besides throwing an error
-      throw error;
+    .catch( () => {
+      return false;
     });
+};
+
+edUserService.changeProfileImage = function() {
+  
 };
 
 export default edUserService;
