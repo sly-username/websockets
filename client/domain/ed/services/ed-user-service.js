@@ -81,7 +81,37 @@ edUserService.login = function( email, password ) {
 };
 
 edUserService.logout = function() {
+  var json = {
+    action: {
+      route: "user/logout",
+      priority: 10 // TODO what should the value actually be??
+    }
+  };
 
+  return edConnectionService.formattedRequest( json )
+    .then( () => {
+      currentUser = null;
+      isOpenSession = false;
+      sessionAuthJSON = null;
+
+      edUserService.dispatch( createEvent( "edLogout", {
+       detail: {
+         user: currentUser
+       }
+      }));
+
+      edAnalyticsService.send(
+       edAnalyticsService.createEvent( "logout", {
+         timestamp: new Date()
+       })
+      );
+
+      return true;
+    })
+    .catch( error => {
+      // do nothing
+      throw error;
+    });
 };
 
 export default edUserService;

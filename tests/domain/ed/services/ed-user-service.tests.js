@@ -113,6 +113,12 @@
               .to.be.an.instanceof( CustomEvent )
               .to.have.property( "type", "edLogout" );
 
+            expect( event )
+              .to.have.property( "detail" )
+              .to.deep.equal( {
+                user: null
+              });
+
             done();
           });
 
@@ -229,16 +235,20 @@
       });
 
       suite( "logout", function() {
-        test( "when fired, should reset properties to default values", function() {
+        suite( "successful logout", function() {
+          test( "when fired, should reset properties to default values", function() {
 
+          });
+
+          test( "returns true", function() {
+
+          });
         });
 
-        test( "returns true on successful logout", function() {
+        suite( "unsuccessful logout", function() {
+          test( "returns false if user is still logged in", function() {
 
-        });
-
-        test( "returns false if user is still logged in", function() {
-
+          });
         });
       });
 
