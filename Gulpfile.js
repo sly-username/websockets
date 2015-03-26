@@ -138,7 +138,7 @@ gulp.task( "dev", gulp.series(
   "watch",
   "jscs:client",
   "lint:client",
-  "tdd"
+  "tdd:alone"
 ));
 
 /*** PRODUCTION BUILD TASK ***/
