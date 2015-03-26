@@ -1,34 +1,41 @@
 <polymer-element name="ed-profile-edit" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-profile-edit.css">
-    <!-- navigation bar -->
-    <header>
-      <ed-icon name="add189"></ed-icon>
-      <p>Edit Profile</p>
-    </header>
-    <!-- name edit field, place holder to be replaced with ed-id data -->
-    <form>
-      <p>NAME (First, Last)</p>
-      <ed-icon-input icon="add189" placeholder="Jeff"></ed-icon-input>
-      <ed-icon-input icon="add189" placeholder="Lin"></ed-icon-input>
-    </form>
-    <hr>
-    <!-- profile picture edit -->
-    <article>
-      <img src="" />
-      <p>Change Profile Photo</p>
-    </article>
-    <hr>
-    <!-- buttons -- >
-    <input type="file" accepts="image/*" />
-    <hr>
-    <input type="file" accept="image/*" capture="camera" />
-    <hr>
-    <p>Music Preferences</p>
-    <hr>
-    <button>
-      <ed-icon name="add189"></ed-icon>
-    </button>
+    <div class="container">
+      <header>
+        <button>
+          <ed-icon name="add189"></ed-icon>
+        </button>
+        <p>Edit Profile</p>
+      </header>
+      <form class="name-field">
+        <p>NAME (First, Last)</p>
+        <ed-icon-input icon="add189" placeholder="Jeff"></ed-icon-input>
+        <ed-icon-input icon="add189" placeholder="Lin"></ed-icon-input>
+      </form>
+      <hr>
+      <section class="image-field">
+        <div class="image-container">
+          <img src="http://i.imgur.com/N8BPuki.jpg" />
+        </div>
+        <p>Change Profile Photo</p>
+      </section>
+      <hr>
+      <form class="upload-field">
+        <button type="file" accept="image/*" >Choose Existing Photo</button>
+        <hr>
+        <button type="file" accept="image/*" capture="camera">Take A Photo</button>
+      </form>
+      <hr>
+      <section class="edit-onboarding">
+        <p>Music Preferences</p>
+        <hr>
+        <button>
+          Edit Your Taste
+          <ed-icon name="add189"></ed-icon>
+        </button>
+      </section>
+    </div>
   </template>
   <script src="ed-profile-edit.js"></script>
 </polymer-element>
