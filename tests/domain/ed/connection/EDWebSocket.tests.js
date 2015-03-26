@@ -24,12 +24,39 @@
       test( "starts with appropriate properties", function() {
         var socket = new EDWebSocket();
 
-        expect( socket.isAuthenticated )
-          .to.be.a( "boolean" );
+        //expect( socket.isAuthenticated )
+        //  .to.be.a( "boolean" );
 
         expect( socket.request )
           .to.be.a( "function" );
 
+        expect( socket.doAuthentication )
+          .to.be.a( "function" );
+
+        expect( socket.send )
+          .to.be.a( "function" );
+      });
+    });
+
+    suite.skip( "Send Method", function() {
+      test( "calls the method", function( done ) {
+        var socket = new EDWebSocket(),
+          socketData = {
+            action: {
+              route: "string",
+              priority: "string"
+            }
+          },
+          sendSpy;
+
+        sendSpy = sinon.spy( socket, "send" );
+        socket.send( socketData );
+
+        expect( sendSpy )
+          .to.have.callCount( 1 );
+
+        sendSpy.restore();
+        done();
       });
     });
 
@@ -52,27 +79,6 @@
 
         requestSpy.restore();
         done();
-      });
-
-      //TODO ask about mocking up a socket event
-      test( "assigns token number", function( done ) {
-        var socket = new EDWebSocket(),
-          socketData = {
-            action: {
-              route: "string",
-              priority: "string"
-            }
-          };
-
-        socket.request( socketData )
-          .then( function( resp ){
-            console.log( "resp", resp );
-            //expect( resp[ "request-token" ] )
-            //  .to.be.a( "number" );
-          });
-
-        done();
-
       });
     });
   });

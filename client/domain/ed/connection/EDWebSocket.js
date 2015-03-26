@@ -71,6 +71,7 @@ export default class EDWebSocket extends HealingWebSocket {
       };
 
       self.on( "message", handler );
+
     });
   }
 
