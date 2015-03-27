@@ -1,60 +1,31 @@
 ( function( polymer ) {
   "use strict";
 
-  var copyAttributes = function( elemFrom, elemTo, attrs ) {
-    attrs.forEach( function( attr ) {
-      if ( elemFrom.hasAttribute( attr ) ) {
-        elemTo.setAttribute( attr, elemFrom.getAttribute( attr ) );
-      } else {
-        elemTo.removeAttribute( attr );
-      }
-    });
-  };
-
   polymer( "ed-song-card-scrubber", {
-//    publish: {
-//      min: {
-//        value: 0,
-//        reflect: true
-//      },
-//      max: {
-//        value: 100,
-//        reflect: true
-//      },
-//      format: {
-//        value: "percent",
-//        reflect: true
-//      },
-//      type: {
-//        value: "default",
-//        reflect: true
-//      }
-//    },
-//    ready: function() {
-//      this.scrubberWrapper = this.shadowRoot.getElementById( "scrubber-wrapper" );
-//      this.scrubberInput = this.shadowRoot.getElementById( "scrubber-input" );
-//      this.valBox = this.shadowRoot.getElementById( "val-box" );
-//      this.backFill = this.shadowRoot.getElementsByClassName( "back-fill" )[ 0 ];
-//    },
-//    attached: function() {
-//      copyAttributes( this, this.scrubberInput, [ "min", "max", "format" ]);
-//      copyAttributes( this, this.scrubberWrapper, [ "type" ]);
-//    },
-//    showVal: function() {
-//      var inputValue = this.scrubberInput.value,
-//          topVal = parseInt( ( inputValue - this.scrubberInput.min ), 10 ),
-//          bottomVal = parseInt( ( this.scrubberInput.max - this.scrubberInput.min ), 10 ),
-//          valPercent = parseInt( ( topVal / bottomVal ) * 100, 10 ) + "%",
-//          valTime = inputValue + " seconds";
-//
-//      this.valBox.innerHTML = this.format === "percent" ? valPercent : valTime;
-//      this.backFill.style.width = valPercent;
-//    },
-//    attributeChanged: function( attrName, oldVal, newVal ) {
-//      if ( newVal == null && ( /^(min|max|format|type)/ ).test( attrName ) ) {
-//        this[ attrName ] = this.publish[ attrName ].value;
-//        return;
-//      }
-//    }
+    ready: function() {
+      this.back = this.shadowRoot.getElementById( "back-circle" );
+      this.mid = this.shadowRoot.getElementById( "mid-circle" );
+      this.front = this.shadowRoot.getElementById( "front-circle" );
+      this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
+      this.hiddenInput = this.shadowRoot.getElementById( "hidden-input" );
+      this.circFront = ( 6.28 * ( parseInt( this.front.getAttribute( "r" ), 10 )));
+      this.circMid = ( 6.28 * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
+      this.bottomVal = parseInt( ( this.hiddenInput.max - this.hiddenInput.min ), 10 );
+    },
+    attached: function() {
+      this.hiddenInput.addEventListener( "change", this.moveScrubber.bind( this ) );
+    },
+    moveScrubber: function() {
+      this.topVal = parseInt( ( this.hiddenInput.value - this.hiddenInput.min ), 10 );
+      this.valPercent = parseInt( ( this.topVal / this.bottomVal ) * 100, 10 );
+      this.degPercent = parseInt( ( this.valPercent * 360 ) / 100, 10 );
+
+      this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
+      this.front.style[ "stroke-dashoffset" ] = ( this.circFront - ( ( this.valPercent * this.circFront ) / 100 ) ) + "%";
+      this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+      this.mid.style[ "stroke-dashoffset" ] = ( this.circMid - ( ( this.valPercent * this.circMid ) / 100 ) ) + "%";
+      this.scrubber.style.webkitTransform = "rotate(" + ( this.degPercent - 92 ) + "deg)";
+      this.scrubber.style.transform = "rotate(" + ( this.degPercent - 92 ) + "deg)";
+    }
   });
 })( window.Polymer );

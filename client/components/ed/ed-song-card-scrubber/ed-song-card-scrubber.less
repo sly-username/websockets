@@ -2,16 +2,20 @@
 @import "../../../styles/mixins/prefixes/transforms.less";
 @import "../../../styles/ed/text-styles.mixin.less";
 
-
 #back-circle {
-  stroke: green;
+  stroke: @originalPurple;
 }
 
 #front-circle {
-  stroke: blue;
+  stroke: @originalTeal;
 }
 #mid-circle {
-  stroke: red;
+  stroke: @originalTeal;
+  opacity: .25;
+}
+
+#circle-scrubber {
+  stroke: @grey2;
 }
 
 #front-circle {
@@ -21,18 +25,12 @@
 #mid-circle {
   -webkit-animation: scrubMid 5s forwards;
 }
-
-// need to generate rule with javascript
-
-
-@-webkit-keyframes scrub {
-  to {
-    stroke-dashoffset: 190%;
-  }
+#circle-scrubber {
+  stroke-dasharray: 1, 220%;
+  stroke-linecap: round;
 }
 
-@-webkit-keyframes scrubMid {
-  to {
-    stroke-dashoffset: 120%;
-  }
+#mid-circle, #front-circle, #circle-scrubber {
+  .transform( rotate(-90deg));
+  transform-origin: 50% 50%;
 }
