@@ -1,0 +1,38 @@
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/ed/text-styles.mixin.less";
+
+
+#back-circle {
+  stroke: green;
+}
+
+#front-circle {
+  stroke: blue;
+}
+#mid-circle {
+  stroke: red;
+}
+
+#front-circle {
+  -webkit-animation: scrub 5s forwards;
+}
+
+#mid-circle {
+  -webkit-animation: scrubMid 5s forwards;
+}
+
+// need to generate rule with javascript
+
+
+@-webkit-keyframes scrub {
+  to {
+    stroke-dashoffset: 190%;
+  }
+}
+
+@-webkit-keyframes scrubMid {
+  to {
+    stroke-dashoffset: 120%;
+  }
+}
