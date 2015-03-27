@@ -115,35 +115,46 @@ edUserService.logout = function() {
     });
 };
 
-edUserService.changeProfileImage = function() {
-  // will be sending blob data, not JSON
-  // ws.binaryType = "blob"; OR
-  var pictureBlob;
-  pictureBlob = instanceof Blob;
+edUserService.changeProfileImage = function( image ) {
+  var pictureBlob = new Blob( [ image ], {
+    type: "image/jpg"
+  });
 
   // then sends the information to change profile picture
   // how do we send the server blob data?
 
-  return edConnectionService.formattedRequest( pictureBlob )
-    .then( () => {
+  /*
+  // send "I'm going to send an image" -- ws.binaryType = "blob";
+  send({
+    "action":{ route:"profile/image/set" }
+  });
+  send( image );
+  new Promise()
+    "onmessage" --> check for a "image upload complete"
+    resolve( dataservce.getUserById( currentUser.id ) )
+   */
 
+  return edConnectionService.send( pictureBlob )
+    .then( ( response ) => {
+      console.log( response.data );
+      return response.data;
     })
-    .catch( () => {
-
+    .catch( ( error ) => {
+      throw error;
     });
 };
 
-edUserService.register = function( registrationInfoObj = {
-  email: "email",
-  password: "password",
-  name: {
-    first: "firstName",
-    last: "lasName"
-    },
-  birthday: "birthday",
-  zipCode: "zipCode",
-  promoCode: "promoCode" } )
-{
+edUserService.register = function( {
+  email,
+  password,
+  name = {
+    first,
+    last
+  },
+  birthday,
+  zipCode,
+  promoCode
+  }) {
   return edConnectionService.formattedRequest( registrationInfoObj )
     .then( () => {
       hasOnboarded = true;

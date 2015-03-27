@@ -125,8 +125,8 @@
                 priority: 10
               },
               auth: {
-                email,
-                password
+                email: "email",
+                password: "password"
               }
             },
             userServiceReturn = edUserService.login( json.auth.email, json.auth.password );
@@ -142,8 +142,8 @@
                   priority: 10
                 },
                 auth: {
-                  email,
-                  password
+                  email: "email",
+                  password: "password"
                 }
               };
 
@@ -161,8 +161,8 @@
                   priority: 10
                 },
                 auth: {
-                  email,
-                  password
+                  email: "email",
+                  password: "password"
                 }
               };
 
@@ -183,8 +183,8 @@
                 priority: 10
               },
               auth: {
-                email,
-                password
+                email: "email",
+                password: "password"
               }
             };
 
@@ -202,8 +202,8 @@
                 priority: 10
               },
               auth: {
-                email,
-                password
+                email: "email",
+                password: "password"
               }
             };
 
@@ -259,7 +259,40 @@
       });
 
       suite( "changeProfileImage", function() {
+        test( "sends image file", function() {
+          var image = "fjsldkfjsdlkfj"; /* not sure what form this will take */
+
+          edUserService.changeProfileImage( image );
+
+          expect( image )
+            .to.be.instanceof( "File" ); /* or do we test instanceof Blob */
+            // will it always be instance of file and/or blob?
+        });
+
         test( "returns EDUser object with new image information", function() {
+          // is this test even needed?
+          var image = "fjsldkfjsdlkfj";
+
+          edUserService.changeProfileImage( image );
+
+          expect( edUserService.changeProfileImage )
+            .to.equal( /* whatever was returned - however the image data is supposed to be formatted */ );
+        });
+
+        test( "returns EDUser object with updated image information", function() {
+          // needs to match the updated image info to the correct user id
+          var image = "fjsldkfjsdlkfj";
+
+          edUserService.changeProfileImage( image );
+        });
+      });
+
+      suite( "register", function() {
+        test( "if successful, returns true", function() {
+
+        });
+
+        test( "if unsuccessful, will reject with proper error object", function() {
 
         });
       });
