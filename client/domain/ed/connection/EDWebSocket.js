@@ -1,9 +1,10 @@
 var
+  isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
   edUserService = {
     sessionAuthJSON: {
       auth: {
-        user: "macygray",
+        email: "mgray@eardish.com",
         password: "itriedbutchoked"
         //user: null,
         //password: null
@@ -25,7 +26,7 @@ export default class EDWebSocket extends HealingWebSocket {
     super( url.path );
   }
 
-  get isAuthenticated() {
+  [ isAuthenticated ]() {
     return this.doAuthentication();
   }
 
@@ -37,48 +38,51 @@ export default class EDWebSocket extends HealingWebSocket {
         }
       });
 
+    this.on( "authenticated", ( event ) => {
+      return event.detail.credentials === edUserService.sessionAuthJSON;
+    });
+
     this.dispatch( authenticatedEvent );
   }
 
   send( data ) {
-    if ( !this.isAuthenticated ) {
+    if ( !this[ isAuthenticated ] ) {
       this.once( "authenticated", event => {
-        this.send( data );
+        super.send( data );
       });
     }
   }
 
   request( data ) {
-    var newToken = generateToken(),
-      self = this;
+    var newToken = generateToken();
 
-    if ( !this.isAuthenticated && !( "auth" in data ) ) {
-      return new Promise( function( resolve, reject ) {
-        this.once( "authenticated", function() {
-          resolve( self.request( data ) );
+    if ( !this[ isAuthenticated ] && !( "auth" in data ) ) {
+      return new Promise( ( resolve, reject ) => {
+        this.once( "authenticated", () => {
+          resolve( this.request( data ) );
         });
       });
     }
 
     data.action[ "response-token" ] = newToken;
 
-    return new Promise( function( resolve, reject ) {
-      var handler = function( msg ) {
-        if ( msg.meta["request-token"] === newToken ) {
-          resolve( data );
-          self.off( "message", handler );
+    return new Promise( ( resolve, reject ) => {
+      var handler = ( msg ) => {
+        if ( msg.meta[ "request-token" ] === newToken ) {
+          resolve( msg );
+          this.off( "message", handler );
         }
       };
 
-      self.on( "message", handler );
-
+      this.on( "message", handler );
+      super.send( data );
     });
   }
 
   [ symbols.heal ]( data ) {
-    if ( !this.isAuthenticated ) {
+    if ( !this[ isAuthenticated ] ) {
       this.once( "authenticated", event => {
-        this[ symbols.heal ]( data );
+        super[ symbols.heal ]( data );
       });
     }
   }
