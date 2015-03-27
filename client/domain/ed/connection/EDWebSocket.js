@@ -24,10 +24,7 @@ generateToken = function() {
 export default class EDWebSocket extends HealingWebSocket {
   constructor() {
     super( url.path );
-  }
-
-  [ isAuthenticated ]() {
-    return this.doAuthentication();
+    this[ isAuthenticated ] = this.doAuthentication();
   }
 
   doAuthentication() {
