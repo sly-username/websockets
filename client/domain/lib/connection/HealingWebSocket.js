@@ -27,6 +27,15 @@ createSocket = function( self, url, protocols ) {
   return oldSocket;
 };
 
+export var symbols = {
+  get heal() {
+    return heal;
+  },
+  get socket() {
+    return socket;
+  }
+};
+
 export default class HealingWebSocket extends EventEmitter {
   constructor( url, protocols ) {
     super( [ "heal", ...socketEvents ] );
