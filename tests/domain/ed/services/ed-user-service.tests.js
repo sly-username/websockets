@@ -32,9 +32,11 @@
         });
 
         test( "cannot be set via \"currentUser\" property", function() {
-          edUserService.currentUser = "value";
-          expect( edUserService )
-            .to.throw( Error );
+          var test = function() {
+            edUserService.currentUser = "value";
+          };
+          expect( test )
+            .to.throw( TypeError );
         });
       });
 
@@ -289,12 +291,23 @@
       });
 
       suite( "register", function() {
+        // TODO need to wait until connection service is coded
         test( "if successful, returns true", function() {
+          // how does the test know if it was successful / promise fulfilled?
+          edUserService.register();
 
+          expect( edUserService.register )
+            .to.equal( true );
         });
 
         test( "if unsuccessful, will reject with proper error object", function() {
+          // how do i tell the test that it failed?
+          edUserService.register();
 
+          expect( edUserService.register )
+            .to.throw( Error );
+
+          // TODO do we need to be more specific about the error in this test?
         });
       });
     });
