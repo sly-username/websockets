@@ -338,6 +338,25 @@ paths.dgeni = {
   }
 };
 
+/*** ENVBUILD PATHS ***/
+/*** ask about qa paths ***/
+paths.envBuild = {
+  src: {
+    dev:  join( paths.dev, "domain/ed/urls", "dev.js" ),
+    prod: join( paths.prod, "domain/ed/urls", "prod.js" ),
+    qa:   join( paths.prod, "domain/ed/urls", "qa.js" )
+  },
+  out: {
+    dev:  join( paths.dev, "domain/ed" ),
+    prod: join( paths.prod, "domain/ed" )
+  },
+  remove: {
+    dev:  join( paths.dev, "domain/ed/urls" ),
+    prod: join( paths.prod, "domain/ed/urls" ),
+    qa:   join( paths.prod, "domain/ed/urls" )
+  }
+};
+
 /*** TODO ***/
 
 // Export!
