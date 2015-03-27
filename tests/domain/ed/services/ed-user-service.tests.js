@@ -258,7 +258,8 @@
         });
       });
 
-      suite( "changeProfileImage", function() {
+      // TODO will come back to this when we figure out how we're going to do file uploads and such
+      suite.skip( "changeProfileImage", function() {
         test( "sends image file", function() {
           var image = "fjsldkfjsdlkfj"; /* not sure what form this will take */
 

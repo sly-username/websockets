@@ -1,10 +1,11 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
-import edConnectionService from "domain/ed/services/ed-connection-service";
+//import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import edAnalyticsService from "domain/ed/analytics/edAnalyticsService";
+import edAnalyticsService from "domain/analytics/EDAnalyticsEvent";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
+  edConnectionService = {}, // TODO for now, until it's created
   currentUser = null,
   isOpenSession = false,
   hasOnboarded = false,
@@ -25,7 +26,7 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  hasOnboarded: {
+  hasOnboarded: { // TODO determine if this flag is needed
     configurable: false,
     enumerable: false,
     get: function() {
@@ -45,7 +46,7 @@ edUserService.login = function( email, password ) {
   var json = {
     action: {
       route: "user/login",
-      priority: 10
+      priority: 10 // TODO when these priority rankings are flushed out
     },
     auth: {
       email,
@@ -85,7 +86,7 @@ edUserService.logout = function() {
   var json = {
     action: {
       route: "user/logout",
-      priority: 10 // TODO
+      priority: 10 // TODO when these priority rankings are flushed out
     }
   },
     oldUser = currentUser;
@@ -115,14 +116,7 @@ edUserService.logout = function() {
     });
 };
 
-edUserService.changeProfileImage = function( image ) {
-  var pictureBlob = new Blob( [ image ], {
-    type: "image/jpg"
-  });
-
-  // then sends the information to change profile picture
-  // how do we send the server blob data?
-
+edUserService.changeProfileImage = function() {
   /*
   // send "I'm going to send an image" -- ws.binaryType = "blob";
   send({
@@ -134,28 +128,18 @@ edUserService.changeProfileImage = function( image ) {
     resolve( dataservce.getUserById( currentUser.id ) )
    */
 
-  return edConnectionService.send( pictureBlob )
-    .then( ( response ) => {
-      console.log( response.data );
-      return response.data;
-    })
-    .catch( ( error ) => {
-      throw error;
-    });
+  //return edConnectionService.send( pictureBlob )
+  //  .then( ( response ) => {
+  //    console.log( response.data );
+  //    return response.data;
+  //  })
+  //  .catch( ( error ) => {
+  //    throw error;
+  //  });
 };
 
-edUserService.register = function( {
-  email,
-  password,
-  name = {
-    first,
-    last
-  },
-  birthday,
-  zipCode,
-  promoCode
-  }) {
-  return edConnectionService.formattedRequest( registrationInfoObj )
+edUserService.register = function( args ) {
+  return edConnectionService.formattedRequest( args )
     .then( () => {
       hasOnboarded = true;
       return true;
