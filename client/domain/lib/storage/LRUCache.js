@@ -4,6 +4,21 @@ var size = Symbol( "size" ), // jshint ignore:line
   head = Symbol( "head" ), // jshint ignore:line
   keyMap = Symbol( "keyMap" ); // jshint ignore:line
 
+export var symbols = {
+  get size() {
+    return size;
+  },
+  get tail() {
+    return tail;
+  },
+  get head() {
+    return head;
+  },
+  get keyMap() {
+    return keyMap;
+  }
+};
+
 export class LRUNode {
   constructor( key, data, newer, older ) {
     this.key = key;
@@ -219,5 +234,9 @@ export default class LRUCache {
     rtn[ Symbol.iterator ] = this.reverse.bind( this );
 
     return rtn;
+  }
+
+  get [ Symbol.toStringTag ]() {
+    return "LRUCache";
   }
 }
