@@ -1,3 +1,4 @@
+/*
 var request = indexedDB.open("library");
 
 request.onupgradeneeded = function() {
@@ -108,3 +109,4 @@ request.onupgradeneeded = function(event) {
 request.onsuccess = function() {
   db = request.result; // db.version will be 3.
 };
+*/

@@ -2,7 +2,13 @@ var observers = Symbol( "observers" ); // jshint ignore:line
 
 import { default as LRUCache, symbols } from "domain/lib/storage/LRUCache";
 
-
+/*
+  TODO remove observers?
+  should observe fns get removed when item is dropped from cache?
+  should there be a flag to set this option?
+  default, remove observers with item
+  also allow observers to live after their associated key has been removed?
+*/
 /** @class ObservableLRUCache */
 export default class ObservableLRUCache extends LRUCache {
   /**
@@ -26,8 +32,16 @@ export default class ObservableLRUCache extends LRUCache {
   }
 
   unobserve( key, callback ) {
+    var tmpObserverList;
+
     if ( key in this[ observers ] ) {
-      this[ observers ][ key ] = this[ observers ][ key ].filter( cb => cb !== callback );
+      tmpObserverList = this[ observers ][ key ].filter( cb => cb !== callback );
+
+      if ( tmpObserverList.length === 0 ) {
+        delete this[ observers ][ key ];
+      } else {
+        this[ observers ][ key ] = tmpObserverList;
+      }
     }
   }
 
