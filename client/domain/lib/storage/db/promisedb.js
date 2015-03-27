@@ -1,20 +1,24 @@
-var request = indexedDB.open("edDatabase");
+var request = indexedDB.open("library");
 
 request.onupgradeneeded = function() {
-// If the database doesn't previously exist, create object store(s) and indexes.
+  // The database did not previously exist, so create object stores and indexes.
   var db = request.result;
-  var store = db.createObjectStore("edDatabase", {keyPath: "id"});
-  var edItemIndex = store.createIndex("by_item", "name", {unique: true});
+  var store = db.createObjectStore("books", {keyPath: "isbn"});
+  var titleIndex = store.createIndex("by_title", "title", {unique: true});
+  var authorIndex = store.createIndex("by_author", "author");
 
-// how to populate data...are we seeding data from somewhere?
-  store.put({name: "edDataObject1", id: 123456});
+  // Populate with initial data.
+  store.put({title: "Quarry Memories", author: "Fred", isbn: 123456});
+  store.put({title: "Water Buffaloes", author: "Fred", isbn: 234567});
+  store.put({title: "Bedrock Nights", author: "Barney", isbn: 345678});
 };
 
 request.onsuccess = function() {
   db = request.result;
 };
+The following example populates the database using a transaction.
 
-var tx = db.transaction("edDatabase", "readwrite");
+  var tx = db.transaction("books", "readwrite");
 var store = tx.objectStore("books");
 
 store.put({title: "Quarry Memories", author: "Fred", isbn: 123456});
