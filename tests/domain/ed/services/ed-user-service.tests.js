@@ -32,10 +32,10 @@
         });
 
         test( "cannot be set via \"currentUser\" property", function() {
-          var test = function() {
+          var setCurrentUser = function() {
             edUserService.currentUser = "value";
           };
-          expect( test )
+          expect( setCurrentUser )
             .to.throw( TypeError );
         });
       });
@@ -48,9 +48,11 @@
         });
 
         test( "cannot be set via \"isOpenSession\" property", function() {
-          edUserService.isOpenSession = true;
-          expect( edUserService )
-            .to.throw( Error );
+          var setOpenSession = function() {
+            edUserService.isOpenSession = true;
+          };
+          expect( setOpenSession )
+            .to.throw( TypeError );
         });
       });
 
@@ -61,14 +63,22 @@
             .that.equals( false );
         });
 
-        test( "hasOnboarded returns true if user has already registered", function() {
-          // test getter
+        test( "hasOnboarded returns true after user registers", function() {
+          // TODO need to wait until connection service is created
+          edUserService.register();
+
+          expect( edUserService )
+            .to.have.property( "hasOnboarded" )
+            .that.equals( true );
         });
 
         test( "cannot be set via \"hasOnboarded\" property", function() {
-          edUserService.hasOnboarded = true;
-          expect( edUserService )
-            .to.throw( Error );
+          var setOnboarded = function() {
+            edUserService.hasOnboarded = true;
+          };
+
+          expect( setOnboarded )
+            .to.throw( TypeError );
         });
       });
     });
@@ -76,7 +86,7 @@
     suite( "Events", function() {
       suite( "edLogin", function() {
         test( "edLogin should fire when login is successful", function( done ) {
-        // TODO again how do we show that login was successful?
+        // TODO how do we show that login was successful?
           edUserService.on( "edLogin", function( event ) {
             expect( event )
               .to.be.an.instanceof( CustomEvent )
