@@ -1,3 +1,4 @@
+"use strict";
 var gulp = require( "gulp" ),
   svgstore = require( "gulp-svgstore" ),
   config = require( "../config.paths.js" );
