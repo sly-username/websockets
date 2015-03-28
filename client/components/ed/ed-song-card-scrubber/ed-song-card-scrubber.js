@@ -8,12 +8,22 @@
       this.front = this.shadowRoot.getElementById( "front-circle" );
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
       this.hiddenInput = this.shadowRoot.getElementById( "hidden-input" );
-      this.circFront = ( 6.28 * ( parseInt( this.front.getAttribute( "r" ), 10 )));
-      this.circMid = ( 6.28 * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
+      this.scrubCenter = [ ( this.scrubber.offsetLeft + ( this.scrubber.offsetWidth / 2 ) ),
+        ( this.scrubber.offsetTop + ( this.scrubber.offsetHeight / 2 ) ) ];
+      this.circFront = ( ( 2 * Math.PI ) * ( parseInt( this.front.getAttribute( "r" ), 10 )));
+      this.circMid = ( ( 2 * Math.PI ) * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
       this.bottomVal = parseInt( ( this.hiddenInput.max - this.hiddenInput.min ), 10 );
     },
     attached: function() {
       this.hiddenInput.addEventListener( "change", this.moveScrubber.bind( this ) );
+      // need to incorporate mousedown and up triggers
+      this.scrubber.addEventListener( "mousemove", this.triggerMove.bind( this ) );
+    },
+    // logic is incorrect need to fix
+    triggerMove: function( e ) {
+      var angle = Math.atan2( e.pageX - this.scrubCenter[0], -1 * ( e.pageY - this.scrubCenter[1] ) ) * ( 180 / Math.PI );
+      this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
+      this.scrubber.style.transform = "rotate(" + angle + "deg)";
     },
     moveScrubber: function() {
       this.topVal = parseInt( ( this.hiddenInput.value - this.hiddenInput.min ), 10 );
