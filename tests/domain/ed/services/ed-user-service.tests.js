@@ -126,6 +126,7 @@
       });
     });
 
+    // TODO need to wait for connection service to be completed
     suite( "Methods", function() {
       suite( "login", function() {
         // TODO need to figure out how to make login successful for this test
@@ -317,7 +318,7 @@
           expect( edUserService.register )
             .to.throw( Error );
 
-          // TODO do we need to be more specific about the error in this test?
+          // TODO do we need to be more specific about the error?
         });
       });
     });

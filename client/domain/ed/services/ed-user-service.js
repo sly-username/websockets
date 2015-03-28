@@ -116,7 +116,7 @@ edUserService.logout = function() {
     });
 };
 
-edUserService.changeProfileImage = function() {
+edUserService.changeProfileImage = function( image ) {
   /*
   // send "I'm going to send an image" -- ws.binaryType = "blob";
   send({
@@ -125,17 +125,10 @@ edUserService.changeProfileImage = function() {
   send( image );
   new Promise()
     "onmessage" --> check for a "image upload complete"
-    resolve( dataservce.getUserById( currentUser.id ) )
-   */
+    resolve( dataservice.getUserById( currentUser.id ) )
+  */
 
-  //return edConnectionService.send( pictureBlob )
-  //  .then( ( response ) => {
-  //    console.log( response.data );
-  //    return response.data;
-  //  })
-  //  .catch( ( error ) => {
-  //    throw error;
-  //  });
+  // need to match new image to appropriate user
 };
 
 edUserService.register = function( args ) {
