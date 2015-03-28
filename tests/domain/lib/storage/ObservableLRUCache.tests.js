@@ -1,6 +1,6 @@
 /*eslint-env mocha*/
 /*global suite, test, console*/
-( function( win, doc, System, sinon, expect ) {
+(function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "ObservableLRUCache", function() {
@@ -10,9 +10,9 @@
 
     this.timeout( 5000 );
 
-    suiteSetup( function( done ) {
+    suiteSetup(function( done ) {
       System.import( "domain/lib/storage/ObservableLRUCache" )
-        .then( function( imported ) {
+        .then(function( imported ) {
           var syms;
 
           ObservableLRUCache = imported.default;
@@ -37,89 +37,89 @@
     suite( "Inherits from LRUCache", function() {
       var cache;
 
-      setup( function() {
+      setup(function() {
         cache = new ObservableLRUCache( 10 );
       });
 
-      teardown( function() {
+      teardown(function() {
         cache = null;
       });
 
-      test( "has inherited property limit", function() {
+      test( "property limit", function() {
         expect( cache )
           .to.have.property( "limit" )
           .to.be.a( "number" )
           .that.equals( 10 );
       });
 
-      test( "has inherited property size", function() {
+      test( "property size", function() {
         expect( cache )
           .to.have.property( "size" )
           .to.be.a( "number" )
           .that.equals( 0 );
       });
 
-      test( "has inherited symbol keyMap", function() {
+      test( "symbol @@keyMap", function() {
         expect( cache )
           .to.have.property( keyMap )
           .to.be.a( "object" );
       });
 
-      test( "has inherited symbol head", function() {
+      test( "symbol @@head", function() {
         expect( cache )
           .to.have.property( head )
           .to.be.equal( null );
       });
 
-      test( "has inherited symbol tail", function() {
+      test( "symbol @@tail", function() {
         expect( cache )
           .to.have.property( tail )
           .to.be.equal( null );
       });
 
-      test( "has inherited method set", function() {
+      test( "method set", function() {
         expect( cache )
           .to.have.property( "set" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method get", function() {
+      test( "method get", function() {
         expect( cache )
           .to.have.property( "get" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method peek", function() {
+      test( "method peek", function() {
         expect( cache )
           .to.have.property( "peek" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method has", function() {
+      test( "method has", function() {
         expect( cache )
           .to.have.property( "has" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method shift", function() {
+      test( "method shift", function() {
         expect( cache )
           .to.have.property( "shift" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method remove", function() {
+      test( "method remove", function() {
         expect( cache )
           .to.have.property( "remove" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method clear", function() {
+      test( "method clear", function() {
         expect( cache )
           .to.have.property( "clear" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method keys", function() {
+      test( "method keys", function() {
         expect( cache )
           .to.have.property( "keys" )
           .that.is.a( "function" );
@@ -128,13 +128,13 @@
           .to.be.an.instanceof( Array );
       });
 
-      test( "has inherited method forEach", function() {
+      test( "method forEach", function() {
         expect( cache )
           .to.have.property( "forEach" )
           .that.is.a( "function" );
       });
 
-      test( "has inherited method toArray", function() {
+      test( "method toArray", function() {
         expect( cache )
           .to.have.property( "toArray" )
           .that.is.a( "function" );
@@ -143,7 +143,7 @@
           .to.be.an.instanceof( Array );
       });
 
-      test( "has inherited method toString", function() {
+      test( "method toString", function() {
         expect( cache )
           .to.have.property( "toString" )
           .that.is.a( "function" );
@@ -152,31 +152,39 @@
           .to.be.a( "string" );
       });
 
-      test( "has inherited default iterator", function() {
+      test( "default @@iterator", function() {
         expect( cache )
           .to.have.property( Symbol.iterator )
           .that.is.a( "function" );
       });
 
-      test( "has inherited iterator reverse", function() {
+      test( "iterator reverse", function() {
         expect( cache )
           .to.have.property( "reverse" )
           .that.is.a( "function" );
       });
+
+      test( "iterator reverseOf", function() {
+        expect( cache )
+          .to.have.property( "reverseOf" )
+          .that.is.a( "object" )
+          .and.has.property( Symbol.iterator )
+          .that.is.a( "function" );
+      });
     });
 
-    suite( "Properties", function() {
+    suite( "Own Properties & Symbols", function() {
       var cache;
 
-      setup( function() {
+      setup(function() {
         cache = new ObservableLRUCache( 3 );
       });
 
-      teardown( function() {
+      teardown(function() {
         cache = null;
       });
 
-      test( "has object map for holding observer functions", function() {
+      test( "@@observers, has object map for holding observer functions", function() {
         expect( cache )
           .to.have.property( observers )
           .that.is.an( "object" )
@@ -188,15 +196,15 @@
       suite( "observe", function() {
         var cache;
 
-        setup( function() {
-          cache = new ObservableLRUCache( 5 );
+        setup(function() {
+          cache = new ObservableLRUCache( 3 );
 
           cache.set( "one", 1 );
           cache.set( "two", 2 );
           cache.set( "three", 3 );
         });
 
-        teardown( function() {
+        teardown(function() {
           cache = null;
         });
 
@@ -211,7 +219,7 @@
             .that.contains( observeFn );
         });
 
-        test( "observe functions get a list of changes", function( done ) {
+        test( "observe functions get an array of changes", function( done ) {
           var observeFn = function( changeList ) {
             expect( changeList )
               .to.be.an.instanceof( Array );
@@ -236,7 +244,7 @@
 
             expect( change )
               .to.have.property( "object" )
-              .that.equals( "one" );
+              .that.equals( "setOne" );
 
             expect( change )
               .to.have.property( "type" )
@@ -250,7 +258,7 @@
           };
 
           cache.observe( "one", observeFn );
-          cache.set( "one", "one" );
+          cache.set( "one", "setOne" );
         });
 
         test( "can specify, only observe 'set' operations", function() {
@@ -282,20 +290,110 @@
           expect( observeFn )
             .to.have.callCount( 1 );
         });
+
+        test( "calling set fires 'set' observers", function() {
+          var setObserver = sinon.spy(),
+            removeObserver = sinon.spy();
+
+          cache.observe( "one", setObserver, [ "set" ]);
+          cache.observe( "one", removeObserver, [ "remove" ]);
+
+          cache.set( "one", "one" );
+
+          expect( setObserver )
+            .to.have.callCount( 1 );
+
+          expect( removeObserver )
+            .to.have.callCount( 0 );
+        });
+
+        test( "calling remove fires 'remove' observers", function() {
+          var setObserver = sinon.spy(),
+            removeObserver = sinon.spy();
+
+          cache.observe( "one", setObserver, [ "set" ]);
+          cache.observe( "one", removeObserver, [ "remove" ]);
+
+          cache.remove( "one" );
+
+          expect( setObserver )
+            .to.have.callCount( 0 );
+
+          expect( removeObserver )
+            .to.have.callCount( 1 );
+        });
+
+        test( "calling shift fires 'remove' for observers of 'head' item", function() {
+          var setObserver = sinon.spy(),
+            removeObserver = sinon.spy(),
+            shiftSpy = sinon.spy( cache, "shift" );
+
+          cache.observe( "one", setObserver, [ "set" ]);
+          cache.observe( "one", removeObserver, [ "remove" ]);
+
+          cache.set( "four", 4 );
+
+          expect( setObserver )
+            .to.have.callCount( 0 );
+
+          expect( shiftSpy )
+            .to.have.callCount( 1 );
+
+          expect( removeObserver )
+            .to.have.callCount( 1 );
+
+          shiftSpy.restore();
+        });
+
+        test( "calling clear fires 'remove' on all observers", function() {
+          var removeObserver = sinon.spy();
+
+          cache.observe( "one", removeObserver, [ "remove" ]);
+          cache.observe( "two", removeObserver, [ "remove" ]);
+          cache.observe( "three", removeObserver, [ "remove" ]);
+
+          cache.clear();
+
+          expect( cache.size )
+            .to.equal( 0 );
+
+          expect( removeObserver )
+            .to.have.callCount( 3 );
+        });
+
+        test( "observers can be used to put items back into the cache when cleared", function() {
+          var removeObserver = sinon.spy(function( changes ) {
+            changes.forEach(function( change ) {
+              cache.set( change.name, change.oldValue );
+            });
+          });
+
+          cache.observe( "one", removeObserver, [ "remove" ]);
+
+          cache.clear();
+
+          expect( removeObserver )
+            .to.have.callCount( 1 );
+
+          expect( cache )
+            .to.have.property( "size", 1 );
+
+          expect( cache.has( "one" ) ).to.equal( true );
+        });
       });
 
       suite( "unobserve", function() {
         var cache;
 
-        setup( function() {
-          cache = new ObservableLRUCache( 5 );
+        setup(function() {
+          cache = new ObservableLRUCache( 3 );
 
           cache.set( "one", 1 );
           cache.set( "two", 2 );
           cache.set( "three", 3 );
         });
 
-        teardown( function() {
+        teardown(function() {
           cache = null;
         });
 
@@ -335,39 +433,3 @@
     });
   });
 })( window, document, window.System, window.sinon, window.chai.expect );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

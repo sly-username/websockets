@@ -1,8 +1,8 @@
 /* jshint strict: false */
-var size = Symbol( "size" ), // jshint ignore:line
-  tail = Symbol( "tail" ), // jshint ignore:line
-  head = Symbol( "head" ), // jshint ignore:line
-  keyMap = Symbol( "keyMap" ); // jshint ignore:line
+var size = Symbol( "size" ),
+  tail = Symbol( "tail" ),
+  head = Symbol( "head" ),
+  keyMap = Symbol( "keyMap" );
 
 export var symbols = {
   get size() {
@@ -53,6 +53,12 @@ export default class LRUCache {
   set( key, data ) {
     var newNode = new LRUNode( key, data, null, null );
 
+    if ( this.has( key ) ) {
+      this[ keyMap ][ key ].data = data;
+      this.get( key );
+      return null;
+    }
+
     this[ keyMap ][ key ] = newNode;
 
     if ( this[ tail ] ) {
@@ -63,12 +69,12 @@ export default class LRUCache {
     }
 
     this[ tail ] = newNode;
+    this[ size ] += 1;
 
-    if ( this[ size ] === this.limit ) {
+    if ( this[ size ] > this.limit ) {
       return this.shift();
     }
 
-    this[ size ] += 1;
     return null;
   }
 
@@ -236,7 +242,9 @@ export default class LRUCache {
     return rtn;
   }
 
+  /*
   get [ Symbol.toStringTag ]() {
     return "LRUCache";
   }
+  */
 }
