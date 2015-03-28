@@ -1,9 +1,10 @@
 import define from "domain/ed/define-properties";
-import EDDataObject from "domain/ed/objects/EDDataObject";
+import EDMedia from "domain/ed/objects/EDMedia";
 
-export default class EDSong extends EDDataObject {
+export default class EDSong extends EDMedia {
   constructor( args ) {
     super( args );
+
     define.readOnly( this, [
       "artistId",
       "createdBy",
