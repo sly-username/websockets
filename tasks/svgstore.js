@@ -1,10 +1,10 @@
-var gulp = require('gulp');
-var svgstore = require('gulp-svgstore');
-var config = require( "../config.paths.js" );
+var gulp = require( "gulp" ),
+  svgstore = require( "gulp-svgstore" ),
+  config = require( "../config.paths.js" );
 
-gulp.task('svgstore:dev', function () {
+gulp.task( "svgstore:dev", function() {
   return gulp
-    .src(config.svgstore.src)
-    .pipe(svgstore())
-    .pipe(gulp.dest(config.svgstore.out));
+    .src( config.svgstore.src )
+    .pipe( svgstore() )
+    .pipe( gulp.dest( config.svgstore.out ));
 });
