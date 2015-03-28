@@ -109,7 +109,8 @@ gulp.task( "build:dev", gulp.series(
     "svgstore:dev",
     "vendor:dev",
     "traceur:dev"
-  )
+  ),
+  "envBuild:dev"
 ));
 
 /*** TESTING TASKS ***/
@@ -138,7 +139,7 @@ gulp.task( "dev", gulp.series(
   "watch",
   "jscs:client",
   "lint:client",
-  "tdd"
+  "tdd:alone"
 ));
 
 /*** PRODUCTION BUILD TASK ***/
