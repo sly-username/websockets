@@ -106,6 +106,7 @@ gulp.task( "build:dev", gulp.series(
   gulp.parallel(
     "less:dev",
     "symlink:dev",
+    "svgstore:dev",
     "vendor:dev",
     "traceur:dev"
   ),
