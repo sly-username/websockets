@@ -18,7 +18,7 @@
         });
     });
 
-    suite( "EDSong creation", function() {
+    suite.skip( "EDSong creation", function() {
       test( "constructor has expected properties", function() {
         var songObj = {
             artistId: "001",
@@ -47,6 +47,34 @@
 
         expect( song )
           .to.have.property( "createdDate" );
+      });
+    });
+
+    suite.skip( "getArtist Method", function() {
+      test( "returns a promise", function() {
+        var songObj = {
+            artistId: "001",
+            createdBy: "Joe",
+            name: "Piper",
+            playCount: 0,
+            waveformImage: "https://static.gearslutz.com/board/imgext.php?u=http%3A%2F%2Fdaveshort.org%2Fmusic%2Floudness%2Fmetallica_big.png&h=067a1a9b3aa501c5f0ac43f4851235bb",
+            createdDate: Date.now()
+          },
+          song = new EDSong( songObj );
+      });
+    });
+
+    suite.skip( "getCreator", function() {
+      test( "returns a promise", function() {
+        var songObj = {
+            artistId: "001",
+            createdBy: "Joe",
+            name: "Piper",
+            playCount: 0,
+            waveformImage: "https://static.gearslutz.com/board/imgext.php?u=http%3A%2F%2Fdaveshort.org%2Fmusic%2Floudness%2Fmetallica_big.png&h=067a1a9b3aa501c5f0ac43f4851235bb",
+            createdDate: Date.now()
+          },
+          song = new EDSong( songObj );
       });
     });
   });
