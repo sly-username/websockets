@@ -5,8 +5,6 @@ export default class EDProfile extends EDDataObject {
   constructor( args ) {
     super( args );
     define.configRO( this, [
-      "userId",
-      "name", // how do i account for the first and last name?
       "zipcode",
       "displayName",
       "birthday",
@@ -14,7 +12,9 @@ export default class EDProfile extends EDDataObject {
       "website",
       "yearFounded"
     ], args );
-    define.readOnly( this, [ "createdDate" ], args )
+    define.configRODeep( this, [ "name" ], args );
+    // should i define it this way to account for name having its own set of key/value pairs?
+    define.readOnly( this, [ "userId", "createdDate" ], args );
     define.readOnlyDeep( this, [ "badgesEarned" ], args );
   }
 }
