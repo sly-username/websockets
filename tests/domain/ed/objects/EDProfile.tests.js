@@ -20,27 +20,18 @@
 
     suite( "EDProfile creation", function() {
       suite( "Properties", function() {
-        test( "EDProfile has the properties specified in the constructor", function() {
-          var args = {
-              badgesEarned: [
-                {
-                  BadgePair: {
-                    badgeId: 1,
-                    dataAcquired: Date
-                  }
-                },
-                {
-                  BadgePair: {
-                    badgeId: 2,
-                    dataAcquired: Date
-                  }
-                }
-              ]
-            },
+        test( "EDProfile should have the following properties:", function() {
+          var args = {},
             edProfile = new EDProfile( args );
 
           expect( edProfile )
+            .to.have.property( "id" );
+
+          expect( edProfile )
             .to.have.property( "userId" );
+
+          expect( edProfile )
+            .to.have.property( "bio" );
 
           expect( edProfile )
             .to.have.property( "email" );
@@ -56,14 +47,11 @@
 
           expect( edProfile )
             .to.have.property( "modifiedDate" );
-
-          expect( edProfile )
-            .to.have.property( "badgesEarned" );
         });
       });
 
       suite( "BadgesEarned", function() {
-        test( "badgesEarned is an array", function() {
+        test( "has property badgesEarned, which is an array", function() {
           var args = {
               badgesEarned: [
                 {
@@ -87,8 +75,7 @@
             .that.is.an( "array" );
         });
 
-        test( "BadgePair is an object", function() {
-          console.log( [ Array( 1 ) ] );
+        test( "badgesEarned is an array of badgePairs", function() {
           var args = {
               badgesEarned: [
                 {
@@ -103,12 +90,14 @@
 
           expect( edProfile )
             .to.have.property( "badgesEarned" )
-            .that.deep.equals({
-              BadgePair: {
-                badgeId: 1,
-                dataAcquired: Date
+            .that.deep.equals([
+              {
+                BadgePair: {
+                  badgeId: 1,
+                  dataAcquired: Date
+                }
               }
-            });
+            ]);
         });
       });
     });

@@ -6,7 +6,9 @@ export default class EDProfile extends EDDataObject {
     super( args );
 
     define.readOnly( this, [
+      "id",
       "userId",
+      "bio",
       "email",
       "zipcode",
       "displayName",
