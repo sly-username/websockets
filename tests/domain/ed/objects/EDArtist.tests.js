@@ -43,7 +43,6 @@
 
         expect( setProperty )
           .to.throw( TypeError );
-
       });
     });
   });
