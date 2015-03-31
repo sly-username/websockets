@@ -4,8 +4,6 @@
   suite( "EDFan", function() {
     var EDFan;
 
-    this.timeout( 5000 );
-
     suiteSetup( function( done ) {
       System.import( "domain/ed/objects/EDFan" )
         .then( function( imported ) {
@@ -19,16 +17,39 @@
     });
 
     suite( "Properties", function() {
-      test( "EDProfile should have the following properties: 'birthday', 'name'",
-        function() {
-          var args = {},
-            edFan = new EDFan( args );
+      test( "EDProfile should have the following properties: 'birthday', 'name'", function() {
+        var args = {},
+          edFan = new EDFan( args );
 
-          expect( edFan )
-            .to.have.property( "birthday" );
+        expect( edFan )
+          .to.have.property( "birthday" );
 
-          expect( edFan )
-            .to.have.property( "name" );
+        expect( edFan )
+          .to.have.property( "name" );
+      });
+
+      test( "property 'name' should be an object", function() {
+        // wouldn't it always be an object? is this necessary?
+        var args = {
+            name: {
+              first: "sly",
+              last: "sylvia"
+            }
+          },
+          edFan = new EDFan( args );
+
+        expect( edFan.name )
+          .to.be.an( "object" );
+      });
+
+      test( "property 'birthday' should be a string", function() {
+        var args = {
+          birthday: "01/01/01" // not sure how we're formatting this
+        },
+          edFan = new EDFan( args );
+
+        expect( edFan.birthday )
+          .to.be.an( "string" );
       });
     });
   });
