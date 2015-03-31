@@ -5,9 +5,7 @@ export default class EDArtist extends EDProfile {
   constructor( args ) {
     super( args );
     define.readOnly( this, [
-      "artistName",
-      "yearFounded",
-      "website"
+      "yearFounded"
     ], args );
   }
 }
