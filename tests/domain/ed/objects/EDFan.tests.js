@@ -4,6 +4,8 @@
   suite( "EDFan", function() {
     var EDFan;
 
+    this.timeout( 5000 );
+
     suiteSetup( function( done ) {
       System.import( "domain/ed/objects/EDFan" )
         .then( function( imported ) {
