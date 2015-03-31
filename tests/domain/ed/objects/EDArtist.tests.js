@@ -4,6 +4,8 @@
   suite( "EDArtist", function() {
     var EDArtist;
 
+    this.timeout( 5000 );
+
     suiteSetup( function( done ) {
       System.import( "domain/ed/objects/EDArtist" )
         .then( function( imported ) {
@@ -34,12 +36,14 @@
           artistInfo = {
             yearFounded: inputtedProperty
           },
-          edArtist = new EDArtist( artistInfo );
+          edArtist = new EDArtist( artistInfo ),
+          setProperty = function() {
+            edArtist.yearFounded = "02/02/02";
+          };
 
-        edArtist.yearFounded = "02/02/02";
+        expect( setProperty )
+          .to.throw( TypeError );
 
-        expect( edArtist.yearFounded )
-          .to.deep.equal( artistInfo.yearFounded );
       });
     });
   });
