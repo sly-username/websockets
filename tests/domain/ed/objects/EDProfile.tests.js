@@ -20,34 +20,35 @@
 
     suite( "EDProfile creation", function() {
       suite( "Properties", function() {
-        test( "EDProfile should have the following properties:", function() {
-          var args = {},
-            edProfile = new EDProfile( args );
+        test( "EDProfile should have the following properties: 'id', 'userId', 'bio', 'email', 'zipcode', 'displayName', 'modifiedDate'",
+          function() {
+            var args = {},
+              edProfile = new EDProfile( args );
 
-          expect( edProfile )
-            .to.have.property( "id" );
+            expect( edProfile )
+              .to.have.property( "id" );
 
-          expect( edProfile )
-            .to.have.property( "userId" );
+            expect( edProfile )
+              .to.have.property( "userId" );
 
-          expect( edProfile )
-            .to.have.property( "bio" );
+            expect( edProfile )
+              .to.have.property( "bio" );
 
-          expect( edProfile )
-            .to.have.property( "email" );
+            expect( edProfile )
+              .to.have.property( "email" );
 
-          expect( edProfile )
-            .to.have.property( "zipcode" );
+            expect( edProfile )
+              .to.have.property( "zipcode" );
 
-          expect( edProfile )
-            .to.have.property( "displayName" );
+            expect( edProfile )
+              .to.have.property( "displayName" );
 
-          expect( edProfile )
-            .to.have.property( "createdDate" );
+            expect( edProfile )
+              .to.have.property( "createdDate" );
 
-          expect( edProfile )
-            .to.have.property( "modifiedDate" );
-        });
+            expect( edProfile )
+              .to.have.property( "modifiedDate" );
+          });
       });
 
       suite( "BadgesEarned", function() {
