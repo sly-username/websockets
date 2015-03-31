@@ -20,9 +20,12 @@
       suite( "Properties", function() {
         test( "EDProfile has the properties specified in the constructor", function() {
           var args = {
-              badgesEarned: {
-                test: null
-              }
+              //badgesEarned: [
+              //  BadgePair: {
+              //    badgeId: "test",
+              //    dataAcquired: Date
+              //  }
+              //]
             },
             edProfile = new EDProfile( args );
 
