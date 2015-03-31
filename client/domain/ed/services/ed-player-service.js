@@ -15,8 +15,10 @@ var edPlayerService = new EventEmitter([
     "edSkip",
     "edSkipTo"
   ]),
+  edConnectionService = {},
+  EDCollection = {},
   currentStats = null,
-  queue = [];
+  queue = EDCollection;
 
 Object.defineProperties( edPlayerService, {
   currentStats: {
@@ -36,17 +38,44 @@ Object.defineProperties( edPlayerService, {
 });
 
 edPlayerService.play = function( EDSong ) {
-  if ( !currentStats.playing ) {
-    EDSong.play();
-    currentStats.playing = true;
-  }
+  return edConnectionService.formattedRequest( EDSong )
+    .then(function( song ) {
+      if ( !currentStats.playing ) {
+        // TODO not sure where the audio file will be
+        song.audio.play();
+        currentStats.playing = true;
+
+        edAnalyticsService.send(
+          edAnalyticsService.createEvent( "play", {
+            timestamp: new Date()
+          })
+        );
+      }
+    })
+    .catch(function( err ) {
+      currentStats.playing = false;
+      throw err;
+    });
 };
 
 edPlayerService.pause = function( EDSong ) {
-  if ( currentStats.playing ) {
-    EDSong.pause();
-    currentStats.playing = false;
-  }
+  return edConnectionService.formattedRequest( EDSong )
+    .then(function( song ) {
+      if ( currentStats.playing ) {
+        // TODO not sure where the audio file will be
+        song.audio.pause();
+        currentStats.playing = false;
+
+        edAnalyticsService.send(
+          edAnalyticsService.createEvent( "pause", {
+            timestamp: new Date()
+          })
+        );
+      }
+    })
+    .catch(function( err ) {
+      throw err;
+    });
 };
 
 edPlayerService.stop = function( EDSong ) {
@@ -65,3 +94,5 @@ edPlayerService.next = function() {};
 edPlayerService.skip = function() {};
 
 edPlayerService.skipTo = function( index ) {};
+
+export default edPlayerService;
