@@ -1,10 +1,9 @@
+
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "EDProfile", function() {
     var EDProfile;
-
-    this.timeout( 5000 );
 
     suiteSetup( function( done ) {
       System.import( "domain/ed/objects/EDProfile" )
@@ -20,7 +19,7 @@
 
     suite( "EDProfile creation", function() {
       suite( "Properties", function() {
-        test( "EDProfile should have the following properties: 'id', 'userId', 'bio', 'email', 'zipcode', 'displayName', 'modifiedDate'",
+        test( "EDProfile should have the following properties: 'id', 'userId', 'bio', 'email', 'zipcode', 'displayName', 'modifiedDate', and 'name'",
           function() {
             var args = {},
               edProfile = new EDProfile( args );
@@ -48,57 +47,65 @@
 
             expect( edProfile )
               .to.have.property( "modifiedDate" );
+
+            expect( edProfile )
+              .to.have.property( "name" );
           });
-      });
 
-      suite( "BadgesEarned", function() {
-        test( "has property badgesEarned, which is an array", function() {
-          var args = {
-              badgesEarned: [
+        suite( "badgesEarned", function() {
+          test( "has property badgesEarned", function() {
+            var args = {
+                badgesEarned: [
+                  {
+                    BadgePair: {
+                      badgeId: 1,
+                      dataAcquired: Date
+                    }
+                  },
+                  {
+                    BadgePair: {
+                      badgeId: 2,
+                      dataAcquired: Date
+                    }
+                  }
+                ]
+              },
+              edProfile = new EDProfile( args );
+
+            expect( edProfile )
+              .to.have.property( "badgesEarned" );
+          });
+
+          test( "badgesEarned is an array of badgePair objects", function() {
+            var args = {
+                badgesEarned: [
+                  {
+                    BadgePair: {
+                      badgeId: 1,
+                      dataAcquired: Date
+                    }
+                  }
+                ]
+              },
+              edProfile = new EDProfile( args );
+
+            console.log( edProfile.badgesEarned );
+
+            expect( edProfile )
+              .to.have.property( "badgesEarned" )
+              .that.deep.equals([
                 {
                   BadgePair: {
                     badgeId: 1,
                     dataAcquired: Date
                   }
-                },
-                {
-                  BadgePair: {
-                    badgeId: 2,
-                    dataAcquired: Date
-                  }
                 }
-              ]
-            },
-            edProfile = new EDProfile( args );
+              ]);
 
-          expect( edProfile )
-            .to.have.property( "badgesEarned" )
-            .that.is.an( "array" );
-        });
+            expect( edProfile.badgesEarned )
+              .to.be.an( "array" );
 
-        test( "badgesEarned is an array of badgePairs", function() {
-          var args = {
-              badgesEarned: [
-                {
-                  BadgePair: {
-                    badgeId: 1,
-                    dataAcquired: Date
-                  }
-                }
-              ]
-            },
-            edProfile = new EDProfile( args );
-
-          expect( edProfile )
-            .to.have.property( "badgesEarned" )
-            .that.deep.equals([
-              {
-                BadgePair: {
-                  badgeId: 1,
-                  dataAcquired: Date
-                }
-              }
-            ]);
+          });
         });
       });
     });
