@@ -25,11 +25,11 @@
 
       test( "ready: can create from document.createElement", function() {
         var createdSpy = sinon.spy(
-          polymer.getRegisteredPrototype( "ed-icon-input" ),
+          polymer.getRegisteredPrototype( "ed-form-input" ),
           "ready"
         );
 
-        expect( document.createElement( "ed-icon-input" ) )
+        expect( document.createElement( "ed-form-input" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
           .and.equals( "<ed-form-input></ed-form-input>" );
@@ -39,7 +39,7 @@
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var iconInput = document.createElement( "ed-icon-input" ),
+        var iconInput = document.createElement( "ed-form-input" ),
           attachedSpy = sinon.spy( iconInput, "attached" );
 
         testingWrapper.appendChild( iconInput );
@@ -55,7 +55,7 @@
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var iconInput = document.createElement( "ed-icon-input" ),
+        var iconInput = document.createElement( "ed-form-input" ),
           detachedSpy = sinon.spy( iconInput, "detached" );
 
         testingWrapper.appendChild( iconInput );
