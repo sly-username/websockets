@@ -34,6 +34,19 @@
         expect( edFan.birthday )
           .to.be.a( "string" );
       });
+
+      test( "should not be able to set 'birthday' property", function() {
+        var args = {
+            birthday: "01/01/01"
+          },
+          edFan = new EDFan( args ),
+          setProperty = function() {
+            edFan.birthday = "02/02/02";
+          };
+
+        expect( setProperty )
+          .to.throw( TypeError );
+      });
     });
   });
 })( window, document, window.System, window.sinon, window.chai.expect );
