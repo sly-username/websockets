@@ -4,6 +4,8 @@
   suite( "EDProfile", function() {
     var EDProfile;
 
+    this.timeout( 5000 );
+
     suiteSetup( function( done ) {
       System.import( "domain/ed/objects/EDProfile" )
         .then( function( imported ) {
@@ -20,12 +22,20 @@
       suite( "Properties", function() {
         test( "EDProfile has the properties specified in the constructor", function() {
           var args = {
-              //badgesEarned: [
-              //  BadgePair: {
-              //    badgeId: "test",
-              //    dataAcquired: Date
-              //  }
-              //]
+              badgesEarned: [
+                {
+                  BadgePair: {
+                    badgeId: 1,
+                    dataAcquired: Date
+                  }
+                },
+                {
+                  BadgePair: {
+                    badgeId: 2,
+                    dataAcquired: Date
+                  }
+                }
+              ]
             },
             edProfile = new EDProfile( args );
 
@@ -54,7 +64,22 @@
 
       suite( "BadgesEarned", function() {
         test( "badgesEarned is an array", function() {
-          var args = {},
+          var args = {
+              badgesEarned: [
+                {
+                  BadgePair: {
+                    badgeId: 1,
+                    dataAcquired: Date
+                  }
+                },
+                {
+                  BadgePair: {
+                    badgeId: 2,
+                    dataAcquired: Date
+                  }
+                }
+              ]
+            },
             edProfile = new EDProfile( args );
 
           expect( edProfile )
@@ -63,17 +88,27 @@
         });
 
         test( "BadgePair is an object", function() {
-          var args = {},
-            BadgePair = {
-              badgeId: 1,
-              dataAcquired: Date
+          console.log( [ Array( 1 ) ] );
+          var args = {
+              badgesEarned: [
+                {
+                  BadgePair: {
+                    badgeId: 1,
+                    dataAcquired: Date
+                  }
+                }
+              ]
             },
             edProfile = new EDProfile( args );
 
           expect( edProfile )
             .to.have.property( "badgesEarned" )
-            .that.deep.equals( "BadgePair" )
-            .that.is.an( "object" );
+            .that.deep.equals({
+              BadgePair: {
+                badgeId: 1,
+                dataAcquired: Date
+              }
+            });
         });
       });
     });

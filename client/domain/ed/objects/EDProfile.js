@@ -24,6 +24,6 @@ export default class EDProfile extends EDDataObject {
       "createdDate",
       "modifiedDate"
     ], args );
-    define.readOnlyDeep( this, badgesEarned, args );
+    define.readOnlyDeep( this, [ "badgesEarned" ], args );
   }
 }
