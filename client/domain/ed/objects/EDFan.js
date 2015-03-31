@@ -7,6 +7,5 @@ export default class EDFan extends EDProfile {
     define.readOnly( this, [
       "birthday"
     ], args );
-    define.readOnlyDeep( this, [ "name" ], args );
   }
 }

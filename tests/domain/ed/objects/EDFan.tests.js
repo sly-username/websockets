@@ -17,39 +17,22 @@
     });
 
     suite( "Properties", function() {
-      test( "EDProfile should have the following properties: 'birthday', 'name'", function() {
+      test( "EDFan should have 'birthday' property", function() {
         var args = {},
           edFan = new EDFan( args );
 
         expect( edFan )
           .to.have.property( "birthday" );
-
-        expect( edFan )
-          .to.have.property( "name" );
       });
 
-      test( "property 'name' should be an object", function() {
-        // wouldn't it always be an object? is this necessary?
+      test( "'birthday' property should be a string", function() {
         var args = {
-            name: {
-              first: "sly",
-              last: "sylvia"
-            }
-          },
-          edFan = new EDFan( args );
-
-        expect( edFan.name )
-          .to.be.an( "object" );
-      });
-
-      test( "property 'birthday' should be a string", function() {
-        var args = {
-          birthday: "01/01/01" // not sure how we're formatting this
+          birthday: "01/01/01"
         },
           edFan = new EDFan( args );
 
         expect( edFan.birthday )
-          .to.be.an( "string" );
+          .to.be.a( "string" );
       });
     });
   });
