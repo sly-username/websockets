@@ -1,5 +1,6 @@
-@import "mixins/prefixes/placeholder.less";
-@import "fonts/edTypeStyles.less";
+@import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/colors.vars.less";
 
 .container {
   padding: 0 .7rem;
@@ -27,7 +28,7 @@
       background: transparent;
       border: 0;
       outline: 0;
-      .input-placeholder( .white( .33 ) );
+      .input-placeholder( { .white( .33 ) } );
     }
   }
 }

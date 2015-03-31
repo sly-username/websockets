@@ -1,5 +1,6 @@
 @import "../styles/ed/colors.vars.less";
 @import "mixins/prefixes/placeholder.less";
+@import "fonts/edTypeStyles.less";
 
 
 #primaryBox, #confirmBox {
@@ -35,7 +36,7 @@
     background: transparent;
     border: 0;
     outline: 0;
-    .input-placeholder( { .edType(heading-L); .color: @white; opacity: .33; } );
+    .input-placeholder( { .edType(heading-L); .white( .33 ); } );
   }
   &.confirm-container {
     margin-top: 1rem;
