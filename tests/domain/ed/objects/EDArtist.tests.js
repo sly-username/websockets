@@ -28,6 +28,19 @@
           .to.be.a( "string" )
           .that.equals( inputtedProperty );
       });
+
+      test( "'yearFounded' property should not be able to be reset", function() {
+        var inputtedProperty = "01/01/01",
+          artistInfo = {
+            yearFounded: inputtedProperty
+          },
+          edArtist = new EDArtist( artistInfo );
+
+        edArtist.yearFounded = "02/02/02";
+
+        expect( edArtist.yearFounded )
+          .to.deep.equal( artistInfo.yearFounded );
+      });
     });
   });
 })( window, document, window.System, window.sinon, window.chai.expect );
