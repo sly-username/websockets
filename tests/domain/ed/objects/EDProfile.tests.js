@@ -1,9 +1,19 @@
-
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "EDProfile", function() {
-    var EDProfile;
+    var EDProfile,
+      profileProperties = [
+        "id",
+        "userId",
+        "bio",
+        "email",
+        "zipcode",
+        "displayName",
+        "createdDate",
+        "modifiedDate",
+        "name"
+      ];
 
     suiteSetup( function( done ) {
       System.import( "domain/ed/objects/EDProfile" )
@@ -19,38 +29,29 @@
 
     suite( "EDProfile creation", function() {
       suite( "Properties", function() {
-        test( "EDProfile should have the following properties: 'id', 'userId', 'bio', 'email', 'zipcode', 'displayName', 'modifiedDate', and 'name'",
-          function() {
-            var args = {},
-              edProfile = new EDProfile( args );
+        profileProperties.forEach( function( value ) {
+          suite( value, function() {
+            test( "should have '" + value + "' property", function() {
+              var args = {},
+                edProfile = new EDProfile( args );
 
-            expect( edProfile )
-              .to.have.property( "id" );
+              expect( edProfile )
+                .to.have.property( value );
+            });
 
-            expect( edProfile )
-              .to.have.property( "userId" );
+            test( "should not be able to set '" + value + "' property", function() {
+              var args = {},
+                inputtedValue = "string value I inputted",
+                edProfile = new EDProfile( args ),
+                setProperty = function() {
+                  edProfile[ value ] = inputtedValue;
+                };
 
-            expect( edProfile )
-              .to.have.property( "bio" );
-
-            expect( edProfile )
-              .to.have.property( "email" );
-
-            expect( edProfile )
-              .to.have.property( "zipcode" );
-
-            expect( edProfile )
-              .to.have.property( "displayName" );
-
-            expect( edProfile )
-              .to.have.property( "createdDate" );
-
-            expect( edProfile )
-              .to.have.property( "modifiedDate" );
-
-            expect( edProfile )
-              .to.have.property( "name" );
+              expect( setProperty )
+                .to.throw( TypeError );
+            });
           });
+        });
 
         suite( "badgesEarned", function() {
           test( "has property badgesEarned", function() {
@@ -89,8 +90,6 @@
               },
               edProfile = new EDProfile( args );
 
-            console.log( edProfile.badgesEarned );
-
             expect( edProfile )
               .to.have.property( "badgesEarned" )
               .that.deep.equals([
@@ -105,6 +104,33 @@
             expect( edProfile.badgesEarned )
               .to.be.an( "array" );
 
+          });
+
+          test( "should not be able to set 'badgesEarned' property", function() {
+            var args = {
+                badgesEarned: [
+                  {
+                    BadgePair: {
+                      badgeId: 1,
+                      dataAcquired: Date
+                    }
+                  }
+                ]
+              },
+              edProfile = new EDProfile( args ),
+              setProperty = function() {
+                edProfile.badgesEarned = [
+                  {
+                    BadgePair: {
+                      badgeId: 4,
+                      dataAcquired: Date
+                    }
+                  }
+                ];
+              };
+
+            expect( setProperty )
+              .to.throw( TypeError );
           });
         });
       });
