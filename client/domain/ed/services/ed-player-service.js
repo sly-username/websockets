@@ -1,4 +1,4 @@
-//import EDSong from "domain/ed/objects/EDSong";
+import EDSong from "domain/ed/objects/EDSong";
 //import EDCollection from "domain/ed/objects/EDCollection";
 import EventEmitter from "domain/lib/eventEventEmitter";
 import createEvent from "domain/lib/event/create-event";
@@ -6,19 +6,19 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 //import edConnectionService from "domain/ed/services/ed-connection-service";
 
 var edPlayerService = new EventEmitter([
-    "edPlay",
-    "edPause",
-    "edStop",
-    "edEnqueue",
-    "edEnqueueNext",
-    "edNext",
-    "edSkip",
-    "edSkipTo"
+    "play",
+    "pause",
+    "stop",
+    "enqueue",
+    "enqueueNext",
+    "next",
+    "skip",
+    "skipTo"
   ]),
   edConnectionService = {},
-  EDCollection = {},
   currentStats = null,
-  queue = EDCollection;
+  queue = [],
+  audio = new Audio();
 
 Object.defineProperties( edPlayerService, {
   currentStats: {
@@ -37,50 +37,28 @@ Object.defineProperties( edPlayerService, {
   }
 });
 
-edPlayerService.play = function( EDSong ) {
-  return edConnectionService.formattedRequest( EDSong )
-    .then(function( song ) {
-      if ( !currentStats.playing ) {
-        // TODO not sure where the audio file will be
-        song.audio.play();
-        currentStats.playing = true;
-
-        edAnalyticsService.send(
-          edAnalyticsService.createEvent( "play", {
-            timestamp: new Date()
-          })
-        );
-      }
-    })
-    .catch(function( err ) {
-      currentStats.playing = false;
-      throw err;
-    });
+edPlayerService.play = function( edSong ) {
+  if ( !( edSong instanceof EDSong ) ) {
+    throw new TypeError( "Song is not an EDSong object" );
+  } else {
+    audio.play();
+    return true;
+  }
 };
 
 edPlayerService.pause = function( EDSong ) {
-  return edConnectionService.formattedRequest( EDSong )
-    .then(function( song ) {
-      if ( currentStats.playing ) {
-        // TODO not sure where the audio file will be
-        song.audio.pause();
-        currentStats.playing = false;
+  if ( currentStats.playing ) {
+    audio.pause();
+  }
 
-        edAnalyticsService.send(
-          edAnalyticsService.createEvent( "pause", {
-            timestamp: new Date()
-          })
-        );
-      }
-    })
-    .catch(function( err ) {
-      throw err;
-    });
+  return !currentStats.playing;
 };
 
 edPlayerService.stop = function( EDSong ) {
   if ( currentStats.playing ) {
-    EDSong.stop();
+    audio.pause();
+    audio.removeAttribute( "src" );
+
     currentStats.playing = false;
   }
 };
