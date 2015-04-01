@@ -145,30 +145,6 @@ paths.scripts = {
   }
 };
 
-/*** JSCS ***/
-paths.jscs = {
-  rc:     join( paths.root, ".jscsrc" ),
-  all:    paths.scripts.all,
-  client: paths.scripts.client,
-  tasks:  paths.scripts.tasks,
-  tests:  paths.scripts.tests,
-  server: paths.scripts.server,
-  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( s => join( paths.root, s ) ),
-  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
-};
-
-/*** ESLINT ***/
-paths.eslint = {
-  rc:     join( paths.root, ".eslintrc" ),
-  all:    paths.scripts.all,
-  client: paths.scripts.client,
-  tasks:  paths.scripts.tasks,
-  tests:  paths.scripts.tests,
-  server: paths.scripts.server,
-  root: join( paths.root, "*.js" ),
-  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
-};
-
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
   bin: join( paths.nodeModules, ".bin", "traceur" ),
