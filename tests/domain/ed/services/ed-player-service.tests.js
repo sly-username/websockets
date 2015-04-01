@@ -284,6 +284,9 @@
         expect( edPlayerService.currentStats.playing )
           .to.equal( song2 );
 
+        edPlayerService.dequeue();
+        edPlayerService.dequeue();
+
         skipToSpy.restore();
       });
     });

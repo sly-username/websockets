@@ -140,7 +140,7 @@ export default edPlayerService = {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
       }
-      return this.play( this.queue[ 0 ] );
+      return this.play( this.dequeue() );
     }
   },
 
