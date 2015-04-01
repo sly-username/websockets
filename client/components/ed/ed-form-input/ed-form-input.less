@@ -2,8 +2,7 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 
-.container {
-  padding: 0 .7rem;
+
   .wrapper {
     height: 10.9rem;
     width: 100%;
@@ -14,13 +13,13 @@
     .align {
       margin-top: 3.3rem;
     }
-    .inner-icon {
-      padding: 1rem;
-      pointer-events: none;
-      left: 0rem;
-      top: 3.3rem;
-      float: left;
-    }
+//    .inner-icon {
+//      padding: 1rem;
+//      pointer-events: none;
+//      left: 0rem;
+//      top: 3.3rem;
+//      float: left;
+//    }
     input {
       .edType( heading-L );
       .white( .75 );
@@ -31,6 +30,17 @@
       .input-placeholder( { .white( .33 ) } );
     }
   }
+
+
+ed-icon {
+/* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
+*/
+  width: 3rem;
+  height: 50%;
+  .white( .50 );
+  pointer-events: none;
+  float: left;
+  padding: 0 1rem;
 }
 
 :host([type="date"]){
