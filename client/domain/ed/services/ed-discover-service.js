@@ -13,12 +13,14 @@ Object.defineProperties( edDiscoverService, {
     get: function() {
       return userBlend;
     }
-    // array of EDGenre-s
   }
 });
 
 edDiscoverService.getDiscoverSongList = function( EDGenre="blend" ) {
-  userBlend = [ EDGenre ];
+  // get user's desired blend of genres - via id or name? from where?
+  // get id's of the genres from EDGenre
+  // userBlend is an array of these EDGenres
+  return userBlend;
 };
 
 export default edDiscoverService;
