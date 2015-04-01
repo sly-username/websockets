@@ -46,8 +46,16 @@ export default edPlayerService = {
 
   get currentTime() {
     if ( this.isPlaying || this.isPaused ) {
-      return audio.currentTime;
+      return 488;
+      // TODO fake current time
+      // return audio.currentTime;
     }
+
+    return 0;
+  },
+
+  set currentTime( val ) {
+    return this.currentTime;
   },
 
   get currentSeconds() {
@@ -72,17 +80,22 @@ export default edPlayerService = {
     hh = hh < 10 ? "0" + hh : hh;
 
     if ( this.isPlaying || this.isPaused ) {
-      if( hh !== "00" ) {
-        return `${ hh }:${ mm }:${ hh }`;
+      if ( hh !== "00" ) {
+        return `${ hh }:${ mm }:${ ss }`;
       }
-      return `${ mm }:${ hh }`;
+      return `${ mm }:${ ss }`;
     }
+
+    return "00:00";
   },
 
   get songDuration() {
     if ( currentSong != null ) {
-      return audio.duration;
+      return 578;
+      //return audio.duration;
     }
+
+    return 0;
   },
 
   play: function( edSong ) {
@@ -104,7 +117,7 @@ export default edPlayerService = {
   },
 
   stop: function( edSong ) {
-    if ( currentStats.playing ) {
+    if ( this.isPlaying ) {
       audio.pause();
       audio.removeAttribute( "src" );
 
