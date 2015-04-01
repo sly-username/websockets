@@ -4,12 +4,23 @@
   "use strict";
 
   suite( "edPlayerService", function() {
-    var edPlayerService;
+    var edPlayerService, EDSong;
 
     suiteSetup( function( done ) {
       System.import( "domain/ed/services/ed-player-service" )
         .then( function( imported ) {
           edPlayerService = imported.default;
+          done();
+        }, function( error ) {
+          console.warn( "Could not import 'edPlayerService' for testing: ", error.message );
+          console.error( error.stack );
+          done( error );
+        }
+      );
+
+      System.import( "domain/ed/objects/EDSong" )
+        .then( function( imported ) {
+          EDSong = imported.default;
           done();
         }, function( error ) {
           console.warn( "Could not import 'edPlayerService' for testing: ", error.message );
@@ -76,8 +87,6 @@
       });
 
       test( "formattedTime is a string", function() {
-        console.log( edPlayerService.isPaused );
-
         expect( edPlayerService.formattedTime )
           .to.be.a( "string" );
       });
@@ -91,19 +100,95 @@
     });
 
     suite( "play method", function() {
-      test( "should return true", function() {
+      test( "if a song instance is passed, then should return true", function() {
         var songData = {
             name: "baby got back"
           },
-          EDsong = function() {},
           song = new EDSong( songData ),
-          playSpy = sinon.spy( edPlayerService, "play" );
-          edPlayerService.play( song );
+          playSpy = sinon.stub( edPlayerService, "play" );
+
+        edPlayerService.play( song );
 
         expect( playSpy )
           .to.have.callCount( 1 );
 
-        console.log( "yoooo" );
+        playSpy.restore();
+      });
+
+      test( "if a non song instance is passed, then should throw typeError", function() {
+        var songData = {
+            name: "baby got back"
+          };
+
+        expect(function() {
+          edPlayerService.play( songData );
+        }).to.throw( "Song is not an EDSong object" );
+      });
+    });
+
+    suite( "pause method", function() {
+      test( "if a song instance is passed, then should return true", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          song = new EDSong( songData ),
+          pauseSpy = sinon.spy( edPlayerService, "pause" ),
+          isPaused;
+
+        isPaused = edPlayerService.pause( song );
+
+        expect( pauseSpy )
+          .to.have.callCount( 1 );
+
+        expect( isPaused )
+          .to.equal( true );
+
+        pauseSpy.restore();
+      });
+    });
+
+    suite( "stop method", function() {
+      test( "if a song instance is passed, then should return true", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          song = new EDSong( songData ),
+          stopSpy = sinon.spy( edPlayerService, "stop" );
+
+        edPlayerService.stop( song );
+
+        expect( stopSpy )
+          .to.have.callCount( 1 );
+
+        expect( edPlayerService.stop( song ) )
+          .to.equal( true );
+
+        stopSpy.restore();
+      });
+    });
+
+    suite( "queue/playlist property", function() {
+      test( "enqueue should add song to the queue", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          oldLength = edPlayerService.queue.length,
+          newLength,
+          song = new EDSong( songData ),
+          song2 = new EDSong( songData ),
+          enqueueSpy = sinon.spy( edPlayerService, "enqueue" );
+
+        edPlayerService.enqueue( song );
+
+        newLength = edPlayerService.queue.length;
+
+        expect( enqueueSpy )
+          .to.have.callCount( 1 );
+
+        expect( newLength )
+          .to.be.above( oldLength );
+
+        enqueueSpy.restore();
       });
     });
   });

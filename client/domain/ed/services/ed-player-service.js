@@ -74,7 +74,6 @@ export default edPlayerService = {
     var ss = this.currentSeconds,
       mm = this.currentMinutes,
       hh = this.currentHours;
-
     ss = ss < 10 ? "0" + ss : ss;
     mm = mm < 10 ? "0" + mm : mm;
     hh = hh < 10 ? "0" + hh : hh;
@@ -112,7 +111,6 @@ export default edPlayerService = {
     if ( this.isPlaying ) {
       audio.pause();
     }
-
     return this.isPaused;
   },
 
@@ -120,7 +118,6 @@ export default edPlayerService = {
     if ( this.isPlaying ) {
       audio.pause();
       audio.removeAttribute( "src" );
-
       currentSong = null;
     }
     return true;
@@ -154,7 +151,7 @@ export default edPlayerService = {
     if ( this.queue.length ) {
       for ( i = 0; i < len; i++ ) {
         if ( i === index ) {
-          this.play( len[ i ] );
+          return this.play( len[ i ] );
         }
       }
     }
