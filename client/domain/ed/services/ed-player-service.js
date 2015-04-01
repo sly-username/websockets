@@ -24,7 +24,7 @@ export default edPlayerService = {
       hours: this.currentHours,
       minutes: this.currentMinutes,
       seconds: this.currentSeconds,
-      length: this.songDuration
+      length: this.songLength
     };
   },
 
@@ -88,23 +88,23 @@ export default edPlayerService = {
     return "00:00";
   },
 
-  get songDuration() {
+  get songLength() {
     if ( currentSong != null ) {
+      // TODO fake length
       return 578;
-      //return audio.duration;
+      // return audio.duration;
     }
-
     return 0;
   },
 
   play: function( edSong ) {
     if ( !( edSong instanceof EDSong ) ) {
       throw new TypeError( "Song is not an EDSong object" );
-    } else {
-      audio.play();
-      setCurrentSong( edSong );
-      return true;
     }
+
+    audio.play();
+    setCurrentSong( edSong );
+    return true;
   },
 
   pause: function( edSong ) {
@@ -137,11 +137,10 @@ export default edPlayerService = {
 
   next: function() {
     if ( this.queue.length ) {
-      if ( this.isPlaying ) {
+      if ( this.isPlaying || this.isPaused ) {
         audio.pause();
       }
-
-      this.play( this.queue[ 0 ] );
+      return this.play( this.queue[ 0 ] );
     }
   },
 
@@ -151,7 +150,7 @@ export default edPlayerService = {
     if ( this.queue.length ) {
       for ( i = 0; i < len; i++ ) {
         if ( i === index ) {
-          return this.play( len[ i ] );
+          return this.play( this.queue[ i ] );
         }
       }
     }

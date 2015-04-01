@@ -6,7 +6,7 @@
   suite( "edPlayerService", function() {
     var edPlayerService, EDSong;
 
-    suiteSetup( function( done ) {
+    suiteSetup(function( done ) {
       System.import( "domain/ed/services/ed-player-service" )
         .then( function( imported ) {
           edPlayerService = imported.default;
@@ -19,7 +19,7 @@
       );
 
       System.import( "domain/ed/objects/EDSong" )
-        .then( function( imported ) {
+        .then(function( imported ) {
           EDSong = imported.default;
           done();
         }, function( error ) {
@@ -58,30 +58,22 @@
           .to.be.a( "boolean" );
       });
 
-      test.skip( "currentTime is a number", function() {
-        edPlayerService.isPlaying;
-
+      test( "currentTime is a number", function() {
         expect( edPlayerService.currentTime )
           .to.be.a( "number" );
       });
 
       test( "currentSeconds is a number", function() {
-        edPlayerService.isPlaying;
-
         expect( edPlayerService.currentSeconds )
           .to.be.a( "number" );
       });
 
       test( "currentMinutes is a number", function() {
-        edPlayerService.isPlaying;
-
         expect( edPlayerService.currentMinutes )
           .to.be.a( "number" );
       });
 
       test( "currentHours is a number", function() {
-        edPlayerService.isPlaying;
-
         expect( edPlayerService.currentHours )
           .to.be.a( "number" );
       });
@@ -91,10 +83,8 @@
           .to.be.a( "string" );
       });
 
-      test( "songDuration is a number", function() {
-        edPlayerService.isPlaying;
-
-        expect( edPlayerService.songDuration )
+      test( "songLength is a number", function() {
+        expect( edPlayerService.songLength )
           .to.be.a( "number" );
       });
     });
@@ -105,9 +95,10 @@
             name: "baby got back"
           },
           song = new EDSong( songData ),
-          playSpy = sinon.stub( edPlayerService, "play" );
+          playSpy = sinon.spy( edPlayerService, "play" );
 
-        edPlayerService.play( song );
+        expect( edPlayerService.play( song ) )
+          .to.equal( true );
 
         expect( playSpy )
           .to.have.callCount( 1 );
@@ -141,7 +132,7 @@
           .to.have.callCount( 1 );
 
         expect( isPaused )
-          .to.equal( true );
+          .to.equal( false );
 
         pauseSpy.restore();
       });
@@ -167,7 +158,7 @@
       });
     });
 
-    suite( "queue/playlist property", function() {
+    suite( "enqueue method", function() {
       test( "enqueue should add song to the queue", function() {
         var songData = {
             name: "baby got back"
@@ -188,7 +179,112 @@
         expect( newLength )
           .to.be.above( oldLength );
 
+        edPlayerService.dequeue();
+
         enqueueSpy.restore();
+      });
+    });
+
+    suite( "enqueueNext method", function() {
+      test( "enqueue should add song to the queue", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          song = new EDSong( songData ),
+          song2 = new EDSong( songData ),
+          enqueueNextSpy = sinon.spy( edPlayerService, "enqueueNext" );
+
+        edPlayerService.enqueueNext( song );
+        edPlayerService.enqueueNext( song2 );
+
+        expect( enqueueNextSpy )
+          .to.have.callCount( 2 );
+
+        expect( edPlayerService.queue[ 0 ] )
+          .to.equal( song2 );
+
+        edPlayerService.dequeue();
+        edPlayerService.dequeue();
+
+        enqueueNextSpy.restore();
+      });
+    });
+
+    suite( "dequeue method", function() {
+      test( "remove next song to the queue", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          song = new EDSong( songData ),
+          song2 = new EDSong( songData ),
+          dequeueSpy = sinon.spy( edPlayerService, "dequeue" );
+
+        edPlayerService.enqueue( song );
+        edPlayerService.enqueue( song2 );
+
+        edPlayerService.dequeue();
+
+        expect( dequeueSpy )
+          .to.have.callCount( 1 );
+
+        expect( edPlayerService.queue.length )
+          .to.equal( 1 );
+
+        edPlayerService.dequeue();
+        edPlayerService.dequeue();
+
+        dequeueSpy.restore();
+      });
+    });
+
+    suite( "next method", function() {
+      test( "plays next song in the queue", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          song = new EDSong( songData ),
+          song2 = new EDSong( songData ),
+          nextSpy = sinon.spy( edPlayerService, "next" );
+
+        edPlayerService.enqueue( song );
+        edPlayerService.enqueue( song2 );
+
+        edPlayerService.next();
+
+        expect( nextSpy )
+          .to.have.callCount( 1 );
+
+        expect( edPlayerService.currentStats.playing )
+          .to.equal( song );
+
+        edPlayerService.dequeue();
+        edPlayerService.dequeue();
+
+        nextSpy.restore();
+      });
+    });
+
+    suite( "skipTo method", function() {
+      test( "plays targeted song in the queue", function() {
+        var songData = {
+            name: "baby got back"
+          },
+          song = new EDSong( songData ),
+          song2 = new EDSong( songData ),
+          skipToSpy = sinon.spy( edPlayerService, "skipTo" );
+
+        edPlayerService.enqueue( song );
+        edPlayerService.enqueue( song2 );
+
+        edPlayerService.skipTo( 1 );
+
+        expect( skipToSpy )
+          .to.have.callCount( 1 );
+
+        expect( edPlayerService.currentStats.playing )
+          .to.equal( song2 );
+
+        skipToSpy.restore();
       });
     });
   });
