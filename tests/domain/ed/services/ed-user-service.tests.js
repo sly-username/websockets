@@ -86,7 +86,6 @@
     suite( "Events", function() {
       suite( "edLogin", function() {
         test( "edLogin should fire when login is successful", function( done ) {
-        // TODO how do we show that login was successful?
           edUserService.on( "edLogin", function( event ) {
             expect( event )
               .to.be.an.instanceof( CustomEvent )
@@ -295,7 +294,7 @@
 
         test( "returns EDUser object with updated image information", function() {
           // needs to match the updated image info to the correct user id
-          var image = "fjsldkfjsdlkfj";
+          var image = "fjsldkfjsdlkfj"; // what format is it going to take?
 
           edUserService.changeProfileImage( image );
         });
@@ -304,7 +303,7 @@
       suite( "register", function() {
         // TODO need to wait until connection service is coded
         test( "if successful, returns true", function() {
-          // how does the test know if it was successful / promise fulfilled?
+          // how does the test know if registration was successful / promise fulfilled?
           edUserService.register();
 
           expect( edUserService.register )
@@ -312,7 +311,7 @@
         });
 
         test( "if unsuccessful, will reject with proper error object", function() {
-          // how do i tell the test that it failed?
+          // how do i tell the test that registration failed?
           edUserService.register();
 
           expect( edUserService.register )
