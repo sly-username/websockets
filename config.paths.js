@@ -88,7 +88,8 @@ paths.symlink = {
     join( "!" + paths.client, "domain", "**", "*.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
-    join( "!**", ".new" )
+    join( "!**", ".new" ),
+    join( "!**", "assets", "icons", "svg", "**" )
   ],
   tests: {
     component: [
@@ -338,22 +339,28 @@ paths.dgeni = {
   }
 };
 
+/*** SVGSTORE PATHS ***/
+paths.svgstore = {
+  src: join( paths.client, "assets", "icons", "svg", "*.svg" ),
+  out: join( paths.dev, "assets", "icons" )
+};
+
 /*** ENVBUILD PATHS ***/
 /*** ask about qa paths ***/
 paths.envBuild = {
   src: {
-    dev:  join( paths.dev, "domain/ed/urls", "dev.js" ),
-    prod: join( paths.prod, "domain/ed/urls", "prod.js" ),
-    qa:   join( paths.prod, "domain/ed/urls", "qa.js" )
+    dev:  join( paths.dev, "domain", "ed", "urls", "dev.js" ),
+    prod: join( paths.prod, "domain", "ed", "urls", "prod.js" ),
+    qa:   join( paths.prod, "domain", "ed", "urls", "qa.js" )
   },
   out: {
-    dev:  join( paths.dev, "domain/ed" ),
-    prod: join( paths.prod, "domain/ed" )
+    dev:  join( paths.dev, "domain", "ed" ),
+    prod: join( paths.prod, "domain", "ed" )
   },
   remove: {
-    dev:  join( paths.dev, "domain/ed/urls" ),
-    prod: join( paths.prod, "domain/ed/urls" ),
-    qa:   join( paths.prod, "domain/ed/urls" )
+    dev:  join( paths.dev, "domain", "ed", "urls" ),
+    prod: join( paths.prod, "domain", "ed", "urls" ),
+    qa:   join( paths.prod, "domain", "ed", "urls" )
   }
 };
 
