@@ -34,7 +34,7 @@
 
           test( "should not be able to set '" + value + "' property", function() {
             var args = {},
-              inputtedValue = "string value I inputted",
+              inputtedValue = "what's wrong with country music?",
               edGenre = new EDGenre( args ),
               setProperty = function() {
                 edGenre[ value ] = inputtedValue;
