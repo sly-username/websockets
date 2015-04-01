@@ -30,17 +30,28 @@
     float: left;
   }
   input {
-    font-size: 3.6rem;
-    color: #FFFFFF;
+    .edType( heading-L );
+    .white( .75 );
     float: left;
     background: transparent;
     border: 0;
     outline: 0;
-    .input-placeholder( { .edType(heading-L); .white( .33 ); } );
+    .input-placeholder( { .white( .33 ) } );
   }
   &.confirm-container {
     margin-top: 1rem;
   }
+}
+
+ed-icon {
+  /* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
+  */
+  width: 3rem;
+  height: 50%;
+  .white( .50 );
+  pointer-events: none;
+  float: left;
+  padding: 0 1rem;
 }
 
 :host([invalid-primary]) {
