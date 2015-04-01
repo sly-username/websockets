@@ -1,10 +1,9 @@
-import EventEmitter from "domain/lib/event/EventEmitter";
-import createEvent from "domain/lib/event/create-event";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
 // import EDGenre from "domain/ed/objects/EDGenre";
+import edAnalyticsService from "domain/analytics/EDAnalytics";
 
-var edDiscoverService = new EventEmitter(),
-  userBlend = [];
+var userBlend = [],
+  getDiscoverSongList,
+  edDiscoverService;
 
 Object.defineProperties( edDiscoverService, {
   userBlend: {
@@ -16,11 +15,11 @@ Object.defineProperties( edDiscoverService, {
   }
 });
 
-edDiscoverService.getDiscoverSongList = function( EDGenre="blend" ) {
+getDiscoverSongList = function( EDGenre or "blend" ) {
   // get user's desired blend of genres - via id or name? from where?
   // get id's of the genres from EDGenre
   // userBlend is an array of these EDGenres
   return userBlend;
-};
+}
 
 export default edDiscoverService;
