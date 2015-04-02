@@ -95,8 +95,6 @@ gulp.task( "start", function( done ) {
 /*** Watch all the things ***/
 gulp.task( "watch", gulp.parallel(
   "less:watch",
-  "jscs:watch",
-  "lint:watch",
   "traceur:watch"
 ));
 
@@ -135,10 +133,7 @@ gulp.task( "test", gulp.series(
 gulp.task( "dev", gulp.series(
   "build:dev",
   "build:tests:only",
-  "server:dev",
   "watch",
-  "jscs:client",
-  "lint:client",
   "tdd:alone"
 ));
 
