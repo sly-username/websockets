@@ -1,8 +1,9 @@
 //import EDGenre from "domain/ed/objects/EDGenre";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 
-var UserBlend = [],
+var UserBlend,
   edDiscoverService;
+
 
 export default edDiscoverService = {
 
@@ -14,8 +15,13 @@ export default edDiscoverService = {
     UserBlend = value;
   },
 
-  getDiscoverSongList( EDGenre ) {
-    return UserBlend;
+  getDiscoverSongList( songList ) {
+    if ( songList instanceof EDGenre || songList === "blend" ) {
+      // need to get songlist from server
+      return songList;
+    } else {
+      throw new TypeError( "you did not provide a valid song list" );
+    }
   },
 
   setUserBlend( EDGenre ) {
