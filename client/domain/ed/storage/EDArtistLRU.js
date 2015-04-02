@@ -6,5 +6,9 @@ export default class EDArtistLRU extends ObservableLRUCache {
     super( limit );
   }
 
-  set( edArtist ) {}
+  set( edArtist ) {
+    if ( !( edArtist instanceof EDArtist ) ) {
+      throw new TypeError( "cannot pass a non-EDArtist instance" );
+    }
+  }
 }
