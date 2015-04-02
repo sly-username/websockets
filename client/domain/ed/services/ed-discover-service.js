@@ -1,30 +1,31 @@
-//import EDGenre from "domain/ed/objects/EDGenre";
+import EDGenre from "domain/ed/objects/EDGenre";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 
-var UserBlend,
-  edDiscoverService;
+var currentProfileBlend = [],
+  edDiscoverService,
+  songList = [];
 
 
 export default edDiscoverService = {
 
-  get UserBlend() {
-    return UserBlend;
+  get currentProfileBlend() {
+    return currentProfileBlend;
   },
 
-  set UserBlend( value ) {
-    UserBlend = value;
-  },
-
-  getDiscoverSongList( songList ) {
-    if ( songList instanceof EDGenre || songList === "blend" ) {
-      // need to get songlist from server
-      return songList;
-    } else {
-      throw new TypeError( "you did not provide a valid song list" );
+  getDiscoverSongList( something ) {
+    if ( something === "blend" ) {
+      // get genreId from server, profileBlend
     }
+
+    if ( something instanceof EDGenre ) {
+      // get genreId
+    }
+
+    // with genreId return songId
   },
 
   setUserBlend( EDGenre ) {
     return EDGenre;
+    // this songList is now the currentProfileBlend
   }
 };
