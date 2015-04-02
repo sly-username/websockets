@@ -2,21 +2,22 @@
   <template>
     <link rel="stylesheet" href="./ed-registration-view.css">
     <div class="registration-container">
-      <!-- placeholder logo, to be replace when assets arrive -->
-      <div class="ed-logo-header" style="color:white; ">Placeholder</div>
+      <div class="ed-logo-header">
+        <ed-icon name="eardish-logo-with-slogan"></ed-icon>
+      </div>
       <div class="ed-registration-body">
         <form id="registration-form" method="post" role="form" action="#">
           <fieldset>
-            <ed-icon-input type="text" placeholder="First Name" icon="add189"></ed-icon-input>
-            <ed-icon-input type="text" placeholder="Last Name" icon="add189"></ed-icon-input>
-            <ed-icon-input type="email" placeholder="Your Email" icon="add189"></ed-icon-input>
-            <ed-icon-input type="date" icon="alarm52"></ed-icon-input>
-            <ed-icon-input type="text" placeholder="Zip Code" icon="add189"></ed-icon-input>
+            <ed-form-input type="text" placeholder="First Name" icon="name-first"></ed-form-input>
+            <ed-form-input type="text" placeholder="Last Name" icon="name-last"></ed-form-input>
+            <ed-form-input type="email" placeholder="Your Email" icon="envelope"></ed-form-input>
+            <ed-form-input type="date" icon="birthday"></ed-form-input>
+            <ed-form-input type="text" placeholder="Zip Code" icon="zip"></ed-form-input>
             <span class="password-req-text"> *8 characters minimum </span>
             <ed-paired-input type="password" placeholder="Password"
                              icon="alarm52"></ed-paired-input>
-            <ed-icon-input id="promo-code" type="email" placeholder="Promo Code (optional)"
-                           icon="add189"></ed-icon-input>
+            <ed-form-input id="promo-code" type="email" placeholder="Promo Code (optional)"
+                           icon="add189"></ed-form-input>
           </fieldset>
           <button id="registration-submit" class="invalid" type="submit" disabled>Sign Up!</button>
         </form>

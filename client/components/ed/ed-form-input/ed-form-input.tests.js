@@ -4,7 +4,7 @@
   "use strict";
   var expect = chai.expect,
     // get wrapper from document or for karma, create a new div and append it to the DOM
-    testingWrapper = document.getElementById( "ed-icon-input-test-wrapper" ) ||
+    testingWrapper = document.getElementById( "ed-form-input-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
@@ -17,7 +17,7 @@
       testingWrapper.innerHTML = "";
     };
 
-  suite( "<ed-icon-input>", function() {
+  suite( "<ed-form-input>", function() {
     suite( "Life Cycle", function() {
       teardown( function() {
         resetWrapper();
@@ -25,21 +25,21 @@
 
       test( "ready: can create from document.createElement", function() {
         var createdSpy = sinon.spy(
-          polymer.getRegisteredPrototype( "ed-icon-input" ),
+          polymer.getRegisteredPrototype( "ed-form-input" ),
           "ready"
         );
 
-        expect( document.createElement( "ed-icon-input" ) )
+        expect( document.createElement( "ed-form-input" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<ed-icon-input></ed-icon-input>" );
+          .and.equals( "<ed-form-input></ed-form-input>" );
 
         expect( createdSpy ).to.have.callCount( 1 );
         createdSpy.restore();
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var iconInput = document.createElement( "ed-icon-input" ),
+        var iconInput = document.createElement( "ed-form-input" ),
           attachedSpy = sinon.spy( iconInput, "attached" );
 
         testingWrapper.appendChild( iconInput );
@@ -49,13 +49,13 @@
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<ed-icon-input></ed-icon-input>" );
+          .and.equals( "<ed-form-input></ed-form-input>" );
 
         attachedSpy.restore();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var iconInput = document.createElement( "ed-icon-input" ),
+        var iconInput = document.createElement( "ed-form-input" ),
           detachedSpy = sinon.spy( iconInput, "detached" );
 
         testingWrapper.appendChild( iconInput );
