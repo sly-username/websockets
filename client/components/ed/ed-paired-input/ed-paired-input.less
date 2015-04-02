@@ -1,7 +1,7 @@
-@import "../styles/ed/colors.vars.less";
-@import "mixins/prefixes/placeholder.less";
-@import "fonts/edTypeStyles.less";
-
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/alignments.mixin.less";
 
 #primaryBox, #confirmBox {
   display: block;
@@ -19,7 +19,6 @@
   background-color: @darkPurple4;
   border-color: @darkPurple5;
   margin: -.33rem auto;
-  }
   input {
     .edType( heading-M );
     .white( .75 );
