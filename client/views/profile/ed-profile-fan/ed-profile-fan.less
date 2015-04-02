@@ -1,11 +1,12 @@
-@import "../../styles/ed/buttons.mixin.less";
-@import "../../styles/ed/text-styles.mixin.less";
-@import "../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/text-styles.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
 
 .wrapper {
   background-color: @darkPurple3;
   margin-left: auto;
   margin-right: auto;
+  background-size: cover;
   height: 100%;
   width: 100%;
   hr {
@@ -83,34 +84,34 @@
 
 .icon-section {
   padding: 4% 0 2% 0;
+  margin-bottom: 10%;
   .icon-header {
     color: @originalTeal;
     margin-left: 3%;
     text-transform: uppercase;
     .headingXSmall();
+    .edit-profile {
+      color: @white;
+      float: right;
+      margin-right: 5%;
+      .headingXXSmall();
+      button {
+        border: none;
+        background: transparent;
+        color: white;
+        opacity: 0.5;
+        text-transform: uppercase;
+      }
+      ed-icon {
+        opacity: 0.5;
+      }
+    }
   }
   .icon-bar-wrapper {
     padding: 4% 1.5%;
     ed-icon {
       margin: 0 9%;
     }
-  }
-}
-
-.bio-section {
-  background: @white;
-  padding: 4% 0 2% 0;
-  margin-bottom: 10%;
-  .bio-header {
-    color: @originalTeal;
-    margin-left: 3%;
-    text-transform: uppercase;
-    .headingXSmall();
-  }
-  .bio-body {
-    color: @darkPurple5;
-    padding: 2%;
-    .paragraphNormal();
   }
 }
 
@@ -124,3 +125,5 @@
     width: 100%;
   }
 }
+
+

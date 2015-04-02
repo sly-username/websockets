@@ -1,4 +1,5 @@
-@import "mixins/prefixes/transforms.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/ed/alignments.mixin.less";
 
 :host {
   display: inline-block;
@@ -6,6 +7,13 @@
 
 :host:not( [name] ) {
   display: none;
+}
+
+svg {
+  width: inherit;
+  height: inherit;
+  margin: 0 auto;
+  .verticalAlign();
 }
 
 .flip90 {

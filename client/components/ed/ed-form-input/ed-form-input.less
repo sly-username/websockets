@@ -1,0 +1,51 @@
+@import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/alignments.mixin.less";
+
+
+.wrapper {
+  height: 7.5rem;
+  width: 98%;
+  max-width: 59.6rem;
+  background-color: @darkPurple4;
+  border-color: @darkPurple5;
+  margin: -.33rem auto;
+}
+// TODO double check that this works as nested CSS...originally input should be nested in wrapper
+input {
+  .edType( heading-M );
+  .white( .75 );
+  .verticalAlign();
+  float: left;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  .input-placeholder( { .white( .33 ) } );
+}
+
+ed-icon {
+/* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
+*/
+  width: 3rem;
+  height: 50%;
+  .white( .50 );
+  pointer-events: none;
+  float: left;
+  padding: 0 2rem;
+  .verticalAlign();
+}
+
+:host([type="date"]){
+  .wrapper {
+    .arrow-box {
+      margin: .6rem;
+      float: right;
+      height: 9.7rem;
+      width: 9.7rem;
+      background-color: #FFFFFF;
+      pointer-events: none;
+      opacity: .5;
+    }
+  }
+}

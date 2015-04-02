@@ -1,8 +1,16 @@
 ( function( polymer ) {
   "use strict";
 
-  polymer( "ed-icon-input", {
+  polymer( "ed-form-input", {
     /* LIFECYCLE */
+    publish: {
+      wide: {
+        reflect: true
+      },
+      high: {
+        reflect: true
+      }
+    },
     ready: function() {},
     attached: function() {},
     detached: function() {},
