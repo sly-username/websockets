@@ -11,7 +11,7 @@
         System.import( "domain/lib/event/create-event" )
       ] )
         .then( function( imported ) {
-          edUserService = imported[0].default;
+          edDiscoverService = imported[0].default;
           EventEmitter = imported[1].default;
           createEvent = imported[2].default;
           done();
@@ -23,9 +23,8 @@
     } );
 
 // Tests begin
-
     suite( "tests test TEEEEEESSSSSSSSSSSSSTS", function() {
-      tests( "test 1", function() {
+      test( "test 1", function() {
         // ready set ... test!
       });
     });
