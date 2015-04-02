@@ -35,6 +35,21 @@
 
 <body unresolved>
 
+<section id="splash-screen">
+  <svg>
+    <use xlink:href="/assets/icons/svg.svg#eardish-logo-with-slogan"></use>
+  </svg>
+  <script>
+    (function(){
+      // TODO component this
+      var here = document.getElementById("splash-screen");
+      here.addEventListener( "transitionend", function( event ) {
+        here.hidden = true;
+      });
+    })();
+  </script>
+</section>
+
 <app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
   <app-route path="/home">
     <template>
