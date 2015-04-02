@@ -4,7 +4,7 @@ import define from "domain/ed/define-properties";
 export default class EDBadge extends EDDataObject {
   constructor( args ) {
     super( args );
-    define.readOnly( this, [ "id", "name", "badgeType" ], args );
+    define.readOnly( this, [ "name", "badgeType" ], args );
   }
 
   static get TYPE() {
