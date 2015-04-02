@@ -1,8 +1,13 @@
 import define from "domain/ed/define-properties";
 import EDMedia from "domain/ed/objects/EDMedia";
-import EDArtist from "domain/ed/objects/EDArtist";
-import EDProfile from "domain/ed/objects/EDProfile";
-import edDataService from "domain/ed/services/ed-data-service";
+//import EDArtist from "domain/ed/objects/EDArtist";
+//import EDProfile from "domain/ed/objects/EDProfile";
+//import edDataService from "domain/ed/services/ed-data-service";
+
+//TODO fake objects
+var EDArtist = {},
+  EDProfile = {},
+  edDataService = {};
 
 export default class EDSong extends EDMedia {
   constructor( args ) {
