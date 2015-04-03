@@ -48,7 +48,7 @@
 
           expect( valid )
             .to.be( "ok" );
-          // not sure what to test
+          // expect getSongID to get called
         });
 
         test( "'profileBlend' is a valid parameter", function() {
@@ -56,7 +56,7 @@
 
           expect( valid )
             .to.be( "ok" );
-          // yup, I got nothing.
+          // expect getGenreID to get called
         });
 
         test( "when invalid parameter is used, an error is thrown", function() {
@@ -65,24 +65,39 @@
 
           expect( invalid )
             .to.throw( Error );
+          // expect an error, I suppose
         });
 
-        test( "returns array of songIDs", function() {
-          var genreData =
-            {
-              id: 999
-            },
-            edGenre = new EDGenre( genreData ),
-            request = edDiscoverService.getDiscoverSongList( edGenre.id );
+        suite( "EDGenre", function() {
+          test( "should call getSongID function", function() {
+            var genreData =
+              {
+                id: 999
+              },
+              edGenre = new EDGenre( genreData ),
+              request = edDiscoverService.getDiscoverSongList( edGenre.id ),
+              songSpy = sinon.spy( edDiscoverService, getSongID );
+          });
 
-          expect( request )
-            .to.be.an( "array" )
-            .that.equals( "currentProfileBlend" );
+          test( "should receive message from the server", function() {
+            // TODO how would we ever test this? create a websocket?
+            var genreData =
+              {
+                id: 999
+              },
+              edGenre = new EDGenre( genreData ),
+              request = edDiscoverService.getDiscoverSongList( edGenre.id );
+
+            expect( request )
+              .to.be.an( "array" )
+              .that.equals( "currentProfileBlend" );
+          });
         });
+
+
 
         suite( "profileBlend parameter", function() {
           test( "returns an array of genreIDs", function() {
-            // receive array of IDs - how do we verify that we were provided correct IDs? or do we not have to?
             // save as new currentProfileBlend
             // expect currentProfileBlend to be an array
             var request = edDiscoverService.getGenreIDs( "profileBlend" );
