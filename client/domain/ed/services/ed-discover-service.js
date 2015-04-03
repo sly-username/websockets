@@ -1,8 +1,9 @@
+//import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDGenre from "domain/ed/objects/EDGenre";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
-// import edConnectionService from "domain/ed/services/ed-connection-service";
 
 var currentProfileBlend = [],
+  genreSongList = [],
+  blendSongList = [],
   edDiscoverService,
   edConnectionService;
 
@@ -14,32 +15,34 @@ export default edDiscoverService = {
 
   getSongIDs( genreID ) {
     edConnectionService.request( genreID )
-      .then( function() {
-        // we receive the list of song IDs, but how do I javascript that?
-        // I was thinking I should name the array. then return it.
+      .then( msg => {
+        genreSongList = msg;
         return genreSongList;
       })
-      .catch( function() {
-        // throw error
+      .catch( error => {
+        throw error;
       });
   },
 
   getGenreIDs() {
     edConnectionService.request( "profileBlend" )
-      .then( function() {
-        // name list of genreIDs = currentProfileBlend;
+      .then( msg => {
+        currentProfileBlend = msg;
         return currentProfileBlend;
       })
-      .catch( function() {
-        // throw error
+      .catch( error => {
+        throw error;
       });
   },
 
-  getDiscoverSongList( something ) {
-    if ( something === "profileBlend" ) {
+  getDiscoverSongList( data ) {
+    if ( data === "profileBlend" ) {
       getGenreIDs();
-      currentProfileBlend.forEach( getSongIDs );
-    } else if ( something instanceof EDGenre ) {
+      currentProfileBlend.forEach( genreID => {
+        blendSongList.push( getSongIDs( genreID ) );
+      });
+      return blendSongList;
+    } else if ( data instanceof EDGenre ) {
       getSongIDs();
     }
   },

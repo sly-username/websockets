@@ -2,20 +2,16 @@
   "use strict";
 
   suite( "edDiscoverService", function() {
-    var edDiscoverService, edUserService, EDGenre;
+    var edDiscoverService, EDGenre;
 
     suiteSetup( function( done ) {
       Promise.all( [
         System.import( "domain/ed/services/ed-discover-service" ),
-        System.import( "domain/ed/services/ed-user-service" ),
-        System.import( "domain/lib/event/EventEmitter" ),
-        System.import( "domain/lib/event/create-event" )
+        System.import( "domain/ed/objects/EDGenre" )
       ] )
         .then( function( imported ) {
           edDiscoverService = imported[0].default;
-          edUserService = imported[1].default;
-          EventEmitter = imported[2].default;
-          createEvent = imported[3].default;
+          EDGenre = imported[1].default;
           done();
         }, function( error ) {
           console.warn( "Could not import 'edDiscoverService' for testing: ", error.message );
