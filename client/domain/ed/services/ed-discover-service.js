@@ -39,7 +39,7 @@ export default edDiscoverService = {
       });
   },
 
-  getDiscoverSongList( data ) {
+  getDiscoverTrackList( data ) {
     if ( data === "profileBlend" ) {
       getGenreIDs();
       currentProfileBlend.forEach( genreID => {
@@ -60,6 +60,6 @@ export default edDiscoverService = {
   setUserBlend( EDGenre ) {
 
     return EDGenre;
-    // this songList is now the currentProfileBlend
+    // this trackList is now the currentProfileBlend
   }
 };

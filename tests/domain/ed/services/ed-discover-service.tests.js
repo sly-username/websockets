@@ -37,22 +37,22 @@
     });
 
     suite( "Methods", function() {
-      suite( "getDiscoverSongList", function() {
+      suite( "getDiscoverTrackList", function() {
         test( "EDGenre object is a valid parameter", function() {
           var genreData =
               {
                 id: 999
               },
             edGenre = new EDGenre( genreData ),
-            valid = edDiscoverService.getDiscoverSongList( edGenre.id );
+            valid = edDiscoverService.getDiscoverTrackList( edGenre.id );
 
           expect( valid )
             .to.be( "ok" );
-          // expect getSongID to get called
+          // expect getTrackID to get called
         });
 
         test( "'profileBlend' is a valid parameter", function() {
-          var valid = edDiscoverService.getDiscoverSongList( "profileBlend" );
+          var valid = edDiscoverService.getDiscoverTrackList( "profileBlend" );
 
           expect( valid )
             .to.be( "ok" );
@@ -61,7 +61,7 @@
 
         test( "when invalid parameter is used, an error is thrown", function() {
           var badParameter = "UNACCEPTABLE!",
-            invalid = edDiscoverService.getDiscoverSongList( badParameter );
+            invalid = edDiscoverService.getDiscoverTrackList( badParameter );
 
           expect( invalid )
             .to.throw( Error );
@@ -69,14 +69,14 @@
         });
 
         suite( "EDGenre", function() {
-          test( "should call getSongID function", function() {
+          test( "should call getTrackID function", function() {
             var genreData =
               {
                 id: 999
               },
               edGenre = new EDGenre( genreData ),
-              request = edDiscoverService.getDiscoverSongList( edGenre.id ),
-              songSpy = sinon.spy( edDiscoverService, getSongID );
+              request = edDiscoverService.getDiscoverTrackList( edGenre.id ),
+              TrackSpy = sinon.spy( edDiscoverService, getTrackID );
           });
 
           test( "should receive message from the server", function() {
@@ -86,7 +86,7 @@
                 id: 999
               },
               edGenre = new EDGenre( genreData ),
-              request = edDiscoverService.getDiscoverSongList( edGenre.id );
+              request = edDiscoverService.getDiscoverTrackList( edGenre.id );
 
             expect( request )
               .to.be.an( "array" )
