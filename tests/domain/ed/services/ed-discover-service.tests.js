@@ -81,7 +81,7 @@
 
           expect( request )
             .to.be.an( "array" )
-            .that.equals( "something or other" );
+            .that.equals( "currentProfileBlend" );
         });
 
         suite( "profileBlend parameter", function() {
@@ -89,7 +89,7 @@
             // receive array of IDs - how do we verify that we were provided correct IDs? or do we not have to?
             // save as new currentProfileBlend
             // expect currentProfileBlend to be an array
-            var request = edDiscoverService.getGenreIds( "profileBlend" );
+            var request = edDiscoverService.getGenreIDs( "profileBlend" );
 
             expect( request )
               .to.be.an( "array" );

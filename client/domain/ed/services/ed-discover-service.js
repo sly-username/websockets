@@ -1,8 +1,10 @@
 import EDGenre from "domain/ed/objects/EDGenre";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
+// import edConnectionService from "domain/ed/services/ed-connection-service";
 
 var currentProfileBlend = [],
-  edDiscoverService;
+  edDiscoverService,
+  edConnectionService;
 
 export default edDiscoverService = {
 
@@ -10,20 +12,36 @@ export default edDiscoverService = {
     return currentProfileBlend;
   },
 
-  getGenreIds() {
+  getSongIDs( genreID ) {
+    edConnectionService.request( genreID )
+      .then( function() {
+        // we receive the list of song IDs, but how do I javascript that?
+        // I was thinking I should name the array. then return it.
+        return genreSongList;
+      })
+      .catch( function() {
+        // throw error
+      });
+  },
 
-  }
+  getGenreIDs() {
+    edConnectionService.request( "profileBlend" )
+      .then( function() {
+        // name list of genreIDs = currentProfileBlend;
+        return currentProfileBlend;
+      })
+      .catch( function() {
+        // throw error
+      });
+  },
 
   getDiscoverSongList( something ) {
-    if ( something === "blend" ) {
-      // get genreId from server, profileBlend
+    if ( something === "profileBlend" ) {
+      getGenreIDs();
+      currentProfileBlend.forEach( getSongIDs );
+    } else if ( something instanceof EDGenre ) {
+      getSongIDs();
     }
-
-    if ( something instanceof EDGenre ) {
-      // get genreId
-    }
-
-    // with genreId return songId
   },
 
   setUserBlend( EDGenre ) {
