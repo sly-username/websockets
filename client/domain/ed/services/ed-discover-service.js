@@ -2,15 +2,17 @@ import EDGenre from "domain/ed/objects/EDGenre";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var currentProfileBlend = [],
-  edDiscoverService,
-  songList = [];
-
+  edDiscoverService;
 
 export default edDiscoverService = {
 
   get currentProfileBlend() {
     return currentProfileBlend;
   },
+
+  getGenreIds() {
+
+  }
 
   getDiscoverSongList( something ) {
     if ( something === "blend" ) {

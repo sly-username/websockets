@@ -42,20 +42,21 @@
 
     suite( "Methods", function() {
       suite( "getDiscoverSongList", function() {
-        test( "can take in EDGenre object as a parameter", function() {
-          var genreData = {
-                name: "bluegrass"
+        test( "EDGenre object is a valid parameter", function() {
+          var genreData =
+              {
+                id: 999
               },
             edGenre = new EDGenre( genreData ),
-            valid = edDiscoverService.getDiscoverSongList( edGenre );
+            valid = edDiscoverService.getDiscoverSongList( edGenre.id );
 
           expect( valid )
             .to.be( "ok" );
           // not sure what to test
         });
 
-        test( "can take in 'blend' as a parameter", function() {
-          var valid = edDiscoverService.getDiscoverSongList( "blend" );
+        test( "'profileBlend' is a valid parameter", function() {
+          var valid = edDiscoverService.getDiscoverSongList( "profileBlend" );
 
           expect( valid )
             .to.be( "ok" );
@@ -70,27 +71,28 @@
             .to.throw( Error );
         });
 
-        suite( "blend parameter", function() {
-          test( "when sending server 'blend' request, if successful, server returns an array of genreIDs", function() {
+        test( "returns array of songIDs", function() {
+          var genreData =
+            {
+              id: 999
+            },
+            edGenre = new EDGenre( genreData ),
+            request = edDiscoverService.getDiscoverSongList( edGenre.id );
 
-          });
-
-          test( "send genreIDs to server", function() {
-
-          });
-
-          test( "when server responds with songIDs, all songs are pushed to single songList array", function() {
-
-          });
+          expect( request )
+            .to.be.an( "array" )
+            .that.equals( "something or other" );
         });
 
-        suite( "EDGenre parameter", function() {
-          test( "send genreIDs to server", function() {
+        suite( "profileBlend parameter", function() {
+          test( "returns an array of genreIDs", function() {
+            // receive array of IDs - how do we verify that we were provided correct IDs? or do we not have to?
+            // save as new currentProfileBlend
+            // expect currentProfileBlend to be an array
+            var request = edDiscoverService.getGenreIds( "profileBlend" );
 
-          });
-
-          test( "when server provides list of songIDs, songs are pushed to songList array", function() {
-
+            expect( request )
+              .to.be.an( "array" );
           });
         });
       });
