@@ -3,181 +3,40 @@
 (function( win, doc, System, sinon, expect ) {
   "use strict";
 
-  suite( "ObservableLRUCache", function() {
-    var ObservableLRUCache,
-      keyMap, size, tail, head,
-      observers;
+  suite( "PromisedDB", function() {
+    var PromisedDB;
 
     this.timeout( 5000 );
 
     suiteSetup(function( done ) {
-      System.import( "domain/lib/storage/ObservableLRUCache" )
+      System.import( "domain/lib/storage/PromisedDB/PromisedDB" )
         .then(function( imported ) {
           var syms;
 
-          ObservableLRUCache = imported.default;
+          PromisedDB = imported.default;
 
-          syms = Object.getOwnPropertySymbols( new ObservableLRUCache( 3 ) );
+//          syms = Object.getOwnPropertySymbols( new PromisedDB( 3 ) );
 
-          keyMap = syms[ 0 ];
-          size = syms[ 1 ];
-          tail = syms[ 2 ];
-          head = syms[ 3 ];
-          observers = syms[ 4 ];
+//          keyMap = syms[ 0 ];
+//          size = syms[ 1 ];
+//          tail = syms[ 2 ];
+//          head = syms[ 3 ];
+//          observers = syms[ 4 ];
 
           done();
         }, function( error ) {
-          console.warn( "Could not import 'ObservableLRUCache' for testing: ", error.message );
+          console.warn( "Could not import 'PromisedDB' for testing: ", error.message );
           console.error( error.stack );
           done( error );
         });
     });
 
     // Start Test
-    suite( "Inherits from LRUCache", function() {
-      var cache;
-
-      setup(function() {
-        cache = new ObservableLRUCache( 10 );
-      });
-
-      teardown(function() {
-        cache = null;
-      });
-
-      test( "property limit", function() {
-        expect( cache )
-          .to.have.property( "limit" )
-          .to.be.a( "number" )
-          .that.equals( 10 );
-      });
-
-      test( "property size", function() {
-        expect( cache )
-          .to.have.property( "size" )
-          .to.be.a( "number" )
-          .that.equals( 0 );
-      });
-
-      test( "symbol @@keyMap", function() {
-        expect( cache )
-          .to.have.property( keyMap )
-          .to.be.a( "object" );
-      });
-
-      test( "symbol @@head", function() {
-        expect( cache )
-          .to.have.property( head )
-          .to.be.equal( null );
-      });
-
-      test( "symbol @@tail", function() {
-        expect( cache )
-          .to.have.property( tail )
-          .to.be.equal( null );
-      });
-
-      test( "method set", function() {
-        expect( cache )
-          .to.have.property( "set" )
-          .that.is.a( "function" );
-      });
-
-      test( "method get", function() {
-        expect( cache )
-          .to.have.property( "get" )
-          .that.is.a( "function" );
-      });
-
-      test( "method peek", function() {
-        expect( cache )
-          .to.have.property( "peek" )
-          .that.is.a( "function" );
-      });
-
-      test( "method has", function() {
-        expect( cache )
-          .to.have.property( "has" )
-          .that.is.a( "function" );
-      });
-
-      test( "method shift", function() {
-        expect( cache )
-          .to.have.property( "shift" )
-          .that.is.a( "function" );
-      });
-
-      test( "method remove", function() {
-        expect( cache )
-          .to.have.property( "remove" )
-          .that.is.a( "function" );
-      });
-
-      test( "method clear", function() {
-        expect( cache )
-          .to.have.property( "clear" )
-          .that.is.a( "function" );
-      });
-
-      test( "method keys", function() {
-        expect( cache )
-          .to.have.property( "keys" )
-          .that.is.a( "function" );
-
-        expect( cache.keys() )
-          .to.be.an.instanceof( Array );
-      });
-
-      test( "method forEach", function() {
-        expect( cache )
-          .to.have.property( "forEach" )
-          .that.is.a( "function" );
-      });
-
-      test( "method toArray", function() {
-        expect( cache )
-          .to.have.property( "toArray" )
-          .that.is.a( "function" );
-
-        expect( cache.toArray() )
-          .to.be.an.instanceof( Array );
-      });
-
-      test( "method toString", function() {
-        expect( cache )
-          .to.have.property( "toString" )
-          .that.is.a( "function" );
-
-        expect( cache.toString() )
-          .to.be.a( "string" );
-      });
-
-      test( "default @@iterator", function() {
-        expect( cache )
-          .to.have.property( Symbol.iterator )
-          .that.is.a( "function" );
-      });
-
-      test( "iterator reverse", function() {
-        expect( cache )
-          .to.have.property( "reverse" )
-          .that.is.a( "function" );
-      });
-
-      test( "iterator reverseOf", function() {
-        expect( cache )
-          .to.have.property( "reverseOf" )
-          .that.is.a( "object" )
-          .and.has.property( Symbol.iterator )
-          .that.is.a( "function" );
-      });
-    });
-
     suite( "Own Properties & Symbols", function() {
       var cache;
 
       setup(function() {
-        cache = new ObservableLRUCache( 3 );
+//        cache = new PromisedDB();
       });
 
       teardown(function() {
@@ -197,11 +56,12 @@
         var cache;
 
         setup(function() {
-          cache = new ObservableLRUCache( 3 );
+          // TODO
+//          cache = new PromisedDB();
 
-          cache.set( "one", 1 );
-          cache.set( "two", 2 );
-          cache.set( "three", 3 );
+//          cache.set( "one", 1 );
+//          cache.set( "two", 2 );
+//          cache.set( "three", 3 );
         });
 
         teardown(function() {
@@ -386,11 +246,12 @@
         var cache;
 
         setup(function() {
-          cache = new ObservableLRUCache( 3 );
+          // TODO
+//          cache = new PromisedDB();
 
-          cache.set( "one", 1 );
-          cache.set( "two", 2 );
-          cache.set( "three", 3 );
+//          cache.set( "one", 1 );
+//          cache.set( "two", 2 );
+//          cache.set( "three", 3 );
         });
 
         teardown(function() {

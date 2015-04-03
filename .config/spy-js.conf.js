@@ -1,5 +1,20 @@
-"use strict";
 module.exports = function( $ ) {
+  "use strict";
+
+  /***
+   * Proxy set up for OSX
+   * System Prefs > Network > Advanced(Btn) > Proxies
+   *  Check Automatic Proxy Configuration
+   *  In URL Box: http://localhost:3546/spy-js-proxy.pac
+   *  OK > Apply
+   *
+   * For Chrome
+   *  check the page: chrome://net-internals/#proxy
+   *  Make sure spy-js-proxy.pac shows up, click the button on the page to
+   *  refresh the proxy list, anytime you restart the spy-js folder the
+   *  proxy will need to be refreshed
+   ***/
+
 //  $.root = "http://localhost:5115";
 
   $.mapper = function( url ) {
