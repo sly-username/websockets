@@ -1,17 +1,7 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
 
-var
-  edConnectionService,
-  formatDataObject,
+var edConnectionService,
   edSocket = new EDWebSocket();
-
-// helpers
-formatDataObject = data => {
-  if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
-    data = JSON.stringify( data );
-  }
-  return data;
-};
 
 export default edConnectionService = {
   send( data ) {
@@ -23,12 +13,20 @@ export default edConnectionService = {
   },
 
   formattedSend( data ) {
-    data = formatDataObject( data );
+    data = this.formatDataObject( data );
     return this.send( data );
   },
 
   formattedRequest( data ) {
-    data = formatDataObject( data );
+    data = this.formatDataObject( data );
     return this.request( data );
+  },
+
+  formatDataObject( data ) {
+    // TODO could be a helper function?
+    if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
+      data = JSON.stringify( data );
+    }
+    return data;
   }
 };

@@ -33,7 +33,105 @@
 
         expect( edConnectionService.formattedRequest )
           .to.be.a( "function" );
+      });
+    });
 
+    suite( "send method", function() {
+      test( "calls the send method on the edWebSocket instance", function( done ) {
+        var dataObj = {
+            id: "001",
+            name: "string"
+          },
+          sendSpy = sinon.spy( edConnectionService, "send" );
+
+        edConnectionService.send( dataObj );
+
+        expect( sendSpy )
+          .to.have.callCount( 1 );
+
+        sendSpy.restore();
+        done();
+      });
+    });
+
+    suite( "request method", function() {
+      test( "calls the request method on the edWebSocket instance", function( done ) {
+        var dataObj = {
+            id: "001",
+            name: "string"
+          },
+          requestSpy = sinon.spy( edConnectionService, "request" );
+
+        edConnectionService.request( dataObj );
+
+        expect( requestSpy )
+          .to.have.callCount( 1 );
+
+        requestSpy.restore();
+        done();
+      });
+    });
+
+    suite( "formattedSend method", function() {
+      test( "calls the send method with formatted data", function( done ) {
+        var dataObj = {
+            id: "001",
+            name: "string"
+          },
+          formattedSendSpy = sinon.spy( edConnectionService, "formattedSend" );
+
+        edConnectionService.formattedSend( dataObj );
+
+        expect( formattedSendSpy )
+          .to.have.callCount( 1 );
+
+        formattedSendSpy.restore();
+        done();
+      });
+    });
+
+    suite( "formattedRequest method", function() {
+      test( "calls the request method with formatted data", function( done ) {
+        var dataObj = {
+            id: "001",
+            name: "string"
+          },
+          formattedSendSpy = sinon.spy( edConnectionService, "formattedSend" );
+
+        edConnectionService.formattedSend( dataObj );
+
+        expect( formattedSendSpy )
+          .to.have.callCount( 1 );
+
+        formattedSendSpy.restore();
+        done();
+      });
+    });
+
+    suite( "formatDataObject method", function() {
+      test( "method invocation", function() {
+        var dataObj = {
+            id: "001",
+            name: "string"
+          },
+          formatDataObjectSpy = sinon.spy( edConnectionService, "formatDataObject" );
+
+        edConnectionService.formatDataObject( dataObj );
+
+        expect( formatDataObjectSpy )
+          .to.have.callCount( 1 );
+
+        formatDataObjectSpy.restore();
+      });
+
+      test( "returns a stringified json object", function() {
+        var dataObj = {
+            id: "001",
+            name: "string"
+          };
+
+        expect( edConnectionService.formatDataObject( dataObj ) )
+          .to.be.a( "string" );
       });
     });
   });
