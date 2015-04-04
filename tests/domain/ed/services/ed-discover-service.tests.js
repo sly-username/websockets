@@ -44,63 +44,60 @@
               id: 999
             },
             edGenre = new EDGenre( genreData ),
-            valid = edDiscoverService.getDiscoverTrackList( edGenre.id );
-
-          expect( valid )
-            .to.be( "ok" );
-          // expect getTrackID to get called?
-        });
-
-        test( "'profileBlend' is a valid parameter", function() {
-          var valid = edDiscoverService.getDiscoverTrackList( "profileBlend" );
-
-          expect( valid )
-            .to.be( "ok" );
-          // expect getGenreID to get called?
-        });
-
-        test( "when invalid parameter is used, an error is thrown", function() {
-          var badParameter = "UNACCEPTABLE!",
-            invalid = edDiscoverService.getDiscoverTrackList( badParameter );
-
-          expect( invalid )
-            .to.throw( Error );
-          // expect an error, I suppose
-        });
-
-        test( "should receive message from the server", function() {
-          // TODO how would we ever test this? create a websocket?
-          var genreData =
-            {
-              id: 999
-            },
-            edGenre = new EDGenre( genreData );
+            getTrackSpy = sinon.spy( this, "getTrackID" );
 
           edDiscoverService.getDiscoverTrackList( edGenre.id );
 
           expect( getTrackSpy )
-            .to.have.callCout( 1 );
+            .to.have.callCount( 1 );
+        });
+
+        test( "'profileBlend' is a valid parameter", function() {
+          var getTrackSpy = sinon.spy( this, "getGenreID" );
+
+          edDiscoverService.getDiscoverTrackList( "profileBlend" );
+
+          expect( getTrackSpy )
+            .to.have.callCount( 1 );
+        });
+
+        test( "when invalid parameter is used, an error is thrown", function() {
+          var badParameter = "UNACCEPTABLE!",
+            badParams = edDiscoverService.getDiscoverTrackList( badParameter );
+
+          expect( badParams )
+            .to.throw( Error );
         });
       });
 
       suite( "setCurrentProfileBlend", function() {
         test( "creates new currentProfileBlend array with genres chosen by user", function() {
-
+          // TODO not sure how this will happen
         });
       });
     });
 
     suite( "helper functions", function() {
       suite( "getTrackID", function() {
-        // TODO when track id request is successful
-        test( "not sure what should be tested", function() {
+        test( "after successful response from server, should return array", function() {
+          var genreData =
+            {
+              id: 999
+            },
+            edGenre = new EDGenre( genreData ),
+            discoverServiceReturn = edDiscoverService.getTrackID( edGenre.id );
 
+          expect( discoverServiceReturn )
+            .to.be.an( "array" );
         });
       });
 
       suite( "getGenreID", function() {
-        test( "should receive message from the server", function() {
+        test( "after successful response from server, should return array", function() {
+          var discoverServiceReturn = edDiscoverService.getGenreID();
 
+          expect( discoverServiceReturn )
+            .to.be.an( "array" );
         });
       });
     });

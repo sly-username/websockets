@@ -44,18 +44,34 @@ export default edDiscoverService = {
         // not sure what to do here.
       });
       return trackIDList;
-      // is this return in the proper place?
     } else if ( data instanceof EDGenre ) {
-      // should we create a variable?
+      // should we create the variable below?
+      // if so, where should it go?
       var ids = getTrackID( data.id );
       trackIDList.push( ids );
+    } else {
+      throw Error;
     }
-    // do we need to throw an error if it doesn't fall in these 2 conditions?
   },
 
-  setUserBlend( EDGenre ) {
+  setUserBlend( changedProfileBlend ) {
+    // not sure how we know when the user changes it genre preferences
+    // or where this happens
+    // lots of questions
+    changedProfileBlend = currentProfileBlend;
 
-    return EDGenre;
-    // this trackList is now the currentProfileBlend
+    // not sure if it's properly returning what I want it to return
+    currentProfileBlend.forEach( genreID => {
+      return edConnectionService.request( genreID )
+        .then( msg => {
+          trackIDList = msg.tracks;
+          trackIDList.push( getTrackID( genreID ) );
+          // will this continue to push the tracks to my trackIDList array as it iterates??
+          return trackIDList;
+        })
+        .catch( error => {
+          throw error;
+        });
+    });
   }
 };
