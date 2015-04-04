@@ -40,15 +40,15 @@
       suite( "getDiscoverTrackList", function() {
         test( "EDGenre object is a valid parameter", function() {
           var genreData =
-              {
-                id: 999
-              },
+            {
+              id: 999
+            },
             edGenre = new EDGenre( genreData ),
             valid = edDiscoverService.getDiscoverTrackList( edGenre.id );
 
           expect( valid )
             .to.be( "ok" );
-          // expect getTrackID to get called
+          // expect getTrackID to get called?
         });
 
         test( "'profileBlend' is a valid parameter", function() {
@@ -56,7 +56,7 @@
 
           expect( valid )
             .to.be( "ok" );
-          // expect getGenreID to get called
+          // expect getGenreID to get called?
         });
 
         test( "when invalid parameter is used, an error is thrown", function() {
@@ -68,48 +68,38 @@
           // expect an error, I suppose
         });
 
-        suite( "EDGenre", function() {
-          test( "should call getTrackID function", function() {
-            var genreData =
-              {
-                id: 999
-              },
-              edGenre = new EDGenre( genreData ),
-              request = edDiscoverService.getDiscoverTrackList( edGenre.id ),
-              TrackSpy = sinon.spy( edDiscoverService, getTrackID );
-          });
+        test( "should receive message from the server", function() {
+          // TODO how would we ever test this? create a websocket?
+          var genreData =
+            {
+              id: 999
+            },
+            edGenre = new EDGenre( genreData );
 
-          test( "should receive message from the server", function() {
-            // TODO how would we ever test this? create a websocket?
-            var genreData =
-              {
-                id: 999
-              },
-              edGenre = new EDGenre( genreData ),
-              request = edDiscoverService.getDiscoverTrackList( edGenre.id );
+          edDiscoverService.getDiscoverTrackList( edGenre.id );
 
-            expect( request )
-              .to.be.an( "array" )
-              .that.equals( "currentProfileBlend" );
-          });
-        });
-
-
-
-        suite( "profileBlend parameter", function() {
-          test( "returns an array of genreIDs", function() {
-            // save as new currentProfileBlend
-            // expect currentProfileBlend to be an array
-            var request = edDiscoverService.getGenreIDs( "profileBlend" );
-
-            expect( request )
-              .to.be.an( "array" );
-          });
+          expect( getTrackSpy )
+            .to.have.callCout( 1 );
         });
       });
 
       suite( "setCurrentProfileBlend", function() {
         test( "creates new currentProfileBlend array with genres chosen by user", function() {
+
+        });
+      });
+    });
+
+    suite( "helper functions", function() {
+      suite( "getTrackID", function() {
+        // TODO when track id request is successful
+        test( "not sure what should be tested", function() {
+
+        });
+      });
+
+      suite( "getGenreID", function() {
+        test( "should receive message from the server", function() {
 
         });
       });
