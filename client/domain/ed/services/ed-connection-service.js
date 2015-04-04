@@ -4,26 +4,56 @@ var edConnectionService,
   edSocket = new EDWebSocket();
 
 export default edConnectionService = {
-  send( data ) {
-    return edSocket.send( data );
+  send( route, priority=0, data ) {
+    var json = {
+        action: {
+          route,
+          priority
+        }
+      },
+      prop;
+
+    for ( prop in json ) {
+      if ( json.hasOwnProperty( prop ) ) {
+        data[ prop ] = json[ prop ];
+      }
+    }
+
+    data = this.formatDataObject( data );
+
+    return this.formattedSend( data );
   },
 
-  request( data ) {
-    return edSocket.request( data );
+  request( route, priority=0, data ) {
+    var json = {
+        action: {
+          route,
+          priority
+        }
+      },
+      prop;
+
+    for ( prop in json ) {
+      if ( json.hasOwnProperty( prop ) ) {
+        data[ prop ] = json[ prop ];
+      }
+    }
+
+    data = this.formatDataObject( data );
+
+    return this.formattedRequest( data );
   },
 
   formattedSend( data ) {
-    data = this.formatDataObject( data );
-    return this.send( data );
+    return edSocket.send( data );
   },
 
   formattedRequest( data ) {
-    data = this.formatDataObject( data );
-    return this.request( data );
+    return edSocket.request( data );
   },
 
   formatDataObject( data ) {
-    // TODO could be a helper function?
+    // TODO could be a helper
     if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
       data = JSON.stringify( data );
     }
