@@ -54,7 +54,7 @@ export default edDiscoverService = {
     }
   },
 
-  setUserBlend( changedProfileBlend ) {
+  setCurrentProfileBlend( changedProfileBlend ) {
     // not sure how we know when the user changes it genre preferences
     // or where this happens
     // lots of questions

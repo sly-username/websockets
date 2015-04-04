@@ -20,7 +20,6 @@
         } );
     } );
 
-// Tests begin
     suite( "Properties", function() {
       suite( "currentProfileBlend", function() {
         test( "edService has 'currentProfileBlend' property", function() {
@@ -31,7 +30,7 @@
         test( "is an array of EDGenre objects", function() {
           expect( edDiscoverService.currentProfileBlend )
             .to.be.an( "array" );
-            // .that.deep.equals( "i have no idea what" );
+            // .that.deep.equals( "i have no idea what; is this even necessary" );
         });
       });
     });
@@ -74,6 +73,13 @@
         test( "creates new currentProfileBlend array with genres chosen by user", function() {
           // TODO not sure how this will happen
         });
+
+        test( "after successful response from server, should return array", function() {
+          var setCurrentBlend = edDiscoverService.setCurrentProfileBlend();
+
+          expect( setCurrentBlend )
+            .to.be.an( "array" );
+        });
       });
     });
 
@@ -85,18 +91,18 @@
               id: 999
             },
             edGenre = new EDGenre( genreData ),
-            discoverServiceReturn = edDiscoverService.getTrackID( edGenre.id );
+            trackServiceReturn = edDiscoverService.getTrackID( edGenre.id );
 
-          expect( discoverServiceReturn )
+          expect( trackServiceReturn )
             .to.be.an( "array" );
         });
       });
 
       suite( "getGenreID", function() {
         test( "after successful response from server, should return array", function() {
-          var discoverServiceReturn = edDiscoverService.getGenreID();
+          var genreServiceReturn = edDiscoverService.getGenreID();
 
-          expect( discoverServiceReturn )
+          expect( genreServiceReturn )
             .to.be.an( "array" );
         });
       });
