@@ -15,6 +15,18 @@ export default class EDLRUCache extends ObservableLRUCache {
     super( limit );
   }
 
+  observe( key, callback, acceptList ) {
+    key = checkKeyType( key );
+
+    return super.observe( key, callback, acceptList );
+  }
+
+  unobserve( key, callback ) {
+    key = checkKeyType( key );
+
+    return super.unobserve( key, callback );
+  }
+
   set( key, data ) {
     if ( key instanceof EDDataObject ) {
       key = key.id;
