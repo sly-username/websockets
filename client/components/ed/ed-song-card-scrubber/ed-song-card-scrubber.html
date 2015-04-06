@@ -1,16 +1,15 @@
-<polymer-element name="ed-song-card-scrubber" attributes="min max">
+<polymer-element name="ed-song-card-scrubber" attributes="min max value">
   <template>
     <link rel="stylesheet" href="./ed-song-card-scrubber.css">
     <span id="val-box"></span>
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
       <g>
         <circle id="back-circle" r="35%" cy="50%" cx="50%" stroke-width="1.5%" fill="none"/>
-        <circle id="mid-circle" r="24.3%" cy="50%" cx="50%" stroke-width="20%" fill="none"/>
+        <circle id="mid-circle" r="24%" cy="50%" cx="50%" stroke-width="21%" fill="none"/>
         <circle id="front-circle" r="35%" cy="50%" cx="50%" stroke-width="1.5%" fill="none"/>
         <circle id="circle-scrubber" r="35%" cy="50%" cx="50%" stroke-width="5%" fill="none" />
       </g>
     </svg>
-    <input id="hidden-input" type="range" min="1" max="100"/>
   </template>
   <script src="ed-song-card-scrubber.js"></script>
 </polymer-element>
