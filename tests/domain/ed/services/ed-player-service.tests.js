@@ -18,7 +18,7 @@
         }
       );
 
-      System.import( "domain/ed/objects/EDSTrack" )
+      System.import( "domain/ed/objects/EDTrack" )
         .then(function( imported ) {
           EDTrack = imported.default;
           done();
