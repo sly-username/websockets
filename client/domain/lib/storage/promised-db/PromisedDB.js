@@ -16,17 +16,16 @@ if ( !indexedDB ) {
   throw new Error( "This Environment doesn't support IndexedDB" );
 }
 
-import PDBObjectStore from "domain/lib/storage/PromisedDB/PDBObjectStore";
-import PDBOpenDBRequest from "domain/lib/storage/PromisedDB/PDBOpenDBRequest";
+import PDBObjectStore from "/PDBObjectStore";
+import PDBOpenDBRequest from "/PDBOpenDBRequest";
 
 /********
 TODOs
-  Account for "onblocked" event of IDBOpenDBRequest
 ********/
 
 // todo export default
 class PromisedDB {
-  constructor( dbName, versionNumber, onUpgradeNeeded=function(){} ) {
+  constructor( dbName, versionNumber, onUpgradeNeeded=function() {} ) {
     var openRequest = new PDBOpenDBRequest( indexedDB.open( dbName, versionNumber ), this);
 
     openRequest.upgradeNeeded
@@ -57,6 +56,7 @@ class PromisedDB {
     });
   }
 
+  // todo remove?
   get originalDB() {
     return this[ db ];
   }

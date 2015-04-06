@@ -1,6 +1,6 @@
 /*jshint strict: false*/
 // jscs:disable requirePaddingNewLinesInObjects
-import PromisedDB from "domain/lib/storage/PromisedDB/PromisedDB";
+import PromisedDB from "domain/lib/storage/promised-db/PromisedDB";
 
 var
   dataService = {},

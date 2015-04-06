@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 var originalStore = Symbol( "originalIDBObjectStore" );
 
-import PDBRequest from "domain/lib/storage/PromisedDB/PDBRequest";
+import PDBRequest from "/PDBRequest";
 
 export default class PDBObjectStore {
   constructor( idbObjectStore ) {

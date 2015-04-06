@@ -9,7 +9,7 @@
     this.timeout( 5000 );
 
     suiteSetup(function( done ) {
-      System.import( "domain/lib/storage/PromisedDB/PromisedDB" )
+      System.import( "domain/lib/storage/promised-db/PromisedDB" )
         .then(function( imported ) {
           var syms;
 

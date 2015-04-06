@@ -1,8 +1,8 @@
 /*jshint strict: false*/
 var originalIndex = Symbol( "originalIDBIndex" );
 
-import PDBObjectStore from "domain/lib/storage/PromisedDB/PDBObjectStore";
-import PDBRequest from "domain/lib/storage/PromisedDB/PDBRequest";
+import PDBObjectStore from "/PDBObjectStore";
+import PDBRequest from "/PDBRequest";
 
 export default class PDBIndex {
   constructor( idbIndex ) {

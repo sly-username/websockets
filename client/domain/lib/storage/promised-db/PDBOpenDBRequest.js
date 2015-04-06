@@ -1,5 +1,5 @@
 
-import PDBRequest from "domain/lib/storage/PromisedDB/PDBRequest";
+import PDBRequest from "/PDBRequest";
 
 export default class PDBOpenDBRequest extends PDBRequest {
   constructor( idbOpenDBRequest, source=null ) {
