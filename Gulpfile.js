@@ -95,8 +95,6 @@ gulp.task( "start", function( done ) {
 /*** Watch all the things ***/
 gulp.task( "watch", gulp.parallel(
   "less:watch",
-  "jscs:watch",
-  "lint:watch",
   "traceur:watch"
 ));
 
@@ -106,9 +104,11 @@ gulp.task( "build:dev", gulp.series(
   gulp.parallel(
     "less:dev",
     "symlink:dev",
+    "svgstore:dev",
     "vendor:dev",
     "traceur:dev"
-  )
+  ),
+  "envBuild:dev"
 ));
 
 /*** TESTING TASKS ***/
@@ -133,11 +133,8 @@ gulp.task( "test", gulp.series(
 gulp.task( "dev", gulp.series(
   "build:dev",
   "build:tests:only",
-  "server:dev",
   "watch",
-  "jscs:client",
-  "lint:client",
-  "tdd"
+  "tdd:alone"
 ));
 
 /*** PRODUCTION BUILD TASK ***/

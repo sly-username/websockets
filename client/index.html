@@ -34,9 +34,26 @@
 </head>
 
 <body unresolved>
+
 <div style="width: 50%; height: 50%;">
   <ed-song-card-scrubber></ed-song-card-scrubber>
 </div>
+
+<!--<section id="splash-screen">-->
+  <!--<svg>-->
+    <!--<use xlink:href="/assets/icons/svg.svg#eardish-logo-with-slogan"></use>-->
+  <!--</svg>-->
+  <!--<script>-->
+    <!--(function(){-->
+      <!--// TODO component this-->
+      <!--var here = document.getElementById("splash-screen");-->
+      <!--here.addEventListener( "transitionend", function( event ) {-->
+        <!--here.hidden = true;-->
+      <!--});-->
+    <!--})();-->
+  <!--</script>-->
+<!--</section>-->
+
 <!--<app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">-->
   <!--<app-route path="/home">-->
     <!--<template>-->
@@ -56,12 +73,15 @@
   <!--<app-route path="/onboarding" redirect="/onboarding/like"></app-route>-->
 
   <!--&lt;!&ndash; PROFILE &ndash;&gt;-->
+  <!--<app-route path="/profile/edit" element="ed-profile-edit"></app-route>-->
   <!--<app-route path="/artist" element="ed-profile-artist"></app-route>-->
   <!--<app-route path="/fan" element="ed-profile-fan"></app-route>-->
 
   <!--&lt;!&ndash; RETRIEVE PASSWORD &ndash;&gt;-->
   <!--<app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>-->
+
   <!--&lt;!&ndash;<app-route path=""&ndash;&gt;-->
+
   <!--&lt;!&ndash; REMOVE FOR PRODUCTION &ndash;&gt;-->
   <!--&lt;!&ndash; POC Viewer page &ndash;&gt;-->
   <!--<app-route path="/poc">-->
@@ -99,6 +119,7 @@
         <!--<a href="#/register">Register (/register)</a>-->
         <!--<a href="#/registration">Register (/registration)</a>-->
         <!--<a href="#/onboarding">Onboarding</a>-->
+        <!--<a href="#/profile/edit">Profile /Edit</a>-->
         <!--<a href="#/artist">Artist</a>-->
         <!--<a href="#/fan">Fan</a>-->
         <!--<a href="#/forgot-pass">Forgot Password</a>-->

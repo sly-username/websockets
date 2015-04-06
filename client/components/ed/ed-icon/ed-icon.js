@@ -1,8 +1,6 @@
 ( function( polymer ) {
   "use strict";
 
-  var nameList = [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ];
-
   polymer( "ed-icon", {
     publish: {
       rotation: {
@@ -13,8 +11,8 @@
         reflect: true
       }
     },
-    get nameList() {
-      return nameList;
+    attached: function() {
+      this.shadowRoot.querySelector( "svg" ).onload = console.log.bind(console);
     },
     rotationChanged: function( oldValue, newValue ) {
       switch ( newValue ) {
