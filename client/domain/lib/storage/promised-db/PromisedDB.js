@@ -4,29 +4,29 @@ var indexedDB = window.indexedDB ||
       window.webkitIndexedDB ||
       window.mozIndexedDB ||
       window.msIndexedDB,
-  IDBTransaction = window.IDBTransaction ||
-    window.webkitIDBTransaction ||
-    window.msIDBTransaction,
-  IDBKeyRange = window.IDBKeyRange ||
-    window.webkitIDBKeyRange ||
-    window.msIDBKeyRange,
-  db = Symbol( "db" );
+  db = Symbol( "originalIDBDatabase" );
 
 if ( !indexedDB ) {
   throw new Error( "This Environment doesn't support IndexedDB" );
 }
 
-import PDBObjectStore from "/PDBObjectStore";
-import PDBOpenDBRequest from "/PDBOpenDBRequest";
+import PDBObjectStore from "domain/lib/storage/promised-db/PDBObjectStore";
+import PDBOpenDBRequest from "domain/lib/storage/promised-db/PDBOpenDBRequest";
+import PDBTransaction from "domain/lib/storage/promised-db/PDBTransaction";
 
 /********
 TODOs
+ Account for "onabort"
 ********/
 
-// todo export default
-class PromisedDB {
+export default class PromisedDB {
   constructor( dbName, versionNumber, onUpgradeNeeded=function() {} ) {
     var openRequest = new PDBOpenDBRequest( indexedDB.open( dbName, versionNumber ), this);
+
+    this[ db ] = {
+      name: dbName,
+      version: versionNumber
+    };
 
     openRequest.upgradeNeeded
       .then(
@@ -61,47 +61,53 @@ class PromisedDB {
     return this[ db ];
   }
 
+  get name() {
+    return this[ db ].name;
+  }
+
+  get version() {
+    return this[ db ].version;
+  }
+
   get objectStoreNames() {
     return this[ db ].objectStoreNames;
   }
 
   close() {
-    return this[ db ].close();
+    if ( this[ db ] && typeof this[ db ].close === "function" ) {
+      this[ db ].close();
+      return;
+    }
+
+    this.openedPromise.then( () => {
+      this[ db ].close();
+    });
   }
 
-  createObjectStore( name, parameters={ autoIncrement: false } ) {
+  createObjectStore( name, parameters ) {
+    if ( parameters == null ) {
+      return new PDBObjectStore( this[ db ].createObjectStore( name ) );
+    }
+
     return new PDBObjectStore( this[ db ].createObjectStore( name, parameters ) );
   }
 
-  deleteObjectStore(){}
+  deleteObjectStore( name ) {
+    return this[ db ].deleteObjectStore( name );
+  }
 
-  transaction( objectStores, access ) {
-    // TODO Wrap in PDBTransaction?
-    return this[ db ].transaction( objectStores, access );
+  transaction( storeNames, accessMode ) {
+    return new PDBTransaction( this[ db ].transaction( storeNames, accessMode ), this );
   }
 
   deleteDatabase() {
-    return new Promise(( resolve, reject ) => {
-      var deleteRequest = indexedDB.deleteDatabase( this[ db ].name );
-
-//      deleteRequest.onsuccess = resolve;
-      deleteRequest.onsuccess = function( event ) {
-        console.log( "should resolve" );
-        resolve( event );
-      };
-
-//      deleteRequest.onerror = reject;
-      deleteRequest.onerror = function( event ) {
-        console.log( "should reject" );
-        reject( event );
-      };
-
+    return this.openedPromise.then( () => {
       this.close();
+
+      return new PDBOpenDBRequest(
+        indexedDB.deleteDatabase( this[ db ].name ),
+        this
+      );
     });
   }
 }
-
-// TODO DEBUG REMOVE
-window.PromisedDB = PromisedDB;
-
-export default PromisedDB;

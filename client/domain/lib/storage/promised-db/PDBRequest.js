@@ -6,6 +6,9 @@ export var symbols = {
   originalRequest: originalRequest
 };
 
+import PDBObjectStore from "domain/lib/storage/promised-db/PDBObjectStore";
+import PDBTransaction from "domain/lib/storage/promised-db/PDBTransaction";
+
 /** @class PDBRequest */
 export default class PDBRequest {
   /**
@@ -36,11 +39,10 @@ export default class PDBRequest {
   }
 
   /**
-   * TODO wrap in PDBObjectStore?
-   * @property result
+   * @property result { PDBObjectStore }
    */
   get result() {
-    return this[ originalRequest ].result;
+    return new PDBObjectStore( this[ originalRequest ].result );
   }
 
   /**
@@ -54,8 +56,8 @@ export default class PDBRequest {
    * @property transaction { PDBTransaction }
    */
   get transaction() {
-    // todo wrap in PDBTransaction
-    return this[ originalRequest ].transaction;
+    // todo get/pass along original promisedDB object?
+    return new PDBTransaction( this[ originalRequest ].transaction );
   }
 
   /**

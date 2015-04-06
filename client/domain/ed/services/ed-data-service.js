@@ -5,9 +5,9 @@ import PromisedDB from "domain/lib/storage/promised-db/PromisedDB";
 var
   dataService = {},
   profileDB = new PromisedDB( "profile", 1, function( event ) {
-    var objStore = this.createObjectStore( "objects", { keyPath: "id" });
+    var objStore = this.createObjectStore( "objects", { keyPath: "id" }),
+      typeIndex = objStore.createIndex( "type", "type", { unique: false });
 
-    var typeIndex = objStore.createIndex( "type", "type", { unique: false });
     objStore.createIndex( "userId", "userId", { unique: false });
 
     console.log( "type index: %o", typeIndex );
@@ -24,6 +24,7 @@ var
   });
 
 // TODO REMOVE DEBUG
+window.PromisedDB = PromisedDB;
 window.edProfileDB = profileDB;
 window.edDataService = dataService;
 export default dataService;

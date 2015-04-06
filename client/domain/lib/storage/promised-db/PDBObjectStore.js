@@ -1,28 +1,31 @@
 /*jshint strict: false*/
 var originalStore = Symbol( "originalIDBObjectStore" );
 
-import PDBRequest from "/PDBRequest";
+import PDBRequest from "domain/lib/storage/promised-db/PDBRequest";
+import PDBIndex from "domain/lib/storage/promised-db/PDBIndex";
+import PDBTransaction from "domain/lib/storage/promised-db/PDBTransaction";
+import PDBCursorWithValue from "domain/lib/storage/promised-db/PDBCursorWithValue";
 
 export default class PDBObjectStore {
   constructor( idbObjectStore ) {
     this[ originalStore ] = idbObjectStore;
   }
 
-  get indexNames() {
-    return this[ originalStore ].indexNames;
+  get name() {
+    return this[ originalStore ].name;
   }
 
   get keyPath() {
     return this[ originalStore ].keyPath;
   }
 
-  get name() {
-    return this[ originalStore ].name;
+  get indexNames() {
+    return this[ originalStore ].indexNames;
   }
 
   get transaction() {
-    // todo Wrap in PDBTransaction
-    return this[ originalStore ].transaction;
+    // todo get/pass along original promisedDB object?
+    return new PDBTransaction( this[ originalStore ].transaction );
   }
 
   get autoIncrement() {
@@ -49,13 +52,12 @@ export default class PDBObjectStore {
     return new PDBRequest( this[ originalStore ].get( key ), this );
   }
 
-  createIndex( objectIndexName, objectKeypath, optionalObjectParameters={} ) {
-    // todo wrap in PDBIndex
-    return this[ originalStore ].createIndex(
-      objectIndexName,
-      objectKeypath,
-      optionalObjectParameters
-    );
+  createIndex( name, keyPath, optionalParameters={} ) {
+    return new PDBIndex( this[ originalStore ].createIndex(
+      name,
+      keyPath,
+      optionalParameters
+    ));
   }
 
   deleteIndex( indexName ) {
@@ -63,8 +65,7 @@ export default class PDBObjectStore {
   }
 
   index( indexName ) {
-    // todo wrap in PDBIndex
-    return this[ originalStore ].index( indexName );
+    return new PDBIndex( this[ originalStore ].index( indexName ) );
   }
 
   put( value, optionalKey ) {
@@ -77,10 +78,14 @@ export default class PDBObjectStore {
 
   // todo check if works for different arg combinations
   openCursor( range, direction ) {
-    return new PDBRequest(
+    var request = new PDBRequest(
       this[ originalStore ].openCursor( range, direction ),
       this
     );
+
+    return request.success.then( event => {
+      return new PDBCursorWithValue( event.target.result, request );
+    });
   }
 
   count( optionalKeyRange ) {
