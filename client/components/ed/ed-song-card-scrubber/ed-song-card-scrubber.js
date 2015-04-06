@@ -24,11 +24,15 @@
     attached: function() {
       // mouse events
       this.scrubber.addEventListener( "mousedown", function() { this.mouseDown = true; }.bind( this ));
-      this.addEventListener( "mouseup", function() { this.mouseDown = false; }.bind( this ));
+      this.addEventListener( "mouseup", function() {
+        this.mouseDown = false;
+      }.bind( this ));
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
       this.scrubber.addEventListener( "touchstart", function() { this.mouseDown = true; }.bind( this ));
-      this.addEventListener( "touchend", function() { this.mouseDown = false; }.bind( this ));
+      this.addEventListener( "touchend", function() {
+        this.mouseDown = false;
+      }.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
     },
     // TODO Event listener may not be removed as expected
@@ -43,13 +47,12 @@
     },
     triggerMove: function( e ) {
       var angle,
-        radians,
-        currentVal;
+        radians;
 
       if ( this.mouseDown ) {
         radians = Math.atan2( e.pageX - this.scrubCenter[ 0 ], e.pageY - this.scrubCenter[ 1 ] );
         angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
-        currentVal = ( angle * this.max ) / 360;
+        this.currentVal = ( angle * this.max ) / 360;
         this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
         this.scrubber.style.transform = "rotate(" + angle + "deg)";
         this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
