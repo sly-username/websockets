@@ -43,21 +43,25 @@
               id: 999
             },
             edGenre = new EDGenre( genreData ),
-            getTrackSpy = sinon.spy( this, "getTrackID" );
+            getTrackSpy = sinon.spy( this, "getGenreTracks" );
 
           edDiscoverService.getDiscoverTrackList( edGenre.id );
 
           expect( getTrackSpy )
             .to.have.callCount( 1 );
+
+          getTrackSpy.restore();
         });
 
         test( "'profileBlend' is a valid parameter", function() {
-          var getTrackSpy = sinon.spy( this, "getGenreID" );
+          var getTrackSpy = sinon.spy( this, "getBlendTracks" );
 
           edDiscoverService.getDiscoverTrackList( "profileBlend" );
 
           expect( getTrackSpy )
             .to.have.callCount( 1 );
+
+          getTrackSpy.restore();
         });
 
         test( "when invalid parameter is used, an error is thrown", function() {
@@ -70,40 +74,90 @@
       });
 
       suite( "setCurrentProfileBlend", function() {
-        test( "creates new currentProfileBlend array with genres chosen by user", function() {
-          // TODO not sure how this will happen
-        });
-
+        // TODO need to indicate that promise was fulfilled or rejected
         test( "after successful response from server, should return array", function() {
-          var setCurrentBlend = edDiscoverService.setCurrentProfileBlend();
+          var country =
+            {
+              id: 999
+            },
+            bluegrass =
+            {
+              id: 414
+            },
+            punk =
+            {
+              id: 355
+            },
+            currentProfileBlend = [ country.id, bluegrass.id, punk.id ],
+            setCurrentBlend = edDiscoverService.setCurrentProfileBlend( currentProfileBlend );
 
           expect( setCurrentBlend )
             .to.be.an( "array" );
+        });
+
+        test( "if response from server is unsuccessful, should throw error", function() {
+          var country =
+            {
+              id: 999
+            },
+            bluegrass =
+            {
+              id: 414
+            },
+            punk =
+            {
+              id: 355
+            },
+            currentProfileBlend = [ country.id, bluegrass.id, punk.id ],
+            setCurrentBlend = edDiscoverService.setCurrentProfileBlend( currentProfileBlend );
+
+          expect( setCurrentBlend )
+            .to.throw( Error );
         });
       });
     });
 
     suite( "helper functions", function() {
-      suite( "getTrackID", function() {
+      // TODO need to indicate that promise was fulfilled or rejected
+      suite( "getGenreTracks", function() {
         test( "after successful response from server, should return array", function() {
           var genreData =
             {
               id: 999
             },
             edGenre = new EDGenre( genreData ),
-            trackServiceReturn = edDiscoverService.getTrackID( edGenre.id );
+            trackReturn = edDiscoverService.getGenreTracks( edGenre.id );
 
-          expect( trackServiceReturn )
+          expect( trackReturn )
             .to.be.an( "array" );
+        });
+
+        test( "if response from server is unsuccessful, should throw error", function() {
+          var genreData =
+            {
+              id: 999
+            },
+            edGenre = new EDGenre( genreData ),
+            trackReturn = edDiscoverService.getGenreTracks( edGenre.id );
+
+          expect( trackReturn )
+            .to.throw( Error );
         });
       });
 
-      suite( "getGenreID", function() {
+      suite( "getBlendTracks", function() {
         test( "after successful response from server, should return array", function() {
-          var genreServiceReturn = edDiscoverService.getGenreID();
+          var blendReturn = edDiscoverService.getBlendTracks();
 
-          expect( genreServiceReturn )
+          expect( blendReturn )
             .to.be.an( "array" );
+        });
+
+        test( "if response from server is unsuccessful, should throw error", function() {
+          var blendReturn = edDiscoverService.getBlendTracks();
+
+          expect( blendReturn )
+            .to.throw( Error );
         });
       });
     });
