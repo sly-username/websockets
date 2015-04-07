@@ -7,6 +7,14 @@ export var symbols = {
 
 import PDBRequest from "domain/lib/storage/promised-db/PDBRequest";
 
+/*
+TODO Make Cursors work promise like?
+  so right now cursors aren't actually working.
+  Typically how they work is you bind to the "onsuccess" event
+  handler then reuse the same handler for every new item the
+  cursor spits up
+ */
+
 export default class PDBCursor {
   constructor( idbCursor, source=null ) {
     this[ originalCursor ] = idbCursor;
@@ -19,6 +27,14 @@ export default class PDBCursor {
         value: source
       }
     });
+  }
+
+  // todo promisify these?
+  get onsuccess() {
+    return this[ originalCursor ].onsuccess;
+  }
+  set onsuccess( handler ) {
+    return this[ originalCursor ].onsuccess = handler.bind( this );
   }
 
   get direction() {

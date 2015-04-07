@@ -17,6 +17,8 @@ import PDBTransaction from "domain/lib/storage/promised-db/PDBTransaction";
 /********
 TODOs
  Account for "onabort"
+ Do more for "onblocked"?
+ PDBTransaction property: "db"
 ********/
 
 export default class PromisedDB {
@@ -56,7 +58,6 @@ export default class PromisedDB {
     });
   }
 
-  // todo remove?
   get originalDB() {
     return this[ db ];
   }

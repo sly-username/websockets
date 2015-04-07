@@ -380,6 +380,61 @@
 
           expect( cache.has( "one" ) ).to.equal( true );
         });
+
+        test( "symbol ObservableLRUCache.OBSERVE_ALL can be used to watch all changes", function() {
+          var allObserver = sinon.spy();
+
+          cache.observe( ObservableLRUCache.OBSERVE_ALL, allObserver );
+
+          cache.remove( "one" );
+          cache.set( "two", "two" );
+          cache.set( "five", 5 );
+
+          expect( allObserver )
+            .to.have.callCount( 3 );
+        });
+
+        test( "an ObservableLRUCache.OBSERVE_ALL observer can be removed", function() {
+          var allObserver = sinon.spy();
+
+          cache.observe( ObservableLRUCache.OBSERVE_ALL, allObserver );
+
+          cache.remove( "one" );
+          cache.set( "two", "two" );
+
+          cache.unobserve( ObservableLRUCache.OBSERVE_ALL, allObserver );
+
+          cache.set( "five", 5 );
+
+          expect( allObserver )
+            .to.have.callCount( 2 );
+        });
+
+        test( "an ObservableLRUCache.OBSERVE_ALL observer can be configured: set", function() {
+          var allSetObserver = sinon.spy();
+
+          cache.observe( ObservableLRUCache.OBSERVE_ALL, allSetObserver, [ "set" ]);
+
+          cache.set( "two", "two" );
+          cache.remove( "one" );
+          cache.remove( "two" );
+
+          expect( allSetObserver )
+            .to.have.callCount( 1 );
+        });
+
+        test( "an ObservableLRUCache.OBSERVE_ALL observer can be configured: remove", function() {
+          var allRemoveObserver = sinon.spy();
+
+          cache.observe( ObservableLRUCache.OBSERVE_ALL, allRemoveObserver, [ "remove" ]);
+
+          cache.set( "two", "two" );
+          cache.remove( "one" );
+          cache.remove( "two" );
+
+          expect( allRemoveObserver )
+            .to.have.callCount( 2 );
+        });
       });
 
       suite( "unobserve", function() {
