@@ -62,8 +62,8 @@
       });
     });
 
-    suite( "Class Methods", function() {
-      test( "observe method", function() {
+    suite( "Observe Method", function() {
+      test( "observe method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
@@ -81,8 +81,10 @@
 
         observeSpy.restore();
       });
+    });
 
-      test( "unobserve method", function() {
+    suite( "Unobserve Method", function() {
+      test( "unobserve method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
@@ -99,8 +101,10 @@
 
         unobserveSpy.restore();
       });
+    });
 
-      test( "set method", function() {
+    suite( "Set Method", function() {
+      test( "set method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
@@ -116,8 +120,10 @@
 
         setSpy.restore();
       });
+    });
 
-      test( "get method", function() {
+    suite( "Get Method", function() {
+      test( "get method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
@@ -133,8 +139,10 @@
 
         getSpy.restore();
       });
+    });
 
-      test( "peek method", function() {
+    suite( "Peek Method", function() {
+      test( "peek method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
@@ -150,8 +158,10 @@
 
         peekSpy.restore();
       });
+    });
 
-      test( "has method", function() {
+    suite( "Has Method", function() {
+      test( "has method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
@@ -167,8 +177,10 @@
 
         hasSpy.restore();
       });
+    });
 
-      test( "remove method", function() {
+    suite( "Remove Method", function() {
+      test( "remove method call count", function() {
         var artistObj = {
             id: "001",
             yearFounded: 2009
