@@ -33,73 +33,12 @@
         var edCache = new EDLRUCache( 10 );
 
         expect( edCache )
-          .to.have.property( "observe" )
-          .to.be.a( "function" );
-
-        expect( edCache )
-          .to.have.property( "unobserve" )
-          .to.be.a( "function" );
-
-        expect( edCache )
           .to.have.property( "set" )
-          .to.be.a( "function" );
-
-        expect( edCache )
-          .to.have.property( "get" )
-          .to.be.a( "function" );
-
-        expect( edCache )
-          .to.have.property( "peek" )
-          .to.be.a( "function" );
-
-        expect( edCache )
-          .to.have.property( "has" )
           .to.be.a( "function" );
 
         expect( edCache )
           .to.have.property( "remove" )
           .to.be.a( "function" );
-      });
-    });
-
-    suite( "Observe Method", function() {
-      test( "observe method call count", function() {
-        var artistObj = {
-            id: "001",
-            yearFounded: 2009
-          },
-          edCache = new EDLRUCache( 10 ),
-          edArtist = new EDArtist( artistObj ),
-          acceptList = [ "set", "remove" ],
-          observeCbSpy = sinon.spy(),
-          observeSpy = sinon.spy( edCache, "observe" );
-
-        edCache.observe( edArtist, observeCbSpy, acceptList );
-
-        expect( observeSpy )
-          .to.have.callCount( 1 );
-
-        observeSpy.restore();
-      });
-    });
-
-    suite( "Unobserve Method", function() {
-      test( "unobserve method call count", function() {
-        var artistObj = {
-            id: "001",
-            yearFounded: 2009
-          },
-          edCache = new EDLRUCache( 10 ),
-          edArtist = new EDArtist( artistObj ),
-          unobserveCbSpy = sinon.spy(),
-          unobserveSpy = sinon.spy( edCache, "unobserve" );
-
-        edCache.unobserve( edArtist, unobserveCbSpy );
-
-        expect( unobserveSpy )
-          .to.have.callCount( 1 );
-
-        unobserveSpy.restore();
       });
     });
 
@@ -119,63 +58,6 @@
           .to.have.callCount( 1 );
 
         setSpy.restore();
-      });
-    });
-
-    suite( "Get Method", function() {
-      test( "get method call count", function() {
-        var artistObj = {
-            id: "001",
-            yearFounded: 2009
-          },
-          edCache = new EDLRUCache( 10 ),
-          edArtist = new EDArtist( artistObj ),
-          getSpy = sinon.spy( edCache, "get" );
-
-        edCache.get( edArtist );
-
-        expect( getSpy )
-          .to.have.callCount( 1 );
-
-        getSpy.restore();
-      });
-    });
-
-    suite( "Peek Method", function() {
-      test( "peek method call count", function() {
-        var artistObj = {
-            id: "001",
-            yearFounded: 2009
-          },
-          edCache = new EDLRUCache( 10 ),
-          edArtist = new EDArtist( artistObj ),
-          peekSpy = sinon.spy( edCache, "peek" );
-
-        edCache.peek( edArtist );
-
-        expect( peekSpy )
-          .to.have.callCount( 1 );
-
-        peekSpy.restore();
-      });
-    });
-
-    suite( "Has Method", function() {
-      test( "has method call count", function() {
-        var artistObj = {
-            id: "001",
-            yearFounded: 2009
-          },
-          edCache = new EDLRUCache( 10 ),
-          edArtist = new EDArtist( artistObj ),
-          hasSpy = sinon.spy( edCache, "has" );
-
-        edCache.has( edArtist );
-
-        expect( hasSpy )
-          .to.have.callCount( 1 );
-
-        hasSpy.restore();
       });
     });
 

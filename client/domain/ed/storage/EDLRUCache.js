@@ -23,14 +23,14 @@ export default class EDLRUCache extends ObservableLRUCache {
    *
    * @description
    *   Checks if key passed is an instance of EDDataObject and if so,
-   *   assigns key to the id of that instance.
+   *   assigns key to the id of that instance and data to that key obj. It then
+   *   calls set on the super class.
    */
   set( key, data ) {
     if ( key instanceof EDDataObject ) {
       key = key.id;
       data = key;
     }
-
     return super.set( key, data );
   }
 
@@ -41,7 +41,7 @@ export default class EDLRUCache extends ObservableLRUCache {
    *
    * @description
    *    Checks to see if key is an instance of EDDataObject. It then
-   *    removes
+   *    removes that key from cache.
    */
   remove( key ) {
     key = checkKeyType( key );
