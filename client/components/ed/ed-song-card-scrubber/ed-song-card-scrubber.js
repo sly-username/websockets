@@ -6,14 +6,10 @@
       this.mouseDown = false;
 
       // Selectors
+      this.svg = this.shadowRoot.getElementById( "svg-circle" );
       this.mid = this.shadowRoot.getElementById( "mid-circle" );
       this.front = this.shadowRoot.getElementById( "front-circle" );
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
-      this.svgBox = this.scrubber.getBoundingClientRect();
-
-      // Calculates the center for the scrubber
-      this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
-        ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
 
       // Calculates the circumference of circles
       this.circFront = ( 2 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
@@ -23,7 +19,14 @@
     },
     attached: function() {
       // mouse events
-      this.scrubber.addEventListener( "mousedown", function() { this.mouseDown = true; }.bind( this ));
+      this.scrubber.addEventListener( "mousedown", function() {
+        this.mouseDown = true;
+        // Calculates the center for the scrubber, not sure why this doesn't work correctly
+        // in the polymer attached or ready function
+        this.svgBox = this.scrubber.getBoundingClientRect();
+        this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
+          ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
+      }.bind( this ));
       this.addEventListener( "mouseup", function() {
         this.mouseDown = false;
         this.fire( "scrubEnd", {
@@ -33,7 +36,12 @@
       }.bind( this ));
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
-      this.scrubber.addEventListener( "touchstart", function() { this.mouseDown = true; }.bind( this ));
+      this.scrubber.addEventListener( "touchstart", function() {
+        this.svgBox = this.scrubber.getBoundingClientRect();
+        this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
+          ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
+        this.mouseDown = true;
+      }.bind( this ));
       this.addEventListener( "touchend", function() {
         this.mouseDown = false;
         this.fire( "scrubEnd", {
