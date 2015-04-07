@@ -3,8 +3,7 @@ import EDGenre from "domain/ed/objects/EDGenre";
 
 var currentProfileBlend = [],
   trackIDList = [],
-  edDiscoverService,
-  edConnectionService;
+  edDiscoverService;
 
 export default edDiscoverService = {
 
