@@ -1,5 +1,5 @@
 import define from "domain/ed/define-properties";
-import EDProfile from "domain/ed/objects/EDProfile";
+import EDProfile from "domain/ed/objects/profile/EDProfile";
 
 export default class EDArtist extends EDProfile {
   constructor( args ) {

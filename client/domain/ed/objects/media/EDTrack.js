@@ -1,7 +1,7 @@
 import define from "domain/ed/define-properties";
-import EDMedia from "domain/ed/objects/EDMedia";
-//import EDArtist from "domain/ed/objects/EDArtist";
-//import EDProfile from "domain/ed/objects/EDProfile";
+import EDMedia from "domain/ed/objects/media/EDMedia";
+//import EDArtist from "domain/ed/objects/profile/EDArtist";
+//import EDProfile from "domain/ed/objects/profile/EDProfile";
 //import edDataService from "domain/ed/services/ed-data-service";
 
 //TODO fake objects
