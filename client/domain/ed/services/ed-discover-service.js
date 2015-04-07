@@ -45,7 +45,7 @@ export default edDiscoverService = {
   },
 
   setCurrentProfileBlend( updatedProfileBlend ) {
-    updatedProfileBlend = currentProfileBlend;
+    currentProfileBlend = updatedProfileBlend;
 
     return edConnectionService.request( currentProfileBlend )
       .then( msg => {
