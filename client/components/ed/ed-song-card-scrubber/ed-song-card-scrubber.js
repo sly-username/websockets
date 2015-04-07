@@ -26,12 +26,20 @@
       this.scrubber.addEventListener( "mousedown", function() { this.mouseDown = true; }.bind( this ));
       this.addEventListener( "mouseup", function() {
         this.mouseDown = false;
+        this.fire( "scrubEnd", {
+          msg: "scrubEnd",
+          newValue: this.currentVal
+        });
       }.bind( this ));
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
       this.scrubber.addEventListener( "touchstart", function() { this.mouseDown = true; }.bind( this ));
       this.addEventListener( "touchend", function() {
         this.mouseDown = false;
+        this.fire( "scrubEnd", {
+          msg: "scrubEnd",
+          newValue: this.currentVal
+        });
       }.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
     },

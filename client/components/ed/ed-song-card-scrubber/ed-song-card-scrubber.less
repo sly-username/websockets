@@ -1,6 +1,7 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
-@import "../../../styles/ed/text-styles.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/alignments.mixin.less";
 
 #back-circle {
   stroke: @originalPurple;
@@ -35,3 +36,25 @@
   .transformOrigin(50% 50%);
 }
 
+.btn-container {
+  width: 25%;
+  position: relative;
+}
+.btn {
+  position: relative;
+  display: inline-block;
+  background: transparent;
+  width: 100%;
+  height: 0;
+  padding: 50% 0;
+  border-radius: 50%;
+  line-height: 0;
+}
+ed-icon {
+  fill: #5eff9e;
+  width: 30rem;
+  height: 50%;
+  pointer-events: none;
+  float: left;
+  padding: 0 2rem;
+}
