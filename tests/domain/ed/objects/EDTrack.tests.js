@@ -3,24 +3,24 @@
 ( function( win, doc, System, sinon, expect ) {
   "use strict";
 
-  suite( "EDSong", function() {
-    var EDSong;
+  suite( "EDTrack", function() {
+    var EDTrack;
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/objects/EDSong" )
+      System.import( "domain/ed/objects/EDTrack" )
         .then( function( imported ) {
-          EDSong = imported.default;
+          EDTrack = imported.default;
           done();
         }, function( error ) {
-          console.warn( "Could not import 'EDSong' for testing: ", error.message );
+          console.warn( "Could not import 'EDTrack' for testing: ", error.message );
           console.error( error.stack );
           done( error );
         });
     });
 
-    suite.skip( "EDSong creation", function() {
+    suite.skip( "EDTrack creation", function() {
       test( "constructor has expected properties", function() {
-        var songObj = {
+        var trackObj = {
             artistId: "001",
             createdBy: "Joe",
             name: "Piper",
@@ -28,31 +28,31 @@
             waveformImage: "https://static.gearslutz.com/board/imgext.php?u=http%3A%2F%2Fdaveshort.org%2Fmusic%2Floudness%2Fmetallica_big.png&h=067a1a9b3aa501c5f0ac43f4851235bb",
             createdDate: Date.now()
           },
-          song = new EDSong( songObj );
+          track = new EDTrack( trackObj );
 
-        expect( song )
+        expect( track )
           .to.have.property( "artistId" );
 
-        expect( song )
+        expect( track )
           .to.have.property( "createdBy" );
 
-        expect( song )
+        expect( track )
           .to.have.property( "name" );
 
-        expect( song )
+        expect( track )
           .to.have.property( "playCount" );
 
-        expect( song )
+        expect( track )
           .to.have.property( "waveformImage" );
 
-        expect( song )
+        expect( track )
           .to.have.property( "createdDate" );
       });
     });
 
     suite.skip( "getArtist Method", function() {
       test( "returns a promise", function() {
-        var songObj = {
+        var trackObj = {
             artistId: "001",
             createdBy: "Joe",
             name: "Piper",
@@ -60,13 +60,13 @@
             waveformImage: "https://static.gearslutz.com/board/imgext.php?u=http%3A%2F%2Fdaveshort.org%2Fmusic%2Floudness%2Fmetallica_big.png&h=067a1a9b3aa501c5f0ac43f4851235bb",
             createdDate: Date.now()
           },
-          song = new EDSong( songObj );
+          track = new EDTrack( trackObj );
       });
     });
 
     suite.skip( "getCreator", function() {
       test( "returns a promise", function() {
-        var songObj = {
+        var trackObj = {
             artistId: "001",
             createdBy: "Joe",
             name: "Piper",
@@ -74,7 +74,7 @@
             waveformImage: "https://static.gearslutz.com/board/imgext.php?u=http%3A%2F%2Fdaveshort.org%2Fmusic%2Floudness%2Fmetallica_big.png&h=067a1a9b3aa501c5f0ac43f4851235bb",
             createdDate: Date.now()
           },
-          song = new EDSong( songObj );
+          track = new EDTrack( trackObj );
       });
     });
   });
