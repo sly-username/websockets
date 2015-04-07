@@ -9,7 +9,7 @@ var EDArtist = {},
   EDProfile = {},
   edDataService = {};
 
-export default class EDSong extends EDMedia {
+export default class EDTrack extends EDMedia {
   constructor( args ) {
     super( args );
 
