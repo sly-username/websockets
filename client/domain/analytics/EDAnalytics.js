@@ -37,7 +37,7 @@ export default edAnalyticsService = {
   get viewStateBlock() {
     return {
       "player-state": {
-        "song-id": 0,
+        "track-id": 0,
         playing: true,
         timecode: ""
       }
