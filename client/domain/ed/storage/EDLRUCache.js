@@ -28,9 +28,9 @@ export default class EDLRUCache extends ObservableLRUCache {
    */
   set( key, data ) {
     if ( key instanceof EDDataObject ) {
-      key = key.id;
-      data = key;
+      return super.set( key.id, key );
     }
+
     return super.set( key, data );
   }
 
