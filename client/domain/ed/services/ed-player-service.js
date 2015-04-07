@@ -1,4 +1,4 @@
-import EDSong from "domain/ed/objects/EDSong";
+import EDTrack from "domain/ed/objects/EDTrack";
 //import EDCollection from "domain/ed/objects/EDCollection";
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
@@ -7,24 +7,24 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 var
   queue = [],
   audio = new Audio() || document.createElement( "audio" ),
-  currentSong = null,
-  setCurrentSong,
+  currentTrack = null,
+  setCurrentTrack,
   edPlayerService;
 
 // helpers
-setCurrentSong = function( edSong ) {
-  currentSong = edSong;
+setCurrentTrack = function( edTrack ) {
+  currentTrack = edTrack;
 };
 
 export default edPlayerService = {
   get currentStats() {
     return {
-      playing: currentSong,
+      playing: currentTrack,
       time: this.formattedTime,
       hours: this.currentHours,
       minutes: this.currentMinutes,
       seconds: this.currentSeconds,
-      length: this.songLength
+      length: this.trackLength
     };
   },
 
@@ -88,8 +88,8 @@ export default edPlayerService = {
     return "00:00";
   },
 
-  get songLength() {
-    if ( currentSong != null ) {
+  get trackLength() {
+    if ( currentTrack != null ) {
       // TODO fake length
       return 578;
       // return audio.duration;
@@ -97,38 +97,38 @@ export default edPlayerService = {
     return 0;
   },
 
-  play: function( edSong ) {
-    if ( !( edSong instanceof EDSong ) ) {
-      throw new TypeError( "Song is not an EDSong object" );
+  play: function( edTrack ) {
+    if ( !( edTrack instanceof EDTrack ) ) {
+      throw new TypeError( "Track is not an EDTrack object" );
     }
 
     audio.play();
-    setCurrentSong( edSong );
+    setCurrentTrack( edTrack );
     return true;
   },
 
-  pause: function( edSong ) {
+  pause: function( edTrack ) {
     if ( this.isPlaying ) {
       audio.pause();
     }
     return this.isPaused;
   },
 
-  stop: function( edSong ) {
+  stop: function( edTrack ) {
     if ( this.isPlaying ) {
       audio.pause();
       audio.removeAttribute( "src" );
-      currentSong = null;
+      currentTrack = null;
     }
     return true;
   },
 
-  enqueue: function( edSong ) {
-    return this.queue.push( edSong );
+  enqueue: function( edTrack ) {
+    return this.queue.push( edTrack );
   },
 
-  enqueueNext: function( edSong ) {
-    return this.queue.unshift( edSong );
+  enqueueNext: function( edTrack ) {
+    return this.queue.unshift( edTrack );
   },
 
   dequeue: function() {
