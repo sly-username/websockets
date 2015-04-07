@@ -36,13 +36,12 @@ export default edDiscoverService = {
 
   getDiscoverTrackList( data ) {
     if ( data === "profileBlend" ) {
-      getBlendTracks();
+      return this.getBlendTracks();
     } else if ( data instanceof EDGenre ) {
-      getGenreTracks();
+      return this.getGenreTracks();
     } else {
       throw Error;
     }
-    return trackIDList;
   },
 
   setCurrentProfileBlend( updatedProfileBlend ) {
