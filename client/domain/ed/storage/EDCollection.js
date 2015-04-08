@@ -19,15 +19,14 @@ export default class EDCollection {
     if ( typeof this.ids[ index ] !== "string" ) {
       Promise.resolve( this.ids[ index ] )
         .then( val => {
-          // TODO since below is made up function name
-          return edDataService.getDataObjectById( val )
+          return edDataService.getByTypeAndId( type, val )
             .then( dataObj => {
               return this.ids[ index ] = dataObj;
             });
         });
     }
 
-    return edDataService.getDataObjectById( this.ids[ index ] )
+    return edDataService.getByTypeAndId( type, this.ids[ index ] )
       .then( function( dataObj ) {
         return this.ids[ index ] = dataObj;
       });

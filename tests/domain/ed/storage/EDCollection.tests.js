@@ -35,7 +35,7 @@
         });
 
         test( "if indexTo is not specified, getRange will extract to end of array", function() {
-          // expect( indexTo )
+          // expect range end to equal array end
           //  .to.equal( arr.length);
         });
 
