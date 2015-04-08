@@ -1,4 +1,4 @@
-//import edDataService from "domain/ed/services/ed-data-service";
+// import edDataService from "domain/ed/services/ed-data-service";
 
 var idFlag = false;
 
@@ -34,11 +34,11 @@ export default class EDCollection {
   }
 
   getRange( indexFrom=0, indexTo ) {
-    // deal with default values
+    var newIds = this.ids.slice( indexFrom, indexTo );
 
-    // slice this.ids to the new range
+    indexTo = ( indexTo != null ) ? indexTo : newIds.length ;
 
-    this.ids[ Symbol.iterator ]( indexFrom );
+    newIds[ Symbol.iterator ]( indexFrom );
   }
 
   getAll() {

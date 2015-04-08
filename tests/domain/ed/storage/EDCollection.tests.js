@@ -26,28 +26,40 @@
           // returns this.ids[ index ]
           // expect to be an instance of EDDataObject
         });
-
-        test( "only makes server call once", function() {
-          // make request, get dataObject, ask for it again ...
-          // expect edDataService.getDataObjectById( val ) to have callCount 1
-        });
       });
 
       suite( "getRange( indexFrom, indexTo )", function() {
-        test( "returns an array of promises for the ids located at the indexes", function() {
-          // testing testing
+        test( "default value for indexFrom parameter is 0", function() {
+          // expect( indexFrom )
+          //  .to.equal( 0 );
+        });
+
+        test( "if indexTo is not specified, getRange will extract to end of array", function() {
+          // expect( indexTo )
+          //  .to.equal( arr.length);
+        });
+
+        test( "returns range specified by parameters", function() {
+          // pass whatever array, and see it the correct range is returned
+          // via values or index numbers
+        });
+
+        test( "returns an array of promises for ids in the range", function() {
+          // pass whatever array
+          // see if array of promises is for the correct range
         });
       });
 
       suite( "getAll()", function() {
-        test( "returns an array of promises for all items in the array", function() {
-          // testing testing testing
+        test( "returns an array of promises for all items in the this.ids array", function() {
+          // pass whatever array
+          // expect a return of array of promises for all items in array
         });
       });
 
       suite( "iterator does things", function() {
         test( "the test", function() {
-
+          // good job test
         });
       });
     });
