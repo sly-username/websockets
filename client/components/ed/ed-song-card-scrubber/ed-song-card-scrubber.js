@@ -2,38 +2,24 @@
   "use strict";
 
   polymer( "ed-song-card-scrubber", {
-    get currentTime() {
-      return this.value;
+    // Formats time into minute display
+    // TODO can be more dry
+    get formattedValue() {
+      return this._formattedValue;
     },
-
-    get currentSeconds() {
-      return Math.floor( this.currentTime % 60 );
+    set formattedValue( value ) {
+      return this._formattedValue = this.formatTime( value );
     },
-
-    get currentMinutes() {
-      return Math.floor( this.currentTime / 60 );
+    get formattedMax() {
+      return this._formattedMax;
     },
-
-    get currentHours() {
-      return Math.floor( 60 / this.currentTime );
-    },
-
-    get formattedTime() {
-      var ss = this.currentSeconds,
-        mm = this.currentMinutes,
-        hh = this.currentHours;
-      ss = ss < 10 ? "0" + ss : ss;
-      mm = mm < 10 ? "0" + mm : mm;
-      hh = hh < 10 ? "0" + hh : hh;
-
-      if ( hh !== "00" ) {
-        return `${ hh }:${ mm }:${ ss }`;
-      }
-      return `${ mm }:${ ss }`;
+    set formattedMax( value ) {
+      return this._formattedMax = this.formatTime( value );
     },
     ready: function() {
       this.mouseDown = false;
-
+      this.formattedValue = this.value;
+      this.formattedMax = this.max;
       // Selectors
       this.svg = this.shadowRoot.getElementById( "svg-circle" );
       this.mid = this.shadowRoot.getElementById( "mid-circle" );
@@ -90,6 +76,15 @@
       this.removeEventListener( "touchend", function() { this.mouseDown = false; }.bind( this ));
       this.removeEventListener( "touchmove", this.triggerMove.bind( this ) );
     },
+    attributeChanged: function() {
+      var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
+      this.scrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.scrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
+      this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+      this.formattedValue = this.value;
+      this.formattedMax = this.max;
+    },
     triggerMove: function( e ) {
       var angle,
         radians;
@@ -104,12 +99,18 @@
         this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
       }
     },
-    attributeChanged: function() {
-      var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
-      this.scrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.scrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-      this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+    formatTime: function( time ) {
+      var ss = Math.floor( time % 60 ),
+        mm = Math.floor( time / 60 ),
+        hh = Math.floor( 60 / time );
+      ss = ss < 10 ? "0" + ss : ss;
+      mm = mm < 10 ? "0" + mm : mm;
+      hh = hh < 10 ? "0" + hh : hh;
+
+      if ( hh !== "00" ) {
+        return `${ hh }:${ mm }:${ ss }`;
+      }
+      return `${ mm }:${ ss }`;
     }
   });
 })( window.Polymer );

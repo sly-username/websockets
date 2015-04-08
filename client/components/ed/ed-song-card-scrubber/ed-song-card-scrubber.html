@@ -1,9 +1,9 @@
 <polymer-element name="ed-song-card-scrubber" attributes="min max value">
   <template>
     <link rel="stylesheet" href="./ed-song-card-scrubber.css">
-    <div class="wrapper">
-      <div class="container">
-        <p id="song-timer">{{formattedTime}} / 4:22</p>
+    <div class="responsive-wrapper">
+      <div class="responsive-container">
+        <p id="song-timer">{{_formattedValue}} / {{_formattedMax}}</p>
         <svg id="svg-circle" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
           <g>
             <circle id="back-circle" r="45%" cy="50%" cx="50%" stroke-width="1%" fill="none"/>
