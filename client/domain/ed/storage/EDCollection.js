@@ -12,11 +12,9 @@ export default class EDCollection {
   }
 
   get( index ) {
-    // datalist is the array of promises
-
-    // check if it has been called
-    // if ( this[ datalist ][ index ] instanceof Promise )
-    this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this[ ids ][index] );
+    if ( !this[ datalist ][ index ] instanceof Promise ) {
+      this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this[ ids ][index] );
+    }
 
     return this[ datalist ][ index ];
   }
