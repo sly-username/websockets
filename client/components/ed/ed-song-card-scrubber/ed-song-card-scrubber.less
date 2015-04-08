@@ -15,6 +15,29 @@
   }
 }
 
+:host([complete]){
+  #fill-circle {
+    fill: @black;
+  }
+}
+
+#rate-request {
+  color: @originalTeal;
+  position: absolute;
+  text-align: center;
+  left: 0;
+  right: 0;
+  bottom: 16%;
+  z-index: 2;
+  opacity: 0;
+  .userSelect( none );
+  .edType( heading-L );
+  span {
+    display: block;
+    .edType( heading-S );
+  }
+}
+
 #svg-circle {
   z-index: 1;
   position: relative;

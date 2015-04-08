@@ -22,8 +22,8 @@
       this.mid = this.shadowRoot.getElementById( "mid-circle" );
       this.front = this.shadowRoot.getElementById( "front-circle" );
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
-      this.fill = this.shadowRoot.getElementById( "fill-circle" );
       this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
+      this.hiddenText = this.shadowRoot.getElementById( "rate-request" );
 
       // Calculates the circumference of circles
       this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
@@ -79,6 +79,11 @@
     },
     attributeChanged: function() {
       this.updateScrub();
+
+      if ( this.value === this.max ) {
+        this.setAttribute( "complete", "" );
+        this.hiddenText.style.opacity = 1;
+      }
     },
     triggerMove: function( e ) {
       var angle,
