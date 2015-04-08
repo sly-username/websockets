@@ -3,33 +3,22 @@
 var idFlag = false;
 
 export default class EDCollection {
-  constructor( ids, type ) {
+  constructor( [ ids ], type ) {
     // TODO should ids be private?
-    this.ids = ids;
+    this.ids = [ ids ];
     this.type = type;
 
     idFlag = this.id.length ? true : false;
   }
 
   get( index ) {
-    if ( this.ids[ index ] instanceof EDDataObject ) {
-      return this.ids[ index ];
-    }
+    // datalist is the array of promises
 
-    if ( typeof this.ids[ index ] !== "string" ) {
-      Promise.resolve( this.ids[ index ] )
-        .then( val => {
-          return edDataService.getByTypeAndId( type, val )
-            .then( dataObj => {
-              return this.ids[ index ] = dataObj;
-            });
-        });
-    }
+    // check if it has been called
+    // if ( this[ datalist ][ index ] instanceof Promise )
+    this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this[ ids ][index] );
 
-    return edDataService.getByTypeAndId( type, this.ids[ index ] )
-      .then( function( dataObj ) {
-        return this.ids[ index ] = dataObj;
-      });
+    return this[ datalist ][ index ];
   }
 
   getRange( indexFrom=0, indexTo ) {
@@ -42,6 +31,8 @@ export default class EDCollection {
 
   getAll() {
     return this.getRange();
+    // also return all the items in promise, and not the array of promises
+    // if all true, returns single promise
   }
 
   * [ Symbol.iterator ]( index=0 ) {
