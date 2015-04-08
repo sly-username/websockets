@@ -1,25 +1,26 @@
 //import edDataService from "domain/ed/services/ed-data-service";
 
-var iterator = Symbol( "iterator" );
+var idFlag = false;
 
 export default class EDCollection {
   constructor( ids, type ) {
+    // TODO should ids be private?
     this.ids = ids;
-    // should ids be private?
     this.type = type;
 
+    idFlag = this.id.length ? true : false;
   }
 
   get( index ) {
     if ( this.ids[ index ] instanceof EDDataObject ) {
-      return ids[ index ];
+      return this.ids[ index ];
     }
 
     if ( typeof this.ids[ index ] !== "string" ) {
       Promise.resolve( this.ids[ index ] )
         .then( val => {
+          // TODO since below is made up function name
           return edDataService.getDataObjectById( val )
-            // TODO made up function name
             .then( dataObj => {
               return this.ids[ index ] = dataObj;
             });
@@ -32,15 +33,22 @@ export default class EDCollection {
       });
   }
 
-  getRange( indexFrom, indexTo ) {
+  getRange( indexFrom=0, indexTo ) {
+    // deal with default values
 
+    // slice this.ids to the new range
+
+    this.ids[ Symbol.iterator ]( indexFrom );
   }
 
   getAll() {
     return this.getRange();
   }
 
-  * [ iterator ]( [param[, param[, ... param]]] ) {
-    // statements
+  * [ Symbol.iterator ]( index=0 ) {
+    while ( idFlag ) {
+      yield get( index );
+      index++;
+    }
   }
 }

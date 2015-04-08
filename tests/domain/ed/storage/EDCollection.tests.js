@@ -23,7 +23,13 @@
     suite( "Methods", function() {
       suite( "get( index )", function() {
         test( "returns a promise that resolves to the data for the id at the given index", function() {
-          // testing
+          // returns this.ids[ index ]
+          // expect to be an instance of EDDataObject
+        });
+
+        test( "only makes server call once", function() {
+          // make request, get dataObject, ask for it again ...
+          // expect edDataService.getDataObjectById( val ) to have callCount 1
         });
       });
 
@@ -36,6 +42,12 @@
       suite( "getAll()", function() {
         test( "returns an array of promises for all items in the array", function() {
           // testing testing testing
+        });
+      });
+
+      suite( "iterator does things", function() {
+        test( "the test", function() {
+
         });
       });
     });
