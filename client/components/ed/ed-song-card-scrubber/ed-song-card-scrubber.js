@@ -94,7 +94,8 @@
         // TODO fix
         radians = Math.atan2( e.pageX - this.scrubCenter[ 0 ], e.pageY - this.scrubCenter[ 1 ] );
         angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
-        this.currentVal = ( ( angle * this.max ) / 360 ) + 90;
+        this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
+        console.log( this.currentVal );
         this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
         this.scrubber.style.transform = "rotate(" + angle + "deg)";
         this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
