@@ -15,6 +15,11 @@
   }
 }
 
+#svg-circle {
+  z-index: 1;
+  position: relative;
+}
+
 #song-timer {
   .edType( heading-S );
   color: @white;
@@ -48,13 +53,6 @@
   stroke: @white;
 }
 
-#front-circle {
-  -webkit-animation: scrub 5s forwards;
-}
-
-#mid-circle {
-  -webkit-animation: scrubMid 5s forwards;
-}
 #circle-scrubber, #shadow-scrubber {
   stroke-dasharray: .5, 290%;
   stroke-linecap: round;

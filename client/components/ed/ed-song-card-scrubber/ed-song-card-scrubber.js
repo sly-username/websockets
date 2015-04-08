@@ -22,6 +22,7 @@
       this.mid = this.shadowRoot.getElementById( "mid-circle" );
       this.front = this.shadowRoot.getElementById( "front-circle" );
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
+      this.fill = this.shadowRoot.getElementById( "fill-circle" );
       this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
 
       // Calculates the circumference of circles
@@ -76,10 +77,6 @@
       }.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
     },
-
-    detached: function() {
-      // TODO find a good way to remove event listeners
-    },
     attributeChanged: function() {
       this.updateScrub();
     },
@@ -108,11 +105,11 @@
       return `${ mm }:${ ss }`;
     },
     updateCenter: function() {
-      // Calculates the center for the scrubber, getBoundingClientRect does not take into account scrolling
-      // TODO find alternative to getBoundingClientRect
+      // determines center of svg, using top to compensate for scrolling
+      var top = window.pageYOffset;
       this.svgBox = this.svg.getBoundingClientRect();
       this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
-        ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
+        ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
     },
     updateScrub: function() {
       var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
