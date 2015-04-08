@@ -15,15 +15,15 @@
       <button>
         <ed-icon></ed-icon>
       </button>
-      <!--<rank-components></rank-components>-->
-      <!--<rank-components></rank-components>-->
+      <ed-user-ranking border="purple" top="songs" bottom="rated" rank="76"></ed-user-ranking>
+      <ed-user-ranking border="teal" top="your" bottom="rank" rank="276"></ed-user-ranking>
     </section>
-    <ed-song-card-scrubber></ed-song-card-scrubber>
+    <ed-song-card-scrubber max="400" min="0" value="122" image="http://i.imgur.com/NEr8ka0.jpg"></ed-song-card-scrubber>
     <section id="track-title">
       Track Title
       <span id="artist">Artist Name</span>
     </section>
-    <!-- rating component -->
+      <ed-star-rating></ed-star-rating>
     <section id="brief-bio">
       <span id="bio-title">Title</span>
       Text of stuff
