@@ -3,6 +3,7 @@
 
 import PromisedDB from "domain/lib/storage/promised-db/PromisedDB";
 
+// TODO UPDATE!
 export default new PromisedDB( "track", 1, function( event ) {
   var objStore = this.createObjectStore( "objects", { keyPath: "id" });
 

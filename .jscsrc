@@ -97,7 +97,13 @@
 //    "case"
   ],
   "requireSpacesInsideObjectBrackets": "all",
-  "requireSpacesInsideArrayBrackets": "all",
+  "requireSpacesInsideArrayBrackets": {
+    "allExcept": [
+      "(", ")",
+      "{", "}",
+      "[", "]"
+    ]
+  },
   "requireSpacesInsideParentheses": {
     "all": true,
     "except": [
