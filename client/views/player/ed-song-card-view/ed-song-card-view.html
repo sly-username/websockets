@@ -1,0 +1,35 @@
+<polymer-element name="ed-song-card-view" attributes="">
+  <template>
+    <link rel="stylesheet" href="./ed-song-card-view.css">
+  <div class="wrapper">
+    <header id="hidden-header">
+      <img src=""/>
+      <p id="header-title">Title
+        <span id="artist-title">Artist Name</span>
+      </p>
+      <button>
+        <ed-icon id="player-button"></ed-icon>
+      </button>
+    </header>
+    <section>
+      <button>
+        <ed-icon></ed-icon>
+      </button>
+      <!--<rank-components></rank-components>-->
+      <!--<rank-components></rank-components>-->
+    </section>
+    <ed-song-card-scrubber></ed-song-card-scrubber>
+    <section id="track-title">
+      Track Title
+      <span id="artist">Artist Name</span>
+    </section>
+    <!-- rating component -->
+    <section id="brief-bio">
+      <span id="bio-title">Title</span>
+      Text of stuff
+      <ed-icon></ed-icon>
+    </section>
+  </div>
+  </template>
+  <script src="ed-song-card-view.js"></script>
+</polymer-element>

@@ -5,12 +5,28 @@
 
 .wrapper {
   width: 100%;
+  background: @darkPurple3;
   position: relative;
   padding-bottom: 75%;
   .container {
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to bottom, fade(@black, 80%), fade(@black, 80%)), url("http://i.imgur.com/NEr8ka0.jpg") no-repeat center;
+    background-size: cover;
+    width: 91%;
+    margin: 0 auto;
+    border: 1px solid red;
+    position: relative;
   }
+}
+
+#song-timer {
+  .edType( heading-S );
+  color: @white;
+  opacity: 0.5;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8%;
 }
 
 #back-circle {
@@ -37,7 +53,7 @@
   -webkit-animation: scrubMid 5s forwards;
 }
 #circle-scrubber {
-  stroke-dasharray: 1, 220%;
+  stroke-dasharray: 1, 290%;
   stroke-linecap: round;
 }
 
@@ -54,7 +70,7 @@
   margin: auto;
   position: absolute;
   background: transparent;
-  width: 27%;
+  width: 29%;
   height: 27vw;
   border-radius: 50%;
   border: none;

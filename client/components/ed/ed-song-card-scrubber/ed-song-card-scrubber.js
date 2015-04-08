@@ -2,6 +2,35 @@
   "use strict";
 
   polymer( "ed-song-card-scrubber", {
+    get currentTime() {
+      return this.value;
+    },
+
+    get currentSeconds() {
+      return Math.floor( this.currentTime % 60 );
+    },
+
+    get currentMinutes() {
+      return Math.floor( this.currentTime / 60 );
+    },
+
+    get currentHours() {
+      return Math.floor( 60 / this.currentTime );
+    },
+
+    get formattedTime() {
+      var ss = this.currentSeconds,
+        mm = this.currentMinutes,
+        hh = this.currentHours;
+      ss = ss < 10 ? "0" + ss : ss;
+      mm = mm < 10 ? "0" + mm : mm;
+      hh = hh < 10 ? "0" + hh : hh;
+
+      if ( hh !== "00" ) {
+        return `${ hh }:${ mm }:${ ss }`;
+      }
+      return `${ mm }:${ ss }`;
+    },
     ready: function() {
       this.mouseDown = false;
 
@@ -12,8 +41,8 @@
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
 
       // Calculates the circumference of circles
-      this.circFront = ( 2 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
-      this.circMid = ( 2 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
+      this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
+      this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
       this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
       this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
     },
