@@ -1,5 +1,6 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/mixins/prefixes/user-select.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/alignments.mixin.less";
 
@@ -27,6 +28,7 @@
   left: 0;
   right: 0;
   bottom: 8%;
+  .userSelect( none );
 }
 
 #back-circle {
@@ -41,8 +43,13 @@
   opacity: .25;
 }
 
+#shadow-scrubber {
+  stroke: @black;
+  opacity: .4;
+}
+
 #circle-scrubber {
-  stroke: @grey2;
+  stroke: @white;
 }
 
 #front-circle {
@@ -52,12 +59,12 @@
 #mid-circle {
   -webkit-animation: scrubMid 5s forwards;
 }
-#circle-scrubber {
-  stroke-dasharray: 1, 290%;
+#circle-scrubber, #shadow-scrubber {
+  stroke-dasharray: .5, 290%;
   stroke-linecap: round;
 }
 
-#mid-circle, #front-circle, #circle-scrubber {
+#mid-circle, #front-circle, #circle-scrubber, #shadow-scrubber {
   .transform( rotate(-90deg));
   .transformOrigin(50% 50%);
 }

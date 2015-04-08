@@ -25,6 +25,7 @@
       this.mid = this.shadowRoot.getElementById( "mid-circle" );
       this.front = this.shadowRoot.getElementById( "front-circle" );
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
+      this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
 
       // Calculates the circumference of circles
       this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
@@ -36,14 +37,15 @@
       // mouse events
       this.scrubber.addEventListener( "mousedown", function() {
         this.mouseDown = true;
-        // Calculates the center for the scrubber, not sure why this doesn't work correctly
-        // in the polymer attached or ready function
-        this.svgBox = this.scrubber.getBoundingClientRect();
-        this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
-          ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
+        this.updateCenter();
+      }.bind( this ));
+      this.shadowScrubber.addEventListener( "mousedown", function() {
+        this.mouseDown = true;
+        this.updateCenter();
       }.bind( this ));
       this.addEventListener( "mouseup", function() {
         this.mouseDown = false;
+        this.formattedValue = this.currentVal;
         this.fire( "scrubEnd", {
           msg: "scrubEnd",
           newValue: this.currentVal
@@ -52,10 +54,12 @@
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
       this.scrubber.addEventListener( "touchstart", function() {
-        this.svgBox = this.scrubber.getBoundingClientRect();
-        this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
-          ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
         this.mouseDown = true;
+        this.updateCenter();
+      }.bind( this ));
+      this.shadowScrubber.addEventListener( "touchstart", function() {
+        this.mouseDown = true;
+        this.updateCenter();
       }.bind( this ));
       this.addEventListener( "touchend", function() {
         this.mouseDown = false;
@@ -66,20 +70,16 @@
       }.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
     },
-    // TODO Event listener may not be removed as expected
+
     detached: function() {
-      this.scrubber.removeEventListener( "mousedown", function() { this.mouseDown = true; }.bind( this ));
-      this.removeEventListener( "mouseup", function() { this.mouseDown = false; }.bind( this ));
-      this.removeEventListener( "mousemove", this.triggerMove.bind( this ) );
-      // touch events
-      this.scrubber.removeEventListener( "touchstart", function() { this.mouseDown = true; }.bind( this ));
-      this.removeEventListener( "touchend", function() { this.mouseDown = false; }.bind( this ));
-      this.removeEventListener( "touchmove", this.triggerMove.bind( this ) );
+      // TODO find a good way to remove event listeners
     },
     attributeChanged: function() {
       var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
       this.scrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
       this.scrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.shadowScrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.shadowScrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
       this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
       this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
       this.formattedValue = this.value;
@@ -90,11 +90,15 @@
         radians;
 
       if ( this.mouseDown ) {
+        // the following function does not generate a max of 360 degress, buffer of 10 deg left and right
+        // TODO fix
         radians = Math.atan2( e.pageX - this.scrubCenter[ 0 ], e.pageY - this.scrubCenter[ 1 ] );
         angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
-        this.currentVal = ( angle * this.max ) / 360;
+        this.currentVal = ( ( angle * this.max ) / 360 ) + 90;
         this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
         this.scrubber.style.transform = "rotate(" + angle + "deg)";
+        this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
+        this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
         this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
         this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
       }
@@ -111,6 +115,13 @@
         return `${ hh }:${ mm }:${ ss }`;
       }
       return `${ mm }:${ ss }`;
+    },
+    updateCenter: function() {
+      // Calculates the center for the scrubber, getBoundingClientRect does not take into account scrolling
+      // TODO find alternative to getBoundingClientRect
+      this.svgBox = this.svg.getBoundingClientRect();
+      this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
+        ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
     }
   });
 })( window.Polymer );
