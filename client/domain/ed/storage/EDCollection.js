@@ -20,7 +20,7 @@ export default class EDCollection {
   }
 
   getRange( indexFrom=0, indexTo ) {
-    var newIds = this.ids.slice( indexFrom, indexTo );
+    var newIds = this[ datalist ].slice( indexFrom, indexTo );
 
     indexTo = ( indexTo != null ) ? indexTo : newIds.length ;
 
@@ -29,8 +29,6 @@ export default class EDCollection {
 
   getAll() {
     return this.getRange();
-    // also return all the items in promise, and not the array of promises
-    // if all true, returns single promise
   }
 
   * [ Symbol.iterator ]( index=0 ) {
