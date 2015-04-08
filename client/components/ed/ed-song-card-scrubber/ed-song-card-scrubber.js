@@ -3,7 +3,6 @@
 
   polymer( "ed-song-card-scrubber", {
     // Formats time into minute display
-    // TODO can be more dry
     get formattedValue() {
       return this._formattedValue;
     },
@@ -18,8 +17,6 @@
     },
     ready: function() {
       this.mouseDown = false;
-      this.formattedValue = this.value;
-      this.formattedMax = this.max;
       // Selectors
       this.svg = this.shadowRoot.getElementById( "svg-circle" );
       this.mid = this.shadowRoot.getElementById( "mid-circle" );
@@ -32,6 +29,7 @@
       this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
       this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
       this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+      this.updateScrub();
     },
     attached: function() {
       // mouse events
@@ -40,12 +38,16 @@
         this.updateCenter();
       }.bind( this ));
       this.shadowScrubber.addEventListener( "mousedown", function() {
+        console.log( "hit" );
         this.mouseDown = true;
         this.updateCenter();
       }.bind( this ));
       this.addEventListener( "mouseup", function() {
         this.mouseDown = false;
-        this.formattedValue = this.currentVal;
+
+        if ( this.currentVal ) {
+          this.formattedValue = this.currentVal;
+        }
         this.fire( "scrubEnd", {
           msg: "scrubEnd",
           newValue: this.currentVal
@@ -63,6 +65,10 @@
       }.bind( this ));
       this.addEventListener( "touchend", function() {
         this.mouseDown = false;
+
+        if ( this.currentVal ) {
+          this.formattedValue = this.currentVal;
+        }
         this.fire( "scrubEnd", {
           msg: "scrubEnd",
           newValue: this.currentVal
@@ -75,27 +81,16 @@
       // TODO find a good way to remove event listeners
     },
     attributeChanged: function() {
-      var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
-      this.scrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.scrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.shadowScrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.shadowScrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-      this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
-      this.formattedValue = this.value;
-      this.formattedMax = this.max;
+      this.updateScrub();
     },
     triggerMove: function( e ) {
       var angle,
         radians;
 
       if ( this.mouseDown ) {
-        // the following function does not generate a max of 360 degress, buffer of 10 deg left and right
-        // TODO fix
         radians = Math.atan2( e.pageX - this.scrubCenter[ 0 ], e.pageY - this.scrubCenter[ 1 ] );
         angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
         this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
-        console.log( this.currentVal );
         this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
         this.scrubber.style.transform = "rotate(" + angle + "deg)";
         this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
@@ -106,15 +101,10 @@
     },
     formatTime: function( time ) {
       var ss = Math.floor( time % 60 ),
-        mm = Math.floor( time / 60 ),
-        hh = Math.floor( 60 / time );
+        mm = Math.floor( time / 60 );
       ss = ss < 10 ? "0" + ss : ss;
       mm = mm < 10 ? "0" + mm : mm;
-      hh = hh < 10 ? "0" + hh : hh;
 
-      if ( hh !== "00" ) {
-        return `${ hh }:${ mm }:${ ss }`;
-      }
       return `${ mm }:${ ss }`;
     },
     updateCenter: function() {
@@ -123,6 +113,17 @@
       this.svgBox = this.svg.getBoundingClientRect();
       this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
         ( this.svgBox.top + ( this.svgBox.height / 2 ) ) ];
+    },
+    updateScrub: function() {
+      var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
+      this.scrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.scrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.shadowScrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.shadowScrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
+      this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+      this.formattedValue = this.value;
+      this.formattedMax = this.max;
     }
   });
 })( window.Polymer );

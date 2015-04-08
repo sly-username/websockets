@@ -9,11 +9,8 @@
   position: relative;
   padding-bottom: 75%;
   .responsive-container {
-    background: linear-gradient(to bottom, fade(@black, 80%), fade(@black, 80%)), url("http://i.imgur.com/NEr8ka0.jpg") no-repeat center;
-    background-size: cover;
     width: 91%;
     margin: 0 auto;
-    border: 1px solid red;
     position: relative;
   }
 }
@@ -68,7 +65,7 @@
   .transformOrigin(50% 50%);
 }
 
-.btn {
+.play-btn {
   top: 0;
   left: 0;
   right: 0;
@@ -82,3 +79,17 @@
   border: none;
 }
 
+.skip-btn {
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  background: transparent;
+  width: 19%;
+  height: 13vw;
+  border: none;
+  span {
+    text-transform: uppercase;
+    .edType(heading-XS);
+    color: @originalTeal;
+  }
+}
