@@ -9,6 +9,7 @@
         <template if="{{complete}}">
           <p id="rate-request">Please rate this track
             <span>to go to the next song</span>
+            <ed-icon name="arrow-short"></ed-icon>
           </p>
         </template>
         <svg id="svg-circle" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
@@ -22,7 +23,9 @@
           </g>
         </svg>
         <!-- the below needs to be replaced with ed-icon once its fixed -->
-        <button class="play-btn">||</button>
+        <button id="play-btn">
+          <ed-icon id="btn-icon" name="play"></ed-icon>
+        </button>
         <button class="skip-btn">
           <span>skip</span>
         </button>

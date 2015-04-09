@@ -24,7 +24,8 @@
       this.front = this.shadowRoot.getElementById( "front-circle" );
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
       this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
-      this.hiddenText = this.shadowRoot.getElementById( "rate-request" );
+      this.playBtn = this.shadowRoot.getElementById( "play-btn" );
+      this.icon = this.shadowRoot.getElementById( "btn-icon" );
 
       // Calculates the circumference of circles
       this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
@@ -35,6 +36,7 @@
     },
     attached: function() {
       // mouse events
+      this.playBtn.addEventListener( "click", this.swapIcon.bind( this ) );
       this.scrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
       this.shadowScrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
       this.addEventListener( "mouseup", function() {
@@ -50,6 +52,7 @@
       }.bind( this ));
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
+      this.playBtn.addEventListener( "tap", this.swapIcon.bind( this ) );
       this.scrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
       this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
       this.addEventListener( "touchend", function() {
@@ -120,6 +123,14 @@
       this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
       this.formattedValue = this.value;
       this.formattedMax = this.max;
+    },
+    swapIcon: function() {
+      console.log( "hit" );
+      if ( this.icon.getAttribute( "name" ) === "play" ) {
+        this.icon.setAttribute( "name", "pause" );
+      } else {
+        this.icon.setAttribute( "name", "play" );
+      }
     }
   });
 })( window.Polymer );
