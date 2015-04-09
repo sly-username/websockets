@@ -3,6 +3,7 @@
 
   polymer( "ed-star-rating", {
     /* LIFECYCLE */
+    disable: false,
     ready: function() {},
     attached: function() {},
     detached: function() {},
