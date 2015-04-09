@@ -1,20 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Creator: CorelDRAW X6 -->
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="100px" height="100px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 1000000 1000000"
- xmlns:xlink="http://www.w3.org/1999/xlink">
- <defs>
-  <style type="text/css">
-   <![CDATA[
-    .fil0 {fill:none}
-    .fil1 {fill:black}
-   ]]>
-  </style>
- </defs>
- <g id="Layer_x0020_1">
-  <metadata id="CorelCorpID_0Corel-Layer"/>
-  <rect class="fil0" x="1649" y="1425" width="1000000" height="999653"/>
-  <path class="fil1" d="M412814 681123l-224876 -171728 -158765 -121211c-29314,-13360 -43805,-114036 43407,-116808l427073 0 433042 0c81192,7598 72542,97171 38132,116269l-159484 121750 -223451 170662c-60054,47104 -128450,41020 -175078,1066z"/>
- </g>
+<svg version="1.1" id="primary" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<path d="M41.281,68.112L18.794,50.939L2.917,38.818c-2.932-1.336-4.381-11.403,4.34-11.681h42.708H93.27
+	c8.119,0.76,7.254,9.717,3.813,11.627L81.135,50.939L58.789,68.006C52.783,72.717,45.944,72.107,41.281,68.112z"/>
 </svg>
