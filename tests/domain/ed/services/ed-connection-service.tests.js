@@ -36,12 +36,12 @@
       });
     });
 
-    suite( "send method", function() {
+    suite.skip( "send method", function() {
       test( "calls the send method on the edWebSocket instance", function( done ) {
         var dataObj = {
             auth: {
-              email: "wondasykes@gmail.com",
-              password: "imwonda"
+              email: "intdev@eardish.com",
+              password: "intdevpass"
             }
           },
           sendSpy = sinon.spy( edConnectionService, "send" );
@@ -56,27 +56,35 @@
       });
     });
 
-    suite.skip( "request method", function() {
+    suite( "request method", function() {
+      this.timeout( 5000 );
+
       test( "calls the request method on the edWebSocket instance", function( done ) {
         var dataObj = {
-            auth: {
-              email: "wondasykes@gmail.com",
-              password: "imwonda"
+            action: {
+              route: "profile/get",
+              priority: 10
+            },
+            data: {
+              id: "0"
             }
           },
-          requestSpy = sinon.spy( edConnectionService, "request" );
+          requestSpy = sinon.spy( edConnectionService, "formattedRequest" );
 
-        edConnectionService.request( "user/login", 10, dataObj );
+        edConnectionService.formattedRequest( dataObj )
+          .then(function( resp ) {
+            console.log( resp );
+            done();
+          });
 
         expect( requestSpy )
           .to.have.callCount( 1 );
 
         requestSpy.restore();
-        done();
       });
     });
 
-    suite( "formattedSend method", function() {
+    suite.skip( "formattedSend method", function() {
       test( "calls the send method with formatted data", function( done ) {
         var dataObj = {
             id: "001",
@@ -94,7 +102,7 @@
       });
     });
 
-    suite( "formattedRequest method", function() {
+    suite.skip( "formattedRequest method", function() {
       test( "calls the request method with formatted data", function( done ) {
         var dataObj = {
             id: "001",
@@ -112,7 +120,7 @@
       });
     });
 
-    suite( "formatDataObject method", function() {
+    suite.skip( "formatDataObject method", function() {
       test( "method invocation", function() {
         var dataObj = {
             id: "001",

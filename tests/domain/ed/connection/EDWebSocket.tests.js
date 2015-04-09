@@ -20,7 +20,7 @@
     });
 
     // Start Testing
-    suite( "EDWebSocket creation", function() {
+    suite.skip( "EDWebSocket creation", function() {
       test( "starts with appropriate properties", function() {
         var socket = new EDWebSocket();
 
@@ -60,13 +60,13 @@
       });
     });
 
-    suite.skip( "Request Method", function() {
+    suite( "Request Method", function() {
       test( "calls the method", function( done ) {
         var socket = new EDWebSocket(),
           socketData = {
-            action: {
-              route: "string",
-              priority: "string"
+            auth: {
+              email: "intdev@eardish.com",
+              password: "intdevpass"
             }
           },
           requestSpy;

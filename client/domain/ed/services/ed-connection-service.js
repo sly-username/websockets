@@ -1,7 +1,10 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
 
 var edConnectionService,
-  edSocket = new EDWebSocket();
+  edWebSocket = new EDWebSocket();
+
+// todo remove for debug!
+window.edWebSocket = edWebSocket;
 
 export default edConnectionService = {
   send( route, priority=0, data ) {
@@ -25,31 +28,39 @@ export default edConnectionService = {
   },
 
   request( route, priority=0, data ) {
+
     var json = {
         action: {
           route,
           priority
         }
       },
-      prop;
+      prop,
+      requestData;
+
+    if ( !typeof data === "object" ) {
+      requestData = JSON.parse( data );
+    } else {
+      requestData = data;
+    }
 
     for ( prop in json ) {
       if ( json.hasOwnProperty( prop ) ) {
-        data[ prop ] = json[ prop ];
+        requestData[ prop ] = json[ prop ];
       }
     }
 
-    data = this.formatDataObject( data );
+    //requestData = this.formatDataObject( requestData );
 
-    return this.formattedRequest( data );
+    return this.formattedRequest( requestData );
   },
 
   formattedSend( data ) {
-    return edSocket.send( data );
+    return edWebSocket.send( data );
   },
 
   formattedRequest( data ) {
-    return edSocket.request( data );
+    return edWebSocket.request( data );
   },
 
   formatDataObject( data ) {
