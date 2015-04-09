@@ -35,7 +35,7 @@ export default class EDCollection {
    * @returns {*}
    */
   get( index ) {
-    if ( !( this[ datalist ][ index ] ) instanceof Promise ) {
+    if ( !( this[ datalist ][ index ] instanceof Promise ) ) {
       this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
     }
 
@@ -49,6 +49,7 @@ export default class EDCollection {
    * @param indexTo { number }
    */
   getRange( indexFrom=0, indexTo ) {
+    let promises = [];
     return Promise.all( this.datalist.slice( indexFrom, indexTo ) )
       .then( values => {
         promises.push( values[ Symbol.iterator ]() );
