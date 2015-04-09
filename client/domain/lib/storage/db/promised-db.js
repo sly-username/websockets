@@ -68,9 +68,6 @@ export default {
 
 
 
-
-
-
     return Promise.resolve({});
   },
   deleteDatabase( name ) {
