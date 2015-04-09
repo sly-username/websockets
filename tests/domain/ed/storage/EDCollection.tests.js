@@ -28,7 +28,7 @@
 
           expect( getFxn )
             .to.be.an.instanceof( edc.Promise )
-            .that.eventually.equals( 61 );
+            .that.eventually.equals( 61 ).notify( done );
 
           done();
         });

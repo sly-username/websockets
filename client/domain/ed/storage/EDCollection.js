@@ -1,20 +1,31 @@
 // import edDataService from "domain/ed/services/ed-data-service";
 
+var datalist = Symbol( "datalist" );
+
+Object.defineProperties( EDCollection, {
+  ids: {
+    configurable: false,
+    enumerable: false,
+    get: function() {
+      return ids;
+    }
+  },
+  type: {
+    configurable: false,
+    enumerable: false,
+    get: function() {
+      return type;
+    }
+  }
+});
+
 export default class EDCollection {
   constructor( type, ids ) {
-    var deepCopy = function( ids ) {
-      var cloned = [];
 
-      ids.forEach( function( element ) {
-        cloned.push( element );
-      });
-      return cloned;
-    };
-    // TODO should ids be private?
+    // TODO do I still need to use "this"?
     this.ids = ids;
     this.type = type;
-    this.datalist = [];
-    deepCopy( this.ids );
+    this[ datalist ] = ids.slice( 0 );
   }
 
   /**
@@ -24,8 +35,8 @@ export default class EDCollection {
    * @returns {*}
    */
   get( index ) {
-    if ( !this.datalist[ index ] instanceof Promise ) {
-      this.datalist[ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
+    if ( !this[ datalist ][ index ] instanceof Promise ) {
+      this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
     }
 
     return this.datalist[ index ];
@@ -61,10 +72,13 @@ export default class EDCollection {
    * @method [ Symbol.iterator ]
    * @param index { number }
    */
-  * [ Symbol.iterator ]( index=0 ) {
-    while ( this.datalist ) {
-      yield this.get( index ).bind( this );
-      index++;
+  * [ Symbol.iterator ]() {
+    var index = 0,
+      length = this.ids.length;
+
+    while ( index < length ) {
+      yield this.get( index );
+      index += 1;
     }
   }
 }
