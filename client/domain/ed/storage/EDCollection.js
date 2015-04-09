@@ -2,10 +2,19 @@
 
 export default class EDCollection {
   constructor( type, ids ) {
+    var deepCopy = function( ids ) {
+      var cloned = [];
+
+      ids.forEach( function( element ) {
+        cloned.push( element );
+      });
+      return cloned;
+    };
     // TODO should ids be private?
     this.ids = ids;
     this.type = type;
     this.datalist = [];
+    deepCopy( this.ids );
   }
 
   /**
@@ -29,13 +38,13 @@ export default class EDCollection {
    * @param indexTo { number }
    */
   getRange( indexFrom=0, indexTo ) {
-    Promise.all( this.datalist.slice( indexFrom, indexTo ) )
-    .then( values => {
-      values[ Symbol.iterator ]();
-    })
-    .catch( reason => {
-      // should we concern ourselves with errors?
-    });
+    return Promise.all( this.datalist.slice( indexFrom, indexTo ) )
+      .then( values => {
+        values[ Symbol.iterator ]();
+      })
+      .catch( reason => {
+        // should we concern ourselves with errors?
+      });
   }
 
   /**
