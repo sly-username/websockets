@@ -44,11 +44,7 @@ export default class EDCollection {
    * @returns {*}
    */
   getAll() {
-    // if no parameters passed in
     return this.getRange();
-
-    // if true passed
-    // return all the items in promises and not the array of promises
   }
 
   /**
