@@ -1,51 +1,71 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
-.rating {
-  display:inline-block;
-  font-size:0;
-  position:relative;
-  text-transform:capitalize;
-  height:100px;
-  label {
-    display:inline-block;
-    float:right;
-    padding:0;
-    font-size:50px;
-    cursor:pointer;
-  }
-  label::before {
-    content:'\2605';
-    display:inline-block;
-    transition:0.2s;
-    color:@darkPurple2;
-  }
-  label:hover::before {
-    content:'\2605';
-    color:@lightPurple1;
-  }
-  label:hover ~ *::before {
-    content:'\2605';
-    color:@lightPurple1;
-  }
-  input {
-    position:absolute;
-    left:-24px;
-    z-index:-1;
-    opacity:0;
-  }
-  input:checked ~ label::before {
-    content:'\2605';
-    color:@lightPurple1;
+#rating-form {
+  text-align: center;
+  .rating {
+    display: inline-block;
+    font-size: 0;
+    position: relative;
+    text-transform: capitalize;
+    height: 8rem;
+    label {
+      display: inline-block;
+      float: right;
+      padding: 0;
+      font-size: 5rem;
+      cursor: pointer;
+    }
+    label::before {
+      content: '\2605';
+      display: inline-block;
+      transition: 0.2s;
+      color: @darkPurple2;
+    }
+    label:hover::before {
+      content: '\2605';
+      color: @lightPurple1;
+    }
+    label:hover ~ *::before {
+      content: '\2605';
+      color: @lightPurple1;
+    }
+    input {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+    }
+    input:checked ~ label::before {
+      content: '\2605';
+      color: @lightPurple1;
+    }
   }
 }
 
 #disable-text {
+  text-align: center;
   color: @white;
   opacity: .25;
-  .edType( heading-XS );
+  padding-bottom: 3rem;
+  .edType( heading-XXS );
 }
 
 .track-title, .artist-name, .rate-song {
   text-align: center;
+  color: @white;
 }
+
+.track-title {
+  .edType( heading-L );
+  margin-bottom: 0;
+}
+.artist-name {
+  .edType( heading-XS );
+  margin-top: 0;
+}
+.rate-song {
+  .edType( heading-XXS );
+  opacity: .33;
+  margin-bottom: 0;
+}
+
