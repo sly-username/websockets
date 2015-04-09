@@ -23,14 +23,12 @@
     suite( "Methods", function() {
       suite( "get( index )", function() {
         test( "returns a promise that resolves to the data for the id at the given index", function( done ) {
-          var edc = new EDCollection( "EDTrack", [ 435, 61, 788, 92 ]),
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]),
             getFxn = edc.get( 1 );
 
           expect( getFxn )
             .to.be.an.instanceof( edc.Promise )
             .that.eventually.equals( 61 );
-          // returns this.ids[ index ]
-          // expect to be an instance of EDDataObject
 
           done();
         });
@@ -38,36 +36,54 @@
 
       suite( "getRange( indexFrom, indexTo )", function() {
         test( "default value for indexFrom parameter is 0", function() {
-          // expect( indexFrom )
-          //  .to.equal( 0 );
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
+          edc.getRange();
+
+          expect( indexFrom )
+            .to.equal( 0 );
         });
 
         test( "if indexTo is not specified, getRange will extract to end of array", function() {
-          // expect range end to equal array end
-          //  .to.equal( arr.length);
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
+
+          edc.getRange( 1 );
+
+          expect( "indexes" )
+            .to.equal( "1-3" );
         });
 
         test( "returns range specified by parameters", function() {
-          // pass whatever array, and see it the correct range is returned
-          // via values or index numbers
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
+
+          edc.getRange( 1, 3 );
+
+          expect( "indexes" )
+            .to.equal( "1-3" );
         });
 
         test( "returns an array of promises for ids in the range", function() {
-          // pass whatever array
-          // see if array of promises is for the correct range
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]),
+            getRangeFxn = edc.getRange( 1, 3 );
+
+          expect( getRangeFxn )
+            .to.eventually.equal([ 61, 788, 92 ]);
         });
       });
 
       suite( "getAll()", function() {
         test( "returns an array of promises for all items in the this.ids array", function() {
-          // pass whatever array
-          // expect a return of array of promises for all items in array
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]),
+            getAllFxn = edc.getAll();
+
+          expect( getAllFxn )
+            .to.eventually.equal([ 435, 61, 788, 92 ]);
         });
       });
 
       suite( "iterator does things", function() {
         test( "the test", function() {
-          // good job test
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
+          // this should be already tested in getRange and getAll, i believe
         });
       });
     });
