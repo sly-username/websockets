@@ -46,7 +46,7 @@
 
       suite( "datalist", function() {
         test( "is a copy of ids parameter", function() {
-          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ] );
 
           expect( edc[ datalistSym ] )
             .to.equal( [ 435, 61, 788, 92 ] );
