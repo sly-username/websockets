@@ -1,30 +1,27 @@
 // import edDataService from "domain/ed/services/ed-data-service";
+import define from "domain/ed/define-properties";
 
-var datalist = Symbol( "datalist" );
-
-Object.defineProperties( EDCollection, {
-  ids: {
-    configurable: false,
-    enumerable: false,
-    get: function() {
-      return ids;
-    }
-  },
-  type: {
-    configurable: false,
-    enumerable: false,
-    get: function() {
-      return type;
-    }
-  }
-});
+var datalist = Symbol( "datalist" ),
+  ids = [];
 
 export default class EDCollection {
   constructor( type, ids ) {
-
-    // TODO do I still need to use "this"?
-    this.ids = ids;
-    this.type = type;
+    Object.defineProperties( this, {
+      ids: {
+        configurable: false,
+        enumerable: false,
+        get: function() {
+          return ids;
+        }
+      },
+      type: {
+        configurable: false,
+        enumerable: false,
+        get: function() {
+          return type;
+        }
+      }
+    });
     this[ datalist ] = ids.slice( 0 );
   }
 
@@ -84,3 +81,5 @@ export default class EDCollection {
     }
   }
 }
+
+
