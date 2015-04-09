@@ -1,32 +1,37 @@
 <polymer-element name="ed-song-card-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-song-card-view.css">
-  <div class="wrapper">
-    <header id="hidden-header">
-      <img src=""/>
-      <p id="header-title">Title
-        <span id="artist-title">Artist Name</span>
-      </p>
-      <button>
-        <ed-icon id="player-button"></ed-icon>
+  <div class="song-card-wrapper">
+    <ed-mini-player
+        song="Track Title" artist="Artist Name"
+        image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
+    <section id="user-ranking">
+      <button id="minify-button">
+        <ed-icon id="minify-icon" name="arrow-down"></ed-icon>
       </button>
-    </header>
-    <section>
-      <button>
-        <ed-icon></ed-icon>
-      </button>
-      <ed-user-ranking border="purple" top="songs" bottom="rated" rank="76"></ed-user-ranking>
-      <ed-user-ranking border="teal" top="your" bottom="rank" rank="276"></ed-user-ranking>
+      <ed-user-ranking id="songs-rated" border="purple" top="songs" bottom="rated" rank="76"></ed-user-ranking>
+      <ed-user-ranking id="your-rank" border="teal" top="your" bottom="rank" rank="276"></ed-user-ranking>
     </section>
     <ed-song-card-scrubber max="400" min="0" value="122" image="http://i.imgur.com/NEr8ka0.jpg"></ed-song-card-scrubber>
-    <section id="track-title">
-      Track Title
-      <span id="artist">Artist Name</span>
-    </section>
-      <ed-star-rating></ed-star-rating>
+    <ed-star-rating disable></ed-star-rating>
     <section id="brief-bio">
-      <span id="bio-title">Title</span>
-      Text of stuff
+      <div class='rectangle-box'>
+        <div class='rectangle-content'>
+          <div id="responsive-text">
+            <p>Artist/Band Biography</p>
+            <button id="bio-button">
+              <ed-icon id="bio-icon" name="arrow-forward-teal"></ed-icon>
+            </button>
+            <span>Do you see any Teletubbies in here? Do you see a slender plastic tag clipped to my shirt with my
+              name printed on it? Do you see a little Asian child with a blank expression on his face sitting outside
+              on a mechanical helicopter that shakes when you put quarters in it? No? Well, that's what you see at a
+              toy store. And you must think you're in a toy store, because you're here shopping for an infant named
+              Jeb.</span>
+
+          </div>
+        </div>
+      </div>
+
     </section>
   </div>
   </template>

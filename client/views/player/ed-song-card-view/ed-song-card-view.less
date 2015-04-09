@@ -1,0 +1,77 @@
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+
+.song-card-wrapper {
+  background: @darkPurple3;
+}
+
+#user-ranking {
+  width: 98%;
+}
+
+#minify-button {
+  height: 20vw;
+  width: 20vw;
+  background: @darkPurple3;
+  border: none;
+  #minify-icon {
+    fill: @white;
+    height: 63%;
+    width: 63%;
+  }
+}
+
+#brief-bio {
+  background: @white;
+  .rectangle-box{
+    position: relative;
+    width: 100%%;
+    overflow: hidden;
+    background: @white;
+    &:before {
+      content: "";
+      display: block;
+      padding-top: 22%;
+    }
+  }
+  .rectangle-content{
+    position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    color: @white;
+    #reponsive-text {
+      display: table;
+      width: 100%;
+      height: 100%;
+    }
+    span {
+      text-align: left;
+      vertical-align: middle;
+      color: @darkPurple5;
+      text-overflow: ellipsis;
+      .edType( paragraph-N );
+    }
+    p {
+      text-align: left;
+      vertical-align: middle;
+      color: @originalTeal;
+      .edType( heading-XS );
+    }
+  }
+}
+
+#bio-button {
+  float: right;
+  height: 14vw;
+  width: 14vw;
+  margin-top: -11%;
+  background: transparent;
+  border: none;
+  #bio-icon {
+    fill: @originalTeal;
+    height: 66%;
+    width: 66%;
+  }
+}

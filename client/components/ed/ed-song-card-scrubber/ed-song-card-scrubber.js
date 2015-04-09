@@ -39,33 +39,13 @@
       this.playBtn.addEventListener( "click", this.swapIcon.bind( this ) );
       this.scrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
       this.shadowScrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
-      this.addEventListener( "mouseup", function() {
-        this.mouseDown = false;
-
-        if ( this.currentVal ) {
-          this.formattedValue = this.currentVal;
-        }
-        this.fire( "scrubEnd", {
-          msg: "scrubEnd",
-          newValue: this.currentVal
-        });
-      }.bind( this ));
+      this.addEventListener( "mouseup", this.scrubFire.bind( this ));
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
       this.playBtn.addEventListener( "tap", this.swapIcon.bind( this ) );
       this.scrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
       this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
-      this.addEventListener( "touchend", function() {
-        this.mouseDown = false;
-
-        if ( this.currentVal ) {
-          this.formattedValue = this.currentVal;
-        }
-        this.fire( "scrubEnd", {
-          msg: "scrubEnd",
-          newValue: this.currentVal
-        });
-      }.bind( this ));
+      this.addEventListener( "touchend", this.scrubFire.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
     },
     attributeChanged: function() {
@@ -105,9 +85,9 @@
       return `${ mm }:${ ss }`;
     },
     updateCenter: function() {
+      var top = window.pageYOffset;
       this.mouseDown = true;
       // determines center of svg, using top to compensate for scrolling
-      var top = window.pageYOffset;
       this.svgBox = this.svg.getBoundingClientRect();
       this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
         ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
@@ -125,12 +105,22 @@
       this.formattedMax = this.max;
     },
     swapIcon: function() {
-      console.log( "hit" );
       if ( this.icon.getAttribute( "name" ) === "play" ) {
         this.icon.setAttribute( "name", "pause" );
       } else {
         this.icon.setAttribute( "name", "play" );
       }
+    },
+    scrubFire: function() {
+      this.mouseDown = false;
+
+      if ( this.currentVal ) {
+        this.formattedValue = this.currentVal;
+      }
+      this.fire( "scrubEnd", {
+        msg: "scrubEnd",
+        newValue: this.currentVal
+      });
     }
   });
 })( window.Polymer );

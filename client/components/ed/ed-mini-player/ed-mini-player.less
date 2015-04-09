@@ -1,10 +1,61 @@
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/user-select.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+
+#ad-banner {
+  height: 9%;
+  display: block;
+  img {
+    width: 100%;
+  }
+}
+
 .player-container {
-  height: 8%;
+  padding-bottom: 12%;
+  height: 0;
+  background: @darkPurple3;
+  display: block;
+  width: 100%;
+  overflow: hidden;
   img {
     display: inline;
-    max-width:50%;
-    max-height:50%;
-    width: auto;
+    width: 11%;
     height: auto;
+    float: left;
+    margin: 0.5%;
+  }
+  .text-container {
+    margin: 2%;
+    display: inline;
+    float: left;
+    color: @white;
+    #title {
+      .edType( heading-M );
+      margin-top: 3%;
+      margin-bottom: 0;
+    }
+    #name {
+      margin-top: 0;
+      opacity: .25;
+      .edType( heading-XS );
+    }
+  }
+  #play-btn {
+    margin: 1.5%;
+    background: @darkPurple2;
+    width: 9%;
+    height: 9vw;
+    border-radius: 50%;
+    border: none;
+    float: right;
+    ed-icon {
+      fill: @white;
+      width: 75%;
+      height: 75%;
+      .userSelect( none );
+    }
+    &:focus {
+      outline: none;
+    }
   }
 }
