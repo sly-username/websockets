@@ -1,4 +1,4 @@
-<polymer-element name="ed-song-card-scrubber" attributes="min max value image ccomplete">
+<polymer-element name="ed-song-card-scrubber" attributes="min max value image complete">
   <template>
     <link rel="stylesheet" href="./ed-song-card-scrubber.css">
     <div class="responsive-wrapper">
@@ -6,9 +6,11 @@
       rgba(0,0,0,0.8)),
       url({{image}}) no-repeat center; background-size: cover;">
         <p id="song-timer">{{_formattedValue}} / {{_formattedMax}}</p>
-        <p id="rate-request">Please rate this track
-          <span>to go to the next song</span>
-        </p>
+        <template if="{{complete}}">
+          <p id="rate-request">Please rate this track
+            <span>to go to the next song</span>
+          </p>
+        </template>
         <svg id="svg-circle" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
           <g>
             <circle id="back-circle" r="45%" cy="50%" cx="50%" stroke-width="1%" fill="none"/>

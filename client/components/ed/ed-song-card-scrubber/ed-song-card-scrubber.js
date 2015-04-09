@@ -2,6 +2,7 @@
   "use strict";
 
   polymer( "ed-song-card-scrubber", {
+    complete: false,
     // Formats time into minute display
     get formattedValue() {
       return this._formattedValue;
@@ -34,15 +35,8 @@
     },
     attached: function() {
       // mouse events
-      this.scrubber.addEventListener( "mousedown", function() {
-        this.mouseDown = true;
-        this.updateCenter();
-      }.bind( this ));
-      this.shadowScrubber.addEventListener( "mousedown", function() {
-        console.log( "hit" );
-        this.mouseDown = true;
-        this.updateCenter();
-      }.bind( this ));
+      this.scrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
+      this.shadowScrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
       this.addEventListener( "mouseup", function() {
         this.mouseDown = false;
 
@@ -56,14 +50,8 @@
       }.bind( this ));
       this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
       // touch events
-      this.scrubber.addEventListener( "touchstart", function() {
-        this.mouseDown = true;
-        this.updateCenter();
-      }.bind( this ));
-      this.shadowScrubber.addEventListener( "touchstart", function() {
-        this.mouseDown = true;
-        this.updateCenter();
-      }.bind( this ));
+      this.scrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
+      this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
       this.addEventListener( "touchend", function() {
         this.mouseDown = false;
 
@@ -81,8 +69,11 @@
       this.updateScrub();
 
       if ( this.value === this.max ) {
+        this.complete = true;
         this.setAttribute( "complete", "" );
-        this.hiddenText.style.opacity = 1;
+      } else {
+        this.complete = false;
+        this.removeAttribute( "complete" );
       }
     },
     triggerMove: function( e ) {
@@ -101,6 +92,7 @@
         this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
       }
     },
+    // To be removed once integrated with player service
     formatTime: function( time ) {
       var ss = Math.floor( time % 60 ),
         mm = Math.floor( time / 60 );
@@ -110,6 +102,7 @@
       return `${ mm }:${ ss }`;
     },
     updateCenter: function() {
+      this.mouseDown = true;
       // determines center of svg, using top to compensate for scrolling
       var top = window.pageYOffset;
       this.svgBox = this.svg.getBoundingClientRect();
@@ -117,11 +110,12 @@
         ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
     },
     updateScrub: function() {
-      var degPercent = parseInt( ( this.value / this.max ) * 360, 10 );
-      this.scrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.scrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.shadowScrubber.style.webkitTransform = "rotate(" + ( degPercent - 90 ) + "deg)";
-      this.shadowScrubber.style.transform = "rotate(" + ( degPercent - 90 ) + "deg)";
+      var degPercent = parseInt( ( this.value / this.max ) * 360, 10 ),
+        rotation = "rotate(" + ( degPercent - 90 ) + "deg)";
+      this.scrubber.style.webkitTransform = rotation;
+      this.scrubber.style.transform = rotation;
+      this.shadowScrubber.style.webkitTransform = rotation;
+      this.shadowScrubber.style.transform = rotation;
       this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
       this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
       this.formattedValue = this.value;
