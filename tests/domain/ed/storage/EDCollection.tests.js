@@ -22,9 +22,17 @@
 // Tests begin
     suite( "Methods", function() {
       suite( "get( index )", function() {
-        test( "returns a promise that resolves to the data for the id at the given index", function() {
+        test( "returns a promise that resolves to the data for the id at the given index", function( done ) {
+          var edc = new EDCollection( "EDTrack", [ 435, 61, 788, 92 ]),
+            getFxn = edc.get( 1 );
+
+          expect( getFxn )
+            .to.be.an.instanceof( edc.Promise )
+            .that.eventually.equals( 61 );
           // returns this.ids[ index ]
           // expect to be an instance of EDDataObject
+
+          done();
         });
       });
 

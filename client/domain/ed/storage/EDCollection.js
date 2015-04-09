@@ -1,30 +1,29 @@
 // import edDataService from "domain/ed/services/ed-data-service";
 
-var idFlag = false;
-
 export default class EDCollection {
-  constructor( [ ids ], type ) {
+  constructor( type, ids ) {
     // TODO should ids be private?
-    this.ids = [ ids ];
+    this.ids = ids;
     this.type = type;
-
-    idFlag = this.id.length ? true : false;
+    this.datalist = [];
   }
 
   get( index ) {
-    if ( !this[ datalist ][ index ] instanceof Promise ) {
-      this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this[ ids ][index] );
+    if ( !this.datalist[ index ] instanceof Promise ) {
+      this.datalist[ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
     }
 
-    return this[ datalist ][ index ];
+    return this.datalist[ index ];
   }
 
   getRange( indexFrom=0, indexTo ) {
-    var newIds = this[ datalist ].slice( indexFrom, indexTo );
-
-    indexTo = ( indexTo != null ) ? indexTo : newIds.length ;
-
-    newIds[ Symbol.iterator ]( indexFrom );
+    Promise.all( this.datalist.slice( indexFrom, indexTo ) )
+    .then( values => {
+      values[ Symbol.iterator ]();
+    })
+    .catch( reason => {
+      // should we concern ourselves with errors?
+    });
   }
 
   getAll() {
@@ -32,8 +31,8 @@ export default class EDCollection {
   }
 
   * [ Symbol.iterator ]( index=0 ) {
-    while ( idFlag ) {
-      yield get( index );
+    while ( this.datalist ) {
+      yield this.get( index ).bind( this );
       index++;
     }
   }
