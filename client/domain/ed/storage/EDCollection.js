@@ -10,7 +10,8 @@ export default class EDCollection {
 
   /**
    *
-   * @param index
+   * @method get
+   * @param index { number }
    * @returns {*}
    */
   get( index ) {
@@ -23,8 +24,9 @@ export default class EDCollection {
 
   /**
    *
-   * @param indexFrom
-   * @param indexTo
+   * @method getRange
+   * @param indexFrom { number }
+   * @param indexTo { number }
    */
   getRange( indexFrom=0, indexTo ) {
     Promise.all( this.datalist.slice( indexFrom, indexTo ) )
@@ -38,6 +40,7 @@ export default class EDCollection {
 
   /**
    *
+   * @method getAll
    * @returns {*}
    */
   getAll() {
@@ -50,6 +53,8 @@ export default class EDCollection {
 
   /**
    *
+   * @method [ Symbol.iterator ]
+   * @param index { number }
    */
   * [ Symbol.iterator ]( index=0 ) {
     while ( this.datalist ) {

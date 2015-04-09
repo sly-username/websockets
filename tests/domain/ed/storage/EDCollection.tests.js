@@ -36,29 +36,19 @@
 
       suite( "getRange( indexFrom, indexTo )", function() {
         test( "default value for indexFrom parameter is 0", function() {
-          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
-          edc.getRange();
+          var edc = new EDCollection( "track", [ 435 ]),
+            getRangeFxn = edc.getRange();
 
-          expect( indexFrom )
-            .to.equal( 0 );
+          expect( getRangeFxn )
+            .to.eventually.equal( [ 435 ] );
         });
 
         test( "if indexTo is not specified, getRange will extract to end of array", function() {
-          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
+          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]),
+            getRangeFxn = edc.getRange( 1 );
 
-          edc.getRange( 1 );
-
-          expect( "indexes" )
-            .to.equal( "1-3" );
-        });
-
-        test( "returns range specified by parameters", function() {
-          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
-
-          edc.getRange( 1, 3 );
-
-          expect( "indexes" )
-            .to.equal( "1-3" );
+          expect( getRangeFxn )
+            .to.eventually.equal( [ 61, 788, 92 ] );
         });
 
         test( "returns an array of promises for ids in the range", function() {
@@ -66,7 +56,7 @@
             getRangeFxn = edc.getRange( 1, 3 );
 
           expect( getRangeFxn )
-            .to.eventually.equal([ 61, 788, 92 ]);
+            .to.eventually.equal( [ 61, 788 ] );
         });
       });
 
@@ -77,13 +67,6 @@
 
           expect( getAllFxn )
             .to.eventually.equal([ 435, 61, 788, 92 ]);
-        });
-      });
-
-      suite( "iterator does things", function() {
-        test( "the test", function() {
-          var edc = new EDCollection( "track", [ 435, 61, 788, 92 ]);
-          // this should be already tested in getRange and getAll, i believe
         });
       });
     });
