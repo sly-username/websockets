@@ -1,3 +1,4 @@
+/*jshint strict: false*/
 import define from "domain/ed/define-properties";
 import EDMedia from "domain/ed/objects/media/EDMedia";
 //import EDArtist from "domain/ed/objects/profile/EDArtist";

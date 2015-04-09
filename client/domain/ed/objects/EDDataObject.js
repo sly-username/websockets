@@ -17,10 +17,10 @@ export default class EDDataObject extends EventEmitter {
     define.readOnly( this, [ "id", "type" ], args );
   }
 
-  /**
-   * Not Currently Supported on any system :(
-   */
+/*
+  // Not Currently Supported on any system :(
   get [ Symbol.toStringTag ]() {
     return "EDDataObject";
   }
+*/
 }

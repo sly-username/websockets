@@ -7,7 +7,7 @@ var gulp = require( "gulp" ),
   runCopy;
 
 runCopy = function( src, dest ) {
-  return gulp.src( src )
+  return gulp.src( src, { base: config.client })
     .pipe( gulp.dest( dest ) );
 };
 
