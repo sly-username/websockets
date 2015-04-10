@@ -1,18 +1,19 @@
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/ed/text-styles.mixin.less";
 
 * {
   font-family: "Ubuntu-Regular";
 }
 
+.ed-logo-header {
+  .logoFormHeader();
+}
+
 .forgot-container {
-  background: linear-gradient(to bottom, rgba(32, 20, 44, 0) , rgba(32, 20, 44, 1)), url("../../../assets/background-images/login_image__1080x1920.jpg");
-  background-size: cover;
-  width: 100%;
+  .mainPicturedBackground();
   height: 100%;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .forgot-text, .forgot-second-text {
@@ -31,7 +32,6 @@
 
 
 .ed-forgot-body {
-  margin-top: 30rem;
   fieldset {
     border: 0;
   }
