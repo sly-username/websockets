@@ -36,8 +36,9 @@ export default class EDWebSocket extends HealingWebSocket {
 
     this.on( "open", () => {
       console.log( "socket opened! %o", this );
+      // needs to authenticate after socket opens
+      this.authenticate( edUserService.sessionAuthJSON.email, edUserService.sessionAuthJSON.password );
     });
-
     // todo
       //if ( true ) {
       //  authenticateSocket( this, {
@@ -79,29 +80,32 @@ export default class EDWebSocket extends HealingWebSocket {
 
   authenticate( email, password ) {
     var authBlock = {
-        email,
-        password
-      },
-      checkForAuthResponse = function( event ) {
+        auth: {
+          email,
+          password
+        }
+      };
+
+    return new Promise(( resolve, reject ) => {
+      var checkForAuthResponse = event => {
         var data;
         console.log( "received message event:", event );
         try {
-          data = event;
-          console.log( "data", data );
+          data = JSON.parse( event.data );
         } catch ( error ) {
           console.error( error );
           return;
         }
 
-        if ( data.code === 1 && typeof data.data.profileId === "number" ) {
+        if ( data.status.code === 1 && typeof data.message.data.profileId === "string" ) {
+          resolve( event );
           this.off( "message", checkForAuthResponse );
         }
       };
 
-    console.log( "authenticating" );
-    HealingWebSocket.prototype.send.call( this, authBlock );
-
-    this.on( "message", checkForAuthResponse );
+      this.on( "message", checkForAuthResponse );
+      super.send( authBlock );
+    });
   }
 
   send( data ) {
@@ -165,21 +169,21 @@ export default class EDWebSocket extends HealingWebSocket {
     });
   }
 
-  [ symbols.heal ]( data ) {
-    //if ( !this[ isAuthenticated ] ) {
-    //  this[ performAuth ]();
-    //  this.once( "authenticated", event => {
-    //    super[ symbols.heal ]( data );
-    //  });
-    //}
-
-    // todo: hasCreds/openSesh
-    if ( true ) {
-      authenticateSocket( this, {
-        auth: edUserService.sessionAuthJSON
-      });
-    }
-    super[ symbols.heal ]( data );
-  }
+  //[ symbols.heal ]( data ) {
+  //  //if ( !this[ isAuthenticated ] ) {
+  //  //  this[ performAuth ]();
+  //  //  this.once( "authenticated", event => {
+  //  //    super[ symbols.heal ]( data );
+  //  //  });
+  //  //}
+  //
+  //  // todo: hasCreds/openSesh
+  //  if ( true ) {
+  //    authenticateSocket( this, {
+  //      auth: edUserService.sessionAuthJSON
+  //    });
+  //  }
+  //  super[ symbols.heal ]( data );
+  //}
 
 }

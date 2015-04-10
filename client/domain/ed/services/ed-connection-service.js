@@ -7,29 +7,21 @@ var edConnectionService,
 window.edSocket = edSocket;
 
 export default edConnectionService = {
-  //needsAuth( route ) {
-  //  return new Promise(( resolve, reject ) {
-  //    if ( route ) {
-  //
-  //    }
-  //  })
-  //},
-
   authenticateConnection( email, password ) {
     return edSocket.authenticate( email, password )
       .then(( response ) => {
+        console.log( "respondsdsasse", response );
         var responseData;
 
         try {
           responseData = JSON.parse( response.data );
-          console.log( "responseData", responseData );
         } catch ( error ) {
           console.warn( "error in request handler" );
           console.error( error );
           responseData = response.data;
         }
 
-        return responseData;
+        return responseData.message.data;
       }).catch(( error ) => {
         console.warn( "Issue authenticating in connection service" );
         console.error( error );

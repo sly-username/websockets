@@ -56,6 +56,27 @@
       });
     });
 
+    suite( "authenticateConnection method", function() {
+      test( "calls the send method on the edWebSocket instance", function( done ) {
+        var dataObj = {
+            auth: {
+              email: "intdev@eardish.com",
+              password: "intdevpass"
+            }
+          },
+          authenticateConnectionSpy = sinon.spy( edConnectionService, "authenticateConnection" );
+
+        edConnectionService.authenticateConnection( "intdev@eardish.com", "intdevpass" )
+          .then(function( response ) {
+            authenticateConnectionSpy.restore();
+            done();
+          });
+
+        expect( authenticateConnectionSpy )
+          .to.have.callCount( 1 );
+      });
+    });
+
     suite.skip( "request method", function() {
       this.timeout( 5000 );
 
