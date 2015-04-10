@@ -2,9 +2,10 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/alignments.mixin.less";
+@import "../../../styles/mixins/all-prefixes.less";
 
 
-.wrapper {
+.form-input-container {
   height: 7.5rem;
   width: 98%;
   max-width: 59.6rem;
@@ -12,7 +13,7 @@
   border-color: @darkPurple5;
   margin: -.33rem auto;
 }
-// TODO double check that this works as nested CSS...originally input should be nested in wrapper
+// TODO double check that this works as nested CSS...originally input should be nested in form-input-container
 input {
   .edType( heading-M );
   .white( .75 );
@@ -37,15 +38,15 @@ ed-icon {
 }
 
 :host([type="date"]){
-  .wrapper {
+  .form-input-container {
     .arrow-box {
-      margin: .6rem;
+      .transform( translateY(7%) translateX(-7%) );
       float: right;
-      height: 9.7rem;
-      width: 9.7rem;
+      height: 6.5rem;
+      width: 6.5rem;
       background-color: #FFFFFF;
       pointer-events: none;
-      opacity: .5;
+      opacity: .25;
     }
   }
 }
