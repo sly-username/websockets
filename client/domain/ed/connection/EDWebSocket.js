@@ -48,14 +48,6 @@ export default class EDWebSocket extends HealingWebSocket {
     return this[ isAuthenticated ];
   }
 
-  needsAuth( route ) {
-    // TODO needs to check route arg and return a boolean
-    // need routes applicable
-    // or how can i test this without given routes?
-    // also where do we check for this again? in every socket method?
-    return true;
-  }
-
   authenticate( email, password ) {
     var authBlock = {
       auth: {
@@ -67,7 +59,6 @@ export default class EDWebSocket extends HealingWebSocket {
     // getting a "Cannot read property 'forEach' of undefined"
     // in the EventEmitter all of a sudden
     // do i need to import EventEmitter and create events?
-
     return new Promise(( resolve, reject ) => {
       var checkForAuthResponse = event => {
         var data;
@@ -98,8 +89,24 @@ export default class EDWebSocket extends HealingWebSocket {
     });
   }
 
+  needsAuth( route ) {
+    // needs to auth routes on open and heal events
+    // not sure how to handle any route that needs to be healed
+    if ( route != null ) {
+      return [ "profile/get", "anyhealroute?" ].some( authRoute => {
+        return authRoute === route;
+      });
+    }
+
+    return false;
+  }
+
   send( data ) {
-    if ( !this[ isAuthenticated ] ) {
+    //if ( !data.hasOwnProperty( "action" ) ) {
+    //  data.action = {};
+    //}
+
+    if ( this.needsAuth( data.action.route ) && !this[ isAuthenticated ] ) {
       this.once( "authenticated", event => {
         super.send( data );
       });
@@ -117,7 +124,7 @@ export default class EDWebSocket extends HealingWebSocket {
     }
 
     console.log( "request called: %o", data );
-    if ( !this[ isAuthenticated ] && !( "auth" in data ) ) {
+    if ( this.needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
       console.log( "in request, not authed, no auth block %o", data );
       return new Promise( ( resolve, reject ) => {
         this.once( "authenticated", () => {

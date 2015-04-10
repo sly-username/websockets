@@ -31,6 +31,9 @@
         expect( socket.authenticate )
           .to.be.a( "function" );
 
+        expect( socket.needsAuth )
+          .to.be.a( "function" );
+
         expect( socket.send )
           .to.be.a( "function" );
 
@@ -68,6 +71,30 @@
         // needs more testing...
         expect( authPromise )
           .to.be.an( "object" );
+      });
+    });
+
+    suite( "needsAuth Method", function() {
+      test( "passing an auth route", function() {
+        var socket = new EDWebSocket(),
+          needsAuthFunc;
+
+        needsAuthFunc = socket.needsAuth( "profile/get" );
+
+        expect( needsAuthFunc )
+          .to.be.a( "boolean" )
+          .that.equals( true );
+      });
+
+      test( "passing a non auth route", function() {
+        var socket = new EDWebSocket(),
+          needsAuthFunc;
+
+        needsAuthFunc = socket.needsAuth( "/registration" );
+
+        expect( needsAuthFunc )
+          .to.be.a( "boolean" )
+          .that.equals( false );
       });
     });
 
