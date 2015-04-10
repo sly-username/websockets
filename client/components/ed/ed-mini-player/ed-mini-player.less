@@ -40,22 +40,29 @@
       .edType( heading-XS );
     }
   }
-  #play-btn {
+  .responsive-btn-wrapper {
+    position: relative;
+    width: 10%;
+    float:right;
     margin: 1.5%;
-    background: @darkPurple2;
-    width: 9%;
-    height: 9vw;
-    border-radius: 50%;
-    border: none;
-    float: right;
-    ed-icon {
-      fill: @white;
-      width: 75%;
-      height: 75%;
-      .userSelect( none );
-    }
-    &:focus {
-      outline: none;
+    #play-btn {
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      height: 0;
+      padding: 50% 0;
+      border-radius: 50%;
+      background: @darkPurple2;
+      border: none;
+      ed-icon {
+        fill: @white;
+        width: 70%;
+        .userSelect(none);
+      }
+      &:focus {
+        outline: none;
+      }
     }
   }
 }

@@ -54,6 +54,10 @@
       if ( this.value === this.max ) {
         this.complete = true;
         this.setAttribute( "complete", "" );
+        this.scrubber.style.opacity = 0;
+        this.shadowScrubber.style.opacity = 0;
+        this.playBtn.disabled = true;
+        this.icon.style.opacity = 0.02;
       } else {
         this.complete = false;
         this.removeAttribute( "complete" );
