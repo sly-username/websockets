@@ -77,7 +77,7 @@
       });
     });
 
-    suite( "request method", function() {
+    suite.skip( "request method", function() {
       this.timeout( 5000 );
       test( "calls the request method on the edWebSocket instance", function( done ) {
         var dataObj = {

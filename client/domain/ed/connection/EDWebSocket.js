@@ -23,24 +23,24 @@ export default class EDWebSocket extends HealingWebSocket {
     super( url.path );
     this[ isAuthenticated ] = false;
 
-    this.on( "close", () => {
-      console.log( "socket was closed" );
-      this[ isAuthenticated ] = false;
+    this.on( "open", () => {
+      console.log( "socket opened! %o", this );
+
+      // needs to authenticate AFTER socket opens
+      // where would we grab the credentials on initial open tho?
+      this.authenticate(
+        edUserService.sessionAuthJSON.email,
+        edUserService.sessionAuthJSON.password
+      );
     });
 
     this.on( "heal", () => {
       console.log( "socket is being healed" );
     });
 
-    this.on( "open", () => {
-      console.log( "socket opened! %o", this );
-
-      // needs to authenticate after socket opens
-      // where would we grab the credentials on initial open tho?
-      this.authenticate(
-        edUserService.sessionAuthJSON.email,
-        edUserService.sessionAuthJSON.password
-      );
+    this.on( "close", () => {
+      console.log( "socket was closed" );
+      this[ isAuthenticated ] = false;
     });
   }
 

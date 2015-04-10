@@ -50,7 +50,6 @@ export default edConnectionService = {
   },
 
   request( route, priority=0, data ) {
-    debugger;
     var json = {
         action: {
           route,
