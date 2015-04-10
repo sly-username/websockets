@@ -1,5 +1,5 @@
 @import "../../../styles/ed/buttons.mixin.less";
-@import "../../../styles/ed/text-styles.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 
 .container {
@@ -13,7 +13,7 @@
 }
 
 header {
-  .headingLarge();
+  .edType( heading-L );
   color: @white;
   text-align: center;
   line-height: 8rem;
@@ -29,7 +29,7 @@ header {
 
 #name-field {
   p {
-    .headingXSmall();
+    .edType( heading-XS );
     color: @originalTeal;
     padding: 0 2%;
   }
@@ -49,7 +49,7 @@ header {
     }
   }
   p {
-    .headingXSmall();
+    .edType( heading-XS );
     text-transform: uppercase;
     color: @originalTeal;
     margin: 6% 2% 0 2%;
@@ -76,7 +76,7 @@ header {
 
 .edit-onboarding {
   p {
-    .headingXSmall();
+    .edType( heading-XS );
     text-transform: uppercase;
     color: @originalTeal;
     margin: 6% 2% 0 2%;
