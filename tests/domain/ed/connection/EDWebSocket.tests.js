@@ -74,30 +74,6 @@
       });
     });
 
-    suite( "needsAuth Method", function() {
-      test( "passing an auth route", function() {
-        var socket = new EDWebSocket(),
-          needsAuthFunc;
-
-        needsAuthFunc = socket.needsAuth( "profile/get" );
-
-        expect( needsAuthFunc )
-          .to.be.a( "boolean" )
-          .that.equals( true );
-      });
-
-      test( "passing a non auth route", function() {
-        var socket = new EDWebSocket(),
-          needsAuthFunc;
-
-        needsAuthFunc = socket.needsAuth( "/registration" );
-
-        expect( needsAuthFunc )
-          .to.be.a( "boolean" )
-          .that.equals( false );
-      });
-    });
-
     suite.skip( "send Method", function() {
       test( "calls the method", function( done ) {
         var socket = new EDWebSocket(),

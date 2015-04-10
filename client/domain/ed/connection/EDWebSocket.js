@@ -1,13 +1,13 @@
-var
+var generateToken, needsAuth,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
   edUserService = {
+    isOpenSession: true,
     sessionAuthJSON: {
       email: "intdev@eardish.com",
       password: "intdevpass"
     }
-  },
-  generateToken;
+  };
 
 import { default as HealingWebSocket, symbols } from "domain/lib/connection/HealingWebSocket";
 import url from "domain/ed/urls";
@@ -16,6 +16,18 @@ import createEvent from "domain/lib/event/create-event";
 
 generateToken = function() {
   return ++token;
+};
+
+needsAuth = function( route ) {
+  // needs to auth routes on open and heal events
+  // not sure how to handle any route that needs to be healed
+  if ( route != null ) {
+    return [ "profile/get", "anyhealroute?" ].some( authRoute => {
+      return authRoute === route;
+    });
+  }
+
+  return false;
 };
 
 export default class EDWebSocket extends HealingWebSocket {
@@ -36,6 +48,15 @@ export default class EDWebSocket extends HealingWebSocket {
 
     this.on( "heal", () => {
       console.log( "socket is being healed" );
+      // this seems right since the credentials are
+      // being pulled from the session
+      // needs a edUserService.hasCredentials function?
+      if ( edUserService.isOpenSession && edUserService.sessionAuthJSON != null ) {
+        this.authenticate(
+          edUserService.sessionAuthJSON.email,
+          edUserService.sessionAuthJSON.password
+        );
+      }
     });
 
     this.on( "close", () => {
@@ -89,24 +110,14 @@ export default class EDWebSocket extends HealingWebSocket {
     });
   }
 
-  needsAuth( route ) {
-    // needs to auth routes on open and heal events
-    // not sure how to handle any route that needs to be healed
-    if ( route != null ) {
-      return [ "profile/get", "anyhealroute?" ].some( authRoute => {
-        return authRoute === route;
-      });
-    }
 
-    return false;
-  }
 
   send( data ) {
     //if ( !data.hasOwnProperty( "action" ) ) {
     //  data.action = {};
     //}
 
-    if ( this.needsAuth( data.action.route ) && !this[ isAuthenticated ] ) {
+    if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] ) {
       this.once( "authenticated", event => {
         super.send( data );
       });
@@ -124,7 +135,7 @@ export default class EDWebSocket extends HealingWebSocket {
     }
 
     console.log( "request called: %o", data );
-    if ( this.needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
+    if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
       console.log( "in request, not authed, no auth block %o", data );
       return new Promise( ( resolve, reject ) => {
         this.once( "authenticated", () => {
@@ -164,23 +175,4 @@ export default class EDWebSocket extends HealingWebSocket {
       super.send( data );
     });
   }
-
-  // do we need this method?
-  //[ symbols.heal ]( data ) {
-  //  //if ( !this[ isAuthenticated ] ) {
-  //  //  this[ performAuth ]();
-  //  //  this.once( "authenticated", event => {
-  //  //    super[ symbols.heal ]( data );
-  //  //  });
-  //  //}
-  //
-  //  // todo: hasCreds/openSesh
-  //  if ( true ) {
-  //    authenticateSocket( this, {
-  //      auth: edUserService.sessionAuthJSON
-  //    });
-  //  }
-  //  super[ symbols.heal ]( data );
-  //}
-
 }
