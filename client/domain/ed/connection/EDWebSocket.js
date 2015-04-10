@@ -1,6 +1,5 @@
 var
   isAuthenticated = Symbol( "isAuthenticated" ),
-  authenticateSocket,
   token = 0,
   edUserService = {
     sessionAuthJSON: {
@@ -13,12 +12,11 @@ var
 import { default as HealingWebSocket, symbols } from "domain/lib/connection/HealingWebSocket";
 import url from "domain/ed/urls";
 import createEvent from "domain/lib/event/create-event";
+//import edUserService from "domain/ed/services/ed-user-service";
 
 generateToken = function() {
   return ++token;
 };
-
-
 
 export default class EDWebSocket extends HealingWebSocket {
   constructor() {
@@ -36,55 +34,39 @@ export default class EDWebSocket extends HealingWebSocket {
 
     this.on( "open", () => {
       console.log( "socket opened! %o", this );
+
       // needs to authenticate after socket opens
-      this.authenticate( edUserService.sessionAuthJSON.email, edUserService.sessionAuthJSON.password );
+      // where would we grab the credentials on initial open tho?
+      this.authenticate(
+        edUserService.sessionAuthJSON.email,
+        edUserService.sessionAuthJSON.password
+      );
     });
-    // todo
-      //if ( true ) {
-      //  authenticateSocket( this, {
-      //    auth: edUserService.sessionAuthJSON
-      //  });
-      //}
   }
 
   get isAuthenticated() {
     return this[ isAuthenticated ];
   }
 
-  //authenticate( email, password ) {
-  //  var authBlock = {
-  //    email,
-  //    password
-  //  };
-  //
-  //  //this.once( "message", event => {
-  //  //  this[ isAuthenticated ] = true;
-  //  //  this.dispatch( createEvent( "authenticated", {} ) );
-  //  //});
-  //
-  //  this.request({
-  //    auth: authBlock
-  //  })
-  //  .then( response => {
-  //    this[ isAuthenticated ] = true;
-  //    this.dispatch( createEvent( "authenticated" ) );
-  //
-  //    return response;
-  //  }).catch( error => {
-  //    console.error( "Issue Authenticating EDWebSocket" );
-  //    console.error( error );
-  //    throw error;
-  //  });
-  //
-  //}
+  needsAuth( route ) {
+    // TODO needs to check route arg and return a boolean
+    // need routes applicable
+    // or how can i test this without given routes?
+    // also where do we check for this again? in every socket method?
+    return true;
+  }
 
   authenticate( email, password ) {
     var authBlock = {
-        auth: {
-          email,
-          password
-        }
-      };
+      auth: {
+        email,
+        password
+      }
+    };
+
+    // getting a "Cannot read property 'forEach' of undefined"
+    // in the EventEmitter all of a sudden
+    // do i need to import EventEmitter and create events?
 
     return new Promise(( resolve, reject ) => {
       var checkForAuthResponse = event => {
@@ -97,14 +79,22 @@ export default class EDWebSocket extends HealingWebSocket {
           return;
         }
 
+        // validate response
         if ( data.status.code === 1 && typeof data.message.data.profileId === "string" ) {
           resolve( event );
+          this[ isAuthenticated ] = true;
+          this.dispatch( createEvent( "authenticated", {
+            detail: {
+              task: "for future self"
+            }
+          }));
           this.off( "message", checkForAuthResponse );
         }
       };
 
-      this.on( "message", checkForAuthResponse );
+      // send to socket & bind message events
       super.send( authBlock );
+      this.on( "message", checkForAuthResponse );
     });
   }
 
@@ -148,13 +138,15 @@ export default class EDWebSocket extends HealingWebSocket {
         var responseData;
 
         try {
-          responseData = JSON.parse( event );
+          responseData = JSON.parse( event.data );
           console.log( "responseData", responseData );
         } catch ( error ) {
           console.warn( "error in request handler" );
           console.error( error );
           responseData = event;
         }
+
+        console.log( "responseDatadsadsadasdasdw943u29329", responseData );
 
         if ( "meta" in responseData.data && responseData.data.meta.requestToken === newToken ) {
           resolve( responseData );
@@ -169,6 +161,7 @@ export default class EDWebSocket extends HealingWebSocket {
     });
   }
 
+  // do we need this method?
   //[ symbols.heal ]( data ) {
   //  //if ( !this[ isAuthenticated ] ) {
   //  //  this[ performAuth ]();

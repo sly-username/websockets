@@ -10,7 +10,6 @@ export default edConnectionService = {
   authenticateConnection( email, password ) {
     return edSocket.authenticate( email, password )
       .then(( response ) => {
-        console.log( "respondsdsasse", response );
         var responseData;
 
         try {
@@ -21,6 +20,7 @@ export default edConnectionService = {
           responseData = response.data;
         }
 
+        console.log( responseData.message.data );
         return responseData.message.data;
       }).catch(( error ) => {
         console.warn( "Issue authenticating in connection service" );
@@ -50,15 +50,15 @@ export default edConnectionService = {
   },
 
   request( route, priority=0, data ) {
-
+    debugger;
     var json = {
         action: {
           route,
           priority
         }
       },
-      prop,
-      requestData;
+      requestData,
+      prop;
 
     if ( !typeof data === "object" ) {
       requestData = JSON.parse( data );
@@ -71,6 +71,8 @@ export default edConnectionService = {
         requestData[ prop ] = json[ prop ];
       }
     }
+
+    console.log( "requestData", requestData );
 
     //requestData = this.formatDataObject( requestData );
 

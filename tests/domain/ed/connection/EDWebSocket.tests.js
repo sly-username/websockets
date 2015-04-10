@@ -20,41 +20,58 @@
     });
 
     // Start Testing
-    suite.skip( "EDWebSocket creation", function() {
-      test( "starts with appropriate properties", function() {
+    suite( "EDWebSocket creation", function() {
+      test( "starts with appropriate properties & functions", function() {
         var socket = new EDWebSocket();
 
-        //expect( socket.isAuthenticated )
-        //  .to.be.a( "boolean" );
+        expect( socket )
+          .to.have.property( "isAuthenticated" )
+          .that.equals( false );
 
-        expect( socket.request )
-          .to.be.a( "function" );
-
-        expect( socket.doAuthentication )
+        expect( socket.authenticate )
           .to.be.a( "function" );
 
         expect( socket.send )
           .to.be.a( "function" );
+
+        expect( socket.request )
+          .to.be.a( "function" );
+
       });
     });
 
-    suite.skip( "authenticate", function() {
-      test( "calls the request method on the edWebSocket instance", function( done ) {
+    suite( "authenticate method", function() {
+      test.skip( "calls the request method on the edWebSocket instance", function( done ) {
         var edSocket = new EDWebSocket(),
-          socketSpy = sinon.spy( edSocket, "authenticate" );
+          authenticateSpy = sinon.spy( edSocket, "authenticate" );
 
         edSocket.authenticate( "intdev@eardish.com", "intdevpass" )
           .then(function( response ) {
-            socketSpy.restore();
+            authenticateSpy.restore();
             done();
           });
 
-        expect( socketSpy )
+        expect( authenticateSpy )
           .to.have.callCount( 1 );
+      });
+
+      test.skip( "returns a promise", function( done ) {
+        var edSocket = new EDWebSocket(),
+          authPromise;
+
+        authPromise = edSocket.authenticate( "intdev@eardish.com", "intdevpass" )
+          .then(function( response ) {
+            done();
+            return response;
+          });
+
+        // needs more testing...
+        expect( authPromise )
+          .to.be.an( "object" );
       });
     });
 
-    suite.skip( "Send Method", function() {
+    suite.skip( "send Method", function() {
       test( "calls the method", function( done ) {
         var socket = new EDWebSocket(),
           socketData = {
@@ -76,7 +93,7 @@
       });
     });
 
-    suite.skip( "Request Method", function() {
+    suite.skip( "request Method", function() {
       test( "calls the method", function( done ) {
         var socket = new EDWebSocket(),
           socketData = {

@@ -55,53 +55,32 @@ edUserService.login = function( email, password ) {
     }
   };
 
-  return edConnectionService.authenticateConnection( email, password )
-    .then( response => {
-      console.log( response );
-      edDataService.getArtistById( response.id )
-        .then( user => {
-          console.log( user );
+  return edConnectionService.formattedRequest( json )
+    .then( raw => {
+      currentUser = new EDUser( raw.auth );
+      isOpenSession = true;
+      sessionAuthJSON = json;
 
-          if ( user instanceof EDUser ) {
-            currentUser = user;
-            isOpenSession = true;
-            sessionAuthJSON = json;
-          }
-          //return the user object
-        });
+      edUserService.dispatch( createEvent( "edLogin", {
+        detail: {
+          user: currentUser
+        }
+      }));
+
+      edAnalyticsService.send(
+        edAnalyticsService.createEvent( "login", {
+          timestamp: new Date()
+        })
+      );
+
+      return currentUser;
     })
     .catch( error => {
-      console.warn( "Issue authenticating connection in user service" );
-      console.error( error );
+      currentUser = null;
+      isOpenSession = false;
       throw error;
+      // TODO if error messages are needed, ex: toasts
     });
-
-  //return edConnectionService.formattedRequest( json )
-  //  .then( raw => {
-  //    currentUser = new EDUser( raw.auth );
-  //    isOpenSession = true;
-  //    sessionAuthJSON = json;
-  //
-  //    edUserService.dispatch( createEvent( "edLogin", {
-  //      detail: {
-  //        user: currentUser
-  //      }
-  //    }));
-  //
-  //    edAnalyticsService.send(
-  //      edAnalyticsService.createEvent( "login", {
-  //        timestamp: new Date()
-  //      })
-  //    );
-  //
-  //    return currentUser;
-  //  })
-  //  .catch( error => {
-  //    currentUser = null;
-  //    isOpenSession = false;
-  //    throw error;
-  //    // TODO if error messages are needed, ex: toasts
-  //  });
 };
 
 edUserService.logout = function() {
