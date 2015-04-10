@@ -6,6 +6,7 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   edConnectionService = {}, // TODO for now, until it's created
+  edDataService = {}, // TODO for now, until it's created
   currentUser = null,
   isOpenSession = false,
   hasOnboarded = false,
@@ -54,32 +55,53 @@ edUserService.login = function( email, password ) {
     }
   };
 
-  return edConnectionService.formattedRequest( json )
-    .then( raw => {
-      currentUser = new EDUser( raw.auth );
-      isOpenSession = true;
-      sessionAuthJSON = json;
+  return edConnectionService.authenticateConnection( email, password )
+    .then( response => {
+      console.log( response );
+      edDataService.getArtistById( response.id )
+        .then( user => {
+          console.log( user );
 
-      edUserService.dispatch( createEvent( "edLogin", {
-        detail: {
-          user: currentUser
-        }
-      }));
-
-      edAnalyticsService.send(
-        edAnalyticsService.createEvent( "login", {
-          timestamp: new Date()
-        })
-      );
-
-      return currentUser;
+          if ( user instanceof EDUser ) {
+            currentUser = user;
+            isOpenSession = true;
+            sessionAuthJSON = json;
+          }
+          //return the user object
+        });
     })
     .catch( error => {
-      currentUser = null;
-      isOpenSession = false;
+      console.warn( "Issue authenticating connection in user service" );
+      console.error( error );
       throw error;
-      // TODO if error messages are needed, ex: toasts
     });
+
+  //return edConnectionService.formattedRequest( json )
+  //  .then( raw => {
+  //    currentUser = new EDUser( raw.auth );
+  //    isOpenSession = true;
+  //    sessionAuthJSON = json;
+  //
+  //    edUserService.dispatch( createEvent( "edLogin", {
+  //      detail: {
+  //        user: currentUser
+  //      }
+  //    }));
+  //
+  //    edAnalyticsService.send(
+  //      edAnalyticsService.createEvent( "login", {
+  //        timestamp: new Date()
+  //      })
+  //    );
+  //
+  //    return currentUser;
+  //  })
+  //  .catch( error => {
+  //    currentUser = null;
+  //    isOpenSession = false;
+  //    throw error;
+  //    // TODO if error messages are needed, ex: toasts
+  //  });
 };
 
 edUserService.logout = function() {

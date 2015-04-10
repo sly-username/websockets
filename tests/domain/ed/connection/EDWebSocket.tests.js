@@ -38,6 +38,24 @@
       });
     });
 
+    suite( "authenticate", function() {
+      test( "calls the request method on the edWebSocket instance", function( done ) {
+        var edSocket = new EDWebSocket(),
+          socketSpy = sinon.spy( edSocket, "authenticate" );
+
+        edSocket.authenticate( "intdev@eardish.com", "intdevpass" )
+          .then(function( resp ) {
+            console.log( "resp", resp );
+            done();
+          });
+
+        expect( socketSpy )
+          .to.have.callCount( 1 );
+
+        socketSpy.restore();
+      });
+    });
+
     suite.skip( "Send Method", function() {
       test( "calls the method", function( done ) {
         var socket = new EDWebSocket(),

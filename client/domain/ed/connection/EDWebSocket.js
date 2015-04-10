@@ -1,6 +1,5 @@
 var
   isAuthenticated = Symbol( "isAuthenticated" ),
-  performAuth = Symbol( "performAuth" ),
   authenticateSocket,
   token = 0,
   edUserService = {
@@ -19,27 +18,7 @@ generateToken = function() {
   return ++token;
 };
 
-authenticateSocket = function( socket, authBlock ) {
-  var checkForAuthResponse = function( event ) {
-    var data;
 
-    try {
-      data = JSON.parse( event.data );
-    } catch ( error ) {
-      console.error( error );
-      return;
-    }
-
-    if ( data.code === 1 && typeof data.data.profileId === "number" ) {
-      socket.off( "message", checkForAuthResponse );
-    }
-  };
-
-  console.log( "authenticating" );
-  HealingWebSocket.prototype.send.call( socket, authBlock );
-
-  socket.on( "message", checkForAuthResponse );
-};
 
 export default class EDWebSocket extends HealingWebSocket {
   constructor() {
@@ -60,49 +39,70 @@ export default class EDWebSocket extends HealingWebSocket {
     });
 
     // todo
-    if ( true ) {
-      authenticateSocket( this, {
-        auth: edUserService.sessionAuthJSON
-      });
-    }
+      //if ( true ) {
+      //  authenticateSocket( this, {
+      //    auth: edUserService.sessionAuthJSON
+      //  });
+      //}
   }
 
   get isAuthenticated() {
     return this[ isAuthenticated ];
   }
 
-  //[ performAuth ]() {
-  //  this.once( "message", event => {
-  //    this[ isAuthenticated ] = true;
-  //    this.dispatch( createEvent( "authenticated", {
-  //      detail: {
-  //        figure: "it out later"
-  //      }
-  //    }));
-  //  });
+  //authenticate( email, password ) {
+  //  var authBlock = {
+  //    email,
+  //    password
+  //  };
   //
-  //  super.send({
-  //    auth: edUserService.sessionAuthJSON
-  //  });
+  //  //this.once( "message", event => {
+  //  //  this[ isAuthenticated ] = true;
+  //  //  this.dispatch( createEvent( "authenticated", {} ) );
+  //  //});
   //
-  //  /*
   //  this.request({
-  //    auth: edUserService.sessionAuthJSON
-  //  }).then( response => {
+  //    auth: authBlock
+  //  })
+  //  .then( response => {
   //    this[ isAuthenticated ] = true;
-  //    this.dispatch( createEvent( "authenticated", {
-  //        detail: {
-  //          figure: "it out later"
-  //        }
-  //      }
-  //    ));
+  //    this.dispatch( createEvent( "authenticated" ) );
+  //
+  //    return response;
   //  }).catch( error => {
   //    console.error( "Issue Authenticating EDWebSocket" );
   //    console.error( error );
   //    throw error;
   //  });
-  //  */
+  //
   //}
+
+  authenticate( email, password ) {
+    var authBlock = {
+        email,
+        password
+      },
+      checkForAuthResponse = function( event ) {
+        var data;
+        console.log( "received message event:", event );
+        try {
+          data = event;
+          console.log( "data", data );
+        } catch ( error ) {
+          console.error( error );
+          return;
+        }
+
+        if ( data.code === 1 && typeof data.data.profileId === "number" ) {
+          this.off( "message", checkForAuthResponse );
+        }
+      };
+
+    console.log( "authenticating" );
+    HealingWebSocket.prototype.send.call( this, authBlock );
+
+    this.on( "message", checkForAuthResponse );
+  }
 
   send( data ) {
     if ( !this[ isAuthenticated ] ) {
@@ -144,15 +144,15 @@ export default class EDWebSocket extends HealingWebSocket {
         var responseData;
 
         try {
-          responseData = JSON.parse( event.data );
+          responseData = JSON.parse( event );
           console.log( "responseData", responseData );
         } catch ( error ) {
           console.warn( "error in request handler" );
           console.error( error );
-          responseData = event.data;
+          responseData = event;
         }
 
-        if ( "meta" in responseData && responseData.meta.requestToken === newToken ) {
+        if ( "meta" in responseData.data && responseData.data.meta.requestToken === newToken ) {
           resolve( responseData );
           this.off( "message", handler );
         }
