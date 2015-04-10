@@ -12,8 +12,8 @@
   background-color: @darkPurple4;
   border-color: @darkPurple5;
   margin: -.33rem auto;
+  box-shadow: .4rem .4rem 0 0 fade(@darkPurple5, 75%) inset;
 }
-// TODO double check that this works as nested CSS...originally input should be nested in form-input-container
 input {
   .edType( heading-M );
   .white( .75 );
@@ -26,7 +26,7 @@ input {
 }
 
 ed-icon {
-/* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
+/* for svg height and width dimensions may both need to be declared and they work like regular CSS max-width or max-height
 */
   width: 3rem;
   height: 50%;
@@ -44,9 +44,8 @@ ed-icon {
       float: right;
       height: 6.5rem;
       width: 6.5rem;
-      background-color: #FFFFFF;
+      background-color: @darkPurple2;
       pointer-events: none;
-      opacity: .25;
     }
   }
 }
