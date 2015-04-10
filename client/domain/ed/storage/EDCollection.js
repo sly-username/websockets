@@ -1,8 +1,7 @@
 // import edDataService from "domain/ed/services/ed-data-service";
 import define from "domain/ed/define-properties";
 
-var datalist = Symbol( "datalist" ),
-  ids = [];
+var datalist = Symbol( "datalist" );
 
 export default class EDCollection {
   constructor( type, ids ) {
@@ -10,16 +9,14 @@ export default class EDCollection {
       ids: {
         configurable: false,
         enumerable: false,
-        get: function() {
-          return ids;
-        }
+        writeable: false,
+        value: ids
       },
       type: {
         configurable: false,
         enumerable: false,
-        get: function() {
-          return type;
-        }
+        writeable: false,
+        value: type
       }
     });
     this[ datalist ] = ids.slice( 0 );
