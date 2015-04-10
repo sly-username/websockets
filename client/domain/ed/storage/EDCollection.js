@@ -43,15 +43,7 @@ export default class EDCollection {
    * @param indexTo { number }
    */
   getRange( indexFrom=0, indexTo ) {
-    let promises = [];
-    return Promise.all( this[ datalist ].slice( indexFrom, indexTo ) )
-      .then( values => {
-        promises.push( values[ Symbol.iterator ]() );
-        return promises;
-      })
-      .catch( reason => {
-        console.log( reason );
-      });
+    return this.ids.slice( indexFrom, indexTo ).map(( id, index ) => this.get( index ));
   }
 
   /**
