@@ -139,16 +139,13 @@ export default class EDWebSocket extends HealingWebSocket {
 
         try {
           responseData = JSON.parse( event.data );
-          console.log( "responseData", responseData );
         } catch ( error ) {
           console.warn( "error in request handler" );
           console.error( error );
           responseData = event;
         }
 
-        console.log( "responseDatadsadsadasdasdw943u29329", responseData );
-
-        if ( "meta" in responseData.data && responseData.data.meta.requestToken === newToken ) {
+        if ( "meta" in responseData && responseData.meta.responseToken === newToken ) {
           resolve( responseData );
           this.off( "message", handler );
         }

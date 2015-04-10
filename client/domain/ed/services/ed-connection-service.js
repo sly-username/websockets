@@ -20,7 +20,6 @@ export default edConnectionService = {
           responseData = response.data;
         }
 
-        console.log( responseData.message.data );
         return responseData.message.data;
       }).catch(( error ) => {
         console.warn( "Issue authenticating in connection service" );
@@ -71,8 +70,7 @@ export default edConnectionService = {
       }
     }
 
-    console.log( "requestData", requestData );
-
+    // doesn't like stringified data
     //requestData = this.formatDataObject( requestData );
 
     return this.formattedRequest( requestData );
