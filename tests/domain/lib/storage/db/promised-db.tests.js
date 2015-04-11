@@ -4,7 +4,8 @@
   "use strict";
 
   suite( "PromisedDB", function() {
-    var promisedDB;
+    var promisedDB,
+      PDBObjectStore;
 
     this.timeout( 5000 );
 
@@ -12,9 +13,13 @@
       indexedDB.deleteDatabase( "testing-track-db" );
       indexedDB.deleteDatabase( "testing-track-db-2" );
 
-      System.import( "domain/lib/storage/db/promised-db" )
+      Promise.all([
+        System.import( "domain/lib/storage/db/promised-db" ),
+        System.import( "domain/lib/storage/db/PDBObjectStore" )
+      ])
         .then(function( imported ) {
-          promisedDB = imported.default;
+          promisedDB = imported[ 0 ].default;
+          PDBObjectStore = imported[ 1 ].default;
 
           done();
         }, function( error ) {
@@ -290,16 +295,17 @@
 
                   pdb[ storeName ].delete( 5 )
                     .then(function( data ) {
-                      // todo expect something
+                      expect( data )
+                        .to.equal( undefined );
+
                       done();
                     })
                     .catch( done );
                 });
 
-                test( "clear", function() {
+                test.skip( "clear", function( done ) {
                   expect( pdb[ storeName ] )
                     .to.respondTo( "clear" );
-
                   // todo, actually check if it works
                 });
 
@@ -310,7 +316,8 @@
                   pdb[ storeName ].get( 0 )
                     .then(function( data ) {
                       expect( data )
-                        .to.equal( seedData[ 0 ] );
+                        .to.deep.equal( seedData[ 0 ] );
+
                       done();
                     }).catch( done );
                 });
@@ -323,7 +330,7 @@
                     .then(function( data ) {
                       expect( data )
                         .to.equal( augmentedData.id );
-//                        .to.deep.equal( augmentedData );
+
                       done();
                     }).catch( done );
                 });
@@ -336,6 +343,8 @@
                     .then(function( cursor ) {
                       expect( cursor )
                         .to.be.instanceof( IDBCursor );
+
+                      done();
                     }).catch( done );
                 });
 
@@ -347,6 +356,7 @@
                     .then(function( count ) {
                       expect( count )
                         .to.equal( seedData.length );
+
                       done();
                     }).catch( done );
                 });
@@ -367,56 +377,114 @@
                           .that.equals( indexName );
                       });
 
-                      test( "objectStore", function() {
-                        expect( pdb[ storeName ][ indexName ] )
-                          .to.have.property( "objectStore" )
-                          .that.equals( pdb[ storeName ] );
-                      });
-
                       test( "keyPath", function() {
                         expect( pdb[ storeName ][ indexName ] )
-                          .to.have.property( "keyPath" );
+                          .to.have.property( "keyPath" )
+                          .that.equals( versionConfig[ storeName ].indexes[ indexName ][ 0 ] );
                       });
 
                       test( "multiEntry", function() {
                         expect( pdb[ storeName ][ indexName ] )
-                          .to.have.property( "multiEntry" );
+                          .to.have.property( "multiEntry" )
+                          .that.equals( versionConfig[ storeName ].indexes[ indexName ][ 1 ].multiEntry );
                       });
 
                       test( "unique", function() {
                         expect( pdb[ storeName ][ indexName ] )
-                          .to.have.property( "unique" );
+                          .to.have.property( "unique" )
+                          .that.equals( versionConfig[ storeName ].indexes[ indexName ][ 1 ].unique );
+                      });
+
+                      test( "objectStoreName", function() {
+                        expect( pdb[ storeName ][ indexName ] )
+                          .to.have.property( "objectStoreName" )
+                          .that.equals( storeName );
                       });
                     });
 
-                    suite( indexName + " has index properties", function() {
-                      test( "count", function() {
+                    // TODO PROPER EXPECTS
+                    suite( indexName + " has index methods", function() {
+                      test( "count", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "count" );
+
+                        pdb[ storeName ][ indexName ].count()
+                          .then(function( count ) {
+                            expect( count )
+                              .to.be.a( "number" )
+                              .and.equal( 5 );
+
+                            done();
+                          })
+                          .catch( done );
                       });
 
-                      test( "get", function() {
+                      test( "get", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "get" );
+
+                        // TODO
+                        pdb[ storeName ][ indexName ].get(
+                          versionConfig[ storeName ].indexes[ indexName ][ 0 ]
+                        )
+                          .then(function( data ) {
+                            expect( data )
+                              .to.deep.equal( seedData[ 1 ] );
+
+                            done();
+                          })
+                          .catch( done );
                       });
 
-                      test( "getKey", function() {
+                      test( "getKey", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "getKey" );
+
+                        // TODO
+                        pdb[ storeName ][ indexName ].getKey(
+                          versionConfig[ storeName ].indexes[ indexName ][ 0 ]
+                        )
+                          .then(function( data ) {
+                            expect( data )
+                              .to.equal( "something" );
+
+                            done();
+                          })
+                          .catch( done );
                       });
 
-                      test( "openCursor", function() {
+                      test( "openCursor", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "openCursor" );
+
+                        // TODO ?
+                        pdb[ storeName ][ indexName ].openCursor()
+                          .then(function( data ) {
+                            expect( data )
+                              .to.be.instanceof( IDBCursorWithValue );
+
+                            done();
+                          })
+                          .catch( done );
                       });
 
-                      test( "openKeyCursor", function() {
+                      test( "openKeyCursor", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "openKeyCursor" );
+
+                        // TODO ?
+                        pdb[ storeName ][ indexName ].openKeyCursor()
+                          .then(function( data ) {
+                            expect( data )
+                              .to.be.instanceof( IDBCursor );
+
+                            done();
+                          })
+                          .catch( done );
                       });
-                    });
-                  });
-                });
+                    }); // end index methods suite
+                  }); // end storeName + indexName suite
+                }); // end Object.keys( indexes )
               }); // end storeName has indexes suite
             }); // end object store suite
           }); // end versionConfig.keys.forEach
