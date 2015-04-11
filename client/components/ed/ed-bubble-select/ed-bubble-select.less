@@ -1,10 +1,12 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/alignments.mixin.less";
 
 :host {
   float: left;
-  max-width: 34.2rem;
-  width: 33.3%
+  width: 28rem;
+  max-width: 33.3%
 }
 
 :host([view-type="dislike"][checked]) {
@@ -70,7 +72,9 @@ input[type="checkbox"] {
   line-height: 0;
   color: @white;
   text-align: center;
-  font-size: 2.3rem;
+  .edType( heading-XS );
+  text-transform: uppercase;
+  .verticalAlign();
   .transform( rotate(-30deg) );
 }
 
