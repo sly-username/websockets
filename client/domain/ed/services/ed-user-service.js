@@ -44,10 +44,6 @@ Object.defineProperties( edUserService, {
 
 edUserService.login = function( email, password ) {
   var json = {
-    action: {
-      route: "user/login",
-      priority: 10 // TODO when these priority rankings are flushed out
-    },
     auth: {
       email,
       password
