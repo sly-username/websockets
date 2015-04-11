@@ -106,7 +106,7 @@ export default class EDWebSocket extends HealingWebSocket {
     //  data.action = {};
     //}
 
-    if ( this.needsAuth( data.action.route ) && !this[ isAuthenticated ] ) {
+    if ( !this[ isAuthenticated ] ) {
       this.once( "authenticated", event => {
         super.send( data );
       });

@@ -64,7 +64,6 @@
         });
 
         test( "hasOnboarded returns true after user registers", function() {
-          // TODO need to wait until connection service is created
           edUserService.register();
 
           expect( edUserService )
@@ -100,7 +99,7 @@
             done();
           });
 
-          edUserService.login( "email", "password" );
+          edUserService.login( "intdev@eardish.com", "password" );
         });
       });
 
@@ -130,32 +129,31 @@
       suite( "login", function() {
         // TODO need to figure out how to make login successful for this test
         suite( "on a successful login", function() {
-          test( "should return user object", function() {
+          test( "should return user object", function( done ) {
             var json = {
-              action: {
-                route: "user/login",
-                priority: 10
-              },
               auth: {
-                email: "email",
-                password: "password"
+                email: "intdev@eardish.com",
+                password: "intdevpass"
               }
             },
-            userServiceReturn = edUserService.login( json.auth.email, json.auth.password );
+            userServiceReturn = edUserService.login( json.auth.email, json.auth.password )
+              .then( function( response ) {
+                console.log( response );
+                done();
+              });
 
             expect( userServiceReturn )
               .to.be.an( "object" );
+
+            //expect( userServiceReturn.isOpenSession )
+            //  .to.eventually.equal( true );
           });
 
           test( "sessionAuthJSON property should store authentication information", function() {
             var json = {
-                action: {
-                  route: "user/login",
-                  priority: 10
-                },
                 auth: {
-                  email: "email",
-                  password: "password"
+                  email: "intdev@eardish.com",
+                  password: "intdevpass"
                 }
               };
 
@@ -166,37 +164,34 @@
               .that.equals( json );
           });
 
-          test( "\"isOpen\" property should be set to true", function() {
+          test( "\"isOpenSession\" property should be set to true", function( done ) {
             var json = {
-                action: {
-                  route: "user/login",
-                  priority: 10
-                },
                 auth: {
-                  email: "email",
-                  password: "password"
+                  email: "intdev@eardish.com",
+                  password: "intdevpass"
                 }
               };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).
+              then( function() {
+                expect( edUserService )
+                  .to.have.property( "isOpenSession" )
+                  .that.is.a( "boolean" )
+                  .that.equals( true );
 
-            expect( edUserService )
-              .to.have.property( "isOpenSession" )
-              .that.is.a( "boolean" )
-              .that.equals( true );
+                done();
+              });
+
+
           });
         });
 
         suite( "when login is not successful", function() {
           test( "should set currentUser to null", function() {
             var json = {
-              action: {
-                route: "user/login",
-                priority: 10
-              },
               auth: {
-                email: "email",
-                password: "password"
+                email: "intdev@eardish.com",
+                password: "intdevpass"
               }
             };
 
@@ -209,13 +204,9 @@
 
           test( "should set isOpenSession to false", function() {
             var json = {
-              action: {
-                route: "user/login",
-                priority: 10
-              },
               auth: {
-                email: "email",
-                password: "password"
+                email: "intdev@eardish.com",
+                password: "intdevpass"
               }
             };
 

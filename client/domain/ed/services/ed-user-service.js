@@ -1,11 +1,10 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
-//import edConnectionService from "domain/ed/services/ed-connection-service";
+import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
-  edConnectionService = {}, // TODO for now, until it's created
   edDataService = {}, // TODO for now, until it's created
   currentUser = null,
   isOpenSession = false,
@@ -55,7 +54,7 @@ edUserService.login = function( email, password ) {
     }
   };
 
-  return edConnectionService.formattedRequest( json )
+  return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
       currentUser = new EDUser( raw.auth );
       isOpenSession = true;

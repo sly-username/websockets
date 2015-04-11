@@ -1,6 +1,7 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
+import EventEmitter from "domain/lib/event/EventEmitter";
 
-var edConnectionService,
+var edConnectionService = new EventEmitter([ "authenticated" ]),
   edSocket = new EDWebSocket();
 
 // todo remove for debug!
