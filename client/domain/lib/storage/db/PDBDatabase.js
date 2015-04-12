@@ -1,3 +1,4 @@
+/*jshint strict: false */
 
 import EventEmitter from "domain/lib/event/EventEmitter";
 import define from "domain/ed/define-properties";

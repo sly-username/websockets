@@ -1,3 +1,4 @@
+/*jshint strict: false*/
 
 import define from "domain/ed/define-properties";
 import createEvent from "domain/lib/event/create-event";

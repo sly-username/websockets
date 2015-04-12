@@ -1,3 +1,5 @@
+/*jshint strict: false */
+
 var transactionSymbol = Symbol( "transaction" );
 
 import define from "domain/ed/define-properties";
