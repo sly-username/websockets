@@ -14,11 +14,17 @@ var
     return t.promise( t.objectStore( storeName )[ fnName ]( ...args ) );
   },
   createChangeEvent = function( objectStore, operation, input, result ) {
+    var [ value, key ] = input;
+
+    if ( key == null && objectStore.keyPath != null ) {
+      key = value[ objectStore.keyPath ];
+    }
+
     return createEvent( "change", {
       detail: {
         objectStoreName: objectStore.name,
-        inputKey: input[ 1 ] || input[ 0 ][ objectStore.keyPath ],
-        inputValue: input[ 0 ],
+        value,
+        key,
         indexName: null,
         operation,
         result

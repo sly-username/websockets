@@ -7,7 +7,7 @@
     var EDTrack;
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/objects/EDTrack" )
+      System.import( "domain/ed/objects/media/EDTrack" )
         .then( function( imported ) {
           EDTrack = imported.default;
           done();

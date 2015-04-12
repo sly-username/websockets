@@ -1,8 +1,6 @@
-/*jshint strict: false */
+/*jshint strict: false*/
 
-var transactionSymbol = Symbol( "transaction" );
-
-import define from "domain/ed/define-properties";
+var transactionSymbol = Symbol( "transaction" ); // jshint ignore line
 
 export default class PDBTransaction {
   constructor( idbTransaction ) {

@@ -211,7 +211,7 @@ export default class LRUCache {
     var str = "";
 
     for ( let [ key, data ] of this ) {
-      str += key + ":" + data + ( key === this[ tail ].key ? "" : " < " );
+      str += `${key}:${data}` + ( key === this[ tail ].key ? "" : " < " );
     }
 
     return str;

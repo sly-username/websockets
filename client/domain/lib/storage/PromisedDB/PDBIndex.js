@@ -7,19 +7,24 @@ var
   readTransaction = function( pdb, storeName, indexName, fnName, args ) {
     var t = pdb.read( storeName, "readonly" );
     return t.promise( t.objectStore( storeName ).index( indexName )[ fnName ]( ...args ) );
-  },
+  };
+/*
   createAccessEvent = function( objectStore, indexName, operation, input, result ) {
+    var [ key ] = input,
+      value = result;
+
     return createEvent( "access", {
       detail: {
         objectStoreName: objectStore.name,
-        inputKey: input[ 1 ] || input[ 0 ][ objectStore.keyPath ],
-        inputValue: input[ 0 ],
+        key,
+        value,
         indexName,
         operation,
         result
       }
     });
   };
+*/
 
 export default class PDBIndex {
   constructor( objectStore, indexName ) {

@@ -17,7 +17,7 @@
           done( error );
         });
 
-      System.import( "domain/ed/objects/EDArtist" )
+      System.import( "domain/ed/objects/profile/EDArtist" )
         .then( function( imported ) {
           EDArtist = imported.default;
           done();

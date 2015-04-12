@@ -1,3 +1,5 @@
+/*jshint strict: false*/
+
 import define from "domain/ed/define-properties";
 import EDDataObject from "domain/ed/objects/EDDataObject";
 

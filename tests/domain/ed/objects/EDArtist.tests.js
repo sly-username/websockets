@@ -7,7 +7,7 @@
     this.timeout( 5000 );
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/objects/EDArtist" )
+      System.import( "domain/ed/objects/profile/EDArtist" )
         .then( function( imported ) {
           EDArtist = imported.default;
           done();

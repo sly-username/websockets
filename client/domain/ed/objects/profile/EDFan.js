@@ -1,3 +1,5 @@
+/*jshint strict: false*/
+
 import define from "domain/ed/define-properties";
 import EDProfile from "domain/ed/objects/profile/EDProfile";
 
