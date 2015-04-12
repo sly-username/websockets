@@ -4,10 +4,9 @@
   indexedDB.deleteDatabase( "profile" );
   indexedDB.deleteDatabase( "track" );
 
-  Promise.all(
-    System.import( "domain/ed/services/ed-data-service" ),
-    System.import( "domain/lib/storage/promised-db/PromisedDB" )
-  ).then( imports => {
+  Promise.all([
+    System.import( "domain/ed/services/ed-data-service" )
+  ]).then( imports => {
     console.log( "PromisedDB/edDataService Loaded" );
   })
   .catch( error => {

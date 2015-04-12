@@ -1,13 +1,16 @@
 /*jshint strict: false*/
 // jscs:disable requirePaddingNewLinesInObjects
 
-import PromisedDB from "domain/lib/storage/promised-db/PromisedDB";
+import promisedDB from "domain/lib/storage/PromisedDB/promisedDB";
 
-// TODO UPDATE!
-export default new PromisedDB( "profile", 1, function( event ) {
-  var objStore = this.createObjectStore( "objects", { keyPath: "id" });
-
-  // create indexes
-  objStore.createIndex( "type", "type", { unique: false });
-  objStore.createIndex( "userId", "userId", { unique: false });
-});
+export default promisedDB.open( "profile", 1, [{
+  objects: {
+    options: {
+      keyPath: "id"
+    },
+    indexes: {
+      type: [ "type", { unique: false }],
+      userId: [ "userId", { unique: false }]
+    }
+  }
+}]);

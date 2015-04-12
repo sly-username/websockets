@@ -14,12 +14,15 @@
       indexedDB.deleteDatabase( "testing-track-db-2" );
 
       Promise.all([
-        System.import( "domain/lib/storage/db/promised-db" ),
-        System.import( "domain/lib/storage/db/PDBObjectStore" )
+        System.import( "domain/lib/storage/PromisedDB/promisedDB" ),
+        System.import( "domain/lib/storage/PromisedDB/PDBDatabase" ),
+        System.import( "domain/lib/storage/PromisedDB/PDBTransaction" ),
+        System.import( "domain/lib/storage/PromisedDB/PDBObjectStore" ),
+        System.import( "domain/lib/storage/PromisedDB/PDBIndex" )
       ])
         .then(function( imported ) {
           promisedDB = imported[ 0 ].default;
-          PDBObjectStore = imported[ 1 ].default;
+          PDBObjectStore = imported[ 3 ].default;
 
           done();
         }, function( error ) {

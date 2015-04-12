@@ -2,7 +2,7 @@
 
 import define from "domain/ed/define-properties";
 import createEvent from "domain/lib/event/create-event";
-import PDBIndex from "domain/lib/storage/db/PDBIndex";
+import PDBIndex from "domain/lib/storage/PromisedDB/PDBIndex";
 
 var
   readTransaction = function( pdb, storeName, fnName, args ) {

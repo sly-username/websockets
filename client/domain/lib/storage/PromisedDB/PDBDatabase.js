@@ -2,8 +2,8 @@
 
 import EventEmitter from "domain/lib/event/EventEmitter";
 import define from "domain/ed/define-properties";
-import PDBObjectStore from "domain/lib/storage/db/PDBObjectStore";
-import PDBTransaction from "domain/lib/storage/db/PDBTransaction";
+import PDBObjectStore from "domain/lib/storage/PromisedDB/PDBObjectStore";
+import PDBTransaction from "domain/lib/storage/PromisedDB/PDBTransaction";
 
 /**
  * @class PDBDatabase
@@ -40,12 +40,12 @@ export default class PDBDatabase extends EventEmitter {
     });
 
     define.enumReadOnly( this, [ "name", "version" ], idb );
-    define.readOnlyDeep( this, [ "objectStoreNames" ], idb );
+    define.enumReadOnlyDeep( this, [ "objectStoreNames" ], idb );
 
     Array.from( idb.objectStoreNames ).forEach( storeName => {
       Object.defineProperty( this, storeName, {
         configurable: false,
-        enumberable: false,
+        enumberable: true,
         writeable: false,
         value: new PDBObjectStore( this, storeName )
       });

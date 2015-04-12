@@ -23,7 +23,7 @@ if ( !indexedDB ) {
   throw new Error( "This Environment doesn't support IndexedDB" );
 }
 
-import PDBDatabase from "domain/lib/storage/db/PDBDatabase";
+import PDBDatabase from "domain/lib/storage/PromisedDB/PDBDatabase";
 
 // START CREATION HELPERS
 
