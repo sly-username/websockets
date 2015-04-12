@@ -2,7 +2,7 @@
 import define from "domain/ed/define-properties";
 import PDBObjectStore from "domain/lib/storage/db/PDBObjectStore";
 
-export default class PromisedDB {
+export default class PDBDatabase {
   constructor( db ) {
     Object.defineProperties( this, {
       close: {
