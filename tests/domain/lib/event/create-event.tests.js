@@ -38,9 +38,7 @@
 
         expect( event )
           .to.have.property( "detail" )
-          .to.deep.equal({
-          something: "for nothing"
-            });
+          .to.deep.equal( descriptor.detail );
       });
 
       test( "setting bubbles to true, makes event.bubbles = true", function() {
@@ -51,7 +49,7 @@
 
         expect( event )
           .to.have.property( "bubbles" )
-          .to.deep.equal( true );
+          .that.equals( descriptor.bubbles );
       });
 
       test( "setting cancelable to true, makes event.cancelable = true", function() {
@@ -62,7 +60,7 @@
 
         expect( event )
           .to.have.property( "cancelable" )
-          .to.deep.equal( true );
+          .that.equals( descriptor.cancelable );
       });
 
       test( "setting detail value, makes event.detail = detail.value", function() {
@@ -122,6 +120,7 @@
               .to.have.property( "detail" )
               .that.equals( descriptor.detail );
 
+            window.removeEventListener( "open", windowHandler );
             done();
           };
 

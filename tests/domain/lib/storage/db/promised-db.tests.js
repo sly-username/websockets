@@ -190,8 +190,6 @@
         var doneHelper = (function() {
           var count = 0;
           return function( arg ) {
-            console.log( "in done helper: %d, %o", count, arg );
-
             if ( ++count === 5 ) {
               done();
             }
@@ -393,12 +391,6 @@
                         expect( pdb[ storeName ][ indexName ] )
                           .to.have.property( "unique" )
                           .that.equals( versionConfig[ storeName ].indexes[ indexName ][ 1 ].unique );
-                      });
-
-                      test( "objectStoreName", function() {
-                        expect( pdb[ storeName ][ indexName ] )
-                          .to.have.property( "objectStoreName" )
-                          .that.equals( storeName );
                       });
                     });
 

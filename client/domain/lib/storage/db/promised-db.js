@@ -19,6 +19,10 @@ var
 // Find the right indexedDB reference
 indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
 
+if ( !indexedDB ) {
+  throw new Error( "This Environment doesn't support IndexedDB" );
+}
+
 import PDBDatabase from "domain/lib/storage/db/PDBDatabase";
 
 // START CREATION HELPERS
@@ -66,8 +70,8 @@ createIndexOnObjectStore = function( objectStore, indexName, keyPath, optionalPa
 setupIndex = function( objectStore, indexName, indexConfig ) {
   var newIndex = createIndexOnObjectStore( objectStore, indexName, ...indexConfig );
 
-  // todo remove debug
-  console.log( `created index ${newIndex.name} on store ${objectStore.name}` );
+//  console.log( `created index ${newIndex.name} on store ${objectStore.name}` );
+  return newIndex;
 };
 
 /**
@@ -86,10 +90,12 @@ setupIndex = function( objectStore, indexName, indexConfig ) {
 setupObjectStore = function( idbInstance, storeName, storeConfig ) {
   var newObjectStore = createObjectStoreInDB( idbInstance, storeName, storeConfig.options );
 
-  console.log( "created store: " + newObjectStore.name );
+//  console.log( "created store: " + newObjectStore.name );
   Object.keys( storeConfig.indexes || {} ).forEach(function( indexName ) {
     setupIndex( newObjectStore, indexName, storeConfig.indexes[ indexName ] );
   });
+
+  return newObjectStore;
 };
 
 // END CREATION HELPERS
@@ -148,7 +154,7 @@ export default {
 
       // reject if blocked?
       openRequest.onblocked = function( event ) {
-        console.log( `${name} version: ${version} openRequest.onblocked %o`, event );
+        console.warn( `${name} version: ${version} openRequest.onblocked %o`, event );
         reject( event );
       };
 

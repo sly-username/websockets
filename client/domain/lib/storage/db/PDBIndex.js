@@ -1,125 +1,89 @@
 
-var
-  dbSymbol = Symbol( "internalDB" ),
-  openReadTransaction,
-  openWriteTransaction,
-  resolveToRequestViaTransaction;
-
 import define from "domain/ed/define-properties";
+import createEvent from "domain/lib/event/create-event";
 
-// TODO DRY OUT open and reslove functions
-// we need to create a new transaction to interact with the database
-// this generates a "readonly" transaction on the idb, for the given store name
-openReadTransaction = function( idb, storeName, indexName ) {
-  var transaction = idb.transaction( storeName, "readonly" );
-
-  return {
-    transaction,
-    index: transaction.objectStore( storeName ).index( indexName )
+var
+  readTransaction = function( pdb, storeName, indexName, fnName, args ) {
+    var t = pdb.read( storeName, "readonly" );
+    return t.promise( t.objectStore( storeName ).index( indexName )[ fnName ]( ...args ) );
+  },
+  createAccessEvent = function( objectStore, indexName, operation, input, result ) {
+    return createEvent( "access", {
+      detail: {
+        objectStoreName: objectStore.name,
+        inputKey: input[ 1 ] || input[ 0 ][ objectStore.keyPath ],
+        inputValue: input[ 0 ],
+        indexName,
+        operation,
+        result
+      }
+    });
   };
-};
-
-// same as above but creates a "readwrite" transaction
-openWriteTransaction = function( idb, storeName, indexName ) {
-  var transaction = idb.transaction( storeName, "readwrite" );
-
-  return {
-    transaction,
-    index: transaction.objectStore( storeName ).index( indexName )
-  };
-};
-
-// this is a helper for resolving Promises to request.result data on "transactioncomplete"
-resolveToRequestViaTransaction = function( transaction, request, resolve, reject ) {
-  transaction.oncomplete = function( event ) {
-    console.log( "transaction complete: %o", event );
-    resolve( request.result );
-  };
-
-  transaction.onerror = function( event ) {
-    console.log( "transaction errored: %o", event );
-    reject( event );
-  };
-
-  request.onsuccess = function( event ) {
-    console.log( "request success, %o", event );
-  };
-
-  request.onerror = function( event ) {
-    console.log( "request error: %o", event );
-  };
-};
 
 export default class PDBIndex {
-  constructor( idbIndex ) {
+  constructor( objectStore, indexName ) {
+    var
+      storeName = objectStore.name,
+      idbIndex = objectStore.pdb.read( storeName ).objectStore( storeName ).index( indexName );
+
     Object.defineProperties( this, {
-      [ dbSymbol ]: {
+      objectStore: {
         configurable: false,
-        enumerable: false,
+        enumerable: true,
         writeable: false,
-        value: idbIndex.objectStore.transaction.db
-      },
-      objectStoreName: {
-        configurable: false,
-        enumerable: false,
-        writeable: false,
-        value: idbIndex.objectStore.name
+        value: objectStore
       }
     });
 
-    define.readOnly( this, [ "name", "keyPath", "multiEntry", "unique" ], idbIndex );
-
-    console.log( "in PDBIndex[[construct]] %o, %o", idbIndex, this );
+    define.enumReadOnly( this, [ "name", "keyPath", "multiEntry", "unique" ], idbIndex );
   }
 
-  get( key ) {
-    return new Promise(( resolve, reject ) => {
-      var request,
-        { transaction, index } = openReadTransaction( this[ dbSymbol ], this.objectStoreName, this.name );
-
-      request = index.get( key );
-      resolveToRequestViaTransaction( transaction, request, resolve, reject );
-    });
+  get( ...args ) {
+    return readTransaction(
+      this.objectStore.pdb,
+      this.objectStore.name,
+      this.name,
+      "get", args
+    );
   }
 
-  count( key ) {
-    return new Promise(( resolve, reject ) => {
-      var request,
-        { transaction, index } = openReadTransaction( this[ dbSymbol ], this.objectStoreName, this.name );
-
-      request = index.count( key );
-      resolveToRequestViaTransaction( transaction, request, resolve, reject );
-    });
+  count( ...args ) {
+    return readTransaction(
+      this.objectStore.pdb,
+      this.objectStore.name,
+      this.name,
+      "count", args
+    );
   }
 
-  getKey( key ) {
-    return new Promise(( resolve, reject ) => {
-      var request,
-        { transaction, index } = openReadTransaction( this[ dbSymbol ], this.objectStoreName, this.name );
-
-      request = index.getKey( key );
-      resolveToRequestViaTransaction( transaction, request, resolve, reject );
-    });
+  getKey( ...args ) {
+    return readTransaction(
+      this.objectStore.pdb,
+      this.objectStore.name,
+      this.name,
+      "getKey", args
+    );
   }
 
-  openCursor( range, direction ) {
-    return new Promise(( resolve, reject ) => {
-      var request,
-        { transaction, index } = openReadTransaction( this[ dbSymbol ], this.objectStoreName, this.name );
-
-      request = index.openCursor( range, direction );
-      resolveToRequestViaTransaction( transaction, request, resolve, reject );
-    });
+  // TODO fix cursor stuff
+  openCursor( ...args ) {
+    return readTransaction(
+      this.objectStore.pdb,
+      this.objectStore.name,
+      this.name,
+      "openCursor",
+      args
+    );
   }
 
-  openKeyCursor( range, direction ) {
-    return new Promise(( resolve, reject ) => {
-      var request,
-        { transaction, index } = openReadTransaction( this[ dbSymbol ], this.objectStoreName, this.name );
-
-      request = index.openKeyCursor( range, direction );
-      resolveToRequestViaTransaction( transaction, request, resolve, reject );
-    });
+  openKeyCursor( ...args ) {
+    return readTransaction(
+      this.objectStore.pdb,
+      this.objectStore.name,
+      this.name,
+      "openKeyCursor",
+      args
+    );
   }
 
   /* maybe future methods (according to mdn)

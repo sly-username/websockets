@@ -1,32 +1,65 @@
 
+import EventEmitter from "domain/lib/event/EventEmitter";
 import define from "domain/ed/define-properties";
 import PDBObjectStore from "domain/lib/storage/db/PDBObjectStore";
+import PDBTransaction from "domain/lib/storage/db/PDBTransaction";
 
-export default class PDBDatabase {
-  constructor( db ) {
+/**
+ * @class PDBDatabase
+ * @inherits EventEmitter
+ * @property name {string}
+ * @property version {number}
+ * @property objectStoreNames {DOMStringList}
+ * @property variable {property key} -- the name of each object store will be saved as a PDBObjectStore
+ */
+export default class PDBDatabase extends EventEmitter {
+  /**
+   * @private
+   * @constructor PDBDatabase
+   * @param idb {IDBDatabase}
+   */
+  constructor( idb ) {
+    super([ "change" ]);
+
     Object.defineProperties( this, {
-      close: {
+      idb: {
         configurable: false,
         enumberable: false,
         writeable: false,
+        value: idb
+      },
+      close: {
+        configurable: false,
+        enumberable: true,
+        writeable: false,
         value: function() {
-          return db.close();
+          return idb.close();
         }
       }
     });
 
-    define.readOnly( this, [ "name", "version" ], db );
-    define.readOnlyDeep( this, [ "objectStoreNames" ], db );
+    define.enumReadOnly( this, [ "name", "version" ], idb );
+    define.readOnlyDeep( this, [ "objectStoreNames" ], idb );
 
-    Array.from( db.objectStoreNames ).forEach( storeName => {
+    Array.from( idb.objectStoreNames ).forEach( storeName => {
       Object.defineProperty( this, storeName, {
         configurable: false,
         enumberable: false,
         writeable: false,
-        value: new PDBObjectStore(
-          db.transaction( storeName, "readwrite" ).objectStore( storeName )
-        )
+        value: new PDBObjectStore( this, storeName )
       });
     });
+  }
+
+  transaction( storeNames, accessMode ) {
+    return new PDBTransaction( this.idb.transaction( storeNames, accessMode ) );
+  }
+
+  read( storeNames ) {
+    return this.transaction( storeNames, "readonly" );
+  }
+
+  write( storeNames ) {
+    return this.transaction( storeNames, "readwrite" );
   }
 }
