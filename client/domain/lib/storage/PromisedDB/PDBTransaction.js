@@ -1,6 +1,6 @@
 /*jshint strict: false*/
 
-var transactionSymbol = Symbol( "transaction" ); // jshint ignore line
+var transactionSymbol = Symbol( "transaction" ); // jshint ignore:line
 
 export default class PDBTransaction {
   constructor( idbTransaction ) {
