@@ -22,6 +22,7 @@
     // Start Testing
     suite( "edConnectionService creation", function() {
       test( "edConnectionService have appropriate properties", function() {
+
         expect( edConnectionService.send )
           .to.be.an( "function" );
 
@@ -36,12 +37,26 @@
       });
     });
 
-    suite( "send method", function() {
+    suite.skip( "authenticateConnection method", function() {
+      test( "calls the method", function( done ) {
+        var authenticateConnectionSpy = sinon.spy( edConnectionService, "authenticateConnection" );
+
+        edConnectionService.authenticateConnection( "intdev@eardish.com", "intdevpass" )
+          .then(function( response ) {
+            authenticateConnectionSpy.restore();
+            done();
+          });
+
+        expect( authenticateConnectionSpy )
+          .to.have.callCount( 1 );
+      });
+    });
+
+    suite.skip( "send method", function() {
       test( "calls the send method on the edWebSocket instance", function( done ) {
         var dataObj = {
-            auth: {
-              email: "wondasykes@gmail.com",
-              password: "imwonda"
+            data: {
+              id: 1
             }
           },
           sendSpy = sinon.spy( edConnectionService, "send" );
@@ -56,35 +71,34 @@
       });
     });
 
-    suite.skip( "request method", function() {
+    suite( "request method", function() {
       test( "calls the request method on the edWebSocket instance", function( done ) {
         var dataObj = {
-            auth: {
-              email: "wondasykes@gmail.com",
-              password: "imwonda"
-            }
+            id: 1
           },
           requestSpy = sinon.spy( edConnectionService, "request" );
 
-        edConnectionService.request( "user/login", 10, dataObj );
+        edConnectionService.request( "profile/get", 10, { data: dataObj } )
+          .then(function( response ) {
+            requestSpy.restore();
+            done();
+          });
 
         expect( requestSpy )
           .to.have.callCount( 1 );
 
-        requestSpy.restore();
-        done();
+
       });
     });
 
-    suite( "formattedSend method", function() {
+    suite.skip( "formattedSend method", function() {
       test( "calls the send method with formatted data", function( done ) {
         var dataObj = {
-            id: "001",
-            name: "string"
+            id: 1
           },
           formattedSendSpy = sinon.spy( edConnectionService, "formattedSend" );
 
-        edConnectionService.formattedSend( dataObj );
+        edConnectionService.formattedSend( { data: dataObj } );
 
         expect( formattedSendSpy )
           .to.have.callCount( 1 );
@@ -94,15 +108,14 @@
       });
     });
 
-    suite( "formattedRequest method", function() {
+    suite.skip( "formattedRequest method", function() {
       test( "calls the request method with formatted data", function( done ) {
         var dataObj = {
-            id: "001",
-            name: "string"
+            id: 1
           },
           formattedSendSpy = sinon.spy( edConnectionService, "formattedSend" );
 
-        edConnectionService.formattedSend( dataObj );
+        edConnectionService.formattedSend( { data: dataObj } );
 
         expect( formattedSendSpy )
           .to.have.callCount( 1 );
@@ -115,12 +128,11 @@
     suite( "formatDataObject method", function() {
       test( "method invocation", function() {
         var dataObj = {
-            id: "001",
-            name: "string"
+            id: 1
           },
           formatDataObjectSpy = sinon.spy( edConnectionService, "formatDataObject" );
 
-        edConnectionService.formatDataObject( dataObj );
+        edConnectionService.formatDataObject( { data: dataObj } );
 
         expect( formatDataObjectSpy )
           .to.have.callCount( 1 );
@@ -130,11 +142,10 @@
 
       test( "returns a stringified json object", function() {
         var dataObj = {
-            id: "001",
-            name: "string"
+            id: 1
           };
 
-        expect( edConnectionService.formatDataObject( dataObj ) )
+        expect( edConnectionService.formatDataObject( { data: dataObj } ) )
           .to.be.a( "string" );
       });
     });
