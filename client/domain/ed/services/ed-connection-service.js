@@ -73,7 +73,6 @@ export default edConnectionService = {
 
     // doesn't like stringified data
     //requestData = this.formatDataObject( requestData );
-
     return this.formattedRequest( requestData );
   },
 
