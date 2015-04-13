@@ -80,7 +80,7 @@ export default class HealingWebSocket extends EventEmitter {
   }
 
   send( data ) {
-    if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
+    if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" || data instanceof String ) ) {
       data = JSON.stringify( data );
     }
 

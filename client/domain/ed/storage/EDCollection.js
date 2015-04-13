@@ -1,5 +1,7 @@
-// import edDataService from "domain/ed/services/ed-data-service";
+/*jshint strict: false*/
+
 import define from "domain/ed/define-properties";
+import dataService from "domain/ed/services/ed-data-service";
 
 var datalist = Symbol( "datalist" );
 
