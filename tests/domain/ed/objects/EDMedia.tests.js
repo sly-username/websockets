@@ -7,7 +7,7 @@
     var EDMedia;
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/objects/EDMedia" )
+      System.import( "domain/ed/objects/media/EDMedia" )
         .then( function( imported ) {
           EDMedia = imported.default;
           done();

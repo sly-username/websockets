@@ -4,6 +4,7 @@ import { default as LRUCache, symbols } from "domain/lib/storage/LRUCache";
 
 var makeChangeObject, notifyOfChange,
   observers = Symbol( "observers" ),
+  observeAll = Symbol( "observeAllObjects" ),
   { head, keyMap } = symbols;
 
 /**
@@ -39,13 +40,17 @@ makeChangeObject = function( name, object, type, oldValue ) {
  * @param change {Object} -- the change object to pass to the observer callbacks
  */
 notifyOfChange = function( key, observerMap, change ) {
+  var toNotify = observerMap[ observeAll ];
+
   if ( key in observerMap ) {
-    observerMap[ key ].forEach(function( cb ) {
-      if ( cb.acceptList.some( value => value === change.type ) ) {
-        cb([ change ]);
-      }
-    });
+    toNotify = toNotify.concat( observerMap[ key ] );
   }
+
+  toNotify.forEach(function( cb ) {
+    if ( cb.acceptList.some( value => value === change.type ) ) {
+      cb([ change ]);
+    }
+  });
 };
 
 /*
@@ -68,7 +73,13 @@ export default class ObservableLRUCache extends LRUCache {
   constructor( limit ) {
     super( limit );
 
-    this[ observers ] = {};
+    this[ observers ] = {
+      [ observeAll ]: []
+    };
+  }
+
+  static get OBSERVE_ALL() {
+    return observeAll;
   }
 
   /**
@@ -108,7 +119,7 @@ export default class ObservableLRUCache extends LRUCache {
     if ( key in this[ observers ] ) {
       tmpObserverList = this[ observers ][ key ].filter( cb => cb !== callback );
 
-      if ( tmpObserverList.length === 0 ) {
+      if ( tmpObserverList.length === 0 && key !== observeAll ) {
         delete this[ observers ][ key ];
       } else {
         this[ observers ][ key ] = tmpObserverList;

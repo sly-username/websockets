@@ -89,9 +89,11 @@ export default class EventEmitter {
 
     extraArgs.unshift( event );
 
-    this[ handlerMap ][ event.type ].forEach( h => {
-      h.apply( this, extraArgs );
-    });
+    if ( Array.isArray( this[ handlerMap ][ event.type ] )) {
+      this[ handlerMap ][ event.type ].forEach( h => {
+        h.apply( this, extraArgs );
+      });
+    }
 
     return this;
   }
