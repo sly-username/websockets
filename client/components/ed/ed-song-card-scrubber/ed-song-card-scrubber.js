@@ -3,9 +3,6 @@
 
   polymer( "ed-song-card-scrubber", {
     complete: false,
-    observe: {
-      icon: "changeSVG"
-    },
     // Formats time into minute display
     get formattedValue() {
       return this._formattedValue;
@@ -50,12 +47,11 @@
       this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
       this.addEventListener( "touchend", this.scrubFire.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
-
-      // sets icon
-      this.playIcon.setAttribute( "name", this.icon );
     },
-    attributeChanged: function() {
-      this.updateScrub();
+    attributeChanged: function( attrName, oldVal, newVal ) {
+      if ( attrName === "value" ) {
+        this.updateScrub();
+      }
 
       if ( this.value === this.max ) {
         this.complete = true;
@@ -131,9 +127,6 @@
         msg: "scrubEnd",
         newValue: this.currentVal
       });
-    },
-    changeSVG: function() {
-      this.playIcon.setAttribute( "name", this.icon );
     }
   });
 })( window.Polymer );
