@@ -190,8 +190,6 @@ paths.karma = {
     "index.html",
     "tests.html",
     "**/.new/*.*",
-    "**/ed-components.html",
-    "**/ui-components.html",
     "**/poc-components.html",
     "coverage/**"
   ],
