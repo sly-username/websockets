@@ -6,6 +6,7 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   edConnectionService = {}, // TODO for now, until it's created
+  edDataService = {}, // TODO for now, until it's created
   currentUser = null,
   isOpenSession = false,
   hasOnboarded = false,
