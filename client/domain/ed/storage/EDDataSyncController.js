@@ -6,8 +6,8 @@ Change on db --> pass through transformer --> put into lru
  */
 
 export default class EDDataSyncController {
-  constructor( db, lru, transformer ) {
-    db.on( "change", function( event ) {
+  constructor( pdb, lru, transformer ) {
+    pdb.on( "change", function( event ) {
       var data = event.detail.value;
 
       console.log( "pushing to lru %o, data %o", lru, event );
