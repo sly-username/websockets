@@ -10,6 +10,7 @@ export default class EDDataSyncController {
     pdb.on( "change", function( event ) {
       var data = event.detail.value;
 
+      // TODO Debug remove
       console.log( "pushing to lru %o, data %o", lru, event );
       lru.set( transformer( data ) );
     });

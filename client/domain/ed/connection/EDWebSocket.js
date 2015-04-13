@@ -37,13 +37,6 @@ export default class EDWebSocket extends HealingWebSocket {
 
     this.on( "open", () => {
       console.log( "socket opened! %o", this );
-
-      // needs to authenticate AFTER socket opens
-      // where would we grab the credentials on initial open tho?
-      this.authenticate(
-        edUserService.sessionAuthJSON.email,
-        edUserService.sessionAuthJSON.password
-      );
     });
 
     this.on( "heal", () => {
@@ -83,23 +76,34 @@ export default class EDWebSocket extends HealingWebSocket {
     return new Promise(( resolve, reject ) => {
       var checkForAuthResponse = event => {
         var data;
+
+        if ( !this.isOpen ) {
+          this.once( "open", () => resolve( this.authenticate( email, password )));
+          return;
+        }
+
         console.log( "received message event:", event );
+
         try {
           data = JSON.parse( event.data );
         } catch ( error ) {
           console.error( error );
+          reject( error );
           return;
         }
 
         // validate response
         if ( data.status.code === 1 && typeof data.message.data.profileId === "string" ) {
           resolve( event );
+
           this[ isAuthenticated ] = true;
+
           this.dispatch( createEvent( "authenticated", {
             detail: {
               task: "for future self"
             }
           }));
+
           this.off( "message", checkForAuthResponse );
         }
       };
@@ -109,8 +113,6 @@ export default class EDWebSocket extends HealingWebSocket {
       this.on( "message", checkForAuthResponse );
     });
   }
-
-
 
   send( data ) {
     //if ( !data.hasOwnProperty( "action" ) ) {
@@ -135,8 +137,10 @@ export default class EDWebSocket extends HealingWebSocket {
     }
 
     console.log( "request called: %o", data );
+
     if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
       console.log( "in request, not authed, no auth block %o", data );
+
       return new Promise( ( resolve, reject ) => {
         this.once( "authenticated", () => {
           resolve( this.request( data ) );
@@ -164,7 +168,7 @@ export default class EDWebSocket extends HealingWebSocket {
         }
 
         if ( "meta" in responseData && responseData.meta.responseToken === newToken ) {
-          resolve( responseData );
+          resolve( event );
           this.off( "message", handler );
         }
       };

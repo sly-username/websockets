@@ -2,6 +2,7 @@
 // jscs:disable requirePaddingNewLinesInObjects
 
 import promisedDB from "domain/lib/storage/PromisedDB/promisedDB";
+// TODO Remove ^^
 
 import edProfileDB from "domain/ed/storage/pdbs/profileDB";
 import edTrackDB from "domain/ed/storage/pdbs/trackDB";
@@ -60,20 +61,23 @@ edTrackDB.then( trackDB => {
     );
 });
 
+// Start Service Functions
 dataService.getByTypeAndId = function( type, id, priority=1 ) {
-
-  connectionService.request( route, priority,  )
+//  connectionService.request( route, priority, {});
   return Promise.resolve({ type, id });
 };
 
-dataService.getArtistById = function( id ) {
+dataService.getArtistById = function( id, priority ) {
   return dataService.getByTypeAndId( EDArtist.TYPE, id );
 };
 
-dataService.getFanById = function( id ) {
+dataService.getFanById = function( id, priority ) {
   return dataService.getByTypeAndId( EDFan.TYPE, id );
 };
 
+dataService.getTrackById = function( id, priority ) {};
+
+var updateModel = function() {};
 
 // TODO REMOVE DEBUG
 dataService.lruMap = lruMap;
