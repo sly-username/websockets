@@ -7,7 +7,7 @@
     this.timeout( 5000 );
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/objects/EDFan" )
+      System.import( "domain/ed/objects/profile/EDFan" )
         .then( function( imported ) {
           EDFan = imported.default;
           done();

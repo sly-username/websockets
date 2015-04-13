@@ -2,15 +2,15 @@ var tmpEvent, createEvent,
   createWithConstructor = function( name, descriptor ) {
     return new CustomEvent( name, descriptor );
   },
-  createWithInit = function( name, descriptor ) {
-    var event = document.createEvent( "CustomEvent" );
-    descriptor = descriptor || {};
+  createWithInit = function( name, descriptor={} ) {
+    var event = document.createEvent( "CustomEvent" ),
+      { bubbles, cancelable, detail } = descriptor;
 
     event.initCustomEvent(
       name,
-      descriptor.bubbles || false,
-      descriptor.cancelable || false,
-      descriptor.detail || {}
+      typeof bubbles === "boolean" ? bubbles : true,
+      typeof cancelable === "boolean" ? cancelable : true,
+      detail || {}
     );
 
     return event;

@@ -1,5 +1,5 @@
-import EDTrack from "domain/ed/objects/EDTrack";
-//import EDCollection from "domain/ed/objects/EDCollection";
+import EDTrack from "domain/ed/objects/media/EDTrack";
+import EDCollection from "domain/ed/storage/EDCollection";
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import edAnalyticsService from "domain/analytics/EDAnalytics";

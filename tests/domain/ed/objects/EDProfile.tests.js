@@ -16,7 +16,7 @@
       ];
 
     suiteSetup( function( done ) {
-      System.import( "domain/ed/objects/EDProfile" )
+      System.import( "domain/ed/objects/profile/EDProfile" )
         .then( function( imported ) {
           EDProfile = imported.default;
           done();
