@@ -1,7 +1,7 @@
 <polymer-element name="ed-bubble-select" attributes="name view-type image value disabled required checked">
   <template>
     <link rel="stylesheet" href="./ed-bubble-select.css">
-    <div class="wrapper">
+    <div class="ed-bubble-select-wrapper">
       <template if="{{checked}}">
         <div class="ed-bubble" style="background-image: url({{image}});"><content></content></div>
       </template>
