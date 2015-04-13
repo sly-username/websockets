@@ -1,5 +1,5 @@
 @import "../../../styles/ed/buttons.mixin.less";
-@import "../../../styles/ed/text-styles.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 
 .wrapper {
@@ -20,7 +20,7 @@
   opacity: 0.5;
   float: left;
   padding: 0.3rem 0.5rem;
-  .headingXXSmall();
+  .edType( heading-XXS );
   span {
     display: block;
   }
@@ -31,7 +31,7 @@
   opacity: 0.5;
   float: right;
   padding: 0.3rem 0.6rem;
-  .headingNormal();
+  .edType( heading-M );
 }
 
 .user-rank, .songs-rated {
@@ -73,11 +73,11 @@
   margin-top: 1.5%;
   text-align: right;
   color: @white;
-  .headingXXXLarge();
+  .edType( heading-XXXL );
   span {
     display: block;
     color: @originalTeal;
-    .headingSmall();
+    .edType( heading-S );
   }
 }
 
@@ -87,7 +87,7 @@
     color: @originalTeal;
     margin-left: 3%;
     text-transform: uppercase;
-    .headingXSmall();
+    .edType( heading-XS );
   }
   .icon-bar-wrapper {
     padding: 4% 1.5%;
@@ -105,12 +105,12 @@
     color: @originalTeal;
     margin-left: 3%;
     text-transform: uppercase;
-    .headingXSmall();
+    .edType( heading-XS );
   }
   .bio-body {
     color: @darkPurple5;
     padding: 2%;
-    .paragraphNormal();
+    .edType( paragraph-M );
   }
 }
 

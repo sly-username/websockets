@@ -1,10 +1,10 @@
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
-@import "../../../styles/ed/text-styles.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
 
 * {
-  font-family: "Ubuntu-Regular";
+  font-family: "Ubuntu";
 }
 
 .ed-logo-header {
@@ -17,7 +17,7 @@
 }
 
 .forgot-text {
-  .paragraphLarge();
+  .edType( paragraph-L );
   color: @white;
   opacity: .5;
   margin-bottom: 4%;
