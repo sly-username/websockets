@@ -1,4 +1,4 @@
-var generateToken, needsAuth,
+var generateToken,/* needsAuth,*/
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
   edUserService = {
@@ -18,17 +18,17 @@ generateToken = function() {
   return ++token;
 };
 
-needsAuth = function( route ) {
-  // needs to auth routes on open and heal events
-  // not sure how to handle any route that needs to be healed
-  if ( route != null ) {
-    return [ "profile/get", "anyhealroute?" ].some( authRoute => {
-      return authRoute === route;
-    });
-  }
-
-  return false;
-};
+//needsAuth = function( route ) {
+//  // needs to auth routes on open and heal events
+//  // not sure how to handle any route that needs to be healed
+//  if ( route != null ) {
+//    return [ "profile/get", "anyhealroute?" ].some( authRoute => {
+//      return authRoute === route;
+//    });
+//  }
+//
+//  return false;
+//};
 
 export default class EDWebSocket extends HealingWebSocket {
   constructor() {
@@ -138,7 +138,7 @@ export default class EDWebSocket extends HealingWebSocket {
 
     console.log( "request called: %o", data );
 
-    if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
+    if ( /*needsAuth( data.action.route ) && */!this[ isAuthenticated ] && !( data.contains( "auth" ) ) ) {
       console.log( "in request, not authed, no auth block %o", data );
 
       return new Promise( ( resolve, reject ) => {

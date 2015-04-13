@@ -63,10 +63,21 @@
             .that.equals( false );
         });
 
-        test( "hasOnboarded returns true after user registers", function() {
-          edUserService.register();
+        test( "hasOnboarded returns true after user registers", function( done ) {
 
-          expect( edUserService )
+          var authBlock = {
+            auth: {
+              email: "intdev@eardish.com",
+              password: "intdevpass"
+            }
+          },
+            userServiceReturn = edUserService.register( authBlock )
+            .then( function( response ) {
+              console.log( response );
+              done();
+            });
+
+          expect( userServiceReturn )
             .to.have.property( "hasOnboarded" )
             .that.equals( true );
         });
