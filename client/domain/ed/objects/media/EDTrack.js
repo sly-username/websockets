@@ -31,34 +31,10 @@ export default class EDTrack extends EDMedia {
   }
 
   getArtist() {
-    var json = {
-      data: {
-        userId: this.artistId
-      }
-    };
-
-    return edDataService.getArtistById( json )
-      .then( raw => {
-        return new EDArtist( raw.data );
-      })
-      .catch( err => {
-        throw err;
-      });
+    return edDataService.getArtistById( this.artistId );
   }
 
   getCreator() {
-    var json = {
-      data: {
-        id: this.createdBy
-      }
-    };
-
-    return edDataService.getProfileById( json )
-      .then( raw => {
-        return new EDProfile( raw.data );
-      })
-      .catch( err => {
-        throw err;
-      });
+    return edDataService.getByTypeAndId( this.createdBy );
   }
 }
