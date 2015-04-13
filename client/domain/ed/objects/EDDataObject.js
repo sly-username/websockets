@@ -8,8 +8,12 @@ export default class EDDataObject extends EventEmitter {
   }
 
   constructor( args ) {
+    if ( !( "id" in args ) ) {
+      throw new TypeError( "EDDataObject id argument not found" );
+    }
+
     if ( !( "type" in args ) ) {
-      args.type = EDDataObject.TYPE;
+      throw new TypeError( "EDDataObject type argument not found" );
     }
 
     // call super to initialize EventEmitter properties

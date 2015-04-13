@@ -1,17 +1,23 @@
 /*jshint strict: false*/
+
 import define from "domain/ed/define-properties";
 import EDMedia from "domain/ed/objects/media/EDMedia";
-//import EDArtist from "domain/ed/objects/profile/EDArtist";
-//import EDProfile from "domain/ed/objects/profile/EDProfile";
-//import edDataService from "domain/ed/services/ed-data-service";
+import edDataService from "domain/ed/services/ed-data-service";
 
-//TODO fake objects
+// TODO fake objects
 var EDArtist = {},
-  EDProfile = {},
-  edDataService = {};
+  EDProfile = {};
 
 export default class EDTrack extends EDMedia {
+  static get TYPE() {
+    return EDMedia.TYPE + "-track";
+  }
+
   constructor( args ) {
+    if ( !( "type" in args ) ) {
+      args.type = EDTrack.TYPE;
+    }
+
     super( args );
 
     define.readOnly( this, [

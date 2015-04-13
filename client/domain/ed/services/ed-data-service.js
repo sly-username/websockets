@@ -9,6 +9,9 @@ import edTrackDB from "domain/ed/storage/pdbs/trackDB";
 import EDLRUCache from "domain/ed/storage/EDLRUCache";
 import EDDataSyncController from "domain/ed/storage/EDDataSyncController";
 
+// TODO use typeMap
+import typeMap from "domain/ed/objects/type-to-constructor";
+
 import EDArtist from "domain/ed/objects/profile/EDArtist";
 import EDFan from "domain/ed/objects/profile/EDFan";
 import EDTrack from "domain/ed/objects/media/EDTrack";
