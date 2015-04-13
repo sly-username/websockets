@@ -3,6 +3,9 @@
 
   polymer( "ed-song-card-scrubber", {
     complete: false,
+    observe: {
+      icon: "changeSVG"
+    },
     // Formats time into minute display
     get formattedValue() {
       return this._formattedValue;
@@ -25,7 +28,7 @@
       this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
       this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
       this.playBtn = this.shadowRoot.getElementById( "play-btn" );
-      this.icon = this.shadowRoot.getElementById( "btn-icon" );
+      this.playIcon = this.shadowRoot.getElementById( "btn-icon" );
 
       // Calculates the circumference of circles
       this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
@@ -47,6 +50,9 @@
       this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
       this.addEventListener( "touchend", this.scrubFire.bind( this ));
       this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
+
+      // sets icon
+      this.playIcon.setAttribute( "name", this.icon );
     },
     attributeChanged: function() {
       this.updateScrub();
@@ -57,7 +63,7 @@
         this.scrubber.style.opacity = 0;
         this.shadowScrubber.style.opacity = 0;
         this.playBtn.disabled = true;
-        this.icon.style.opacity = 0.02;
+        this.playIcon.style.opacity = 0.02;
       } else {
         this.complete = false;
         this.removeAttribute( "complete" );
@@ -109,10 +115,10 @@
       this.formattedMax = this.max;
     },
     swapIcon: function() {
-      if ( this.icon.getAttribute( "name" ) === "play" ) {
-        this.icon.setAttribute( "name", "pause" );
+      if ( this.playIcon.getAttribute( "name" ) === "play" ) {
+        this.playIcon.setAttribute( "name", "pause" );
       } else {
-        this.icon.setAttribute( "name", "play" );
+        this.playIcon.setAttribute( "name", "play" );
       }
     },
     scrubFire: function() {
@@ -125,6 +131,9 @@
         msg: "scrubEnd",
         newValue: this.currentVal
       });
+    },
+    changeSVG: function() {
+      this.playIcon.setAttribute( "name", this.icon );
     }
   });
 })( window.Polymer );

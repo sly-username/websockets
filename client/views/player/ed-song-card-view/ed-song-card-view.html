@@ -1,8 +1,14 @@
+<link rel="import" href="../../../components/ed/ed-user-ranking/ed-user-ranking.html"/>
+<link rel="import" href="../../../components/ed/ed-star-rating/ed-star-rating.html"/>
+<link rel="import" href="../../../components/ed/ed-mini-player/ed-mini-player.html"/>
+<link rel="import" href="../../../components/ed/ed-song-card-scrubber/ed-song-card-scrubber.html"/>
+<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+
 <polymer-element name="ed-song-card-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-song-card-view.css">
   <div class="song-card-wrapper">
-    <ed-mini-player
+    <ed-mini-player id="mini-player" icon="play"
         song="Track Title" artist="Artist Name"
         image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
     <section id="user-ranking">
@@ -12,7 +18,8 @@
       <ed-user-ranking id="songs-rated" top="songs" bottom="rated" rank="76"></ed-user-ranking>
       <ed-user-ranking id="your-rank" teal top="your" bottom="rank" rank="276"></ed-user-ranking>
     </section>
-    <ed-song-card-scrubber max="400" min="0" value="122" image="http://i.imgur.com/NEr8ka0.jpg"></ed-song-card-scrubber>
+    <ed-song-card-scrubber id="main-player" icon="play" max="400" min="0" value="122"
+                            image="http://i.imgur.com/NEr8ka0.jpg"></ed-song-card-scrubber>
     <ed-star-rating disable></ed-star-rating>
     <section id="brief-bio">
       <div class='rectangle-box'>
