@@ -10,10 +10,12 @@
         ready: function() {
           this.loginForm = this.shadowRoot.getElementById( "login-form" );
           this.submitButton = this.shadowRoot.getElementById( "login-submit" );
-          this.formInputs = this.loginForm.shadowRoot.querySelectorAll( "ed-form-input" );
+          this.clickEvents = [ "mousedown", "touchstart" ];
         },
         attached: function() {
-          this.submitButton.addEventListener( "click", this.submitForm.bind( this ) );
+          this.clickEvents.forEach( function( e ) {
+            this.submitButton.addEventListener( e, this.submitForm.bind( this ) );
+          }.bind( this ) );
         },
         submitForm: function( event ) {
           event.preventDefault();
