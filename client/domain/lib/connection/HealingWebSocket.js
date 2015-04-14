@@ -88,6 +88,7 @@ export default class HealingWebSocket extends EventEmitter {
       this[ socket ].send( data );
     } else if ( this.readyState === WebSocket.CONNECTING ) {
       this.once( "open", ( event ) => {
+//        HealingWebSocket.prototype.send.call( this, data );
         this.send( data );
       });
     } else {
