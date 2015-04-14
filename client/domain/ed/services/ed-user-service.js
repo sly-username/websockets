@@ -66,7 +66,7 @@ edUserService.login = function( email, password ) {
             }
           }));
 
-          document.querySelector( "app-router" ).go( "/profile/" + raw.profileId );
+          document.querySelector( "app-router" ).go( "/profile/get/" + raw.profileId );
           //edAnalyticsService.send(
           //  edAnalyticsService.createEvent( "login", {
           //    timestamp: new Date()
