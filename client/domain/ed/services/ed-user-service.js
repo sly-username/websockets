@@ -44,10 +44,10 @@ Object.defineProperties( edUserService, {
 
 edUserService.login = function( email, password ) {
   var json = {
-    action: {
-      route: "user/login",
-      priority: 10 // TODO when these priority rankings are flushed out
-    },
+    //action: {
+    //  route: "user/login",
+    //  priority: 10 // TODO when these priority rankings are flushed out
+    //},
     auth: {
       email,
       password
@@ -84,10 +84,10 @@ edUserService.login = function( email, password ) {
 
 edUserService.logout = function() {
   var json = {
-    action: {
-      route: "user/logout",
-      priority: 10 // TODO when these priority rankings are flushed out
-    }
+    //action: {
+    //  route: "user/logout",
+    //  priority: 10 // TODO when these priority rankings are flushed out
+    //}
   },
     oldUser = currentUser;
 

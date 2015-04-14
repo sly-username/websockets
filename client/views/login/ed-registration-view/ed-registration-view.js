@@ -11,7 +11,7 @@
           this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
           this.formContainer = this.shadowRoot.getElementById( "registration-form" );
           this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
-          this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
+          // this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
         },
         attached: function() {
           //this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
@@ -26,8 +26,7 @@
         },
         submitForm: function( event ) {
           event.preventDefault();
-
-
+          // refactor these selectors
           var registrationBlock = {
               type: "user",
               email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
