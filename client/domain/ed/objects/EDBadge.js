@@ -1,7 +1,9 @@
-import EDDataObject from "domain/ed/objects/EDDataObject";
-import define from "domain/ed/define-properties";
+/*jshint strict: false*/
 
-export default class EDBadge extends EDDataObject {
+import define from "domain/ed/define-properties";
+import EDModel from "domain/ed/objects/EDModel";
+
+export default class EDBadge extends EDModel {
   static get TYPE() {
     return "badge";
   }

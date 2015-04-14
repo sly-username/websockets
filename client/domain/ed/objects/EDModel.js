@@ -2,18 +2,18 @@
 import define from "domain/ed/define-properties";
 import EventEmitter from "domain/lib/event/EventEmitter";
 
-export default class EDDataObject extends EventEmitter {
+export default class EDModel extends EventEmitter {
   static get TYPE() {
     return "object";
   }
 
   constructor( args ) {
     if ( !( "id" in args ) ) {
-      throw new TypeError( "EDDataObject id argument not found" );
+      throw new TypeError( "EDModel id argument not found" );
     }
 
     if ( !( "type" in args ) ) {
-      throw new TypeError( "EDDataObject type argument not found" );
+      throw new TypeError( "EDModel type argument not found" );
     }
 
     // call super to initialize EventEmitter properties
@@ -24,7 +24,7 @@ export default class EDDataObject extends EventEmitter {
 /*
   // Not Currently Supported on any system :(
   get [ Symbol.toStringTag ]() {
-    return "EDDataObject";
+    return "EDModel";
   }
 */
 }

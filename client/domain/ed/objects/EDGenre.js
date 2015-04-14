@@ -1,7 +1,7 @@
 import define from "domain/ed/define-properties";
-import EDDataObject from "domain/ed/objects/EDDataObject";
+import EDModel from "domain/ed/objects/EDModel";
 
-export default class EDGenre extends EDDataObject {
+export default class EDGenre extends EDModel {
   static get TYPE() {
     return "genre";
   }

@@ -1,13 +1,13 @@
 /*jshint strict: false */
 /*eslint vars-on-top: 0*/
-import EDDataObject from "domain/ed/objects/EDDataObject";
+import EDModel from "domain/ed/objects/EDModel";
 import ObservableLRUCache from "domain/lib/storage/ObservableLRUCache";
 
 var checkKeyType;
 
 // helpers
 checkKeyType = function( tmpKey ) {
-  return tmpKey instanceof EDDataObject ? tmpKey.id : tmpKey;
+  return tmpKey instanceof EDModel ? tmpKey.id : tmpKey;
 };
 
 export default class EDLRUCache extends ObservableLRUCache {
@@ -22,13 +22,13 @@ export default class EDLRUCache extends ObservableLRUCache {
    * @returns {*}
    *
    * @description
-   *   Checks if key passed is an instance of EDDataObject and if so,
+   *   Checks if key passed is an instance of EDModel and if so,
    *   assigns key to the id of that instance and data to that key obj. It then
    *   calls set on the super class.
    */
   set( key, data ) {
     // TODO THROW/TYPE CHECK?
-    if ( data == null && key instanceof EDDataObject ) {
+    if ( data == null && key instanceof EDModel ) {
       return super.set( key.id, key );
     }
 
@@ -41,7 +41,7 @@ export default class EDLRUCache extends ObservableLRUCache {
    * @returns {*}
    *
    * @description
-   *    Checks to see if key is an instance of EDDataObject. It then
+   *    Checks to see if key is an instance of EDModel. It then
    *    removes that key from cache.
    */
   remove( key ) {

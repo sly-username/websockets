@@ -1,9 +1,9 @@
 /*jshint strict: false*/
 
 import define from "domain/ed/define-properties";
-import EDDataObject from "domain/ed/objects/EDDataObject";
+import EDModel from "domain/ed/objects/EDModel";
 
-export default class EDProfile extends EDDataObject {
+export default class EDProfile extends EDModel {
   static get TYPE() {
     return "profile";
   }
