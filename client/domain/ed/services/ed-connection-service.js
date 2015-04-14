@@ -62,6 +62,7 @@ export default edConnectionService = {
     return this.formattedRequest( json );
   },
 
+  // these two functions mainly used by analytics send requests
   formattedSend( data ) {
     return edSocket.send( data );
   },

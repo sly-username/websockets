@@ -1,12 +1,11 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import edDataService from "domain/ed/services/ed-data-service";
-//import edConnectionService from "domain/ed/services/ed-connection-service";
+import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
-  edConnectionService = {}, // TODO for now, until it's created
   currentUser = null,
   isOpenSession = false,
   hasOnboarded = false,
@@ -133,7 +132,7 @@ edUserService.changeProfileImage = function( image ) {
 };
 
 edUserService.register = function( args ) {
-  return edConnectionService.formattedRequest( args )
+  return edConnectionService.request( "user/create", 10, args )
     .then( () => {
       hasOnboarded = true;
       return true;
