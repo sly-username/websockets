@@ -15,6 +15,9 @@ export default class EDArtist extends EDProfile {
 
     super( args );
     define.readOnly( this, [
+      "genreId",
+      "influencedBy",
+      "displayName",
       "yearFounded"
     ], args );
   }

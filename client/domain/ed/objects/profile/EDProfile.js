@@ -10,16 +10,20 @@ export default class EDProfile extends EDDataObject {
 
   constructor( args ) {
     super( args );
+
     define.readOnly( this, [
-      "id",
       "userId",
+      "artId",
+      "contactId",
       "bio",
       "email",
       "zipcode",
-      "displayName",
+      "website",
+      "hometown",
       "createdDate",
       "modifiedDate"
     ], args );
-    define.readOnlyDeep( this, [ "name", "badgesEarned" ], args );
+
+    define.readOnlyDeep( this, [ "name", "socialLinks", "badgesEarned" ], args );
   }
 }

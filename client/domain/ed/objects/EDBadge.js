@@ -12,6 +12,9 @@ export default class EDBadge extends EDDataObject {
     }
 
     super( args );
-    define.readOnly( this, [ "name", "badgeType" ], args );
+    define.readOnly( this, [
+      "name",
+      "badgeType"
+    ], args );
   }
 }

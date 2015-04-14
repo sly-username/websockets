@@ -15,7 +15,7 @@ export default class EDFan extends EDProfile {
 
     super( args );
     define.readOnly( this, [
-      "birthday"
+      "yearOfBirth"
     ], args );
   }
 }
