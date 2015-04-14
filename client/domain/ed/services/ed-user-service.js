@@ -133,12 +133,21 @@ edUserService.changeProfileImage = function( image ) {
 
 edUserService.register = function( args ) {
   return edConnectionService.request( "user/create", 10, args )
-    .then( () => {
-      hasOnboarded = true;
-      return true;
+    .then( response => {
+      var responseData;
+
+      if ( response && response.status && response.status.code && response.status.code === 1 &&
+        typeof response.data[ 0 ].id === "string" ) {
+        console.log( "response validated" );
+
+        hasOnboarded = true;
+
+        return response.data;
+      }
     })
     .catch( error => {
       hasOnboarded = false;
+
       throw error;
       // TODO throw proper error object
     });

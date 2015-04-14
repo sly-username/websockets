@@ -11,10 +11,11 @@
           this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
           this.formContainer = this.shadowRoot.getElementById( "registration-form" );
           this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
+          // TODO maybe a better way to grab the form inputs
           // this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
         },
         attached: function() {
-          //this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
+          // this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
           this.submitButton.addEventListener( "click", this.submitForm.bind( this ), false);
         },
         submitCheck: function() {
@@ -25,13 +26,16 @@
           }
         },
         submitForm: function( event ) {
+          // TODO remove debug
           event.preventDefault();
-          // refactor these selectors
-          var registrationBlock = {
+
+          // refactor these selectors.. please
+          var self = this,
+            registrationBlock = {
               type: "user",
               email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
-              password: this.formContainer.querySelector("ed-paired-input").shadowRoot.querySelector( "#primary-box" ).value,
-              passwordConfirmation: this.formContainer.querySelector("ed-paired-input").shadowRoot.querySelector( "#confirm-box" ).value,
+              password: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#primary-box" ).value,
+              passwordConfirmation: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#confirm-box" ).value,
               name: {
                 first: this.formContainer.querySelector( "ed-form-input.name-first" ).shadowRoot.querySelector( "input" ).value,
                 last: this.formContainer.querySelector( "ed-form-input.name-last" ).shadowRoot.querySelector( "input" ).value
@@ -42,8 +46,15 @@
             };
 
           console.log( "registrationBlock", registrationBlock );
-          userService.register({ data: registrationBlock });
 
+          userService.register({ data: registrationBlock })
+            .then(function( newUser ) {
+              console.log( "newUser", newUser );
+
+              self.edUser = newUser;
+            });
+
+          // TODO put redirect in here?
         },
         detached: function() {},
         attributeChanged: function( attrName, oldValue, newValue ) {}
