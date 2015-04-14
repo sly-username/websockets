@@ -1,25 +1,29 @@
 /*jshint strict: false*/
 
 import define from "domain/ed/define-properties";
-import EDDataObject from "domain/ed/objects/EDDataObject";
+import EDModel from "domain/ed/objects/EDModel";
 
-export default class EDProfile extends EDDataObject {
+export default class EDProfile extends EDModel {
   static get TYPE() {
     return "profile";
   }
 
   constructor( args ) {
     super( args );
+
     define.readOnly( this, [
-      "id",
       "userId",
+      "artId",
+      "contactId",
       "bio",
       "email",
       "zipcode",
-      "displayName",
+      "website",
+      "hometown",
       "createdDate",
       "modifiedDate"
     ], args );
-    define.readOnlyDeep( this, [ "name", "badgesEarned" ], args );
+
+    define.readOnlyDeep( this, [ "name", "socialLinks", "badgesEarned" ], args );
   }
 }

@@ -4,20 +4,12 @@ import define from "domain/ed/define-properties";
 import EDMedia from "domain/ed/objects/media/EDMedia";
 import edDataService from "domain/ed/services/ed-data-service";
 
-// TODO fake objects
-var EDArtist = {},
-  EDProfile = {};
-
 export default class EDTrack extends EDMedia {
   static get TYPE() {
-    return EDMedia.TYPE + "-track";
+    return "media-track";
   }
 
   constructor( args ) {
-    if ( !( "type" in args ) ) {
-      args.type = EDTrack.TYPE;
-    }
-
     super( args );
 
     define.readOnly( this, [
@@ -35,6 +27,7 @@ export default class EDTrack extends EDMedia {
   }
 
   getCreator() {
-    return edDataService.getByTypeAndId( this.createdBy );
+    // TODO figure this one out if needed
+    return edDataService.getByTypeAndId( "profile", this.createdBy );
   }
 }
