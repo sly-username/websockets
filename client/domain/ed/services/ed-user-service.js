@@ -52,13 +52,12 @@ edUserService.login = function( email, password ) {
 
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
-      console.log( "raw", raw );
       edDataService.getByTypeAndId( "user", raw.profileId )
         .then( userResponse => {
-          console.log( userResponse );
           currentUser = userResponse;
           isOpenSession = true;
           sessionAuthJSON = json;
+          hasOnboarded = true; // should we put this in here?
 
           edUserService.dispatch( createEvent( "edLogin", {
             detail: {
@@ -67,22 +66,26 @@ edUserService.login = function( email, password ) {
           }));
 
           document.querySelector( "app-router" ).go( "/profile/get/" + raw.profileId );
-          //edAnalyticsService.send(
+
+          // todo analytics
+          // edAnalyticsService.send(
           //  edAnalyticsService.createEvent( "login", {
           //    timestamp: new Date()
           //  })
-          //);
+          // );
           return currentUser;
         });
     })
     .catch( () => {
       currentUser = null;
       isOpenSession = false;
-      // TODO if error messages are needed, ex: toasts
+      // todo toast messages to user that login failed
+      console.log( "this person was unable to login" );
     });
 };
 
 edUserService.logout = function() {
+  // todo will integrate with settings page
   var oldUser = currentUser;
 
   return edConnectionService.deauthenticateSocket()
@@ -97,11 +100,12 @@ edUserService.logout = function() {
        }
       }));
 
-      //edAnalyticsService.send(
+      // todo analytics
+      // edAnalyticsService.send(
       // edAnalyticsService.createEvent( "logout", {
       //   timestamp: new Date()
       // })
-      //);
+      // );
 
       return true;
     })
@@ -111,6 +115,7 @@ edUserService.logout = function() {
 };
 
 edUserService.changeProfileImage = function( image ) {
+  // todo a lot
   /*
   // send "I'm going to send an image" -- ws.binaryType = "blob";
   send({
@@ -134,7 +139,7 @@ edUserService.register = function( args ) {
     .catch( error => {
       hasOnboarded = false;
       throw error;
-      // TODO throw proper error object
+      // todo throw proper error object
     });
 };
 
