@@ -10,8 +10,9 @@ import edTrackDB from "domain/ed/storage/pdbs/trackDB";
 import EDLRUCache from "domain/ed/storage/EDLRUCache";
 import EDDataSyncController from "domain/ed/storage/EDDataSyncController";
 
-import typeMap from "domain/ed/objects/type-to-constructor";
+import typeChecker from "domain/ed/objects/model-type-checker";
 
+import EDModel from "domain/ed/objects/EDModel";
 import EDArtist from "domain/ed/objects/profile/EDArtist";
 import EDFan from "domain/ed/objects/profile/EDFan";
 import EDTrack from "domain/ed/objects/media/EDTrack";
@@ -25,40 +26,46 @@ var
   pdbMap = {},
   lruMap = {
     profile: new EDLRUCache( 250 ),
-    [ EDTrack.TYPE ]: new EDLRUCache( 300 )
-  },
-  isProfileType = function( type ) {
-    switch ( type ) {
-      case "profile":
-      case EDArtist.TYPE:
-      case EDFan.TYPE:
-        return true;
-      default:
-        return false;
-    }
+    media: new EDLRUCache( 300 )
   },
   getDBAndLRUForType = function( type ) {
-    if ( isProfileType( type ) ) {
+    if ( typeChecker.isProfileType({ type }) ) {
       return {
         lru: lruMap.profile,
         pdb: pdbMap.profile
       };
-    } else if ( type === EDTrack.TYPE ) {
+    } else if ( typeChecker.isMediaType({ type }) ) {
       return {
-        lru: lruMap[ EDTrack.TYPE ],
-        pdb: pdbMap[ EDTrack.TYPE ]
+        lru: lruMap.media,
+        pdb: pdbMap.media
       };
     }
 
-    return false;
+    return {
+      lru: null,
+      pdb: null
+    };
+  },
+  // TODO this should be somehwere else, a "routing" module perhaps
+  getQueryRouteForType = function( type ) {
+    if ( typeChecker.isProfileType({ type }) ) {
+      return "profile/get";
+    }
+
+    if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, { type }) ) {
+      return "track/detail/get";
+    }
+
+    return "";
   },
   dataSyncTransform = function( data ) {
     // TODO Standardize types
-    if ( data.type in typeMap ) {
-      return new typeMap[ data.type ]( data );
+    if ( typeChecker.hasValidType( data ) ) {
+      return new typeChecker.constructorMap[ data.type ]( data );
     }
 
-    return data;
+    // fallback to base object
+    return new EDModel( data );
   };
 
 // Setup Profile DB
@@ -74,20 +81,20 @@ edProfileDB.then( profileDB => {
 
 // Setup Track DB
 edTrackDB.then( trackDB => {
-  pdbMap.track = trackDB;
+  pdbMap.media = trackDB;
   syncControllers.track =
     new EDDataSyncController(
       trackDB,
-      lruMap.track,
+      lruMap.media,
       data => new EDTrack( data )
 //      dataSyncTransform
     );
 });
 
 // Start Service Functions
-dataService.getByTypeAndId = function( type, id, priority=1 ) {
+dataService.getByTypeAndId = function( type, id, priority=10 ) {
   var
-    route = "",
+    route,
     json = {
       data: {
         id
@@ -95,20 +102,7 @@ dataService.getByTypeAndId = function( type, id, priority=1 ) {
     },
     { pdb, lru } = getDBAndLRUForType( type );
 
-  switch ( type ) {
-    case EDTrack.TYPE:
-      route = "track/detail/get";
-      break;
-
-    case "profile":
-    case EDArtist.TYPE:
-    case EDFan.TYPE:
-      route = "profile/get";
-      break;
-
-    default:
-      throw new TypeError( `Unknown route for type: ${type}` );
-  }
+  route = getQueryRouteForType( type );
 
   return connectionService.request( route, priority, json)
     .then(function( response ) {
@@ -129,25 +123,25 @@ dataService.getByTypeAndId = function( type, id, priority=1 ) {
     });
 };
 
-dataService.getArtistById = function( id, priority ) {
+dataService.getArtistById = function( id, priority=10 ) {
   return dataService.getByTypeAndId( EDArtist.TYPE, id, priority );
 };
 
-dataService.getFanById = function( id, priority ) {
+dataService.getFanById = function( id, priority=10 ) {
   return dataService.getByTypeAndId( EDFan.TYPE, id, priority );
 };
 
-dataService.getTrackById = function( id, priority ) {
+dataService.getTrackById = function( id, priority=10 ) {
   return dataService.getByTypeAndId( EDTrack.TYPE, id, priority );
 };
 
-updateModel = function( type, newModel ) {
+updateModel = function( newModel ) {
   var
     json,
     oldModel,
-    { pdb, lru } = getDBAndLRUForType( type );
+    { pdb, lru } = getDBAndLRUForType( newModel.type );
 
-  if ( !isProfileType( type ) && type !== EDTrack.TYPE ) {
+  if ( !typeChecker.isProfileType( newModel ) && !typeChecker.isMediaType( newModel )) {
     throw new TypeError( "Do not recognize type passed to dataService updateModel function" );
   }
 

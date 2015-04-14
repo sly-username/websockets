@@ -9,10 +9,6 @@ export default class EDBadge extends EDModel {
   }
 
   constructor( args ) {
-    if ( !( "type" in args ) ) {
-      args.type = EDBadge.TYPE;
-    }
-
     super( args );
     define.readOnly( this, [
       "name",

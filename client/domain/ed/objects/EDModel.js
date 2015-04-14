@@ -4,7 +4,7 @@ import EventEmitter from "domain/lib/event/EventEmitter";
 
 export default class EDModel extends EventEmitter {
   static get TYPE() {
-    return "object";
+    return "base";
   }
 
   constructor( args ) {
@@ -19,6 +19,12 @@ export default class EDModel extends EventEmitter {
     // call super to initialize EventEmitter properties
     super();
     define.readOnly( this, [ "id", "type" ], args );
+
+    // TODO REMOVE
+    // This is for catching any data that might slip through the cracks
+    define.readOnlyDeep( this, [ "raw" ], {
+      raw: args
+    });
   }
 
 /*

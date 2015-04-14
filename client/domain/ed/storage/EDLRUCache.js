@@ -29,7 +29,11 @@ export default class EDLRUCache extends ObservableLRUCache {
   set( key, data ) {
     // TODO THROW/TYPE CHECK?
     if ( data == null && key instanceof EDModel ) {
-      return super.set( key.id, key );
+      data = key;
+      key = key.id;
+    } else if ( key.id != null ) {
+      data = key;
+      key = key.id;
     }
 
     return super.set( key, data );

@@ -10,14 +10,10 @@ var EDArtist = {},
 
 export default class EDTrack extends EDMedia {
   static get TYPE() {
-    return EDMedia.TYPE + "-track";
+    return "media-track";
   }
 
   constructor( args ) {
-    if ( !( "type" in args ) ) {
-      args.type = EDTrack.TYPE;
-    }
-
     super( args );
 
     define.readOnly( this, [

@@ -5,14 +5,10 @@ import EDProfile from "domain/ed/objects/profile/EDProfile";
 
 export default class EDArtist extends EDProfile {
   static get TYPE() {
-    return EDProfile.TYPE + "-artist";
+    return "profile-artist-solo";
   }
 
   constructor( args ) {
-    if ( !( "type" in args ) ) {
-      args.type = EDArtist.TYPE;
-    }
-
     super( args );
     define.readOnly( this, [
       "genreId",
