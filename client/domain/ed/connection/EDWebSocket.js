@@ -106,8 +106,8 @@ export default class EDWebSocket extends HealingWebSocket {
 
           this.off( "message", checkForAuthResponse );
         } else if ( data.status.code === 11 ) {
+          resolve( event );
           this[ isAuthenticated ] = false;
-          throw new Error( "Error authenticating user in EDWebSocket" );
         }
       };
 

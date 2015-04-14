@@ -75,10 +75,9 @@ edUserService.login = function( email, password ) {
           return currentUser;
         });
     })
-    .catch( error => {
+    .catch( () => {
       currentUser = null;
       isOpenSession = false;
-      throw error;
       // TODO if error messages are needed, ex: toasts
     });
 };

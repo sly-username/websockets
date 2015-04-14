@@ -219,22 +219,6 @@
               done();
             });
           });
-
-          test( "should throw an error", function() {
-            var json = {
-              auth: {
-                email: "invalid@eardish.com",
-                password: "invalidpass"
-              }
-            };
-
-            edUserService.login( json.auth.email, json.auth.password ).then( function() {
-              expect( edUserService )
-                .to.throw( Error );
-
-              done();
-            });
-          });
         });
       });
 
