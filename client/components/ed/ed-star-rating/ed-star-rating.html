@@ -11,17 +11,12 @@
     </template>
     <template if="{{!disable}}">
       <form id="rating-form">
-        <div class="rating">
-          <input type='radio' name='rate' id='rating-opt5'>
-          <label for='rating-opt5'></label>
-          <input type='radio' name='rate' id='rating-opt4'>
-          <label for='rating-opt4'></label>
-          <input type='radio' name='rate' id='rating-opt3'>
-          <label for='rating-opt3'></label>
-          <input type='radio' name='rate' id='rating-opt2'>
-          <label for='rating-opt2'></label>
-          <input type='radio' name='rate' id='rating-opt1'>
-          <label for='rating-opt1'></label>
+        <div class="star-rating">
+          <input type="radio" name="rating" value="1"><div></div>
+          <input type="radio" name="rating" value="2"><div></div>
+          <input type="radio" name="rating" value="3"><div></div>
+          <input type="radio" name="rating" value="4"><div></div>
+          <input type="radio" name="rating" value="5"><div></div>
         </div>
       </form>
     </template>
