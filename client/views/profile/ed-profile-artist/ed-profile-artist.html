@@ -38,11 +38,11 @@
           <div class="icon-header">Rewards</div>
           <hr>
           <div class="icon-bar-wrapper">
-            <!-- placeholder until more info gets added to service -->
-            <ed-icon name="{{ edArtist.displayIcon1 }}"></ed-icon>
-            <ed-icon name="{{ edArtist.displayIcon2 }}"></ed-icon>
-            <ed-icon name="{{ edArtist.displayIcon3 }}"></ed-icon>
-            <ed-icon name="{{ edArtist.displayIcon4 }}"></ed-icon>
+            <template repeat="{{badges in edArtist.badgesEarned}}">
+              <li>
+                <ed-icon name="{{ badges.name }}"></ed-icon>
+              </li>
+            </template>
           </div>
           <hr>
         </div>

@@ -42,11 +42,11 @@
           </div>
           <hr>
           <div class="icon-bar-wrapper">
-            <!-- placeholder until more info gets added to service -->
-            <ed-icon name="{{ edFan.displayIcon1 }}"></ed-icon>
-            <ed-icon name="{{ edFan.displayIcon2 }}"></ed-icon>
-            <ed-icon name="{{ edFan.displayIcon3 }}"></ed-icon>
-            <ed-icon name="{{ edFan.displayIcon4 }}"></ed-icon>
+            <template repeat="{{badges in edFan.badgesEarned}}">
+              <li>
+                <ed-icon name="{{ badges.name }}"></ed-icon>
+              </li>
+            </template>
           </div>
           <hr>
         </div>
