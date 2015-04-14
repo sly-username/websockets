@@ -3,7 +3,7 @@ import createEvent from "domain/lib/event/create-event";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
+//import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   currentUser = null,
@@ -52,23 +52,27 @@ edUserService.login = function( email, password ) {
 
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
-      currentUser = new EDUser( raw.auth );
-      isOpenSession = true;
-      sessionAuthJSON = json;
+      console.log( "raw", raw );
+      edDataService.getByTypeAndId( "user", raw.profileId )
+        .then( userResponse => {
+          currentUser = userResponse;
+          isOpenSession = true;
+          sessionAuthJSON = json;
 
-      edUserService.dispatch( createEvent( "edLogin", {
-        detail: {
-          user: currentUser
-        }
-      }));
+          edUserService.dispatch( createEvent( "edLogin", {
+            detail: {
+              user: currentUser
+            }
+          }));
 
-      edAnalyticsService.send(
-        edAnalyticsService.createEvent( "login", {
-          timestamp: new Date()
-        })
-      );
+          //edAnalyticsService.send(
+          //  edAnalyticsService.createEvent( "login", {
+          //    timestamp: new Date()
+          //  })
+          //);
 
-      return currentUser;
+          return currentUser;
+        });
     })
     .catch( error => {
       currentUser = null;
@@ -99,11 +103,11 @@ edUserService.logout = function() {
        }
       }));
 
-      edAnalyticsService.send(
-       edAnalyticsService.createEvent( "logout", {
-         timestamp: new Date()
-       })
-      );
+      //edAnalyticsService.send(
+      // edAnalyticsService.createEvent( "logout", {
+      //   timestamp: new Date()
+      // })
+      //);
 
       return true;
     })

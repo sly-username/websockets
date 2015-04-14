@@ -2,18 +2,16 @@
   "use strict";
 
   suite( "EDUserService", function() {
-    var edUserService, EventEmitter, createEvent;
+    var edUserService, edConnectionService;
 
     suiteSetup( function( done ) {
       Promise.all([
         System.import( "domain/ed/services/ed-user-service" ),
-        System.import( "domain/lib/event/EventEmitter" ),
-        System.import( "domain/lib/event/create-event" )
+        System.import( "domain/ed/services/ed-connection-service" )
       ])
         .then( function( imported ) {
           edUserService = imported[0].default;
-          EventEmitter = imported[1].default;
-          createEvent = imported[2].default;
+          edConnectionService = imported[1].default;
           done();
         }, function( error ) {
           console.warn( "Could not import 'user-service' for testing: ", error.message );
@@ -63,21 +61,10 @@
             .that.equals( false );
         });
 
-        test( "hasOnboarded returns true after user registers", function( done ) {
+        test( "hasOnboarded returns true after user registers", function() {
+          edUserService.register();
 
-          var authBlock = {
-            auth: {
-              email: "intdev@eardish.com",
-              password: "intdevpass"
-            }
-          },
-            userServiceReturn = edUserService.register( authBlock )
-            .then( function( response ) {
-              console.log( response );
-              done();
-            });
-
-          expect( userServiceReturn )
+          expect( edUserService )
             .to.have.property( "hasOnboarded" )
             .that.equals( true );
         });
@@ -110,7 +97,7 @@
             done();
           });
 
-          edUserService.login( "intdev@eardish.com", "password" );
+          edUserService.login( "intdev@eardish.com", "intdevpass" );
         });
       });
 
@@ -140,27 +127,20 @@
       suite( "login", function() {
         // TODO need to figure out how to make login successful for this test
         suite( "on a successful login", function() {
-          test( "should return user object", function( done ) {
+          test( "should return user object", function() {
             var json = {
               auth: {
                 email: "intdev@eardish.com",
                 password: "intdevpass"
               }
             },
-            userServiceReturn = edUserService.login( json.auth.email, json.auth.password )
-              .then( function( response ) {
-                console.log( response );
-                done();
-              });
+            userServiceReturn = edUserService.login( json.auth.email, json.auth.password );
 
             expect( userServiceReturn )
-              .to.be.an( "object" );
-
-            //expect( userServiceReturn.isOpenSession )
-            //  .to.eventually.equal( true );
+              .to.eventually.be.an( "object" );
           });
 
-          test( "sessionAuthJSON property should store authentication information", function() {
+          test( "isOpenSession should be true", function( done ) {
             var json = {
                 auth: {
                   email: "intdev@eardish.com",
@@ -168,14 +148,17 @@
                 }
               };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "isOpenSession" )
+                .that.is.a( "boolean" )
+                .that.equals( true );
 
-            expect( edUserService )
-              .to.have.property( "sessionAuthJSON" )
-              .that.equals( json );
+              done();
+            });
           });
 
-          test( "\"isOpenSession\" property should be set to true", function( done ) {
+          test( "sessionAuthJSON property should store auth block", function( done ) {
             var json = {
                 auth: {
                   email: "intdev@eardish.com",
@@ -183,17 +166,18 @@
                 }
               };
 
-            edUserService.login( json.auth.email, json.auth.password ).
-              then( function() {
-                expect( edUserService )
-                  .to.have.property( "isOpenSession" )
-                  .that.is.a( "boolean" )
-                  .that.equals( true );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "sessionAuthJSON" )
+                .that.deep.equals( {
+                  auth: {
+                    email: "intdev@eardish.com",
+                    password: "intdevpass"
+                  }
+                });
 
-                done();
-              });
-
-
+              done();
+            });
           });
         });
 
@@ -201,8 +185,8 @@
           test( "should set currentUser to null", function() {
             var json = {
               auth: {
-                email: "intdev@eardish.com",
-                password: "intdevpass"
+                email: "broken@eardish.com",
+                password: "brokenpass"
               }
             };
 
@@ -213,11 +197,11 @@
               .that.equals( null );
           });
 
-          test( "should set isOpenSession to false", function() {
+          test( "isOpenSession should be false", function() {
             var json = {
               auth: {
-                email: "intdev@eardish.com",
-                password: "intdevpass"
+                email: "broken@eardish.com",
+                password: "brokenpass"
               }
             };
 
@@ -230,7 +214,17 @@
           });
 
           test( "should throw an error", function() {
+            var json = {
+              auth: {
+                email: "broken@eardish.com",
+                password: "brokenpass"
+              }
+            };
 
+            edUserService.login( json.auth.email, json.auth.password );
+
+            expect( edUserService )
+              .to.throw( Error );
           });
         });
       });
