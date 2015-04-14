@@ -1,9 +1,9 @@
 /*jshint strict: false*/
 
 import define from "domain/ed/define-properties";
-import EDDataObject from "domain/ed/objects/EDDataObject";
+import EDModel from "domain/ed/objects/EDModel";
 
-export default class EDMedia extends EDDataObject {
+export default class EDMedia extends EDModel {
   static get TYPE() {
     return "media";
   }
