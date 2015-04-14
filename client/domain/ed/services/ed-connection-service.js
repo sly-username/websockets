@@ -1,7 +1,14 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
 
 var edConnectionService,
-  edSocket = new EDWebSocket();
+  edSocket = new EDWebSocket(),
+  parseSocketMessage = function( response ) {
+    if ( typeof response.data === "string" ) {
+      return JSON.parse( response.data );
+    }
+
+    return response.data;
+  };
 
 // todo remove for debug!
 window.edSocket = edSocket;
@@ -9,19 +16,10 @@ window.edSocket = edSocket;
 export default edConnectionService = {
   authenticateConnection( email, password ) {
     return edSocket.authenticate( email, password )
-      .then(( response ) => {
-        var responseData;
-
-        try {
-          responseData = JSON.parse( response.data );
-        } catch ( error ) {
-          console.warn( "error in request handler" );
-          console.error( error );
-          responseData = response.data;
-        }
-
+      .then( parseSocketMessage )
+      .then( parsedResponse => {
         // return dataBlock ( profileId, userId )
-        return responseData.data;
+        return parsedResponse.data;
       }).catch(( error ) => {
         console.warn( "Issue authenticating in connection service" );
         console.error( error );
@@ -63,10 +61,10 @@ export default edConnectionService = {
   },
 
   formattedSend( data ) {
-    return edSocket.send( data );
+    return edSocket.send( data ).then( parseSocketMessage );
   },
 
   formattedRequest( data ) {
-    return edSocket.request( data );
+    return edSocket.request( data ).then( parseSocketMessage );
   }
 };
