@@ -127,17 +127,20 @@
       suite( "login", function() {
         // TODO need to figure out how to make login successful for this test
         suite( "on a successful login", function() {
-          test( "should return user object", function() {
+          test( "should return user object", function( done ) {
             var json = {
               auth: {
                 email: "intdev@eardish.com",
                 password: "intdevpass"
               }
             },
-            userServiceReturn = edUserService.login( json.auth.email, json.auth.password );
+            userServiceReturn = edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( userServiceReturn )
+                .to.eventually.be.an( "object" );
 
-            expect( userServiceReturn )
-              .to.eventually.be.an( "object" );
+              done();
+            });
+
           });
 
           test( "isOpenSession should be true", function( done ) {
@@ -182,7 +185,7 @@
         });
 
         suite( "when login is not successful", function() {
-          test( "currentUser should be null", function() {
+          test( "currentUser should be null", function( done ) {
             var json = {
               auth: {
                 email: "invalid@eardish.com",
@@ -190,14 +193,16 @@
               }
             };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "currentUser" )
+                .that.equals( null );
 
-            expect( edUserService )
-              .to.have.property( "currentUser" )
-              .that.equals( null );
+              done();
+            });
           });
 
-          test( "isOpenSession should be false", function() {
+          test( "isOpenSession should be false", function( done ) {
             var json = {
               auth: {
                 email: "invalid@eardish.com",
@@ -205,12 +210,14 @@
               }
             };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "isOpenSession" )
+                .that.is.a( "boolean" )
+                .that.equals( false );
 
-            expect( edUserService )
-              .to.have.property( "isOpenSession" )
-              .that.is.a( "boolean" )
-              .that.equals( false );
+              done();
+            });
           });
 
           test( "should throw an error", function() {
@@ -221,10 +228,12 @@
               }
             };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.throw( Error );
 
-            expect( edUserService )
-              .to.throw( Error );
+              done();
+            });
           });
         });
       });
