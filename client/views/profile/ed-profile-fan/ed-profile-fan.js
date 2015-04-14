@@ -21,9 +21,6 @@
             this.edFan = edFan;
           }.bind( this ));
         }
-        // todo changes on ed-id attr
-        /* PROPERTIES */
-        /* METHODS */
       });
     });
 })( window.Polymer, window.System );

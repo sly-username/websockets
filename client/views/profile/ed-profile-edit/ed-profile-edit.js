@@ -37,8 +37,6 @@
       dataService.getFanById( this.attributes[ "ed-id" ].value ).then(function( edFan ){
         this.edFan = edFan;
       }.bind( this ));}
-    /* PROPERTIES */
-    /* METHODS */
   });
 })( window.Polymer, window.System );
 

@@ -16,14 +16,11 @@
       },
       attached: function() {},
       detached: function() {},
-      attributeChanged: function( attrName, oldValue, newValue ) {
+      attributeChanged: function() {
         dataService.getArtistById( this.attributes[ "ed-id" ].value ).then(function( edArtist ){
           this.edArtist = edArtist;
         }.bind( this ));
       }
-      // todo changes on ed-id attr
-      /* PROPERTIES */
-      /* METHODS */
     });
   });
 })( window.Polymer, window.System );

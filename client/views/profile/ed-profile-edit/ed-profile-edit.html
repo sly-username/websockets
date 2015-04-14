@@ -2,7 +2,7 @@
 <link rel="import" href="../../../components/ed/ed-form-input/ed-form-input.html"/>
 
 
-<polymer-element name="ed-profile-edit" attributes="">
+<polymer-element name="ed-profile-edit" attributes="ed-id">
   <template>
     <link rel="stylesheet" href="./ed-profile-edit.css">
     <div class="ed-profile-edit-wrapper">
@@ -21,7 +21,7 @@
         <hr>
         <section class="image-field">
           <div class="image-container">
-            <img src="http://i.imgur.com/N8BPuki.jpg" />
+            <img src="{{edFan.displayImage}}" />
           </div>
           <p>Change Profile Photo</p>
         </section>
