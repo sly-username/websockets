@@ -16,7 +16,11 @@
       },
       attached: function() {},
       detached: function() {},
-      attributeChanged: function( attrName, oldValue, newValue ) {}
+      attributeChanged: function( attrName, oldValue, newValue ) {
+        dataService.getArtistById( this.attributes[ "ed-id" ].value ).then(function( edArtist ){
+          this.edArtist = edArtist;
+        }.bind( this ));
+      }
       // todo changes on ed-id attr
       /* PROPERTIES */
       /* METHODS */

@@ -1,9 +1,17 @@
-( function( polymer ) {
+( function( polymer, System ) {
   "use strict";
+  Promise.all([
+    System.import( "domain/ed/services/ed-data-service" )
+  ])
+    .then(function( imported ) {
+      var dataService = imported.default;
 
   polymer( "ed-profile-edit", {
     /* LIFECYCLE */
     ready: function() {
+      dataService.getFanById( this.attributes[ "ed-id" ].value ).then(function( edFan ){
+        this.edFan = edFan;
+      }.bind( this ));
       this.editForm = this.shadowRoot.getElementById( "edit-form" );
       this.firstName = this.shadowRoot.getElementById( "first-name" );
       this.lastName = this.shadowRoot.getElementById( "last-name" );
@@ -25,8 +33,12 @@
     autoSubmit: function() {
       this.editForm.submit();
     },
-    attributeChanged: function( attrName, oldValue, newValue ) {}
+    attributeChanged: function( attrName, oldValue, newValue ) {
+      dataService.getFanById( this.attributes[ "ed-id" ].value ).then(function( edFan ){
+        this.edFan = edFan;
+      }.bind( this ));}
     /* PROPERTIES */
     /* METHODS */
   });
-})( window.Polymer );
+})( window.Polymer, window.System );
+
