@@ -66,12 +66,12 @@ edUserService.login = function( email, password ) {
             }
           }));
 
+          document.querySelector( "app-router" ).go( "/profile/" + raw.profileId );
           //edAnalyticsService.send(
           //  edAnalyticsService.createEvent( "login", {
           //    timestamp: new Date()
           //  })
           //);
-
           return currentUser;
         });
     })
