@@ -5,7 +5,8 @@ import EDProfile from "domain/ed/objects/profile/EDProfile";
 
 export default class EDFan extends EDProfile {
   static get TYPE(){
-    return "profile-fan";
+    return "fan";
+//    return "profile-fan";
   }
 
   constructor ( args ) {

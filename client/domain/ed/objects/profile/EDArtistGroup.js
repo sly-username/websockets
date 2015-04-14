@@ -5,7 +5,8 @@ import EDArtist from "domain/ed/objects/profile/EDArtist";
 
 export default class EDArtistGroup extends EDArtist {
   static get TYPE() {
-    return "profile-artist-group";
+    return "artist-group";
+//    return "profile-artist-group";
   }
 
   constructor( args ) {

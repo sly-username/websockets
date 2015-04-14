@@ -20,11 +20,6 @@ import EDFan from "domain/ed/objects/profile/EDFan";
 import EDBadge from "domain/ed/objects/EDBadge";
 import EDGenre from "domain/ed/objects/EDGenre";
 
-window.EDModel = EDModel;
-window.EDProfile = EDProfile;
-window.EDFan = EDFan;
-window.EDArtist = EDArtist;
-
 export default {
   constructorMap: {
     [ EDModel.TYPE ]: EDModel,
@@ -49,38 +44,23 @@ export default {
     return type in this.constructorMap;
   },
   checkForInstanceOfType( type, object ) {
-    var classConstructor;
-
-    if ( type in this.constructorMap ) {
-      classConstructor = this.constructorMap[ type ];
-    } else {
-      throw new TypeError(
-        `Checking against ${type} did not yield a constructor to check against.`
-      );
+    if ( !( "type" in object ) ) {
+      throw new TypeError( "No type found in object to check against" );
     }
 
-    if ( object instanceof EDModel ) {
-      return object instanceof classConstructor;
-    } else if ( !( "type" in object ) ) {
-      throw new TypeError( "Object to check against did not have a property \"type\"." );
+    if ( type === object.type ) {
+      return true;
     }
 
-    // otherwise we are checking against an arg ball
-    while ( classConstructor !== Object ) {
-      if ( object.type.indexOf( classConstructor.TYPE ) > -1 ) {
-        return true;
-      }
-
-      classConstructor = Object.getPrototypeOf( classConstructor );
+    if ( !( type in this.constructorMap ) ) {
+      throw new TypeError( `Given type is not a valid EDModel type: ${type}` );
     }
 
-    return false;
+    if ( !( object.type in this.constructorMap ) ) {
+      throw new TypeError( `Given object with type, ${object.type} is not a valid EDModel type` );
+    }
 
-    return Object.keys( this.constructorMap )
-      .map( type => this.constructorMap[ type ] )
-      .some( classConstructor => {
-        return classConstructor.TYPE === type;
-      });
+    return this.constructorMap[ type ].isPrototypeOf( this.constructorMap[ object.type ] );
   },
   fuzzyMatch( type, object ) {
     if ( object == null || typeof object.type !== "string" ) {

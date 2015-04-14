@@ -5,7 +5,8 @@ import EDProfile from "domain/ed/objects/profile/EDProfile";
 
 export default class EDArtist extends EDProfile {
   static get TYPE() {
-    return "profile-artist-solo";
+    return "artist-solo";
+//    return "profile-artist-solo";
   }
 
   constructor( args ) {

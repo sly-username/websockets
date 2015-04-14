@@ -1,9 +1,6 @@
 /*jshint strict: false*/
 // jscs:disable requirePaddingNewLinesInObjects
 
-import promisedDB from "domain/lib/storage/PromisedDB/promisedDB";
-// TODO Remove ^^
-
 import edProfileDB from "domain/ed/storage/pdbs/profileDB";
 import edTrackDB from "domain/ed/storage/pdbs/trackDB";
 
@@ -13,11 +10,15 @@ import EDDataSyncController from "domain/ed/storage/EDDataSyncController";
 import typeChecker from "domain/ed/objects/model-type-checker";
 
 import EDModel from "domain/ed/objects/EDModel";
+import EDProfile from "domain/ed/objects/profile/EDProfile";
 import EDArtist from "domain/ed/objects/profile/EDArtist";
 import EDFan from "domain/ed/objects/profile/EDFan";
 import EDTrack from "domain/ed/objects/media/EDTrack";
 
 import connectionService from "domain/ed/services/ed-connection-service";
+
+// TODO DEBUG
+// connectionService.authenticateConnection( "intdev@eardish.com", "intdevpass" );
 
 var
   dataService = {},
@@ -29,16 +30,21 @@ var
     media: new EDLRUCache( 300 )
   },
   getDBAndLRUForType = function( type ) {
-    if ( typeChecker.isProfileType({ type }) ) {
-      return {
-        lru: lruMap.profile,
-        pdb: pdbMap.profile
-      };
-    } else if ( typeChecker.isMediaType({ type }) ) {
-      return {
-        lru: lruMap.media,
-        pdb: pdbMap.media
-      };
+    try {
+      if ( typeChecker.isProfileType({ type }) ) {
+        return {
+          lru: lruMap.profile,
+          pdb: pdbMap.profile
+        };
+      } else if ( typeChecker.isMediaType({ type }) ) {
+        return {
+          lru: lruMap.media,
+          pdb: pdbMap.media
+        };
+      }
+    } catch ( error ) {
+      console.warn( "Error while type checking" );
+      console.error( error );
     }
 
     return {
@@ -48,20 +54,30 @@ var
   },
   // TODO this should be somehwere else, a "routing" module perhaps
   getQueryRouteForType = function( type ) {
-    if ( typeChecker.isProfileType({ type }) ) {
-      return "profile/get";
-    }
+    try {
+      if ( typeChecker.isProfileType({ type }) ) {
+        return "profile/get";
+      }
 
-    if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, { type }) ) {
-      return "track/detail/get";
+      if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, { type }) ) {
+        return "track/detail/get";
+      }
+    } catch ( error ) {
+      console.warn( "Error while type checking" );
+      console.error( error );
     }
 
     return "";
   },
   dataSyncTransform = function( data ) {
     // TODO Standardize types
-    if ( typeChecker.hasValidType( data ) ) {
-      return new typeChecker.constructorMap[ data.type ]( data );
+    try {
+      if ( typeChecker.hasValidType( data ) ) {
+        return new typeChecker.constructorMap[ data.type ]( data );
+      }
+    } catch ( error ) {
+      console.warn( "Error while type checking" );
+      console.error( error );
     }
 
     // fallback to base object
@@ -93,6 +109,8 @@ edTrackDB.then( trackDB => {
 
 // Start Service Functions
 dataService.getByTypeAndId = function( type, id, priority=10 ) {
+  console.log( "getByTypeAndId %o", arguments );
+
   var
     route,
     json = {
@@ -103,6 +121,10 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     { pdb, lru } = getDBAndLRUForType( type );
 
   route = getQueryRouteForType( type );
+
+  if ( route === "" ) {
+    return Promise.reject( new TypeError( `Could not find route associated with ${type} in dataService` ) );
+  }
 
   return connectionService.request( route, priority, json)
     .then(function( response ) {
@@ -121,6 +143,10 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
       console.error( error );
       throw error;
     });
+};
+
+dataService.getProfileById = function( id, priority=10 ) {
+  return dataService.getByTypeAndId( EDProfile.TYPE, id, priority );
 };
 
 dataService.getArtistById = function( id, priority=10 ) {
@@ -173,8 +199,6 @@ updateModel = function( newModel ) {
 // TODO REMOVE DEBUG
 dataService.lruMap = lruMap;
 dataService.pdbMap = pdbMap;
-
-window.promisedDB = promisedDB;
 window.edDataService = dataService;
 
 export default dataService;

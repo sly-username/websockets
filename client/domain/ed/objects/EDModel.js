@@ -20,7 +20,7 @@ export default class EDModel extends EventEmitter {
     super();
     define.readOnly( this, [ "id", "type" ], args );
 
-    // TODO REMOVE
+    // TODO REMOVE WHEN STANDARDIZED
     // This is for catching any data that might slip through the cracks
     define.readOnlyDeep( this, [ "raw" ], {
       raw: args
