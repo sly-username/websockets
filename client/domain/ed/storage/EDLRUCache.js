@@ -27,7 +27,8 @@ export default class EDLRUCache extends ObservableLRUCache {
    *   calls set on the super class.
    */
   set( key, data ) {
-    if ( key instanceof EDDataObject ) {
+    // TODO THROW/TYPE CHECK?
+    if ( data == null && key instanceof EDDataObject ) {
       return super.set( key.id, key );
     }
 
