@@ -86,7 +86,7 @@ edUserService.login = function( email, password ) {
 edUserService.logout = function() {
   var oldUser = currentUser;
 
-  return edConnectionService.request( json )
+  return edConnectionService.deauthenticateSocket()
     .then( () => {
       currentUser = null;
       isOpenSession = false;
