@@ -182,11 +182,11 @@
         });
 
         suite( "when login is not successful", function() {
-          test( "should set currentUser to null", function() {
+          test( "currentUser should be null", function() {
             var json = {
               auth: {
-                email: "broken@eardish.com",
-                password: "brokenpass"
+                email: "invalid@eardish.com",
+                password: "invalidpass"
               }
             };
 
@@ -200,8 +200,8 @@
           test( "isOpenSession should be false", function() {
             var json = {
               auth: {
-                email: "broken@eardish.com",
-                password: "brokenpass"
+                email: "invalid@eardish.com",
+                password: "invalidpass"
               }
             };
 
@@ -216,8 +216,8 @@
           test( "should throw an error", function() {
             var json = {
               auth: {
-                email: "broken@eardish.com",
-                password: "brokenpass"
+                email: "invalid@eardish.com",
+                password: "invalidpass"
               }
             };
 

@@ -55,6 +55,7 @@ edUserService.login = function( email, password ) {
       console.log( "raw", raw );
       edDataService.getByTypeAndId( "user", raw.profileId )
         .then( userResponse => {
+          console.log( userResponse );
           currentUser = userResponse;
           isOpenSession = true;
           sessionAuthJSON = json;
@@ -83,13 +84,7 @@ edUserService.login = function( email, password ) {
 };
 
 edUserService.logout = function() {
-  var json = {
-    action: {
-      route: "user/logout",
-      priority: 10 // TODO when these priority rankings are flushed out
-    }
-  },
-    oldUser = currentUser;
+  var oldUser = currentUser;
 
   return edConnectionService.request( json )
     .then( () => {
