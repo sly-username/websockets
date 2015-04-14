@@ -2,7 +2,8 @@
   "use strict";
 
   Promise.all([
-   System.import( "domain/ed/services/ed-data-service" )
+   System.import( "domain/ed/services/ed-data-service" ),
+
   ])
   .then(function( imported ) {
     var dataService = imported.default;
