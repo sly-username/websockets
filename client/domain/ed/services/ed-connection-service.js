@@ -62,10 +62,10 @@ export default edConnectionService = {
 
   // these two functions mainly used by analytics send requests
   formattedSend( data ) {
-    return edSocket.send( data ).then( parseSocketMessage );;
+    return edSocket.send( data ).then( parseSocketMessage );
   },
 
   formattedRequest( data ) {
-    return edSocket.request( data ).then( parseSocketMessage );;
+    return edSocket.request( data ).then( parseSocketMessage );
   }
 };

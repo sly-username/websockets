@@ -93,7 +93,7 @@ export default class EDWebSocket extends HealingWebSocket {
         }
 
         // validate response
-        if ( data.status.code === 1 && typeof data.message.data.profileId === "string" ) {
+        if ( data.status.code === 1 && typeof data.data.profileId === "string" ) {
           resolve( event );
 
           this[ isAuthenticated ] = true;
