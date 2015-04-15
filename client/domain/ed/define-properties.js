@@ -1,3 +1,4 @@
+/*eslint consistent-this: 0 */
 var readOnly = function( value ) {
     return {
       configurable: false,
@@ -6,7 +7,7 @@ var readOnly = function( value ) {
       value
     };
   },
-  readOnlySealObjects = function( value ) {
+  readOnlyFreezeObjects = function( value ) {
     value = typeof value === "object" ? Object.freeze( value ) : value;
     return readOnly( value );
   },
@@ -17,6 +18,10 @@ var readOnly = function( value ) {
       writeable: false,
       value
     };
+  },
+  enumROFreezeObjects = function( value ) {
+    value = typeof value === "object" ? Object.freeze( value ) : value;
+    return enumRO( value );
   },
   configRO = function( value ) {
     return {
@@ -52,10 +57,13 @@ export default {
     */
   },
   readOnlyDeep( self, keys, valueMap ) {
-    defineViaReduceWithFunction( self, keys, valueMap, readOnlySealObjects );
+    defineViaReduceWithFunction( self, keys, valueMap, readOnlyFreezeObjects );
   },
   enumReadOnly( self, keys, valueMap ) {
     defineViaReduceWithFunction( self, keys, valueMap, enumRO );
+  },
+  enumReadOnlyDeep( self, keys, valueMap ) {
+    defineViaReduceWithFunction( self, keys, valueMap, enumROFreezeObjects );
   },
   configReadOnly( self, keys, valueMap ) {
     defineViaReduceWithFunction( self, keys, valueMap, configRO );

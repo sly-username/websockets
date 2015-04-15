@@ -1,0 +1,48 @@
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/backgrounds.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+
+* {
+  font-family: "Ubuntu";
+}
+.ed-logo-header {
+  .logoFormHeader();
+  margin-bottom: 17rem;
+}
+
+.login-container {
+  .mainPicturedBackground();
+  height: 100%;
+}
+
+.ed-login-body {
+  fieldset {
+    border: 0;
+  }
+  ed-form-input {
+    margin: .5rem;
+    text-align: center;
+  }
+}
+
+#login-submit {
+  .edButton();
+  bottom: 0;
+  margin: 3% auto 0 auto;
+}
+
+#sign-up-button {
+  .edButton( double-line );
+  bottom: 13rem;
+  margin: 0 auto;
+}
+
+#login-forgot-password {
+  text-decoration: none;
+  .edType( heading-S );
+  .white( .5 );
+  text-align: center;
+  display: block;
+  margin: .5rem auto;
+}

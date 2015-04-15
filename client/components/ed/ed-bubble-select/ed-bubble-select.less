@@ -1,0 +1,80 @@
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/alignments.mixin.less";
+
+:host {
+  float: left;
+  width: 28rem;
+  max-width: 33.3%
+}
+
+:host([view-type="dislike"][checked]) {
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    padding: 50% 0;
+    border-radius: 50%;
+    background: @originalRed;
+    opacity: 0.5;
+  }
+}
+
+:host([view-type="like"][checked]) {
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    padding: 50% 0;
+    border-radius: 50%;
+    background: @originalTeal;
+    opacity: 0.5;
+  }
+}
+
+:host([view-type="dislike"]) {
+  .ed-bubble {
+    background: @darkOrange1;
+  }
+}
+
+:host([view-type="like"]) {
+  .ed-bubble {
+    background: @originalPurple;
+  }
+}
+
+input[type="checkbox"] {
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  opacity: 1;
+}
+
+.ed-bubble-select-wrapper {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+
+.ed-bubble {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 0;
+  padding: 50% 0;
+  border-radius: 50%;
+  line-height: 0;
+  color: @white;
+  text-align: center;
+  .edType( heading-XS );
+  text-transform: uppercase;
+  .verticalAlign();
+  .transform( rotate(-30deg) );
+}
+

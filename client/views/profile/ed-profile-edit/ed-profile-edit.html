@@ -1,0 +1,51 @@
+<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+
+<polymer-element name="ed-profile-edit" attributes="">
+  <template>
+    <link rel="stylesheet" href="./ed-profile-edit.css">
+    <div class="ed-profile-edit-wrapper">
+      <header>
+        <button>
+          <ed-icon name="add189"></ed-icon>
+        </button>
+        <p>Edit Profile</p>
+      </header>
+      <form id="edit-form">
+        <div id="name-field">
+          <p>NAME (First, Last)</p>
+          <ed-form-input id="first-name" icon="add189" placeholder="Jeff"></ed-form-input>
+          <ed-form-input id="last-name" icon="add189" placeholder="Lin"></ed-form-input>
+        </div>
+        <hr>
+        <section class="image-field">
+          <div class="image-container">
+            <img src="http://i.imgur.com/N8BPuki.jpg" />
+          </div>
+          <p>Change Profile Photo</p>
+        </section>
+        <hr>
+        <div id="upload-field">
+          <div class="upload-button">
+            <input id="choose-photo" type="file" accept="image/*" >
+            <button>Choose Existing Photo</button>
+          </div>
+          <hr>
+          <div class="upload-button">
+            <input id="take-photo" type="file" accept="image/*" capture="camera">
+            <button>Take A Photo</button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <section class="edit-onboarding">
+        <p>Music Preferences</p>
+        <hr>
+        <button>
+          Edit Your Taste
+          <ed-icon name="add189"></ed-icon>
+        </button>
+      </section>
+    </div>
+  </template>
+  <script src="ed-profile-edit.js"></script>
+</polymer-element>

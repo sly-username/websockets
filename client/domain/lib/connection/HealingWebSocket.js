@@ -1,91 +1,115 @@
-/* jshint strict:false */
-
-import EventEmitter from "domain/lib/event/EventEmitter";
-
-var socket = Symbol( "socket" ), // jshint ignore:line
+/*eslint no-inline-comments: 0, consistent-this: 0*/
+var
+  socket = Symbol( "socket" ), // jshint ignore:line
   heal = Symbol( "heal" ), // jshint ignore:line
   socketEvents = [ "open", "close", "message", "error" ],
-  createSocket = function( url, protocols ) {
-    // TODO MAKE ACUTALLY WORK
-    this[socket] = protocols == null ?
-      new WebSocket( url ) :
-      new WebSocket( url, protocols );
+  createSocket;
 
-    EventEmitter.bindToEventTarget( this, this[ socket ], socketEvents );
-  };
+import EventEmitter from "domain/lib/event/EventEmitter";
+import createEvent from "domain/lib/event/create-event";
+
+/**
+ *
+ * @param self { HealingWebSocket }
+ * @param url { String }
+ * @param protocols { Array<String> }
+ * @returns { WebSocket }
+ */
+createSocket = function( self, url, protocols ) {
+  var oldSocket = self[ socket ];
+
+  self[ socket ] = protocols == null ?
+    new WebSocket( url ) :
+    new WebSocket( url, protocols );
+
+  EventEmitter.bindToEventTarget( self, self[ socket ], socketEvents );
+
+  return oldSocket;
+};
+
+export var symbols = {
+  get heal() {
+    return heal;
+  },
+  get socket() {
+    return socket;
+  }
+};
 
 export default class HealingWebSocket extends EventEmitter {
   constructor( url, protocols ) {
     super( [ "heal", ...socketEvents ] );
-
-    createSocket.call( this, url, protocols );
+    createSocket( this, url, protocols );
   }
 
   get isOpen() {
-    return this[socket].readyState === WebSocket.OPEN;
+    return this[ socket ].readyState === WebSocket.OPEN;
   }
 
   get readyState() {
-    return this[socket].readyState;
+    return this[ socket ].readyState;
   }
 
   get binaryType() {
-    return this[socket].binaryType;
+    return this[ socket ].binaryType;
   }
 
   set binaryType( value ) {
-    this[socket].binaryType = value;
+    this[ socket ].binaryType = value;
     return value;
   }
 
   get bufferedAmount() {
-    return this[socket].bufferedAmount;
+    return this[ socket ].bufferedAmount;
   }
 
   get extensions() {
-    return this[socket].extensions;
+    return this[ socket ].extensions;
   }
 
   get protocol() {
-    return this[socket].protocol;
+    return this[ socket ].protocol;
   }
 
   get url() {
-    return this[socket].url;
+    return this[ socket ].url;
   }
 
-  close() {
-    this[socket].close();
+  close( code=1000, reason="" ) {
+    return this[ socket ].close( code, reason );
   }
 
   send( data ) {
-    if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" ) ) {
+    if ( !( data instanceof ArrayBuffer || data instanceof Blob || typeof data === "string" || data instanceof String ) ) {
       data = JSON.stringify( data );
     }
 
-//    console.log( "send called, %s - %o", this.readyState, data );
-
     if ( this.isOpen ) {
-      this[socket].send( data );
+      this[ socket ].send( data );
     } else if ( this.readyState === WebSocket.CONNECTING ) {
-      this.one( "open", ( event ) => {
+      this.once( "open", ( event ) => {
+//        HealingWebSocket.prototype.send.call( this, data );
         this.send( data );
       });
     } else {
-      this[heal]( data );
+      this[ heal ]( data );
     }
   }
 
-  [heal]( data ) {
-    console.log( "healing: %o", this );
+  [ heal ]( data ) {
+    var oldSocket = createSocket( this, this.url, this.protocol !== "" ? [ this.protocol ] : null ),
+      healEvent = createEvent( "heal", {
+        detail: {
+          oldSocket
+        }
+      });
 
-    this[socket] = this[socket].protocols == null ?
-      new WebSocket( this[socket].url ) :
-      new WebSocket( this[socket].url, this[socket].protocols );
+    this.dispatch( healEvent );
 
-    this.one( "open", event => {
-      this.send( data )
-    });
+    if ( data ) {
+      this.once( "open", event => {
+        this.send( data );
+      });
+    }
   }
-
 }

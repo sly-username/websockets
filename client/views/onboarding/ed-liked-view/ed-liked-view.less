@@ -1,0 +1,39 @@
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/colors.vars.less";
+
+.genre-container {
+  background-color: @darkPurple3;
+  margin: 0 auto 13rem auto;
+  padding-top: 10%;
+  overflow-x: hidden;
+}
+
+.header {
+  .edType( heading-XXL );
+  text-align: center;
+  text-transform: uppercase;
+  color: @originalTeal;
+  span {
+    display: block;
+  }
+}
+
+.ed-genre-bubbles {
+  float: right;
+  width: 82%;
+  margin: 25% 2% 0 2%;
+}
+.alternate-bubbles {
+  float: left;
+  width: 82%;
+  margin: -4% 2% 0 2%;
+  clear: both;
+}
+
+#next-button {
+  .edButton();
+  margin-top: 25%;
+  bottom: 13rem;
+}
+

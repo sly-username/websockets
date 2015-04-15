@@ -30,7 +30,9 @@
   "requireMultipleVarDecl": "onevar",
   "requireCommaBeforeLineBreak": true,
   "requireCamelCaseOrUpperCaseIdentifiers": true,
-  "requireCapitalizedConstructors": true,
+  "requireCapitalizedConstructors": {
+    "allExcept": [ "Symbol", "Polymer" ]
+  },
   "requireDotNotation": true,
   "maximumLineLength": {
     "value": 100,
@@ -44,7 +46,7 @@
     "escape": true
   },
   "requireSpaceAfterLineComment": {
-    "allExcept": ["#", "*", "=", "/"]
+    "allExcept": [ "#", "*", "=", "/" ]
   },
 //  "disallowImplicitTypeConversion": ["numeric", "boolean", "binary", "string"],
   "disallowMixedSpacesAndTabs": true,
@@ -95,14 +97,21 @@
 //    "case"
   ],
   "requireSpacesInsideObjectBrackets": "all",
-  "requireSpacesInsideArrayBrackets": "all",
+  "requireSpacesInsideArrayBrackets": {
+    "allExcept": [
+      "(", ")",
+      "{", "}",
+      "[", "]"
+    ]
+  },
   "requireSpacesInsideParentheses": {
     "all": true,
     "except": [
       "(", ")",
       "{", "}",
       "[", "]",
-      "/"
+      "/",
+      "function"
     ]
   },
   "requireLineFeedAtFileEnd": true,
@@ -175,7 +184,7 @@
     "beforeOpeningRoundBrace": true
   },
   "validateLineBreaks": "LF",
-  "disallowKeywords": ["with"],
-  "disallowKeywordsOnNewLine": ["else"],
+  "disallowKeywords": [ "with" ],
+  "disallowKeywordsOnNewLine": [ "else" ],
   "disallowMultipleLineBreaks": true
 }

@@ -63,6 +63,100 @@
           .to.be.equal( null );
       });
     });
+
+    suite( "Properties", function() {
+      test( "Adding an item increases size", function() {
+        var cache = new LRUCache( 5 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 0 );
+
+        cache.set( "one", 1 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 1 );
+      });
+
+      test( "Re-setting an item does not increase size", function() {
+        var cache = new LRUCache( 5 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 0 );
+
+        cache.set( "one", 1 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 1 );
+
+        cache.set( "one", "one" );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 1 );
+      });
+
+      test( "Removing an item decreases size", function() {
+        var cache = new LRUCache( 5 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 0 );
+
+        cache.set( "one", 1 );
+        cache.set( "two", 2 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 2 );
+
+        cache.remove( "one" );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 1 );
+      });
+
+      test( "when at limit, shift is called, size stays the same", function() {
+        var cache = new LRUCache( 3 ),
+          shiftSpy = sinon.spy( cache, "shift" );
+
+        expect( cache )
+          .to.have.property( "limit" )
+          .that.equals( 3 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 0 );
+
+        cache.set( "one", 1 );
+        cache.set( "two", 2 );
+        cache.set( "three", 3 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 3 );
+
+        expect( shiftSpy )
+          .to.have.callCount( 0 );
+
+        cache.set( "four", 4 );
+
+        expect( cache )
+          .to.have.property( "size" )
+          .that.equals( 3 );
+
+        expect( shiftSpy )
+          .to.have.callCount( 1 );
+
+        shiftSpy.restore();
+      });
+    });
+
+    // TODO fix names, properly group in suites
     suite( "LRUCache Properties and Methods", function() {
       test( "Setting for initial object", function() {
         var cache = new LRUCache( 10 );
@@ -360,7 +454,7 @@
           ]);
       });
 
-      test( "ToString to return a string on the objects", function() {
+      test( "toString to return a string on the objects", function() {
         var cache = new LRUCache( 10 );
 
         cache.set( "A", 1 );

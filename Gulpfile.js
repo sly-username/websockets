@@ -1,4 +1,4 @@
-/*eslint no-process-env:0, valid-jsdoc:0, no-unused-vars:0*/
+/*eslint no-process-env:0, valid-jsdoc:0, no-unused-vars:0, strict: [2, "global"]*/
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
@@ -10,7 +10,7 @@ var gulp = require( "gulp" ),
   currentTasks;
 
 // load .env file into process.env
-dotenv.load();
+dotenv.config();
 
 // get array of currently running tasks
 currentTasks = process.argv.reduce(
@@ -95,8 +95,6 @@ gulp.task( "start", function( done ) {
 /*** Watch all the things ***/
 gulp.task( "watch", gulp.parallel(
   "less:watch",
-  "jscs:watch",
-  "lint:watch",
   "traceur:watch"
 ));
 
@@ -106,9 +104,11 @@ gulp.task( "build:dev", gulp.series(
   gulp.parallel(
     "less:dev",
     "symlink:dev",
+    "svgstore:dev",
     "vendor:dev",
     "traceur:dev"
-  )
+  ),
+  "envBuild:dev"
 ));
 
 /*** TESTING TASKS ***/
@@ -133,11 +133,8 @@ gulp.task( "test", gulp.series(
 gulp.task( "dev", gulp.series(
   "build:dev",
   "build:tests:only",
-  "server:dev",
   "watch",
-  "jscs:client",
-  "lint:client",
-  "tdd"
+  "tdd:alone"
 ));
 
 /*** PRODUCTION BUILD TASK ***/

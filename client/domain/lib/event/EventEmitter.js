@@ -1,4 +1,5 @@
 /* jshint strict:false */
+/*eslint no-inline-comments: 0*/
 var handlerMap = Symbol( "handlerMap" ); // jshint ignore:line
 
 /** @class EventEmitter */
@@ -88,9 +89,11 @@ export default class EventEmitter {
 
     extraArgs.unshift( event );
 
-    this[ handlerMap ][ event.type ].forEach( h => {
-      h.apply( this, extraArgs );
-    });
+    if ( Array.isArray( this[ handlerMap ][ event.type ] )) {
+      this[ handlerMap ][ event.type ].forEach( h => {
+        h.apply( this, extraArgs );
+      });
+    }
 
     return this;
   }

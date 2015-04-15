@@ -4,12 +4,16 @@
   "use strict";
 
   suite( "EventEmitter", function() {
-    var EventEmitter, handlerMapSym;
+    var EventEmitter, handlerMapSym, createEvent;
 
     suiteSetup( function( done ) {
-      System.import( "domain/lib/event/EventEmitter" )
+      Promise.all([
+        System.import( "domain/lib/event/EventEmitter" ),
+        System.import( "domain/lib/event/create-event" )
+      ])
         .then( function( imported ) {
-          EventEmitter = imported.default;
+          EventEmitter = imported[0].default;
+          createEvent = imported[1].default;
 
           handlerMapSym = Object.getOwnPropertySymbols( new EventEmitter( [ "open" ] ) )[0];
 
@@ -100,7 +104,7 @@
             openListener = sinon.spy(),
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" ),
-            eventObj = new CustomEvent( "open" );
+            eventObj = createEvent( "open" );
 
           expect( emitter[ handlerMapSym ].open )
             .to.have.length( 0 )
@@ -129,7 +133,7 @@
         test( "if eventName array does not exist in handlerMap object", function() {
           var emitter = new EventEmitter(),
             openListener = sinon.spy(),
-            eventObj = new CustomEvent( "open" ),
+            eventObj = createEvent( "open" ),
             onSpy = sinon.spy( emitter, "on" ),
             offSpy = sinon.spy( emitter, "off" );
 
@@ -206,7 +210,7 @@
       suite( "dispatch method", function() {
         test( "should fire event handler", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-            eventObj = new CustomEvent( "open" ),
+            eventObj = createEvent( "open" ),
             openListener = sinon.spy(),
             openListenerAgain = sinon.spy();
 
@@ -229,7 +233,7 @@
 
         test( "should fire event handler with extraArgs passed in", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-            eventObj = new CustomEvent( "open" ),
+            eventObj = createEvent( "open" ),
             openListener = sinon.spy(),
             openListenerAgain = sinon.spy();
 
@@ -253,7 +257,7 @@
 
         test( "should properly bind this reference in handler", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-            eventObj = new CustomEvent( "open" ),
+            eventObj = createEvent( "open" ),
             openListener = sinon.spy();
 
           emitter.on( "open", openListener );
@@ -278,8 +282,12 @@
 
           emitter.on( "open", openListener );
 
-          expect( emitter.dispatch )
-            .to.throw( TypeError );
+          try {
+            emitter.dispatch( eventObj );
+          } catch ( error ) {
+            expect( error )
+              .to.be.instanceof( TypeError );
+          }
 
           expect( dispatchSpy )
             .to.have.thrown( "TypeError" );
@@ -289,7 +297,7 @@
 
         test( "dispatch method should be chainable", function() {
           var emitter = new EventEmitter( [ "open" ] ),
-            eventObj = new CustomEvent( "open" ),
+            eventObj = createEvent( "open" ),
             openListener = sinon.spy();
 
           emitter.on( "open", openListener );

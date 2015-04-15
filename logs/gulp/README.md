@@ -1,0 +1,1 @@
+This file is here so that the logs/gulp folder will be created for new clones of the repo. This will be helpful for environments that do not use Vagrant, since the vagrant provision process will make this folder if needed.

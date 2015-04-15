@@ -7,5 +7,5 @@
    */
 
   // Tweak base url for System usage to karma'd url
-  System.baseURL = System.baseURL + "base/";
+  System.baseURL += "base/";
 })( window.System );

@@ -1,0 +1,53 @@
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/backgrounds.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+
+
+* {
+  font-family: "Ubuntu";
+}
+
+.ed-logo-header {
+  .logoFormHeader();
+}
+
+.forgot-container {
+  .mainPicturedBackground();
+  height: 100%;
+}
+
+.forgot-text, .forgot-second-text {
+  .edType( paragraph-L );
+  color: @white;
+  opacity: .5;
+  text-align: center;
+  span {
+    display: block;
+  }
+}
+
+.forgot-second-text {
+  margin: 6% 2% 4% 2%;
+}
+
+
+.ed-forgot-body {
+  fieldset {
+    border: 0;
+  }
+  ed-form-input {
+    margin: .5rem;
+    text-align: center;
+  }
+}
+
+#forgot-submit {
+  .edButton();
+  margin-top: 4%;
+  bottom: 0;
+}
+#back-button {
+  .edButton( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 );
+  bottom: 0;
+}

@@ -1,0 +1,29 @@
+<link rel="import" href="../../../components/ed/ed-bubble-select/ed-bubble-select.html"/>
+
+<polymer-element name="ed-disliked-view" attributes="">
+  <template>
+    <link rel="stylesheet" href="./ed-disliked-view.css">
+    <div class="genre-container">
+      <div class="header" >
+        <span>Tap 1 genre</span>
+        <span>you don't want to hear</span>
+      </div>
+      <form>
+        <div class="ed-genre-bubbles">
+          <ed-bubble-select view-type="dislike" image="http://i.imgur.com/B4CvYsy.jpg">pop</ed-bubble-select>
+          <ed-bubble-select view-type="dislike" image="http://i.imgur.com/XqugVbqb.jpg">rock</ed-bubble-select>
+          <ed-bubble-select view-type="dislike" image="http://i.imgur.com/XqugVbqb.jpg">alternative</ed-bubble-select>
+        </div>
+        <div class="alternate-bubbles">
+          <ed-bubble-select view-type="dislike" image="http://i.imgur.com/B4CvYsy.jpg">hip-hop</ed-bubble-select>
+          <ed-bubble-select view-type="dislike" image="http://i.imgur.com/XqugVbqb.jpg">country</ed-bubble-select>
+          <ed-bubble-select view-type="dislike" image="http://i.imgur.com/XqugVbqb.jpg">dance</ed-bubble-select>
+        </div>
+        <button id="next-button" type="submit" href="#">
+          Next
+        </button>
+      </form>
+    </div>
+  </template>
+  <script src="ed-disliked-view.js"></script>
+</polymer-element>

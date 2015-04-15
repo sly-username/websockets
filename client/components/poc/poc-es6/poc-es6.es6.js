@@ -2,9 +2,10 @@
   "use strict";
   polymer( "poc-es6", {
     attached() {
-      System.import( "domain/main" ).then( hello => {
+      System.import( "domain/hello-goodbye" ).then( imports => {
+        var hello = imports.default.hello;
         this.addEventListener( "click", () => {
-          hello.default( this.getAttribute( "my-name" ) );
+          hello( this.getAttribute( "my-name" ) );
         });
       });
     }

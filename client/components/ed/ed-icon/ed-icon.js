@@ -1,8 +1,6 @@
 ( function( polymer ) {
   "use strict";
 
-  var nameList = [ "add189", "alarm52", "basic14", "basic15", "basic16", "basic17", "etc..." ];
-
   polymer( "ed-icon", {
     publish: {
       rotation: {
@@ -13,8 +11,16 @@
         reflect: true
       }
     },
-    get nameList() {
-      return nameList;
+    observe: {
+      name: "changeSVG"
+    },
+    ready: function() {
+      this.triggerSVG = this.shadowRoot.getElementById( "svg-use" );
+      this.getUrl = "/assets/icons/svg.svg#" + this.name;
+    },
+    attached: function() {
+      this.shadowRoot.querySelector( "svg" ).onload = console.log.bind(console);
+      this.triggerSVG.setAttributeNS( "http://www.w3.org/1999/xlink", "xlink:href", this.getUrl );
     },
     rotationChanged: function( oldValue, newValue ) {
       switch ( newValue ) {
@@ -26,6 +32,10 @@
         default:
           this.rotation = 0;
       }
+    },
+    changeSVG: function() {
+      this.getUrl = "/assets/icons/svg.svg#" + this.name;
+      this.triggerSVG.setAttributeNS( "http://www.w3.org/1999/xlink", "xlink:href", this.getUrl );
     }
   });
 })( window.Polymer );

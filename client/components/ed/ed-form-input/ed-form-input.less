@@ -1,0 +1,51 @@
+@import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/alignments.mixin.less";
+@import "../../../styles/mixins/all-prefixes.less";
+
+
+.form-input-container {
+  height: 7.5rem;
+  width: 98%;
+  max-width: 59.6rem;
+  background-color: @darkPurple4;
+  border-color: @darkPurple5;
+  margin: -.33rem auto;
+  box-shadow: .4rem .4rem 0 0 fade(@darkPurple5, 75%) inset;
+}
+input {
+  .edType( heading-L );
+  .white( .75 );
+  .verticalAlign();
+  float: left;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  .input-placeholder( { .white( .33 ) } );
+}
+
+ed-icon {
+/* for svg height and width dimensions may both need to be declared and they work like regular CSS max-width or max-height
+*/
+  width: 3rem;
+  height: 50%;
+  .white( .50 );
+  pointer-events: none;
+  float: left;
+  padding: 0 2rem;
+  .verticalAlign();
+}
+
+:host([type="date"]){
+  .form-input-container {
+    .arrow-box {
+      .transform( translateY(7%) translateX(-7%) );
+      float: right;
+      height: 6.5rem;
+      width: 6.5rem;
+      background-color: @darkPurple2;
+      pointer-events: none;
+    }
+  }
+}

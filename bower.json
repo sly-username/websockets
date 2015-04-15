@@ -14,7 +14,8 @@
     "es6-module-loader": "=0.15.0",
     "system.js": "=0.15.0",
     "director": "=1.2.8",
-    "app-router": "=2.6.0"
+    "app-router": "=2.6.0",
+    "normalize.css": "~3.0.2"
   },
   "license": "To Be Decided",
   "description": "The Client Application for the Eardish Platform"

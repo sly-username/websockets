@@ -1,6 +1,7 @@
-@import "../styles/ed/colors.vars.less";
-@import "mixins/prefixes/placeholder.less";
-
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/alignments.mixin.less";
 
 #primaryBox, #confirmBox {
   display: block;
@@ -11,36 +12,51 @@
   font-size: 2.7rem;
 }
 
-.wrapper {
-  height: 10.9rem;
-  width: 100%;
+.ed-paired-input-primary-wrapper, .ed-paired-input-confirm-wrapper {
+  height: 7.5rem;
+  width: 98%;
   max-width: 59.6rem;
-  background-color: #150D1C;
-  border-color: #100A16;
-  margin: 0 auto;
-  .align {
-    margin-top: 3.3rem;
-  }
-  .inner-icon {
-    padding: 1rem;
-    pointer-events: none;
-    left: 0rem;
-    top: 3.3rem;
-    float: left;
-  }
+  background-color: @darkPurple4;
+  margin: -.33rem auto;
+  box-shadow: .4rem .4rem 0 0 fade(@darkPurple5, 75%) inset;
   input {
-    font-size: 3.6rem;
-    color: #FFFFFF;
+    .edType( heading-L );
+    .white( .75 );
+    .verticalAlign();
     float: left;
     background: transparent;
     border: 0;
     outline: 0;
-    .input-placeholder( { color: #FFFFFF; font-size: 3.6rem; opacity: .33; } );
+    .input-placeholder( { .white( .33 ) } );
   }
   &.confirm-container {
-    margin-top: 1rem;
+    margin-top: .8rem;
   }
 }
 
+ed-icon {
+  /* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
+  */
+  width: 3rem;
+  height: 50%;
+  .white( .50 );
+  pointer-events: none;
+  float: left;
+  padding: 0 2rem;
+  .verticalAlign();
+}
 
+:host([invalid-primary]) {
+  .ed-paired-input-primary-wrapper {
+    background-color: @originalRed;
+    border-color: @darkRed1;
+  }
+}
+
+:host([invalid-confirm]) {
+  .ed-paired-input-confirm-wrapper {
+    background-color: @originalRed;
+    border-color: @darkRed1;
+  }
+}
 

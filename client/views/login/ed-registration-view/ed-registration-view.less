@@ -1,0 +1,48 @@
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/alignments.mixin.less";
+@import "../../../styles/ed/backgrounds.mixin.less";
+
+* {
+  font-family: "Ubuntu";
+}
+
+.ed-logo-header {
+  .logoFormHeader();
+}
+
+.registration-container {
+  .mainPicturedBackground();
+}
+
+.ed-registration-body {
+  text-align: center;
+  fieldset {
+    border: 0;
+  }
+  ed-form-input {
+    margin: .25rem;
+    text-align: center;
+  }
+  .password-req-text {
+    color: @originalTeal;
+    .edType( heading-XS );
+    margin-top: -.2rem;
+    margin-bottom: .9rem;
+  }
+}
+
+#registration-submit {
+  &:disabled {
+    .edButton( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 );
+  }
+  .edButton();
+  bottom: 0;
+  margin: 3% auto 0 auto;
+}
+
+#sign-up-button {
+  .edButton( double-line );
+  bottom: 13rem;
+  margin: 0 auto;
+}

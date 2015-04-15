@@ -80,7 +80,7 @@
       }
     },
     updatePercentage: function() {
-      this.valuePercentage = Math.round( this.value * 100  / this.max );
+      this.valuePercentage = Math.round( this.value * 100 / this.max );
       this.innerBar.style.width = this.valuePercentage + "%";
     }
   });

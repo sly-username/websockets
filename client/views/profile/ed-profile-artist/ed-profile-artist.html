@@ -1,0 +1,70 @@
+<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+
+<polymer-element name="ed-profile-artist" attributes="ed-id">
+  <template>
+    <link rel="stylesheet" href="./ed-profile-artist.css">
+    <div class="ed-profile-artist-wrapper">
+      <div class="ed-content">
+        <div class="rank-bar">
+          <div class="back-icon">
+            <ed-icon name="add189"></ed-icon>
+          </div>
+          <div class="user-rank">
+            <div class="rank-text">Your
+              <span>rank</span>
+            </div>
+            <div class="rank-box">76</div>
+          </div>
+          <div class="songs-rated">
+            <!-- the below is to be replace with a data object -->
+            <div class="songs-rated-text">Songs
+              <span>rated</span>
+            </div>
+            <!-- the below is to be replace with a data object -->
+            <div class="songs-rated-box">362</div>
+          </div>
+        </div>
+        <div class="image-wrapper">
+          <div class="profile-name">
+            <!-- the below is to be replace with a data object -->
+            {{ edArtist.displayName }}
+            <span>Artist/Band</span>
+          </div>
+          <div class="profile-image">
+            <!-- the below is to be replace with a data object -->
+            <img src="http://i.imgur.com/6K8eazu.jpg"/>
+          </div>
+        </div>
+        <div class="icon-section">
+          <div class="icon-header">Rewards</div>
+          <hr>
+          <div class="icon-bar-wrapper">
+            <!-- the below is to be replace with a data object -->
+            <ed-icon name="add189"></ed-icon>
+            <ed-icon name="add189"></ed-icon>
+            <ed-icon name="add189"></ed-icon>
+            <ed-icon name="add189"></ed-icon>
+          </div>
+          <hr>
+        </div>
+        <div class="bio-section">
+          <div class="bio-header">Biography</div>
+          <hr>
+          <div class="bio-body">
+            <!-- the below is to be replace with a data object -->
+            The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of
+            evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of
+            darkness, for he is truly his brother's keeper and the finder of lost children. And I  will strike down
+            upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers.
+            And you will know My name is the Lord when I lay My vengeance upon thee.
+          </div>
+        </div>
+      </div>
+      <div class="ad-content">
+        <!-- the below is to be replace with a data object -->
+        <img src="http://i.imgur.com/BHsn5lxb.jpg" />
+      </div>
+    </div>
+  </template>
+  <script src="ed-profile-artist.js"></script>
+</polymer-element>

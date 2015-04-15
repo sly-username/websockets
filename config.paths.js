@@ -88,7 +88,8 @@ paths.symlink = {
     join( "!" + paths.client, "domain", "**", "*.js" ),
     join( "!**", "*.tests.html" ),
     join( "!**", "*.tests.js" ),
-    join( "!**", ".new" )
+    join( "!**", ".new" ),
+    join( "!**", "assets", "icons", "svg", "**" )
   ],
   tests: {
     component: [
@@ -144,30 +145,6 @@ paths.scripts = {
   }
 };
 
-/*** JSCS ***/
-paths.jscs = {
-  rc:     join( paths.root, ".jscsrc" ),
-  all:    paths.scripts.all,
-  client: paths.scripts.client,
-  tasks:  paths.scripts.tasks,
-  tests:  paths.scripts.tests,
-  server: paths.scripts.server,
-  root: [ "*.js", ".eslintrc", ".jscsrc" ].map( s => join( paths.root, s ) ),
-  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
-};
-
-/*** ESLINT ***/
-paths.eslint = {
-  rc:     join( paths.root, ".eslintrc" ),
-  all:    paths.scripts.all,
-  client: paths.scripts.client,
-  tasks:  paths.scripts.tasks,
-  tests:  paths.scripts.tests,
-  server: paths.scripts.server,
-  root: join( paths.root, "*.js" ),
-  taskNames: [ "all", "client", "tasks", "tests", "server", "root" ]
-};
-
 /*** Traceur ES6 --> ES5 ***/
 paths.traceur = {
   bin: join( paths.nodeModules, ".bin", "traceur" ),
@@ -213,8 +190,6 @@ paths.karma = {
     "index.html",
     "tests.html",
     "**/.new/*.*",
-    "**/ed-components.html",
-    "**/ui-components.html",
     "**/poc-components.html",
     "coverage/**"
   ],
@@ -335,6 +310,31 @@ paths.dgeni = {
     templateFolder: join( paths.dgeni, "templates" ),
     templatePattern: "components.template.html",
     outputFolder: join( paths.docs, "components" )
+  }
+};
+
+/*** SVGSTORE PATHS ***/
+paths.svgstore = {
+  src: join( paths.client, "assets", "icons", "svg", "*.svg" ),
+  out: join( paths.dev, "assets", "icons" )
+};
+
+/*** ENVBUILD PATHS ***/
+/*** ask about qa paths ***/
+paths.envBuild = {
+  src: {
+    dev:  join( paths.dev, "domain", "ed", "urls", "dev.js" ),
+    prod: join( paths.prod, "domain", "ed", "urls", "prod.js" ),
+    qa:   join( paths.prod, "domain", "ed", "urls", "qa.js" )
+  },
+  out: {
+    dev:  join( paths.dev, "domain", "ed" ),
+    prod: join( paths.prod, "domain", "ed" )
+  },
+  remove: {
+    dev:  join( paths.dev, "domain", "ed", "urls" ),
+    prod: join( paths.prod, "domain", "ed", "urls" ),
+    qa:   join( paths.prod, "domain", "ed", "urls" )
   }
 };
 

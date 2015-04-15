@@ -1,6 +1,5 @@
 
 @import "ed/colors.vars.less";
-@import "test.mixin.less";
 @import "mixins/prefixes/animations.less";
 
 .keyframes("my-fade-animation", {
@@ -27,8 +26,7 @@
 h2{
 //  color: orange;
   background-color: black;
-  color: darken( @accent, 20% );
-  .cool( @fontColor );
+  color: darken( @originalTeal, 20% );
   .animation( ~"my-fade-animation 3s 1s" );
   .animation( ~"my-other-animation 2.5s" );
 }

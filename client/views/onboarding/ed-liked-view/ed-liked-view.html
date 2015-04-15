@@ -1,0 +1,29 @@
+<link rel="import" href="../../../components/ed/ed-bubble-select/ed-bubble-select.html"/>
+
+<polymer-element name="ed-liked-view" attributes="">
+  <template>
+    <link rel="stylesheet" href="./ed-liked-view.css">
+    <div class="genre-container">
+      <div class="header" >
+        <span>Tap up to 3 genres</span>
+        <span>you want to hear</span>
+      </div>
+      <form method="post" role="form" action="#">
+        <div class="ed-genre-bubbles">
+          <ed-bubble-select view-type="like" image="http://i.imgur.com/B4CvYsy.jpg">pop</ed-bubble-select>
+          <ed-bubble-select view-type="like" image="http://i.imgur.com/XqugVbqb.jpg">rock</ed-bubble-select>
+          <ed-bubble-select view-type="like" image="http://i.imgur.com/Hrl64Xx.jpg">alternative</ed-bubble-select>
+        </div>
+        <div class="alternate-bubbles">
+          <ed-bubble-select view-type="like" image="http://i.imgur.com/w9vJym1b.jpg">hip-hop</ed-bubble-select>
+          <ed-bubble-select view-type="like" image="http://i.imgur.com/uI4VP0Z.jpg">country</ed-bubble-select>
+          <ed-bubble-select view-type="like" image="http://i.imgur.com/yOuhs7I.jpg">dance</ed-bubble-select>
+        </div>
+        <button id="next-button" type="submit" href="#">
+          Next
+        </button>
+      </form>
+    </div>
+  </template>
+  <script src="ed-liked-view.js"></script>
+</polymer-element>
