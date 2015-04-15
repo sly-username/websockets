@@ -102,6 +102,7 @@ paths.symlink = {
     ]
   }
 };
+paths.symlink.prod = paths.symlink.src.concat( join( "!**", "coverage.html" ) );
 
 /*** LESS ***/
 paths.less = {
@@ -316,7 +317,10 @@ paths.dgeni = {
 /*** SVGSTORE PATHS ***/
 paths.svgstore = {
   src: join( paths.client, "assets", "icons", "svg", "*.svg" ),
-  out: join( paths.dev, "assets", "icons" )
+  out: {
+    dev: join( paths.dev, "assets", "icons" ),
+    prod: join( paths.prod, "assets", "icons" )
+  }
 };
 
 /*** ENVBUILD PATHS ***/
@@ -337,8 +341,6 @@ paths.envBuild = {
     qa:   join( paths.prod, "domain", "ed", "urls" )
   }
 };
-
-/*** TODO ***/
 
 // Export!
 module.exports = paths;

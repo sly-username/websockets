@@ -40,5 +40,5 @@ gulp.task( "symlink:tests", gulp.parallel(
 
 // Copy files that don't need to be compiled into the build/prod folder
 gulp.task( "copy:prod", function() {
-  return runCopy( config.symlink.src, config.prod );
+  return runCopy( config.symlink.prod, config.prod );
 });
