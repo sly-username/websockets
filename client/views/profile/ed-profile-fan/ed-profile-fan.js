@@ -8,16 +8,23 @@
       polymer( "ed-profile-fan", {
         /* LIFECYCLE */
         ready: function() {
-          dataService.getFanById( this.attributes[ "ed-id" ].value )
-            .then(function( edFan ) {
-              this.edFan = edFan;
-            }.bind( this ));
+          if ( this[ "ed-id" ] ) {
+            dataService.getFanById( this[ "ed-id" ] )
+              .then(function( edFan ) {
+                this.edFan = edFan;
+                console.log( "artist got: %o", edFan );
+                console.dir( this );
+              }.bind( this ));
+          }
         },
         attached: function() {},
         detached: function() {},
-        attributeChanged: function( attrName, oldValue, newValue ) {
+        "ed-idChanged": function() {
+          this.attributeChanged( "ed-id" );
+        },
+        attributeChanged: function( attrName ) {
           if ( attrName === "ed-id" ) {
-            dataService.getFanById( this.attributes[ "ed-id" ].value )
+            dataService.getFanById( this[ "ed-id" ] )
               .then(function( edFan ) {
                 this.edFan = edFan;
               }.bind( this ));

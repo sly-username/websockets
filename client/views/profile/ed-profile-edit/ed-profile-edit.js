@@ -1,4 +1,4 @@
-(function( polymer, System ) {
+( function( polymer, System ) {
   "use strict";
 
   System.import( "domain/ed/services/ed-data-service" )
@@ -8,10 +8,14 @@
       polymer( "ed-profile-edit", {
         /* LIFECYCLE */
         ready: function() {
-          dataService.getFanById( this.attributes[ "ed-id" ].value ).then( function( edFan ) {
-            this.edFan = edFan;
-          }.bind( this ) );
-
+          if ( this[ "ed-id" ] ) {
+            dataService.getFanById( this[ "ed-id" ] )
+              .then(function( edFan ) {
+                this.edFan = edFan;
+                console.log( "artist got: %o", edFan );
+                console.dir( this );
+              }.bind( this ));
+          }
           this.editForm = this.shadowRoot.getElementById( "edit-form" );
           this.firstName = this.shadowRoot.getElementById( "first-name" );
           this.lastName = this.shadowRoot.getElementById( "last-name" );
@@ -30,15 +34,22 @@
           this.choosePhoto.removeEventListener( "change", this.autoSubmit.bind( this ) );
           this.takePhoto.removeEventListener( "change", this.autoSubmit.bind( this ) );
         },
+        "ed-idChanged": function() {
+          this.attributeChanged( "ed-id" );
+        },
         autoSubmit: function() {
           this.editForm.submit();
         },
-        attributeChanged: function( attrName, oldValue, newValue ) {
-          dataService.getFanById( this.attributes[ "ed-id" ].value ).then( function( edFan ) {
-            this.edFan = edFan;
-          }.bind( this ));
+        attributeChanged: function( attrName ) {
+          if ( attrName === "ed-id" ) {
+            dataService.getFanById( this[ "ed-id" ] )
+              .then(function( edFan ) {
+                this.edFan = edFan;
+              }.bind( this ));
+          }
         }
       });
     });
 })( window.Polymer, window.System );
+
 

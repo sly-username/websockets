@@ -1,4 +1,5 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
 <polymer-element name="ed-profile-fan" attributes="ed-id">
   <template>
@@ -14,23 +15,23 @@
               <span>rank</span>
             </div>
             <!-- placeholder until more info gets added to service -->
-            <div class="rank-box">{{ edFan.displayRank }}</div>
+            <div class="rank-box">{{ edFan.displayRank || 0 }}</div>
           </div>
           <div class="songs-rated">
             <div class="songs-rated-text">Songs
               <span>rated</span>
             </div>
             <!-- placeholder until more info gets added to service -->
-            <div class="songs-rated-box">{{ edFan.songsRated }}</div>
+            <div class="songs-rated-box">{{ edFan.songsRated || 0 }}</div>
           </div>
         </div>
         <div class="image-wrapper">
-          <div class="profile-name"> {{ edFan.displayName }}
+          <div class="profile-name"> {{ edFan.displayName || "No Name" }}
             <span>Fan</span>
           </div>
           <div class="profile-image">
             <!-- placeholder until more info gets added to service -->
-            <img src="{{ edFan.displayImage }}"/>
+            <img-placeholder src="{{ edArtist.displayImage }}" image="placecage"></img-placeholder>
           </div>
         </div>
         <div class="icon-section">
@@ -42,11 +43,10 @@
           </div>
           <hr>
           <div class="icon-bar-wrapper">
-            <template repeat="{{badges in edFan.badgesEarned}}">
-              <li>
-                <ed-icon name="{{ badges.name }}"></ed-icon>
-              </li>
-            </template>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
           </div>
           <hr>
         </div>

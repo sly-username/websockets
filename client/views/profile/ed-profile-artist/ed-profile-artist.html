@@ -15,19 +15,19 @@
               <span>rank</span>
             </div>
             <!-- placeholder until more info gets added to service -->
-            <div class="rank-box">{{ edArtist.displayRank }}</div>
+            <div class="rank-box">{{ edArtist.displayRank || 0 }}</div>
           </div>
           <div class="songs-rated">
             <div class="songs-rated-text">Songs
               <span>rated</span>
             </div>
             <!-- placeholder until more info gets added to service -->
-            <div class="songs-rated-box">{{ edArtist.songsRated }}</div>
+            <div class="songs-rated-box">{{ edArtist.songsRated || 0 }}</div>
           </div>
         </div>
         <div class="image-wrapper">
           <div class="profile-name">
-            {{ edArtist.displayName }}
+            {{ edArtist.displayName || "Name Error" }}
             <span>Artist/Band</span>
           </div>
           <div class="profile-image">
@@ -39,11 +39,10 @@
           <div class="icon-header">Rewards</div>
           <hr>
           <div class="icon-bar-wrapper">
-            <template repeat="{{badges in edArtist.badgesEarned}}">
-              <li>
-                <ed-icon name="{{ badges.name }}"></ed-icon>
-              </li>
-            </template>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
           </div>
           <hr>
         </div>
@@ -51,7 +50,7 @@
           <div class="bio-header">Biography</div>
           <hr>
           <div class="bio-body">
-            {{ edArtist.bio }}
+            {{ edArtist.bio || "No Bio" }}
           </div>
         </div>
       </div>
