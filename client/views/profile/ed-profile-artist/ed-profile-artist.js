@@ -21,7 +21,6 @@
         detached: function() {},
         "ed-idChanged": function() {
           this.attributeChanged( "ed-id" );
-          console.log( this.edArtist );
         },
         attributeChanged: function( attrName ) {
           if ( attrName === "ed-id" ) {
