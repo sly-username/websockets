@@ -130,7 +130,7 @@ edUserService.register = function( args, authBlock ) {
         typeof response.data[ 0 ].id === "string" ) {
         console.log( "response validated" );
 
-        return response;
+        return response.data;
       }
     })
     .catch( error => {
@@ -140,8 +140,9 @@ edUserService.register = function( args, authBlock ) {
       throw error;
     })
     .then( response => {
-      console.log( "reponsereponsereponse", response );
-      return this.login( authBlock.email, authBlock.password );
+      // TODO wait for login integration to be merged
+      //return this.login( authBlock.email, authBlock.password );
+      return response;
     });
 };
 

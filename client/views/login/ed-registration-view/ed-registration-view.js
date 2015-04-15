@@ -3,7 +3,20 @@
 
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
-      var userService = imported.default;
+      var userService = imported.default,
+        validateInputs;
+
+      validateInputs = function( self ) {
+        var i,
+          length = self.formInputs.length;
+
+        for ( i = 0; i < length; i++) {
+          var value = self.formInputs[ i ].shadowRoot.querySelector( "input" ).value;
+          return value !== "";
+        }
+
+        return false;
+      };
 
       polymer( "ed-registration-view", {
         /* LIFECYCLE */
@@ -12,12 +25,21 @@
           this.formContainer = this.shadowRoot.getElementById( "registration-form" );
           this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
           // TODO maybe a better way to grab the form inputs
-          // this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
+          this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
         },
         attached: function() {
           // this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
-          //this.formContainer.addEventListener( "keypress", this.submitForm.bind( this ) );
-          this.submitButton.addEventListener( "click", this.submitForm.bind( this ), false);
+          this.formContainer.addEventListener( "keypress", this.handleEvent.bind( this ) );
+          this.submitButton.addEventListener( "click", this.handleEvent.bind( this ), false);
+        },
+        handleEvent: function( event ) {
+          if ( event.type === "keypress" && event.keyCode === 13) {
+            this.submitForm( event );
+          }
+
+          if ( event.type === "click" ) {
+            this.submitForm( event );
+          }
         },
         submitCheck: function( event ) {
           if ( this.pairedInput.isValid ) {
@@ -27,14 +49,14 @@
           }
         },
         submitForm: function( event ) {
+          var authBlock, registrationBlock, areValidInputs;
           // TODO remove debug
           event.preventDefault();
-          //if ( event.type !== "keypress" && event.keyCode !== 13 || event.type !== "click" ) {
-          //  return;
-          //}
 
-          // refactor these selectors.. please
-          var authBlock,
+          areValidInputs = validateInputs( this );
+
+          if ( areValidInputs ) {
+            // refactor these selectors...
             registrationBlock = {
               type: "user",
               email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
@@ -49,15 +71,19 @@
               zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
             };
 
-          // could prob abstract this out
-          if ( registrationBlock.password === registrationBlock.passwordConfirmation ) {
-            authBlock = {
-              email: registrationBlock.email,
-              password: registrationBlock.password
-            };
-          }
+            // could prob abstract this out
+            if ( registrationBlock.password === registrationBlock.passwordConfirmation ) {
+              authBlock = {
+                email: registrationBlock.email,
+                password: registrationBlock.password
+              };
+            }
 
-          userService.register({ data: registrationBlock }, authBlock );
+            userService.register({ data: registrationBlock }, authBlock )
+              .then( function( response ) {
+                console.log( "response", response );
+              });
+          }
         },
         detached: function() {},
         attributeChanged: function( attrName, oldValue, newValue ) {}
