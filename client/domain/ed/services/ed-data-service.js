@@ -112,7 +112,7 @@ edTrackDB.then( trackDB => {
 
 // Start Service Functions
 dataService.getByTypeAndId = function( type, id, priority=10 ) {
-  console.log( "getByTypeAndId %o", arguments );
+//  console.log( "getByTypeAndId %o", arguments );
 
   var
     route,
@@ -124,6 +124,11 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     { pdb, lru } = getDBAndLRUForType( type );
 
   route = getQueryRouteForType( type );
+
+  if ( lru.has( id ) ) {
+    console.log( `id: ${id} already found in lru: %o`, lru );
+    return Promise.resolve( lru.get( id ) );
+  }
 
   if ( route === "" ) {
     return Promise.reject( new TypeError( `Could not find route associated with ${type} in dataService` ) );
