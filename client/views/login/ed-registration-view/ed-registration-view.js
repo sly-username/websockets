@@ -4,9 +4,9 @@
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
       var userService = imported.default,
-        validateInputs;
+        validateFormInputValues;
 
-      validateInputs = function( self ) {
+      validateFormInputValues = function( self ) {
         var i,
           length = self.formInputs.length;
 
@@ -49,15 +49,15 @@
           }
         },
         submitForm: function( event ) {
-          var authBlock, registrationBlock, areValidInputs;
+          var authBlock, registrationDataBlock, areValidInputs;
           // TODO remove debug
           event.preventDefault();
 
-          areValidInputs = validateInputs( this );
+          areValidInputs = validateFormInputValues( this );
 
           if ( areValidInputs ) {
             // refactor these selectors...
-            registrationBlock = {
+            registrationDataBlock = {
               type: "user",
               email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
               password: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#primary-box" ).value,
@@ -71,17 +71,10 @@
               zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
             };
 
-            // could prob abstract this out
-            if ( registrationBlock.password === registrationBlock.passwordConfirmation ) {
-              authBlock = {
-                email: registrationBlock.email,
-                password: registrationBlock.password
-              };
-            }
-
-            userService.register({ data: registrationBlock }, authBlock )
+            userService.register({ data: registrationDataBlock })
               .then( function( response ) {
                 console.log( "response", response );
+                document.querySelector( "app-router" ).go( "" )
               });
           }
         },

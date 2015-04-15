@@ -131,12 +131,12 @@ edUserService.changeProfileImage = function( image ) {
   return Promise.resolve( null );
 };
 
-edUserService.register = function( args, authBlock ) {
+edUserService.register = function( args ) {
   return edConnectionService.request( "user/create", 10, args )
     .then( response => {
       // validate response
       if ( response && response.status && response.status.code && response.status.code === 1 &&
-        typeof response.data[ 0 ].id === "string" ) {
+        typeof response.data.id === "string" ) {
         console.log( "response validated %o", response );
 
         return response.data;
@@ -150,7 +150,7 @@ edUserService.register = function( args, authBlock ) {
     })
     .then( response => {
       // TODO wait for login integration to be merged
-      return edUserService.login( authBlock.email, authBlock.password );
+      //return edUserService.login( authBlock.email, authBlock.password );
     });
 };
 
