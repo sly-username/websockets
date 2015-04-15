@@ -1,4 +1,5 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
 <polymer-element name="ed-profile-artist" attributes="ed-id">
   <template>
@@ -31,7 +32,7 @@
           </div>
           <div class="profile-image">
             <!-- placeholder until more info gets added to service -->
-            <img src="{{ edArtist.displayImage }}"/>
+            <img-placeholder src="{{ edArtist.displayImage }}" image="fillmurray"></img-placeholder>
           </div>
         </div>
         <div class="icon-section">

@@ -1,7 +1,8 @@
 ( function( polymer ) {
   "use strict";
 
-  var globalMap = {},
+  var
+    globalMap = {},
     updateMap = function() {
       Array.prototype.forEach.call(
         document.getElementsByTagName( "img-placeholder" ),
@@ -11,6 +12,21 @@
         }
       );
     };
+
+  globalMap = (function() {
+    var urlPrefix = "http://",
+      urlPostfix = ".com/200/300",
+      map = {},
+      imageNames = [
+        "fillmurray",
+        "placecage"
+      ];
+
+    imageNames.forEach(function( imageName ) {
+      map[imageName] = urlPrefix + imageName + urlPostfix;
+    });
+    return map;
+  })();
 
   polymer( "img-placeholder", {
     published: {
