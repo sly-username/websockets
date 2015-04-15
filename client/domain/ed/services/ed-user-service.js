@@ -1,9 +1,12 @@
+/*jshint strict: false*/
+
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
-//import edAnalyticsService from "domain/analytics/EDAnalytics";
+import EDUser from "domain/ed/objects/EDUser";
+import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
@@ -129,15 +132,29 @@ edUserService.changeProfileImage = function( image ) {
 };
 
 edUserService.register = function( args ) {
-  return edConnectionService.request( args )
-    .then( () => {
-      hasOnboarded = true;
-      return true;
+  var authBlock = {
+    email: args.email,
+    password: args.password
+  };
+
+  return edConnectionService.request( "user/create", 10, { data: args } )
+    .then( response => {
+      // validate response
+      if ( response && response.status && response.status.code && response.status.code === 1 &&
+        typeof response.data.id === "string" ) {
+        console.log( "response validated %o", response );
+
+        return response;
+      }
     })
     .catch( error => {
-      hasOnboarded = false;
+      console.log( "Error registering new user in User Service" );
+      console.error( error );
+      // TODO throw proper error object
       throw error;
-      // todo throw proper error object
+    })
+    .then( response => {
+      return edUserService.login( authBlock.email, authBlock.password );
     });
 };
 

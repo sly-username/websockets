@@ -1,3 +1,5 @@
+/*jshint strict: false*/
+
 var generateToken,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
@@ -79,7 +81,7 @@ export default class EDWebSocket extends HealingWebSocket {
           reject( error );
           return;
         }
-
+        
         // validate response
         if ( response.status.code === 1 && typeof response.data.profileId === "string" ) {
           resolve( event );
@@ -129,7 +131,7 @@ export default class EDWebSocket extends HealingWebSocket {
 
     console.log( "request called: %o", data );
 
-    if ( data && data.action && data.action.route && data.action.route === "profile/get" ) {
+    if ( data && data.action && data.action.route && (data.action.route === "profile/get" || data.action.route === "user/create") ) {
       console.log( "hack fix: skip auth for profile gets");
     } else if ( !this[ isAuthenticated ] && !( "auth" in data ) ) {
       console.log( "in request, not authed, no auth block %o", data );

@@ -1,4 +1,5 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
 <polymer-element name="ed-profile-fan" attributes="ed-id">
   <template>
@@ -7,54 +8,48 @@
       <div class="ed-content">
         <div class="rank-bar">
           <div class="back-icon">
-            <ed-icon name="add189"></ed-icon>
+            <ed-icon name="arrow-down"></ed-icon>
           </div>
           <div class="user-rank">
             <div class="rank-text">Your
               <span>rank</span>
             </div>
-            <div class="rank-box">76</div>
+            <!-- placeholder until more info gets added to service -->
+            <div class="rank-box">{{ edFan.displayRank || 0 }}</div>
           </div>
           <div class="songs-rated">
-            <!-- the below is to be replace with a data object -->
             <div class="songs-rated-text">Songs
               <span>rated</span>
             </div>
-            <!-- the below is to be replace with a data object -->
-            <div class="songs-rated-box">362</div>
+            <!-- placeholder until more info gets added to service -->
+            <div class="songs-rated-box">{{ edFan.songsRated || 0 }}</div>
           </div>
         </div>
         <div class="image-wrapper">
-          <!-- the below is to be replace with a data object -->
-          <div class="profile-name"> Rock Fan
-            <span>Artist/Band</span>
+          <div class="profile-name"> {{ edFan.displayName || "No Name" }}
+            <span>Fan</span>
           </div>
           <div class="profile-image">
-            <!-- the below is to be replace with a data object -->
-            <img src="http://i.imgur.com/xvirNok.jpg"/>
+            <!-- placeholder until more info gets added to service -->
+            <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
           </div>
         </div>
         <div class="icon-section">
           <div class="icon-header">Rewards
             <div class="edit-profile">
-              <ed-icon name="add189"></ed-icon>
+              <ed-icon name="pencil"></ed-icon>
               <button>Edit Profile</button>
             </div>
           </div>
           <hr>
           <div class="icon-bar-wrapper">
-            <!-- the below is to be replace with a data object -->
-            <ed-icon name="add189"></ed-icon>
-            <ed-icon name="add189"></ed-icon>
-            <ed-icon name="add189"></ed-icon>
-            <ed-icon name="add189"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
+            <ed-icon name="badge-empty"></ed-icon>
           </div>
           <hr>
         </div>
-      </div>
-      <div class="ad-content">
-        <!-- the below is to be replace with a data object -->
-        <img src="http://i.imgur.com/BHsn5lxb.jpg" />
       </div>
     </div>
   </template>
