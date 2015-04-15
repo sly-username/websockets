@@ -68,7 +68,7 @@ gulp.task( "envBuild:dev", gulp.series(
 
 // PROD TASKS
 gulp.task( "envBuild:prod:copy", function() {
-  return runCopy( config.envBuild.src.prod, config.prod, thisEnv );
+  return runCopy( config.envBuild.src.prod, config.prod, "prod" );
 });
 gulp.task( "envBuild:prod:cleanup", cleanUp( config.envBuild.remove.prod ));
 
