@@ -3,7 +3,8 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/alignments.mixin.less";
 
-@redTransparent: linear-gradient(to bottom, fade(@originalRed, 50%);
+@redTransparent: linear-gradient(to bottom, fade(@originalRed, 50%), fade(@originalRed, 50%));
+@tealTransparent: linear-gradient(to bottom, fade(@originalTeal, 50%), fade(@originalTeal, 50%));
 
 :host {
   float: left;
@@ -11,43 +12,67 @@
   max-width: 33.3%
 }
 
+// dislike views
 :host([view-type="dislike"][genre="rock"][checked]) {
-  background:
-    url(http://placekitten.com/200/300), @redTransparent;
+  .ed-bubble {
+    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+  }
 }
 :host([view-type="dislike"][genre="country"][checked]) {
-  background:
-    url(http://placekitten.com/200/300), @redTransparent;
+  .ed-bubble {
+    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+  }
 }
 :host([view-type="dislike"][genre="hip-hop"][checked]) {
-  background:
-    url(http://placekitten.com/200/300), @redTransparent;
+  .ed-bubble {
+    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+  }
 }
 :host([view-type="dislike"][genre="pop"][checked]) {
-  background:
-    url(http://placekitten.com/200/300), @redTransparent;
+  .ed-bubble {
+    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+  }
 }
 :host([view-type="dislike"][genre="dance"][checked]) {
-  background:
-    url(http://placekitten.com/200/300), @redTransparent;
+  .ed-bubble {
+    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+  }
 }
 :host([view-type="dislike"][genre="alternative"][checked]) {
-  background:
-    url(http://placekitten.com/200/300),
-    linear-gradient(to bottom, fade(@originalRed, 50%));
+  .ed-bubble {
+    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+  }
 }
 
-:host([view-type="like"][checked]) {
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-    padding: 50% 0;
-    border-radius: 50%;
-    background: @originalTeal;
-    opacity: 0.5;
+// like views
+:host([view-type="like"][genre="rock"][checked]) {
+  .ed-bubble {
+    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+  }
+}
+:host([view-type="like"][genre="country"][checked]) {
+  .ed-bubble {
+    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+  }
+}
+:host([view-type="like"][genre="hip-hop"][checked]) {
+  .ed-bubble {
+    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+  }
+}
+:host([view-type="like"][genre="pop"][checked]) {
+  .ed-bubble {
+    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+  }
+}
+:host([view-type="like"][genre="dance"][checked]) {
+  .ed-bubble {
+    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+  }
+}
+:host([view-type="like"][genre="alternative"][checked]) {
+  .ed-bubble {
+    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
   }
 }
 
