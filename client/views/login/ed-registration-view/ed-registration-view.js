@@ -71,7 +71,7 @@
               zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
             };
 
-            userService.register({ data: registrationDataBlock })
+            userService.register( registrationDataBlock )
               .then(function( edProfile ) {
                 var redirectTo;
 

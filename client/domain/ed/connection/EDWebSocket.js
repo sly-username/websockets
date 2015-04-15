@@ -82,6 +82,8 @@ export default class EDWebSocket extends HealingWebSocket {
           return;
         }
 
+        console.log( "response1281ijdjka", response );
+
         // validate response
         if ( response.status.code === 1 && typeof response.data.profileId === "string" ) {
           resolve( event );

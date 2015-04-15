@@ -132,14 +132,19 @@ edUserService.changeProfileImage = function( image ) {
 };
 
 edUserService.register = function( args ) {
-  return edConnectionService.request( "user/create", 10, args )
+  var authBlock = {
+    email: args.email,
+    password: args.password
+  };
+
+  return edConnectionService.request( "user/create", 10, { data: args } )
     .then( response => {
       // validate response
       if ( response && response.status && response.status.code && response.status.code === 1 &&
         typeof response.data.id === "string" ) {
         console.log( "response validated %o", response );
 
-        return response.data;
+        return response;
       }
     })
     .catch( error => {
@@ -149,7 +154,7 @@ edUserService.register = function( args ) {
       throw error;
     })
     .then( response => {
-      //return edUserService.login();
+      return edUserService.login( authBlock.email, authBlock.password );
     });
 };
 
