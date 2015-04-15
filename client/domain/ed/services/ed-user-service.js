@@ -1,21 +1,16 @@
+/*jshint strict: false*/
+
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
-<<<<<<< HEAD
 import EDUser from "domain/ed/objects/EDUser";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
-
-var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
-  currentUser = null,
-=======
-//import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   currentProfile = null,
->>>>>>> dev
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null;
@@ -52,7 +47,6 @@ Object.defineProperties( edUserService, {
 });
 
 edUserService.login = function( email, password ) {
-
   var
     json = {
       auth: {
@@ -137,13 +131,13 @@ edUserService.changeProfileImage = function( image ) {
   return Promise.resolve( null );
 };
 
-edUserService.register = function( args, authBlock ) {
+edUserService.register = function( args ) {
   return edConnectionService.request( "user/create", 10, args )
     .then( response => {
       // validate response
       if ( response && response.status && response.status.code && response.status.code === 1 &&
-        typeof response.data[ 0 ].id === "string" ) {
-        console.log( "response validated" );
+        typeof response.data.id === "string" ) {
+        console.log( "response validated %o", response );
 
         return response.data;
       }
@@ -156,9 +150,7 @@ edUserService.register = function( args, authBlock ) {
     })
     .then( response => {
       // TODO wait for login integration to be merged
-      //return this.login( authBlock.email, authBlock.password );
-      return response;
-
+      //return edUserService.login( authBlock.email, authBlock.password );
     });
 };
 
