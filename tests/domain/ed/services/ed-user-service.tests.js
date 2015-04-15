@@ -1,4 +1,4 @@
-( function( win, doc, System, sinon, expect ) {
+(function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "EDUserService", function() {
@@ -22,16 +22,16 @@
 
 // Tests begin
     suite( "Properties", function() {
-      suite( "currentUser", function() {
-        test( "currentUser default value is null", function() {
+      suite( "currentProfile", function() {
+        test( "currentProfile default value is null", function() {
           expect( edUserService )
-            .to.have.property( "currentUser" )
+            .to.have.property( "currentProfile" )
             .that.equals( null );
         });
 
-        test( "cannot be set via \"currentUser\" property", function() {
+        test( "cannot be set via \"currentProfile\" property", function() {
           var setCurrentUser = function() {
-            edUserService.currentUser = "value";
+            edUserService.currentProfile = "value";
           };
           expect( setCurrentUser )
             .to.throw( TypeError );
@@ -91,7 +91,7 @@
             expect( event )
               .to.have.property( "detail" )
               .to.deep.equal( {
-                user: currentUser
+                user: currentProfile
               });
 
             done();
@@ -185,7 +185,7 @@
         });
 
         suite( "when login is not successful", function() {
-          test( "currentUser should be null", function( done ) {
+          test( "currentProfile should be null", function( done ) {
             var json = {
               auth: {
                 email: "invalid@eardish.com",
@@ -195,7 +195,7 @@
 
             edUserService.login( json.auth.email, json.auth.password ).then( function() {
               expect( edUserService )
-                .to.have.property( "currentUser" )
+                .to.have.property( "currentProfile" )
                 .that.equals( null );
 
               done();
@@ -233,7 +233,7 @@
               .that.equals( false );
 
             expect( edUserService )
-              .to.have.property( "currentUser" )
+              .to.have.property( "currentProfile" )
               .that.equals( null );
 
             expect( edUserService )

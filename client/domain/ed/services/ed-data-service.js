@@ -10,6 +10,7 @@ import EDDataSyncController from "domain/ed/storage/EDDataSyncController";
 import typeChecker from "domain/ed/objects/model-type-checker";
 
 import EDModel from "domain/ed/objects/EDModel";
+import EDUser from "domain/ed/objects/EDUser";
 import EDProfile from "domain/ed/objects/profile/EDProfile";
 import EDArtist from "domain/ed/objects/profile/EDArtist";
 import EDFan from "domain/ed/objects/profile/EDFan";
@@ -55,11 +56,13 @@ var
   // TODO this should be somehwere else, a "routing" module perhaps
   getQueryRouteForType = function( type ) {
     try {
-      if ( typeChecker.isProfileType({ type }) ) {
+      let objType = { type };
+
+      if ( typeChecker.isProfileType( objType ) ) {
         return "profile/get";
       }
 
-      if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, { type }) ) {
+      if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, objType )) {
         return "track/detail/get";
       }
     } catch ( error ) {

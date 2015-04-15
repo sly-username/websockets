@@ -1,22 +1,23 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
+import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
-import EDUser from "domain/ed/objects/EDUser";
 //import edAnalyticsService from "domain/analytics/EDAnalytics";
 
-var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
-  currentUser = null,
+var
+  edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
+  currentProfile = null,
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null;
 
 Object.defineProperties( edUserService, {
-  currentUser: {
+  currentProfile: {
     configurable: false,
     enumerable: false,
     get: function() {
-      return currentUser;
+      return currentProfile;
     }
   },
   isOpenSession: {
@@ -43,41 +44,37 @@ Object.defineProperties( edUserService, {
 });
 
 edUserService.login = function( email, password ) {
-  var json = {
-    auth: {
-      email,
-      password
-    }
-  };
+  var
+    json = {
+      auth: {
+        email,
+        password
+      }
+    };
 
   return edConnectionService.authenticateConnection( email, password )
-    .then( raw => {
-      edDataService.getByTypeAndId( "user", raw.profileId )
-        .then( userResponse => {
-          currentUser = userResponse;
-          isOpenSession = true;
-          sessionAuthJSON = json;
-          hasOnboarded = true; // should we put this in here?
+    .then( raw => edDataService.getProfileById( raw.profileId ))
+    .then( edProfile => {
+      currentProfile = edProfile;
+      isOpenSession = true;
+      sessionAuthJSON = json;
 
-          edUserService.dispatch( createEvent( "edLogin", {
-            detail: {
-              user: currentUser
-            }
-          }));
+      edUserService.dispatch( createEvent( "edLogin", {
+        detail: {
+          user: currentProfile
+        }
+      }));
 
-          document.querySelector( "app-router" ).go( "/profile/get/" + raw.profileId );
-
-          // todo analytics
-          // edAnalyticsService.send(
-          //  edAnalyticsService.createEvent( "login", {
-          //    timestamp: new Date()
-          //  })
-          // );
-          return currentUser;
-        });
+      // todo analytics
+      // edAnalyticsService.send(
+      //  edAnalyticsService.createEvent( "login", {
+      //    timestamp: new Date()
+      //  })
+      // );
+      return currentProfile;
     })
     .catch( () => {
-      currentUser = null;
+      currentProfile = null;
       isOpenSession = false;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
@@ -86,11 +83,11 @@ edUserService.login = function( email, password ) {
 
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUser = currentUser;
+  var oldUser = currentProfile;
 
   return edConnectionService.deauthenticateSocket()
     .then( () => {
-      currentUser = null;
+      currentProfile = null;
       isOpenSession = false;
       sessionAuthJSON = null;
 
@@ -109,7 +106,7 @@ edUserService.logout = function() {
 
       return true;
     })
-    .catch( () => {
+    .catch(() => {
       return false;
     });
 };
@@ -124,10 +121,11 @@ edUserService.changeProfileImage = function( image ) {
   send( image );
   new Promise()
     "onmessage" --> check for a "image upload complete"
-    resolve( dataservice.getUserById( currentUser.id ) )
+    resolve( dataservice.getUserById( currentProfile.id ) )
   */
 
   // need to match new image to appropriate user
+  return Promise.resolve( null );
 };
 
 edUserService.register = function( args ) {

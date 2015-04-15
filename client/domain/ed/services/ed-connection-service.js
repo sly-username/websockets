@@ -1,5 +1,4 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
-import EventEmitter from "domain/lib/event/EventEmitter";
 
 var edConnectionService,
   edSocket = new EDWebSocket(),
