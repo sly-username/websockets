@@ -88,7 +88,7 @@
       ss = ss < 10 ? "0" + ss : ss;
       mm = mm < 10 ? "0" + mm : mm;
 
-      return `${ mm }:${ ss }`;
+      return mm + ":" + ss;
     },
     updateCenter: function() {
       var top = window.pageYOffset;
