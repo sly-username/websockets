@@ -138,7 +138,8 @@ export default class EDWebSocket extends HealingWebSocket {
 
     console.log( "request called: %o", data );
 
-    if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
+    // if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
+    if ( !this[ isAuthenticated ] && !( "auth" in data ) ) {
       console.log( "in request, not authed, no auth block %o", data );
 
       return new Promise( ( resolve, reject ) => {

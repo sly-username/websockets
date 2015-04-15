@@ -44,10 +44,6 @@ Object.defineProperties( edUserService, {
 
 edUserService.login = function( email, password ) {
   var json = {
-    //action: {
-    //  route: "user/login",
-    //  priority: 10 // TODO when these priority rankings are flushed out
-    //},
     auth: {
       email,
       password
@@ -83,12 +79,7 @@ edUserService.login = function( email, password ) {
 };
 
 edUserService.logout = function() {
-  var json = {
-    //action: {
-    //  route: "user/logout",
-    //  priority: 10 // TODO when these priority rankings are flushed out
-    //}
-  },
+  var json = {},
     oldUser = currentUser;
 
   return edConnectionService.formattedRequest( json )
@@ -131,25 +122,26 @@ edUserService.changeProfileImage = function( image ) {
   // need to match new image to appropriate user
 };
 
-edUserService.register = function( args ) {
+edUserService.register = function( args, authBlock ) {
   return edConnectionService.request( "user/create", 10, args )
     .then( response => {
-      var responseData;
-
+      // validate response
       if ( response && response.status && response.status.code && response.status.code === 1 &&
         typeof response.data[ 0 ].id === "string" ) {
         console.log( "response validated" );
 
-        hasOnboarded = true;
-
-        return response.data;
+        return response;
       }
     })
     .catch( error => {
-      hasOnboarded = false;
-
-      throw error;
+      console.log( "Error registering new user in User Service" );
+      console.error( error );
       // TODO throw proper error object
+      throw error;
+    })
+    .then( response => {
+      console.log( "reponsereponsereponse", response );
+      return this.login( authBlock.email, authBlock.password );
     });
 };
 

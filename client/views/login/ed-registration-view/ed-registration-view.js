@@ -16,9 +16,10 @@
         },
         attached: function() {
           // this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
+          //this.formContainer.addEventListener( "keypress", this.submitForm.bind( this ) );
           this.submitButton.addEventListener( "click", this.submitForm.bind( this ), false);
         },
-        submitCheck: function() {
+        submitCheck: function( event ) {
           if ( this.pairedInput.isValid ) {
             this.submitButton.removeAttribute( "disabled" );
           } else {
@@ -28,9 +29,12 @@
         submitForm: function( event ) {
           // TODO remove debug
           event.preventDefault();
+          //if ( event.type !== "keypress" && event.keyCode !== 13 || event.type !== "click" ) {
+          //  return;
+          //}
 
           // refactor these selectors.. please
-          var self = this,
+          var authBlock,
             registrationBlock = {
               type: "user",
               email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
@@ -45,21 +49,18 @@
               zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
             };
 
-          console.log( "registrationBlock", registrationBlock );
+          // could prob abstract this out
+          if ( registrationBlock.password === registrationBlock.passwordConfirmation ) {
+            authBlock = {
+              email: registrationBlock.email,
+              password: registrationBlock.password
+            };
+          }
 
-          userService.register({ data: registrationBlock })
-            .then(function( newUser ) {
-              console.log( "newUser", newUser );
-
-              self.edUser = newUser;
-            });
-
-          // TODO put redirect in here?
+          userService.register({ data: registrationBlock }, authBlock );
         },
         detached: function() {},
         attributeChanged: function( attrName, oldValue, newValue ) {}
-        /* PROPERTIES */
-        /* METHODS */
       });
     }, function( error ) {
       console.warn( "Could not import 'user service': ", error.message );
