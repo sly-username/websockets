@@ -10,6 +10,7 @@ import EDDataSyncController from "domain/ed/storage/EDDataSyncController";
 import typeChecker from "domain/ed/objects/model-type-checker";
 
 import EDModel from "domain/ed/objects/EDModel";
+import EDUser from "domain/ed/objects/EDUser";
 import EDProfile from "domain/ed/objects/profile/EDProfile";
 import EDArtist from "domain/ed/objects/profile/EDArtist";
 import EDFan from "domain/ed/objects/profile/EDFan";
@@ -55,11 +56,13 @@ var
   // TODO this should be somehwere else, a "routing" module perhaps
   getQueryRouteForType = function( type ) {
     try {
-      if ( typeChecker.isProfileType({ type }) ) {
+      let objType = { type };
+
+      if ( typeChecker.isProfileType( objType ) ) {
         return "profile/get";
       }
 
-      if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, { type }) ) {
+      if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, objType )) {
         return "track/detail/get";
       }
     } catch ( error ) {
@@ -109,7 +112,7 @@ edTrackDB.then( trackDB => {
 
 // Start Service Functions
 dataService.getByTypeAndId = function( type, id, priority=10 ) {
-  console.log( "getByTypeAndId %o", arguments );
+//  console.log( "getByTypeAndId %o", arguments );
 
   var
     route,
@@ -121,6 +124,11 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     { pdb, lru } = getDBAndLRUForType( type );
 
   route = getQueryRouteForType( type );
+
+  if ( lru.has( id ) ) {
+    console.log( `id: ${id} already found in lru: %o`, lru );
+    return Promise.resolve( lru.get( id ) );
+  }
 
   if ( route === "" ) {
     return Promise.reject( new TypeError( `Could not find route associated with ${type} in dataService` ) );

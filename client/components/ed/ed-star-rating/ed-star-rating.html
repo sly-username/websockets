@@ -1,0 +1,30 @@
+<polymer-element name="ed-star-rating" attributes="disable">
+  <template>
+    <link rel="stylesheet" href="./ed-star-rating.css">
+    <p class="track-title">Track Title</p>
+    <p class="artist-name">Artist Name</p>
+    <p class="rate-song">RATE SONG:</p>
+    <template if="{{disable}}">
+      <p id="disable-text">You must listen to at least half of the song without
+        <span>scrubbing to rate it</span>
+      </p>
+    </template>
+    <template if="{{!disable}}">
+      <form id="rating-form">
+        <div class="rating">
+          <input type='radio' name='rate' id='rating-opt5'>
+          <label for='rating-opt5'></label>
+          <input type='radio' name='rate' id='rating-opt4'>
+          <label for='rating-opt4'></label>
+          <input type='radio' name='rate' id='rating-opt3'>
+          <label for='rating-opt3'></label>
+          <input type='radio' name='rate' id='rating-opt2'>
+          <label for='rating-opt2'></label>
+          <input type='radio' name='rate' id='rating-opt1'>
+          <label for='rating-opt1'></label>
+        </div>
+      </form>
+    </template>
+  </template>
+  <script src="ed-star-rating.js"></script>
+</polymer-element>
