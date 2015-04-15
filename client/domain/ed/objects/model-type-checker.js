@@ -72,6 +72,12 @@ export default {
   isProfileType( object ) {
     return this.checkForInstanceOfType( EDProfile.TYPE, object );
   },
+  isFan( object ) {
+    return this.checkForInstanceOfType( EDFan.TYPE, object );
+  },
+  isArtist( object ) {
+    return this.checkForInstanceOfType( EDArtist.TYPE, object );
+  },
   isMediaType( object ) {
     return this.checkForInstanceOfType( EDMedia.TYPE, object );
   }

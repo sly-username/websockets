@@ -1,0 +1,30 @@
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/colors.vars.less";
+.user-rank {
+  float: right;
+  margin: 4% 3%;
+  text-transform: uppercase;
+  .rank-text {
+    color: @white;
+    opacity: 0.5;
+    float: left;
+    padding: 0.3rem 0.5rem;
+    .edType( heading-XXS );
+    span {
+      display: block;
+    }
+  }
+  .rank-box {
+    color: @white;
+    opacity: 0.5;
+    float: right;
+    padding: 0.3rem 0.6rem;
+    border: 0.3rem solid @originalPurple;
+    .edType( heading-M );
+  }
+}
+:host([teal]) {
+  .rank-box {
+    border: 0.3rem solid @originalTeal;
+  }
+}
