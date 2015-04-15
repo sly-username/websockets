@@ -1,33 +1,51 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/mixins/prefixes/user-select";
 
 .rating {
   border: none;
-  .input-field {
-    border: 1px solid red;
-    height: 13rem;
-    input {
-      border: 1px solid green;
-      height: 13rem;
-      width: 17%;
-      margin: 0 0 0 1.5%;
-    }
-  }
   .star-field {
-    border: 1px solid black;
     position: absolute;
-    top: 10%;
+    left: 0;
+    pointer-events: none;
+    .userSelect( none );
   }
   .overlap-field {
-    border: 1px solid blue;
+    position: absolute;
+    left: 0;
+    pointer-events: none;
+    .transform( translateX(100%) );
+    .userSelect( none );
+    // left: 0;
   }
   ed-icon {
-    width: 30%;
-    padding: 0 0 0 6%;
-    margin: 0 -19% 0 0;
+    width: 20%;
     height: 13rem;
-    border: 1px solid black;
+    float: left;
+    text-align: center;
+    pointer-events: none;
+    .userSelect( none );
+  }
+  .input-field {
+    height: 13rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    opacity: .5;
+    input {
+      height: 13rem;
+      width: 20%;
+      margin: 0;
+      float: left;
+    }
+  }
+}
+
+input:checked {
+  .overlap-field {
+    .transform( translateX(60%) );
   }
 }
 
