@@ -1,4 +1,4 @@
-<polymer-element name="ed-bubble-select" attributes="name view-type image value disabled required checked">
+<polymer-element name="ed-bubble-select" attributes="name view-type genre value disabled required checked">
   <template>
     <link rel="stylesheet" href="./ed-bubble-select.css">
     <div class="ed-bubble-select-wrapper">
@@ -8,7 +8,6 @@
       <template if="{{!checked}}">
         <div class="ed-bubble"><content></content></div>
       </template>
-      <div class="overlay"></div>
       <input id="checkbox-field" type="checkbox"
           name={{name}} value={{value}}
           disabled?="{{disabled}}"
