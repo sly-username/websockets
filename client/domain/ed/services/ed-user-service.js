@@ -149,8 +149,7 @@ edUserService.register = function( args ) {
       throw error;
     })
     .then( response => {
-      // TODO wait for login integration to be merged
-      //return edUserService.login( authBlock.email, authBlock.password );
+      //return edUserService.login();
     });
 };
 

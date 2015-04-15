@@ -72,10 +72,17 @@
             };
 
             userService.register({ data: registrationDataBlock })
-              .then( function( response ) {
-                console.log( "response", response );
-                document.querySelector( "app-router" ).go( "" )
-              });
+              .then(function( edProfile ) {
+                var redirectTo;
+
+                if ( typeChecker.isArtist( edProfile ) ) {
+                  redirectTo = "/artist/" + edProfile.id;
+                } else {
+                  redirectTo = "/fan/" + edProfile.id;
+                }
+
+                this.router.go( redirectTo );
+              }.bind( this ));
           }
         },
         detached: function() {},
