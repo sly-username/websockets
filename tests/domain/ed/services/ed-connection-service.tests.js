@@ -61,7 +61,7 @@
           },
           sendSpy = sinon.spy( edConnectionService, "send" );
 
-        edConnectionService.send( "user/login", 10, dataObj );
+        //edConnectionService.send( "user/login", 10, dataObj );
 
         expect( sendSpy )
           .to.have.callCount( 1 );

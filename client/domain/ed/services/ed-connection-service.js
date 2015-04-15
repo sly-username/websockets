@@ -27,6 +27,10 @@ export default edConnectionService = {
       });
   },
 
+  deauthenticateSocket( ) {
+    edSocket.close( 4000 );
+  },
+
   send( route, priority=0, data ) {
     var json = {
         action: {
