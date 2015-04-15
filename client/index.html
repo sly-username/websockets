@@ -28,7 +28,6 @@
 </head>
 
 <body unresolved>
-
 <section id="splash-screen">
   <svg>
     <use xlink:href="/assets/icons/svg.svg#eardish-logo-with-slogan"></use>
@@ -69,6 +68,11 @@
 
   <!-- RETRIEVE PASSWORD -->
   <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
+
+  <!-- PLAYER -->
+  <app-route path="/player" element="ed-song-card-view"></app-route>
+
+  <!--<app-route path=""-->
 
   <!-- REMOVE FOR PRODUCTION -->
   <!-- POC Viewer page -->
@@ -113,6 +117,7 @@
         <a href="#/forgot-pass">Forgot Password</a>
         <a href="#/poc">POC Viewer Page</a>
         <a href="#/poc-bp">POC Breakpoint Page</a>
+        <a href="#/player">Song Card</a>
       </nav>
     </template>
   </app-route>
