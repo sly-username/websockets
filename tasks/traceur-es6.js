@@ -21,7 +21,7 @@ traceurOptions = {
 /* Traceur node api is working! ...for now... */
 compileES6 = function( options ) {
   return through.obj( function( file, enc, done ) {
-    var es6,
+    var es6, es5,
       opts = defaults( {}, options ),
       oldPath = file.path;
 
@@ -44,9 +44,14 @@ compileES6 = function( options ) {
 
     // Get ES6 File Content
     es6 = file.contents.toString( "utf8" );
+    es5 = traceur.compile( es6, opts );
+
+    // update source map url
+    // TODO need to replace the /home/vagrant with where the repo is in the HOST OS
+    es5 = es5.replace( "<compile-source>", "file://" + oldPath );
 
     // Update File Object
-    file.contents = new Buffer( traceur.compile( es6, opts ) );
+    file.contents = new Buffer( es5 );
     file.path = oldPath;
 
     this.push( file );

@@ -1,5 +1,6 @@
 export default {
   get path() {
-    return "wss://www.websocket.org/demos.html";
+    // TODO GET RIGHT "PROD" URL
+    return "ws://apidev.eardishcorp.com";
   }
 }
