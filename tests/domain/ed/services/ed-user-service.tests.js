@@ -1,19 +1,17 @@
-( function( win, doc, System, sinon, expect ) {
+(function( win, doc, System, sinon, expect ) {
   "use strict";
 
   suite( "EDUserService", function() {
-    var edUserService, EventEmitter, createEvent;
+    var edUserService, edConnectionService;
 
     suiteSetup( function( done ) {
       Promise.all([
         System.import( "domain/ed/services/ed-user-service" ),
-        System.import( "domain/lib/event/EventEmitter" ),
-        System.import( "domain/lib/event/create-event" )
+        System.import( "domain/ed/services/ed-connection-service" )
       ])
         .then( function( imported ) {
           edUserService = imported[0].default;
-          EventEmitter = imported[1].default;
-          createEvent = imported[2].default;
+          edConnectionService = imported[1].default;
           done();
         }, function( error ) {
           console.warn( "Could not import 'user-service' for testing: ", error.message );
@@ -24,16 +22,16 @@
 
 // Tests begin
     suite( "Properties", function() {
-      suite( "currentUser", function() {
-        test( "currentUser default value is null", function() {
+      suite( "currentProfile", function() {
+        test( "currentProfile default value is null", function() {
           expect( edUserService )
-            .to.have.property( "currentUser" )
+            .to.have.property( "currentProfile" )
             .that.equals( null );
         });
 
-        test( "cannot be set via \"currentUser\" property", function() {
+        test( "cannot be set via \"currentProfile\" property", function() {
           var setCurrentUser = function() {
-            edUserService.currentUser = "value";
+            edUserService.currentProfile = "value";
           };
           expect( setCurrentUser )
             .to.throw( TypeError );
@@ -64,7 +62,6 @@
         });
 
         test( "hasOnboarded returns true after user registers", function() {
-          // TODO need to wait until connection service is created
           edUserService.register();
 
           expect( edUserService )
@@ -94,13 +91,13 @@
             expect( event )
               .to.have.property( "detail" )
               .to.deep.equal( {
-                user: currentUser
+                user: currentProfile
               });
 
             done();
           });
 
-          edUserService.login( "email", "password" );
+          edUserService.login( "intdev@eardish.com", "intdevpass" );
         });
       });
 
@@ -130,105 +127,97 @@
       suite( "login", function() {
         // TODO need to figure out how to make login successful for this test
         suite( "on a successful login", function() {
-          test( "should return user object", function() {
+          test( "should return user object", function( done ) {
             var json = {
-              action: {
-                route: "user/login",
-                priority: 10
-              },
               auth: {
-                email: "email",
-                password: "password"
+                email: "intdev@eardish.com",
+                password: "intdevpass"
               }
             },
-            userServiceReturn = edUserService.login( json.auth.email, json.auth.password );
+            userServiceReturn = edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( userServiceReturn )
+                .to.eventually.be.an( "object" );
 
-            expect( userServiceReturn )
-              .to.be.an( "object" );
+              done();
+            });
+
           });
 
-          test( "sessionAuthJSON property should store authentication information", function() {
+          test( "isOpenSession should be true", function( done ) {
             var json = {
-                action: {
-                  route: "user/login",
-                  priority: 10
-                },
                 auth: {
-                  email: "email",
-                  password: "password"
+                  email: "intdev@eardish.com",
+                  password: "intdevpass"
                 }
               };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "isOpenSession" )
+                .that.is.a( "boolean" )
+                .that.equals( true );
 
-            expect( edUserService )
-              .to.have.property( "sessionAuthJSON" )
-              .that.equals( json );
+              done();
+            });
           });
 
-          test( "\"isOpen\" property should be set to true", function() {
+          test( "sessionAuthJSON property should store auth block", function( done ) {
             var json = {
-                action: {
-                  route: "user/login",
-                  priority: 10
-                },
                 auth: {
-                  email: "email",
-                  password: "password"
+                  email: "intdev@eardish.com",
+                  password: "intdevpass"
                 }
               };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "sessionAuthJSON" )
+                .that.deep.equals( {
+                  auth: {
+                    email: "intdev@eardish.com",
+                    password: "intdevpass"
+                  }
+                });
 
-            expect( edUserService )
-              .to.have.property( "isOpenSession" )
-              .that.is.a( "boolean" )
-              .that.equals( true );
+              done();
+            });
           });
         });
 
         suite( "when login is not successful", function() {
-          test( "should set currentUser to null", function() {
+          test( "currentProfile should be null", function( done ) {
             var json = {
-              action: {
-                route: "user/login",
-                priority: 10
-              },
               auth: {
-                email: "email",
-                password: "password"
+                email: "invalid@eardish.com",
+                password: "invalidpass"
               }
             };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "currentProfile" )
+                .that.equals( null );
 
-            expect( edUserService )
-              .to.have.property( "currentUser" )
-              .that.equals( null );
+              done();
+            });
           });
 
-          test( "should set isOpenSession to false", function() {
+          test( "isOpenSession should be false", function( done ) {
             var json = {
-              action: {
-                route: "user/login",
-                priority: 10
-              },
               auth: {
-                email: "email",
-                password: "password"
+                email: "invalid@eardish.com",
+                password: "invalidpass"
               }
             };
 
-            edUserService.login( json.auth.email, json.auth.password );
+            edUserService.login( json.auth.email, json.auth.password ).then( function() {
+              expect( edUserService )
+                .to.have.property( "isOpenSession" )
+                .that.is.a( "boolean" )
+                .that.equals( false );
 
-            expect( edUserService )
-              .to.have.property( "isOpenSession" )
-              .that.is.a( "boolean" )
-              .that.equals( false );
-          });
-
-          test( "should throw an error", function() {
-
+              done();
+            });
           });
         });
       });
@@ -244,7 +233,7 @@
               .that.equals( false );
 
             expect( edUserService )
-              .to.have.property( "currentUser" )
+              .to.have.property( "currentProfile" )
               .that.equals( null );
 
             expect( edUserService )

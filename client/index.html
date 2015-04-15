@@ -53,10 +53,10 @@
   </app-route>
 
   <!-- LOGIN -->
-  <app-route path="/login" element="ed-login-view"></app-route>
+  <app-route path="/login" element="ed-login-view" bindRouter></app-route>
 
   <!-- REGISTRATION -->
-  <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view"></app-route>
+  <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view" bindRouter></app-route>
 
   <!-- ONBOARDING -->
   <app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>

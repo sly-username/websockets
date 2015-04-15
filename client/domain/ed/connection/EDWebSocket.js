@@ -1,4 +1,6 @@
-var generateToken, needsAuth,
+/*jshint strict: false*/
+
+var generateToken,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
   edUserService = {
@@ -16,18 +18,6 @@ import createEvent from "domain/lib/event/create-event";
 
 generateToken = function() {
   return ++token;
-};
-
-needsAuth = function( route ) {
-  // needs to auth routes on open and heal events
-  // not sure how to handle any route that needs to be healed
-  if ( route != null ) {
-    return [ "profile/get", "anyhealroute?" ].some( authRoute => {
-      return authRoute === route;
-    });
-  }
-
-  return false;
 };
 
 export default class EDWebSocket extends HealingWebSocket {
@@ -75,17 +65,17 @@ export default class EDWebSocket extends HealingWebSocket {
     // do i need to import EventEmitter and create events?
     return new Promise(( resolve, reject ) => {
       var checkForAuthResponse = event => {
-        var data;
+        var response;
 
         if ( !this.isOpen ) {
           this.once( "open", () => resolve( this.authenticate( email, password )));
           return;
         }
 
-        console.log( "received message event:", event );
+        console.log( "in socket auth received message event:", event );
 
         try {
-          data = JSON.parse( event.data );
+          response = JSON.parse( event.data );
         } catch ( error ) {
           console.error( error );
           reject( error );
@@ -93,7 +83,7 @@ export default class EDWebSocket extends HealingWebSocket {
         }
 
         // validate response
-        if ( data.status.code === 1 && typeof data.data.profileId === "string" ) {
+        if ( response.status.code === 1 && typeof response.data.profileId === "string" ) {
           resolve( event );
 
           this[ isAuthenticated ] = true;
@@ -105,6 +95,9 @@ export default class EDWebSocket extends HealingWebSocket {
           }));
 
           this.off( "message", checkForAuthResponse );
+        } else if ( response.status.code === 11 ) {
+          resolve( event );
+          this[ isAuthenticated ] = false;
         }
       };
 
@@ -119,7 +112,7 @@ export default class EDWebSocket extends HealingWebSocket {
     //  data.action = {};
     //}
 
-    if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] ) {
+    if ( !this[ isAuthenticated ] ) {
       this.once( "authenticated", event => {
         super.send( data );
       });
@@ -138,8 +131,9 @@ export default class EDWebSocket extends HealingWebSocket {
 
     console.log( "request called: %o", data );
 
-    // TODO remove needsAuth when login integration gets merged
-    if ( needsAuth( data.action.route ) && !this[ isAuthenticated ] && !( "auth" in data ) ) {
+    if ( data && data.action && data.action.route && (data.action.route === "profile/get" || data.action.route === "user/create") ) {
+      console.log( "hack fix: skip auth for profile gets");
+    } else if ( !this[ isAuthenticated ] && !( "auth" in data ) ) {
       console.log( "in request, not authed, no auth block %o", data );
 
       return new Promise( ( resolve, reject ) => {
