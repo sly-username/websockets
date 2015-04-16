@@ -1,15 +1,21 @@
 import EDTrack from "domain/ed/objects/media/EDTrack";
-import EDCollection from "domain/ed/storage/EDCollection";
-import EventEmitter from "domain/lib/event/EventEmitter";
-import createEvent from "domain/lib/event/create-event";
+//import EDCollection from "domain/ed/storage/EDCollection";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
+import edConnectionService from "domain/ed/services/ed-connection-service";
 
 var
   queue = [],
-  audio = new Audio() || document.createElement( "audio" ),
   currentTrack = null,
   setCurrentTrack,
-  edPlayerService;
+  edPlayerService,
+  // http://picosong.com/XFk6/
+  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" );
+
+audio.setAttribute('id', 'hiddenAudioPlayer');
+audio.setAttribute('preload', 'auto');
+
+audio.style.display     = 'none';
+audio.style.visibility  = 'hidden';
 
 // helpers
 setCurrentTrack = function( edTrack ) {
@@ -46,9 +52,7 @@ export default edPlayerService = {
 
   get currentTime() {
     if ( this.isPlaying || this.isPaused ) {
-      return 488;
-      // TODO fake current time
-      // return audio.currentTime;
+       return audio.currentTime;
     }
 
     return 0;
@@ -98,12 +102,14 @@ export default edPlayerService = {
   },
 
   play: function( edTrack ) {
-    if ( !( edTrack instanceof EDTrack ) ) {
-      throw new TypeError( "Track is not an EDTrack object" );
-    }
+    //if ( !( edTrack instanceof EDTrack ) ) {
+    //  throw new TypeError( "Track is not an EDTrack object" );
+    //}
+
+    console.log( "audio", audio );
 
     audio.play();
-    setCurrentTrack( edTrack );
+    //setCurrentTrack( edTrack );
     return true;
   },
 
