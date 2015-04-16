@@ -31,6 +31,7 @@ export default class EDCollection {
    * @returns {*}
    */
   get( index ) {
+    console.log( this[ datalist ]);
     if ( !( this[ datalist ][ index ] instanceof Promise ) ) {
       this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
     }
@@ -72,5 +73,3 @@ export default class EDCollection {
     }
   }
 }
-
-
