@@ -12,14 +12,14 @@
     <template if="{{!disable}}">
       <form id="rating-form">
         <fieldset class="rating">
-          <div class="input-field">
-            <input type="radio" name="rating" value="1">
-            <input type="radio" name="rating" value="2">
-            <input type="radio" name="rating" value="3">
-            <input type="radio" name="rating" value="4">
-            <input type="radio" name="rating" value="5">
+          <div id="input-field">
+            <input id="rate1" type="radio" name="rating" value="1">
+            <input id="rate2" type="radio" name="rating" value="2">
+            <input id="rate3" type="radio" name="rating" value="3">
+            <input id="rate4" type="radio" name="rating" value="4">
+            <input id="rate5" type="radio" name="rating" value="5">
           </div>
-          <div class="star-field">
+          <div id="star-field">
             <ed-icon name="star-rating-1"></ed-icon>
             <ed-icon name="star-rating-1"></ed-icon>
             <ed-icon name="star-rating-1"></ed-icon>
@@ -27,7 +27,7 @@
             <ed-icon name="star-rating-1"></ed-icon>
           </div>
 
-          <div class="overlap-field">
+          <div id="overlap-field">
             <ed-icon name="star-rating-2"></ed-icon>
             <ed-icon name="star-rating-2"></ed-icon>
             <ed-icon name="star-rating-2"></ed-icon>
