@@ -5,17 +5,14 @@ import EDProfile from "domain/ed/objects/profile/EDProfile";
 
 export default class EDFan extends EDProfile {
   static get TYPE(){
-    return EDProfile.TYPE + "-fan";
+    return "fan";
+//    return "profile-fan";
   }
 
   constructor ( args ) {
-    if ( !( "type" in args ) ) {
-      args.type = EDFan.TYPE;
-    }
-
     super( args );
     define.readOnly( this, [
-      "birthday"
+      "yearOfBirth"
     ], args );
   }
 }

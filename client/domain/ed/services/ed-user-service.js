@@ -1,23 +1,26 @@
+/*jshint strict: false*/
+
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
+import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
-//import edConnectionService from "domain/ed/services/ed-connection-service";
+import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 
-var edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
-  edConnectionService = {}, // TODO for now, until it's created
-  currentUser = null,
+var
+  edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
+  currentProfile = null,
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null;
 
 Object.defineProperties( edUserService, {
-  currentUser: {
+  currentProfile: {
     configurable: false,
     enumerable: false,
     get: function() {
-      return currentUser;
+      return currentProfile;
     }
   },
   isOpenSession: {
@@ -44,57 +47,50 @@ Object.defineProperties( edUserService, {
 });
 
 edUserService.login = function( email, password ) {
-  var json = {
-    action: {
-      route: "user/login",
-      priority: 10 // TODO when these priority rankings are flushed out
-    },
-    auth: {
-      email,
-      password
-    }
-  };
+  var
+    json = {
+      auth: {
+        email,
+        password
+      }
+    };
 
-  return edConnectionService.formattedRequest( json )
-    .then( raw => {
-      currentUser = new EDUser( raw.auth );
+  return edConnectionService.authenticateConnection( email, password )
+    .then( raw => edDataService.getProfileById( raw.profileId ))
+    .then( edProfile => {
+      currentProfile = edProfile;
       isOpenSession = true;
       sessionAuthJSON = json;
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
-          user: currentUser
+          user: currentProfile
         }
       }));
 
-      edAnalyticsService.send(
-        edAnalyticsService.createEvent( "login", {
-          timestamp: new Date()
-        })
-      );
-
-      return currentUser;
+      // todo analytics
+      // edAnalyticsService.send(
+      //  edAnalyticsService.createEvent( "login", {
+      //    timestamp: new Date()
+      //  })
+      // );
+      return currentProfile;
     })
-    .catch( error => {
-      currentUser = null;
+    .catch( () => {
+      currentProfile = null;
       isOpenSession = false;
-      throw error;
-      // TODO if error messages are needed, ex: toasts
+      // todo toast messages to user that login failed
+      console.log( "this person was unable to login" );
     });
 };
 
 edUserService.logout = function() {
-  var json = {
-    action: {
-      route: "user/logout",
-      priority: 10 // TODO when these priority rankings are flushed out
-    }
-  },
-    oldUser = currentUser;
+  // todo will integrate with settings page
+  var oldUser = currentProfile;
 
-  return edConnectionService.formattedRequest( json )
+  return edConnectionService.deauthenticateSocket()
     .then( () => {
-      currentUser = null;
+      currentProfile = null;
       isOpenSession = false;
       sessionAuthJSON = null;
 
@@ -104,20 +100,22 @@ edUserService.logout = function() {
        }
       }));
 
-      edAnalyticsService.send(
-       edAnalyticsService.createEvent( "logout", {
-         timestamp: new Date()
-       })
-      );
+      // todo analytics
+      // edAnalyticsService.send(
+      // edAnalyticsService.createEvent( "logout", {
+      //   timestamp: new Date()
+      // })
+      // );
 
       return true;
     })
-    .catch( () => {
+    .catch(() => {
       return false;
     });
 };
 
 edUserService.changeProfileImage = function( image ) {
+  // todo a lot
   /*
   // send "I'm going to send an image" -- ws.binaryType = "blob";
   send({
@@ -126,22 +124,37 @@ edUserService.changeProfileImage = function( image ) {
   send( image );
   new Promise()
     "onmessage" --> check for a "image upload complete"
-    resolve( dataservice.getUserById( currentUser.id ) )
+    resolve( dataservice.getUserById( currentProfile.id ) )
   */
 
   // need to match new image to appropriate user
+  return Promise.resolve( null );
 };
 
 edUserService.register = function( args ) {
-  return edConnectionService.formattedRequest( args )
-    .then( () => {
-      hasOnboarded = true;
-      return true;
+  var authBlock = {
+    email: args.email,
+    password: args.password
+  };
+
+  return edConnectionService.request( "user/create", 10, { data: args } )
+    .then( response => {
+      // validate response
+      if ( response && response.status && response.status.code && response.status.code === 1 &&
+        typeof response.data.id === "string" ) {
+        console.log( "response validated %o", response );
+
+        return response;
+      }
     })
     .catch( error => {
-      hasOnboarded = false;
-      throw error;
+      console.log( "Error registering new user in User Service" );
+      console.error( error );
       // TODO throw proper error object
+      throw error;
+    })
+    .then( response => {
+      return edUserService.login( authBlock.email, authBlock.password );
     });
 };
 

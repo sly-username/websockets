@@ -53,10 +53,10 @@
   </app-route>
 
   <!-- LOGIN -->
-  <app-route path="/login" element="ed-login-view"></app-route>
+  <app-route path="/login" element="ed-login-view" bindRouter></app-route>
 
   <!-- REGISTRATION -->
-  <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view"></app-route>
+  <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view" bindRouter></app-route>
 
   <!-- ONBOARDING -->
   <app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>
@@ -64,8 +64,8 @@
 
   <!-- PROFILE -->
   <app-route path="/profile/edit" element="ed-profile-edit"></app-route>
-  <app-route path="/artist" element="ed-profile-artist"></app-route>
-  <app-route path="/fan" element="ed-profile-fan"></app-route>
+  <app-route path="/artist/:ed-id" element="ed-profile-artist" onUrlChange="updateModel"></app-route>
+  <app-route path="/fan/:ed-id" element="ed-profile-fan" onUrlChange="updateModel"></app-route>
 
   <!-- RETRIEVE PASSWORD -->
   <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
@@ -113,8 +113,8 @@
         <a href="#/registration">Register (/registration)</a>
         <a href="#/onboarding">Onboarding</a>
         <a href="#/profile/edit">Profile /Edit</a>
-        <a href="#/artist">Artist</a>
-        <a href="#/fan">Fan</a>
+        <a href="#/artist/22">Artist</a>
+        <a href="#/fan/10">Fan</a>
         <a href="#/forgot-pass">Forgot Password</a>
         <a href="#/poc">POC Viewer Page</a>
         <a href="#/poc-bp">POC Breakpoint Page</a>
