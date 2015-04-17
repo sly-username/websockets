@@ -5,6 +5,9 @@
     /* LIFECYCLE */
     disable: false,
     ready: function() {
+      this.handlers = {
+        triggerRating: this.triggerRatingHandler.bind( this )
+      };
       this.inputField = this.shadowRoot.getElementById( "input-field" );
       this.overlapField = this.shadowRoot.getElementById( "overlap-field" );
       this.secondInput = this.shadowRoot.getElementById( "rate2" );
@@ -13,10 +16,14 @@
       this.fifthInput = this.shadowRoot.getElementById( "rate5" );
     },
     attached: function() {
-      this.inputField.addEventListener( "click", this.triggerRating.bind( this ));
-      this.inputField.addEventListener( "mouseover", this.triggerRating.bind( this ));
+      this.inputField.addEventListener( "click", this.handlers.triggerRating );
+      this.inputField.addEventListener( "mouseover", this.handlers.triggerRating );
     },
-    triggerRating: function( event ) {
+    detached: function() {
+      this.inputField.removeEventListener( "click", this.handlers.triggerRating );
+      this.inputField.removeEventListener( "mouseover", this.handlers.triggerRating );
+    },
+    triggerRatingHandler: function( event ) {
       switch ( event.target.id ) {
         case "rate1":
           if ( this.fifthInput.checked || this.forthInput.checked || this.thirdInput.checked || this.secondInput.checked ) {
