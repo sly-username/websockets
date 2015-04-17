@@ -21,10 +21,6 @@
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
 
-  <!-- REMOVE FOR PRODUCTION -->
-  <!-- POC WebComponents -->
-  <link rel="import" href="components/poc/poc-elements.html" />
-  <!-- END REMOVE FOR PRODUCTION -->
 </head>
 
 <body unresolved>
@@ -75,22 +71,6 @@
 
   <!--<app-route path=""-->
 
-  <!-- REMOVE FOR PRODUCTION -->
-  <!-- POC Viewer page -->
-  <app-route path="/poc">
-    <template>
-      <poc-viewer class="left" element-name="poc-mixins" path="poc/poc-mixins"></poc-viewer>
-    </template>
-  </app-route>
-
-  <!-- Breakpoints POC page -->
-  <app-route path="/poc-bp">
-    <template>
-      <poc-bp style="display:block; float: left; clear: both; margin: 20px;"></poc-bp>
-    </template>
-  </app-route>
-  <!-- END REMOVE FOR PRODUCTION -->
-
   <!-- catch all route, 404 page? or redirect... -->
   <app-route path="*">
     <template>
@@ -116,8 +96,6 @@
         <a href="#/artist/22">Artist</a>
         <a href="#/fan/10">Fan</a>
         <a href="#/forgot-pass">Forgot Password</a>
-        <a href="#/poc">POC Viewer Page</a>
-        <a href="#/poc-bp">POC Breakpoint Page</a>
         <a href="#/player">Song Card</a>
       </nav>
     </template>
