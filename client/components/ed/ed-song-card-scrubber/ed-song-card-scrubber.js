@@ -169,7 +169,7 @@
         var degPercent = parseInt( playerService.currentTime / playerService.trackLength * 360, 10 ),
           rotation = "rotate(" + ( degPercent - 90 ) + "deg)";
 
-        console.log( "this.value", this.value );
+        //console.log( "this.value", this.value );
 
         this.scrubber.style.webkitTransform = rotation;
         this.scrubber.style.transform = rotation;

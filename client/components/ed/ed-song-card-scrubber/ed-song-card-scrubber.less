@@ -72,6 +72,7 @@
 #mid-circle {
   stroke: @originalTeal;
   opacity: .25;
+  transition: transform 250ms;
 }
 
 #shadow-scrubber {
@@ -92,7 +93,7 @@
 
 #mid-circle, #front-circle, #circle-scrubber, #shadow-scrubber {
   transition: transform 250ms;
-  .transform( rotate(-90deg));
+  .transform( rotate(-90deg) );
   .transformOrigin(50% 50%);
 }
 
