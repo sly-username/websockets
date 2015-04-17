@@ -1,43 +1,54 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/mixins/prefixes/user-select";
 
 #rating-form {
-  text-align: center;
+  position: relative;
+  height: 10rem;
+  overflow: hidden;
+  margin: -5% 20% 0 20%;
   .rating {
-    display: inline-block;
-    font-size: 0;
-    position: relative;
-    text-transform: capitalize;
-    height: 7rem;
-    label {
-      display: inline-block;
-      float: right;
-      padding: 0;
-      font-size: 5rem;
-      cursor: pointer;
-    }
-    label::before {
-      content: '\2605';
-      display: inline-block;
-      transition: 0.2s;
-      color: @darkPurple2;
-    }
-    label:hover::before {
-      content: '\2605';
-      color: @lightPurple1;
-    }
-    label:hover ~ *::before {
-      content: '\2605';
-      color: @lightPurple1;
-    }
-    input {
+    border: none;
+    #star-field {
       position: absolute;
-      z-index: -1;
-      opacity: 0;
+      left: 0;
+      pointer-events: none;
+      .userSelect(none);
     }
-    input:checked ~ label::before {
-      content: '\2605';
-      color: @lightPurple1;
+    #overlap-field {
+      position: absolute;
+      left: 0;
+      pointer-events: none;
+      .transform(translateX(-100%));
+      .userSelect(none);
+    }
+    ed-icon {
+      width: 20%;
+      height: 13rem;
+      float: left;
+      text-align: center;
+      pointer-events: none;
+      .userSelect(none);
+      &::shadow {
+        svg {
+          width: 50%;
+        }
+      }
+    }
+    #input-field {
+      height: 13rem;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      opacity: 0;
+      input {
+        height: 13rem;
+        width: 20%;
+        margin: 0;
+        float: left;
+      }
     }
   }
 }
@@ -68,4 +79,3 @@
   opacity: .33;
   margin-bottom: 0;
 }
-
