@@ -30,6 +30,11 @@
       text-align: center;
       pointer-events: none;
       .userSelect(none);
+      &::shadow {
+        svg {
+          width: 50%;
+        }
+      }
     }
     #input-field {
       height: 13rem;
@@ -45,12 +50,6 @@
         float: left;
       }
     }
-  }
-}
-
-input:checked {
-  .overlap-field {
-    .transform( translateX(60%) );
   }
 }
 
@@ -79,8 +78,4 @@ input:checked {
   .edType( heading-XXS );
   opacity: .33;
   margin-bottom: 0;
-}
-
-ed-icon::shadow svg {
-  width: 50%;
 }
