@@ -5,55 +5,33 @@
   <template>
     <link rel="stylesheet" href="./ed-profile-artist.css">
     <div class="ed-profile-artist-wrapper">
-      <div class="ed-content">
-        <div class="rank-bar">
-          <div class="back-icon">
-            <ed-icon name="arrow-down"></ed-icon>
-          </div>
-          <div class="user-rank">
-            <div class="rank-text">Your
-              <span>rank</span>
-            </div>
-            <!-- placeholder until more info gets added to service -->
-            <div class="rank-box">{{ edArtist.displayRank || 0 }}</div>
-          </div>
-          <div class="songs-rated">
-            <div class="songs-rated-text">Songs
-              <span>rated</span>
-            </div>
-            <!-- placeholder until more info gets added to service -->
-            <div class="songs-rated-box">{{ edArtist.songsRated || 0 }}</div>
-          </div>
+      <button class="back-icon">
+        <ed-icon name="arrow-back"></ed-icon>
+      </button>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ edArtist.displayRank || 0 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 0 }}"></ed-user-ranking>
+      <section class="image-wrapper">
+        <div class="profile-name">
+          {{ edArtist.displayName || "Name Error" }}
+          <span>Artist/Band</span>
         </div>
-        <div class="image-wrapper">
-          <div class="profile-name">
-            {{ edArtist.displayName || "Name Error" }}
-            <span>Artist/Band</span>
-          </div>
-          <div class="profile-image">
-            <!-- placeholder until more info gets added to service -->
-            <img-placeholder src="{{ edArtist.displayImage }}" image="fillmurray"></img-placeholder>
-          </div>
-        </div>
-        <div class="icon-section">
-          <div class="icon-header">Rewards</div>
-          <hr>
-          <div class="icon-bar-wrapper">
-            <ed-icon name="badge-empty"></ed-icon>
-            <ed-icon name="badge-empty"></ed-icon>
-            <ed-icon name="badge-empty"></ed-icon>
-            <ed-icon name="badge-empty"></ed-icon>
-          </div>
-          <hr>
-        </div>
-        <div class="bio-section">
-          <div class="bio-header">Biography</div>
-          <hr>
-          <div class="bio-body">
-            {{ edArtist.bio || "No Bio" }}
-          </div>
-        </div>
-      </div>
+        <img-placeholder src="{{ edArtist.displayImage }}" image="fillmurray"></img-placeholder>
+      </section>
+      <section class="icon-section">
+        <div class="icon-header">Rewards</div>
+        <hr>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <hr>
+      </section>
+      <section class="bio-section">
+        <div class="bio-header">Biography</div>
+        <p class="bio-body">
+          {{ edArtist.bio || "No Bio" }}
+        </p>
+      </section>
     </div>
   </template>
   <script src="ed-profile-artist.js"></script>
