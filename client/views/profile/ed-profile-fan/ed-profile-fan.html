@@ -5,52 +5,32 @@
   <template>
     <link rel="stylesheet" href="./ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
-      <div class="ed-content">
-        <div class="rank-bar">
-          <div class="back-icon">
-            <ed-icon name="arrow-down"></ed-icon>
-          </div>
-          <div class="user-rank">
-            <div class="rank-text">Your
-              <span>rank</span>
-            </div>
-            <!-- placeholder until more info gets added to service -->
-            <div class="rank-box">{{ edFan.displayRank || 0 }}</div>
-          </div>
-          <div class="songs-rated">
-            <div class="songs-rated-text">Songs
-              <span>rated</span>
-            </div>
-            <!-- placeholder until more info gets added to service -->
-            <div class="songs-rated-box">{{ edFan.songsRated || 0 }}</div>
+      <button class="back-icon">
+        <ed-icon name="arrow-back"></ed-icon>
+      </button>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 0 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 0 }}"></ed-user-ranking>
+      <section class="image-wrapper">
+        <div class="profile-name">
+          {{ edFan.displayName || "Name Error" }}
+          <span>Fan</span>
+        </div>
+        <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
+      </section>
+      <section class="icon-section">
+        <div class="icon-header">Rewards
+          <div class="edit-profile">
+            <ed-icon name="pencil"></ed-icon>
+            <button>Edit Profile</button>
           </div>
         </div>
-        <div class="image-wrapper">
-          <div class="profile-name"> {{ edFan.displayName || "No Name" }}
-            <span>Fan</span>
-          </div>
-          <div class="profile-image">
-            <!-- placeholder until more info gets added to service -->
-            <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
-          </div>
-        </div>
-        <div class="icon-section">
-          <div class="icon-header">Rewards
-            <div class="edit-profile">
-              <ed-icon name="pencil"></ed-icon>
-              <button>Edit Profile</button>
-            </div>
-          </div>
-          <hr>
-          <div class="icon-bar-wrapper">
-            <ed-icon name="badge-empty"></ed-icon>
-            <ed-icon name="badge-empty"></ed-icon>
-            <ed-icon name="badge-empty"></ed-icon>
-            <ed-icon name="badge-empty"></ed-icon>
-          </div>
-          <hr>
-        </div>
-      </div>
+        <hr>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <hr>
+      </section>
     </div>
   </template>
   <script src="ed-profile-fan.js"></script>
