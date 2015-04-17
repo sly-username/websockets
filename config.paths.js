@@ -191,7 +191,6 @@ paths.karma = {
     "index.html",
     "tests.html",
     "**/.new/*.*",
-    "**/poc-components.html",
     "coverage/**"
   ],
   files: ( function() {
