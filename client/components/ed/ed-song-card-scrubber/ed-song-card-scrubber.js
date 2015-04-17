@@ -5,13 +5,18 @@
     System.import( "domain/ed/services/ed-player-service" ),
     System.import( "domain/ed/objects/model-type-checker" )
   ]).then(function( imported ) {
-
     var
       playerService = imported[ 0 ].default,
-      typeChecker = imported[ 1 ].default;
+      typeChecker = imported[ 1 ].default,
+      intervalTime = 500;
+
+    // TODO REMOVE
+    window.playerService = playerService;
 
     polymer( "ed-song-card-scrubber", {
       complete: false,
+      max: playerService.trackLength,
+      value: playerService.currentTime,
       // Formats time into minute display
       get formattedValue() {
         return this._formattedValue;
@@ -26,6 +31,7 @@
         return this._formattedMax = playerService.formatTime( playerService.trackLength );
       },
       ready: function() {
+        console.dir( this );
         this.mouseDown = false;
         // Selectors
         this.svg            = this.shadowRoot.getElementById( "svg-circle" );
@@ -41,6 +47,18 @@
         this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+
+        this.playerServiceEventHandler = function( event ) {
+          var eventType = event.detail.type;
+
+          if ( eventType === "pause" || eventType === "stop" ) {
+            clearInterval( this.intervalId );
+          }
+
+          if ( eventType === "play" ) {
+            this.intervalId = setInterval( this.playerServiceEventHandler, intervalTime );
+          }
+        }.bind( this );
       },
       attached: function() {
         // mouse events
@@ -59,6 +77,19 @@
 
         // init events
         this.updateScrub();
+
+        // setup interval
+        // only if playing
+        this.intervalId = setInterval( this.updateScrub.bind( this ), 500 );
+
+        // attach play/pause/stop event handlers
+        playerService.emitter.on( "update", this.playerServiceEventHandler );
+      },
+      detached: function() {
+        clearInterval( this.intervalId );
+
+        // remove play/pause/stop event handlers
+        playerService.emitter.off( "update", this.playerServiceEventHandler );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
         if ( attrName === "value" ) {
@@ -77,13 +108,22 @@
           this.removeAttribute( "complete" );
         }
       },
+      valueChanged: function( oldValue, newValue ) {
+        //console.log( "old", oldValue );
+        //console.log( "new", newValue );
+      },
       handleEvents: function( event ) {
-        var tempId = event.target.getAttribute( "id" );
+        var self = this,
+          tempId = event.target.getAttribute( "id" );
 
         if ( event.type === "click" ||  event.type === "tap" && tempId === "play-icon" ) {
           this.swapIcon();
           this.playSong();
           this.updateScrub();
+
+          //setInterval(function() {
+          //  self.updateScrub();
+          //}, 1000);
         }
       },
       playSong: function() {
@@ -125,8 +165,11 @@
           ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
       },
       updateScrub: function() {
-        var degPercent = parseInt( this.value / this.max * 360, 10 ),
+        this.value = playerService.currentTime;
+        var degPercent = parseInt( playerService.currentTime / playerService.trackLength * 360, 10 ),
           rotation = "rotate(" + ( degPercent - 90 ) + "deg)";
+
+        console.log( "this.value", this.value );
 
         this.scrubber.style.webkitTransform = rotation;
         this.scrubber.style.transform = rotation;
@@ -139,9 +182,10 @@
 
         this.formattedValue = this.value;
         this.formattedMax = this.max;
+        this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
       },
       swapIcon: function() {
-        if( playerService.isPaused ) {
+        if ( playerService.isPaused ) {
           this.playIcon.setAttribute( "name", "pause" );
         }
 

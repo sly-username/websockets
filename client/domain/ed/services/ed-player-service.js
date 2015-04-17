@@ -2,12 +2,14 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 //import EDCollection from "domain/ed/storage/EDCollection";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 import edConnectionService from "domain/ed/services/ed-connection-service";
+import EventEmitter from "domain/lib/event/EventEmitter";
 
 var
   queue = [],
   currentTrack = null,
   setCurrentTrack,
   edPlayerService,
+  emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   // http://picosong.com/XFk6/
   audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" );
 
@@ -23,6 +25,9 @@ setCurrentTrack = function( edTrack ) {
 };
 
 export default edPlayerService = {
+  get emitter() {
+    return emitter;
+  },
   get currentStats() {
     return {
       playing: currentTrack,
@@ -74,6 +79,10 @@ export default edPlayerService = {
     return Math.floor( 60 / this.currentTime );
   },
 
+  get formattedTimeDisplay() {
+    return this.formattedTime + " / " + this.formattedLength;
+  },
+
   get formattedTime() {
     var ss = this.currentSeconds,
       mm = this.currentMinutes,
@@ -90,6 +99,10 @@ export default edPlayerService = {
     }
 
     return "00:00";
+  },
+
+  get formattedLength() {
+    return this.formatTime( this.trackLength );
   },
 
   get trackLength() {
