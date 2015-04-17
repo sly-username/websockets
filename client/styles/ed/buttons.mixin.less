@@ -1,5 +1,6 @@
 @import "colors.vars.less";
 @import "../fonts/edTypeStyles.less";
+@import "alignments.mixin.less";
 
 /**
 * Single Line Button Mixin
@@ -51,5 +52,19 @@
 
 .edButton( double-line; purple ) {
   .edButton( @originalPurple; @lightPurple1 );
+}
+
+.edButtonTertiary() {
+  height: 5.5rem;
+  .edType( heading-M );
+  color: @originalWhite;
+  padding: 2rem 0 0 2rem;
+  width: 100%;
+  max-width: 59.6rem;
+  background-color: @darkPurple3;
+  border-bottom: 0.1rem solid @darkPurple1;
+  &:active, &:hover {
+    background-color: @darkPurple1;
+  }
 }
 

@@ -3,6 +3,7 @@
 @import "mixins/hidden.less";
 @import "fonts/edTypeStyles.less";
 @import "mixins/breakpoints/mixins.less";
+@import "ed/buttons.mixin.less";
 @import "ed/colors.vars.less";
 
 @color: white;
@@ -56,6 +57,30 @@ body {
     svg {
       opacity: 1;
     }
+  }
+}
+
+.discover-view {
+  padding: 0;
+  ed-icon {
+    width: 3rem;
+    height: 3rem;
+    fill: @lightGrey1;
+  }
+  // todo create mixin?
+  .menu-heading{
+    color: @darkPurple2;
+    height: 10%;
+    text-transform: uppercase;
+  }
+  li {
+    .edButtonTertiary();
+  }
+  list-style-type: none;
+  .genre-title {
+    .edType( heading-XS );
+    color: @originalTeal;
+    text-transform: uppercase;
   }
 }
 
