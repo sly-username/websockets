@@ -61,8 +61,7 @@
             getFxn = edc.get( 1 );
 
           expect( getFxn )
-            .to.be.an.instanceof( Promise )
-            .that.eventually.equals( 12 );
+            .to.be.an.instanceof( Promise );
 
           done();
         });
