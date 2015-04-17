@@ -26,14 +26,12 @@
 
 .edButtonDoubleLine( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 ) when( iscolor(@backgroundColor) ) {
   .edButton( @backgroundColor; @activeColor );
-  span {
-    .edType( heading-L );
-    &.small-text {
-      .edType( heading-XS );
-      color: #31AFAE;
-      text-transform: none;
-      margin-bottom: 0;
-    }
+  .edType( heading-M );
+  .small-text {
+    .edType( heading-XS );
+    color: #31AFAE;
+    text-transform: none;
+    margin-bottom: 0;
   }
 }
 
