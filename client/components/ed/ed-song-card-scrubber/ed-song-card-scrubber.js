@@ -17,35 +17,33 @@
         return this._formattedValue;
       },
       set formattedValue( value ) {
-        return this._formattedValue = this.formatTime( value );
+        return this._formattedValue = playerService.formattedTime;
       },
       get formattedMax() {
         return this._formattedMax;
       },
       set formattedMax( value ) {
-        return this._formattedMax = this.formatTime( value );
+        return this._formattedMax = playerService.formatTime( playerService.trackLength );
       },
       ready: function() {
         this.mouseDown = false;
         // Selectors
-        this.svg = this.shadowRoot.getElementById( "svg-circle" );
-        this.mid = this.shadowRoot.getElementById( "mid-circle" );
-        this.front = this.shadowRoot.getElementById( "front-circle" );
-        this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
+        this.svg            = this.shadowRoot.getElementById( "svg-circle" );
+        this.mid            = this.shadowRoot.getElementById( "mid-circle" );
+        this.front          = this.shadowRoot.getElementById( "front-circle" );
+        this.scrubber       = this.shadowRoot.getElementById( "circle-scrubber" );
         this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
-        this.playBtn = this.shadowRoot.getElementById( "play-btn" );
-        this.playIcon = this.shadowRoot.getElementById( "play-icon" );
+        this.playBtn        = this.shadowRoot.getElementById( "play-btn" );
+        this.playIcon       = this.shadowRoot.getElementById( "play-icon" );
 
         // Calculates the circumference of circles
         this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
         this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
-        this.updateScrub();
       },
       attached: function() {
         // mouse events
-        //this.playBtn.addEventListener( "click", this.swapIcon.bind( this ) );
         this.playBtn.addEventListener( "click", this.handleEvents.bind( this ) );
         this.scrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
         this.shadowScrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
@@ -53,19 +51,14 @@
         this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
 
         // touch events
-        this.playBtn.addEventListener( "tap", this.handleEvents.bind( this ) );
+        //this.playBtn.addEventListener( "tap", this.handleEvents.bind( this ) );
         this.scrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
         this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
         this.addEventListener( "touchend", this.scrubFire.bind( this ));
         this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
-      },
-      handleEvents: function( event ) {
-        var tempId = event.target.getAttribute( "id" );
 
-        if ( event.type === "click" ||  event.type === "tap" && tempId === "play-icon" ) {
-          this.swapIcon();
-          this.playSong();
-        }
+        // init events
+        this.updateScrub();
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
         if ( attrName === "value" ) {
@@ -84,65 +77,75 @@
           this.removeAttribute( "complete" );
         }
       },
-      triggerMove: function( e ) {
-        var angle,
-          radians;
+      handleEvents: function( event ) {
+        var tempId = event.target.getAttribute( "id" );
 
-        if ( this.mouseDown ) {
-          radians = Math.atan2( e.pageX - this.scrubCenter[ 0 ], e.pageY - this.scrubCenter[ 1 ] );
-          angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
-          this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
-          this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
-          this.scrubber.style.transform = "rotate(" + angle + "deg)";
-          this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
-          this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
-          this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-          this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+        if ( event.type === "click" ||  event.type === "tap" && tempId === "play-icon" ) {
+          this.swapIcon();
+          this.playSong();
+          this.updateScrub();
         }
       },
       playSong: function() {
         // Playing same song causes pause or resume
-        if( playerService.isPlaying ) {
+        if ( playerService.isPlaying ) {
           return playerService.pause();
         }
 
-        if( playerService.isPaused ) {
+        if ( playerService.isPaused ) {
           playerService.play();
         }
       },
-      // To be removed once integrated with player service
-      formatTime: function( time ) {
-        var ss = Math.floor( time % 60 ),
-          mm = Math.floor( time / 60 );
-        ss = ss < 10 ? "0" + ss : ss;
-        mm = mm < 10 ? "0" + mm : mm;
+      triggerMove: function( event ) {
+        var angle,
+          radians;
 
-        return mm + ":" + ss;
+        if ( this.mouseDown ) {
+          radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
+          angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
+          this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
+
+          this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
+          this.scrubber.style.transform = "rotate(" + angle + "deg)";
+
+          this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
+          this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
+
+          this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
+          this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+        }
       },
       updateCenter: function() {
         var top = window.pageYOffset;
         this.mouseDown = true;
+
         // determines center of svg, using top to compensate for scrolling
         this.svgBox = this.svg.getBoundingClientRect();
         this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
           ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
       },
       updateScrub: function() {
-        var degPercent = parseInt( ( this.value / this.max ) * 360, 10 ),
+        var degPercent = parseInt( this.value / this.max * 360, 10 ),
           rotation = "rotate(" + ( degPercent - 90 ) + "deg)";
+
         this.scrubber.style.webkitTransform = rotation;
         this.scrubber.style.transform = rotation;
+
         this.shadowScrubber.style.webkitTransform = rotation;
         this.shadowScrubber.style.transform = rotation;
+
         this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
         this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+
         this.formattedValue = this.value;
         this.formattedMax = this.max;
       },
       swapIcon: function() {
-        if ( playerService.isPlaying ) {
+        if( playerService.isPaused ) {
           this.playIcon.setAttribute( "name", "pause" );
-        } else {
+        }
+
+        if ( playerService.isPlaying ) {
           this.playIcon.setAttribute( "name", "play" );
         }
       },

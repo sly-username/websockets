@@ -58,7 +58,7 @@ export default edPlayerService = {
     return 0;
   },
 
-  set currentTime( val ) {
+  set currentTime( value ) {
     return this.currentTime;
   },
 
@@ -83,9 +83,9 @@ export default edPlayerService = {
     hh = hh < 10 ? "0" + hh : hh;
 
     if ( this.isPlaying || this.isPaused ) {
-      if ( hh !== "00" ) {
-        return `${ hh }:${ mm }:${ ss }`;
-      }
+      //if ( hh !== "00" ) {
+      //  return `${ hh }:${ mm }:${ ss }`;
+      //}
       return `${ mm }:${ ss }`;
     }
 
@@ -94,11 +94,20 @@ export default edPlayerService = {
 
   get trackLength() {
     if ( currentTrack != null ) {
-      // TODO fake length
-      return 578;
-      // return audio.duration;
+      return audio.duration;
     }
+
     return 0;
+  },
+
+  // To be removed once integrated with player service
+  formatTime: function( time ) {
+    var ss = Math.floor( time % 60 ),
+      mm = Math.floor( time / 60 );
+    ss = ss < 10 ? "0" + ss : ss;
+    mm = mm < 10 ? "0" + mm : mm;
+
+    return mm + ":" + ss;
   },
 
   play: function( edTrack ) {
@@ -106,10 +115,8 @@ export default edPlayerService = {
     //  throw new TypeError( "Track is not an EDTrack object" );
     //}
 
-    console.log( "audio", audio );
-
     audio.play();
-    //setCurrentTrack( edTrack );
+    setCurrentTrack( audio );
     return true;
   },
 
