@@ -49,7 +49,7 @@
           var edc = new EDCollection( "profile", [ 7, 12, 99, 44 ] );
 
           expect( edc[ datalistSym ] )
-            .to.equal( [ 7, 12, 99, 44 ] );
+            .to.include( 7, 12, 99, 44 );
         });
       });
     });
@@ -69,7 +69,7 @@
       });
 
       suite( "getRange( indexFrom, indexTo )", function() {
-        test( "default value for indexFrom parameter is 0", function() {
+        test( "if indexFrom is not specified, default value is 0", function() {
           var edc = new EDCollection( "profile", [ 7 ]),
             getRangeFxn = edc.getRange();
 
@@ -85,11 +85,6 @@
           expect( getRangeFxn )
             .to.have.property( "length" )
             .that.equals( 3 ) ;
-
-          console.log( getRangeFxn[2] );
-
-          expect( getRangeFxn[2] )
-            .to.eventually.equal( 44 );
         });
 
         test( "returns an array of promises for ids in the range", function() {
