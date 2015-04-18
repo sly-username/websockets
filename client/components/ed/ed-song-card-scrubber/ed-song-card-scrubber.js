@@ -8,7 +8,50 @@
     var
       playerService = imported[ 0 ].default,
       typeChecker = imported[ 1 ].default,
-      intervalTime = 500;
+      intervalTime = 500,
+      updateCenterHandler = function() {
+        var top = window.pageYOffset;
+        this.mouseDown = true;
+
+        // determines center of svg, using top to compensate for scrolling
+        this.svgBox = this.svg.getBoundingClientRect();
+        this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
+                             ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
+      },
+      swapIconHandler = function() {
+        if ( this.playIcon.getAttribute( "name" ) === "play" ) {
+          this.playIcon.setAttribute( "name", "pause" );
+        } else {
+          this.playIcon.setAttribute( "name", "play" );
+        }
+      },
+      scrubFireHandler = function() {
+        this.mouseDown = false;
+
+        if ( this.currentVal ) {
+          this.formattedValue = this.currentVal;
+        }
+        this.fire( "scrubEnd", {
+          msg: "scrubEnd",
+          newValue: this.currentVal
+        });
+      },
+      triggerMoveHandler = function( e ) {
+        var angle,
+          radians;
+
+        if ( this.mouseDown ) {
+          radians = Math.atan2( e.pageX - this.scrubCenter[ 0 ], e.pageY - this.scrubCenter[ 1 ] );
+          angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
+          this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
+          this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
+          this.scrubber.style.transform = "rotate(" + angle + "deg)";
+          this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
+          this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
+          this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
+          this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+        }
+      };
 
     // TODO REMOVE
     window.playerService = playerService;
@@ -41,6 +84,14 @@
         this.playBtn        = this.shadowRoot.getElementById( "play-btn" );
         this.playIcon       = this.shadowRoot.getElementById( "play-icon" );
 
+        // Event Handler
+        this.handler = {
+          swapIcon: swapIconHandler.bind( this ),
+          updateCenter: updateCenterHandler.bind( this ),
+          scrubFire: scrubFireHandler.bind( this ),
+          triggerMove: triggerMoveHandler.bind( this )
+        };
+
         // Calculates the circumference of circles
         this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
         this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
@@ -60,19 +111,33 @@
         }.bind( this );
       },
       attached: function() {
+
         // mouse events
         this.playBtn.addEventListener( "click", this.handleEvents.bind( this ) );
-        this.scrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
-        this.shadowScrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
-        this.addEventListener( "mouseup", this.scrubFire.bind( this ));
-        this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
-
+        this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
+        this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
+        this.addEventListener( "mouseup", this.handler.scrubFire );
+        this.addEventListener( "mousemove", this.handler.triggerMove );
         // touch events
-        //this.playBtn.addEventListener( "tap", this.handleEvents.bind( this ) );
-        this.scrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
-        this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
-        this.addEventListener( "touchend", this.scrubFire.bind( this ));
-        this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
+        this.playBtn.addEventListener( "tap", this.handler.swapIcon );
+        this.scrubber.addEventListener( "touchstart", this.handler.updateCenter );
+        this.shadowScrubber.addEventListener( "touchstart", this.handler.updateCenter );
+        this.addEventListener( "touchend", this.handler.scrubFire );
+        this.addEventListener( "touchmove", this.handler.triggerMove );
+
+        //// mouse events
+        //this.playBtn.addEventListener( "click", this.handleEvents.bind( this ) );
+        //this.scrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
+        //this.shadowScrubber.addEventListener( "mousedown", this.updateCenter.bind( this ) );
+        //this.addEventListener( "mouseup", this.scrubFire.bind( this ));
+        //this.addEventListener( "mousemove", this.triggerMove.bind( this ) );
+        //
+        //// touch events
+        ////this.playBtn.addEventListener( "tap", this.handleEvents.bind( this ) );
+        //this.scrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
+        //this.shadowScrubber.addEventListener( "touchstart", this.updateCenter.bind( this ) );
+        //this.addEventListener( "touchend", this.scrubFire.bind( this ));
+        //this.addEventListener( "touchmove", this.triggerMove.bind( this ) );
 
         // init events
         this.updateScrub();
@@ -85,13 +150,26 @@
         playerService.emitter.on( "update", this.playerServiceEventHandler );
       },
       detached: function() {
+        this.playBtn.removeEventListener( "click", this.handler.swapIcon );
+        this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
+        this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
+        this.removeEventListener( "mouseup", this.handler.scrubFire );
+        this.removeEventListener( "mousemove", this.handler.triggerMove );
+
+        // touch events
+        this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
+        this.scrubber.removeEventListener( "touchstart", this.handler.updateCenter );
+        this.shadowScrubber.removeEventListener( "touchstart", this.handler.updateCenter );
+        this.removeEventListener( "touchend", this.handler.scrubFire );
+        this.removeEventListener( "touchmove", this.handler.triggerMove );
+
         clearInterval( this.intervalId );
 
         // remove play/pause/stop event handlers
         playerService.emitter.off( "update", this.playerServiceEventHandler );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
-        if ( attrName === "value" ) {
+        if ( attrName = "value" ) {
           this.updateScrub();
         }
 
@@ -131,34 +209,6 @@
           playerService.play();
         }
       },
-      triggerMove: function( event ) {
-        var angle,
-          radians;
-
-        if ( this.mouseDown ) {
-          radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
-          angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
-          this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
-
-          this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
-          this.scrubber.style.transform = "rotate(" + angle + "deg)";
-
-          this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
-          this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
-
-          this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-          this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
-        }
-      },
-      updateCenter: function() {
-        var top = window.pageYOffset;
-        this.mouseDown = true;
-
-        // determines center of svg, using top to compensate for scrolling
-        this.svgBox = this.svg.getBoundingClientRect();
-        this.scrubCenter = [ ( this.svgBox.left + ( this.svgBox.width / 2 ) ),
-          ( ( this.svgBox.top + top ) + ( this.svgBox.height / 2 ) ) ];
-      },
       updateScrub: function() {
         this.value = playerService.currentTime;
         var degPercent = parseInt( playerService.currentTime / playerService.trackLength * 360, 10 ),
@@ -178,6 +228,15 @@
         this.formattedValue = this.value;
         this.formattedMax = this.max;
         this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
+      },
+      // To be removed once integrated with player service
+      formatTime: function( time ) {
+        var ss = Math.floor( time % 60 ),
+          mm = Math.floor( time / 60 );
+        ss = ss < 10 ? "0" + ss : ss;
+        mm = mm < 10 ? "0" + mm : mm;
+
+        return mm + ":" + ss;
       },
       swapIcon: function() {
         if ( playerService.isPaused ) {

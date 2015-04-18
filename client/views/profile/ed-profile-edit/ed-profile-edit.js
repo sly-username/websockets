@@ -3,7 +3,11 @@
 
   System.import( "domain/ed/services/ed-data-service" )
     .then(function( imported ) {
-      var dataService = imported.default;
+      var dataService = imported.default,
+
+      autoSubmitHandler = function() {
+        this.editForm.submit();
+      };
 
       polymer( "ed-profile-edit", {
         /* LIFECYCLE */
@@ -21,24 +25,24 @@
           this.lastName = this.shadowRoot.getElementById( "last-name" );
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
           this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
+          this.handler = {
+            autoSubmit: autoSubmitHandler.bind( this )
+          };
         },
         attached: function() {
-          this.firstName.addEventListener( "blur", this.autoSubmit.bind( this ) );
-          this.lastName.addEventListener( "blur", this.autoSubmit.bind( this ) );
-          this.choosePhoto.addEventListener( "change", this.autoSubmit.bind( this ) );
-          this.takePhoto.addEventListener( "change", this.autoSubmit.bind( this ) );
+          this.firstName.addEventListener( "blur", this.handler.autoSubmit );
+          this.lastName.addEventListener( "blur", this.handler.autoSubmit );
+          this.choosePhoto.addEventListener( "change", this.handler.autoSubmit );
+          this.takePhoto.addEventListener( "change", this.handler.autoSubmit );
         },
         detached: function() {
-          this.firstName.removeEventListener( "blur", this.autoSubmit.bind( this ) );
-          this.lastName.removeEventListener( "blur", this.autoSubmit.bind( this ) );
-          this.choosePhoto.removeEventListener( "change", this.autoSubmit.bind( this ) );
-          this.takePhoto.removeEventListener( "change", this.autoSubmit.bind( this ) );
+          this.firstName.removeEventListener( "blur", this.handler.autoSubmit );
+          this.lastName.removeEventListener( "blur", this.handler.autoSubmit );
+          this.choosePhoto.removeEventListener( "change", this.handler.autoSubmit );
+          this.takePhoto.removeEventListener( "change", this.handler.autoSubmit );
         },
         "ed-idChanged": function() {
           this.attributeChanged( "ed-id" );
-        },
-        autoSubmit: function() {
-          this.editForm.submit();
         },
         attributeChanged: function( attrName ) {
           if ( attrName === "ed-id" ) {
