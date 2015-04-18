@@ -44,20 +44,25 @@ hr {
     padding: 1rem 2rem 0 0;
     text-align: right;
     color: @white;
+    text-transform: uppercase;
     .edType( heading-XXXL );
     span {
+      text-transform: none;
       display: block;
       color: @originalTeal;
       .edType( heading-S );
+      font-weight: 500;
+      margin-top: -.8rem;
     }
   }
   .icon-section {
     height: 19rem;
     .icon-header {
-      margin: 8% 0 4% 3%;
+      padding: 4rem 0 2rem 2rem;
       color: @originalTeal;
       text-transform: uppercase;
       .edType( heading-XS );
+      font-weight: 500;
     }
     ed-icon {
       width: 23%;
@@ -74,14 +79,15 @@ hr {
   }
   .bio-section {
     background: @white;
-    padding: 3%;
+    padding: 2rem;
     .bio-header {
+      padding: 1.3rem 0;
       color: @originalTeal;
       text-transform: uppercase;
       .edType( heading-XS );
+      font-weight: 500;
     }
     .bio-body {
-      margin-top: 4%;
       color: @darkPurple5;
       word-wrap: break-word;
       .edType( paragraph-L );
