@@ -12,7 +12,8 @@
 html {
   font-size: 62.5%;
   background: @darkPurple3;
-  height: 100%;
+  // todo do we need this height designation?
+  //height: 100%;
   width: 100%;
 }
 
@@ -56,39 +57,6 @@ body {
     opacity: 1;
     svg {
       opacity: 1;
-    }
-  }
-}
-
-// TODO where to put this view, keep it in index?
-.discover-view {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-  ed-icon {
-    width: 3rem;
-    height: 3rem;
-    fill: @lightGrey1;
-  }
-  li {
-    .edButtonTertiary();
-  }
-  // todo create mixin?
-  .menu-heading {
-    color: @originalWhite;
-    height: 10%;
-    text-transform: uppercase;
-    background-color: @darkPurple2;
-    &:active, &:hover {
-      background-color: @darkPurple2;
-    }
-  }
-  .genre-title {
-    .edType( heading-XS );
-    color: @originalTeal;
-    text-transform: uppercase;
-    &:active, &:hover {
-      background-color: @darkPurple3;
     }
   }
 }
