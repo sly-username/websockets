@@ -57,7 +57,7 @@ export default edPlayerService = {
 
   get currentTime() {
     if ( this.isPlaying || this.isPaused ) {
-       return audio.currentTime;
+      return audio.currentTime;
     }
 
     return 0;

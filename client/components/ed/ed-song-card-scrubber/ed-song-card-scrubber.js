@@ -31,7 +31,6 @@
         return this._formattedMax = playerService.formatTime( playerService.trackLength );
       },
       ready: function() {
-        console.dir( this );
         this.mouseDown = false;
         // Selectors
         this.svg            = this.shadowRoot.getElementById( "svg-circle" );
@@ -107,10 +106,6 @@
           this.complete = false;
           this.removeAttribute( "complete" );
         }
-      },
-      valueChanged: function( oldValue, newValue ) {
-        //console.log( "old", oldValue );
-        //console.log( "new", newValue );
       },
       handleEvents: function( event ) {
         var self = this,
