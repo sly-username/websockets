@@ -13,28 +13,17 @@
 @lightPurple1: lighten(@mainColor, 10%), desaturate(@mainColor, 15%);
 @darkPurple1: darken(@mainColor, 9%), desaturate(67%);
 @darkPurple2: darken(@mainColor, 15%), desaturate(67%);
-@darkPurple3: #20142C;
-@darkPurple4: #150D1C;
-@darkPurple5: #100A16;
-
-@white: #FFFFFF;
-
-// white currently used in ed-form-input.less
-.white ( @opacity ) {
-  color: #FFFFFF;
-  fill: #FFFFFF;
-  opacity: @opacity;
-}
+@darkPurple3: darken(@mainColor, 22%), desaturate(55%);
 
 @originalTeal: #00A49E;
 
 @originalOrange: #E97117;
-@darkOrange1: #A94A03;
+@darkOrange1: darken(@originalOrange, 16%), saturate(8%);
 
 @originalRed: #DF0029;
-@darkRed1: #6C0115;
+@darkRed1: darken(@originalRed, 22%);
 
-@grey1: #453D4C;
-@grey2: #968F97;
+@originalGrey: #453D4C;
+@lightGrey1: lighten(@originalGrey, 31%), desaturate(@originalGrey, 6%);
 
-@black: #000000;
+@originalWhite: #FFFFFF;
