@@ -1,8 +1,3 @@
-/**
- * Created by Ryan Bogle on 11/10/14.
- */
-
-
 @backgroundColor: #F8F8F8;
 @fontColor: #338877;
 
@@ -12,9 +7,11 @@
 
 /* Eardish color variables */
 
+@mainColor: @originalPurple;
+
 @originalPurple: #5D0C7B;
-@lightPurple1: #772297;
-@darkPurple1: #300B41;
+@lightPurple1: lighten(@mainColor, 10%), desaturate(@mainColor, 15%);
+@darkPurple1: ;
 @darkPurple2: #30273A;
 @darkPurple3: #20142C;
 @darkPurple4: #150D1C;
