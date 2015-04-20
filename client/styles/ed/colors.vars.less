@@ -10,20 +10,20 @@
 @mainColor: @originalPurple;
 
 @originalPurple: #5D0C7B;
-@lightPurple1: lighten(@mainColor, 10%), desaturate(@mainColor, 15%);
-@darkPurple1: darken(@mainColor, 9%), desaturate(67%);
-@darkPurple2: darken(@mainColor, 15%), desaturate(67%);
-@darkPurple3: darken(@mainColor, 22%), desaturate(55%);
+@lightPurple1: lighten(desaturate(@mainColor, 15%), 10%);
+@darkPurple1: darken(desaturate(@mainColor, 67%), 9%);
+@darkPurple2: darken(desaturate(@mainColor, 67%), 15%);
+@darkPurple3: darken(desaturate(@mainColor, 55%), 22%);
 
 @originalTeal: #00A49E;
 
 @originalOrange: #E97117;
-@darkOrange1: darken(@originalOrange, 16%), saturate(8%);
+@darkOrange1: darken(saturate(8%), 16%), ;
 
 @originalRed: #DF0029;
 @darkRed1: darken(@originalRed, 22%);
 
 @originalGrey: #453D4C;
-@lightGrey1: lighten(@originalGrey, 31%), desaturate(@originalGrey, 6%);
+@lightGrey1: lighten(desaturate(@originalGrey, 6%), 31%);
 
 @originalWhite: #FFFFFF;
