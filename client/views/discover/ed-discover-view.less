@@ -1,29 +1,31 @@
 @import "../../styles/ed/buttons.mixin.less";
 @import "../../styles/ed/colors.vars.less";
 
-.discover-view {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
+.title-bar {
+  color: @originalWhite;
+  height: 10vh;
+  text-transform: uppercase;
+  border: 0;
+  background-color: @darkPurple2;
+  &:active, &:hover {
+    background-color: @darkPurple2;
+  }
   ed-icon {
     width: 3rem;
     height: 3rem;
     fill: @lightGrey1;
   }
+}
+
+.discover-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
   li {
     .edButtonTertiary();
   }
-  // todo create mixin?
-  .menu-heading {
-    color: @originalWhite;
-    height: 10vh;
-    text-transform: uppercase;
-    border: 0;
-    background-color: @darkPurple2;
-    &:active, &:hover {
-      background-color: @darkPurple2;
-    }
-  }
+
   .genre-title {
     .edType( heading-XS );
     color: @originalTeal;

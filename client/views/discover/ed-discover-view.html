@@ -3,10 +3,11 @@
 <polymer-element name="ed-discover-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-discover-view.css">
-      <ul class="discover-view hidden">
-        <li class="menu-heading"><ed-icon name="burger"></ed-icon>
-          <span>discover</span>
-        </li>
+      <div class="discover-heading title-bar">
+        <ed-icon name="burger"></ed-icon>
+        <span>discover</span>
+      </div>
+      <ul class="discover-list list-style hidden">
         <li id="featured-button">Featured</li>
         <li class="genre-title">by genre</li>
         <li id="pop-button">Pop</li>
