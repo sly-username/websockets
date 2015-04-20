@@ -11,18 +11,29 @@
     </template>
     <template if="{{!disable}}">
       <form id="rating-form">
-        <div class="rating">
-          <input type='radio' name='rate' id='rating-opt5'>
-          <label for='rating-opt5'></label>
-          <input type='radio' name='rate' id='rating-opt4'>
-          <label for='rating-opt4'></label>
-          <input type='radio' name='rate' id='rating-opt3'>
-          <label for='rating-opt3'></label>
-          <input type='radio' name='rate' id='rating-opt2'>
-          <label for='rating-opt2'></label>
-          <input type='radio' name='rate' id='rating-opt1'>
-          <label for='rating-opt1'></label>
-        </div>
+        <fieldset class="rating">
+          <div id="input-field">
+            <input id="rate1" type="radio" name="rating" value="1">
+            <input id="rate2" type="radio" name="rating" value="2">
+            <input id="rate3" type="radio" name="rating" value="3">
+            <input id="rate4" type="radio" name="rating" value="4">
+            <input id="rate5" type="radio" name="rating" value="5">
+          </div>
+          <div id="star-field">
+            <ed-icon name="star-rating-1"></ed-icon>
+            <ed-icon name="star-rating-1"></ed-icon>
+            <ed-icon name="star-rating-1"></ed-icon>
+            <ed-icon name="star-rating-1"></ed-icon>
+            <ed-icon name="star-rating-1"></ed-icon>
+          </div>
+          <div id="overlap-field">
+            <ed-icon name="star-rating-2"></ed-icon>
+            <ed-icon name="star-rating-2"></ed-icon>
+            <ed-icon name="star-rating-2"></ed-icon>
+            <ed-icon name="star-rating-2"></ed-icon>
+            <ed-icon name="star-rating-2"></ed-icon>
+          </div>
+        </fieldset>
       </form>
     </template>
   </template>
