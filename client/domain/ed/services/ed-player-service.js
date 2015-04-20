@@ -131,26 +131,30 @@ export default edPlayerService = {
     //  throw new TypeError( "Track is not an EDTrack object" );
     //}
 
-    audio.play();
 
-    this.emitter.dispatch( createEvent( "update", {
+
+    this.emitter.dispatch( createEvent( "playerUpdate", {
       detail: {
         type: "play"
       }
     }));
+
+    audio.play();
 
     setCurrentTrack( audio );
     return true;
   },
 
   pause: function( edTrack ) {
-    audio.pause();
 
-    //this.emitter.dispatch( createEvent( "update", {
-    //  detail: {
-    //    type: "pause"
-    //  }
-    //}));
+
+    this.emitter.dispatch( createEvent( "playerUpdate", {
+      detail: {
+        type: "pause"
+      }
+    }));
+
+    audio.pause();
 
     return this.isPaused;
   },

@@ -34,12 +34,11 @@
         // dom selectors
         this.mainPlayer = this.$[ "main-player" ];
         this.miniPlayer = this.$[ "mini-player" ];
-
         // this.rating = this.$[ "mini-player" ];
 
         // Event Handler
         this.handler = {
-          updateTime: updateTimeHandler.bind( this ),
+          updateTime: updateTimeHandler.bind( this )
         };
 
         this.playerServiceEventHandler = function( event ) {
@@ -64,7 +63,8 @@
       },
       attached: function() {
         // bind events
-        this.addEventListener( "scrubberUpdate", this.playerServiceEventHandler.bind( this ) );
+        this.addEventListener( "scrubberUpdate", this.playerServiceEventHandler );
+
       },
       detached: function() {
         clearInterval( this.intervalId );

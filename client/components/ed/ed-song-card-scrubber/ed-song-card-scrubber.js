@@ -46,10 +46,6 @@
         if ( this.currentVal ) {
           this.formattedValue = this.currentVal;
         }
-        //this.fire( "scrubEnd", {
-        //  msg: "scrubEnd",
-        //  newValue: this.currentVal
-        //});
 
         this.dispatchEvent( createUpdateEvent( "scrubEnd" ));
       },
@@ -103,6 +99,17 @@
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
 
+        this.playPauseEventHandler = function( event ) {
+          var eventType = event.detail.type;
+
+          if ( eventType === "play" ) {
+            this.playIcon.setAttribute( "name", "pause" );
+          }
+
+          if ( eventType === "pause" ) {
+            this.playIcon.setAttribute( "name", "play" );
+          }
+        }.bind( this );
       },
       attached: function() {
         // mouse events
@@ -121,6 +128,7 @@
 
         // init events
         this.updateScrub();
+        playerService.emitter.on( "playerUpdate", this.playPauseEventHandler )
       },
       detached: function() {
         this.playBtn.removeEventListener( "click", this.handler.swapIcon );
@@ -160,14 +168,24 @@
         this.scrubber.style.webkitTransform = rotation;
         this.scrubber.style.transform = rotation;
 
+        //this.scrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
+        //this.scrubber.style.animation = "rotateScrubber " + this.max + "s linear";
+
         this.shadowScrubber.style.webkitTransform = rotation;
         this.shadowScrubber.style.transform = rotation;
+
+        //this.shadowScrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
+        //this.shadowScrubber.style.animation = "rotateScrubber " + this.max + "s linear";
 
         this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
         this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
 
+        //this.front.style.webkitAnimation = "dashoffsetFill " + this.max + "s linear";
+        //this.mid.style.animation = "dashoffsetFill " + this.max + "s linear";
+
         this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
       }
+
     });
   });
 })( window.Polymer );
