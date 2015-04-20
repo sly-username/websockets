@@ -1,6 +1,12 @@
 @import "../../styles/ed/buttons.mixin.less";
 @import "../../styles/ed/colors.vars.less";
 
+.discover-view {
+  margin: 0 auto;
+  max-width: 59.6rem;
+  padding: 0;
+}
+
 .title-bar {
   .edType( heading-M );
   color: @originalWhite;
@@ -8,13 +14,14 @@
   text-transform: uppercase;
   border: 0;
   background-color: @darkPurple2;
+  padding: 1.5rem 0 0 2rem;
   &:active, &:hover {
     background-color: @darkPurple2;
   }
   ed-icon {
     width: 2.5rem;
     height:2.5rem;
-    padding: 1.5rem 0 0 2rem;
+
     fill: @lightGrey1;
   }
   span {
