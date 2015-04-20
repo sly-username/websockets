@@ -1,6 +1,7 @@
-@import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
 
 * {
   font-family: "Ubuntu";
@@ -28,7 +29,7 @@ hr {
       height: 3rem;
       display: block;
       padding-left: 15%;
-      .white( .5 );
+      color: @lightGrey1;
     }
   }
   .image-wrapper {
@@ -42,45 +43,53 @@ hr {
     right: 0;
     padding: 1rem 2rem 0 0;
     text-align: right;
-    color: @white;
+    color: @originalWhite;
     text-transform: uppercase;
-    .edType( heading-XXXL );
+    .edType(heading-XXXL);
     span {
       text-transform: none;
       display: block;
       color: @originalTeal;
-      .edType( heading-S );
+      .edType(heading-S);
       font-weight: 500;
       margin-top: -.8rem;
     }
   }
   .icon-section {
-    height: 19rem;
+    height: 30rem;
     .icon-header {
       padding: 4rem 0 2rem 2rem;
       color: @originalTeal;
       text-transform: uppercase;
-      .edType( heading-XS );
+      .edType(heading-XS);
       font-weight: 500;
       button {
         width: 30%;
-        height: 2vh;
+        height: 5rem;
+        margin-top: -2rem;
         float: right;
-        border: none;
-        background: transparent;
-        color: @grey2;
+        color: @lightGrey1;
         text-transform: uppercase;
-        .edType( heading-XXS );
-        ed-icon {
-          fill: @grey2;
-          height: 100%;
+        background: transparent;
+        border: none;
+        .edType(heading-XXS);
+      }
+      #btn-icon {
+        fill: @lightGrey1;
+        width: 3rem;
+        height: 0;
+        float: right;
+        &::shadow {
+          svg {
+            height: 3rem;
+          }
         }
       }
     }
     ed-icon {
       width: 23%;
       height: 8rem;
-      .transform( translateX(13%) );
+      .transform(translateX(13%));
       &::shadow {
         svg {
           width: 9rem;
