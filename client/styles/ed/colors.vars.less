@@ -1,8 +1,3 @@
-/**
- * Created by Ryan Bogle on 11/10/14.
- */
-
-
 @backgroundColor: #F8F8F8;
 @fontColor: #338877;
 
@@ -12,37 +7,24 @@
 
 /* Eardish color variables */
 
+@mainColor: @originalPurple;
+
 @originalPurple: #5D0C7B;
-@lightPurple1: #772297;
-@darkPurple1: #300B41;
-@darkPurple2: #30273A;
-@darkPurple3: #20142C;
-@darkPurple4: #150D1C;
-@darkPurple5: #100A16;
 
-@originalGrey: #453D4C;
-@lightGrey1: #968F97;
-
-@white: #FFFFFF;
-
-@originalWhite: #FFFFFF;
-
-// white currently used in ed-form-input.less
-.white ( @opacity ) {
-  color: #FFFFFF;
-  fill: #FFFFFF;
-  opacity: @opacity;
-}
+@lightPurple1: lighten(@mainColor, 10%), desaturate(@mainColor, 15%);
+@darkPurple1: darken(@mainColor, 9%), desaturate(67%);
+@darkPurple2: darken(@mainColor, 15%), desaturate(67%);
+@darkPurple3: darken(@mainColor, 22%), desaturate(55%);
 
 @originalTeal: #00A49E;
 
 @originalOrange: #E97117;
-@darkOrange1: #A94A03;
+@darkOrange1: darken(@originalOrange, 16%), saturate(8%);
 
 @originalRed: #DF0029;
-@darkRed1: #6C0115;
+@darkRed1: darken(@originalRed, 22%);
 
-@grey1: #453D4C;
-@grey2: #968F97;
+@originalGrey: #453D4C;
+@lightGrey1: lighten(@originalGrey, 31%), desaturate(@originalGrey, 6%);
 
-@black: #000000;
+@originalWhite: #FFFFFF;
