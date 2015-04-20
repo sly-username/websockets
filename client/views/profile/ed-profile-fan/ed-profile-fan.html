@@ -8,8 +8,8 @@
       <button class="back-icon">
         <ed-icon name="arrow-back"></ed-icon>
       </button>
-      <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 362 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 75 }}"></ed-user-ranking>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
           {{ edFan.displayName || "Emma Wilson" }}
@@ -21,8 +21,8 @@
         <div class="icon-header">Rewards
           <button>
             Edit Profile
+            <ed-icon id="btn-icon" name="pencil"></ed-icon>
           </button>
-          <ed-icon id="btn-icon" name="pencil"></ed-icon>
         </div>
         <hr>
         <ed-icon name="badge-empty"></ed-icon>
