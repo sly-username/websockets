@@ -3,13 +3,29 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-player-service" ),
-    System.import( "domain/ed/objects/model-type-checker" )
+    System.import( "domain/lib/event/create-event" )
   ]).then(function( imported ) {
     var
       playerService = imported[ 0 ].default,
-      typeChecker = imported[ 1 ].default,
-      intervalId,
-      intervalTime = 500;
+      intervalTime = 500,
+      updateTimeHandler;
+
+    // helpers
+    updateTimeHandler = function( tempValue, scrubFlag ) {
+      var currentValue;
+
+      if ( scrubFlag ) {
+        currentValue = playerService.scrubTo( tempValue );
+      } else {
+        currentValue = playerService.currentTime;
+      }
+
+      this.mainPlayer.setAttribute( "max", playerService.trackLength );
+      this.mainPlayer.setAttribute( "value", currentValue );
+    };
+
+    // TODO remove
+    window.playerService = playerService;
 
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
@@ -19,61 +35,42 @@
         this.mainPlayer = this.$[ "main-player" ];
         this.miniPlayer = this.$[ "mini-player" ];
 
-        // just for now
-        this.playBtn = this.mainPlayer.shadowRoot.getElementById( "play-btn" );
         // this.rating = this.$[ "mini-player" ];
 
+        // Event Handler
+        this.handler = {
+          updateTime: updateTimeHandler.bind( this ),
+        };
+
         this.playerServiceEventHandler = function( event ) {
-          var eventType = event.detail.type;
+          var eventType = event.detail.name,
+            currentVal = event.detail.currentVal;
 
           if ( eventType === "pause" || eventType === "stop" ) {
-            clearInterval( intervalId );
+            playerService.pause();
+            clearInterval( this.intervalId );
+
           }
 
           if ( eventType === "play" ) {
-            intervalId = setInterval( this.playerServiceEventHandler, intervalTime );
+            playerService.play();
+            this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+          }
+
+          if ( eventType === "scrubStart" ) {
+            this.handler.updateTime( currentVal, true );
           }
         }.bind( this );
       },
       attached: function() {
         // bind events
-        this.playBtn.addEventListener( "click", this.handleEvents.bind( this ));
-
-        // attach play/pause/stop event handlers
-        playerService.emitter.on( "update", this.playerServiceEventHandler );
-
-        // setup interval
-        // only if playing
-        //intervalId = setInterval( this.updateScrub.bind( this ), 500 );
+        this.addEventListener( "scrubberUpdate", this.playerServiceEventHandler.bind( this ) );
       },
       detached: function() {
-        clearInterval( intervalId );
-
-        // remove play/pause/stop event handlers
-        playerService.emitter.off( "update", this.playerServiceEventHandler );
+        clearInterval( this.intervalId );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 
-      },
-      playSong: function() {
-        // Playing same song causes pause or resume
-        if ( playerService.isPlaying ) {
-          return playerService.pause();
-        }
-
-        if ( playerService.isPaused ) {
-          playerService.play();
-        }
-      },
-      handleEvents: function( event ) {
-        var self = this,
-          tempId = event.target.getAttribute( "id" );
-
-        if ( event.type === "click" ||  event.type === "tap" && tempId === "play-icon" ) {
-          //this.swapIcon();
-          this.playSong();
-          //this.updateScrub();
-        }
       }
       /* PROPERTIES */
       /* METHODS */

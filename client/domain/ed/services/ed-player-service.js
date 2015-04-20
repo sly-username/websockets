@@ -3,6 +3,7 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EventEmitter from "domain/lib/event/EventEmitter";
+import createEvent from "domain/lib/event/create-event";
 
 var
   queue = [],
@@ -23,6 +24,8 @@ audio.style.visibility  = 'hidden';
 setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
 };
+
+window.audioTest = audio;
 
 export default edPlayerService = {
   get emitter() {
@@ -64,7 +67,7 @@ export default edPlayerService = {
   },
 
   set currentTime( value ) {
-    return this.currentTime;
+    return audio.currentTime;
   },
 
   get currentSeconds() {
@@ -129,14 +132,26 @@ export default edPlayerService = {
     //}
 
     audio.play();
+
+    this.emitter.dispatch( createEvent( "update", {
+      detail: {
+        type: "play"
+      }
+    }));
+
     setCurrentTrack( audio );
     return true;
   },
 
   pause: function( edTrack ) {
-    if ( this.isPlaying ) {
-      audio.pause();
-    }
+    audio.pause();
+
+    //this.emitter.dispatch( createEvent( "update", {
+    //  detail: {
+    //    type: "pause"
+    //  }
+    //}));
+
     return this.isPaused;
   },
 
@@ -147,6 +162,10 @@ export default edPlayerService = {
       currentTrack = null;
     }
     return true;
+  },
+
+  scrubTo: function( value ) {
+    audio.currentTime = value;
   },
 
   enqueue: function( edTrack ) {

@@ -3,10 +3,19 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-player-service" ),
-    System.import( "domain/ed/objects/model-type-checker" )
+    System.import( "domain/lib/event/create-event" )
   ]).then(function( imported ) {
     var
       playerService = imported[ 0 ].default,
+      createEvent = imported[ 1 ].default,
+      createUpdateEvent = function( name, detail ) {
+        detail = detail || {};
+        detail.name = name;
+
+        return createEvent( "scrubberUpdate", {
+          detail: detail
+        });
+      },
       updateCenterHandler = function() {
         var top = window.pageYOffset;
         this.mouseDown = true;
@@ -19,26 +28,36 @@
         ];
       },
       swapIconHandler = function() {
+        var state = this.playIcon.getAttribute( "name" );
+
         if ( this.playIcon.getAttribute( "name" ) === "play" ) {
           this.playIcon.setAttribute( "name", "pause" );
         } else {
           this.playIcon.setAttribute( "name", "play" );
         }
+
+        this.dispatchEvent( createUpdateEvent( state ));
       },
       scrubFireHandler = function() {
         this.mouseDown = false;
 
+        //console.log( "this.currentVal", this.currentVal );
+
         if ( this.currentVal ) {
           this.formattedValue = this.currentVal;
         }
-        this.fire( "scrubEnd", {
-          msg: "scrubEnd",
-          newValue: this.currentVal
-        });
+        //this.fire( "scrubEnd", {
+        //  msg: "scrubEnd",
+        //  newValue: this.currentVal
+        //});
+
+        this.dispatchEvent( createUpdateEvent( "scrubEnd" ));
       },
       triggerMoveHandler = function( event ) {
         var angle,
           radians;
+
+        console.log( "triggering?" );
 
         if ( this.mouseDown ) {
           radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
@@ -50,14 +69,11 @@
           this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
           this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
           this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+
+
+          this.dispatchEvent( createUpdateEvent( "scrubStart", { currentVal: this.currentVal }));
+          this.updateScrub();
         }
-      },
-      createUpdateEvent = function( name, detail ) {
-        detail.name = name;
-        
-        return createEvent( "scrubberUpdate", {
-          detail: detail
-        });
       };
 
     polymer( "ed-song-card-scrubber", {
@@ -121,7 +137,7 @@
         this.removeEventListener( "touchmove", this.handler.triggerMove );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
-        if ( attrName == "value" ) {
+        if ( attrName === "value" ) {
           this.updateScrub();
         }
 
@@ -151,14 +167,6 @@
         this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
 
         this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
-      },
-      scrubFire: function() {
-        this.mouseDown = false;
-
-        this.fire( "scrubEnd", {
-          msg: "scrubEnd",
-          newValue: this.currentVal
-        });
       }
     });
   });
