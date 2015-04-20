@@ -19,43 +19,49 @@ hr {
   width: 100%;
   max-width: 59.6rem;
   .back-icon {
-    width: 20%;
+    height: 9rem;
+    width: 15%;
     border: none;
     background: transparent;
     ed-icon {
-      width: 64%;
+      width: 3rem;
+      height: 3rem;
       display: block;
-      text-align: center;
+      padding-left: 15%;
       .white( .5 );
-      .transform( translateY(40%) );
     }
   }
   .image-wrapper {
     width: 100%;
     overflow: hidden;
-    margin-top: -5rem;
+    position: relative;
   }
   .profile-name {
     position: absolute;
     z-index: 1;
-    left: 51%;
-    margin-top: 1.5%;
+    right: 0;
+    padding: 1rem 2rem 0 0;
     text-align: right;
     color: @white;
+    text-transform: uppercase;
     .edType( heading-XXXL );
     span {
+      text-transform: none;
       display: block;
       color: @originalTeal;
       .edType( heading-S );
+      font-weight: 500;
+      margin-top: -.8rem;
     }
   }
   .icon-section {
-    height: 24rem;
+    height: 19rem;
     .icon-header {
-      margin: 8% 3% 4% 3%;
+      padding: 4rem 0 2rem 2rem;
       color: @originalTeal;
       text-transform: uppercase;
       .edType( heading-XS );
+      font-weight: 500;
       button {
         width: 30%;
         height: 2vh;
@@ -72,12 +78,14 @@ hr {
       }
     }
     ed-icon {
-      width: 24%;
-      height: 12rem;
-      .transform( translateX(18%) );
+      width: 23%;
+      height: 8rem;
+      .transform( translateX(13%) );
       &::shadow {
         svg {
-          width: 70%;
+          width: 9rem;
+          height: 8rem;
+          padding-top: 0.6rem;
         }
       }
     }
