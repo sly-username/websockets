@@ -1,45 +1,18 @@
-@backgroundColor: #F8F8F8;
-@fontColor: #338877;
-
-@border: #00FFFF;
-
-@accent: #FF70F0;
-
-/* Eardish color variables */
-
-@mainColor: @originalPurple;
-
 @originalPurple: #5D0C7B;
-@lightPurple1: lighten(@mainColor, 10%), desaturate(@mainColor, 15%);
-@darkPurple1: darken(@mainColor, 9%), desaturate(67%);
-@darkPurple2: darken(@mainColor, 15%), desaturate(67%);
-@darkPurple3: #20142C;
-@darkPurple4: #150D1C;
-@darkPurple5: #100A16;
-
-@originalGrey: #453D4C;
-@lightGrey1: #968F97;
-
-@white: #FFFFFF;
-
-@originalWhite: #FFFFFF;
-
-// white currently used in ed-form-input.less
-.white ( @opacity ) {
-  color: #FFFFFF;
-  fill: #FFFFFF;
-  opacity: @opacity;
-}
+@lightPurple1: lighten(desaturate(@originalPurple, 15%), 10%);
+@darkPurple1: darken(desaturate(@originalPurple, 67%), 9%);
+@darkPurple2: darken(desaturate(@originalPurple, 67%), 15%);
+@darkPurple3: darken(desaturate(@originalPurple, 55%), 22%);
 
 @originalTeal: #00A49E;
 
 @originalOrange: #E97117;
-@darkOrange1: #A94A03;
+@darkOrange1: darken(saturate(@originalOrange, 8%), 16%), ;
 
 @originalRed: #DF0029;
-@darkRed1: #6C0115;
+@darkRed1: darken(@originalRed, 22%);
 
-@grey1: #453D4C;
-@grey2: #968F97;
+@originalGrey: #453D4C;
+@lightGrey1: lighten(desaturate(@originalGrey, 6%), 31%);
 
-@black: #000000;
+@originalWhite: #FFFFFF;
