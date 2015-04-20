@@ -20,8 +20,6 @@ traceurOptions = {
   experimental: true
 };
 
-//console.log( sourceMapRewriteLocation );
-
 // Traceur compile in a stream!
 /* Traceur node api is working! ...for now... */
 compileES6 = function( options ) {
@@ -56,7 +54,7 @@ compileES6 = function( options ) {
     // TODO need to replace the /home/vagrant with where the repo is in the HOST OS
     if ( typeof sourceMapRewriteLocation === "string" && sourcePath.indexOf( "vagrant" ) > -1 ) {
       sourcePath = sourcePath.replace(
-        path.join( "home", "vagrant" ),
+        path.join( path.sep + "home", "vagrant" ),
         sourceMapRewriteLocation
       );
     }
