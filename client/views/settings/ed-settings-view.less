@@ -1,0 +1,43 @@
+@import "../../styles/ed/buttons.mixin.less";
+@import "../../styles/ed/colors.vars.less";
+
+.title-bar {
+  .edType( heading-M );
+  color: @originalWhite;
+  height: 10vh;
+  text-transform: uppercase;
+  border: 0;
+  background-color: @darkPurple2;
+  &:active, &:hover {
+    background-color: @darkPurple2;
+  }
+  ed-icon {
+    width: 2.5rem;
+    height:2.5rem;
+    padding: 1.5rem 0 0 2rem;
+    fill: @lightGrey1;
+  }
+  span {
+    padding-left: 6.5rem;
+  }
+}
+
+.discover-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  li {
+    .edButtonTertiary();
+    border-bototm: 0.2rem solid @lightGrey1;
+  }
+  .menu-heading {
+    color: @originalWhite;
+    height: 10vh;
+    text-transform: uppercase;
+    border: 0;
+    background-color: @darkPurple2;
+    &:active, &:hover {
+      background-color: @darkPurple2;
+    }
+  }
+}
