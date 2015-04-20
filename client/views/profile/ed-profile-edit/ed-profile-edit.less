@@ -14,7 +14,7 @@
 
 header {
   .edType( heading-L );
-  color: @white;
+  color: @originalWhite;
   text-align: center;
   line-height: 8rem;
   padding: 0 2%;
@@ -59,14 +59,14 @@ header {
 #upload-field {
   .upload-button {
     input {
-      .edButton();
+      .edPrimaryButton();
       opacity: 0;
       position: absolute;
     }
     button {
-      .edButton();
+      .edPrimaryButton();
       background: transparent;
-      color: @grey2;
+      color: @lightGrey1;
       text-align: left;
       text-transform: capitalize;
       pointer-events: none;
@@ -82,8 +82,8 @@ header {
     margin: 6% 2% 0 2%;
   }
   button {
-    .edButton();
-    color: @grey2;
+    .edPrimaryButton();
+    color: @lightGrey1;
     text-align: left;
     background: transparent;
     text-transform: capitalize;

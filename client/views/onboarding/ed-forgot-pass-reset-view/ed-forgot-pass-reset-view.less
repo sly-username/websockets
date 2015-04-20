@@ -18,7 +18,7 @@
 
 .forgot-text {
   .edType( paragraph-L );
-  color: @white;
+  color: @originalWhite;
   opacity: .5;
   margin-bottom: 4%;
   span {
@@ -42,9 +42,9 @@
 
 #forgot-submit {
   &:disabled {
-    .edButton( @backgroundColor: @grey1; @activeColor: @grey2 );
+    .edPrimaryButton( @backgroundColor: @originalGrey; @activeColor: @lightGrey1 );
   }
-  .edButton();
+  .edPrimaryButton();
   margin-top: 4%;
   bottom: 0;
 }

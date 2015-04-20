@@ -5,8 +5,6 @@
 @import "mixins/breakpoints/mixins.less";
 @import "ed/colors.vars.less";
 
-@color: white;
-
 
 html {
   font-size: 62.5%;
@@ -16,7 +14,7 @@ html {
 }
 
 body {
-  background-color: @color;
+  background-color: @originalWhite;
   height: 100%;
   width: 100%;
   padding: 0;
@@ -60,34 +58,4 @@ body {
 }
 
 .hidden();
-
-/**
- * LESS for testing horizontal scrollbox
- **/
-scroll-box-horizontal img {
-  border: 2px solid black;
-  float: left;
-  clear: none;
-}
-/**
- * ENDS LESS for testing horizontal scrollbox
- **/
-
-/* <checkbox-select> */
-checkbox-select {
-  background: url("http://www.psoriasispatients.com/images/icons/qa_rating_star1.png") no-repeat;
-}
-/* END <checkbox-select> */
-
-/**
- * LESS for testing file-drop
- **/
-.parent{
-  height: 300px;
-  width: 300px;
-  border: 1px solid red;
-}
-/**
- * ENDS LESS for testing file-drop
- **/
 
