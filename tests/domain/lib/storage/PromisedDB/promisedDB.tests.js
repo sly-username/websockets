@@ -1,17 +1,167 @@
 /*eslint-env mocha*/
+/*jscs:disable requirePaddingNewLinesInObjects*/
 /*global suite, test, console*/
 (function( win, doc, System, sinon, expect ) {
   "use strict";
 
+  /* TODOS
+      Add versioned config
+      Get Cursors working as generators
+   */
+
+  /***
+   * PLEASE NOTE:
+   *  This test suite is dynamically built based on the configurations
+   *  for promisedDB. Tests are also written against dummy data found below,
+   *  all tests should clean up after themselves if they complete successfully.
+   */
+
+  var
+    fullPDBConfig,
+    minimalPDBConfig,
+    dummyProfiles,
+    dummyTracks,
+    insertProfile,
+    insertTrack;
+
+  // Fully formed config object for testing
+  fullPDBConfig = {
+    profile: {
+      options: {
+        keyPath: "id",
+        autoIncrement: false
+      },
+      indexes: {
+        type: [ "type", { unique: false, multiEntry: false }],
+        userId: [ "userId", { unique: false, multiEntry: false }]
+      }
+    },
+    track: {
+      options: {
+        keyPath: "id",
+        autoIncrement: false
+      },
+      indexes: {
+        type: [ "type", { unique: false, multiEntry: false }],
+        profileId: [ "profileId", { unique: false, multiEntry: false }]
+      }
+    }
+  };
+  /*jscs:enable*/
+
+  // Minimally formed config object for testing
+  minimalPDBConfig = {
+    profile: {
+      options: { keyPath: "id" },
+      indexes: {
+        type: [ "type" ],
+        userId: [ "userId" ]
+      }
+    },
+    track: {
+      options: { keyPath: "id" },
+      indexes: {
+        type: [ "type" ],
+        profileId: [ "profileId" ]
+      }
+    }
+  };
+
+  // Dummy profile data
+  dummyProfiles = [
+    {
+      id: 0,
+      name: "Hello World",
+      type: "artist",
+      userId: 0,
+      genre: "Rock"
+    },
+    {
+      id: 1,
+      name: "Hello John",
+      type: "artist",
+      userId: 1,
+      genre: "EDM"
+    },
+    {
+      id: 2,
+      name: "Bobby Boggs",
+      type: "fan",
+      userId: 2,
+      genre: "Alt"
+    },
+    {
+      id: 3,
+      name: "Jimmy Johns",
+      type: "fan",
+      userId: 1,
+      genre: "Pop"
+    }
+  ];
+
+  insertProfile = {
+    id: 4,
+    name: "Jamie Smits",
+    type: "artist",
+    userId: 3,
+    genre: "Dance"
+  };
+
+  // dummy track data
+  dummyTracks = [
+    {
+      id: 0,
+      name: "Hello Song",
+      type: "track",
+      profileId: 0,
+      genre: "Rock"
+    },
+    {
+      id: 1,
+      name: "Hello Electro",
+      type: "mix",
+      profileId: 1,
+      genre: "EDM"
+    },
+    {
+      id: 2,
+      name: "Hello Boggs",
+      type: "track",
+      profileId: 0,
+      genre: "Alt"
+    },
+    {
+      id: 3,
+      name: "Goodbye",
+      type: "demo",
+      profileId: 1,
+      genre: "Pop"
+    }
+  ];
+
+  insertTrack = {
+    id: 4,
+    name: "Hey-oh",
+    type: "demo",
+    profileId: 4,
+    genre: "Dance"
+  };
+
+  // Start Test Suites
   suite( "PromisedDB", function() {
     var promisedDB,
-      PDBObjectStore;
+      PDBTransaction,
+      PDBObjectStore,
+      PDBIndex,
+      configs = {
+        fullPDBConfig: fullPDBConfig,
+        minimalPDBConfig: minimalPDBConfig
+      };
 
     this.timeout( 5000 );
 
     suiteSetup(function( done ) {
-      indexedDB.deleteDatabase( "testing-track-db" );
-      indexedDB.deleteDatabase( "testing-track-db-2" );
+      indexedDB.deleteDatabase( "testing-db" );
 
       Promise.all([
         System.import( "domain/lib/storage/PromisedDB/promisedDB" ),
@@ -22,7 +172,9 @@
       ])
         .then(function( imported ) {
           promisedDB = imported[ 0 ].default;
+          PDBTransaction = imported[ 2 ].default;
           PDBObjectStore = imported[ 3 ].default;
+          PDBIndex = imported[ 4 ].default;
 
           done();
         }, function( error ) {
@@ -32,199 +184,264 @@
         });
     });
 
-    // Start Test
-    test( "construction with fully formed config object", function( done ) {
-      var dbOpenRequest;
+    // Start Construction Tests
+    Object.keys( configs ).forEach(function( configName ) {
+      test( "construction with config object: " + configName, function( done ) {
+        var dbOpenRequest;
 
-      promisedDB.open( "testing-track-db", 1, [{
-        storeName: {
-          options: {
-            keyPath: "id",
-            autoIncrement: false
-          },
-          indexes: {
-            type: [ "type", {
-              unique: false,
-              multiEntry: false
-            }],
-            userId: [ "userId", {
-              unique: false,
-              multiEntry: false
-            }],
-            profileId: [ "profileId", {
-              unique: false,
-              multiEntry: false
-            }]
-          }
-        }
-      }])
-        .then(function( pdb ) {
-          console.log( "testing-track-db constructed: %o", pdb );
-          pdb.close();
+        promisedDB.open( "testing-db", 1, [ configs[ configName ]])
+          .then(function( pdb ) {
+            console.log( "testing-db constructed: %o", pdb );
+            pdb.close();
 
-          dbOpenRequest = indexedDB.open( "testing-track-db", 1 );
-          dbOpenRequest.onsuccess = function( event ) {
-            var idb = event.target.result,
-              transaction = idb.transaction( "storeName", "readonly" ),
-              store;
+            dbOpenRequest = indexedDB.open( "testing-db", 1 );
+            dbOpenRequest.onsuccess = function( event ) {
+              var idb = event.target.result,
+                transaction = idb.transaction( [ "profile", "track" ], "readonly" ),
+                profileStore,
+                trackStore;
 
-            transaction.oncomplete = function() {
-              idb.close();
-              done();
+              expect( idb )
+                .to.have.property( "objectStoreNames" );
+
+              expect( idb.objectStoreNames )
+                .to.have.property( "0" )
+                .that.equals( "profile" );
+
+              expect( idb.objectStoreNames )
+                .to.have.property( "1" )
+                .that.equals( "track" );
+
+              profileStore = transaction.objectStore( "profile" );
+              trackStore = transaction.objectStore( "track" );
+
+              expect( profileStore )
+                .to.be.an.instanceOf( IDBObjectStore );
+
+              expect( trackStore )
+                .to.be.an.instanceOf( IDBObjectStore );
+
+              expect( profileStore )
+                .to.have.property( "name", "profile" );
+
+              expect( trackStore )
+                .to.have.property( "name", "track" );
+
+              expect( profileStore )
+                .to.have.property( "autoIncrement", false );
+
+              expect( trackStore )
+                .to.have.property( "autoIncrement", false );
+
+              expect( profileStore )
+                .to.have.property( "keyPath", "id" );
+
+              expect( trackStore )
+                .to.have.property( "keyPath", "id" );
+
+              expect( profileStore )
+                .to.have.property( "indexNames" );
+
+              expect( trackStore )
+                .to.have.property( "indexNames" );
+
+              expect( profileStore.indexNames )
+                .to.have.property( "0", "type" );
+
+              expect( profileStore.indexNames )
+                .to.have.property( "1", "userId" );
+
+              expect( trackStore.indexNames )
+                .to.have.property( "0", "profileId" );
+
+              expect( trackStore.indexNames )
+                .to.have.property( "1", "type" );
+
+              console.dir( profileStore );
+              console.dir( trackStore );
+
+              transaction.oncomplete = function() {
+                idb.close();
+                indexedDB.deleteDatabase( "testing-db" );
+                done();
+              };
             };
-
-            store = transaction.objectStore( "storeName" );
-
-            expect( store )
-              .to.be.an.instanceOf( IDBObjectStore );
-
-            expect( store )
-              .to.have.property( "name" )
-              .that.equals( "storeName" );
-          };
-
-          promisedDB.deleteDatabase( "testing-track-db" );
-        });
-    });
-
-    test( "construction with minimal config object", function( done ) {
-      var dbOpenRequest;
-
-      promisedDB.open( "testing-track-db-2", 1, [{
-        storeName: {
-          indexes: {
-            type: [ "type" ],
-            userId: [ "userId" ],
-            profileId: [ "profileId" ]
-          }
-        }
-      }]).then(function( pdb ) {
-        console.log( "testing-track-db-2 constructed: %o", pdb );
-        pdb.close();
-
-        dbOpenRequest = indexedDB.open( "testing-track-db-2", 1 );
-        dbOpenRequest.onsuccess = function( event ) {
-          var idb = event.target.result,
-            transaction = idb.transaction( "storeName", "readonly" ),
-            store;
-
-          transaction.oncomplete = function() {
-            idb.close();
-            done();
-          };
-
-          store = transaction.objectStore( "storeName" );
-
-          expect( store )
-            .to.be.an.instanceOf( IDBObjectStore );
-
-          expect( store )
-            .to.have.property( "name" )
-            .that.equals( "storeName" );
-        };
-
-        promisedDB.deleteDatabase( "testing-track-db-2" );
+          });
       });
     });
+    // END Construction Tests
 
     suite( "Own Properties & Symbols", function() {
       var pdb,
-        config = [{
-          storeName: {
-            options: {
-              keyPath: "id",
-              autoIncrement: false
-            },
-            indexes: {
-              type: [ "type", {
-                unique: false,
-                multiEntry: false
-              }],
-              userId: [ "userId", {
-                unique: false,
-                multiEntry: false
-              }],
-              profileId: [ "profileId", {
-                unique: false,
-                multiEntry: false
-              }]
-            }
-          }
-        }],
-        seedData = [
-          {
-            id: 0,
-            type: "track",
-            userId: 0,
-            profileId: 0,
-            name: "After the Rain"
-          },
-          {
-            id: 1,
-            type: "track",
-            userId: 0,
-            profileId: 1,
-            name: "Recommendation"
-          },
-          {
-            id: 2,
-            type: "track",
-            userId: 1,
-            profileId: 2,
-            name: "Turn Left"
-          },
-          {
-            id: 3,
-            type: "track",
-            userId: 2,
-            profileId: 3,
-            name: "Blinking Pigs"
-          },
-          {
-            id: 4,
-            type: "track",
-            userId: 1,
-            profileId: 4,
-            name: "Howling at the Moon"
-          }
-        ];
+        config = [ fullPDBConfig ],
+        dbName = "testing-db",
+        dbVersion = 1;
 
+      // Populate DB
       suiteSetup(function( done ) {
         var doneHelper = (function() {
           var count = 0;
-          return function( arg ) {
-            if ( ++count === 5 ) {
+          return function() {
+            if ( ++count === 8 ) {
               done();
             }
           };
         })();
 
-        promisedDB.open( "testing-track-db", 1, config ).then(function( createdPDB ) {
-          pdb = createdPDB;
+        promisedDB.open( dbName, dbVersion, config )
+          .then(function( createdPDB ) {
+            pdb = createdPDB;
 
-          seedData.forEach(function( entry ) {
-            return pdb.storeName.add( entry ).then( doneHelper );
+            // Seed Profile Data
+            dummyProfiles.forEach(function( entry ) {
+              pdb.profile.add( entry ).then( doneHelper );
+            });
+
+            // Seed Track Data
+            dummyTracks.forEach(function( entry ) {
+              pdb.track.add( entry ).then( doneHelper );
+            });
           });
-        });
       });
 
+      // Destroy DB
       suiteTeardown(function() {
         pdb.close();
         promisedDB.deleteDatabase( pdb.name );
       });
 
-      test( "promised db has property name", function() {
-        expect( pdb )
-          .to.have.property( "name" )
-          .that.is.a( "string" )
-          .and.equals( "testing-track-db" );
+      suite( "IndexedDB Style Properties", function() {
+        test( "name", function() {
+          expect( pdb )
+            .to.have.property( "name" )
+            .that.is.a( "string" )
+            .and.equals( dbName );
+        });
+
+        test( "version", function() {
+          expect( pdb )
+            .to.have.property( "version" )
+            .that.is.a( "number" )
+            .and.equals( dbVersion );
+        });
+
+        test( "objectStoreNames", function() {
+          expect( pdb )
+            .to.have.property( "objectStoreNames" )
+            .that.is.an.instanceOf( DOMStringList );
+
+          expect( pdb.objectStoreNames )
+            .to.have.property( 0 )
+            .that.equals( "profile" );
+
+          expect( pdb.objectStoreNames )
+            .to.have.property( 1 )
+            .that.equals( "track" );
+
+          expect( pdb.objectStoreNames )
+            .to.have.property( "length" )
+            .that.equals( 2 );
+        });
       });
 
-      test( "promised db has property version", function() {
-        expect( pdb )
-          .to.have.property( "version" )
-          .that.is.a( "number" )
-          .and.equals( 1 );
+      suite( "PromisedDB Methods", function() {
+        test( "transaction", function() {
+          var transaction;
+
+          expect( pdb )
+            .to.respondTo( "transaction" );
+
+          transaction = pdb.transaction( "profile", "readonly" );
+
+          expect( transaction )
+            .to.be.an.instanceOf( PDBTransaction );
+
+          expect( transaction )
+            .to.have.property( "mode", "readonly" );
+        });
+
+        test( "read", function() {
+          var transaction;
+
+          expect( pdb )
+            .to.respondTo( "read" );
+
+          transaction = pdb.read( "profile" );
+
+          expect( transaction )
+            .to.have.property( "mode" )
+            .that.equals( "readonly" );
+
+          expect( transaction )
+            .to.respondTo( "objectStore" );
+
+          expect( transaction.objectStore( "profile" ))
+            .to.have.property( "name" )
+            .that.equals( "profile" );
+        });
+
+        test( "write", function() {
+          var transaction;
+
+          expect( pdb )
+            .to.respondTo( "write" );
+
+          transaction = pdb.write( "profile" );
+
+          expect( transaction )
+            .to.have.property( "mode" )
+            .that.equals( "readwrite" );
+
+          expect( transaction )
+            .to.respondTo( "objectStore" );
+
+          expect( transaction.objectStore( "profile" ))
+            .to.have.property( "name" )
+            .that.equals( "profile" );
+        });
+      });
+
+      suite( "PDBTransaction", function() {
+        suite( "Properties", function() {
+          test( "mode", function() {
+            var transaction = pdb.transaction( "profile", "readonly" );
+
+            expect( transaction )
+              .to.have.property( "mode" )
+              .that.equals( "readonly" );
+          });
+
+          test( "objectStore", function() {
+            var transaction = pdb.transaction( "profile", "readonly" );
+
+            expect( transaction )
+              .to.respondTo( "objectStore" );
+
+            expect( transaction.objectStore( "profile" ) )
+              .to.be.an.instanceOf( IDBObjectStore );
+          });
+
+          test( "promise", function( done ) {
+            var transaction = pdb.transaction( "profile", "readonly" ),
+              request = transaction.objectStore( "profile" ).get( dummyProfiles[ 0 ].id );
+
+            expect( transaction )
+              .to.respondTo( "promise" );
+
+            transaction.promise( request )
+              .then(function( data ) {
+                expect( data )
+                  .to.deep.equal( dummyProfiles[ 0 ]);
+
+                done();
+              }).catch( done );
+          });
+
+          test( "abort", function() {
+            expect( pdb.transaction( "profile", "readonly" ))
+              .to.respondTo( "abort" );
+          });
+        });
       });
 
       config.forEach(function( versionConfig, versionNumber ) {
@@ -236,7 +453,7 @@
               test( "pdb has property objectStore: " + storeName, function() {
                 expect( pdb )
                   .to.have.property( storeName )
-                  .that.is.an.instanceof( PDBObjectStore ); // todo import this
+                  .that.is.an.instanceof( PDBObjectStore );
               });
 
               suite( storeName + " has objectStore properties", function() {
@@ -250,7 +467,7 @@
                   expect( pdb[ storeName ] )
                     .to.have.property( "keyPath" )
                     .that.is.a( "string" )
-                    .and.equals( versionConfig[ storeName ].options.keyPath );
+                    .and.equals( versionConfig[ storeName ].options.keyPath || "" );
                 });
 
                 test( "name", function() {
@@ -268,35 +485,31 @@
               });
 
               suite( storeName + " has objectStore methods", function() {
-                var newData = {
-                    id: 5,
-                    type: "track",
-                    userId: 3,
-                    profileId: 8,
-                    name: "Hunger of the Pine"
-                  },
-                  augmentedData = Object.assign( {}, seedData[1] );
-
-                augmentedData.userId = 10;
-
                 test( "add", function( done ) {
+                  var toInsert = storeName === "profile" ? insertProfile : insertTrack;
+
                   expect( pdb[ storeName ] )
                     .to.respondTo( "add" );
 
-                  pdb[ storeName ].add( newData )
-                    .then(function( id ) {
-                      expect( id ).to.equal( 5 );
+                  pdb[ storeName ].add( toInsert )
+                    .then(function( result ) {
+                      expect( result )
+                        .to.equal( toInsert.id );
+
                       done();
-                    }).catch( done );
+                    })
+                    .catch( done );
                 });
 
                 test( "delete", function( done ) {
+                  var toDelete = storeName === "profile" ? insertProfile : insertTrack;
+
                   expect( pdb[ storeName ] )
                     .to.respondTo( "delete" );
 
-                  pdb[ storeName ].delete( 5 )
-                    .then(function( data ) {
-                      expect( data )
+                  pdb[ storeName ].delete( toDelete.id )
+                    .then(function( result ) {
+                      expect( result )
                         .to.equal( undefined );
 
                       done();
@@ -304,39 +517,97 @@
                     .catch( done );
                 });
 
-                test.skip( "clear", function( done ) {
+                test( "clear", function( done ) {
+                  var restoreData = storeName === "profile" ? dummyProfiles : dummyTracks;
+
                   expect( pdb[ storeName ] )
                     .to.respondTo( "clear" );
-                  // todo, actually check if it works
+
+                  pdb[ storeName ].clear()
+                    .then(function( data ) {
+                      expect( data )
+                        .to.equal( undefined );
+
+                      // restore data
+                      return Promise.all(
+                        restoreData.map(function( toRestore ) {
+                          return pdb[ storeName ].put( toRestore );
+                        })
+                      );
+                    })
+                    .then(function( ids ) {
+                      expect( ids )
+                        .to.deep.equal( restoreData.map(function( data ) { return data.id; }) );
+
+                      // deep check for restored data
+                      return Promise.all(
+                        ids.map(function( id ) {
+                          return pdb[ storeName ].get( id );
+                        })
+                      );
+                    })
+                    .then(function( dataList ) {
+                      expect( dataList )
+                        .to.deep.equal( restoreData );
+
+                      done();
+                    })
+                    .catch( done );
                 });
 
                 test( "get", function( done ) {
+                  var toGet = storeName === "profile" ? dummyProfiles[ 0 ] : dummyTracks[ 0 ];
+
                   expect( pdb[ storeName ] )
                     .to.respondTo( "get" );
 
-                  pdb[ storeName ].get( 0 )
+                  pdb[ storeName ].get( toGet.id )
                     .then(function( data ) {
                       expect( data )
-                        .to.deep.equal( seedData[ 0 ] );
+                        .to.deep.equal( toGet );
 
                       done();
                     }).catch( done );
                 });
 
                 test( "put", function( done ) {
+                  var toPut,
+                    original = storeName === "profile" ? dummyProfiles[ 0 ] : dummyTracks[ 0 ];
+
+                  toPut = Object.assign({}, original );
+                  toPut.genre = "New Genre";
+
                   expect( pdb[ storeName ] )
                     .to.respondTo( "put" );
 
-                  pdb[ storeName ].put( augmentedData )
-                    .then(function( data ) {
-                      expect( data )
-                        .to.equal( augmentedData.id );
+                  // put new version with augmented genre
+                  pdb[ storeName ].put( toPut )
+                    .then(function( newId ) {
+                      expect( newId )
+                        .to.equal( toPut.id );
 
+                      // only returns id so do get to see if data was commited
+                      return pdb[ storeName ].get( newId );
+                    })
+                    .then(function( result ) {
+                      expect( result )
+                        .to.deep.equal( toPut );
+
+                      expect( result )
+                        .to.have.property( "genre" )
+                        .that.equals( "New Genre" );
+
+                      // reset data back to original
+                      return pdb[ storeName ].put( original );
+                    })
+                    .then(function() {
                       done();
-                    }).catch( done );
+                    })
+                    .catch( done );
                 });
 
-                test( "openCursor", function( done ) {
+                // TODO Fix when returns generator
+                test.skip( "openCursor", function( done ) {
                   expect( pdb[ storeName ] )
                     .to.respondTo( "openCursor" );
 
@@ -350,13 +621,15 @@
                 });
 
                 test( "count", function( done ) {
+                  var dataCount = storeName === "profile" ? dummyProfiles.length : dummyTracks.length;
+
                   expect( pdb[ storeName ] )
                     .to.respondTo( "count" );
 
                   pdb[ storeName ].count()
                     .then(function( count ) {
                       expect( count )
-                        .to.equal( seedData.length );
+                        .to.equal( dataCount );
 
                       done();
                     }).catch( done );
@@ -368,7 +641,8 @@
                   suite( storeName + " index: " + indexName, function() {
                     test( "object store: " + storeName + " has index " + indexName, function() {
                       expect( pdb[ storeName ] )
-                        .to.have.property( indexName );
+                        .to.have.property( indexName )
+                        .that.is.an.instanceOf( PDBIndex );
                     });
 
                     suite( indexName + " has index properties", function() {
@@ -387,19 +661,28 @@
                       test( "multiEntry", function() {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.have.property( "multiEntry" )
-                          .that.equals( versionConfig[ storeName ].indexes[ indexName ][ 1 ].multiEntry );
+                          .that.equals(
+                            versionConfig[ storeName ].indexes[ indexName ][ 1 ].multiEntry
+                          );
                       });
 
                       test( "unique", function() {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.have.property( "unique" )
-                          .that.equals( versionConfig[ storeName ].indexes[ indexName ][ 1 ].unique );
+                          .that.equals(
+                            versionConfig[ storeName ].indexes[ indexName ][ 1 ].unique
+                          );
                       });
                     });
 
-                    // TODO PROPER EXPECTS
+                    // TODO CURSORS
                     suite( indexName + " has index methods", function() {
                       test( "count", function( done ) {
+                        var indexCount =
+                              storeName === "profile" ?
+                                dummyProfiles.length :
+                                dummyTracks.length;
+
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "count" );
 
@@ -407,7 +690,33 @@
                           .then(function( count ) {
                             expect( count )
                               .to.be.a( "number" )
-                              .and.equal( 5 );
+                              .and.equal( indexCount );
+
+                            done();
+                          })
+                          .catch( done );
+                      });
+
+                      test( "count with arguments", function( done ) {
+                        var
+                          indexPath = fullPDBConfig[ storeName ].indexes[ indexName ][ 0 ],
+                          indexValue =
+                            storeName === "profile" ?
+                              dummyProfiles[ 0 ][ indexPath ] :
+                              dummyTracks[ 0 ][ indexPath ],
+                          indexCount =
+                              storeName === "profile" ?
+                                dummyProfiles.filter(function( data ) { return data[ indexPath ] === indexValue; }).length :
+                                dummyTracks.filter(function( data ) { return data[ indexPath ] === indexValue; }).length;
+
+                        expect( pdb[ storeName ][ indexName ] )
+                          .to.respondTo( "count" );
+
+                        pdb[ storeName ][ indexName ].count( indexValue )
+                          .then(function( count ) {
+                            expect( count )
+                              .to.be.a( "number" )
+                              .and.equal( indexCount );
 
                             done();
                           })
@@ -415,40 +724,42 @@
                       });
 
                       test( "get", function( done ) {
+                        var toGet = storeName === "profile" ? dummyProfiles[ 0 ] : dummyTracks[ 0 ],
+                          indexPath = fullPDBConfig[ storeName ].indexes[ indexName ][ 0 ];
+
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "get" );
 
-                        // TODO
-                        pdb[ storeName ][ indexName ].get(
-                          versionConfig[ storeName ].indexes[ indexName ][ 0 ]
-                        )
-                          .then(function( data ) {
-                            expect( data )
-                              .to.deep.equal( seedData[ 1 ] );
+                        pdb[ storeName ][ indexName ]
+                          .get( toGet[ indexPath ] )
+                            .then(function( data ) {
+                              expect( data )
+                                .to.deep.equal( toGet );
 
-                            done();
-                          })
-                          .catch( done );
+                              done();
+                            })
+                            .catch( done );
                       });
 
                       test( "getKey", function( done ) {
+                        var toGet = storeName === "profile" ? dummyProfiles[ 0 ] : dummyTracks[ 0 ],
+                          indexPath = fullPDBConfig[ storeName ].indexes[ indexName ][ 0 ];
+
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "getKey" );
 
-                        // TODO
-                        pdb[ storeName ][ indexName ].getKey(
-                          versionConfig[ storeName ].indexes[ indexName ][ 0 ]
-                        )
-                          .then(function( data ) {
-                            expect( data )
-                              .to.equal( "something" );
+                        pdb[ storeName ][ indexName ]
+                          .getKey( toGet[ indexPath ] )
+                            .then(function( id ) {
+                              expect( id )
+                                .to.equal( toGet.id );
 
-                            done();
-                          })
-                          .catch( done );
+                              done();
+                            })
+                            .catch( done );
                       });
 
-                      test( "openCursor", function( done ) {
+                      test.skip( "openCursor", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "openCursor" );
 
@@ -463,7 +774,7 @@
                           .catch( done );
                       });
 
-                      test( "openKeyCursor", function( done ) {
+                      test.skip( "openKeyCursor", function( done ) {
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "openKeyCursor" );
 
