@@ -2,17 +2,17 @@
 @import "../../styles/ed/list-style.mixin.less";
 
 .discover-heading {
-  .title-bar();
+  .edTitleBar();
 }
 
 .discover-list {
-  .list-style();
+  .edListStyle();
 
   .genre-title {
     .edType( heading-XS );
     color: @originalTeal;
     text-transform: uppercase;
-    &:active, &:hover {
+    &:active, &:hover, &:focus {
       background-color: @darkPurple3;
     }
   }
