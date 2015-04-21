@@ -15,31 +15,31 @@
         rank: 2,
         image: "http://www.fillmurray.com/200/300",
         name: "Fill Murray",
-        points: 12732
+        points: 112732
       },
       {
         rank: 3,
         image: "http://www.fillmurray.com/200/300",
         name: "Fill Murray",
-        points: 12732
+        points: 10732
       },
       {
         rank: 4,
         image: "http://www.fillmurray.com/200/300",
         name: "Fill Murray",
-        points: 12732
+        points: 9732
       },
       {
         rank: 5,
         image: "http://www.fillmurray.com/200/300",
         name: "Fill Murray",
-        points: 12732
+        points: 4732
       },
       {
         rank: 6,
         image: "http://www.placecage.com/200/300",
         name: "Place Cage",
-        points: 212732
+        points: 732
       }
     ],
     ready: function() {},

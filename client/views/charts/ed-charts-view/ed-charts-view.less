@@ -5,15 +5,55 @@
 
 .charts-header {
   text-align: center;
+  .chart-arrows {
+    position: absolute;
+    width: 20%;
+    height: 7rem;
+    z-index: 2;
+    &::shadow {
+      svg {
+        position: static;
+        top: 0;
+        -webkit-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+        transform: translateY(0%);
+        fill: @originalWhite;
+      }
+    }
+  }
   header {
     background: @lightPurple1;
     color: @originalWhite;
     .edType( heading-s );
     padding: 0.5rem 0;
     font-style: italic;
+    position: relative;
 
     .month {
       font-style: normal;
+      .edType( paragraph-M );
+    }
+  }
+}
+
+#arrow-left {
+  left: 0;
+}
+
+#arrow-right {
+  right: 0;
+}
+
+#badge-hrs {
+  margin-top: 1rem;
+
+  &::shadow {
+    svg {
+      position: static;
+      top: 0;
+      -webkit-transform: translateY( 0% );
+      -ms-transform: translateY( 0% );
+      transform: translateY( 0% );
     }
   }
 }
@@ -23,7 +63,7 @@
 
   .time-left {
     .edType( paragraph-M );
-    margin-bottom: 0;
+    margin: 0;
   }
 
   .countdown-timer {
@@ -41,15 +81,15 @@
     width: 100%;
     margin: 0;
     padding: 0;
+    margin-bottom: -0.3rem;
     li {
-      border-bottom: .2rem solid @lightGrey1;
       height: 7rem;
-      margin-top: -.2rem;
+      margin-top: -0.3rem;
       width: 100%;
       display: inline-block;
       background: @darkPurple3;
       color: @originalWhite;
-      .edType( heading-S );
+      .edType( heading-XS );
       font-weight: 500;
       .img-container {
         width: 4.5rem;
@@ -59,15 +99,43 @@
       .chart-rank {
         float: left;
         margin-left: 2rem;
+        margin-top: 2.5rem;
       }
       .chart-name {
         float: left;
         margin-left: 2.5rem;
+        margin-top: 2.5rem;
       }
       .chart-points {
         float: right;
         padding-right: 2rem;
         margin-top: 2.8rem;
+      }
+    }
+  }
+}
+
+#mini-player {
+  &::shadow {
+    #ad-banner {
+      display: none;
+    }
+
+    .player-container {
+      padding-bottom: 15%;
+      padding-top: 2%;
+
+      .text-container {
+        margin: 0;
+        
+        h1 {
+          margin: 0;
+          line-height: 1;
+        }
+        
+        #name {
+          margin: 0;
+        }
       }
     }
   }
