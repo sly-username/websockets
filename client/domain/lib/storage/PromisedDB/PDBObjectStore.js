@@ -38,7 +38,7 @@ export default class PDBObjectStore {
    * @constructor
    * @param pdb { PDBDatabase }
    */
-  constructor( pdb, storeName ) {
+  constructor( pdb, storeName, indexes ) {
     var idbObjectStore = pdb.read( storeName ).objectStore( storeName );
 
     Object.defineProperty( this, "pdb", {
@@ -53,7 +53,7 @@ export default class PDBObjectStore {
     define.enumReadOnlyDeep( this, [ "indexNames" ], idbObjectStore );
 
     // Indexes
-    Array.from( idbObjectStore.indexNames ).forEach( indexName => {
+    indexes.forEach( indexName => {
       Object.defineProperty( this, indexName, {
         configurable: false,
         enumerable: true,

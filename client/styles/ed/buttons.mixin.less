@@ -1,5 +1,6 @@
 @import "colors.vars.less";
 @import "../fonts/edTypeStyles.less";
+@import "alignments.mixin.less";
 
 /**
 * Single Line Button Mixin
@@ -11,7 +12,7 @@
 */
 .edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1 ) when ( iscolor(@backgroundColor) ) {
   .edType( heading-L );
-  .white( 1.0 );
+  color: @originalWhite;
   width: 100%;
   max-width: 59.6rem;
   height: 9.2rem;
@@ -24,7 +25,7 @@
   }
 }
 
-.edSecondaryButton( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 ) when ( iscolor(@backgroundColor) ) {
+.edSecondaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1 ) when ( iscolor(@backgroundColor) ) {
   .edPrimaryButton( @backgroundColor; @activeColor );
   .edType( heading-M );
   .small-text {
@@ -40,7 +41,7 @@
 }
 
 .edPrimaryButton( single-line; dark ) {
-  .edPrimaryButton( @darkPurple4; @darkPurple2 );
+  .edPrimaryButton( @darkPurple3; @darkPurple2 );
 }
 
 .edPrimaryButton( double-line ) {
@@ -49,5 +50,18 @@
 
 .edPrimaryButton( double-line; purple ) {
   .edPrimaryButton( @originalPurple; @lightPurple1 );
+}
+
+.edButtonTertiary() {
+  height: 7.5rem;
+  .edType( heading-M );
+  color: @originalWhite;
+  padding: 2.5rem 0 0 2rem;
+  width: 100%;
+  background-color: @darkPurple3;
+  border-bottom: 0.1rem solid @darkPurple1;
+  &:active, &:hover, &:hover {
+    background-color: @darkPurple1;
+  }
 }
 

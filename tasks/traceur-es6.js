@@ -1,3 +1,5 @@
+/*eslint no-process-env:0*/
+
 "use strict";
 var gulp = require( "gulp" ),
   gutil = require( "gulp-util" ),
@@ -9,7 +11,8 @@ var gulp = require( "gulp" ),
   traceur = require( "traceur" ),
   traceurOptions,
   compileES6,
-  runCompileFromToWithOptions;
+  runCompileFromToWithOptions,
+  sourceMapRewriteLocation = process.env.ED_SOURCE_LOCATION;
 
 // Compiler Options
 traceurOptions = {
@@ -23,6 +26,7 @@ compileES6 = function( options ) {
   return through.obj( function( file, enc, done ) {
     var es6, es5,
       opts = defaults( {}, options ),
+      sourcePath = file.path,
       oldPath = file.path;
 
     if ( file.isNull() ) {
@@ -48,7 +52,14 @@ compileES6 = function( options ) {
 
     // update source map url
     // TODO need to replace the /home/vagrant with where the repo is in the HOST OS
-    es5 = es5.replace( "<compile-source>", "file://" + oldPath );
+    if ( typeof sourceMapRewriteLocation === "string" && sourcePath.indexOf( "vagrant" ) > -1 ) {
+      sourcePath = sourcePath.replace(
+        path.join( path.sep + "home", "vagrant" ),
+        sourceMapRewriteLocation
+      );
+    }
+
+    es5 = es5.replace( "<compile-source>", "file://" + sourcePath );
 
     // Update File Object
     file.contents = new Buffer( es5 );

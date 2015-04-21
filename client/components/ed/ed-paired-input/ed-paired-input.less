@@ -16,18 +16,18 @@
   height: 7.5rem;
   width: 98%;
   max-width: 59.6rem;
-  background-color: @darkPurple4;
+  background-color: @darkPurple3;
   margin: -.33rem auto;
-  box-shadow: .4rem .4rem 0 0 fade(@darkPurple5, 75%) inset;
+  box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
   input {
     .edType( heading-L );
-    .white( .75 );
     .verticalAlign();
+    color: @originalWhite;
     float: left;
     background: transparent;
     border: 0;
     outline: 0;
-    .input-placeholder( { .white( .33 ) } );
+    .input-placeholder( { color: @originalGrey } );
   }
   &.confirm-container {
     margin-top: .8rem;
@@ -39,7 +39,7 @@ ed-icon {
   */
   width: 3rem;
   height: 50%;
-  .white( .50 );
+  fill: @originalGrey;
   pointer-events: none;
   float: left;
   padding: 0 2rem;

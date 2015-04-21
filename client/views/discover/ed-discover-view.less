@@ -1,0 +1,19 @@
+@import "../../styles/ed/title-bar.mixin.less";
+@import "../../styles/ed/list-style.mixin.less";
+
+.discover-heading {
+  .edTitleBar();
+}
+
+.discover-list {
+  .edListStyle();
+
+  .genre-title {
+    .edType( heading-XS );
+    color: @originalTeal;
+    text-transform: uppercase;
+    &:active, &:hover, &:focus {
+      background-color: @darkPurple3;
+    }
+  }
+}
