@@ -1,5 +1,7 @@
 @import "../../styles/ed/buttons.mixin.less";
 @import "../../styles/ed/colors.vars.less";
+@import "../../styles/ed/title-bar.mixin.less";
+@import "../../styles/ed/list-style.mixin.less";
 
 // TODO use Sylvia's mixins once her branch gets merged for title bar and list styles
 
@@ -43,13 +45,10 @@
     }
   }
   .ed-settings-list {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
+    .edList
     li {
       .edButtonTertiary();
-      border-bottom: 0.2rem solid @darkPurple1;
-      padding: 3.2rem 0 1rem 3.7rem;
+
     }
   }
 
