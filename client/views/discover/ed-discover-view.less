@@ -1,12 +1,6 @@
 @import "../../styles/ed/buttons.mixin.less";
 @import "../../styles/ed/colors.vars.less";
 
-.discover-view {
-  margin: 0 auto;
-  max-width: 59.6rem;
-  padding: 0;
-}
-
 .title-bar {
   .edType( heading-M );
   color: @originalWhite;
@@ -14,22 +8,26 @@
   text-transform: uppercase;
   border: 0;
   background-color: @darkPurple2;
-  padding: 1.5rem 0 0 2rem;
+  padding: 2rem 0 0 2rem;
   &:active, &:hover {
     background-color: @darkPurple2;
   }
   ed-icon {
-    width: 2.5rem;
-    height:2.5rem;
+    width: 3rem;
+    height: 3rem;
 
     fill: @lightGrey1;
   }
   span {
-    padding-left: 6.5rem;
+    padding-left: 4rem;
+    display:block;
+    position: absolute;
+    top: 5%;
+    left: 30%;
   }
 }
 
-.discover-list {
+.list-style {
   padding: 0;
   margin: 0;
   list-style-type: none;
