@@ -25,47 +25,74 @@
     insertTrack;
 
   // Fully formed config object for testing
-  fullPDBConfig = {
-    profile: {
-      options: {
-        keyPath: "id",
-        autoIncrement: false
+  fullPDBConfig = [
+    // Version 1
+    {
+      profile: {
+        options: {
+          keyPath: "id",
+          autoIncrement: false
+        },
+        indexes: {
+          type: [ "type", { unique: false, multiEntry: false }],
+          userId: [ "userId", { unique: false, multiEntry: false }]
+        }
       },
-      indexes: {
-        type: [ "type", { unique: false, multiEntry: false }],
-        userId: [ "userId", { unique: false, multiEntry: false }]
+      track: {
+        options: {
+          keyPath: "id",
+          autoIncrement: false
+        },
+        indexes: {
+          type: [ "type", { unique: false, multiEntry: false }],
+          profileId: [ "profileId", { unique: false, multiEntry: false }]
+        }
       }
     },
-    track: {
-      options: {
-        keyPath: "id",
-        autoIncrement: false
-      },
-      indexes: {
-        type: [ "type", { unique: false, multiEntry: false }],
-        profileId: [ "profileId", { unique: false, multiEntry: false }]
+    // Version 2
+    {
+      user: {
+        options: {
+          keyPath: "id",
+          autoIncrement: false
+        },
+        indexes: {
+          type: [ "type", { unique: false, multiEntry: false }]
+        }
       }
     }
-  };
-  /*jscs:enable*/
+  ];
 
   // Minimally formed config object for testing
-  minimalPDBConfig = {
-    profile: {
-      options: { keyPath: "id" },
-      indexes: {
-        type: [ "type" ],
-        userId: [ "userId" ]
+  minimalPDBConfig = [
+    // Version 1
+    {
+      profile: {
+        options: { keyPath: "id" },
+        indexes: {
+          type: [ "type" ],
+          userId: [ "userId" ]
+        }
+      },
+      track: {
+        options: { keyPath: "id" },
+        indexes: {
+          type: [ "type" ],
+          profileId: [ "profileId" ]
+        }
       }
     },
-    track: {
-      options: { keyPath: "id" },
-      indexes: {
-        type: [ "type" ],
-        profileId: [ "profileId" ]
+    // Version 2
+    {
+      user: {
+        options: { keyPath: "id" },
+        indexes: {
+          type: [ "type" ]
+        }
       }
     }
-  };
+  ];
+  /*jscs:enable*/
 
   // Dummy profile data
   dummyProfiles = [
@@ -187,14 +214,15 @@
     // Start Construction Tests
     Object.keys( configs ).forEach(function( configName ) {
       test( "construction with config object: " + configName, function( done ) {
-        var dbOpenRequest;
+        var dbOpenRequest,
+          versionNumber = configs[ configName ].length;
 
-        promisedDB.open( "testing-db", 1, [ configs[ configName ]])
+        promisedDB.open( "testing-db", versionNumber, configs[ configName ] )
           .then(function( pdb ) {
             console.log( "testing-db constructed: %o", pdb );
             pdb.close();
 
-            dbOpenRequest = indexedDB.open( "testing-db", 1 );
+            dbOpenRequest = indexedDB.open( "testing-db", versionNumber );
             dbOpenRequest.onsuccess = function( event ) {
               var idb = event.target.result,
                 transaction = idb.transaction( [ "profile", "track" ], "readonly" ),
@@ -257,8 +285,8 @@
               expect( trackStore.indexNames )
                 .to.have.property( "1", "type" );
 
-              console.dir( profileStore );
-              console.dir( trackStore );
+//              console.dir( profileStore );
+//              console.dir( trackStore );
 
               transaction.oncomplete = function() {
                 idb.close();
@@ -273,9 +301,9 @@
 
     suite( "Own Properties & Symbols", function() {
       var pdb,
-        config = [ fullPDBConfig ],
-        dbName = "testing-db",
-        dbVersion = 1;
+        config = fullPDBConfig,
+        versionNumber = config.length,
+        dbName = "testing-db";
 
       // Populate DB
       suiteSetup(function( done ) {
@@ -288,7 +316,7 @@
           };
         })();
 
-        promisedDB.open( dbName, dbVersion, config )
+        promisedDB.open( dbName, versionNumber, config )
           .then(function( createdPDB ) {
             pdb = createdPDB;
 
@@ -322,7 +350,7 @@
           expect( pdb )
             .to.have.property( "version" )
             .that.is.a( "number" )
-            .and.equals( dbVersion );
+            .and.equals( versionNumber );
         });
 
         test( "objectStoreNames", function() {
@@ -340,7 +368,7 @@
 
           expect( pdb.objectStoreNames )
             .to.have.property( "length" )
-            .that.equals( 2 );
+            .that.equals( 3 );
         });
       });
 
@@ -758,7 +786,7 @@
 
                       test( "count with arguments", function( done ) {
                         var
-                          indexPath = fullPDBConfig[ storeName ].indexes[ indexName ][ 0 ],
+                          indexPath = versionConfig[ storeName ].indexes[ indexName ][ 0 ],
                           indexValue =
                             storeName === "profile" ?
                               dummyProfiles[ 0 ][ indexPath ] :
@@ -784,7 +812,7 @@
 
                       test( "get", function( done ) {
                         var toGet = storeName === "profile" ? dummyProfiles[ 0 ] : dummyTracks[ 0 ],
-                          indexPath = fullPDBConfig[ storeName ].indexes[ indexName ][ 0 ];
+                          indexPath = versionConfig[ storeName ].indexes[ indexName ][ 0 ];
 
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "get" );
@@ -802,7 +830,7 @@
 
                       test( "getKey", function( done ) {
                         var toGet = storeName === "profile" ? dummyProfiles[ 0 ] : dummyTracks[ 0 ],
-                          indexPath = fullPDBConfig[ storeName ].indexes[ indexName ][ 0 ];
+                          indexPath = versionConfig[ storeName ].indexes[ indexName ][ 0 ];
 
                         expect( pdb[ storeName ][ indexName ] )
                           .to.respondTo( "getKey" );

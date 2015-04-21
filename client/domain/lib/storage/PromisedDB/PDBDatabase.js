@@ -5,7 +5,43 @@ import define from "domain/ed/define-properties";
 import PDBObjectStore from "domain/lib/storage/PromisedDB/PDBObjectStore";
 import PDBTransaction from "domain/lib/storage/PromisedDB/PDBTransaction";
 
-var IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+var IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange,
+  objectStoresFromConfigArray;
+
+objectStoresFromConfigArray = function( configArray ) {
+  var storeMap = {};
+
+  if ( !Array.isArray( configArray ) ) {
+    throw new TypeError( "Invalid argument to PDBDatabase constructor" );
+  }
+
+  configArray.forEach(function( versionConfig ) {
+    Object.keys( versionConfig ).forEach(function( storeName ) {
+      var indexes;
+
+      if ( !( storeName in storeMap ) ) {
+        storeMap[ storeName ] = Object.keys( versionConfig[ storeName ].indexes );
+        return;
+      }
+
+      indexes = storeMap[ storeName ];
+
+      Object.keys( versionConfig[ storeName ].indexes ).forEach(function( indexName ) {
+        if ( indexes.some( existingIndexName => existingIndexName === indexName ) ) {
+          // already exists
+          console.log( "index: %s should already exist", indexName );
+          return;
+        }
+
+        indexes.push( indexName );
+      });
+
+      storeMap[ storeName ] = indexes;
+    });
+  });
+
+  return storeMap;
+};
 
 /**
  * @class PDBDatabase
@@ -21,7 +57,9 @@ export default class PDBDatabase extends EventEmitter {
    * @constructor PDBDatabase
    * @param idb {IDBDatabase}
    */
-  constructor( idb ) {
+  constructor( idb, configArray ) {
+    var objectStores = objectStoresFromConfigArray( configArray );
+
     super([ "change" ]);
 
     Object.defineProperties( this, {
@@ -44,12 +82,12 @@ export default class PDBDatabase extends EventEmitter {
     define.enumReadOnly( this, [ "name", "version" ], idb );
     define.enumReadOnlyDeep( this, [ "objectStoreNames" ], idb );
 
-    Array.from( idb.objectStoreNames ).forEach( storeName => {
+    Object.keys( objectStores ).forEach( storeName => {
       Object.defineProperty( this, storeName, {
         configurable: false,
         enumberable: true,
         writeable: false,
-        value: new PDBObjectStore( this, storeName )
+        value: new PDBObjectStore( this, storeName, objectStores[ storeName ] )
       });
     });
   }
