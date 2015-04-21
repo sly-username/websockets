@@ -1,0 +1,31 @@
+@import "../../styles/ed/colors.vars.less";
+@import "../../styles/fonts/edTypeStyles.less";
+
+.edTitleBar() {
+  color: @originalWhite;
+  height: 9rem;
+  text-transform: uppercase;
+  border: 0;
+  background-color: @darkPurple2;
+  text-align: center;
+  button {
+    position: absolute;
+    left: 0;
+    height: 9rem;
+    width: 9rem;
+    border: none;
+    background: transparent;
+    ed-icon {
+      width: 3rem;
+      height:3rem;
+      fill: @lightGrey1;
+      margin-left: -1.1rem;
+    }
+  }
+  h1 {
+    .edType( heading-L );
+    padding-top: 3rem;
+    font-weight: 500;
+    margin: 0;
+  }
+}

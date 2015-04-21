@@ -1,0 +1,25 @@
+@import "../../styles/ed/buttons.mixin.less";
+@import "../../styles/ed/colors.vars.less";
+@import "../../styles/ed/title-bar.mixin.less";
+@import "../../styles/ed/list-style.mixin.less";
+
+* {
+  font-family: "Ubuntu";
+}
+.settings-wrapper {
+  width: 100%;
+  background-color: @darkPurple3;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 59.6rem;
+  overflow: hidden;
+  position: relative;
+  .settings-title-bar {
+    .edTitleBar();
+  }
+  .settings-list {
+   .edListStyle();
+  }
+}
+
+
