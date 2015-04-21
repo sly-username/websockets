@@ -52,11 +52,6 @@ export default edPlayerService = {
   get emitter() {
     return emitter;
   },
-
-  genreTracks( genreId ) {
-    return edDiscoverService.getGenreTracks( genreId );
-  },
-
   get currentStats() {
     return {
       playing: currentTrack,
@@ -220,6 +215,9 @@ export default edPlayerService = {
   },
 
   next: function() {
+    // TODO remove
+    this.enqueue( audio2 );
+
     if ( this.queue.length ) {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
