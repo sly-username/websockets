@@ -8,11 +8,11 @@
       <button class="back-icon">
         <ed-icon name="arrow-back"></ed-icon>
       </button>
-      <ed-user-ranking top="Your" bottom="rank" rank="{{ edArtist.displayRank || 0 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 0 }}"></ed-user-ranking>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ edArtist.displayRank || 362 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 75 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
-          {{ edArtist.displayName || "Name Error" }}
+          {{ edArtist.displayName || "Diego Martinez" }}
           <span>Artist/Band</span>
         </div>
         <img-placeholder src="{{ edArtist.displayImage }}" image="fillmurray"></img-placeholder>
@@ -20,8 +20,8 @@
       <section class="icon-section">
         <div class="icon-header">Rewards</div>
         <hr>
-        <ed-icon name="badge-empty"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-hrs"></ed-icon>
+        <ed-icon name="badge-mnf"></ed-icon>
         <ed-icon name="badge-empty"></ed-icon>
         <ed-icon name="badge-empty"></ed-icon>
         <hr>
