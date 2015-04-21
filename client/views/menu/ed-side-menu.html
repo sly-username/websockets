@@ -1,0 +1,30 @@
+<polymer-element name="ed-side-menu" attributes="ed-id">
+  <template>
+    <link rel="stylesheet" href="./ed-side-menu.css">
+    <div class="menu-wrapper">
+      <ul class="menu-list">
+        <li id="discover-button">
+          <ed-icon name="discover"></ed-icon>
+          Discover
+        </li>
+        <li id="charts-button">
+          <ed-icon name="charts"></ed-icon>
+          Charts
+        </li>
+        <li id="invite-button">
+          <ed-icon name="invite-friends"></ed-icon>
+          Invite Friends
+        </li>
+        <li id="settings-button">
+          <ed-icon name="settings"></ed-icon>
+          Settings
+        </li>
+      </ul>
+      <div id="profile=bar">
+        <img-placeholder src="{{ edFan.displayImage }}" image="fillmurray"></img-placeholder>
+        <p>{{ edFan.displayName || Jeff Lin }}</p>
+      </div>
+    </div>
+  </template>
+  <script src="ed-side-menu.js"></script>
+</polymer-element>
