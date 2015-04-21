@@ -106,25 +106,16 @@ setupObjectStore = function( idbInstance, storeName, storeConfig ) {
  *   Generates a function that is used as the onupgradeneeded event handler
  *    for the given config array and version number
  *
- * @param currentVersion { number }
  * @param configArray { Array<PDBConfigObject> }
  * @returns {Function}
  */
-createUpgradeHandler = function( currentVersion, configArray ) {
+createUpgradeHandler = function( configArray ) {
   return function( upgradeEvent ) {
     // get the indexeddb instance
     var idb = upgradeEvent.target.result;
 
-    // config array index === version number - 1
-    configArray.forEach(function( versionConfig, index ) {
-      // check version
-      if ( idb.version > index + 1 ) {
-        // skip this version (it is already set up)
-        console.log( "%s skipping version %d", idb.name, index + 1 );
-        return;
-      }
-
-      // Iterate over store configuration, getting each store name
+    // Iterate over store configuration, getting each store name
+    configArray.forEach(function( versionConfig ) {
       Object.keys( versionConfig ).forEach(function( storeName ) {
         setupObjectStore( idb, storeName, versionConfig[ storeName ] );
       });
@@ -141,7 +132,6 @@ export default {
    *  Set up and creation of IndexedDB database and PromisedDB representation.
    *
    * @param name { string }
-   * @param version { number }
    * @param config { PDBConfigObject }
    * @returns { Promise<PDBDataBase> }
    */
@@ -150,7 +140,7 @@ export default {
       var openRequest = indexedDB.open( name, version );
 
       // perform upgrade
-      openRequest.onupgradeneeded = createUpgradeHandler( version, config );
+      openRequest.onupgradeneeded = createUpgradeHandler( config );
 
       // reject if blocked?
       openRequest.onblocked = function( event ) {
@@ -160,8 +150,8 @@ export default {
 
       // create and resolve on success
       openRequest.onsuccess = function( event ) {
-        console.log( `${name} version: ${version} openRequest.onsuccess %o`, event );
-        resolve( new PDBDatabase( event.target.result ) );
+//        console.log( `${name} version: ${version} openRequest.onsuccess %o`, event );
+        resolve( new PDBDatabase( event.target.result, config ) );
       };
 
       // reject on error
@@ -174,7 +164,7 @@ export default {
         console.log( "in promisedDB.open new promise catch" );
         console.error( error );
         // TODO?
-        return null;
+        throw error;
       });
   },
   /**
