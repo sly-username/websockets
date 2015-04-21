@@ -56,6 +56,7 @@
     polymer( "ed-star-rating", {
       /* LIFECYCLE */
       disable: false,
+      playerService: playerService,
       ready: function() {
         this.handlers = {
           triggerRating: triggerRatingHandler.bind( this )

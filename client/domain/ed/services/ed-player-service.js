@@ -16,12 +16,12 @@ var
   track1Data = {
     id: 101,
     type: "track",
-    name: "burn bridges"
+    name: "Burn Bridges"
   },
   track2Data = {
     id: 102,
     type: "track",
-    name: "track 2 song name"
+    name: "Good Times Ahead"
   },
   // http://picosong.com/XFk6/
   audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
