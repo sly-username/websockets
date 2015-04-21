@@ -41,8 +41,6 @@
       scrubFireHandler = function() {
         this.mouseDown = false;
 
-        //console.log( "this.currentVal", this.currentVal );
-
         if ( this.currentVal ) {
           this.formattedValue = this.currentVal;
         }
@@ -66,10 +64,12 @@
           this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
           this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
 
-
           this.dispatchEvent( createUpdateEvent( "scrubStart", { currentVal: this.currentVal }));
           this.updateScrub();
         }
+      },
+      skipSongHandler = function( event ) {
+        this.dispatchEvent( createUpdateEvent( "skip"));
       };
 
     polymer( "ed-song-card-scrubber", {
@@ -84,13 +84,15 @@
         this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
         this.playBtn        = this.shadowRoot.getElementById( "play-btn" );
         this.playIcon       = this.shadowRoot.getElementById( "play-icon" );
+        this.skipBtn        = this.shadowRoot.getElementById( "skip-btn" );
 
         // Event Handler
         this.handler = {
           swapIcon: swapIconHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
-          triggerMove: triggerMoveHandler.bind( this )
+          triggerMove: triggerMoveHandler.bind( this ),
+          skipSong: skipSongHandler.bind( this )
         };
 
         // Calculates the circumference of circles
@@ -116,6 +118,7 @@
         this.playBtn.addEventListener( "click", this.handler.swapIcon );
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
+        this.skipBtn.addEventListener( "click", this.handler.skipSong );
         this.addEventListener( "mouseup", this.handler.scrubFire );
         this.addEventListener( "mousemove", this.handler.triggerMove );
 

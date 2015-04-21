@@ -39,7 +39,7 @@
 
         this.playPauseEventHandler = function( event ) {
           var eventType = event.detail.type;
-          
+
           if ( eventType === "play" ) {
             this.playIcon.setAttribute( "name", "pause" );
           }

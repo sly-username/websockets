@@ -10,22 +10,45 @@ var
   currentTrack = null,
   setCurrentTrack,
   edPlayerService,
+  rateCurrentlyPlaying,
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
+  // TODO remove debug
+  track1Data = {
+    id: 101,
+    type: "track",
+    name: "burn bridges"
+  },
+  track2Data = {
+    id: 102,
+    type: "track",
+    name: "track 2 song name"
+  },
   // http://picosong.com/XFk6/
-  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" );
+  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
+  audio2 = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-04-AllBecauseYoureMine.mp3" ) || document.createElement( "audio" );
+  //track1 = new EDTrack( track1Data );
+  //track2 = new EDTrack();
 
-audio.setAttribute('id', 'hiddenAudioPlayer');
-audio.setAttribute('preload', 'auto');
+audio.setAttribute( "id", "hiddenAudioPlayer" );
+audio.setAttribute( "preload", "auto" );
 
-audio.style.display     = 'none';
-audio.style.visibility  = 'hidden';
+audio.style.display = "none";
+audio.style.visibility = "hidden";
+
+// TODO remove debug
+queue.push( audio2 );
 
 // helpers
 setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
 };
 
-window.audioTest = audio;
+rateCurrentlyPlaying = function( number ) {
+  if ( number != null ) {
+    //currentTrack.rate( number );
+    //track1.rate( number );
+  }
+};
 
 export default edPlayerService = {
   get emitter() {
@@ -47,27 +70,27 @@ export default edPlayerService = {
   },
 
   get isPlaying() {
-    return !audio.paused;
+    return !currentTrack.paused;
   },
 
   get isPaused() {
-    return audio.paused && !!audio.src;
+    return currentTrack.paused && !!currentTrack.src;
   },
 
   get isStopped() {
-    return audio.paused && !audio.src;
+    return currentTrack.paused && !currentTrack.src;
   },
 
   get currentTime() {
     if ( this.isPlaying || this.isPaused ) {
-      return audio.currentTime;
+      return currentTrack.currentTime;
     }
 
     return 0;
   },
 
   set currentTime( value ) {
-    return audio.currentTime;
+    return currentTrack.currentTime;
   },
 
   get currentSeconds() {
@@ -110,7 +133,7 @@ export default edPlayerService = {
 
   get trackLength() {
     if ( currentTrack != null ) {
-      return audio.duration;
+      return currentTrack.duration;
     }
 
     return 0;
@@ -131,7 +154,9 @@ export default edPlayerService = {
     //  throw new TypeError( "Track is not an EDTrack object" );
     //}
 
-
+    if ( !edTrack ) {
+      edTrack = audio;
+    }
 
     this.emitter.dispatch( createEvent( "playerUpdate", {
       detail: {
@@ -139,37 +164,36 @@ export default edPlayerService = {
       }
     }));
 
-    audio.play();
+    edTrack.play();
 
-    setCurrentTrack( audio );
+    setCurrentTrack( edTrack );
+
     return true;
   },
 
   pause: function( edTrack ) {
-
-
     this.emitter.dispatch( createEvent( "playerUpdate", {
       detail: {
         type: "pause"
       }
     }));
 
-    audio.pause();
+    currentTrack.pause();
 
     return this.isPaused;
   },
 
   stop: function( edTrack ) {
     if ( this.isPlaying ) {
-      audio.pause();
-      audio.removeAttribute( "src" );
+      currentTrack.pause();
+      currentTrack.removeAttribute( "src" );
       currentTrack = null;
     }
     return true;
   },
 
   scrubTo: function( value ) {
-    audio.currentTime = value;
+    currentTrack.currentTime = value;
   },
 
   enqueue: function( edTrack ) {
@@ -185,6 +209,9 @@ export default edPlayerService = {
   },
 
   next: function() {
+    // TODO remove
+    this.enqueue( audio2 );
+
     if ( this.queue.length ) {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
@@ -203,5 +230,9 @@ export default edPlayerService = {
         }
       }
     }
+  },
+
+  rateSong: function( number ) {
+    return rateCurrentlyPlaying( number );
   }
 };

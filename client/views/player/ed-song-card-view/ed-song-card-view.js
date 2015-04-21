@@ -7,14 +7,15 @@
   ]).then(function( imported ) {
     var
       playerService = imported[ 0 ].default,
+      createEvent = imported[ 1 ].default,
       intervalTime = 500,
       updateTimeHandler;
 
     // helpers
-    updateTimeHandler = function( tempValue, scrubFlag ) {
+    updateTimeHandler = function( tempValue, isScrubbing ) {
       var currentValue;
 
-      if ( scrubFlag ) {
+      if ( isScrubbing ) {
         currentValue = playerService.scrubTo( tempValue );
       } else {
         currentValue = playerService.currentTime;
@@ -34,7 +35,7 @@
         // dom selectors
         this.mainPlayer = this.$[ "main-player" ];
         this.miniPlayer = this.$[ "mini-player" ];
-        // this.rating = this.$[ "mini-player" ];
+        this.ratingForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form" );
 
         // Event Handler
         this.handler = {
@@ -48,7 +49,6 @@
           if ( eventType === "pause" || eventType === "stop" ) {
             playerService.pause();
             clearInterval( this.intervalId );
-
           }
 
           if ( eventType === "play" ) {
@@ -59,12 +59,19 @@
           if ( eventType === "scrubStart" ) {
             this.handler.updateTime( currentVal, true );
           }
+
+          if ( eventType === "rate" ) {
+            playerService.rateSong( currentVal );
+          }
+
+          if ( eventType === "skip" ) {
+            playerService.next();
+          }
         }.bind( this );
       },
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.playerServiceEventHandler );
-
       },
       detached: function() {
         clearInterval( this.intervalId );
