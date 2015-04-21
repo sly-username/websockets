@@ -1,16 +1,23 @@
+<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
+
 <polymer-element name="ed-charts-view" attributes="">
     <template>
         <link rel="stylesheet" href="./ed-charts-view.css">
-        <ul class="options">
-            <template repeat="{{opt in _options}}">
-                <li>
-                    <p class="chart-rank">{{opt.rank}}</p>
-                    <img class="chart-image" src="{{opt.image}}" />
-                    <p class="chart-name">{{opt.name}}</p>
-                    <p class="chart-points">{{opt.points}}</p>
-                </li>
-            </template>
-        </ul>
+        <div class="charts-wrapper">
+            <ul class="options">
+                <template repeat="{{opt in _options}}">
+                    <li>
+                        <p class="chart-rank">{{opt.rank}}</p>
+                        <div class="img-container">
+                            <img-placeholder src="{{ opt.image }}" image="fillmurray"></img-placeholder>
+                        </div>
+                        <p class="chart-points">{{opt.points}}</p>
+                        <p class="chart-name">{{opt.name}}</p>
+                    </li>
+                </template>
+            </ul>
+        </div>
     </template>
     <script src="./ed-charts-view.js"></script>
 </polymer-element>

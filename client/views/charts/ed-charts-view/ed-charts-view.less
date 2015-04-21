@@ -1,4 +1,35 @@
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/backgrounds.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+
+.charts-wrapper {
+  max-width: 59.6rem;
+  margin: 0 auto;
+}
 .options {
-  border: 1px solid black;
-  float: left;
+  list-style-type: none;
+  width: 100%;
+  margin: 0;
+  li {
+    border: 1px solid black;
+    width: 100%;
+    display: inline-block;
+    background: @darkPurple3;
+    color: @lightGrey1;
+    .img-container {
+      height: 2rem;
+      width: 2rem;
+      float: left;
+    }
+    .chart-rank {
+      float: left;
+    }
+    .chart-name {
+      float: right;
+    }
+    .chart-points {
+      float: right;
+    }
+  }
 }

@@ -7,9 +7,15 @@
     _options: [
       {
         rank: 1,
-        image: "http://fillmurray.com/200/300",
+        image: "http://www.placecage.com/200/300",
+        name: "Place Cage",
+        points: 212732
+      },
+      {
+        rank: 2,
+        image: "http://www.fillmurray.com/200/300",
         name: "Fill Murray",
-        points: 22732
+        points: 12732
       }
     ],
     ready: function() {},
