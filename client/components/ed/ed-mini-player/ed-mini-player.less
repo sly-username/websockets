@@ -28,6 +28,16 @@
     display: inline;
     float: left;
     color: @originalWhite;
+    #title {
+      .edType( heading-M );
+      margin-top: 3%;
+      margin-bottom: 0;
+    }
+    #name {
+      margin-top: 0;
+      color: @lightGrey1;
+      .edType( heading-XS );
+    }
   }
   .responsive-btn-wrapper {
     position: relative;
@@ -42,7 +52,7 @@
       height: 0;
       padding: 50% 0;
       border-radius: 50%;
-      background: @darkPurple2;
+      background: @darkPurple1;
       border: none;
       ed-icon {
         fill: @originalWhite;
