@@ -41,17 +41,11 @@
       scrubFireHandler = function() {
         this.mouseDown = false;
 
-        if ( this.currentVal ) {
-          this.formattedValue = this.currentVal;
-        }
-
         this.dispatchEvent( createUpdateEvent( "scrubEnd" ));
       },
       triggerMoveHandler = function( event ) {
         var angle,
           radians;
-
-        console.log( "triggering?" );
 
         if ( this.mouseDown ) {
           radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
@@ -129,9 +123,9 @@
         this.addEventListener( "touchend", this.handler.scrubFire );
         this.addEventListener( "touchmove", this.handler.triggerMove );
 
+        playerService.emitter.on( "playerUpdate", this.playPauseEventHandler );
         // init events
         this.updateScrub();
-        playerService.emitter.on( "playerUpdate", this.playPauseEventHandler )
       },
       detached: function() {
         this.playBtn.removeEventListener( "click", this.handler.swapIcon );

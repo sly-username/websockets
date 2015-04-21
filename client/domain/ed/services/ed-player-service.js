@@ -2,6 +2,7 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 //import EDCollection from "domain/ed/storage/EDCollection";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 import edConnectionService from "domain/ed/services/ed-connection-service";
+import edDiscoverService from "domain/ed/services/ed-discover-service";
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 
@@ -35,9 +36,6 @@ audio.setAttribute( "preload", "auto" );
 audio.style.display = "none";
 audio.style.visibility = "hidden";
 
-// TODO remove debug
-queue.push( audio2 );
-
 // helpers
 setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
@@ -54,6 +52,11 @@ export default edPlayerService = {
   get emitter() {
     return emitter;
   },
+
+  genreTracks( genreId ) {
+    return edDiscoverService.getGenreTracks( genreId );
+  },
+
   get currentStats() {
     return {
       playing: currentTrack,
@@ -70,11 +73,19 @@ export default edPlayerService = {
   },
 
   get isPlaying() {
-    return !currentTrack.paused;
+    if ( currentTrack != null ) {
+      return !currentTrack.paused;
+    }
+
+    return false;
   },
 
   get isPaused() {
-    return currentTrack.paused && !!currentTrack.src;
+    if ( currentTrack != null ) {
+      return currentTrack.paused && !!currentTrack.src;
+    }
+
+    return false;
   },
 
   get isStopped() {
@@ -209,9 +220,6 @@ export default edPlayerService = {
   },
 
   next: function() {
-    // TODO remove
-    this.enqueue( audio2 );
-
     if ( this.queue.length ) {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
