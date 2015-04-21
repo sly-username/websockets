@@ -18,9 +18,6 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 
 import connectionService from "domain/ed/services/ed-connection-service";
 
-// TODO DEBUG
-// connectionService.authenticateConnection( "intdev@eardish.com", "intdevpass" );
-
 var
   dataService = {},
   syncControllers = {},
