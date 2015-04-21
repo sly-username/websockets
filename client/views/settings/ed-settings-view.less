@@ -3,8 +3,6 @@
 @import "../../styles/ed/title-bar.mixin.less";
 @import "../../styles/ed/list-style.mixin.less";
 
-// TODO use Sylvia's mixins once her branch gets merged for title bar and list styles
-
 * {
   font-family: "Ubuntu";
 }
@@ -20,12 +18,7 @@
     .edTitleBar();
   }
   .settings-list {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    li {
-      .edButtonTertiary();
-    }
+   .edListStyle();
   }
 }
 
