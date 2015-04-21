@@ -1,0 +1,20 @@
+@import "../../styles/ed/buttons.mixin.less";
+@import "../../styles/ed/colors.vars.less";
+
+.list-style {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  li {
+    .edButtonTertiary();
+  }
+  .genre-title {
+    .edType( heading-XS );
+    color: @originalTeal;
+    text-transform: uppercase;
+    &:active, &:hover {
+      background-color: @darkPurple3;
+    }
+  }
+}

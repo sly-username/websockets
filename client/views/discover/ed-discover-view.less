@@ -1,45 +1,10 @@
-@import "../../styles/ed/buttons.mixin.less";
-@import "../../styles/ed/colors.vars.less";
+@import "../../styles/ed/title-bar.mixin.less";
+@import "../../styles/ed/list-style.mixin.less";
 
-.title-bar {
-  .edType( heading-M );
-  color: @originalWhite;
-  height: 5rem;
-  text-transform: uppercase;
-  border: 0;
-  background-color: @darkPurple2;
-  padding: 2rem 0 0 2rem;
-  &:active, &:hover {
-    background-color: @darkPurple2;
-  }
-  ed-icon {
-    display: block;
-    position: absolute;
-    width: 3rem;
-    height: 3rem;
-    fill: @lightGrey1;
-  }
-  span {
-    display:block;
-    position: absolute;
-    left: 35%;
-  }
+.discover-heading {
+  .title-bar();
 }
 
-.list-style {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-
-  li {
-    .edButtonTertiary();
-  }
-  .genre-title {
-    .edType( heading-XS );
-    color: @originalTeal;
-    text-transform: uppercase;
-    &:active, &:hover {
-      background-color: @darkPurple3;
-    }
-  }
+.discover-list {
+  .list-style();
 }
