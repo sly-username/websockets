@@ -399,6 +399,50 @@
             .to.have.property( "name" )
             .that.equals( "profile" );
         });
+
+        test( "bound", function() {
+          var keyRange = pdb.bound( 0, 2 );
+
+          expect( keyRange )
+            .to.be.instanceOf( IDBKeyRange );
+
+          expect( keyRange )
+            .to.have.property( "lower" )
+            .that.equals( 0 );
+
+          expect( keyRange )
+            .to.have.property( "upper" )
+            .that.equals( 2 );
+        });
+
+        test( "only", function() {
+          var keyRange = pdb.only( 0 );
+
+          expect( keyRange )
+            .to.be.instanceOf( IDBKeyRange );
+        });
+
+        test( "lowerBound", function() {
+          var keyRange = pdb.lowerBound( 0 );
+
+          expect( keyRange )
+            .to.be.instanceOf( IDBKeyRange );
+
+          expect( keyRange )
+            .to.have.property( "lower" )
+            .that.equals( 0 );
+        });
+
+        test( "upperBound", function() {
+          var keyRange = pdb.upperBound( 2 );
+
+          expect( keyRange )
+            .to.be.instanceOf( IDBKeyRange );
+
+          expect( keyRange )
+            .to.have.property( "upper" )
+            .that.equals( 2 );
+        });
       });
 
       suite( "PDBTransaction", function() {
@@ -630,6 +674,21 @@
                     .then(function( count ) {
                       expect( count )
                         .to.equal( dataCount );
+
+                      done();
+                    }).catch( done );
+                });
+
+                test( "count with arguments", function( done ) {
+                  var keyRange = pdb.bound( 0, 2 );
+
+                  expect( pdb[ storeName ] )
+                    .to.respondTo( "count" );
+
+                  pdb[ storeName ].count( keyRange )
+                    .then(function( count ) {
+                      expect( count )
+                        .to.equal( 3 );
 
                       done();
                     }).catch( done );

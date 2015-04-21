@@ -5,6 +5,8 @@ import define from "domain/ed/define-properties";
 import PDBObjectStore from "domain/lib/storage/PromisedDB/PDBObjectStore";
 import PDBTransaction from "domain/lib/storage/PromisedDB/PDBTransaction";
 
+var IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+
 /**
  * @class PDBDatabase
  * @inherits EventEmitter
@@ -62,5 +64,21 @@ export default class PDBDatabase extends EventEmitter {
 
   write( storeNames ) {
     return this.transaction( storeNames, "readwrite" );
+  }
+
+  bound( lower, upper, excludeLower=false, excludeUpper=false ) {
+    return IDBKeyRange.bound( lower, upper, excludeLower, excludeUpper );
+  }
+
+  only( value ) {
+    return IDBKeyRange.only( value );
+  }
+
+  lowerBound( bound, exclude=false ) {
+    return IDBKeyRange.lowerBound( bound, exclude );
+  }
+
+  upperBound( bound, exclude=false ) {
+    return IDBKeyRange.upperBound( bound, exclude );
   }
 }
