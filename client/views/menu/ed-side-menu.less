@@ -1,0 +1,15 @@
+@import "../../styles/ed/list-style.mixin.less";
+
+.menu-wrapper {
+  width: 100%;
+  max-width: 59.6rem;
+  .menu-list {
+    .edListStyle();
+    li {
+      box-sizing: border-box;
+      &:active, &:hover, &:hover {
+        background-color: @darkPurple1;
+      }
+    }
+  }
+}
