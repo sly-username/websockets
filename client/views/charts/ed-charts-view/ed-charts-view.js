@@ -16,6 +16,30 @@
         image: "http://www.fillmurray.com/200/300",
         name: "Fill Murray",
         points: 12732
+      },
+      {
+        rank: 3,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 12732
+      },
+      {
+        rank: 4,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 12732
+      },
+      {
+        rank: 5,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 12732
+      },
+      {
+        rank: 6,
+        image: "http://www.placecage.com/200/300",
+        name: "Place Cage",
+        points: 212732
       }
     ],
     ready: function() {},

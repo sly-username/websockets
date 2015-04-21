@@ -5,7 +5,18 @@
     <template>
         <link rel="stylesheet" href="./ed-charts-view.css">
         <div class="charts-wrapper">
-            <ul class="options">
+            <div class="charts-header">
+                <header>
+                    <h1>Highest Rated Song</h1>
+                    <p class="month">April 2015</p>
+                </header>
+                <div class="ranks-badge-wrapper">
+                    <ed-icon></ed-icon>
+                    <p class="time-left">Time Left</p>
+                    <h2 class="countdown-timer">03d 10h 15m</h2>
+                </div>
+            </div>
+            <ul id="ranks-list" class="options">
                 <template repeat="{{opt in _options}}">
                     <li>
                         <p class="chart-rank">{{opt.rank}}</p>
@@ -17,6 +28,9 @@
                     </li>
                 </template>
             </ul>
+            <ed-mini-player id="mini-player"
+                            song="Track Title" artist="Artist Name"
+                            image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
         </div>
     </template>
     <script src="./ed-charts-view.js"></script>

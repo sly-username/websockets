@@ -3,9 +3,39 @@
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
+.charts-header {
+  text-align: center;
+  header {
+    background: @lightPurple1;
+    color: @originalWhite;
+    .edType( heading-s );
+    padding: 0.5rem 0;
+    font-style: italic;
+
+    .month {
+      font-style: normal;
+    }
+  }
+}
+
+.ranks-badge-wrapper {
+  color: @originalTeal;
+
+  .time-left {
+    .edType( paragraph-M );
+    margin-bottom: 0;
+  }
+
+  .countdown-timer {
+    .edType( paragraph-L );
+    margin-top: 0;
+  }
+}
+
 .charts-wrapper {
   max-width: 59.6rem;
   margin: 0 auto;
+  background: @originalPurple;
   .options {
     list-style-type: none;
     width: 100%;
@@ -23,18 +53,16 @@
       font-weight: 500;
       .img-container {
         width: 4.5rem;
-        padding: 1.8rem 0 0 4.5rem;
+        margin: 1.3rem 0 0 2.5rem;
         float: left;
       }
       .chart-rank {
         float: left;
-        padding-left: 2rem;
-        margin-top: 2.8rem;
+        margin-left: 2rem;
       }
       .chart-name {
         float: left;
-        padding-left: 1rem;
-        margin-top: 2.8rem;
+        margin-left: 2.5rem;
       }
       .chart-points {
         float: right;
