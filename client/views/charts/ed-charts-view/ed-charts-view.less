@@ -6,30 +6,41 @@
 .charts-wrapper {
   max-width: 59.6rem;
   margin: 0 auto;
-}
-.options {
-  list-style-type: none;
-  width: 100%;
-  margin: 0;
-  li {
-    border: 1px solid black;
+  .options {
+    list-style-type: none;
     width: 100%;
-    display: inline-block;
-    background: @darkPurple3;
-    color: @lightGrey1;
-    .img-container {
-      height: 2rem;
-      width: 2rem;
-      float: left;
-    }
-    .chart-rank {
-      float: left;
-    }
-    .chart-name {
-      float: right;
-    }
-    .chart-points {
-      float: right;
+    margin: 0;
+    padding: 0;
+    li {
+      border-bottom: .2rem solid @lightGrey1;
+      height: 7rem;
+      margin-top: -.2rem;
+      width: 100%;
+      display: inline-block;
+      background: @darkPurple3;
+      color: @originalWhite;
+      .edType( heading-S );
+      font-weight: 500;
+      .img-container {
+        width: 4.5rem;
+        padding: 1.8rem 0 0 4.5rem;
+        float: left;
+      }
+      .chart-rank {
+        float: left;
+        padding-left: 2rem;
+        margin-top: 2.8rem;
+      }
+      .chart-name {
+        float: left;
+        padding-left: 1rem;
+        margin-top: 2.8rem;
+      }
+      .chart-points {
+        float: right;
+        padding-right: 2rem;
+        margin-top: 2.8rem;
+      }
     }
   }
 }
