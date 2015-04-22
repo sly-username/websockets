@@ -6,9 +6,6 @@ import edDiscoverService from "domain/ed/services/ed-discover-service";
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 
-window.edDiscoverService = edDiscoverService;
-window.edConnectionService = edConnectionService;
-
 var
   queue = [],
   currentTrack = null,
