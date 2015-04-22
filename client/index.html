@@ -40,7 +40,7 @@
   </script>
 </section>
 
-<ed-side-menu></ed-side-menu>
+<ed-side-menu hide></ed-side-menu>
 
 <app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
   <app-route path="/home">
@@ -70,6 +70,12 @@
 
   <!-- PLAYER -->
   <app-route path="/player" element="ed-song-card-view"></app-route>
+
+  <!-- CHARTS -->
+  <app-route path="/charts" element="ed-charts-view"></app-route>
+
+  <!-- SETTINGS -->
+  <app-route path="/settings" element="ed-settings-view"></app-route>
 
   <!-- DISCOVER -->
   <app-route path="/discover" element="ed-discover-view"></app-route>
@@ -102,6 +108,8 @@
         <a href="#/fan/10">Fan</a>
         <a href="#/forgot-pass">Forgot Password</a>
         <a href="#/player">Song Card</a>
+        <a href="#/charts">Charts</a>
+        <a href="#/settings">Settings</a>
         <a href="#/discover">Discover Music</a>
       </nav>
     </template>

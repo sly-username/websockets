@@ -2,23 +2,30 @@
 @import "../../styles/fonts/edTypeStyles.less";
 
 .edTitleBar() {
-  .edType( heading-L );
   color: @originalWhite;
-  height: 7rem;
+  height: 9rem;
   text-transform: uppercase;
   border: 0;
   background-color: @darkPurple2;
-  padding: 2rem 0 0 2rem;
-  ed-icon {
-    display: block;
+  text-align: center;
+  button {
     position: absolute;
-    width: 3rem;
-    height: 3rem;
-    fill: @lightGrey1;
+    left: 0;
+    height: 9rem;
+    width: 9rem;
+    border: none;
+    background: transparent;
+    ed-icon {
+      width: 3rem;
+      height:3rem;
+      fill: @lightGrey1;
+      margin-left: -1.1rem;
+    }
   }
-  span {
-    display:block;
-    position: absolute;
-    left: 35%;
+  h1 {
+    .edType( heading-L );
+    padding-top: 3rem;
+    font-weight: 500;
+    margin: 0;
   }
 }

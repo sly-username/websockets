@@ -2,7 +2,18 @@
 @import "../../styles/fonts/edTypeStyles.less";
 @import "../../styles/ed/colors.vars.less";
 @import "../../styles/ed/alignments.mixin.less";
+@import "../../styles/mixins/prefixes/transforms.less";
 
+:host([hide]){
+  position: absolute;
+  top: 0;
+  left: 0;
+  .transform( translateX( -100% ));
+}
+
+:host {
+  float: left;
+}
 .menu-wrapper {
   width: 84%;
   padding-top: 6rem;
