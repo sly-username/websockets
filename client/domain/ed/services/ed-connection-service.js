@@ -1,5 +1,5 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
-import checkRoute from "domain/ed/check-route-auth";
+import checkRoute from "domain/ed/connection/route-auth-check";
 
 var edConnectionService, needsAuth,
   edSocket = new EDWebSocket(),
@@ -38,34 +38,46 @@ export default edConnectionService = {
     edSocket.close( 4000 );
   },
 
-  send( route, priority=0, data ) {
-    var json = {
+  send( route, priority=10, data={} ) {
+    var
+      json = joinData( data, {
         action: {
           route,
           priority
         }
-      };
+      });
 
-    if ( !checkRoute.needsAuth( route )) {
-      json = joinData( data, json );
+    if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
+      edSocket.once( "authenticated", () => {
+        this.formattedSend( json );
+      });
+      return;
     }
 
-    return this.formattedSend( json );
+    this.formattedSend( json );
+    return;
   },
 
-  request( route, priority=0, data ) {
-    var json = {
+  request( route, priority=10, data={} ) {
+    var
+      json = joinData( data, {
         action: {
           route,
           priority
         }
-      };
+      });
 
-    if ( !checkRoute.needsAuth( route )) {
-      json = joinData( data, json );
-    }
+    return new Promise(( resolve, reject ) => {
+      if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
+        edSocket.once( "authenticated", () => {
+          resolve( this.formattedRequest( data ) );
+        });
 
-    return this.formattedRequest( json );
+        return;
+      }
+
+      resolve( this.formattedRequest( json ) );
+    });
   },
 
   // these two functions mainly used by analytics send requests
