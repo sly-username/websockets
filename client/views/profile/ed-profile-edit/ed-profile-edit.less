@@ -13,7 +13,7 @@ hr {
 
 .ed-profile-edit-wrapper {
   width: 100%;
-  background-color: @darkPurple3;
+  background-color: @darkPurple2;
   height: 100%;
   margin: 0 auto;
   max-width: 59.6rem;
@@ -22,49 +22,73 @@ hr {
   .edit-title-bar {
     .edTitleBar();
   }
-}
 
-
-.name-field {
-  p {
-    .edType( heading-XS );
-    color: @originalTeal;
-    padding: 0 2%;
-  }
-  ed-form-input {
-    margin: 2%;
-  }
-}
-
-.image-field {
-  .image-container {
-    height: 10.5rem;
-    width: 10.5rem;
-    margin: 2%;
-    img-placeholder {
-      height: auto;
-      width: 100%
+  .name-field {
+    p {
+      .edType( heading-XS );
+      color: @originalTeal;
+      padding: 0 2%;
+    }
+    ed-form-input {
+      margin: 2%;
+      &::shadow {
+        .form-input-container {
+          width: 90%;
+        }
+      }
     }
   }
-  p {
-    .edType( heading-XS );
-    text-transform: uppercase;
-    color: @originalTeal;
-    margin: 6% 2% 0 2%;
+
+  .image-field {
+    .image-container {
+      height: 10.5rem;
+      width: 10.5rem;
+      margin: 2%;
+      img-placeholder {
+        height: auto;
+        width: 100%
+      }
+    }
+    p {
+      .edType( heading-XS );
+      text-transform: uppercase;
+      color: @originalTeal;
+      margin: 6% 2% 0 2%;
+    }
   }
+
+  .edit-list {
+    .edListStyle();
+    overflow: hidden;
+    li {
+      background-color: @darkPurple2;
+    }
+    .music-pref {
+      .edType( heading-XS );
+      color: @originalTeal;
+      text-transform: uppercase;
+      padding: 6rem 0 1.8rem 2rem;
+      &:active, &:hover, &:focus {
+        background-color: @darkPurple2;
+      }
+    }
+  }
+
 }
 
-
-.edit-list {
-  .edListStyle();
-  overflow: hidden;
-  .music-pref {
-    .edType( heading-XS );
-    color: @originalTeal;
-    text-transform: uppercase;
-    padding: 6rem 0 1.8rem 2rem;
-    &:active, &:hover, &:focus {
-      background-color: @darkPurple3;
+#edit-music-button {
+  button {
+    position: absolute;
+    right: 0;
+    height: 9rem;
+    width: 9rem;
+    border: none;
+    background: transparent;
+    ed-icon {
+      width: 3rem;
+      height:3rem;
+      fill: @lightGrey1;
+      margin-right: -1.1rem;
     }
   }
 }

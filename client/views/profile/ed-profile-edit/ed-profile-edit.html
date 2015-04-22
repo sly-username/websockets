@@ -15,8 +15,8 @@
       <form id="edit-form">
         <div class="name-field">
           <p>NAME (First, Last)</p>
-          <ed-form-input id="first-name" icon="add189" placeholder="Jeff"></ed-form-input>
-          <ed-form-input id="last-name" icon="add189" placeholder="Lin"></ed-form-input>
+          <ed-form-input id="first-name" icon="name-first" placeholder="Jeff"></ed-form-input>
+          <ed-form-input id="last-name" icon="name-last" placeholder="Lin"></ed-form-input>
         </div>
         <hr>
         <section class="image-field">
@@ -31,7 +31,11 @@
           <li id="choose-photo">Choose Existing Photo</li>
           <li id="take-photo">Take Photo</li>
           <li class="music-pref">Music Preferences</li>
-          <li id="edit-music-button">Edit Music Taste</li>
+          <li id="edit-music-button">Edit Music Taste
+            <button>
+              <ed-icon name="arrow-forward"></ed-icon>
+            </button>
+          </li>
         </ul>
       </form>
     </div>
