@@ -7,7 +7,8 @@
     var
       playerService = imported[ 0 ].default,
       intervalTime = 500,
-      updateTimeHandler;
+      updateTimeHandler,
+      playerServiceEventHandler;
 
     // helpers
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -23,6 +24,33 @@
       this.mainPlayer.setAttribute( "value", currentValue );
     };
 
+    playerServiceEventHandler = function( event ) {
+      var eventType = event.detail.name,
+        currentVal = event.detail.currentVal;
+
+      if ( eventType === "pause" || eventType === "stop" ) {
+        playerService.pause();
+        clearInterval( this.intervalId );
+      }
+
+      if ( eventType === "play" ) {
+        playerService.play();
+        this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+      }
+
+      if ( eventType === "scrubStart" ) {
+        this.handler.updateTime( currentVal, true );
+      }
+
+      if ( eventType === "rate" ) {
+        playerService.rateSong( currentVal );
+      }
+
+      if ( eventType === "skip" ) {
+        playerService.next();
+      }
+    };
+
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
@@ -32,44 +60,18 @@
 
         // Event Handler
         this.handler = {
-          updateTime: updateTimeHandler.bind( this )
+          updateTime: updateTimeHandler.bind( this ),
+          playerServiceEvent: playerServiceEventHandler.bind( this )
         };
-
-        this.playerServiceEventHandler = function( event ) {
-          var eventType = event.detail.name,
-            currentVal = event.detail.currentVal;
-
-          if ( eventType === "pause" || eventType === "stop" ) {
-            playerService.pause();
-            clearInterval( this.intervalId );
-          }
-
-          if ( eventType === "play" ) {
-            playerService.play();
-            this.intervalId = setInterval( this.handler.updateTime, intervalTime );
-          }
-
-          if ( eventType === "scrubStart" ) {
-            this.handler.updateTime( currentVal, true );
-          }
-
-          if ( eventType === "rate" ) {
-            playerService.rateSong( currentVal );
-          }
-
-          if ( eventType === "skip" ) {
-            playerService.next();
-          }
-        }.bind( this );
       },
       attached: function() {
         // bind events
-        this.addEventListener( "scrubberUpdate", this.playerServiceEventHandler );
-
-        console.log( "playerService.genreTracks( 6 )", playerService.genreTracks( 6 ) );
+        this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
       detached: function() {
         clearInterval( this.intervalId );
+
+        this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 

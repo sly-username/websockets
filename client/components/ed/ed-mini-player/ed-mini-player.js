@@ -26,6 +26,17 @@
         }
 
         this.dispatchEvent( createUpdateEvent( state ));
+      },
+      playPauseEventHandler = function( event ) {
+        var eventType = event.detail.type;
+
+        if ( eventType === "play" ) {
+          this.playIcon.setAttribute( "name", "pause" );
+        }
+
+        if ( eventType === "pause" ) {
+          this.playIcon.setAttribute( "name", "play" );
+        }
       };
 
     polymer( "ed-mini-player", {
@@ -33,31 +44,24 @@
       ready: function() {
         this.playBtn = this.shadowRoot.getElementById( "play-btn" );
         this.playIcon = this.shadowRoot.getElementById( "play-icon" );
-        this.handlers = {
-          swapIcon: swapIconHandler.bind( this )
+
+        // event handler
+        this.handler = {
+          swapIcon: swapIconHandler.bind( this ),
+          playPauseEvent: playPauseEventHandler.bind( this )
         };
-
-        this.playPauseEventHandler = function( event ) {
-          var eventType = event.detail.type;
-
-          if ( eventType === "play" ) {
-            this.playIcon.setAttribute( "name", "pause" );
-          }
-
-          if ( eventType === "pause" ) {
-            this.playIcon.setAttribute( "name", "play" );
-          }
-        }.bind( this );
       },
       attached: function() {
-        this.playBtn.addEventListener( "click", this.handlers.swapIcon );
-        this.playBtn.addEventListener( "tap", this.handlers.swapIcon );
+        this.playBtn.addEventListener( "click", this.handler.swapIcon );
+        this.playBtn.addEventListener( "tap", this.handler.swapIcon );
 
-        playerService.emitter.on( "playerUpdate", this.playPauseEventHandler )
+        playerService.emitter.on( "playerUpdate", this.handler.playPauseEvent )
       },
       detached: function() {
-        this.playBtn.removeEventListener( "click", this.handlers.swapIcon );
-        this.playBtn.removeEventListener( "tap", this.handlers.swapIcon );
+        this.playBtn.removeEventListener( "click", this.handler.swapIcon );
+        this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
+
+        playerService.emitter.off( "playerUpdate", this.handler.playPauseEvent )
       }
     });
   });
