@@ -13,7 +13,7 @@
   polymer( "ed-settings-view", {
     /* LIFECYCLE */
     ready: function() {
-      this.edMenu = document.getElementsByTagName( "ed-side-menu" )[0];
+      this.edMenu = document.getElementById( "side-menu" );
       this.edTitle = this.shadowRoot.getElementById( "settings-title" );
       this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
       this.handlers = {
