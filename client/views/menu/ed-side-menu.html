@@ -2,27 +2,29 @@
   <template>
     <link rel="stylesheet" href="./ed-side-menu.css">
     <div class="menu-wrapper">
-      <ul class="menu-list">
-        <li id="discover-button">
+      <nav class="menu-list">
+        <a id="discover-button">
           <ed-icon name="discover"></ed-icon>
           Discover
-        </li>
-        <li id="charts-button">
+        </a>
+        <a id="charts-button">
           <ed-icon name="charts"></ed-icon>
           Charts
-        </li>
-        <li id="invite-button">
+        </a>
+        <a id="invite-button">
           <ed-icon name="invite-friends"></ed-icon>
           Invite Friends
-        </li>
-        <li id="settings-button">
+        </a>
+        <a id="settings-button">
           <ed-icon name="settings"></ed-icon>
           Settings
-        </li>
-      </ul>
-      <div id="profile=bar">
-        <img-placeholder src="{{ edFan.displayImage }}" image="fillmurray"></img-placeholder>
-        <p>{{ edFan.displayName || Jeff Lin }}</p>
+        </a>
+      </nav>
+      <div class="profile-bar">
+        <div class="img-container">
+          <img-placeholder src="{{ edFan.displayImage }}" image="fillmurray"></img-placeholder>
+        </div>
+        <p>{{ edFan.displayName || "Jeff Lin" }}</p>
       </div>
     </div>
   </template>

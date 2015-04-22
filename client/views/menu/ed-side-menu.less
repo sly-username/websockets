@@ -1,15 +1,50 @@
 @import "../../styles/ed/list-style.mixin.less";
+@import "../../styles/fonts/edTypeStyles.less";
+@import "../../styles/ed/colors.vars.less";
+@import "../../styles/ed/alignments.mixin.less";
 
 .menu-wrapper {
-  width: 100%;
-  max-width: 59.6rem;
+  width: 84%;
+  padding-top: 6rem;
   .menu-list {
-    .edListStyle();
-    li {
+    a {
       box-sizing: border-box;
-      &:active, &:hover, &:hover {
-        background-color: @darkPurple1;
+      height: 9.6rem;
+      display: block;
+      .edType( heading-L );
+      line-height: 3.5;
+      color: @darkPurple3;
+      vertical-align: middle;
+      padding-left: 2rem;
+      border-left: 2.1rem solid transparent;
+      ed-icon {
+        margin-right: 2rem;
+        float: left;
+        width: 6rem;
+        height: 100%;
+        vertical-align: middle;
+        // works when svgs get fixed
+        fill: @lightGrey1;
       }
+      &:hover, :focus, :active {
+        border-left: 2.1rem solid @originalPurple;
+      }
+    }
+  }
+  .profile-bar {
+    position: absolute;
+    bottom: 2rem;
+    .img-container {
+      height: 6.8rem;
+      width: 6.8rem;
+      float: left;
+      padding-left: 2rem;
+    }
+    p {
+      float: left;
+      padding-left: 1.5rem;
+      .edType( heading-S );
+      color: @darkPurple3;
     }
   }
 }
