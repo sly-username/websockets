@@ -1,22 +1,57 @@
 import EDTrack from "domain/ed/objects/media/EDTrack";
-import EDCollection from "domain/ed/storage/EDCollection";
+//import EDCollection from "domain/ed/storage/EDCollection";
+import edAnalyticsService from "domain/analytics/EDAnalytics";
+import edConnectionService from "domain/ed/services/ed-connection-service";
+import edDiscoverService from "domain/ed/services/ed-discover-service";
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
 
 var
   queue = [],
-  audio = new Audio() || document.createElement( "audio" ),
   currentTrack = null,
   setCurrentTrack,
-  edPlayerService;
+  edPlayerService,
+  rateCurrentlyPlaying,
+  emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
+  // TODO remove debug
+  track1Data = {
+    id: 101,
+    type: "track",
+    name: "Burn Bridges"
+  },
+  track2Data = {
+    id: 102,
+    type: "track",
+    name: "Good Times Ahead"
+  },
+  // http://picosong.com/XFk6/
+  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
+  audio2 = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-04-AllBecauseYoureMine.mp3" ) || document.createElement( "audio" );
+  //track1 = new EDTrack( track1Data );
+  //track2 = new EDTrack();
+
+audio.setAttribute( "id", "hiddenAudioPlayer" );
+audio.setAttribute( "preload", "auto" );
+
+audio.style.display = "none";
+audio.style.visibility = "hidden";
 
 // helpers
 setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
 };
 
+rateCurrentlyPlaying = function( number ) {
+  if ( number != null ) {
+    //currentTrack.rate( number );
+    //track1.rate( number );
+  }
+};
+
 export default edPlayerService = {
+  get emitter() {
+    return emitter;
+  },
   get currentStats() {
     return {
       playing: currentTrack,
@@ -33,29 +68,35 @@ export default edPlayerService = {
   },
 
   get isPlaying() {
-    return !audio.paused;
+    if ( currentTrack != null ) {
+      return !currentTrack.paused;
+    }
+
+    return false;
   },
 
   get isPaused() {
-    return audio.paused && !!audio.src;
+    if ( currentTrack != null ) {
+      return currentTrack.paused && !!currentTrack.src;
+    }
+
+    return false;
   },
 
   get isStopped() {
-    return audio.paused && !audio.src;
+    return currentTrack.paused && !currentTrack.src;
   },
 
   get currentTime() {
     if ( this.isPlaying || this.isPaused ) {
-      return 488;
-      // TODO fake current time
-      // return audio.currentTime;
+      return currentTrack.currentTime;
     }
 
     return 0;
   },
 
-  set currentTime( val ) {
-    return this.currentTime;
+  set currentTime( value ) {
+    return currentTrack.currentTime;
   },
 
   get currentSeconds() {
@@ -70,6 +111,10 @@ export default edPlayerService = {
     return Math.floor( 60 / this.currentTime );
   },
 
+  get formattedTimeDisplay() {
+    return this.formattedTime + " / " + this.formattedLength;
+  },
+
   get formattedTime() {
     var ss = this.currentSeconds,
       mm = this.currentMinutes,
@@ -79,48 +124,82 @@ export default edPlayerService = {
     hh = hh < 10 ? "0" + hh : hh;
 
     if ( this.isPlaying || this.isPaused ) {
-      if ( hh !== "00" ) {
-        return `${ hh }:${ mm }:${ ss }`;
-      }
+      //if ( hh !== "00" ) {
+      //  return `${ hh }:${ mm }:${ ss }`;
+      //}
       return `${ mm }:${ ss }`;
     }
 
     return "00:00";
   },
 
+  get formattedLength() {
+    return this.formatTime( this.trackLength );
+  },
+
   get trackLength() {
     if ( currentTrack != null ) {
-      // TODO fake length
-      return 578;
-      // return audio.duration;
+      return currentTrack.duration;
     }
+
     return 0;
   },
 
+  // To be removed once integrated with player service
+  formatTime: function( time ) {
+    var ss = Math.floor( time % 60 ),
+      mm = Math.floor( time / 60 );
+    ss = ss < 10 ? "0" + ss : ss;
+    mm = mm < 10 ? "0" + mm : mm;
+
+    return mm + ":" + ss;
+  },
+
   play: function( edTrack ) {
-    if ( !( edTrack instanceof EDTrack ) ) {
-      throw new TypeError( "Track is not an EDTrack object" );
+    //if ( !( edTrack instanceof EDTrack ) ) {
+    //  throw new TypeError( "Track is not an EDTrack object" );
+    //}
+
+    if ( !edTrack ) {
+      edTrack = audio;
     }
 
-    audio.play();
+    this.emitter.dispatch( createEvent( "playerUpdate", {
+      detail: {
+        type: "play"
+      }
+    }));
+
+    edTrack.play();
+
     setCurrentTrack( edTrack );
+
     return true;
   },
 
   pause: function( edTrack ) {
-    if ( this.isPlaying ) {
-      audio.pause();
-    }
+    this.emitter.dispatch( createEvent( "playerUpdate", {
+      detail: {
+        type: "pause"
+      }
+    }));
+
+    currentTrack.pause();
+
     return this.isPaused;
   },
 
   stop: function( edTrack ) {
     if ( this.isPlaying ) {
-      audio.pause();
-      audio.removeAttribute( "src" );
+      currentTrack.pause();
+      currentTrack.removeAttribute( "src" );
       currentTrack = null;
     }
     return true;
+  },
+
+  scrubTo: function( value ) {
+    currentTrack.currentTime = value;
   },
 
   enqueue: function( edTrack ) {
@@ -136,6 +215,9 @@ export default edPlayerService = {
   },
 
   next: function() {
+    // TODO remove
+    this.enqueue( audio2 );
+
     if ( this.queue.length ) {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
@@ -154,5 +236,9 @@ export default edPlayerService = {
         }
       }
     }
+  },
+
+  rateSong: function( number ) {
+    return rateCurrentlyPlaying( number );
   }
 };
