@@ -1,6 +1,7 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
+import checkRoute from "domain/ed/check-route-auth";
 
-var edConnectionService,
+var edConnectionService, needsAuth,
   edSocket = new EDWebSocket(),
   parseSocketMessage = function( response ) {
     if ( typeof response.data === "string" ) {
@@ -8,6 +9,12 @@ var edConnectionService,
     }
 
     return response.data;
+  },
+  joinData = function( dataObject, jsonObject ) {
+    return Object.keys( dataObject ).reduce(( prevJson, currKey ) => {
+      prevJson[ currKey ] = dataObject[ currKey ];
+      return prevJson;
+    }, jsonObject );
   };
 
 // todo remove for debug!
@@ -39,11 +46,9 @@ export default edConnectionService = {
         }
       };
 
-    // TODO create function for this
-    json = Object.keys( data ).reduce(( prevJson, currKey ) => {
-      prevJson[ currKey ] = data[ currKey ];
-      return prevJson;
-    }, json );
+    if ( !checkRoute.needsAuth( route )) {
+      json = joinData( data, json );
+    }
 
     return this.formattedSend( json );
   },
@@ -56,10 +61,9 @@ export default edConnectionService = {
         }
       };
 
-    json = Object.keys( data ).reduce(( prevJson, currKey ) => {
-      prevJson[ currKey ] = data[ currKey ];
-      return prevJson;
-    }, json );
+    if ( !checkRoute.needsAuth( route )) {
+      json = joinData( data, json );
+    }
 
     return this.formattedRequest( json );
   },
