@@ -5,6 +5,7 @@
 @import "mixins/breakpoints/mixins.less";
 @import "ed/buttons.mixin.less";
 @import "ed/colors.vars.less";
+@import "mixins/prefixes/transforms.less";
 
 
 html {
@@ -56,6 +57,13 @@ body {
       opacity: 1;
     }
   }
+}
+
+ed-side-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  .transform( translateX( -100% ));
 }
 
 .hidden();
