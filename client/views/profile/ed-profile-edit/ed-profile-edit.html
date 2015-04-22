@@ -6,14 +6,14 @@
   <template>
     <link rel="stylesheet" href="./ed-profile-edit.css">
     <div class="ed-profile-edit-wrapper">
-      <header>
+      <div class="edit-title-bar">
         <button>
-          <ed-icon name="add189"></ed-icon>
+          <ed-icon name="arrow-back"></ed-icon>
         </button>
-        <p>Edit Profile</p>
-      </header>
+        <h1>Edit Profile</h1>
+      </div>
       <form id="edit-form">
-        <div id="name-field">
+        <div class="name-field">
           <p>NAME (First, Last)</p>
           <ed-form-input id="first-name" icon="add189" placeholder="Jeff"></ed-form-input>
           <ed-form-input id="last-name" icon="add189" placeholder="Lin"></ed-form-input>
@@ -27,27 +27,13 @@
           <p>Change Profile Photo</p>
         </section>
         <hr>
-        <div id="upload-field">
-          <div class="upload-button">
-            <input id="choose-photo" type="file" accept="image/*" >
-            <button>Choose Existing Photo</button>
-          </div>
-          <hr>
-          <div class="upload-button">
-            <input id="take-photo" type="file" accept="image/*" capture="camera">
-            <button>Take A Photo</button>
-          </div>
-        </div>
+        <ul class="edit-list">
+          <li id="choose-photo">Choose Existing Photo</li>
+          <li id="take-photo">Take Photo</li>
+          <li class="music-pref">Music Preferences</li>
+          <li id="edit-music-button">Edit Music Taste</li>
+        </ul>
       </form>
-      <hr>
-      <section class="edit-onboarding">
-        <p>Music Preferences</p>
-        <hr>
-        <button>
-          Edit Your Taste
-          <ed-icon name="add189"></ed-icon>
-        </button>
-      </section>
     </div>
   </template>
   <script src="ed-profile-edit.js"></script>
