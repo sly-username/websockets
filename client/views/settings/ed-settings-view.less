@@ -6,8 +6,12 @@
 * {
   font-family: "Ubuntu";
 }
+
+:host {
+  transition: .5s;
+}
+
 .settings-wrapper {
-  width: 100%;
   background-color: @darkPurple3;
   height: 100%;
   margin: 0 auto;
@@ -16,6 +20,12 @@
   position: relative;
   .settings-title-bar {
     .edTitleBar();
+    #settings-title {
+      pointer-events: none;
+    }
+    button {
+      outline: none;
+    }
   }
   .settings-list {
    .edListStyle();
