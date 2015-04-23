@@ -31,9 +31,6 @@
         expect( socket.authenticate )
           .to.be.a( "function" );
 
-        expect( socket.needsAuth )
-          .to.be.a( "function" );
-
         expect( socket.send )
           .to.be.a( "function" );
 

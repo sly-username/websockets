@@ -1,17 +1,18 @@
 @import "colors.vars.less";
 @import "../fonts/edTypeStyles.less";
+@import "alignments.mixin.less";
 
 /**
 * Single Line Button Mixin
-* .edButton();
+* .edPrimaryButton();
 *
 * Description:
 * This mixin is used to make the standard eardish button
 *
 */
-.edButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1 ) when ( iscolor(@backgroundColor) ) {
+.edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1 ) when ( iscolor(@backgroundColor) ) {
   .edType( heading-L );
-  .white( 1.0 );
+  color: @originalWhite;
   width: 100%;
   max-width: 59.6rem;
   height: 9.2rem;
@@ -24,32 +25,41 @@
   }
 }
 
-.edButtonDoubleLine( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 ) when( iscolor(@backgroundColor) ) {
-  .edButton( @backgroundColor; @activeColor );
-  span {
-    .edType( heading-L );
-    &.small-text {
-      .edType( heading-XS );
-      color: #31AFAE;
-      text-transform: none;
-      margin-bottom: 0;
-    }
+.edSecondaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1 ) when ( iscolor(@backgroundColor) ) {
+  .edPrimaryButton( @backgroundColor; @activeColor );
+  .edType( heading-M );
+  .small-text {
+    .edType( heading-XS );
+    color: #31AFAE;
+    text-transform: none;
+    margin-bottom: 0;
   }
 }
 
-.edButton( single-line ) {
-  .edButton();
+.edPrimaryButton( single-line ) {
+  .edPrimaryButton();
 }
 
-.edButton( single-line; dark ) {
-  .edButton( @darkPurple4; @darkPurple2 );
+.edPrimaryButton( single-line; dark ) {
+  .edPrimaryButton( @darkPurple3; @darkPurple2 );
 }
 
-.edButton( double-line ) {
-  .edButtonDoubleLine();
+.edPrimaryButton( double-line ) {
+  .edSecondaryButton();
 }
 
-.edButton( double-line; purple ) {
-  .edButton( @originalPurple; @lightPurple1 );
+.edPrimaryButton( double-line; purple ) {
+  .edPrimaryButton( @originalPurple; @lightPurple1 );
 }
 
+.edButtonTertiary() {
+  .edType( heading-M );
+  color: @originalWhite;
+  padding: 3.5rem 2rem;
+  width: 100%;
+  background-color: @darkPurple3;
+  border-bottom: 0.2rem solid @darkPurple1;
+  &:active, &:hover, &:hover {
+    background-color: @darkPurple1;
+  }
+}

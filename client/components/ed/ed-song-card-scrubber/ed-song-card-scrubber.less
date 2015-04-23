@@ -2,6 +2,7 @@
 @import "../../../styles/mixins/prefixes/transforms.less";
 @import "../../../styles/mixins/prefixes/user-select.less";
 @import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/mixins/prefixes/animations.less";
 
 .responsive-wrapper {
   width: 100%;
@@ -52,7 +53,7 @@
 
 #song-timer {
   .edType( heading-S );
-  color: @white;
+  color: @originalWhite;
   opacity: 0.5;
   text-align: center;
   position: absolute;
@@ -72,9 +73,11 @@
 #mid-circle {
   stroke: @originalTeal;
   opacity: .25;
+  transition: transform 250ms;
 }
 
 #shadow-scrubber {
+  stroke-width: 18;
   stroke: @black;
   opacity: .4;
   cursor: pointer;
@@ -82,7 +85,7 @@
 
 #circle-scrubber {
   cursor: pointer;
-  stroke: @white;
+  stroke: @originalWhite;
 }
 
 #circle-scrubber, #shadow-scrubber {
@@ -91,7 +94,8 @@
 }
 
 #mid-circle, #front-circle, #circle-scrubber, #shadow-scrubber {
-  .transform( rotate(-90deg));
+  //transition: transform 250ms;
+  .transform( rotate(-90deg) );
   .transformOrigin(50% 50%);
 }
 
@@ -110,7 +114,7 @@
   border: none;
   z-index: 3;
   ed-icon {
-    fill: @white;
+    fill: @originalWhite;
     width: 50%;
     height: 50%;
     .userSelect( none );
@@ -120,7 +124,7 @@
   }
 }
 
-.skip-btn {
+#skip-btn {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -128,9 +132,30 @@
   width: 19%;
   height: 10%;
   border: none;
+  z-index: 3;
+  outline: none;
   span {
     text-transform: uppercase;
     .edType(heading-XS);
     color: @originalTeal;
   }
 }
+
+.keyframes( rotateScrubber, {
+  0% {
+    transform: rotate( -90deg );
+  }
+  100% {
+    transform: rotate( 270deg );
+  }
+});
+
+
+//.keyframes( dashoffsetFill, {
+//0% {
+//  stroke-dashoffset: 100%;
+//}
+//100% {
+//  stroke-dashoffset: 0%;
+//}
+//});

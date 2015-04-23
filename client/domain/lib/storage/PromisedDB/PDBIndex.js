@@ -5,7 +5,7 @@ import createEvent from "domain/lib/event/create-event";
 
 var
   readTransaction = function( pdb, storeName, indexName, fnName, args ) {
-    var t = pdb.read( storeName, "readonly" );
+    var t = pdb.read( storeName );
     return t.promise( t.objectStore( storeName ).index( indexName )[ fnName ]( ...args ) );
   };
 /*

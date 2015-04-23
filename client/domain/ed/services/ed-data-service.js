@@ -18,9 +18,6 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 
 import connectionService from "domain/ed/services/ed-connection-service";
 
-// TODO DEBUG
-// connectionService.authenticateConnection( "intdev@eardish.com", "intdevpass" );
-
 var
   dataService = {},
   syncControllers = {},
@@ -134,7 +131,7 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     return Promise.reject( new TypeError( `Could not find route associated with ${type} in dataService` ) );
   }
 
-  return connectionService.request( route, priority, json)
+  return connectionService.request( route, priority, json )
     .then(function( response ) {
       if ( false && response.status.code ) {
         // todo add check for proper status code

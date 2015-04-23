@@ -1,6 +1,7 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
+import checkRoute from "domain/ed/connection/route-auth-check";
 
-var edConnectionService,
+var edConnectionService, needsAuth,
   edSocket = new EDWebSocket(),
   parseSocketMessage = function( response ) {
     if ( typeof response.data === "string" ) {
@@ -8,6 +9,12 @@ var edConnectionService,
     }
 
     return response.data;
+  },
+  joinData = function( dataObject, jsonObject ) {
+    return Object.keys( dataObject ).reduce(( prevJson, currKey ) => {
+      prevJson[ currKey ] = dataObject[ currKey ];
+      return prevJson;
+    }, jsonObject );
   };
 
 // todo remove for debug!
@@ -31,39 +38,49 @@ export default edConnectionService = {
     edSocket.close( 4000 );
   },
 
-  send( route, priority=0, data ) {
-    var json = {
+  send( route, priority=10, data={} ) {
+    var
+      json = joinData( data, {
         action: {
           route,
           priority
         }
-      };
+      });
 
-    // TODO create function for this
-    json = Object.keys( data ).reduce(( prevJson, currKey ) => {
-      prevJson[ currKey ] = data[ currKey ];
-      return prevJson;
-    }, json );
+    if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
+      edSocket.once( "authenticated", () => {
+        this.formattedSend( json );
+      });
+      return;
+    }
 
-    return this.formattedSend( json );
+    this.formattedSend( json );
+    return;
   },
 
-  request( route, priority=0, data ) {
-    var json = {
+  request( route, priority=10, data={} ) {
+    var
+      json = joinData( data, {
         action: {
           route,
           priority
         }
-      };
+      });
 
-    json = Object.keys( data ).reduce(( prevJson, currKey ) => {
-      prevJson[ currKey ] = data[ currKey ];
-      return prevJson;
-    }, json );
+    return new Promise(( resolve, reject ) => {
+      if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
+        edSocket.once( "authenticated", () => {
+          resolve( this.formattedRequest( data ) );
+        });
 
-    return this.formattedRequest( json );
+        return;
+      }
+
+      resolve( this.formattedRequest( json ) );
+    });
   },
 
+  // these two functions mainly used by analytics send requests
   formattedSend( data ) {
     return edSocket.send( data ).then( parseSocketMessage );
   },

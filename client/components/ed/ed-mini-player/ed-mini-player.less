@@ -25,10 +25,9 @@
     margin: 0.5%;
   }
   .text-container {
-    margin: 2%;
     display: inline;
     float: left;
-    color: @white;
+    color: @originalWhite;
     #title {
       .edType( heading-M );
       margin-top: 3%;
@@ -36,7 +35,7 @@
     }
     #name {
       margin-top: 0;
-      opacity: .25;
+      color: @lightGrey1;
       .edType( heading-XS );
     }
   }
@@ -53,10 +52,10 @@
       height: 0;
       padding: 50% 0;
       border-radius: 50%;
-      background: @darkPurple2;
+      background: @darkPurple1;
       border: none;
       ed-icon {
-        fill: @white;
+        fill: @originalWhite;
         width: 70%;
         .userSelect(none);
       }
@@ -65,4 +64,15 @@
       }
     }
   }
+}
+
+#title {
+  .edType( heading-M );
+  margin: 0;
+  line-height: 1;
+}
+#name {
+  opacity: .25;
+  .edType( heading-XS );
+  margin: 0;
 }

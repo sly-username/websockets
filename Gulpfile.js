@@ -138,10 +138,17 @@ gulp.task( "dev", gulp.series(
 ));
 
 /*** PRODUCTION BUILD TASK ***/
-gulp.task( "build:prod", function( done ) {
-  gutil.log( "TODO THIS TASK" );
-  done();
-});
+gulp.task( "build:prod", gulp.series(
+  "clean:prod",
+  gulp.parallel(
+    "copy:prod",
+    "less:prod",
+    "svgstore:prod",
+    "vendor:prod",
+    "traceur:prod"
+  ),
+  "envBuild:prod"
+));
 
 /*** MAIN PRODUCTION TASK ***/
 gulp.task( "prod", gulp.series( "build:prod" ));

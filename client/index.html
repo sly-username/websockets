@@ -21,13 +21,10 @@
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
 
-  <!-- REMOVE FOR PRODUCTION -->
-  <!-- POC WebComponents -->
-  <link rel="import" href="components/poc/poc-elements.html" />
-  <!-- END REMOVE FOR PRODUCTION -->
 </head>
 
 <body unresolved>
+
 <section id="splash-screen">
   <svg>
     <use xlink:href="/assets/icons/svg.svg#eardish-logo-with-slogan"></use>
@@ -63,8 +60,8 @@
 
   <!-- PROFILE -->
   <app-route path="/profile/edit" element="ed-profile-edit"></app-route>
-  <app-route path="/artist" element="ed-profile-artist"></app-route>
-  <app-route path="/fan" element="ed-profile-fan"></app-route>
+  <app-route path="/artist/:ed-id" element="ed-profile-artist" onUrlChange="updateModel"></app-route>
+  <app-route path="/fan/:ed-id" element="ed-profile-fan" onUrlChange="updateModel"></app-route>
 
   <!-- RETRIEVE PASSWORD -->
   <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
@@ -72,23 +69,16 @@
   <!-- PLAYER -->
   <app-route path="/player" element="ed-song-card-view"></app-route>
 
+  <!-- CHARTS -->
+  <app-route path="/charts" element="ed-charts-view"></app-route>
+
+  <!-- SETTINGS -->
+  <app-route path="/settings" element="ed-settings-view"></app-route>
+
+  <!-- DISCOVER -->
+  <app-route path="/discover" element="ed-discover-view"></app-route>
+
   <!--<app-route path=""-->
-
-  <!-- REMOVE FOR PRODUCTION -->
-  <!-- POC Viewer page -->
-  <app-route path="/poc">
-    <template>
-      <poc-viewer class="left" element-name="poc-mixins" path="poc/poc-mixins"></poc-viewer>
-    </template>
-  </app-route>
-
-  <!-- Breakpoints POC page -->
-  <app-route path="/poc-bp">
-    <template>
-      <poc-bp style="display:block; float: left; clear: both; margin: 20px;"></poc-bp>
-    </template>
-  </app-route>
-  <!-- END REMOVE FOR PRODUCTION -->
 
   <!-- catch all route, 404 page? or redirect... -->
   <app-route path="*">
@@ -112,17 +102,17 @@
         <a href="#/registration">Register (/registration)</a>
         <a href="#/onboarding">Onboarding</a>
         <a href="#/profile/edit">Profile /Edit</a>
-        <a href="#/artist">Artist</a>
-        <a href="#/fan">Fan</a>
+        <a href="#/artist/22">Artist</a>
+        <a href="#/fan/10">Fan</a>
         <a href="#/forgot-pass">Forgot Password</a>
-        <a href="#/poc">POC Viewer Page</a>
-        <a href="#/poc-bp">POC Breakpoint Page</a>
         <a href="#/player">Song Card</a>
+        <a href="#/charts">Charts</a>
+        <a href="#/settings">Settings</a>
+        <a href="#/discover">Discover Music</a>
       </nav>
     </template>
   </app-route>
 </app-router>
-
 
 <!-- APPLICATION SCRIPT -->
 <script src="domain/main.script.js" type="text/javascript"></script>

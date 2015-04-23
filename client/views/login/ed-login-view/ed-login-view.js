@@ -46,9 +46,9 @@
               var redirectTo;
 
               if ( typeChecker.isArtist( edProfile ) ) {
-                redirectTo = `/artist/${edProfile.id}`;
+                redirectTo = "/artist/" + edProfile.id;
               } else {
-                redirectTo = `/fan/${edProfile.id}`;
+                redirectTo = "/fan/" + edProfile.id;
               }
 
               this.router.go( redirectTo );
