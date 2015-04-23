@@ -8,6 +8,7 @@
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
+        userService: userService,
         ready: function() {
           this.emailInput = this.shadowRoot.getElementsByTagName( "input" )[0];
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
@@ -19,11 +20,22 @@
           // todo add return "keydown" event.keyCode === 13
         },
         detached: function() {},
+        validateFriendEmail: function() {
+          if ( this.emailInput.valid ){
+            this.submitButton.removeAttribute( "disabled" );
+          } else {
+            this.submitButton.setAttribute( "disabled", "" );
+          }
+        },
         submitFriendEmail: function( event ) {
-          var friendEmail = this.emailInput.value;
+          var friendEmail = this.emailInput.value,
+            self = this;
           event.preventDefault();
 
-          userService.referral( friendEmail );
+          return userService.referral( friendEmail )
+            .then( function( response ) {
+              self.referralsRemaining = response;
+            });
           // todo change referralsRemaining number
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}

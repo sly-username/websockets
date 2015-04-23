@@ -162,6 +162,7 @@ edUserService.referral = function( friendEmail ) {
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
         referralsRemaining = response.referralsRemaining;
         return referralsRemaining;
+        // todo any notifications?
       }
     })
     .catch( error => {
