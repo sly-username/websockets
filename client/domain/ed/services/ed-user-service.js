@@ -14,7 +14,8 @@ var
   currentUserId = null,
   isOpenSession = false,
   hasOnboarded = false,
-  sessionAuthJSON = null;
+  sessionAuthJSON = null,
+  referralsRemaining = 5;
 
 Object.defineProperties( edUserService, {
   currentProfile: {
@@ -148,18 +149,25 @@ edUserService.changeProfileImage = function( image ) {
   return Promise.resolve( null );
 };
 
-edUserService.referral = function( args ) {
-  // todo need to send userId, email
-  // todo where do we store how many referrals they have left?
-  // todo what information/status codes will we be getting back from the server?
+edUserService.referral = function( friendEmail ) {
+  // todo need to send userId, friend's email
+  // todo save referral remaining information
   var data = {
-    userId: args.currentUserId,
-    email: args.email
+    currentUserId,
+    friendEmail
   };
 
-  return edConnectionService.request( route, priority, data )
-    .then( function() {
-
+  return edConnectionService.request( data )
+    .then( response => {
+      if ( response && response.status && response.status.code && response.status.code === 1 ) {
+        referralsRemaining = response.referralsRemaining;
+        return referralsRemaining;
+      }
+    })
+    .catch( error => {
+      console.log( "referral email was not successfully sent" );
+      console.log( error );
+      throw error;
     });
 };
 

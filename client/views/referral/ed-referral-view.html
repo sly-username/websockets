@@ -1,6 +1,6 @@
 <link rel="import" href="../../components/ed/ed-icon/ed-icon.html"/>
 
-<polymer-element name="ed-referral-view" attributes="">
+<polymer-element name="ed-referral-view" attributes="ed-id">
   <template>
     <link rel="stylesheet" href="./ed-referral-view.css">
     <div class="referral-wrapper">
@@ -8,11 +8,18 @@
         <button>
           <ed-icon name="burger"></ed-icon>
         </button>
-        <h1>Invite Friends</h1>
+        <h1>invite friends</h1>
       </div>
 
-      <input type="email" placeholder="INPUT EMAIL"/>
-      <button id="referral-submit" class="invalid">SEND EMAIL</button>
+      <ed-icon name="invite-friends"></ed-icon>
+
+      <p>
+        <!--todo change default?-->
+        {{ edProfile.name.firstName || Emma }}, you have {{ referralsRemaining }} invites left
+      </p>
+
+      <ed-form-input type="email" class="email" placeholder="Your Friend's Email" icon="envelope"></ed-form-input>
+      <button id="referral-submit" class="invalid">SEND INVITE</button>
     </div>
   </template>
   <script src="ed-referral-view.js"></script>
