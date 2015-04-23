@@ -64,6 +64,7 @@ edUserService.login = function( email, password ) {
     };
 
   return edConnectionService.authenticateConnection( email, password )
+    // todo does the profile contain userId information?
     .then( raw => edDataService.getProfileById( raw ))
     .then( edProfile => {
       currentProfile = edProfile.profileId;
@@ -73,7 +74,7 @@ edUserService.login = function( email, password ) {
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
-          user: currentId,
+          user: currentUser,
           profile: currentProfile
         }
       }));
@@ -138,7 +139,7 @@ edUserService.changeProfileImage = function( image ) {
    send( image );
    new Promise()
    "onmessage" --> check for a "image upload complete"
-   resolve( dataservice.getUserById( currentProfile.id ) )
+   resolve( dataservice.getUserById( currentProfile ) )
    */
 
   // need to match new image to appropriate user
