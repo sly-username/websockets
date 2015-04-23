@@ -27,6 +27,7 @@
           // todo change referralsRemaining number
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
+
       });
     });
 })( window.Polymer, window.System );

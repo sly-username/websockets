@@ -1,8 +1,24 @@
 @import "../../styles/ed/title-bar.mixin.less";
+@import "../../styles/ed/colors.vars.less";
 @import "../../styles/ed/buttons.mixin.less";
+
+.referral-wrapper {
+  text-align: center;
+  background-color: @darkPurple2;
+  height: 100%;
+  width: 100%;
+}
 
 .referral-title-bar {
   .edTitleBar();
+}
+
+ed-icon{
+  width: 11rem;
+  height: 11rem;
+  margin: 0 auto;
+  text-align: center;
+  fill: @lightGrey1;
 }
 
 #referral-submit {
@@ -14,9 +30,12 @@
   margin: 3% auto 0 auto;
 }
 
-input {
-  .edPrimaryButton();
+ed-form-input {
   bottom: 0;
   margin: 3% auto 0 auto;
+  text-align: center;
+}
+
+p {
   text-align: center;
 }
