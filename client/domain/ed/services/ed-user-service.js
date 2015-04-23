@@ -86,7 +86,8 @@ edUserService.login = function( email, password ) {
 
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUser = currentProfile;
+  var oldProfile = currentProfile,
+    oldUser = currentUser;
 
   return edConnectionService.deauthenticateSocket()
     .then( () => {
@@ -96,6 +97,7 @@ edUserService.logout = function() {
 
       edUserService.dispatch( createEvent( "edLogout", {
        detail: {
+         profile: oldProfile,
          user: oldUser
        }
       }));
