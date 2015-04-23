@@ -11,7 +11,7 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   currentProfile = null,
-  currentUser = null,
+  currentUserId = null,
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null;
@@ -24,11 +24,11 @@ Object.defineProperties( edUserService, {
       return currentProfile;
     }
   },
-  currentUser: {
+  currentUserId: {
     configurable: false,
     enumerable: false,
     get: function() {
-      return currentUser;
+      return currentUserId;
     }
   },
   isOpenSession: {
@@ -65,16 +65,18 @@ edUserService.login = function( email, password ) {
 
   return edConnectionService.authenticateConnection( email, password )
     // todo does the profile contain userId information?
-    .then( raw => edDataService.getProfileById( raw ))
+    .then( raw => {
+      currentUserId = raw.userId;
+      return edDataService.getProfileById( raw.profileId );
+    })
     .then( edProfile => {
-      currentProfile = edProfile.profileId;
-      currentUser = edProfile.userId;
+      currentProfile = edProfile;
       isOpenSession = true;
       sessionAuthJSON = json;
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
-          user: currentUser,
+          userId: currentUserId,
           profile: currentProfile
         }
       }));
@@ -89,7 +91,7 @@ edUserService.login = function( email, password ) {
     })
     .catch( () => {
       currentProfile = null;
-      currentUser = null;
+      currentUserId = null;
       isOpenSession = false;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
@@ -98,19 +100,19 @@ edUserService.login = function( email, password ) {
 
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUser = currentUser,
+  var oldUserId = currentUserId,
     oldProfile = currentProfile;
 
   return edConnectionService.deauthenticateSocket()
     .then( () => {
       currentProfile = null;
-      currentUser = null;
+      currentUserId = null;
       isOpenSession = false;
       sessionAuthJSON = null;
 
       edUserService.dispatch( createEvent( "edLogout", {
         detail: {
-          user: oldUser,
+          userId: oldUserId,
           profile: oldProfile
         }
       }));
@@ -151,7 +153,7 @@ edUserService.referral = function( args ) {
   // todo where do we store how many referrals they have left?
   // todo what information/status codes will we be getting back from the server?
   var data = {
-    userId: args.currentUser,
+    userId: args.currentUserId,
     email: args.email
   };
 
