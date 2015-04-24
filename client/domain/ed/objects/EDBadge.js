@@ -4,7 +4,7 @@ import define from "domain/ed/define-properties";
 import EDModel from "domain/ed/objects/EDModel";
 
 export default class EDBadge extends EDModel {
-  static get TYPE() {
+  static get MODEL_TYPE() {
     return "badge";
   }
 
