@@ -12,8 +12,7 @@
       <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 75 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
-          {{ edArtist.displayName || "Diego Martinez" }}
-          <span>Artist/Band</span>
+          <span>{{ edArtist.raw.artistName }}</span>
         </div>
         <img-placeholder src="{{ edArtist.displayImage }}" image="fillmurray"></img-placeholder>
       </section>

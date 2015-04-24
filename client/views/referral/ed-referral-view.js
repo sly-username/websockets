@@ -42,7 +42,7 @@
           }.bind( this ));
         },
         detached: function() {},
-        updatetReferralCount: function() {
+        updateReferralCount: function() {
           return userService.getReferrals()
             .then( function( response) {
               console.log( response );
