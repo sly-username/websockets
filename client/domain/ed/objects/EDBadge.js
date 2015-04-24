@@ -10,6 +10,9 @@ export default class EDBadge extends EDModel {
 
   constructor( args ) {
     super( args );
+
+    // TODO where does "dateAquired" go?
+
     define.readOnly( this, [
       "name",
       "badgeType"

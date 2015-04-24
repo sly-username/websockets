@@ -14,16 +14,13 @@ export default class EDProfile extends EDModel {
     define.readOnly( this, [
       "userId",
       "artId",
+      "artUrl",
       "contactId",
       "bio",
-      "email",
-      "zipcode",
       "website",
-      "hometown",
-      "createdDate",
-      "modifiedDate"
+      "hometown"
     ], args );
 
-    define.readOnlyDeep( this, [ "name", "socialLinks", "badgesEarned" ], args );
+    define.readOnlyDeep( this, [ "name", "address", "socialLinks", "badgesEarned" ], args );
   }
 }

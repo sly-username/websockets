@@ -4,6 +4,7 @@ import define from "domain/ed/define-properties";
 import EDMedia from "domain/ed/objects/media/EDMedia";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
+import edUserService from "domain/ed/services/ed-user-service";
 
 export default class EDTrack extends EDMedia {
   static get MODEL_TYPE() {
@@ -14,17 +15,21 @@ export default class EDTrack extends EDMedia {
     super( args );
 
     define.readOnly( this, [
-      "artistId",
+      "length",
+      "rating",
+      "averageRating",
       "createdBy",
-      "name",
       "playCount",
-      "waveformImage",
-      "createdDate"
+      "waveformImage"
     ], args );
   }
 
+  hasBeenRated() {
+    return this.rating !== -1;
+  }
+
   getArtist() {
-    return edDataService.getArtistById( this.artistId );
+    return edDataService.getArtistById( this.profileId );
   }
 
   getCreator() {
@@ -32,12 +37,13 @@ export default class EDTrack extends EDMedia {
     return edDataService.getByTypeAndId( "profile", this.createdBy );
   }
 
-  rate( number ) {
-    var json = {
-      profileId: 102, // fake profile id
-      trackId: 103, // fake id
-      rating: number
-    };
-    return edConnectionService.send( "track/rate/create", 10,  { data: json });
+  rate( rating ) {
+    return edConnectionService.send( "track/rate/set", 10, {
+      data: {
+        profileId: edUserService.currentProfile.id,
+        trackId: this.id,
+        rating
+      }
+    });
   }
 }
