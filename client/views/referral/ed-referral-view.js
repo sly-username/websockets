@@ -23,7 +23,7 @@
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
           console.log( this.emailInput );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
-
+          this.emailInput.setAttribute( "autofocus", "" );
         },
         attached: function() {
           clickEvents.forEach( function( eventName ) {
