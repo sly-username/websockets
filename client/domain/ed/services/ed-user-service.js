@@ -39,7 +39,7 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  hasOnboarded: { // TODO determine if this flag is needed
+  hasOnboarded: {
     configurable: false,
     enumerable: false,
     get: function() {
