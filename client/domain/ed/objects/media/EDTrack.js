@@ -6,8 +6,8 @@ import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 
 export default class EDTrack extends EDMedia {
-  static get TYPE() {
-    return "media-track";
+  static get MODEL_TYPE() {
+    return EDMedia.MODEL_TYPE + "-track";
   }
 
   constructor( args ) {
