@@ -55,6 +55,8 @@ Object.defineProperties( edUserService, {
   }
 });
 
+window.edUserService = edUserService;
+
 edUserService.login = function( email, password ) {
   var
     json = {
@@ -65,10 +67,8 @@ edUserService.login = function( email, password ) {
     };
 
   return edConnectionService.authenticateConnection( email, password )
-    // todo does the profile contain userId information?
     .then( raw => {
       currentUserId = raw.userId;
-
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
@@ -91,7 +91,8 @@ edUserService.login = function( email, password ) {
       // );
       return currentProfile;
     })
-    .catch( () => {
+    .catch(( error ) => {
+      console.error( error );
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
@@ -150,18 +151,18 @@ edUserService.changeProfileImage = function( image ) {
   return Promise.resolve( null );
 };
 
-edUserService.referral = function( friendEmail ) {
+edUserService.referral = function( email ) {
   // todo need to send userId, friend's email
   // todo save referral remaining information
   var data = {
     // todo
-    currentUserId: 10,
-    friendEmail
+    //userId: currentUserId,
+    userId: parseInt( currentUserId, 10 ),
+    email
   };
 
   return edConnectionService.request( "referral/create", 10, data )
     .then( response => {
-
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
         referralsRemaining = response.referralsRemaining;
         return referralsRemaining;

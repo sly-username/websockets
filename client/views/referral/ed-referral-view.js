@@ -13,15 +13,12 @@
             this.submitButton.setAttribute( "disabled", "" );
           }
         };
-      console.log( userService.currentUserId );
-
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
         userService: userService,
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
-          console.log( this.emailInput );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
           this.emailInput.setAttribute( "autofocus", "" );
         },
@@ -47,7 +44,6 @@
           // todo change referralsRemaining number
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
-
       });
     });
 })( window.Polymer, window.System );
