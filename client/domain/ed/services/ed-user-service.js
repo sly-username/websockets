@@ -11,6 +11,7 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   currentProfile = null,
+  currentUserId = null,
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null;
@@ -21,6 +22,13 @@ Object.defineProperties( edUserService, {
     enumerable: false,
     get: function() {
       return currentProfile;
+    }
+  },
+  currentUserId: {
+    configurable: false,
+    enumerable: false,
+    get: function() {
+      return currentUserId;
     }
   },
   isOpenSession: {
@@ -56,7 +64,11 @@ edUserService.login = function( email, password ) {
     };
 
   return edConnectionService.authenticateConnection( email, password )
-    .then( raw => edDataService.getProfileById( raw.profileId ))
+    // todo does the profile contain userId information?
+    .then( raw => {
+      currentUserId = raw.userId;
+      return edDataService.getProfileById( raw.profileId );
+    })
     .then( edProfile => {
       currentProfile = edProfile;
       isOpenSession = true;
@@ -64,7 +76,8 @@ edUserService.login = function( email, password ) {
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
-          user: currentProfile
+          userId: currentUserId,
+          profile: currentProfile
         }
       }));
 
@@ -78,6 +91,7 @@ edUserService.login = function( email, password ) {
     })
     .catch( () => {
       currentProfile = null;
+      currentUserId = null;
       isOpenSession = false;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
@@ -86,18 +100,21 @@ edUserService.login = function( email, password ) {
 
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUser = currentProfile;
+  var oldUserId = currentUserId,
+    oldProfile = currentProfile;
 
   return edConnectionService.deauthenticateSocket()
     .then( () => {
       currentProfile = null;
+      currentUserId = null;
       isOpenSession = false;
       sessionAuthJSON = null;
 
       edUserService.dispatch( createEvent( "edLogout", {
-       detail: {
-         user: oldUser
-       }
+        detail: {
+          userId: oldUserId,
+          profile: oldProfile
+        }
       }));
 
       // todo analytics
@@ -117,18 +134,33 @@ edUserService.logout = function() {
 edUserService.changeProfileImage = function( image ) {
   // todo a lot
   /*
-  // send "I'm going to send an image" -- ws.binaryType = "blob";
-  send({
-    "action":{ route:"profile/image/set" }
-  });
-  send( image );
-  new Promise()
-    "onmessage" --> check for a "image upload complete"
-    resolve( dataservice.getUserById( currentProfile.id ) )
-  */
+   // send "I'm going to send an image" -- ws.binaryType = "blob";
+   send({
+   "action":{ route:"profile/image/set" }
+   });
+   send( image );
+   new Promise()
+   "onmessage" --> check for a "image upload complete"
+   resolve( dataservice.getUserById( currentProfile ) )
+   */
 
   // need to match new image to appropriate user
   return Promise.resolve( null );
+};
+
+edUserService.referral = function( args ) {
+  // todo need to send userId, email
+  // todo where do we store how many referrals they have left?
+  // todo what information/status codes will we be getting back from the server?
+  var data = {
+    userId: args.currentUserId,
+    email: args.email
+  };
+
+  return edConnectionService.request( route, priority, data )
+    .then( function() {
+
+    });
 };
 
 edUserService.register = function( args ) {
