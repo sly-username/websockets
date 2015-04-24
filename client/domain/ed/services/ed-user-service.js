@@ -154,14 +154,16 @@ edUserService.changeProfileImage = function( image ) {
 edUserService.referral = function( email ) {
   // todo need to send userId, friend's email
   // todo save referral remaining information
-  var data = {
-    // todo
-    //userId: currentUserId,
-    userId: parseInt( currentUserId, 10 ),
-    email
+  var json = {
+    data: {
+      // todo
+      //userId: currentUserId,
+      userId: parseInt( currentUserId, 10 ),
+      email
+    }
   };
 
-  return edConnectionService.request( "referral/create", 10, data )
+  return edConnectionService.request( "referral/create", 10, json )
     .then( response => {
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
         referralsRemaining = response.referralsRemaining;
