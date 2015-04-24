@@ -4,7 +4,17 @@
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
       var userService = imported.default,
-        clickEvents = [ "mousedown", "touchstart" ];
+        clickEvents = [ "mousedown", "touchstart" ],
+        validateEmail = function() {
+          var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          if ( this.emailInput.validity.valid && re.test( this.emailInput.value )) {
+            this.submitButton.removeAttribute( "disabled" );
+          } else {
+            this.submitButton.setAttribute( "disabled", "" );
+          }
+        };
+      console.log( userService.currentUserId );
+
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
@@ -13,6 +23,7 @@
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
           console.log( this.emailInput );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
+
         },
         attached: function() {
           clickEvents.forEach( function( eventName ) {
@@ -20,11 +31,7 @@
           }.bind( this ));
           // todo add return "keydown" event.keyCode === 13
 
-          if ( this.emailInput.validity.valid ) {
-            this.submitButton.removeAttribute( "disabled" );
-          } else {
-            this.submitButton.setAttribute( "disabled", "" );
-          }
+          this.emailInput.addEventListener( "keyup", validateEmail.bind( this ));
         },
         detached: function() {},
         submitFriendEmail: function( event ) {
@@ -34,6 +41,7 @@
 
           return userService.referral( friendEmail )
             .then( function( response ) {
+              console.log( response );
               self.referralsRemaining = response;
             });
           // todo change referralsRemaining number

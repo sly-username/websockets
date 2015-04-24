@@ -68,6 +68,7 @@ edUserService.login = function( email, password ) {
     // todo does the profile contain userId information?
     .then( raw => {
       currentUserId = raw.userId;
+
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
@@ -153,12 +154,14 @@ edUserService.referral = function( friendEmail ) {
   // todo need to send userId, friend's email
   // todo save referral remaining information
   var data = {
-    currentUserId,
+    // todo
+    currentUserId: 10,
     friendEmail
   };
 
-  return edConnectionService.request( data )
+  return edConnectionService.request( "referral/create", 10, data )
     .then( response => {
+
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
         referralsRemaining = response.referralsRemaining;
         return referralsRemaining;
