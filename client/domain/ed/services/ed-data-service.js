@@ -138,7 +138,10 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
   }
 
   return dbsReadyPromise.then( dbsLoaded => {
-    pdb = getDBAndLRUForType( type ).pdb;
+    if ( pdb == null ) {
+      console.log( "pdb was not ready when getByType was called, re-setting pdb" );
+      pdb = getDBAndLRUForType( type ).pdb;
+    }
     return connectionService.request( route, priority, json );
   })
     .then(function( response ) {
