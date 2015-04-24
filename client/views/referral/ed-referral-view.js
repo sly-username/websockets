@@ -42,6 +42,12 @@
           }.bind( this ));
         },
         detached: function() {},
+        getCurrentReferralCount: function() {
+          return userService.getReferrals()
+            .then( function( response) {
+              console.log( response );
+            });
+        },
         submitFriendEmail: function( event ) {
           var friendEmail = this.emailInput.value,
             self = this;

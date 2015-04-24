@@ -57,6 +57,10 @@ Object.defineProperties( edUserService, {
 
 window.edUserService = edUserService;
 
+edUserService.getReferrals = function() {
+  return edConnectionService.request( "referral/get", 10 );
+};
+
 edUserService.login = function( email, password ) {
   var
     json = {
@@ -165,8 +169,9 @@ edUserService.referral = function( email ) {
 
   return edConnectionService.request( "referral/create", 10, json )
     .then( response => {
+      console.log( response );
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
-        referralsRemaining = response.referralsRemaining;
+        referralsRemaining = response.data.referralsRemaining;
         return referralsRemaining;
         // todo any notifications?
       }
