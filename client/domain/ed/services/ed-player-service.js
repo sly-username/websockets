@@ -9,26 +9,11 @@ import createEvent from "domain/lib/event/create-event";
 var
   queue = [],
   currentTrack = null,
+  emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
+  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
   setCurrentTrack,
   edPlayerService,
-  rateCurrentlyPlaying,
-  emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
-  // TODO remove debug
-  track1Data = {
-    id: 101,
-    type: "track",
-    name: "Burn Bridges"
-  },
-  track2Data = {
-    id: 102,
-    type: "track",
-    name: "Good Times Ahead"
-  },
-  // http://picosong.com/XFk6/
-  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
-  audio2 = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-04-AllBecauseYoureMine.mp3" ) || document.createElement( "audio" );
-  //track1 = new EDTrack( track1Data );
-  //track2 = new EDTrack();
+  rateCurrentlyPlaying;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -44,7 +29,6 @@ setCurrentTrack = function( edTrack ) {
 rateCurrentlyPlaying = function( number ) {
   if ( number != null ) {
     //currentTrack.rate( number );
-    //track1.rate( number );
   }
 };
 
@@ -215,9 +199,6 @@ export default edPlayerService = {
   },
 
   next: function() {
-    // TODO remove
-    this.enqueue( audio2 );
-
     if ( this.queue.length ) {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
@@ -240,5 +221,14 @@ export default edPlayerService = {
 
   rateSong: function( number ) {
     return rateCurrentlyPlaying( number );
+  },
+
+  // TODO use discover service to bring in song queue
+  // once onboarding and registration done
+  getTracksQueue: function( data ) {
+    return edDiscoverService.getDiscoverTrackList( data )
+      .then(( response ) => {
+        //this.queue.push( response );
+      });
   }
 };

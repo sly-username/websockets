@@ -57,12 +57,10 @@
 
       switch( tmpId ) {
         case "minify-icon":
-          console.log( "minify it" );
           this.mainPlayerWrapper.setAttribute( "class", "hidden" );
           this.miniPlayer.setAttribute( "class", "active" );
           break;
         case "mini-player":
-          console.log( "heeeeyyyyaaa" );
           this.mainPlayerWrapper.setAttribute( "class", "active" );
           this.miniPlayer.setAttribute( "class", "hidden" );
           break;
