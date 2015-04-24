@@ -18,12 +18,13 @@
         userService: userService,
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
-          this.emailInput.setAttribute( "autofocus", "" );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
           this.clickEvents = [ "mousedown", "touchstart" ];
           this.triggerList = [ this.emailInput, this.submitButton ];
         },
         attached: function() {
+          this.emailInput.setAttribute( "autofocus", "" );
+
           this.clickEvents.forEach( function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
           }.bind( this ));
@@ -48,9 +49,10 @@
 
           return userService.referral( friendEmail )
             .then( function( response ) {
+              this.emailInput.value = "";
               console.log( response );
               self.referralsRemaining = response;
-            });
+            }.bind( this ));
           // todo change referralsRemaining number
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
