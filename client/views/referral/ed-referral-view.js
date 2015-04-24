@@ -33,12 +33,12 @@
           this.triggerList.forEach( function( trigger ) {
             trigger.addEventListener( "keydown", function( event ) {
               if ( event.keyCode === 13 ) {
-                this.submitFriendEmail( event ).bind( this );
+                this.submitFriendEmail( event );
               }
 
               return false;
             }.bind( this ));
-          });
+          }.bind( this ));
         },
         detached: function() {},
         submitFriendEmail: function( event ) {
