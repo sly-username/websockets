@@ -10,7 +10,8 @@
         /* LIFECYCLE */
         userService: userService,
         ready: function() {
-          this.emailInput = this.shadowRoot.getElementsByTagName( "input" )[0];
+          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
+          console.log( this.emailInput );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
         },
         attached: function() {
@@ -18,15 +19,14 @@
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
           }.bind( this ));
           // todo add return "keydown" event.keyCode === 13
-        },
-        detached: function() {},
-        validateFriendEmail: function() {
-          if ( this.emailInput.valid ){
+
+          if ( this.emailInput.validity.valid ) {
             this.submitButton.removeAttribute( "disabled" );
           } else {
             this.submitButton.setAttribute( "disabled", "" );
           }
         },
+        detached: function() {},
         submitFriendEmail: function( event ) {
           var friendEmail = this.emailInput.value,
             self = this;
