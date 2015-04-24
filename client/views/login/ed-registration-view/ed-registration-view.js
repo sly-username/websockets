@@ -62,7 +62,7 @@
         if ( areValidInputs ) {
           // refactor these selectors...
           registrationDataBlock = {
-            type: "user",
+            type: "fan",
             email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
             password: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#primary-box" ).value,
             passwordConfirmation: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#confirm-box" ).value,

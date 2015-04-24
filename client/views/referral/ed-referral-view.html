@@ -14,11 +14,10 @@
       <ed-icon name="invite-friends"></ed-icon>
 
       <p>
-        <!--todo change default?-->
-        {{ userService.currentProfile.name.first || "Emma" }}, you have {{ userService.getCurrentReferralCount || 5 }}<br>invites left
+        {{ userService.currentProfile.firstName }}, you have {{ userService.referralsRemaining }}<br>invites left
       </p>
 
-      <ed-form-input type="email" class="email" placeholder="Your Friend's Email" icon="envelope"></ed-form-input>
+      <ed-form-input type="email" class="email" placeholder="Friend's Email" icon="envelope"></ed-form-input>
       <button id="referral-submit" class="invalid" disabled>SEND INVITE</button>
     </div>
   </template>

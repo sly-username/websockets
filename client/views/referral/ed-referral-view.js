@@ -5,7 +5,7 @@
     .then( function( imported ) {
       var userService = imported.default,
         validateEmail = function() {
-          var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
           if ( this.emailInput.validity.valid && re.test( this.emailInput.value )) {
             this.submitButton.removeAttribute( "disabled" );
           } else {
@@ -42,7 +42,7 @@
           }.bind( this ));
         },
         detached: function() {},
-        getCurrentReferralCount: function() {
+        updatetReferralCount: function() {
           return userService.getReferrals()
             .then( function( response) {
               console.log( response );

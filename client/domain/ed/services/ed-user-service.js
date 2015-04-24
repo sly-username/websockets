@@ -15,7 +15,7 @@ var
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null,
-  referralsRemaining = 5;
+  referralsRemaining;
 
 Object.defineProperties( edUserService, {
   currentProfile: {
@@ -51,6 +51,13 @@ Object.defineProperties( edUserService, {
     enumerable: false,
     get: function() {
       return sessionAuthJSON;
+    }
+  },
+  referralsRemaining: {
+    configurable: false,
+    enumberable: false,
+    get: function() {
+      return edUserService.getReferrals();
     }
   }
 });
@@ -100,6 +107,7 @@ edUserService.login = function( email, password ) {
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
+      referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
@@ -116,6 +124,7 @@ edUserService.logout = function() {
       currentUserId = null;
       isOpenSession = false;
       sessionAuthJSON = null;
+      referralsRemaining = 0;
 
       edUserService.dispatch( createEvent( "edLogout", {
         detail: {
@@ -173,7 +182,7 @@ edUserService.referral = function( email ) {
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
         referralsRemaining = response.data.referralsRemaining;
         return referralsRemaining;
-        // todo any notifications?
+        // todo any notifications?36
       }
     })
     .catch( error => {
