@@ -1,12 +1,12 @@
 ( function( polymer ) {
   "use strict";
   var triggerMenuHandler = function() {
-    if ( this.edMenu.hasAttribute( "hide" ) ) {
-      this.edMenu.removeAttribute( "hide" );
-      this.edTitle.style.opacity = 0;
+    if ( !this.edMenu.hasAttribute( "class" ) ) {
+      this.edMenu.setAttribute( "class", "hide-menu" );
+      this.settingsTitle.style.opacity = 1;
     } else {
-      this.edMenu.setAttribute( "hide", "" );
-      this.edTitle.style.opacity = 1;
+      this.edMenu.removeAttribute( "class" );
+      this.settingsTitle.style.opacity = 0;
     }
   }
 
@@ -14,8 +14,9 @@
     /* LIFECYCLE */
     ready: function() {
       this.edMenu = document.getElementById( "side-menu" );
-      this.edTitle = this.shadowRoot.getElementById( "settings-title" );
       this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
+      this.settingsTitle = this.shadowRoot.getElementById( "settings-title" );
+      console.log( this.settingsTitle );
       this.handlers = {
         triggerMenu: triggerMenuHandler.bind( this )
       };

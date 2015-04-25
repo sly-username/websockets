@@ -3,11 +3,24 @@
 @import "../../../styles/mixins/prefixes/transforms.less";
 @import "../../../styles/mixins/prefixes/user-select";
 
+:host([disable]) {
+  #rating-form {
+    opacity:0;
+    #input-field {
+    pointer-events: none;
+  }
+  }
+  #disable-text {
+    opacity: 1;
+  }
+}
+
 #rating-form {
   position: relative;
-  height: 10rem;
+  height: 11rem;
   overflow: hidden;
-  margin: -5% 20% 0 20%;
+  width: 60%;
+  margin: 0 auto;
   .rating {
     border: none;
     #star-field {
@@ -54,10 +67,17 @@
 }
 
 #disable-text {
-  text-align: center;
-  color: @originalWhite;
-  opacity: .25;
-  .edType( heading-XXS );
+  opacity: 0;
+  position: relative;
+  p {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    text-align: center;
+    color: @originalWhite;
+    opacity: .25;
+    .edType(heading-XXS);
+  }
 }
 
 .track-title, .artist-name, .rate-song {
@@ -77,5 +97,5 @@
 .rate-song {
   .edType( heading-XXS );
   opacity: .33;
-  margin-bottom: 0;
+  margin-bottom: -4rem;
 }

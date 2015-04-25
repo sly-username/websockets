@@ -1,20 +1,21 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/user-select.less";
+@import "../../../styles/mixins/prefixes/animations.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
-#ad-banner {
-  height: 9%;
-  display: block;
-  img {
-    width: 100%;
-  }
+:host {
+  padding: 1rem 0;
 }
 
-.player-container {
+#ad-banner {
+  width: 100%;
+  display: none;
+}
+
+#mini-player-container {
   padding-bottom: 12%;
   height: 0;
   background: @darkPurple3;
-  display: block;
   width: 100%;
   overflow: hidden;
   img {
@@ -22,47 +23,50 @@
     width: 11%;
     height: auto;
     float: left;
-    margin: 0.5%;
+    margin: .5%;
+    margin-right: 2%;
   }
   .text-container {
-    margin: 2%;
     display: inline;
     float: left;
     color: @originalWhite;
-    #title {
-      .edType( heading-M );
-      margin-top: 3%;
-      margin-bottom: 0;
-    }
-    #name {
-      margin-top: 0;
-      color: @lightGrey1;
-      .edType( heading-XS );
-    }
   }
   .responsive-btn-wrapper {
     position: relative;
     width: 10%;
     float:right;
     margin: 1.5%;
-    #play-btn {
-      cursor: pointer;
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      height: 0;
-      padding: 50% 0;
-      border-radius: 50%;
-      background: @darkPurple1;
-      border: none;
-      ed-icon {
-        fill: @originalWhite;
-        width: 70%;
-        .userSelect(none);
-      }
-      &:focus {
-        outline: none;
-      }
-    }
+    margin-top: .5%;
   }
+}
+
+#play-btn {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 0;
+  padding: 50% 0;
+  border-radius: 50%;
+  background: @darkPurple1;
+  border: none;
+  ed-icon {
+    fill: @originalWhite;
+    width: 70%;
+    .userSelect(none);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+#title {
+  .edType( heading-S );
+  margin: 0;
+  line-height: 1;
+}
+#name {
+  opacity: .25;
+  .edType( heading-XS );
+  margin: 0;
 }

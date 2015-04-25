@@ -4,24 +4,24 @@
 @import "../../styles/ed/alignments.mixin.less";
 @import "../../styles/mixins/prefixes/transforms.less";
 
-:host([hide]){
-  position: absolute;
-  top: 0;
-  left: 0;
-  .transform( translateX( -100% ));
+:host {
+//  top: 0;
+//  left: 0;
+//  .transform( translateX(-100%));
 }
 
-:host {
-  float: left;
-  transition: .3s;
-}
 .menu-wrapper {
+  float: left;
   width: 84%;
   padding-top: 6rem;
-  position: relative;
+  margin: 0;
+//  position: relative;
   height: 100vh;
+  background: @originalWhite;
+  border: 1px solid red;
   .menu-list {
     a {
+      text-decoration: none;
       box-sizing: border-box;
       height: 9.6rem;
       display: block;
@@ -37,10 +37,9 @@
         width: 6rem;
         height: 100%;
         vertical-align: middle;
-        // works when svgs get fixed
         fill: @lightGrey1;
       }
-      &:hover, :focus, :active {
+      &:hover, :focus {
         border-left: 2.1rem solid @originalPurple;
       }
     }
