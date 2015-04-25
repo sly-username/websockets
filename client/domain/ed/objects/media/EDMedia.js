@@ -10,7 +10,21 @@ export default class EDMedia extends EDModel {
 
   constructor( args ) {
     super( args );
-    define.readOnly( this, [ "original" ], args );
-    define.readOnlyDeep( this, [ "phone", "tablet", "thumbnail" ], args );
+
+    define.enumReadOnly( this, [
+      "profileId",
+      "artId",
+      "artUrl",
+      "name",
+      "genre",
+      "original"
+    ], args );
+
+    define.enumReadOnlyDeep( this, [
+      "art",
+      "phone",
+      "tablet",
+      "thumbnail"
+    ], args );
   }
 }

@@ -84,5 +84,8 @@ export default {
   },
   isMediaType( object ) {
     return this.checkForInstanceOfType( EDMedia.MODEL_TYPE, object );
+  },
+  isGenreType( object ) {
+    return this.checkForInstanceOfType( EDGenre.MODEL_TYPE, object );
   }
 };
