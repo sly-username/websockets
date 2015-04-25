@@ -2,6 +2,7 @@ import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDGenre from "domain/ed/objects/EDGenre";
 
 var currentProfileBlend = [],
+  likedBlend = [],
   trackIDList = [],
   edDiscoverService;
 
@@ -9,6 +10,19 @@ export default edDiscoverService = {
 
   get currentProfileBlend() {
     return currentProfileBlend;
+  },
+
+  get likedBlend() {
+    return likedBlend;
+  },
+
+  setLikedBlend( blend ) {
+    if ( blend != null && Array.isArray( blend )) {
+      likedBlend = blend;
+      return true;
+    }
+
+    return false;
   },
 
   getGenreTracks( genreID ) {
@@ -46,12 +60,14 @@ export default edDiscoverService = {
   setCurrentProfileBlend( updatedProfileBlend ) {
     currentProfileBlend = updatedProfileBlend;
 
-    return edConnectionService.request( currentProfileBlend )
+    return edConnectionService.request( "profile/blend/set", 10, currentProfileBlend )
       .then( msg => {
+        console.log( msg );
         trackIDList = msg;
         return trackIDList;
       })
       .catch( error => {
+        console.log( error );
         throw error;
       });
   }

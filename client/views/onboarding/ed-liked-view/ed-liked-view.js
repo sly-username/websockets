@@ -8,57 +8,76 @@
       discoverService = imported[ 0 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
-      i,
       triggerBubblesHandler = function( event ) {
+        var i, isSet;
+        event.preventDefault();
+
+        // clear array
+        bubbleArray = [];
+
         for ( i = 0; i < this.inputBubbles.length; i++ ) {
           if ( this.inputBubbles[i].hasAttribute( "checked" ) ) {
             bubbleArray.push( this.inputBubbles[i].getAttribute( "data-id" ) );
           }
         }
+
+        isSet = discoverService.setLikedBlend( bubbleArray );
+
+        if ( isSet ) {
+          this.router.go( "/onboarding/dislike" );
+        }
       },
       triggerCounterHandler = function( event ) {
-        var i;
-        for ( i = 0; i < this.inputBubbles.length; i++ ) {
-          if ( this.inputBubbles[i].hasAttribute( "checked" ) ) {
-            bubbleCounter++;
-          }
-          if ( bubbleCounter > 3 ) {
-            latestcheck.checked = false;
+        if ( event.target.hasAttribute( "checked" ) &&
+          event.target.hasAttribute( "data-id" ) &&
+          bubbleCounter < 3 ) {
+          bubbleCounter++;
+        } else if ( !event.target.hasAttribute( "checked" ) &&
+          !event.target.hasAttribute( "disabled" ) &&
+          bubbleCounter !== 0 ) {
+          bubbleCounter--;
+        }
+
+        return this.handlers.bubblesLiked();
+      },
+      bubblesLikedHandler = function( event ) {
+        var i, j, k;
+
+        // so many for loops ugh
+        if ( bubbleCounter < 3 ) {
+          for ( i = 0; i < this.inputBubbles.length; i++ ) {
+            if ( !this.inputBubbles[ i ].hasAttribute( "checked" ) ) {
+              this.inputBubbles[ i ].removeAttribute( "disabled" );
+            }
           }
         }
-        //if ( event.target.hasAttribute( "checked" ) && bubbleCounter !== 3 ) {
-        //  bubbleCounter++;
-        //} else if ( !event.target.hasAttribute( "checked" ) && bubbleCounter < 4 ) {
-        //  event.target.removeAttribute( "disabled" );
-        //  bubbleCounter--;
-        //}
-        //
-        //if ( bubbleCounter === 3 ) {
-        //  for ( i = 0; i < this.inputBubbles.length; i++ ) {
-        //    this.inputBubbles[ i ].setAttribute( "disabled", "" );
-        //
-        //    if ( this.inputBubbles[ i ].hasAttribute( "checked" ) ) {
-        //      this.inputBubbles[ i ].removeAttribute( "disabled" );
-        //      console.log( this.inputBubbles[ i ] );
-        //    }
-        //  }
-        //}
-        //
-        //console.log( "event.target", event.target );
-        //console.log( "bubbleCounter", bubbleCounter );
+
+        if ( bubbleCounter === 3 ) {
+          for ( j = 0; j < this.inputBubbles.length; j++ ) {
+            this.inputBubbles[ j ].setAttribute( "disabled", "" );
+          }
+
+          for ( k = 0; k < this.inputBubbles.length; k++ ) {
+            if ( this.inputBubbles[ k ].hasAttribute( "checked" ) ) {
+              this.inputBubbles[ k ].removeAttribute( "disabled" );
+            }
+          }
+        }
       };
 
     polymer( "ed-liked-view", {
       /* LIFECYCLE */
       ready: function() {
+        this.inputBubbles     = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
+        this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
+        this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
+
+        // handlers
         this.handlers = {
           triggerBubbles: triggerBubblesHandler.bind( this ),
-          triggerCounter: triggerCounterHandler.bind( this )
+          triggerCounter: triggerCounterHandler.bind( this ),
+          bubblesLiked: bubblesLikedHandler.bind( this )
         };
-        this.inputBubbles = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
-        this.nextBtn = this.shadowRoot.getElementById( "next-button" );
-        this.bubbleContainer = this.shadowRoot.getElementById( "bubble-container" );
-        console.log( this.inputBubbles[0].shadowRoot.getElementsByTagName( "input" ));
       },
       attached: function() {
         this.nextBtn.addEventListener( "click", this.handlers.triggerBubbles );
