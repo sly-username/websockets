@@ -12,7 +12,7 @@
       <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 75 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
-          <span>{{ edArtist.raw.artistName }}</span>
+          <span>{{ edArtist.raw.displayName }}</span>
         </div>
         <img-placeholder src="{{ edArtist.displayImage }}" image="fillmurray"></img-placeholder>
       </section>
