@@ -11,6 +11,6 @@ export default class EDArtistGroup extends EDArtist {
   constructor( args ) {
     super( args );
     // TODO add artist group (band) only properties
-    define.readOnly( this, [ "admin" ], args );
+    define.enumReadOnly( this, [ "admin" ], args );
   }
 }

@@ -10,7 +10,8 @@ export default class EDFan extends EDProfile {
 
   constructor ( args ) {
     super( args );
-    define.readOnly( this, [
+
+    define.enumReadOnly( this, [
       "yearOfBirth"
     ], args );
   }

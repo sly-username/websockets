@@ -14,7 +14,7 @@ export default class EDArtist extends EDProfile {
   constructor( args ) {
     super( args );
 
-    define.readOnly( this, [
+    define.enumReadOnly( this, [
       "genreId",
       "influencedBy",
       "displayName",

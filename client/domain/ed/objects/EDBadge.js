@@ -13,7 +13,7 @@ export default class EDBadge extends EDModel {
 
     // TODO where does "dateAquired" go?
 
-    define.readOnly( this, [
+    define.enumReadOnly( this, [
       "name",
       "badgeType"
     ], args );

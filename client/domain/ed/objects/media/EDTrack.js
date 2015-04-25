@@ -14,13 +14,16 @@ export default class EDTrack extends EDMedia {
   constructor( args ) {
     super( args );
 
-    define.readOnly( this, [
+    define.enumReadOnly( this, [
       "length",
       "rating",
-      "averageRating",
-      "createdBy",
-      "playCount",
-      "waveformImage"
+      "format",
+      "bitrate",
+      "encoding"
+//      "averageRating",
+//      "createdBy",
+//      "playCount",
+//      "waveformImage"
     ], args );
   }
 
@@ -35,6 +38,14 @@ export default class EDTrack extends EDMedia {
   getCreator() {
     // TODO figure this one out if needed
     return edDataService.getByTypeAndId( "profile", this.createdBy );
+  }
+
+  getUrl() {
+    return edConnectionService.request( "track/url/get", 10, {
+      data: {
+        id: this.id
+      }
+    });
   }
 
   rate( rating ) {
