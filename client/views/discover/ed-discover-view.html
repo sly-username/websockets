@@ -3,25 +3,24 @@
 <polymer-element name="ed-discover-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-discover-view.css">
-
-    <div class="discover-heading">
-      <button>
-        <ed-icon name="burger"></ed-icon>
-      </button>
-      <h1>discover</h1>
+    <div class="discover-wrapper">
+      <div class="discover-heading">
+        <button id="menu-trigger">
+          <ed-icon name="burger"></ed-icon>
+        </button>
+        <h1 id="discover-title">discover</h1>
+      </div>
+      <ul class="discover-list">
+        <li id="featured-button">Featured</li>
+        <li class="genre-title">by genre</li>
+        <li id="pop-button">Pop</li>
+        <li id="rock-button">Rock</li>
+        <li id="alternative-button">Alternative</li>
+        <li id="country-button">Country</li>
+        <li id="hiphop-button">Hip-Hop/Urban</li>
+        <li id="edm-button">EDM</li>
+      </ul>
     </div>
-
-    <ul class="discover-list">
-      <li id="featured-button">Featured</li>
-      <li class="genre-title">by genre</li>
-      <li id="pop-button">Pop</li>
-      <li id="rock-button">Rock</li>
-      <li id="alternative-button">Alternative</li>
-      <li id="country-button">Country</li>
-      <li id="hiphop-button">Hip-Hop/Urban</li>
-      <li id="edm-button">EDM</li>
-    </ul>
-
   </template>
   <script src="ed-discover-view.js"></script>
 </polymer-element>

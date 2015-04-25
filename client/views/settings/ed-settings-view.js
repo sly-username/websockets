@@ -2,11 +2,11 @@
   "use strict";
   var triggerMenuHandler = function() {
     if ( !this.edMenu.hasAttribute( "class" ) ) {
-      this.edMenu.setAttribute( "class", "hide-menu" );
-      this.settingsTitle.style.opacity = 1;
+      this.edMenu.setAttribute( "class", "show-menu" );
+      this.settingsTitle.style.opacity = 0;
     } else {
       this.edMenu.removeAttribute( "class" );
-      this.settingsTitle.style.opacity = 0;
+      this.settingsTitle.style.opacity = 1;
     }
   }
 
@@ -16,7 +16,6 @@
       this.edMenu = document.getElementById( "side-menu" );
       this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
       this.settingsTitle = this.shadowRoot.getElementById( "settings-title" );
-      console.log( this.settingsTitle );
       this.handlers = {
         triggerMenu: triggerMenuHandler.bind( this )
       };

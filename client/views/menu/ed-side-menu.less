@@ -5,20 +5,17 @@
 @import "../../styles/mixins/prefixes/transforms.less";
 
 :host {
-//  top: 0;
-//  left: 0;
-//  .transform( translateX(-100%));
-}
-
-.menu-wrapper {
   float: left;
   width: 84%;
   padding-top: 6rem;
   margin: 0;
-//  position: relative;
   height: 100vh;
   background: @originalWhite;
-  border: 1px solid red;
+  position: absolute;
+  .transform( translateX( -100% ));
+}
+
+.menu-wrapper {
   .menu-list {
     a {
       text-decoration: none;
