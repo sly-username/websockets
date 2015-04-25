@@ -62,7 +62,6 @@ export default edDiscoverService = {
 
     return edConnectionService.request( "profile/blend/set", 10, currentProfileBlend )
       .then( msg => {
-        console.log( msg );
         trackIDList = msg;
         return trackIDList;
       })
