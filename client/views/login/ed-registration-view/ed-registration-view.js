@@ -1,21 +1,18 @@
 ( function( polymer, System ) {
   "use strict";
 
-  Promise.all([
-    System.import( "domain/ed/objects/model-type-checker" ),
-    System.import( "domain/ed/services/ed-user-service" )
-  ]).then(function( imported ) {
+  System.import( "domain/ed/services/ed-user-service" )
+  .then(function( imported ) {
     var
-      userService = imported[ 1 ].default,
-      typeChecker = imported[ 0 ].default,
+      userService = imported.default,
       validateFormInputValues;
 
     validateFormInputValues = function( self ) {
-      var i,
+      var i, value,
         length = self.formInputs.length;
 
-      for ( i = 0; i < length; i++) {
-        var value = self.formInputs[ i ].shadowRoot.querySelector( "input" ).value;
+      for ( i = 0; i < length; i++ ) {
+        value = self.formInputs[ i ].shadowRoot.querySelector( "input" ).value;
         return value !== "";
       }
 
@@ -25,62 +22,68 @@
     polymer( "ed-registration-view", {
       /* LIFECYCLE */
       ready: function() {
-        this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
-        this.formContainer = this.shadowRoot.getElementById( "registration-form" );
         this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
-        // TODO maybe a better way to grab the form inputs
-        this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
+        this.eventNames = [ "mousedown", "touchstart" ];
+
+        this.formInputs = this.shadowRoot.querySelectorAll( "ed-form-input" );
+        this.firstNameInput = this.shadowRoot.querySelector( ".name-first" ).shadowRoot.querySelector( "input" );
+        this.lastNameInput = this.shadowRoot.querySelector( ".name-last" ).shadowRoot.querySelector( "input" );
+        this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
+        this.inviteCodeInput = this.shadowRoot.querySelector( ".invite-code" ).shadowRoot.querySelector( "input" );
+        this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" ).shadowRoot.querySelector( "input" );
+        this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( "input" );
+
+        this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
+        this.passwordInput = this.shadowRoot.querySelector( ".password" )
+          .shadowRoot.querySelector( "input#primary-box" );
+        this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
+          .shadowRoot.querySelector( "input#confirm-box" );
       },
       attached: function() {
-        // this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
-        this.formContainer.addEventListener( "keypress", this.handleEvent.bind( this ) );
-        this.submitButton.addEventListener( "click", this.handleEvent.bind( this ), false);
-      },
-      handleEvent: function( event ) {
-        if ( event.type === "keypress" && event.keyCode === 13) {
-          this.submitForm( event );
-        }
+        this.submitButton.setAttribute( "disabled", "" );
 
-        if ( event.type === "click" ) {
-          this.submitForm( event );
-        }
+        this.eventNames.forEach( function( event ) {
+          this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
+        }.bind( this ));
+
+        this.submitButton.addEventListener( "keydown", function( event ) {
+          if ( event.keyCode === 13 ) {
+            this.submitForm( event );
+          }
+
+          return false;
+        }.bind( this ));
       },
-      submitCheck: function( event ) {
-        if ( this.pairedInput.isValid ) {
+      submitCheck: function() {
+        var areValidInputs = validateFormInputValues( this );
+        if ( areValidInputs ) {
           this.submitButton.removeAttribute( "disabled" );
-        } else {
-          this.submitButton.setAttribute( "disabled", "" );
         }
       },
       submitForm: function( event ) {
-        var authBlock, registrationDataBlock, areValidInputs;
+        var registrationDataBlock;
         // TODO remove debug
         event.preventDefault();
 
-        areValidInputs = validateFormInputValues( this );
+        registrationDataBlock = {
+          type: "fan",
+          email: this.emailInput.value,
+          password: this.passwordInput.value,
+          passwordConfirmation: this.passwordConfirmInput.value,
+          name: {
+            first: this.firstNameInput.value,
+            last: this.lastNameInput.value
+          },
+          inviteCode: this.inviteCodeInput.value,
+          yearOfBirth: this.yearOfBirthInput.value,
+          zipcode: this.zipcodeInput.value
+        };
 
-        if ( areValidInputs ) {
-          // refactor these selectors...
-          registrationDataBlock = {
-            type: "fan",
-            email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
-            password: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#primary-box" ).value,
-            passwordConfirmation: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#confirm-box" ).value,
-            name: {
-              first: this.formContainer.querySelector( "ed-form-input.name-first" ).shadowRoot.querySelector( "input" ).value,
-              last: this.formContainer.querySelector( "ed-form-input.name-last" ).shadowRoot.querySelector( "input" ).value
-            },
-            inviteCode: this.formContainer.querySelector( "ed-form-input.invite-code" ).shadowRoot.querySelector( "input" ).value,
-            yearOfBirth: this.formContainer.querySelector( "ed-form-input.birthday" ).shadowRoot.querySelector( "input" ).valueAsDate.getFullYear(),
-            zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
-          };
-
-          // todo do artists also go through onboarding?
-          userService.register( registrationDataBlock )
-            .then(function() {
-              this.router.go( "/onboarding/like" );
-            }.bind( this ));
-        }
+        // todo do artists also go through onboarding?
+        userService.register( registrationDataBlock )
+          .then(function() {
+            this.router.go( "/onboarding/like" );
+          }.bind( this ));
       },
       detached: function() {},
       attributeChanged: function( attrName, oldValue, newValue ) {}
