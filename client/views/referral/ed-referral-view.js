@@ -21,6 +21,7 @@
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
           this.clickEvents = [ "mousedown", "touchstart" ];
           this.triggerList = [ this.emailInput, this.submitButton ];
+          this.referralMessage = this.shadowRoot.getElementById( "referral-message" );
         },
         attached: function() {
           userService.getReferrals();
@@ -44,21 +45,21 @@
         },
         detached: function() {},
         updateReferralCount: function() {
+          var referralsRemaining;
           return userService.getReferrals()
             .then( function( response) {
-              console.log( response );
+              referralsRemaining = response.data.count;
+              return referralsRemaining;
             });
         },
         submitFriendEmail: function( event ) {
-          var friendEmail = this.emailInput.value,
-            self = this;
+          var friendEmail = this.emailInput.value;
           event.preventDefault();
 
           return userService.referral( friendEmail )
             .then( function( response ) {
+              this.referralsRemaining = response;
               this.emailInput.value = "";
-              console.log( response );
-              self.referralsRemaining = response;
             }.bind( this ));
           // todo change referralsRemaining number
         },

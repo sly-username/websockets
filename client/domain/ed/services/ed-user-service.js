@@ -68,7 +68,6 @@ window.edUserService = edUserService;
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
-      console.log( response.data.count );
       referralsRemaining = response.data.count;
       return referralsRemaining;
     });
