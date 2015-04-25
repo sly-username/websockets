@@ -12,7 +12,7 @@ export default edDiscoverService = {
   },
 
   getGenreTracks( genreID ) {
-    return edConnectionService.request( genreID )
+    return edConnectionService.request( "discover/list", 10, genreID )
       .then( msg => {
         trackIDList = msg;
         return trackIDList;

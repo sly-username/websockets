@@ -3,6 +3,7 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 import edAnalyticsService from "domain/analytics/EDAnalytics";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edDiscoverService from "domain/ed/services/ed-discover-service";
+import edDataService from "domain/ed/services/ed-data-service";
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 
@@ -225,10 +226,13 @@ export default edPlayerService = {
 
   // TODO use discover service to bring in song queue
   // once onboarding and registration done
-  getTracksQueue: function( data ) {
-    return edDiscoverService.getDiscoverTrackList( data )
+  getTracksQueue: function( genreId ) {
+    return edDiscoverService.getGenreTracks( { data: { id: 101, genreId: genreId, count: 5 }})
       .then(( response ) => {
+        console.log( response.data );
         //this.queue.push( response );
       });
   }
 };
+
+window.edPlayerService = edPlayerService;
