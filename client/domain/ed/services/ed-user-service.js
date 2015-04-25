@@ -57,15 +57,21 @@ Object.defineProperties( edUserService, {
     configurable: false,
     enumberable: false,
     get: function() {
-      return edUserService.getReferrals();
+      return referralsRemaining;
     }
   }
 });
 
+// todo remove
 window.edUserService = edUserService;
 
 edUserService.getReferrals = function() {
-  return edConnectionService.request( "referral/get", 10 );
+  return edConnectionService.request( "referral/get", 10 )
+    .then( response => {
+      console.log( response.data.count );
+      referralsRemaining = response.data.count;
+      return referralsRemaining;
+    });
 };
 
 edUserService.login = function( email, password ) {
@@ -93,6 +99,9 @@ edUserService.login = function( email, password ) {
           profile: currentProfile
         }
       }));
+
+      edUserService.getReferrals();
+      //console.log( this.referralsRemaining );
 
       // todo analytics
       // edAnalyticsService.send(

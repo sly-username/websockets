@@ -23,6 +23,7 @@
           this.triggerList = [ this.emailInput, this.submitButton ];
         },
         attached: function() {
+          userService.getReferrals();
           this.emailInput.setAttribute( "autofocus", "" );
 
           this.clickEvents.forEach( function( eventName ) {

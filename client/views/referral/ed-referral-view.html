@@ -14,7 +14,7 @@
       <ed-icon name="invite-friends"></ed-icon>
 
       <p>
-        {{ userService.currentProfile.raw.firstName }}, you have {{ updateReferralCount }}<br>invites left
+        {{ userService.currentProfile.raw.firstName }}, you have {{ userService.referralsRemaining }}<br>invites left
       </p>
 
       <ed-form-input type="email" class="email" placeholder="Friend's Email" icon="envelope"></ed-form-input>
