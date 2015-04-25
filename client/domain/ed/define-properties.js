@@ -1,5 +1,7 @@
 /*eslint consistent-this: 0 */
 var readOnly = function( value ) {
+    value = typeof value === "undefined" ? null : value;
+
     return {
       configurable: false,
       enumerable: false,
@@ -9,9 +11,12 @@ var readOnly = function( value ) {
   },
   readOnlyFreezeObjects = function( value ) {
     value = typeof value === "object" ? Object.freeze( value ) : value;
+    value = typeof value === "undefined" ? null : value;
     return readOnly( value );
   },
   enumRO = function( value ) {
+    value = typeof value === "undefined" ? null : value;
+
     return {
       configurable: false,
       enumerable: true,
@@ -21,9 +26,12 @@ var readOnly = function( value ) {
   },
   enumROFreezeObjects = function( value ) {
     value = typeof value === "object" ? Object.freeze( value ) : value;
+    value = typeof value === "undefined" ? null : value;
     return enumRO( value );
   },
   configRO = function( value ) {
+    value = typeof value === "undefined" ? null : value;
+
     return {
       configurable: true,
       enumerable: false,
@@ -32,6 +40,8 @@ var readOnly = function( value ) {
     };
   },
   configEnumRO = function( value ) {
+    value = typeof value === "undefined" ? null : value;
+
     return {
       configurable: true,
       enumerable: true,
