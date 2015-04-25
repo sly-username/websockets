@@ -14,6 +14,10 @@ export default class EDArtist extends EDProfile {
   constructor( args ) {
     super( args );
 
+    if ( args.yearFounded ) {
+      args.yearFounded = new Date( args.yearFounded );
+    }
+
     define.enumReadOnly( this, [
       "genreId",
       "influencedBy",
