@@ -5,6 +5,7 @@
   .then(function( imported ) {
     var
       userService = imported.default,
+      eventNames = [ "mousedown", "touchstart" ];,
       validateFormInputValues;
 
     validateFormInputValues = function( self ) {
@@ -23,7 +24,6 @@
       /* LIFECYCLE */
       ready: function() {
         this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
-        this.eventNames = [ "mousedown", "touchstart" ];
 
         this.formInputs = this.shadowRoot.querySelectorAll( "ed-form-input" );
         this.firstNameInput = this.shadowRoot.querySelector( ".name-first" ).shadowRoot.querySelector( "input" );
@@ -42,7 +42,7 @@
       attached: function() {
         this.submitButton.setAttribute( "disabled", "" );
 
-        this.eventNames.forEach( function( event ) {
+        eventNames.forEach( function( event ) {
           this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
         }.bind( this ));
 

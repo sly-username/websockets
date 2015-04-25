@@ -11,7 +11,8 @@
           } else {
             this.submitButton.setAttribute( "disabled", "" );
           }
-        };
+        },
+        clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
@@ -19,15 +20,13 @@
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
-          this.clickEvents = [ "mousedown", "touchstart" ];
           this.triggerList = [ this.emailInput, this.submitButton ];
-          this.referralMessage = this.shadowRoot.getElementById( "referral-message" );
         },
         attached: function() {
           userService.getReferrals();
           this.emailInput.setAttribute( "autofocus", "" );
 
-          this.clickEvents.forEach( function( eventName ) {
+          clickEvents.forEach( function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
           }.bind( this ));
 
