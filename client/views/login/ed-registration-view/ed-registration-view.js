@@ -62,7 +62,7 @@
         if ( areValidInputs ) {
           // refactor these selectors...
           registrationDataBlock = {
-            type: "user",
+            type: "fan",
             email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
             password: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#primary-box" ).value,
             passwordConfirmation: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#confirm-box" ).value,
@@ -75,17 +75,10 @@
             zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
           };
 
+          // todo do artists also go through onboarding?
           userService.register( registrationDataBlock )
-            .then(function( edProfile ) {
-              var redirectTo;
-
-              if ( typeChecker.isArtist( edProfile ) ) {
-                redirectTo = "/artist/" + edProfile.id;
-              } else {
-                redirectTo = "/fan/" + edProfile.id;
-              }
-
-              this.router.go( redirectTo );
+            .then(function() {
+              this.router.go( "/onboarding/like" );
             }.bind( this ));
         }
       },
