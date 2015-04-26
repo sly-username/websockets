@@ -3,10 +3,8 @@
   var triggerMenuHandler = function() {
     if ( !this.edMenu.hasAttribute( "class" ) ) {
       this.edMenu.setAttribute( "class", "show-menu" );
-      this.chartsTitle.style.opacity = 0;
     } else {
       this.edMenu.removeAttribute( "class" );
-      this.chartsTitle.style.opacity = 1;
     }
   };
 
@@ -54,7 +52,6 @@
     ready: function() {
       this.edMenu = document.getElementById( "side-menu" );
       this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
-      this.chartsTitle = this.shadowRoot.getElementById( "charts-title" );
       this.handlers = {
         triggerMenu: triggerMenuHandler.bind( this )
       };

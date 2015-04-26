@@ -15,10 +15,8 @@
         triggerMenuHandler = function() {
         if ( !this.edMenu.hasAttribute( "class" ) ) {
           this.edMenu.setAttribute( "class", "show-menu" );
-          this.referralTitle.style.opacity = 0;
         } else {
           this.edMenu.removeAttribute( "class" );
-          this.referralTitle.style.opacity = 1;
         }
       };
 
@@ -33,7 +31,6 @@
           this.referralMessage = this.shadowRoot.getElementById( "referral-message" );
           this.edMenu = document.getElementById( "side-menu" );
           this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
-          this.referralTitle = this.shadowRoot.getElementById( "referral-title" );
           this.handlers = {
             triggerMenu: triggerMenuHandler.bind( this )
           };
