@@ -22,7 +22,14 @@ export default class EDModel extends EventEmitter {
 
     // call super to initialize EventEmitter properties
     super();
-    define.readOnly( this, [ "id", "type", "modelType" ], args );
+
+    define.enumReadOnly( this, [
+      "id",
+      "type",
+      "modelType"
+    ], args );
+
+//    define.enumReadOnlyDeep( this, [ "art" ], args );
 
     // TODO REMOVE WHEN STANDARDIZED
     // This is for catching any data that might slip through the cracks
