@@ -8,7 +8,7 @@
       this.edMenu.removeAttribute( "class" );
       this.chartsTitle.style.opacity = 1;
     }
-  }
+  };
 
   polymer( "ed-charts-view", {
     /* LIFECYCLE */

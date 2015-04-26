@@ -1,22 +1,29 @@
 @import "../../styles/ed/title-bar.mixin.less";
 @import "../../styles/ed/buttons.mixin.less";
 
-.referral-title-bar {
-  .edTitleBar();
-}
-
-#referral-submit {
-  &:disabled {
-    .edPrimaryButton( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 );
+.referral-wrapper {
+  background-color: @darkPurple3;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 59.6rem;
+  overflow: hidden;
+  position: relative;
+  .referral-title-bar {
+    .edTitleBar();
   }
-  .edPrimaryButton();
-  bottom: 0;
-  margin: 3% auto 0 auto;
-}
+  #referral-submit {
+    &:disabled {
+      .edPrimaryButton( @backgroundColor: @darkPurple4; @activeColor: @darkPurple2 );
+    }
+    .edPrimaryButton();
+    bottom: 0;
+    margin: 3% auto 0 auto;
+  }
 
-input {
-  .edPrimaryButton();
-  bottom: 0;
-  margin: 3% auto 0 auto;
-  text-align: center;
+  input {
+    .edPrimaryButton();
+    bottom: 0;
+    margin: 3% auto 0 auto;
+    text-align: center;
+  }
 }
