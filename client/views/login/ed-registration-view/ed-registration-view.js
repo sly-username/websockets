@@ -6,20 +6,29 @@
     var
       userService = imported.default,
       eventNames = [ "mousedown", "touchstart" ],
-      validateFormInputValues;
 
-    validateFormInputValues = function( self ) {
-      var i, value;
+      validateEmail = function( self ) {
+        var inputtedEmail = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
 
-      for ( i = 0; i < self.edformInputsArray.length; i++) {
-        value = self.edformInputsArray[ i ].shadowRoot.querySelector( "input" ).value;
+        return self.emailInput.validity.valid && inputtedEmail.test( self.emailInput.value );
+      },
+      validateZipCode = function( self ) {
+        var inputtedZip = /^\d{5,5}/;
 
-        if ( value === "" ) {
-          return false;
+        return inputtedZip.test( self.zipcodeInput.value );
+      },
+      validateFormInputValues = function( self ) {
+        var i, value;
+
+        for ( i = 0; i < self.edformInputsArray.length; i++ ) {
+          value = self.edformInputsArray[ i ].shadowRoot.querySelector( "input" ).value;
+
+          if ( value === "" ) {
+            return false;
+          }
         }
-      }
-      return true;
-    };
+        return true;
+      };
 
     polymer( "ed-registration-view", {
       /* LIFECYCLE */
@@ -33,7 +42,7 @@
         this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" ).shadowRoot.querySelector( "input" );
         this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( "input" );
 
-        this.pairedInput = this.shadowRoot.getElementsByTagName( "ed-paired-input" );
+        this.pairedInput = this.shadowRoot.querySelectorAll( "ed-paired-input" );
         this.passwordInput = this.shadowRoot.querySelector( ".password" )
           .shadowRoot.querySelector( "input#primary-box" );
         this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
@@ -50,6 +59,7 @@
           this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
         }.bind( this ));
 
+        // todo why isn't return working??
         this.submitButton.addEventListener( "keydown", function( event ) {
           if ( event.keyCode === 13 ) {
             this.submitForm( event );
@@ -59,13 +69,15 @@
         }.bind( this ));
 
         this.formInputsArray.forEach( function( formInput ) {
-          formInput.addEventListener( "blur", this.submitCheck.bind( this ));
+          formInput.addEventListener( "keyup", this.submitCheck.bind( this ));
         }.bind( this ));
       },
       submitCheck: function() {
-        var areValidInputs = validateFormInputValues( this );
+        var areValidInputs = validateFormInputValues( this ),
+          validZip = validateZipCode( this ),
+          validEmail = validateEmail( this );
 
-        if ( areValidInputs && this.pairedInput.isValid ) {
+        if ( areValidInputs && validZip && validEmail ) {
           this.submitButton.removeAttribute( "disabled" );
         } else {
           this.submitButton.setAttribute( "disabled", "" );
@@ -90,16 +102,18 @@
           zipcode: this.zipcodeInput.value
         };
 
-        // todo if artist goes to login, then his/her page
-        // todo what if they are already registered?
         userService.register( registrationDataBlock )
           .then(function() {
             this.router.go( "/onboarding/like" );
-          }.bind( this ));
+          }.bind( this ))
+          .catch( function( error ) {
+            this.router.go( "/registration" );
+            return error;
+          });
       },
       detached: function() {
         this.formInputsArray.forEach( function( formInput ) {
-          formInput.removeEventListener( "blur", this.submitCheck.bind( this ));
+          formInput.removeEventListener( "keyup", this.submitCheck.bind( this ));
         }.bind( this ));
       },
       attributeChanged: function( attrName, oldValue, newValue ) {}
