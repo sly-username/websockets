@@ -10,7 +10,12 @@ export default class EDUser extends EDModel {
 
   constructor( args ) {
     super( args );
-    define.readOnly( this, [ "username", "email", "birthday" ], args );
-    define.readOnlyDeep( this, [ "name" ], args );
+
+    define.enumReadOnly( this, [
+      "email",
+      "username"
+    ], args );
+
+    define.enumReadOnlyDeep( this, [ "name" ], args );
   }
 }

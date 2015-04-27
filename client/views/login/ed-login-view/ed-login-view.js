@@ -8,18 +8,19 @@
     .then( function( imported ) {
       var
         userService = imported[ 1 ].default,
-        typeChecker = imported[ 0 ].default,
-        clickEvents = [ "mousedown", "touchstart" ];
+        typeChecker = imported[ 0 ].default;
 
       polymer( "ed-login-view", {
         /* LIFECYCLE */
         ready: function() {
-          this.loginForm = this.shadowRoot.getElementById( "login-form" );
+          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelectorAll( "input" )[0];
+          this.passwordInput = this.shadowRoot.querySelectorAll( "ed-form-input" )[1].shadowRoot.querySelector( "input" );
           this.submitButton = this.shadowRoot.getElementById( "login-submit" );
           this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
+          this.clickEvents = [ "mousedown", "touchstart" ];
         },
         attached: function() {
-          clickEvents.forEach(function( eventName ) {
+          this.clickEvents.forEach(function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitForm.bind( this ));
             this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
           }.bind( this ));
@@ -32,14 +33,21 @@
             return false;
           }.bind( this ));
         },
+        validateFields: function() {
+          if ( this.emailInput !== "" && this.passwordInput !== "" ) {
+            this.submitButton.removeAttribute( "disabled" );
+          } else {
+            this.submitButton.setAttribute( "disabled", "" );
+          }
+        },
         submitForm: function( event ) {
           event.preventDefault();
 
           var
-            email = this.loginForm.querySelector( ".email" )
-              .shadowRoot.querySelector( "input" ).value,
-            password = this.loginForm.querySelector( ".password" )
-              .shadowRoot.querySelector( "input" ).value;
+            email = this.emailInput.value,
+            password = this.passwordInput.value;
+
+          this.validateFields();
 
           userService.login( email, password )
             .then(function( edProfile ) {

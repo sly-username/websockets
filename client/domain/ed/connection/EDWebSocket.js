@@ -46,7 +46,7 @@ export default class EDWebSocket extends HealingWebSocket {
           return;
         }
 
-        console.log( "in socket auth received message event:", event );
+        // console.log( "in socket auth received message event:", event );
 
         try {
           response = JSON.parse( event.data );
@@ -57,7 +57,7 @@ export default class EDWebSocket extends HealingWebSocket {
         }
 
         // validate response
-        if ( response.status.code === 1 && typeof response.data.profileId === "string" ) {
+        if ( response.status.code === 1 && "profileId" in response.data && "userId" in response.data ) {
           resolve( event );
 
           this[ isAuthenticated ] = true;
