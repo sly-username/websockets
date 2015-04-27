@@ -10,13 +10,9 @@
       userService = imported[ 1 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
-
-      // sends data on next button
       triggerBubblesHandler = function( event ) {
         var i;
         event.preventDefault();
-
-        // clear array
         bubbleArray = [];
 
         for ( i = 0; i < this.inputBubbles.length; i++ ) {
@@ -25,11 +21,10 @@
           }
         }
 
-        return discoverService.setCurrentProfileBlend( { data: { id: 10, genresLiked: this.likedBubbles, genresDisliked: bubbleArray }} )
+        return discoverService.setCurrentProfileBlend( { data: { id: userService.currentProfile.id, genresLiked: this.likedBubbles, genresDisliked: bubbleArray }} )
           .then(function( response ) {
             console.log( response );
-            //this.router.go( "/onboarding/dislike" );
-
+            this.router.go( "/discover" );
           });
       },
       // hides bubbles on ready
@@ -37,18 +32,16 @@
         var self = this;
 
         this.likedBubbles.forEach(function( idNumber ) {
-          var genre = self.shadowRoot.querySelector( "ed-bubble-select[data-id='"+ idNumber + "']" );
+          var genre = self.shadowRoot.querySelector( "ed-bubble-select[data-id='" + idNumber + "']" );
           genre.style.visibility = "hidden";
           genre.setAttribute( "disabled", "" );
         });
       },
       triggerCounterHandler = function( event ) {
-        // if checked and has data-id and is less than 1 ==> add one to counter
         if ( event.target.hasAttribute( "checked" ) &&
           event.target.hasAttribute( "data-id" ) &&
           bubbleCounter < 1 ) {
           bubbleCounter++;
-          // if not checked and not disabled and not zero ==> remove from counter
         } else if ( !event.target.hasAttribute( "checked" ) &&
           !event.target.hasAttribute( "disabled" ) &&
           bubbleCounter !== 0 ) {
@@ -60,8 +53,6 @@
       bubblesDislikedHandler = function( event ) {
         var i, j;
 
-        // if counter is less than one then go through all bubbles
-        // then if there are unchecked bubbles then remove disabled form then
         if ( bubbleCounter < 1 ) {
           for ( i = 0; i < this.inputBubbles.length; i++ ) {
             if ( !this.inputBubbles[ i ].hasAttribute( "checked" ) ) {
@@ -69,7 +60,7 @@
             }
           }
         }
-        // if counter is at one then add disabled to everything unchecked
+
         if ( bubbleCounter === 1 ) {
           for ( j = 0; j < this.inputBubbles.length; j++ ) {
             if ( !this.inputBubbles[ j ].hasAttribute( "checked" ) ) {
