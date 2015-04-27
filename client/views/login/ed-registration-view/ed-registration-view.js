@@ -9,12 +9,16 @@
       validateFormInputValues;
 
     validateFormInputValues = function( self ) {
-      var value;
-      self.edformInputsArray.forEach( function( formInput ) {
-        value = formInput.shadowRoot.querySelector( "input" ).value;
-        return value !== "";
-      });
-      return false;
+      var i, value;
+
+      for ( i = 0; i < self.edformInputsArray.length; i++) {
+        value = self.edformInputsArray[ i ].shadowRoot.querySelector( "input" ).value;
+
+        if ( value === "" ) {
+          return false;
+        }
+      }
+      return true;
     };
 
     polymer( "ed-registration-view", {
@@ -28,7 +32,8 @@
         this.inviteCodeInput = this.shadowRoot.querySelector( ".invite-code" ).shadowRoot.querySelector( "input" );
         this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" ).shadowRoot.querySelector( "input" );
         this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( "input" );
-        
+
+        this.pairedInput = this.shadowRoot.getElementsByTagName( "ed-paired-input" );
         this.passwordInput = this.shadowRoot.querySelector( ".password" )
           .shadowRoot.querySelector( "input#primary-box" );
         this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
@@ -59,12 +64,12 @@
       },
       submitCheck: function() {
         var areValidInputs = validateFormInputValues( this );
-        console.log( validateFormInputValues( this ) );
 
-        if ( areValidInputs ) {
+        if ( areValidInputs && this.pairedInput.isValid ) {
           this.submitButton.removeAttribute( "disabled" );
+        } else {
+          this.submitButton.setAttribute( "disabled", "" );
         }
-        this.submitButton.setAttribute( "disabled", "" );
       },
       submitForm: function( event ) {
         var registrationDataBlock;
