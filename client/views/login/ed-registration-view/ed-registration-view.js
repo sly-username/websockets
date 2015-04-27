@@ -8,9 +8,9 @@
       eventNames = [ "mousedown", "touchstart" ],
       validateFormInputValues;
 
-    validateFormInputValues = function( self ) {
+    validateFormInputValues = function() {
       var value;
-      self.formInputsArray.forEach( function( formInput ) {
+      this.formInputsArray.forEach( function( formInput ) {
         value = formInput.shadowRoot.querySelector( "input" ).value;
         return value !== "";
       });
@@ -22,7 +22,6 @@
       ready: function() {
         this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
 
-        this.formInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
         this.firstNameInput = this.shadowRoot.querySelector( ".name-first" ).shadowRoot.querySelector( "input" );
         this.lastNameInput = this.shadowRoot.querySelector( ".name-last" ).shadowRoot.querySelector( "input" );
         this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
@@ -35,6 +34,10 @@
           .shadowRoot.querySelector( "input#primary-box" );
         this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
           .shadowRoot.querySelector( "input#confirm-box" );
+
+        this.edformInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
+        this.pairedInputsArray = [ this.passwordInput, this.passwordConfirmInput ];
+        this.formInputsArray = this.edformInputsArray.concat( this.pairedInputsArray );
       },
       attached: function() {
         this.submitButton.setAttribute( "disabled", "" );
@@ -56,9 +59,10 @@
         }.bind( this ));
       },
       submitCheck: function() {
-        var areValidInputs = validateFormInputValues( this );
+        var areValidInputs = validateFormInputValues.bind( this );
+        console.log( validateFormInputValues.bind( this ) );
 
-        if ( areValidInputs && this.pairedInputs.isValid ) {
+        if ( areValidInputs ) {
           this.submitButton.removeAttribute( "disabled" );
         }
         this.submitButton.setAttribute( "disabled", "" );
