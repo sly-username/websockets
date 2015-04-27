@@ -2,10 +2,12 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-discover-service" )
+    System.import( "domain/ed/services/ed-discover-service" ),
+    System.import( "domain/ed/services/ed-user-service" )
   ]).then(function( imported ) {
     var
       discoverService = imported[ 0 ].default,
+      userService = imported[ 1 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
 
@@ -56,7 +58,7 @@
         return this.handlers.bubblesDisliked();
       },
       bubblesDislikedHandler = function( event ) {
-        var i, j, k;
+        var i, j;
 
         // if counter is less than one then go through all bubbles
         // then if there are unchecked bubbles then remove disabled form then
@@ -67,15 +69,11 @@
             }
           }
         }
-        // if counter is at one then add disabled to everything
+        // if counter is at one then add disabled to everything unchecked
         if ( bubbleCounter === 1 ) {
           for ( j = 0; j < this.inputBubbles.length; j++ ) {
-            this.inputBubbles[ j ].setAttribute( "disabled", "" );
-          }
-          // if a bubbled as checked attribute remove disabled from them
-          for ( k = 0; k < this.inputBubbles.length; k++ ) {
-            if ( this.inputBubbles[ k ].hasAttribute( "checked" ) ) {
-              this.inputBubbles[ k ].removeAttribute( "disabled" );
+            if ( !this.inputBubbles[ j ].hasAttribute( "checked" ) ) {
+              this.inputBubbles[ j ].setAttribute( "disabled", "" );
             }
           }
         }

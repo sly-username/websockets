@@ -46,7 +46,7 @@
         return this.handlers.bubblesLiked();
       },
       bubblesLikedHandler = function( event ) {
-        var i, j, k;
+        var i, j;
 
         // if counter is less than 3 then for every bubble that is checked remove disabled attribute
         if ( bubbleCounter < 3 ) {
@@ -57,16 +57,11 @@
           }
         }
 
-        // if counter is at 3 then disable all the inputs
+        // if counter is at 3 then disable unchecked inputs
         if ( bubbleCounter === 3 ) {
           for ( j = 0; j < this.inputBubbles.length; j++ ) {
-            this.inputBubbles[ j ].setAttribute( "disabled", "" );
-          }
-
-          // if bubbles have the attribute checked then remove the disabled attribute
-          for ( k = 0; k < this.inputBubbles.length; k++ ) {
-            if ( this.inputBubbles[ k ].hasAttribute( "checked" ) ) {
-              this.inputBubbles[ k ].removeAttribute( "disabled" );
+            if ( !this.inputBubbles[ j ].hasAttribute( "checked" ) ) {
+              this.inputBubbles[ j ].setAttribute( "disabled", "" );
             }
           }
         }
