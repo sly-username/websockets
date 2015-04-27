@@ -3,7 +3,7 @@ import define from "domain/ed/define-properties";
 import EventEmitter from "domain/lib/event/EventEmitter";
 
 export default class EDModel extends EventEmitter {
-  static get TYPE() {
+  static get MODEL_TYPE() {
     return "base";
   }
 
@@ -16,9 +16,20 @@ export default class EDModel extends EventEmitter {
       throw new TypeError( "EDModel type argument not found" );
     }
 
+    if ( !( "modelType" in args ) ) {
+      throw new TypeError( "EDModel modelType argument not found" );
+    }
+
     // call super to initialize EventEmitter properties
     super();
-    define.readOnly( this, [ "id", "type" ], args );
+
+    define.enumReadOnly( this, [
+      "id",
+      "type",
+      "modelType"
+    ], args );
+
+//    define.enumReadOnlyDeep( this, [ "art" ], args );
 
     // TODO REMOVE WHEN STANDARDIZED
     // This is for catching any data that might slip through the cracks

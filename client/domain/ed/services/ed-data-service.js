@@ -10,6 +10,7 @@ import EDDataSyncController from "domain/ed/storage/EDDataSyncController";
 import typeChecker from "domain/ed/objects/model-type-checker";
 
 import EDModel from "domain/ed/objects/EDModel";
+import EDGenre from "domain/ed/objects/EDGenre";
 import EDUser from "domain/ed/objects/EDUser";
 import EDProfile from "domain/ed/objects/profile/EDProfile";
 import EDArtist from "domain/ed/objects/profile/EDArtist";
@@ -25,19 +26,35 @@ var
   pdbMap = {},
   lruMap = {
     profile: new EDLRUCache( 250 ),
-    media: new EDLRUCache( 300 )
+    media: new EDLRUCache( 300 ),
+    genre: new EDLRUCache( 50 )
   },
-  getDBAndLRUForType = function( type ) {
+  dbsReadyPromise = Promise.all([
+    edProfileDB,
+    edTrackDB
+  ]),
+  getDBAndLRUForType = function( modelType ) {
     try {
-      if ( typeChecker.isProfileType({ type }) ) {
+      let objType = { modelType };
+
+      if ( typeChecker.isProfileType( objType ) ) {
         return {
           lru: lruMap.profile,
           pdb: pdbMap.profile
         };
-      } else if ( typeChecker.isMediaType({ type }) ) {
+      }
+
+      if ( typeChecker.isMediaType( objType ) ) {
         return {
           lru: lruMap.media,
           pdb: pdbMap.media
+        };
+      }
+
+      if ( typeChecker.isGenreType( objType ) ) {
+        return {
+          lru: lruMap.media,
+          pdb: null
         };
       }
     } catch ( error ) {
@@ -51,16 +68,20 @@ var
     };
   },
   // TODO this should be somehwere else, a "routing" module perhaps
-  getQueryRouteForType = function( type ) {
+  getQueryRouteForType = function( modelType ) {
     try {
-      let objType = { type };
+      let objType = { modelType };
 
       if ( typeChecker.isProfileType( objType ) ) {
         return "profile/get";
       }
 
-      if ( typeChecker.checkForInstanceOfType( EDTrack.TYPE, objType )) {
-        return "track/detail/get";
+      if ( typeChecker.isMediaType( objType )) {
+        return "track/get";
+      }
+
+      if ( typeChecker.isGenreType( objType )) {
+        return "genre/get";
       }
     } catch ( error ) {
       console.warn( "Error while type checking" );
@@ -73,7 +94,7 @@ var
     // TODO Standardize types
     try {
       if ( typeChecker.hasValidType( data ) ) {
-        return new typeChecker.constructorMap[ data.type ]( data );
+        return new typeChecker.constructorMap[ data.modelType ]( data );
       }
     } catch ( error ) {
       console.warn( "Error while type checking" );
@@ -107,10 +128,27 @@ edTrackDB.then( trackDB => {
     );
 });
 
-// Start Service Functions
+// Populate Genre LRU
+connectionService.request( "genre/list", 10, { /* no data required */ })
+  .then(function( response ) {
+    if ( response.status && response.status.code === 1 ) {
+      response.data.genres.forEach(function( genreData ) {
+        lruMap.genre.set( new EDGenre( genreData ) );
+      });
+      return true;
+    }
+
+    throw new TypeError( "genre/list resolved with error status code" );
+  })
+  .catch(function( error ) {
+    console.warn( "There was a problem getting the list of genres" );
+    console.error( error.stack );
+  });
+
+/* Start Service Functions */
+// Main function for getting data object from server
 dataService.getByTypeAndId = function( type, id, priority=10 ) {
 //  console.log( "getByTypeAndId %o", arguments );
-
   var
     route,
     json = {
@@ -131,10 +169,21 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     return Promise.reject( new TypeError( `Could not find route associated with ${type} in dataService` ) );
   }
 
-  return connectionService.request( route, priority, json )
+  return dbsReadyPromise.then( dbsLoaded => {
+    if ( pdb == null ) {
+      console.log( "pdb was not ready when getByType was called, re-setting pdb" );
+      pdb = getDBAndLRUForType( type ).pdb;
+    }
+
+    return connectionService.request( route, priority, json );
+  })
     .then(function( response ) {
       if ( false && response.status.code ) {
         // todo add check for proper status code
+      }
+
+      if ( response && response.data && response.meta && response.meta.modelType ) {
+        response.data.modelType = response.meta.modelType;
       }
 
       return pdb.objects.put( response.data );
@@ -150,27 +199,32 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     });
 };
 
+// Alias Functions
 dataService.getProfileById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDProfile.TYPE, id, priority );
+  return dataService.getByTypeAndId( EDProfile.MODEL_TYPE, id, priority );
 };
 
 dataService.getArtistById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDArtist.TYPE, id, priority );
+  return dataService.getByTypeAndId( EDArtist.MODEL_TYPE, id, priority );
 };
 
 dataService.getFanById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDFan.TYPE, id, priority );
+  return dataService.getByTypeAndId( EDFan.MODEL_TYPE, id, priority );
 };
 
 dataService.getTrackById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDTrack.TYPE, id, priority );
+  return dataService.getByTypeAndId( EDTrack.MODEL_TYPE, id, priority );
+};
+
+dataService.getGenreById = function( id, priority=10 ) {
+  return dataService.getByTypeAndId( EDGenre.MODEL_TYPE, id, priority );
 };
 
 updateModel = function( newModel ) {
   var
     json,
     oldModel,
-    { pdb, lru } = getDBAndLRUForType( newModel.type );
+    { pdb, lru } = getDBAndLRUForType( newModel.modelType );
 
   if ( !typeChecker.isProfileType( newModel ) && !typeChecker.isMediaType( newModel )) {
     throw new TypeError( "Do not recognize type passed to dataService updateModel function" );

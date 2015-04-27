@@ -11,9 +11,11 @@ import edAnalyticsService from "domain/analytics/EDAnalytics";
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
   currentProfile = null,
+  currentUserId = null,
   isOpenSession = false,
   hasOnboarded = false,
-  sessionAuthJSON = null;
+  sessionAuthJSON = null,
+  referralsRemaining;
 
 Object.defineProperties( edUserService, {
   currentProfile: {
@@ -23,6 +25,13 @@ Object.defineProperties( edUserService, {
       return currentProfile;
     }
   },
+  currentUserId: {
+    configurable: false,
+    enumerable: false,
+    get: function() {
+      return currentUserId;
+    }
+  },
   isOpenSession: {
     configurable: false,
     enumerable: false,
@@ -30,7 +39,7 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  hasOnboarded: { // TODO determine if this flag is needed
+  hasOnboarded: {
     configurable: false,
     enumerable: false,
     get: function() {
@@ -43,8 +52,26 @@ Object.defineProperties( edUserService, {
     get: function() {
       return sessionAuthJSON;
     }
+  },
+  referralsRemaining: {
+    configurable: false,
+    enumberable: false,
+    get: function() {
+      return referralsRemaining;
+    }
   }
 });
+
+// todo remove
+window.edUserService = edUserService;
+
+edUserService.getReferrals = function() {
+  return edConnectionService.request( "referral/get", 10 )
+    .then( response => {
+      referralsRemaining = response.data.count;
+      return referralsRemaining;
+    });
+};
 
 edUserService.login = function( email, password ) {
   var
@@ -56,7 +83,10 @@ edUserService.login = function( email, password ) {
     };
 
   return edConnectionService.authenticateConnection( email, password )
-    .then( raw => edDataService.getProfileById( raw.profileId ))
+    .then( raw => {
+      currentUserId = raw.userId;
+      return edDataService.getProfileById( raw.profileId );
+    })
     .then( edProfile => {
       currentProfile = edProfile;
       isOpenSession = true;
@@ -64,9 +94,13 @@ edUserService.login = function( email, password ) {
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
-          user: currentProfile
+          userId: currentUserId,
+          profile: currentProfile
         }
       }));
+
+      edUserService.getReferrals();
+      //console.log( this.referralsRemaining );
 
       // todo analytics
       // edAnalyticsService.send(
@@ -76,9 +110,12 @@ edUserService.login = function( email, password ) {
       // );
       return currentProfile;
     })
-    .catch( () => {
+    .catch(( error ) => {
+      console.error( error );
       currentProfile = null;
+      currentUserId = null;
       isOpenSession = false;
+      referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
@@ -86,18 +123,22 @@ edUserService.login = function( email, password ) {
 
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUser = currentProfile;
+  var oldUserId = currentUserId,
+    oldProfile = currentProfile;
 
   return edConnectionService.deauthenticateSocket()
     .then( () => {
       currentProfile = null;
+      currentUserId = null;
       isOpenSession = false;
       sessionAuthJSON = null;
+      referralsRemaining = 0;
 
       edUserService.dispatch( createEvent( "edLogout", {
-       detail: {
-         user: oldUser
-       }
+        detail: {
+          userId: oldUserId,
+          profile: oldProfile
+        }
       }));
 
       // todo analytics
@@ -117,18 +158,46 @@ edUserService.logout = function() {
 edUserService.changeProfileImage = function( image ) {
   // todo a lot
   /*
-  // send "I'm going to send an image" -- ws.binaryType = "blob";
-  send({
-    "action":{ route:"profile/image/set" }
-  });
-  send( image );
-  new Promise()
-    "onmessage" --> check for a "image upload complete"
-    resolve( dataservice.getUserById( currentProfile.id ) )
-  */
+   // send "I'm going to send an image" -- ws.binaryType = "blob";
+   send({
+   "action":{ route:"profile/image/set" }
+   });
+   send( image );
+   new Promise()
+   "onmessage" --> check for a "image upload complete"
+   resolve( dataservice.getUserById( currentProfile ) )
+   */
 
   // need to match new image to appropriate user
   return Promise.resolve( null );
+};
+
+edUserService.referral = function( email ) {
+  // todo need to send userId, friend's email
+  // todo save referral remaining information
+  var json = {
+    data: {
+      // todo
+      //userId: currentUserId,
+      userId: parseInt( currentUserId, 10 ),
+      email
+    }
+  };
+
+  return edConnectionService.request( "referral/create", 10, json )
+    .then( response => {
+      console.log( response );
+      if ( response && response.status && response.status.code && response.status.code === 1 ) {
+        referralsRemaining = response.data.referralsRemaining;
+        return referralsRemaining;
+        // todo any notifications?36
+      }
+    })
+    .catch( error => {
+      console.log( "referral email was not successfully sent" );
+      console.log( error );
+      throw error;
+    });
 };
 
 edUserService.register = function( args ) {
