@@ -115,6 +115,7 @@ edUserService.login = function( email, password ) {
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
+      hasOnboarded = false;
       referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );

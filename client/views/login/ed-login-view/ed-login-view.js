@@ -55,8 +55,11 @@
 
               if ( typeChecker.isArtist( edProfile ) ) {
                 redirectTo = "/artist/" + edProfile.id;
-              } else {
+              // todo needs to check if fan has onboarded
+              } else if ( typeChecker.isFan( edProfile ) && this.hasOnboarded ) {
                 redirectTo = "/fan/" + edProfile.id;
+              } else if ( typeChecker.isFan( edProfile ) && !this.hasOnboarded ) {
+                redirectTo = "/onboarding/like";
               }
 
               this.router.go( redirectTo );
