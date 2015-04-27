@@ -19,9 +19,14 @@
   }
   .settings-list {
    .edListStyle();
-    span {
-      float: right;
-      margin-right: 4rem;
+    .version-title {
+      &:active, &:hover, &:focus {
+        background-color: @darkPurple3;
+      }
+      span {
+        float: right;
+        margin-right: 4rem;
+      }
     }
   }
 }
