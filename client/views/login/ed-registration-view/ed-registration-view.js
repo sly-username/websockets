@@ -8,9 +8,9 @@
       eventNames = [ "mousedown", "touchstart" ],
       validateFormInputValues;
 
-    validateFormInputValues = function() {
+    validateFormInputValues = function( self ) {
       var value;
-      this.formInputsArray.forEach( function( formInput ) {
+      self.edformInputsArray.forEach( function( formInput ) {
         value = formInput.shadowRoot.querySelector( "input" ).value;
         return value !== "";
       });
@@ -28,8 +28,7 @@
         this.inviteCodeInput = this.shadowRoot.querySelector( ".invite-code" ).shadowRoot.querySelector( "input" );
         this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" ).shadowRoot.querySelector( "input" );
         this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( "input" );
-
-        this.pairedInputs = this.shadowRoot.querySelector( "ed-paired-input" );
+        
         this.passwordInput = this.shadowRoot.querySelector( ".password" )
           .shadowRoot.querySelector( "input#primary-box" );
         this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
@@ -59,8 +58,8 @@
         }.bind( this ));
       },
       submitCheck: function() {
-        var areValidInputs = validateFormInputValues.bind( this );
-        console.log( validateFormInputValues.bind( this ) );
+        var areValidInputs = validateFormInputValues( this );
+        console.log( validateFormInputValues( this ) );
 
         if ( areValidInputs ) {
           this.submitButton.removeAttribute( "disabled" );
