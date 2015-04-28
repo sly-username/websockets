@@ -86,6 +86,10 @@ edUserService.getReferrals = function() {
     .then( response => {
       referralsRemaining = response.data.count;
       return referralsRemaining;
+    })
+    .catch( error => {
+      console.error( error );
+      console.log( "the user has no referrals remaining" );
     });
 };
 
@@ -191,9 +195,16 @@ edUserService.referral = function( email ) {
     }
   };
 
+  // todo need to prevent submitting when there are no referrals left
   return edConnectionService.request( "referral/create", 10, json )
     .then( response => {
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
+
+        edAnalytics.send( "invite", {
+          code: "invite code",
+          recipient: "string email"
+        });
+
         referralsRemaining = response.data.referralsRemaining;
         return referralsRemaining;
       }
