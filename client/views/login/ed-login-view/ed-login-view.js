@@ -4,12 +4,12 @@
   Promise.all([
     System.import( "domain/ed/objects/model-type-checker" ),
     System.import( "domain/ed/services/ed-user-service" ),
-    System.import( "domain/analytics/EDAnalytics" )
+    System.import( "domain/ed/analytics/ed-analytics-service" )
   ])
     .then( function( imported ) {
       var
-        userService = imported[ 1 ].default,
         typeChecker = imported[ 0 ].default,
+        userService = imported[ 1 ].default,
         edAnalytics = imported[ 2 ].default,
         clickEvents = [ "mousedown", "touchstart" ];
 
