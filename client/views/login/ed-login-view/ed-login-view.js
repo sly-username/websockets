@@ -3,12 +3,14 @@
 
   Promise.all([
     System.import( "domain/ed/objects/model-type-checker" ),
-    System.import( "domain/ed/services/ed-user-service" )
+    System.import( "domain/ed/services/ed-user-service" ),
+    System.import( "domain/analytics/EDAnalytics" )
   ])
     .then( function( imported ) {
       var
         userService = imported[ 1 ].default,
         typeChecker = imported[ 0 ].default,
+        edAnalytics = imported[ 2 ].default,
         clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-login-view", {
@@ -60,6 +62,10 @@
           userService.login( email, password )
             .then(function( edProfile ) {
               var redirectTo;
+              
+              edAnalytics.send( "login", {
+                time: new Date().toISOString()
+              });
 
               if ( typeChecker.isArtist( edProfile ) ) {
                 redirectTo = "/artist/" + edProfile.id;
