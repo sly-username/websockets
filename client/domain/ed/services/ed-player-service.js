@@ -46,6 +46,13 @@ rateCurrentlyPlaying = function( number ) {
     //currentTrack.rate( number );
     //track1.rate( number );
   }
+
+  // adding in fake ID for now
+  edAnalyticsService.send( "rate", {
+    trackId: currentTrack.id || 10,
+    timecode: currentTrack.currentTime,
+    rating: number
+  });
 };
 
 export default edPlayerService = {
@@ -156,10 +163,6 @@ export default edPlayerService = {
   },
 
   play: function( edTrack ) {
-    //if ( !( edTrack instanceof EDTrack ) ) {
-    //  throw new TypeError( "Track is not an EDTrack object" );
-    //}
-
     if ( !edTrack ) {
       edTrack = audio;
     }
@@ -174,6 +177,11 @@ export default edPlayerService = {
 
     setCurrentTrack( edTrack );
 
+    edAnalyticsService.send( "play", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime
+    });
+
     return true;
   },
 
@@ -185,6 +193,11 @@ export default edPlayerService = {
     }));
 
     currentTrack.pause();
+
+    edAnalyticsService.send( "pause", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime
+    });
 
     return this.isPaused;
   },
@@ -199,7 +212,14 @@ export default edPlayerService = {
   },
 
   scrubTo: function( value ) {
+    var scrubFrom = currentTrack.currentTime;
     currentTrack.currentTime = value;
+
+    edAnalyticsService.send( "scrub", {
+      trackId: currentTrack.id || 10,
+      timeStart: scrubFrom,
+      timeEnd: value
+    });
   },
 
   enqueue: function( edTrack ) {
