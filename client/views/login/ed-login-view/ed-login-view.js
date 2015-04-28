@@ -63,8 +63,9 @@
             .then(function( edProfile ) {
               var redirectTo;
 
+              // analytics
               edAnalytics.send( "login", {
-                time: new Date().toISOString()
+                time: ( new Date() ).toISOString()
               });
 
               if ( typeChecker.isArtist( edProfile ) ) {
