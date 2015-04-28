@@ -43,16 +43,16 @@ setCurrentTrack = function( edTrack ) {
 
 rateCurrentlyPlaying = function( number ) {
   if ( number != null ) {
-    //currentTrack.rate( number );
-    //track1.rate( number );
+    return currentTrack.rate( number )
+      .then(function( response ) {
+        // adding in fake ID for now
+        edAnalyticsService.send( "rate", {
+          trackId: currentTrack.id || 10,
+          timecode: currentTrack.currentTime,
+          rating: number
+        });
+      });
   }
-
-  // adding in fake ID for now
-  edAnalyticsService.send( "rate", {
-    trackId: currentTrack.id || 10,
-    timecode: currentTrack.currentTime,
-    rating: number
-  });
 };
 
 export default edPlayerService = {
