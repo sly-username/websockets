@@ -59,7 +59,7 @@ getDBAndLRUForType = function( modelType ) {
 
     if ( typeChecker.isGenreType( objType ) ) {
       return {
-        lru: lruMap.media,
+        lru: lruMap.genre,
         pdb: null
       };
     }
