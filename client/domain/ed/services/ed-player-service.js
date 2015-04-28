@@ -14,7 +14,8 @@ var
   audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
   setCurrentTrack,
   edPlayerService,
-  rateCurrentlyPlaying;
+  rateCurrentlyPlaying,
+  getTracksQueue;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -33,10 +34,15 @@ rateCurrentlyPlaying = function( number ) {
   }
 };
 
+getTracksQueue = function() {
+
+};
+
 export default edPlayerService = {
   get emitter() {
     return emitter;
   },
+
   get currentStats() {
     return {
       playing: currentTrack,
@@ -162,7 +168,7 @@ export default edPlayerService = {
     return true;
   },
 
-  pause: function( edTrack ) {
+  pause: function() {
     this.emitter.dispatch( createEvent( "playerUpdate", {
       detail: {
         type: "pause"
@@ -174,7 +180,7 @@ export default edPlayerService = {
     return this.isPaused;
   },
 
-  stop: function( edTrack ) {
+  stop: function() {
     if ( this.isPlaying ) {
       currentTrack.pause();
       currentTrack.removeAttribute( "src" );
@@ -224,15 +230,22 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  // TODO use discover service to bring in song queue
-  // once onboarding and registration done
-  getTracksQueue: function( genreId ) {
-    return edDiscoverService.getGenreTracks( { data: { id: 101, genreId: genreId, count: 5 }})
+  getTracksQueue: function( data ) {
+    return edDiscoverService.getDiscoverTrackList( data )
       .then(( response ) => {
-        console.log( response.data );
         //this.queue.push( response );
+        return response.data;
+      })
+      .catch(( error ) => {
+        console.warn( "Error getting tracks in player service" );
+        console.error( error );
+      })
+      .then(( response ) => {
+        //edDataService.getTrackById
       });
   }
 };
 
-window.edPlayerService = edPlayerService;
+// TODO remove debug
+window.playerService = edPlayerService;
+window.edDiscoverService = edDiscoverService;

@@ -1,4 +1,5 @@
 import edConnectionService from "domain/ed/services/ed-connection-service";
+import edUserService from "domain/ed/services/ed-user-service";
 import EDGenre from "domain/ed/objects/EDGenre";
 
 var currentProfileBlend = [],
@@ -23,12 +24,19 @@ export default edDiscoverService = {
   },
 
   getBlendTracks() {
-    return edConnectionService.request( "profileBlend" )
+    var data = {
+      data: {
+        id: 115
+      }
+    };
+
+    return edConnectionService.request( "profile/blend/get", 10, data )
       .then( msg => {
         trackIDList = msg;
         return trackIDList;
       })
       .catch( error => {
+        console.log( "no" );
         throw error;
       });
   },
