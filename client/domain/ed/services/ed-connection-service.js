@@ -1,7 +1,9 @@
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
 import checkRoute from "domain/ed/connection/route-auth-check";
 
-var edConnectionService, needsAuth,
+var
+  edConnectionService,
+  needsAuth,
   edSocket = new EDWebSocket(),
   parseSocketMessage = function( response ) {
     if ( typeof response.data === "string" ) {
@@ -70,7 +72,7 @@ export default edConnectionService = {
     return new Promise(( resolve, reject ) => {
       if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
         edSocket.once( "authenticated", () => {
-          resolve( this.formattedRequest( data ) );
+          resolve( this.formattedRequest( json ) );
         });
 
         return;
@@ -82,7 +84,7 @@ export default edConnectionService = {
 
   // these two functions mainly used by analytics send requests
   formattedSend( data ) {
-    return edSocket.send( data ).then( parseSocketMessage );
+    return edSocket.send( data );
   },
 
   formattedRequest( data ) {

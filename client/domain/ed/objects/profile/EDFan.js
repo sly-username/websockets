@@ -9,14 +9,16 @@ export default class EDFan extends EDProfile {
   }
 
   constructor ( args ) {
+    var argsCopy = Object.assign( {}, args );
+
     super( args );
 
     if ( args.yearOfBirth ) {
-      args.yearOfBirth = new Date( args.yearOfBirth );
+      argsCopy.yearOfBirth = new Date( args.yearOfBirth );
     }
 
     define.enumReadOnly( this, [
       "yearOfBirth"
-    ], args );
+    ], argsCopy );
   }
 }

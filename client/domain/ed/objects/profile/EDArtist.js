@@ -12,10 +12,12 @@ export default class EDArtist extends EDProfile {
   }
 
   constructor( args ) {
+    var argsCopy = Object.assign( {}, args );
+
     super( args );
 
     if ( args.yearFounded ) {
-      args.yearFounded = new Date( args.yearFounded );
+      argsCopy.yearFounded = new Date( args.yearFounded );
     }
 
     define.enumReadOnly( this, [
@@ -23,7 +25,7 @@ export default class EDArtist extends EDProfile {
       "influencedBy",
       "displayName",
       "yearFounded"
-    ], args );
+    ], argsCopy );
   }
 
   getTracks() {
