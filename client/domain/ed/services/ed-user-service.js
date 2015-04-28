@@ -6,7 +6,7 @@ import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
+import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
@@ -15,6 +15,7 @@ var
   isOpenSession = false,
   hasOnboarded = false,
   sessionAuthJSON = null,
+  loggedInDate = null,
   referralsRemaining;
 
 Object.defineProperties( edUserService, {
@@ -61,6 +62,19 @@ Object.defineProperties( edUserService, {
     get: function() {
       return referralsRemaining;
     }
+  },
+  sessionDuration: {
+    configurable: false,
+    enumberable: false,
+    get: function() {
+      var now = new Date();
+
+      if ( loggedInDate == null ) {
+        return 0;
+      }
+
+      return now - loggedInDate;
+    }
   }
 });
 
@@ -93,6 +107,7 @@ edUserService.login = function( email, password ) {
       currentProfile = edProfile;
       isOpenSession = true;
       sessionAuthJSON = json;
+      loggedInDate = new Date();
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
@@ -133,6 +148,7 @@ edUserService.logout = function() {
       currentUserId = null;
       isOpenSession = false;
       sessionAuthJSON = null;
+      loggedInDate = null;
       referralsRemaining = 0;
 
       edUserService.dispatch( createEvent( "edLogout", {

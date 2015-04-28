@@ -7,7 +7,7 @@ sudo timedatectl set-timezone America/Los_Angeles
 
 # install and load nvm
 if [ ! -d ~/.nvm ]; then
-  curl -# https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh > ~/install.nvm.sh
+  curl -# https://raw.githubusercontent.com/creationix/nvm/v0.25.0/install.sh > ~/install.nvm.sh
   chmod +x ~/install.nvm.sh
   . ~/install.nvm.sh
   rm ~/install.nvm.sh
