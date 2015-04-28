@@ -8,19 +8,28 @@
     .then( function( imported ) {
       var
         userService = imported[ 1 ].default,
-        typeChecker = imported[ 0 ].default;
+        typeChecker = imported[ 0 ].default,
+        clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-login-view", {
         /* LIFECYCLE */
         ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelectorAll( "input" )[0];
-          this.passwordInput = this.shadowRoot.querySelectorAll( "ed-form-input" )[1].shadowRoot.querySelector( "input" );
+          this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
+          this.passwordInput = this.shadowRoot.querySelector( ".password" ).shadowRoot.querySelector( "input" );
+          this.inputsArray = [ this.emailInput, this.passwordInput ];
           this.submitButton = this.shadowRoot.getElementById( "login-submit" );
           this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
-          this.clickEvents = [ "mousedown", "touchstart" ];
         },
         attached: function() {
-          this.clickEvents.forEach(function( eventName ) {
+          this.emailInput.setAttribute( "autofocus", "" );
+          this.submitButton.setAttribute( "disabled", "" );
+
+          // check inputs to see if they're empty before pressing submit
+          this.inputsArray.forEach( function( formInput ) {
+            formInput.addEventListener( "keyup", this.validateFields.bind( this ));
+          }.bind( this ));
+
+          clickEvents.forEach(function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitForm.bind( this ));
             this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
           }.bind( this ));
@@ -34,7 +43,7 @@
           }.bind( this ));
         },
         validateFields: function() {
-          if ( this.emailInput !== "" && this.passwordInput !== "" ) {
+          if ( this.emailInput.value !== "" && this.passwordInput.value !== "" ) {
             this.submitButton.removeAttribute( "disabled" );
           } else {
             this.submitButton.setAttribute( "disabled", "" );
@@ -46,8 +55,6 @@
           var
             email = this.emailInput.value,
             password = this.passwordInput.value;
-
-          this.validateFields();
 
           userService.login( email, password )
             .then(function( edProfile ) {
