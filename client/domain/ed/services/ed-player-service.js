@@ -51,6 +51,8 @@ rateCurrentlyPlaying = function( number ) {
           timecode: currentTrack.currentTime,
           rating: number
         });
+
+        return response;
       });
   }
 };
