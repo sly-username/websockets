@@ -160,6 +160,8 @@
             edAnalytics.send( "register", {
               code: this.inviteCodeInput.value
             });
+
+            // todo error messages for invalid referral code and already registered email
             //var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
             //  errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
             //
@@ -168,7 +170,7 @@
             //} else if ( ( /email/ ).test( response.message )) {
             //  errorUsedEmail.innerHTML = "This email address has already been registered";
             //} else {
-              this.router.go( "/referral" );
+              this.router.go( "/onboarding/like" );
             //}
           }.bind( this ))
           .catch( function( error ) {
