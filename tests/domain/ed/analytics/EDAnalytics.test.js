@@ -7,7 +7,7 @@
     var EDAnalytics;
 
     suiteSetup( function( done ) {
-      System.import( "domain/analytics/EDAnalytics" )
+      System.import( "domain/ed/analytics/ed-analytics-service" )
         .then( function( imported ) {
 
           EDAnalytics = imported.default;
