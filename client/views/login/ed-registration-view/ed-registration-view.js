@@ -13,7 +13,7 @@
         return self.emailInput.validity.valid && regexPattern.test( self.emailInput.value );
       },
       validateZipCode = function( self ) {
-        var inputtedZip = /^\d{5,5}/;
+        var inputtedZip = /^(\d{5})?$/;
 
         return inputtedZip.test( self.zipcodeInput.value );
       },
