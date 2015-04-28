@@ -3,31 +3,41 @@
 
   System.import( "domain/ed/services/ed-data-service" )
     .then(function( imported ) {
-      var dataService = imported.default;
+      var dataService = imported.default,
+        modelObserver = function( changes ) {
+          if ( changes.some(function( change ) { return change.name === "ed-id"; }) ) {
+            this.updateProfileModel();
+          }
+        };
 
       polymer( "ed-profile-artist", {
         /* LIFECYCLE */
         ready: function() {
+          // Get first model
+          this.updateProfileModel();
+
+          this.handlers = {
+            modelObserver: modelObserver.bind( this )
+          };
+        },
+        attached: function() {
+          Object.observe( this, this.handlers.modelObserver );
+        },
+        detached: function() {
+          Object.unobserve( this, this.handlers.modelObserver );
+        },
+        updateProfileModel: function() {
           if ( this[ "ed-id" ] ) {
             dataService.getArtistById( this[ "ed-id" ] )
               .then(function( edArtist ) {
                 this.edArtist = edArtist;
-                console.log( "artist got: %o", edArtist );
-                console.dir( this );
+                console.log( "profile artist got: %o", edArtist );
               }.bind( this ));
           }
         },
-        attached: function() {},
-        detached: function() {},
-        "ed-idChanged": function() {
-          this.attributeChanged( "ed-id" );
-        },
         attributeChanged: function( attrName ) {
           if ( attrName === "ed-id" ) {
-            dataService.getArtistById( this[ "ed-id" ] )
-              .then(function( edArtist ) {
-                this.edArtist = edArtist;
-              }.bind( this ));
+            this.updateProfileModel();
           }
         }
       });

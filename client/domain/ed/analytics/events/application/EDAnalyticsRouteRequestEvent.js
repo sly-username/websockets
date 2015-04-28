@@ -4,14 +4,13 @@ import define from "domain/ed/define-properties";
 import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 
 var eventKeys = [
-  // TODO add this event's key values
+  "route",
+  "params"
 ];
 
-// TODO UPDATE NAME
-export default class EDAnalyticsEventName extends EDAnalyticsEvent {
+export default class EDAnalyticsRouteRequestEvent extends EDAnalyticsEvent {
   static get TYPE() {
-    // TODO UPDATE NAME/TYPE
-    return "event-name";
+    return "routeRequest";
   }
 
   constructor( args ) {

@@ -4,14 +4,15 @@ import define from "domain/ed/define-properties";
 import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 
 var eventKeys = [
-  // TODO add this event's key values
+  "trackId",
+  "timecode",
+  "rating"
 ];
 
 // TODO UPDATE NAME
-export default class EDAnalyticsEventName extends EDAnalyticsEvent {
+export default class EDAnalyticsRateEvent extends EDAnalyticsEvent {
   static get TYPE() {
-    // TODO UPDATE NAME/TYPE
-    return "event-name";
+    return "rate";
   }
 
   constructor( args ) {

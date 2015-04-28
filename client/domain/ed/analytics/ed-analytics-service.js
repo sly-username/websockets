@@ -14,23 +14,33 @@ var
     }
   };
 
-import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
+// Services
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edUserService from "domain/ed/services/ed-user-service";
 import edPlayerService from "domain/ed/services/ed-player-service";
 
+// Analytics Stuff
+import eventMap from "domain/ed/analytics/event-map";
+import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
+
+// try to get geo loaction data
 updateLocation();
 
+// Route request event attached below...
+
+/**
+ * @module ed-analytics-service
+ */
 export default edAnalyticsService = {
   get commonBlock() {
     return {
       device: this.deviceBlock,
-      "client-version": this.version,
+      clientVersion: this.version,
       location: this.locationBlock,
       time: this.formattedTime,
       user: edUserService.currentUserId,
-      "view-route": window.location.pathname,
-      "view-state": this.viewStateBlock,
+      viewRoute: window.location.pathname + window.location.hash,
+      viewState: this.viewStateBlock,
       session: this.sessionBlock
     };
   },
@@ -50,8 +60,8 @@ export default edAnalyticsService = {
     var currentPlayerStats = edPlayerService.currentStats;
 
     return {
-      "player-state": {
-        trackId: currentPlayerStats.playing.id,
+      playerState: {
+        trackId: currentPlayerStats.playing == null ? null : currentPlayerStatus.playing.id,
         playing: edPlayerService.isPlaying,
         timecode: currentPlayerStats.time,
         queueLength: edPlayerService.queue.length
@@ -60,7 +70,7 @@ export default edAnalyticsService = {
   },
 
   get sessionBlock() {
-    // TODO use session service for this
+    // TODO double check the math for this
     return {
       duration: edUserService.sessionDuration
     };
@@ -76,30 +86,18 @@ export default edAnalyticsService = {
   },
 
   get time() {
-    /*
-    let date = new Date(),
-      dd = date.getDate(),
-      mm = date.getMonth() + 1,
-      yyyy = date.getFullYear(),
-      hh = date.getHours(),
-      min = date.getMinutes(),
-      ss = date.getSeconds();
-
-    if ( dd < 10 ) {
-      dd = "0" + dd;
-    }
-
-    if ( mm < 10 ) {
-      mm = "0" + mm;
-    }
-
-    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
-    */
     return ( new Date() ).toISOString();
   },
 
   /**
    * @method send
+   * @description
+   *  This method as two signatures:
+   *    If you send it an EDAnalyticsEvent instance that instance will be used
+   *      to construct the "eventBlock" of this analytics server call.
+   *
+   *    If you send it a string and argument map the function will call
+   *      createEvent and pass along the event creation arguments.
    */
   send( ...args ) {
     var event;
@@ -110,15 +108,52 @@ export default edAnalyticsService = {
       event = this.createEvent( ...args );
     }
 
-    edConnectionService.formattedSend({
-      analytics: {
-        common: this.commonBlock,
-        event: event.eventBlock
-      }
-    });
+    // Catch errors to make analytic calls "safe"
+    try {
+      edConnectionService.formattedSend({
+        analytics: {
+          common: this.commonBlock,
+          event: event.eventBlock
+        }
+      });
+    } catch ( error ) {
+      console.warn( "Suppressing exception on analytics call" );
+      console.warn( "Original Message: %s", error.message );
+    }
   },
 
-  createEvent( eventName, constructorArgs ) {
-    // TODO create custom event method
+  /**
+   * @method createEvent
+   * @param { string } eventName -- the event name of the event to create
+   * @param { object } eventArgs -- an "arg ball" of the properties for this event
+   *
+   * @returns { EDAnalyticsEvent }
+   */
+  createEvent( eventName, eventArgs ) {
+    if ( !( eventName in eventMap ) ) {
+      throw new TypeError(
+        `No analytics event with name ${eventName} found in analytics event map.`
+      );
+    }
+
+    if ( eventArgs == null ) {
+      throw new TypeError(
+        `Missing argument map for construction of ${eventName} analytics event`
+      );
+    }
+
+    return new eventMap[ eventName ]( eventArgs );
   }
 };
+
+// Attach listener for route request event
+document.getElementById( "root-app-router" )
+  .addEventListener( "activate-route-end", function( event ) {
+    // TODO REMOVE DEBUG
+    console.log( "saw route change %o", event.detail );
+
+    edAnalyticsService.send( "routeRequest", {
+      route: event.detail.path,
+      params: event.detail.model
+    });
+  });
