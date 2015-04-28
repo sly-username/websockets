@@ -211,8 +211,7 @@ edUserService.register = function( args ) {
       if ( response && response.status && response.status.code && response.status.code === 1 &&
         typeof response.data.id === "string" ) {
         console.log( "response validated %o", response );
-
-        return response;
+        return edUserService.login( authBlock.email, authBlock.password );
       }
     })
     .catch( error => {
@@ -222,7 +221,9 @@ edUserService.register = function( args ) {
       throw error;
     })
     .then( response => {
-      return edUserService.login( authBlock.email, authBlock.password );
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        return response;
+      }
     });
 };
 

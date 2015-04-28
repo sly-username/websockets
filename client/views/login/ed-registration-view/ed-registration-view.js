@@ -140,8 +140,17 @@
         };
 
         userService.register( registrationDataBlock )
-          .then(function() {
-            this.router.go( "/onboarding/like" );
+          .then( function( response ) {
+            var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
+              errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
+
+            if ( ( /invite/ ).test( response.message )) {
+              errorReferralCode.innerHTML = "Please reenter your referral code";
+            } else if ( ( /email/ ).test( response.message )) {
+              errorUsedEmail.innerHTML = "This email address has already been registered";
+            } else {
+              this.router.go( "/onboarding/like" );
+            }
           }.bind( this ))
           .catch( function( error ) {
             this.router.go( "/registration" );
