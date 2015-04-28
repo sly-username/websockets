@@ -29,73 +29,83 @@
         }
         return true;
       };
-
     polymer( "ed-registration-view", {
       /* LIFECYCLE */
       ready: function() {
-        this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
+        this.submitButton = this.shadowRoot.querySelector( "#registration-submit" );
 
-        this.firstNameInput = this.shadowRoot.querySelector( ".name-first" ).shadowRoot.querySelector( "input" );
-        this.lastNameInput = this.shadowRoot.querySelector( ".name-last" ).shadowRoot.querySelector( "input" );
-        this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
-        this.inviteCodeInput = this.shadowRoot.querySelector( ".invite-code" ).shadowRoot.querySelector( "input" );
-        this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" ).shadowRoot.querySelector( "input" );
-        this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( "input" );
+        this.firstNameInput = this.shadowRoot.querySelector( ".name-first" )
+          .shadowRoot.querySelector( "input" );
+        this.lastNameInput = this.shadowRoot.querySelector( ".name-last" )
+          .shadowRoot.querySelector( "input" );
+        this.emailInput = this.shadowRoot.querySelector( ".email" )
+          .shadowRoot.querySelector( "input" );
+        this.inviteCodeInput = this.shadowRoot.querySelector( ".invite-code" )
+          .shadowRoot.querySelector( "input" );
+        this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" )
+          .shadowRoot.querySelector( "input" );
+        this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" )
+          .shadowRoot.querySelector( "input" );
 
-        this.pairedInput = this.shadowRoot.querySelectorAll( "ed-paired-input" );
+        this.pairedInput = this.shadowRoot.querySelectorAll( "ed-paired-input" )[0];
         this.passwordInput = this.shadowRoot.querySelector( ".password" )
           .shadowRoot.querySelector( "input#primary-box" );
         this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
           .shadowRoot.querySelector( "input#confirm-box" );
 
-        this.edformInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
-        this.pairedInputsArray = [ this.passwordInput, this.passwordConfirmInput ];
-        this.formInputsArray = this.edformInputsArray.concat( this.pairedInputsArray );
-
         this.emailField = this.shadowRoot.querySelector( ".email" )
           .shadowRoot.querySelector( ".form-input-container" );
         this.zipField = this.shadowRoot.querySelector( ".zipcode" )
           .shadowRoot.querySelector( ".form-input-container" );
+
+        this.edformInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
+        this.pairedInputsArray = [ this.passwordInput, this.passwordConfirmInput ];
+        this.formInputsArray = this.edformInputsArray.concat( this.pairedInputsArray );
       },
+
       attached: function() {
         this.submitButton.setAttribute( "disabled", "" );
 
-        // submit form on mousedown and touchstart
+        // submit form on mousedown and touchstart events
         eventNames.forEach( function( event ) {
           this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
         }.bind( this ));
 
-        // todo why isn't return working??
-        // submit form on enter
-        this.submitButton.addEventListener( "keydown", function( event ) {
-          if ( event.keyCode === 13 ) {
-            this.submitForm( event );
-          }
-          return false;
-        }.bind( this ));
-
-        // check inputs to see if they're empty before pressing submit
+        // submit check happens on keyup of all input fields
         this.formInputsArray.forEach( function( formInput ) {
           formInput.addEventListener( "keyup", this.submitCheck.bind( this ));
         }.bind( this ));
 
-        // email and zip validation event handlers on blur
+        // email and zip validation happens on blur of each of these fields
         this.emailInput.addEventListener( "blur", this.emailCheck.bind( this ));
         this.zipcodeInput.addEventListener( "blur", this.zipCheck.bind( this ));
-
       },
+
+      // checks whether all fields are filled in before enabling submit button
+      // or allowing submit on enter
       submitCheck: function() {
-        // todo why isn't pairedInputs.isValid working??
         var areValidInputs = validateFormInputValues( this ),
           validZip = validateZipCode( this ),
           validEmail = validateEmail( this );
 
-        if ( areValidInputs && validZip && validEmail ) {
+        if ( areValidInputs && validZip && validEmail && this.pairedInput.isValid ) {
           this.submitButton.removeAttribute( "disabled" );
+
+          // submit happens on enter
+          this.formInputsArray.forEach( function( formInput ) {
+            formInput.addEventListener( "keyup", function( event ) {
+              if ( event.keyCode === 13 ) {
+                this.submitForm( event );
+              }
+              return false;
+            }.bind( this ));
+          }.bind( this ));
+
         } else {
           this.submitButton.setAttribute( "disabled", "" );
         }
       },
+
       emailCheck: function() {
         var errorEmail = this.shadowRoot.getElementById( "errorEmail" ),
           validEmail = validateEmail( this );
@@ -108,6 +118,7 @@
           errorEmail.innerHTML = "";
         }
       },
+
       zipCheck: function() {
         var errorZip = this.shadowRoot.getElementById( "errorZip" ),
           validZip = validateZipCode( this );
@@ -120,6 +131,7 @@
           errorZip.innerHTML = "";
         }
       },
+
       submitForm: function( event ) {
         var registrationDataBlock;
         // TODO remove debug
