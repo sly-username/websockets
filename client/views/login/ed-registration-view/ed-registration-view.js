@@ -51,57 +51,72 @@
         this.edformInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
         this.pairedInputsArray = [ this.passwordInput, this.passwordConfirmInput ];
         this.formInputsArray = this.edformInputsArray.concat( this.pairedInputsArray );
+
+        this.emailField = this.shadowRoot.querySelector( ".email" )
+          .shadowRoot.querySelector( ".form-input-container" );
+        this.zipField = this.shadowRoot.querySelector( ".zipcode" )
+          .shadowRoot.querySelector( ".form-input-container" );
       },
       attached: function() {
         this.submitButton.setAttribute( "disabled", "" );
 
+        // submit form on mousedown and touchstart
         eventNames.forEach( function( event ) {
           this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
         }.bind( this ));
 
         // todo why isn't return working??
+        // submit form on enter
         this.submitButton.addEventListener( "keydown", function( event ) {
           if ( event.keyCode === 13 ) {
             this.submitForm( event );
           }
-
           return false;
         }.bind( this ));
 
+        // check inputs to see if they're empty before pressing submit
         this.formInputsArray.forEach( function( formInput ) {
           formInput.addEventListener( "keyup", this.submitCheck.bind( this ));
         }.bind( this ));
+
+        // email and zip validation event handlers on blur
+        this.emailInput.addEventListener( "blur", this.emailCheck.bind( this ));
+        this.zipcodeInput.addEventListener( "blur", this.zipCheck.bind( this ));
+
       },
       submitCheck: function() {
         // todo why isn't pairedInputs.isValid working??
         var areValidInputs = validateFormInputValues( this ),
           validZip = validateZipCode( this ),
-          validEmail = validateEmail( this ),
-          errorEmail = this.shadowRoot.getElementById( "errorEmail" ),
-          errorZip = this.shadowRoot.getElementById( "errorZip" ),
-          emailField = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( ".form-input-container" ),
-          zipField = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( ".form-input-container" );
+          validEmail = validateEmail( this );
 
         if ( areValidInputs && validZip && validEmail ) {
           this.submitButton.removeAttribute( "disabled" );
-
         } else {
           this.submitButton.setAttribute( "disabled", "" );
         }
+      },
+      emailCheck: function() {
+        var errorEmail = this.shadowRoot.getElementById( "errorEmail" ),
+          validEmail = validateEmail( this );
 
         if ( !validEmail ) {
-          emailField.classList.add( "invalid-field" );
+          this.emailField.classList.add( "invalid-field" );
           errorEmail.innerHTML = "Please enter a valid email address";
         } else {
-          emailField.classList.remove( "invalid-field" );
+          this.emailField.classList.remove( "invalid-field" );
           errorEmail.innerHTML = "";
         }
+      },
+      zipCheck: function() {
+        var errorZip = this.shadowRoot.getElementById( "errorZip" ),
+          validZip = validateZipCode( this );
 
         if ( !validZip ) {
-          zipField.classList.add( "invalid-field" );
+          this.zipField.classList.add( "invalid-field" );
           errorZip.innerHTML = "Please enter a valid zip code";
         } else {
-          zipField.classList.remove( "invalid-field" );
+          this.zipField.classList.remove( "invalid-field" );
           errorZip.innerHTML = "";
         }
       },
