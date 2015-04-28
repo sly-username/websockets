@@ -102,14 +102,12 @@ edUserService.login = function( email, password ) {
       }));
 
       edUserService.getReferrals();
-      //console.log( this.referralsRemaining );
+      
+      // todo analytics needs to happen on login, not when socket is healed
+      edAnalyticsService.send( "login", {
+        time: new Date().toISOString()
+      });
 
-      // todo analytics
-      // edAnalyticsService.send(
-      //  edAnalyticsService.createEvent( "login", {
-      //    timestamp: new Date()
-      //  })
-      // );
       return currentProfile;
     })
     .catch(( error ) => {
