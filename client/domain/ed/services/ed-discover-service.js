@@ -1,8 +1,8 @@
 import edConnectionService from "domain/ed/services/ed-connection-service";
+import edUserService from "domain/ed/services/ed-user-service";
 import EDGenre from "domain/ed/objects/EDGenre";
 
-var currentProfileBlend = [],
-  likedBlend = [],
+var currentProfileBlend = {},
   trackIDList = [],
   edDiscoverService;
 
@@ -10,19 +10,6 @@ export default edDiscoverService = {
 
   get currentProfileBlend() {
     return currentProfileBlend;
-  },
-
-  get likedBlend() {
-    return likedBlend;
-  },
-
-  setLikedBlend( blend ) {
-    if ( blend != null && Array.isArray( blend )) {
-      likedBlend = blend;
-      return true;
-    }
-
-    return false;
   },
 
   getGenreTracks( genreID ) {
@@ -57,17 +44,25 @@ export default edDiscoverService = {
     }
   },
 
-  setCurrentProfileBlend( updatedProfileBlend ) {
-    currentProfileBlend = updatedProfileBlend;
+  setCurrentProfileBlend( genresLiked, genresDisliked ) {
+    console.log( "sending: %o %o", genresLiked, genresDisliked );
 
-    return edConnectionService.request( "profile/blend/set", 10, currentProfileBlend )
-      .then( msg => {
-        trackIDList = msg;
-        return trackIDList;
-      })
-      .catch( error => {
-        console.log( error );
-        throw error;
-      });
+    return edConnectionService.request( "profile/blend/set", 10, {
+      data: {
+        id: edUserService.currentProfile.id,
+        genresLiked,
+        genresDisliked
+      }
+    }).then( response => {
+      currentProfileBlend = {
+        id: edUserService.currentProfile.id,
+        genresLiked,
+        genresDisliked
+      };
+
+      // analytics for discover blend changed
+
+      return response;
+    });
   }
 };

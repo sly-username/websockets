@@ -2,30 +2,29 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-discover-service" ),
-    System.import( "domain/ed/services/ed-user-service" )
+    System.import( "domain/ed/services/ed-discover-service" )
   ]).then(function( imported ) {
     var
       discoverService = imported[ 0 ].default,
-      userService = imported[ 1 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
       triggerBubblesHandler = function( event ) {
-        var i;
         event.preventDefault();
-        bubbleArray = [];
 
-        for ( i = 0; i < this.inputBubbles.length; i++ ) {
-          if ( this.inputBubbles[i].hasAttribute( "checked" ) ) {
-            bubbleArray.push( this.inputBubbles[i].getAttribute( "data-id" ) );
-          }
-        }
+        bubbleArray = Array.from( this.inputBubbles )
+          .filter(function( element ) {
+            return element.hasAttribute( "checked" );
+          })
+          .map(function( element ) {
+            return element.getAttribute( "data-id" );
+          });
 
-        return discoverService.setCurrentProfileBlend( { data: { id: userService.currentProfile.id, genresLiked: this.likedBubbles, genresDisliked: bubbleArray }} )
+        console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );
+        return discoverService.setCurrentProfileBlend( this.likedBubbles, bubbleArray )
           .then(function( response ) {
             console.log( response );
-            this.router.go( "/discover" );
-          });
+            // todo go to song card and start playing discover blend
+          }.bind( this ));
       },
       // hides bubbles on ready
       hideBubblesHandler = function( event ) {
@@ -76,7 +75,7 @@
         this.inputBubbles     = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
         this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
         this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
-        this.likedBubbles     = discoverService.likedBlend;
+        this.likedBubbles     = this.getUrlVar();
       },
       attached: function() {
         // handlers
@@ -95,7 +94,17 @@
         this.nextBtn.removeEventListener( "click", this.handlers.triggerBubbles );
         this.bubbleContainer.removeEventListener( "click", this.handlers.triggerCounter );
       },
-      attributeChanged: function( attrName, oldValue, newValue ) {}
+      getUrlVar: function() {
+        var query = location.hash.substr( 1 ),
+           result = [];
+
+        query.split( "?" ).forEach(function( part ) {
+          var item = part.split( "=" );
+          result[item[0]] = decodeURIComponent( item[1] );
+        });
+
+        return result.genresliked.split( "," );
+      }
       /* PROPERTIES */
       /* METHODS */
     });

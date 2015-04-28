@@ -2,29 +2,25 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-discover-service" )
+    System.import( "domain/ed/services/ed-discover-service" ),
+    System.import( "domain/ed/analytics/ed-analytics-service" )
   ]).then(function( imported ) {
     var
       discoverService = imported[ 0 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
       triggerBubblesHandler = function( event ) {
-        var i, isSet;
         event.preventDefault();
 
-        bubbleArray = [];
+        bubbleArray = Array.from( this.inputBubbles )
+          .filter(function( element ) {
+            return element.hasAttribute( "checked" );
+          })
+          .map(function( element ) {
+            return element.getAttribute( "data-id" );
+          });
 
-        for ( i = 0; i < this.inputBubbles.length; i++ ) {
-          if ( this.inputBubbles[i].hasAttribute( "checked" ) ) {
-            bubbleArray.push( this.inputBubbles[i].getAttribute( "data-id" ) );
-          }
-        }
-        // reroutes to dislike
-        isSet = discoverService.setLikedBlend( bubbleArray );
-
-        if ( isSet ) {
-          this.router.go( "/onboarding/dislike" );
-        }
+        this.router.go( "/onboarding/dislike?genresliked=" + bubbleArray  );
       },
       triggerCounterHandler = function( event ) {
         if ( event.target.hasAttribute( "checked" ) &&
