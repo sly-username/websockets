@@ -1,6 +1,7 @@
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edUserService from "domain/ed/services/ed-user-service";
 import EDGenre from "domain/ed/objects/EDGenre";
+import EDAnalyticsEditDiscoverBlend from "domain/ed/analytics/events/user-profile/EDAnalyticsEditDiscoverBlend.js";
 
 var currentProfileBlend = {},
   trackIDList = [],
@@ -45,8 +46,6 @@ export default edDiscoverService = {
   },
 
   setCurrentProfileBlend( genresLiked, genresDisliked ) {
-    console.log( "sending: %o %o", genresLiked, genresDisliked );
-
     return edConnectionService.request( "profile/blend/set", 10, {
       data: {
         id: edUserService.currentProfile.id,
@@ -61,6 +60,9 @@ export default edDiscoverService = {
       };
 
       // analytics for discover blend changed
+      EDAnalyticsEditDiscoverBlend.send( "editDiscoverBlend", {
+        editDiscoverBlend: currentProfileBlend
+      });
 
       return response;
     });
