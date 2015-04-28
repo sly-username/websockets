@@ -208,26 +208,27 @@ edUserService.register = function( args ) {
   return edConnectionService.request( "user/create", 10, { data: args } )
     .then( response => {
       // validate response
-      //if ( response && response.status && response.status.code && response.status.code === 1 &&
-      //  typeof response.data.id === "string" ) {
-      //  console.log( "response validated %o", response );
-      //  return edUserService.login( authBlock.email, authBlock.password );
-      //}
+      if ( response && response.status && response.status.code && response.status.code === 1 &&
+        typeof response.data.id === "string" ) {
+        console.log( "response validated %o", response );
 
-      if ( response && response.status && response.status.code && response.status.code === 10 ) {
-        return response;
       }
+
+      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
+      //  return response;
+      //}
     })
     .catch( error => {
       console.log( "Error registering new user in User Service" );
       console.error( error );
       // TODO throw proper error object
       throw error;
-    //})
-    //.then( response => {
-    //  if ( response && response.status && response.status.code && response.status.code === 10 ) {
-    //    return response;
-    //  }
+    })
+    .then( response => {
+      return edUserService.login( authBlock.email, authBlock.password );
+      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
+      //  return response;
+      //}
     });
 };
 
