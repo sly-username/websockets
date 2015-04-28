@@ -37,11 +37,15 @@ ed-icon {
   .verticalAlign();
 }
 
-
-.form-input-container{
-  &.invalid-field {
-    background-color: @originalRed;
-    border-color: @darkRed1;
+:host([type="date"]){
+  .form-input-container {
+    .arrow-box {
+      .transform( translateY(7%) translateX(-7%) );
+      float: right;
+      height: 6.5rem;
+      width: 6.5rem;
+      background-color: @darkPurple2;
+      pointer-events: none;
+    }
   }
 }
-
