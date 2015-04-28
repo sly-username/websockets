@@ -141,16 +141,16 @@
 
         userService.register( registrationDataBlock )
           .then( function( response ) {
-            var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
-              errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
-
-            if ( ( /invite/ ).test( response.message )) {
-              errorReferralCode.innerHTML = "Please reenter your referral code";
-            } else if ( ( /email/ ).test( response.message )) {
-              errorUsedEmail.innerHTML = "This email address has already been registered";
-            } else {
-              this.router.go( "/onboarding/like" );
-            }
+            //var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
+            //  errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
+            //
+            //if ( ( /invite/ ).test( response.message )) {
+            //  errorReferralCode.innerHTML = "Please reenter your referral code";
+            //} else if ( ( /email/ ).test( response.message )) {
+            //  errorUsedEmail.innerHTML = "This email address has already been registered";
+            //} else {
+              this.router.go( "/referral" );
+            //}
           }.bind( this ))
           .catch( function( error ) {
             this.router.go( "/registration" );

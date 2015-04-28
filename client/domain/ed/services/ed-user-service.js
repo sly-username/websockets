@@ -208,10 +208,14 @@ edUserService.register = function( args ) {
   return edConnectionService.request( "user/create", 10, { data: args } )
     .then( response => {
       // validate response
-      if ( response && response.status && response.status.code && response.status.code === 1 &&
-        typeof response.data.id === "string" ) {
-        console.log( "response validated %o", response );
-        return edUserService.login( authBlock.email, authBlock.password );
+      //if ( response && response.status && response.status.code && response.status.code === 1 &&
+      //  typeof response.data.id === "string" ) {
+      //  console.log( "response validated %o", response );
+      //  return edUserService.login( authBlock.email, authBlock.password );
+      //}
+
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        return response;
       }
     })
     .catch( error => {
@@ -219,11 +223,11 @@ edUserService.register = function( args ) {
       console.error( error );
       // TODO throw proper error object
       throw error;
-    })
-    .then( response => {
-      if ( response && response.status && response.status.code && response.status.code === 10 ) {
-        return response;
-      }
+    //})
+    //.then( response => {
+    //  if ( response && response.status && response.status.code && response.status.code === 10 ) {
+    //    return response;
+    //  }
     });
 };
 
