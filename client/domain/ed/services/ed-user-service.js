@@ -39,6 +39,8 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
+  // todo should we keep this flag?
+  // todo since we're using whether they have a currentProfileBlend as indication of onboarding
   hasOnboarded: {
     configurable: false,
     enumerable: false,
@@ -174,8 +176,6 @@ edUserService.changeProfileImage = function( image ) {
 };
 
 edUserService.referral = function( email ) {
-  // todo need to send userId, friend's email
-  // todo save referral remaining information
   var json = {
     data: {
       // todo
@@ -187,11 +187,9 @@ edUserService.referral = function( email ) {
 
   return edConnectionService.request( "referral/create", 10, json )
     .then( response => {
-      console.log( response );
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
         referralsRemaining = response.data.referralsRemaining;
         return referralsRemaining;
-        // todo any notifications?36
       }
     })
     .catch( error => {

@@ -8,9 +8,9 @@
       eventNames = [ "mousedown", "touchstart" ],
 
       validateEmail = function( self ) {
-        var inputtedEmail = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+        var regexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
 
-        return self.emailInput.validity.valid && inputtedEmail.test( self.emailInput.value );
+        return self.emailInput.validity.valid && regexPattern.test( self.emailInput.value );
       },
       validateZipCode = function( self ) {
         var inputtedZip = /^\d{5,5}/;
@@ -73,14 +73,36 @@
         }.bind( this ));
       },
       submitCheck: function() {
+        // todo why isn't pairedInputs.isValid working??
         var areValidInputs = validateFormInputValues( this ),
           validZip = validateZipCode( this ),
-          validEmail = validateEmail( this );
+          validEmail = validateEmail( this ),
+          errorEmail = this.shadowRoot.getElementById( "errorEmail" ),
+          errorZip = this.shadowRoot.getElementById( "errorZip" ),
+          emailField = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( ".form-input-container" ),
+          zipField = this.shadowRoot.querySelector( ".zipcode" ).shadowRoot.querySelector( ".form-input-container" );
 
         if ( areValidInputs && validZip && validEmail ) {
           this.submitButton.removeAttribute( "disabled" );
+
         } else {
           this.submitButton.setAttribute( "disabled", "" );
+        }
+
+        if ( !validEmail ) {
+          emailField.classList.add( "invalid-field" );
+          errorEmail.innerHTML = "Please enter a valid email address";
+        } else {
+          emailField.classList.remove( "invalid-field" );
+          errorEmail.innerHTML = "";
+        }
+
+        if ( !validZip ) {
+          zipField.classList.add( "invalid-field" );
+          errorZip.innerHTML = "Please enter a valid zip code";
+        } else {
+          zipField.classList.remove( "invalid-field" );
+          errorZip.innerHTML = "";
         }
       },
       submitForm: function( event ) {
