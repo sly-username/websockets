@@ -2,12 +2,12 @@
   "use strict";
   Promise.all([
     System.import( "domain/ed/services/ed-user-service" ),
-    System.import( "domain/analytics/EDAnalytics" )
+    System.import( "domain/ed/analytics/ed-analytics-service" )
   ])
   .then(function( imported ) {
     var
-      userService = imported.default[ 0 ],
-      edAnalytics = imported.default[ 1 ],
+      userService = imported[ 0 ].default,
+      edAnalytics = imported[ 1 ].default,
       eventNames = [ "mousedown", "touchstart" ],
 
       validateEmail = function( self ) {
