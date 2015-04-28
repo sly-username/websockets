@@ -62,7 +62,7 @@
           userService.login( email, password )
             .then(function( edProfile ) {
               var redirectTo;
-              
+
               edAnalytics.send( "login", {
                 time: new Date().toISOString()
               });
