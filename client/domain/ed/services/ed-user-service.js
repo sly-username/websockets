@@ -6,7 +6,7 @@ import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
+import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
@@ -117,11 +117,6 @@ edUserService.login = function( email, password ) {
       }));
 
       edUserService.getReferrals();
-      
-      // todo analytics needs to happen on login, not when socket is healed
-      edAnalyticsService.send( "login", {
-        time: new Date().toISOString()
-      });
 
       return currentProfile;
     })
@@ -158,12 +153,9 @@ edUserService.logout = function() {
         }
       }));
 
-      // todo analytics
-      // edAnalyticsService.send(
-      // edAnalyticsService.createEvent( "logout", {
-      //   timestamp: new Date()
-      // })
-      // );
+      edAnalytics.send( "logout", {
+        time: ( new Date() ).toISOString()
+      });
 
       return true;
     })
