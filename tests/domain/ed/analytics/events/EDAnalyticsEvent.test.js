@@ -7,7 +7,7 @@
     var EDAnalyticsEvent;
 
     suiteSetup( function( done ) {
-      System.import( "domain/analytics/EDAnalyticsEvent" )
+      System.import( "domain/ed/analytics/events/EDAnalyticsEvent" )
         .then( function( imported ) {
 
           EDAnalyticsEvent = imported.default;
