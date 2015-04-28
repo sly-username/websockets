@@ -102,14 +102,14 @@ export default edAnalyticsService = {
   send( ...args ) {
     var event;
 
-    if ( args.length === 1 && args[0] instanceof EDAnalyticsEvent ) {
-      event = args[ 0 ];
-    } else {
-      event = this.createEvent( ...args );
-    }
-
     // Catch errors to make analytic calls "safe"
     try {
+      if ( args.length === 1 && args[0] instanceof EDAnalyticsEvent ) {
+        event = args[ 0 ];
+      } else {
+        event = this.createEvent( ...args );
+      }
+
       edConnectionService.formattedSend({
         analytics: {
           common: this.commonBlock,
