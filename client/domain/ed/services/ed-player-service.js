@@ -1,6 +1,6 @@
 import EDTrack from "domain/ed/objects/media/EDTrack";
 //import EDCollection from "domain/ed/storage/EDCollection";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
+import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edDiscoverService from "domain/ed/services/ed-discover-service";
 import edDataService from "domain/ed/services/ed-data-service";

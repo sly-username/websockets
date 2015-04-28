@@ -8,6 +8,7 @@ export default class EDGenre extends EDModel {
 
   constructor( args ) {
     super( args );
-    define.readOnly( this, [ "name" ], args );
+
+    define.enumReadOnly( this, [ "name" ], args );
   }
 }

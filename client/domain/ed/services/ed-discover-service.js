@@ -46,7 +46,7 @@ export default edDiscoverService = {
   setCurrentProfileBlend( updatedProfileBlend ) {
     currentProfileBlend = updatedProfileBlend;
 
-    return edConnectionService.request( currentProfileBlend )
+    return edConnectionService.request( "profile/blend/set", 10, currentProfileBlend )
       .then( msg => {
         trackIDList = msg;
         return trackIDList;

@@ -11,19 +11,22 @@ export default class EDProfile extends EDModel {
   constructor( args ) {
     super( args );
 
-    define.readOnly( this, [
+    define.enumReadOnly( this, [
       "userId",
       "artId",
+      "artUrl",
       "contactId",
       "bio",
-      "email",
-      "zipcode",
       "website",
-      "hometown",
-      "createdDate",
-      "modifiedDate"
+      "hometown"
     ], args );
 
-    define.readOnlyDeep( this, [ "name", "socialLinks", "badgesEarned" ], args );
+    define.enumReadOnlyDeep( this, [
+      "name",
+      "art",
+      "address",
+      "socialLinks",
+      "badgesEarned"
+    ], args );
   }
 }

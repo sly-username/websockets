@@ -16,19 +16,25 @@ export default class EDModel extends EventEmitter {
       throw new TypeError( "EDModel type argument not found" );
     }
 
-    if ( !( "modelType" in args ) ) {
-      throw new TypeError( "EDModel modelType argument not found" );
-    }
-
     // call super to initialize EventEmitter properties
     super();
-    define.readOnly( this, [ "id", "type", "modelType" ], args );
+
+    define.enumReadOnly( this, [
+      "id",
+      "type"
+    ], args );
+
+//    define.enumReadOnlyDeep( this, [ "art" ], args );
 
     // TODO REMOVE WHEN STANDARDIZED
     // This is for catching any data that might slip through the cracks
     define.readOnlyDeep( this, [ "raw" ], {
       raw: args
     });
+  }
+
+  get modelType() {
+    return this.constructor.MODEL_TYPE;
   }
 
 /*

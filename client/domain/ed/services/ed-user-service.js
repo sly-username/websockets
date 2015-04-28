@@ -6,7 +6,7 @@ import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import edAnalyticsService from "domain/analytics/EDAnalytics";
+import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
@@ -14,7 +14,9 @@ var
   currentUserId = null,
   isOpenSession = false,
   hasOnboarded = false,
-  sessionAuthJSON = null;
+  sessionAuthJSON = null,
+  loggedInDate = null,
+  referralsRemaining;
 
 Object.defineProperties( edUserService, {
   currentProfile: {
@@ -38,7 +40,7 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  hasOnboarded: { // TODO determine if this flag is needed
+  hasOnboarded: {
     configurable: false,
     enumerable: false,
     get: function() {
@@ -51,8 +53,39 @@ Object.defineProperties( edUserService, {
     get: function() {
       return sessionAuthJSON;
     }
+  },
+  referralsRemaining: {
+    configurable: false,
+    enumberable: false,
+    get: function() {
+      return referralsRemaining;
+    }
+  },
+  sessionDuration: {
+    configurable: false,
+    enumberable: false,
+    get: function() {
+      var now = new Date();
+
+      if ( loggedInDate == null ) {
+        return 0;
+      }
+
+      return now - loggedInDate;
+    }
   }
 });
+
+// todo remove
+window.edUserService = edUserService;
+
+edUserService.getReferrals = function() {
+  return edConnectionService.request( "referral/get", 10 )
+    .then( response => {
+      referralsRemaining = response.data.count;
+      return referralsRemaining;
+    });
+};
 
 edUserService.login = function( email, password ) {
   var
@@ -64,7 +97,6 @@ edUserService.login = function( email, password ) {
     };
 
   return edConnectionService.authenticateConnection( email, password )
-    // todo does the profile contain userId information?
     .then( raw => {
       currentUserId = raw.userId;
       return edDataService.getProfileById( raw.profileId );
@@ -73,6 +105,7 @@ edUserService.login = function( email, password ) {
       currentProfile = edProfile;
       isOpenSession = true;
       sessionAuthJSON = json;
+      loggedInDate = new Date();
 
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
@@ -80,6 +113,9 @@ edUserService.login = function( email, password ) {
           profile: currentProfile
         }
       }));
+
+      edUserService.getReferrals();
+      //console.log( this.referralsRemaining );
 
       // todo analytics
       // edAnalyticsService.send(
@@ -89,10 +125,12 @@ edUserService.login = function( email, password ) {
       // );
       return currentProfile;
     })
-    .catch( () => {
+    .catch(( error ) => {
+      console.error( error );
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
+      referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
@@ -109,6 +147,8 @@ edUserService.logout = function() {
       currentUserId = null;
       isOpenSession = false;
       sessionAuthJSON = null;
+      loggedInDate = null;
+      referralsRemaining = 0;
 
       edUserService.dispatch( createEvent( "edLogout", {
         detail: {
@@ -148,18 +188,31 @@ edUserService.changeProfileImage = function( image ) {
   return Promise.resolve( null );
 };
 
-edUserService.referral = function( args ) {
-  // todo need to send userId, email
-  // todo where do we store how many referrals they have left?
-  // todo what information/status codes will we be getting back from the server?
-  var data = {
-    userId: args.currentUserId,
-    email: args.email
+edUserService.referral = function( email ) {
+  // todo need to send userId, friend's email
+  // todo save referral remaining information
+  var json = {
+    data: {
+      // todo
+      //userId: currentUserId,
+      userId: parseInt( currentUserId, 10 ),
+      email
+    }
   };
 
-  return edConnectionService.request( route, priority, data )
-    .then( function() {
-
+  return edConnectionService.request( "referral/create", 10, json )
+    .then( response => {
+      console.log( response );
+      if ( response && response.status && response.status.code && response.status.code === 1 ) {
+        referralsRemaining = response.data.referralsRemaining;
+        return referralsRemaining;
+        // todo any notifications?36
+      }
+    })
+    .catch( error => {
+      console.log( "referral email was not successfully sent" );
+      console.log( error );
+      throw error;
     });
 };
 

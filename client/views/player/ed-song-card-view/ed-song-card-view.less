@@ -75,22 +75,24 @@
     color: @originalWhite;
     text-align: center;
     p {
-      color: @darkPurple5;
+      color: @darkPurple3;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 85%;
       white-space: nowrap;
-      .edType(paragraph-N);
+      .edType( paragraph-M );
+      margin: 0;
     }
     h3 {
       text-align: left;
       vertical-align: middle;
       color: @originalTeal;
-      .edType(heading-XS);
+      .edType( heading-XXS );
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
   }
 }
-
 
 #bio-button {
   height: 55%;
@@ -105,8 +107,10 @@
   border: none;
   #bio-icon {
     fill: @originalTeal;
-    height: 66%;
-    width: 66%;
+    height: 64%;
+    width: 64%;
+    position: inherit;
+    margin: 2.7rem -2rem 0 0;
   }
 }
 
