@@ -1,10 +1,13 @@
 ( function( polymer, System ) {
   "use strict";
-
-  System.import( "domain/ed/services/ed-user-service" )
+  Promise.all([
+    System.import( "domain/ed/services/ed-user-service" ),
+    System.import( "domain/analytics/EDAnalytics" )
+  ])
   .then(function( imported ) {
     var
-      userService = imported.default,
+      userService = imported.default[ 0 ],
+      edAnalytics = imported.default[ 1 ],
       eventNames = [ "mousedown", "touchstart" ],
 
       validateEmail = function( self ) {
@@ -153,6 +156,10 @@
 
         userService.register( registrationDataBlock )
           .then( function( response ) {
+
+            edAnalytics.send( "register", {
+              code: this.inviteCodeInput.value
+            });
             //var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
             //  errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
             //
