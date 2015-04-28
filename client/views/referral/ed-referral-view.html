@@ -10,11 +10,12 @@
         </button>
         <h1 id="referral-title">Invite Friends</h1>
       </div>
-      <ed-icon name="invite-friends"></ed-icon>
-      <p>
+      <ed-icon class="friends-icon" name="invite-friends"></ed-icon>
+      <p class="referral-text">
         {{ userService.currentProfile.raw.firstName }}, you have {{ userService.referralsRemaining }}<br>invites left
       </p>
-      <ed-form-input type="email" class="email" placeholder="Friend's Email" icon="envelope"></ed-form-input>
+      <ed-form-input id="email-input" type="email" class="email" placeholder="Friend's Email"
+                     icon="envelope"></ed-form-input>
       <button id="referral-submit" class="invalid" disabled>SEND INVITE</button>
     </div>
   </template>

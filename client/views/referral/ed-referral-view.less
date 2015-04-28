@@ -15,21 +15,31 @@
     color: @lightGrey1;
     text-align: center;
   }
-  .referral-title-bar {
-    .edTitleBar();
-    #referral-title {
-      padding: 3rem 7.5rem;
-      pointer-events: none;
+  #email-input {
+    &::shadow {
+      input {
+        padding: 0 6.5rem;
+      }
     }
   }
-  ed-icon {
+  .referral-title-bar {
+    .edTitleBar();
+  }
+  .friends-icon {
     width: 11rem;
     height: 11rem;
     margin: 0 auto;
     text-align: center;
     fill: @lightGrey1;
+    padding: 0 7rem;
+  }
+  .referral-text {
+    padding: 0 7rem;
+    white-space: pre;
   }
   #referral-submit {
+    white-space: pre;
+    padding: 0 7rem;
     &:disabled {
       .edPrimaryButton( @backgroundColor: @lightGrey1; @activeColor: @lightGrey1 );
     }

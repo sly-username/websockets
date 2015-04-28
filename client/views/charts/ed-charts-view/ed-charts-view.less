@@ -14,16 +14,20 @@
   position: relative;
   .charts-title-bar {
     .edTitleBar();
-    #charts-title {
-      padding: 3rem 7.5rem;
-      pointer-events: none;
-    }
     button {
       outline: none;
     }
   }
   .charts-header {
     text-align: center;
+    .chart-title-text {
+      padding: 0 7rem;
+      white-space: pre;
+    }
+    .month {
+      padding: 0 7rem;
+      white-space: pre;
+    }
     .chart-arrows {
       position: absolute;
       width: 20%;
@@ -81,11 +85,15 @@
     color: @originalTeal;
 
     .time-left {
+      padding: 0 7rem;
+      white-space: pre;
       .edType( paragraph-M );
       margin: 0;
     }
 
     .countdown-timer {
+      padding: 0 7rem;
+      white-space: pre;
       .edType( paragraph-L );
       margin-top: 0;
     }
@@ -97,6 +105,7 @@
     padding: 0;
     margin-bottom: -0.3rem;
     li {
+      overflow: auto;
       height: 7rem;
       margin-top: -0.3rem;
       width: 100%;
