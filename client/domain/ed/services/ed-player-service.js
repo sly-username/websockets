@@ -208,6 +208,12 @@ export default edPlayerService = {
       currentTrack.removeAttribute( "src" );
       currentTrack = null;
     }
+
+    edAnalyticsService.send( "quit", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime,
+      action: "stop"
+    });
     return true;
   },
 
@@ -244,6 +250,12 @@ export default edPlayerService = {
       }
       return this.play( this.dequeue() );
     }
+
+    edAnalyticsService.send( "quit", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime,
+      action: "skip"
+    });
   },
 
   skipTo: function( index ) {
