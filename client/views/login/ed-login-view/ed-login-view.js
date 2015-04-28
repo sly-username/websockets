@@ -19,6 +19,7 @@
           this.inputsArray = [ this.emailInput, this.passwordInput ];
           this.submitButton = this.shadowRoot.getElementById( "login-submit" );
           this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
+          this.errorDiv = this.shadowRoot.getElementById( "errorDiv" );
         },
         attached: function() {
           this.emailInput.setAttribute( "autofocus", "" );
@@ -63,14 +64,17 @@
               if ( typeChecker.isArtist( edProfile ) ) {
                 redirectTo = "/artist/" + edProfile.id;
               // todo needs to check if fan has onboarded
-              } else if ( typeChecker.isFan( edProfile ) && this.hasOnboarded ) {
+              } else if ( typeChecker.isFan( edProfile ) && userService.hasOnboarded ) {
                 redirectTo = "/fan/" + edProfile.id;
-              } else if ( typeChecker.isFan( edProfile ) && !this.hasOnboarded ) {
+              } else if ( typeChecker.isFan( edProfile ) && !userService.hasOnboarded ) {
                 redirectTo = "/onboarding/like";
               }
 
               this.router.go( redirectTo );
-            }.bind( this ));
+            }.bind( this ))
+          .catch( function() {
+            this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
+          }.bind( this ));
         },
         goToSignUpPage: function() {
           this.router.go( "/register" );
