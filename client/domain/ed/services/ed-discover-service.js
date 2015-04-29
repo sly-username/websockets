@@ -60,7 +60,7 @@ export default edDiscoverService = {
       };
 
       // analytics for discover blend changed
-      EDAnalyticsEditDiscoverBlend.send( "editDiscoverBlend", {
+      edAnalyticsService.send( "editDiscoverBlend", {
         editDiscoverBlend: currentProfileBlend
       });
 
