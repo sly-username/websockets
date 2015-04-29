@@ -88,8 +88,9 @@ edUserService.getReferrals = function() {
       return referralsRemaining;
     })
     .catch( error => {
-      console.error( error );
       console.log( "the user has no referrals remaining" );
+      referralsRemaining = 0;
+      return referralsRemaining;
     });
 };
 
