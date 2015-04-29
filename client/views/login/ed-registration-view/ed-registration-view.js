@@ -1,14 +1,11 @@
 ( function( polymer, System ) {
   "use strict";
-  Promise.all([
-    System.import( "domain/ed/services/ed-user-service" ),
-    System.import( "domain/ed/analytics/ed-analytics-service" )
-  ])
-  .then(function( imported ) {
-    var
-      userService = imported[ 0 ].default,
-      edAnalytics = imported[ 1 ].default,
-      eventNames = [ "mousedown", "touchstart" ],
+
+  System.import( "domain/ed/services/ed-user-service" )
+    .then(function( imported ) {
+      var
+        userService = imported.default,
+        eventNames = [ "mousedown", "touchstart" ],
 
       validateEmail = function( self ) {
         var regexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
@@ -156,10 +153,6 @@
 
         userService.register( registrationDataBlock )
           .then( function( response ) {
-
-            edAnalytics.send( "register", {
-              code: this.inviteCodeInput.value
-            });
 
             // todo error messages for invalid referral code and already registered email
             //var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),

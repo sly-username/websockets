@@ -207,8 +207,9 @@ edUserService.referral = function( email ) {
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
 
         edAnalytics.send( "invite", {
-          code: "invite code",
-          recipient: "string email"
+          // todo doesn't return invite code that is created by server
+          code: response.data.inviteCode,
+          recipient: response.data.email
         });
 
         referralsRemaining = response.data.referralsRemaining;
@@ -235,6 +236,11 @@ edUserService.register = function( args ) {
         typeof response.data.id === "string" ) {
         console.log( "response validated %o", response );
 
+        edAnalytics.send( "register", {
+          code: response.data.inviteCode
+        });
+
+        return response;
       }
 
       //if ( response && response.status && response.status.code && response.status.code === 10 ) {
