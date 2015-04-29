@@ -3,117 +3,138 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/alignments.mixin.less";
 
-@redTransparent: linear-gradient(to bottom, fade(@originalRed, 50%), fade(@originalRed, 50%));
-@tealTransparent: linear-gradient(to bottom, fade(@originalTeal, 50%), fade(@originalTeal, 50%));
-
-:host {
-  float: left;
-  width: 28rem;
-  max-width: 33.3%
-}
-
 // dislike views
 :host([view-type="dislike"][genre="rock"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-dislike/02.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="dislike"][genre="country"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-dislike/04.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="dislike"][genre="hip-hop"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-dislike/05.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="dislike"][genre="pop"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-dislike/01.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="dislike"][genre="dance"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-dislike/06.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="dislike"][genre="alternative"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-dislike/03.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 
 // like views
 :host([view-type="like"][genre="rock"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-like/02.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="like"][genre="country"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-like/04.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="like"][genre="hip-hop"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-like/05.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="like"][genre="pop"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-like/01.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="like"][genre="dance"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-like/06.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 :host([view-type="like"][genre="alternative"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    background: url(../../../assets/background-images/genre-pics/selected-like/03.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 
-:host([view-type="dislike"]) {
+// deselected View
+:host([genre="rock"]) {
   .ed-bubble {
-    background: @darkOrange1;
+    background: url(../../../assets/background-images/genre-pics/deselected/02.jpg) no-repeat center;
+    background-size: cover;
   }
 }
-
-:host([view-type="like"]) {
+:host([genre="country"]) {
   .ed-bubble {
-    background: @originalPurple;
+    background: url(../../../assets/background-images/genre-pics/deselected/04.jpg) no-repeat center;
+    background-size: cover;
+  }
+}
+:host([genre="hip-hop"]) {
+  .ed-bubble {
+    background: url(../../../assets/background-images/genre-pics/deselected/05.jpg) no-repeat center;
+    background-size: cover;
+  }
+}
+:host([genre="pop"]) {
+  .ed-bubble {
+    background: url(../../../assets/background-images/genre-pics/deselected/01.jpg) no-repeat center;
+    background-size: cover;
+  }
+}
+:host([genre="dance"]) {
+  .ed-bubble {
+    background: url(../../../assets/background-images/genre-pics/deselected/06.jpg) no-repeat center;
+    background-size: cover;
+  }
+}
+:host([genre="alternative"]) {
+  .ed-bubble {
+    background: url(../../../assets/background-images/genre-pics/deselected/03.jpg) no-repeat center;
+    background-size: cover;
   }
 }
 
 input[type="checkbox"] {
-  visibility: hidden;
+  display: none;
   margin: 0;
   padding: 0;
   opacity: 1;
 }
 
-.ed-bubble-select-wrapper {
-  position: relative;
-  width: 100%;
-  float: left;
-}
-
 .ed-bubble {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  height: 0;
-  padding: 50% 0;
-  border-radius: 50%;
+  float: left;
+  width: 50%;
+  height: 12rem;
   color: @originalWhite;
   text-align: center;
   .edType( heading-XS );
-  line-height: 0;
   text-transform: uppercase;
-  .verticalAlign();
-  .transform( rotate(-30deg) );
+  span {
+    display: inline-block;
+    .verticalAlign();
+  }
 }
 

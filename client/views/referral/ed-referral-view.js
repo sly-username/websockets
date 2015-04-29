@@ -4,10 +4,10 @@
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
       var userService = imported.default,
-        validateEmail = function() {
+        validateEmail = function( self ) {
           var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
           if ( this.emailInput.validity.valid && re.test( this.emailInput.value )) {
-            this.submitButton.removeAttribute( "disabled" );
+            this.submitCheck();
           } else {
             this.submitButton.setAttribute( "disabled", "" );
           }
@@ -20,7 +20,8 @@
             this.edMenu.setAttribute( "class", "show-menu" );
             this.appRouter.setAttribute( "class", "hide-router" );
           }
-        };
+        },
+        clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
@@ -28,9 +29,6 @@
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
-          this.clickEvents = [ "mousedown", "touchstart" ];
-          this.triggerList = [ this.emailInput, this.submitButton ];
-          this.referralMessage = this.shadowRoot.getElementById( "referral-message" );
           this.edMenu = document.getElementById( "side-menu" );
           this.appRouter = document.getElementById( "animation-wrapper" );
           this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
@@ -39,38 +37,40 @@
           };
         },
         attached: function() {
-          userService.getReferrals();
           this.emailInput.setAttribute( "autofocus", "" );
+          this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
+          this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
 
-          this.clickEvents.forEach( function( eventName ) {
+          clickEvents.forEach( function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
           }.bind( this ));
 
           this.emailInput.addEventListener( "keyup", validateEmail.bind( this ));
-
-          this.triggerList.forEach( function( trigger ) {
-            trigger.addEventListener( "keydown", function( event ) {
-              if ( event.keyCode === 13 ) {
-                this.submitFriendEmail( event );
-              }
-
-              return false;
-            }.bind( this ));
-          }.bind( this ));
-          this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
-          this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
         },
         detached: function() {
+          clickEvents.forEach( function( eventName ) {
+            this.submitButton.removeEventListener( eventName, this.submitFriendEmail.bind( this ));
+          }.bind( this ));
+
+          this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
           this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
           this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
         },
-        updateReferralCount: function() {
-          var referralsRemaining;
-          return userService.getReferrals()
-            .then( function( response ) {
-              referralsRemaining = response.data.count;
-              return referralsRemaining;
-            });
+        submitCheck: function() {
+          if ( userService.referralsRemaining === 0 ) {
+            this.submitButton.setAttribute( "disabled", "" );
+          } else if ( userService.referralsRemaining > 0 ) {
+            this.submitButton.removeAttribute( "disabled" );
+
+            // todo, if you press tab and enter, it'll reload the page
+            this.emailInput.addEventListener( "submit", function( event ) {
+              if ( event.keyCode === 13 ) {
+                event.preventDefault();
+                this.submitFriendEmail( event );
+              }
+              return false;
+            }.bind( this ));
+          }
         },
         submitFriendEmail: function( event ) {
           var friendEmail = this.emailInput.value;
@@ -81,10 +81,8 @@
               this.referralsRemaining = response;
               this.emailInput.value = "";
             }.bind( this ));
-          // todo change referralsRemaining number
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
     });
 })( window.Polymer, window.System );
-
