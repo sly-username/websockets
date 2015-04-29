@@ -20,6 +20,7 @@ import EDAnalyticsRegisterEvent from "domain/ed/analytics/events/user-profile/ED
 import EDAnalyticsLoginEvent from "domain/ed/analytics/events/user-profile/EDAnalyticsLoginEvent";
 import EDAnalyticsLogoutEvent from "domain/ed/analytics/events/user-profile/EDAnalyticsLogoutEvent";
 import EDAnalyticsEditProfileEvent from "domain/ed/analytics/events/user-profile/EDAnalyticsEditProfileEvent";
+import EDAnalyticsEditDiscoverBlend from "domain/ed/analytics/events/user-profile/EDAnalyticsEditDiscoverBlend";
 
 // Application Events
 import EDAnalyticsRouteRequestEvent from "domain/ed/analytics/events/application/EDAnalyticsRouteRequestEvent";
@@ -43,6 +44,7 @@ eventMap = {
   [ EDAnalyticsLoginEvent.TYPE ]: EDAnalyticsLoginEvent,
   [ EDAnalyticsLogoutEvent.TYPE ]: EDAnalyticsLogoutEvent,
   [ EDAnalyticsEditProfileEvent.TYPE ]: EDAnalyticsEditProfileEvent,
+  [ EDAnalyticsEditDiscoverBlend.TYPE ]: EDAnalyticsEditDiscoverBlend,
 
   // Application Events
   [ EDAnalyticsRouteRequestEvent.TYPE ]: EDAnalyticsRouteRequestEvent
