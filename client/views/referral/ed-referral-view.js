@@ -22,7 +22,6 @@
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
         },
         attached: function() {
-          userService.getReferrals();
           this.emailInput.setAttribute( "autofocus", "" );
 
           clickEvents.forEach( function( eventName ) {
@@ -38,18 +37,6 @@
 
           this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
         },
-        //updateReferralCount: function() {
-        //  var referralsRemaining;
-        //  return userService.getReferrals()
-        //    .then( function( response ) {
-        //      referralsRemaining = response.data.count;
-        //      return referralsRemaining;
-        //    })
-        //    .catch( function( error ) {
-        //      referralsRemaining = 0;
-        //      return referralsRemaining;
-        //    });
-        //},
         submitCheck: function() {
 
           if ( userService.referralsRemaining === 0 ) {
