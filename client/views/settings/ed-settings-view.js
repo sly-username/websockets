@@ -8,13 +8,13 @@
     }
   },
     logOutTriggerHandler = function() {
-    var reallyLogout = confirm( "Are you sure you want to log out?" );
+      var reallyLogout = confirm( "Are you sure you want to log out?" );
 
       if ( reallyLogout ) {
-      // reroute somewhere else
-      console.log( "logout" );
-    }
-    return false;
+        // reroute somewhere else
+        console.log( "logout" );
+      }
+      return false;
   };
 
   polymer( "ed-settings-view", {
