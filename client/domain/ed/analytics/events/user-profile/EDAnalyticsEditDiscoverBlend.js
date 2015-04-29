@@ -4,12 +4,14 @@ import define from "domain/ed/define-properties";
 import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 
 var eventKeys = [
-  "editDiscoverBlend"
+  "profileId",
+  "genresLiked",
+  "genresDisliked"
 ];
 
 export default class EDAnalyticsEditDiscoverBlend extends EDAnalyticsEvent {
   static get TYPE() {
-    return "onboarding";
+    return "editDiscoverBlend";
   }
 
   constructor( args ) {

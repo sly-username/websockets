@@ -1,7 +1,7 @@
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edUserService from "domain/ed/services/ed-user-service";
 import EDGenre from "domain/ed/objects/EDGenre";
-import EDAnalyticsEditDiscoverBlend from "domain/ed/analytics/events/user-profile/EDAnalyticsEditDiscoverBlend.js";
+import EDAnalyticsEditDiscoverBlend from "domain/ed/analytics/ed-analytics-service";
 
 var currentProfileBlend = {},
   trackIDList = [],
