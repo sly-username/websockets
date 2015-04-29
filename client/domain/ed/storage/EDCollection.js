@@ -32,7 +32,7 @@ export default class EDCollection {
    */
   get( index ) {
     if ( !( this[ datalist ][ index ] instanceof Promise ) ) {
-      this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ].trackId );
+      this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
     }
     return this[ datalist ][ index ];
   }

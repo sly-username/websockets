@@ -13,7 +13,9 @@ export default class EDModel extends EventEmitter {
     }
 
     if ( !( "type" in args ) ) {
-      throw new TypeError( "EDModel type argument not found" );
+      // TODO figure out if this should really always be required
+      console.warn( "EDModel created without 'type' Property: %o", args );
+      // throw new TypeError( "EDModel type argument not found" );
     }
 
     // call super to initialize EventEmitter properties

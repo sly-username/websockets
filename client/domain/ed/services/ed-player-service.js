@@ -13,13 +13,11 @@ var
   queue = [],
   currentTrack = null,
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
-  //audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
   audio = new Audio() || document.createElement( "audio" ),
   setCurrentTrack,
   edPlayerService,
   rateCurrentlyPlaying,
-  getTracksQueue,
-  trackCollection;
+  tracksCollection;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -32,25 +30,21 @@ setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
 };
 
-rateCurrentlyPlaying = function( number ) {
-  if ( number != null ) {
-    return currentTrack.rate( number )
-      .then(function( response ) {
-        // adding in fake ID for now
-        edAnalyticsService.send( "rate", {
-          trackId: currentTrack.id || 10,
-          timecode: currentTrack.currentTime,
-          rating: number
-        });
-
-        return response;
-      });
-  }
-};
-
-getTracksQueue = function() {
-
-};
+//rateCurrentlyPlaying = function( number ) {
+//  if ( number != null && currentTrack ) {
+//    return currentTrack.rate( number )
+//      .then(function( response ) {
+//        // adding in fake ID for now
+//        edAnalyticsService.send( "rate", {
+//          trackId: currentTrack.id || 10,
+//          timecode: currentTrack.currentTime,
+//          rating: number
+//        });
+//
+//        return response;
+//      });
+//  }
+//};
 
 export default edPlayerService = {
   get emitter() {
@@ -73,35 +67,27 @@ export default edPlayerService = {
   },
 
   get isPlaying() {
-    if ( currentTrack != null ) {
-      return !currentTrack.paused;
-    }
-
-    return false;
+    return !audio.paused;
   },
 
   get isPaused() {
-    if ( currentTrack != null ) {
-      return currentTrack.paused && !!currentTrack.src;
-    }
-
-    return false;
+    return audio.paused && !!audio.src;
   },
 
   get isStopped() {
-    return currentTrack.paused && !currentTrack.src;
+    return audio.paused && !audio.src;
   },
 
   get currentTime() {
     if ( this.isPlaying || this.isPaused ) {
-      return currentTrack.currentTime;
+      return audio.currentTime;
     }
 
     return 0;
   },
 
   set currentTime( value ) {
-    return currentTrack.currentTime;
+    return audio.currentTime;
   },
 
   get currentSeconds() {
@@ -144,7 +130,7 @@ export default edPlayerService = {
 
   get trackLength() {
     if ( currentTrack != null ) {
-      return currentTrack.duration;
+      return audio.duration;
     }
 
     return 0;
@@ -162,13 +148,14 @@ export default edPlayerService = {
 
   play: function( edTrack ) {
     if ( !edTrack instanceof EDTrack ) {
-      throw new TypeError( "Track is not an EDTrack object" );
+      console.warn( "not an instance of edTrack" );
+      //throw new TypeError( "Track is not an EDTrack object" );
     }
 
     return edTrack.getUrl()
       .then(( response ) => {
-        console.log( "play response", response );
-        //audio.src = response;
+        console.log( "play response", response.data.url );
+        audio.src = response.data.url;
         audio.play();
 
         this.emitter.dispatch( createEvent( "playerUpdate", {
@@ -177,7 +164,7 @@ export default edPlayerService = {
           }
         }));
 
-        setCurrentTrack( audio );
+        setCurrentTrack( edTrack );
 
         edAnalyticsService.send( "play", {
           trackId: currentTrack.id || 10,
@@ -195,11 +182,11 @@ export default edPlayerService = {
       }
     }));
 
-    currentTrack.pause();
+    audio.pause();
 
     edAnalyticsService.send( "pause", {
       trackId: currentTrack.id || 10,
-      timecode: currentTrack.currentTime
+      timecode: audio.currentTime
     });
 
     return this.isPaused;
@@ -207,14 +194,14 @@ export default edPlayerService = {
 
   stop: function() {
     if ( this.isPlaying ) {
-      currentTrack.pause();
-      currentTrack.removeAttribute( "src" );
+      audio.pause();
+      audio.removeAttribute( "src" );
       currentTrack = null;
     }
 
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id || 10,
-      timecode: currentTrack.currentTime,
+      timecode: audio.currentTime,
       action: "stop"
     });
     return true;
@@ -222,7 +209,7 @@ export default edPlayerService = {
 
   scrubTo: function( value ) {
     var scrubFrom = currentTrack.currentTime;
-    currentTrack.currentTime = value;
+    audio.currentTime = value;
 
     edAnalyticsService.send( "scrub", {
       trackId: currentTrack.id || 10,
@@ -253,7 +240,7 @@ export default edPlayerService = {
 
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id || 10,
-      timecode: currentTrack.currentTime,
+      timecode: audio.currentTime,
       action: "skip"
     });
   },
@@ -282,9 +269,10 @@ export default edPlayerService = {
 
     return edDiscoverService.getBlendTracks()
       .then(( response ) => {
-        trackCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
-        console.log( "tracker", trackCollection.get( 0 ) );
-        //this.play( trackCollection.ids[ 0 ] );
+        tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
+        tracksCollection.get( 0 ).then(( edTrack ) => {
+          this.play( edTrack );
+        });
 
         return response;
       })

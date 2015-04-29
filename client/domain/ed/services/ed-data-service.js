@@ -201,8 +201,9 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
       return pdb.objects.put( response.data );
     })
     .then(function( dbResponse ) {
-      console.log( "db response %o", dbResponse );
-      return lru.get( id );
+      console.log( "db response %o, original id %o", dbResponse, id );
+      console.log( "looking up in lru %o", lru.get( dbResponse ) );
+      return lru.get( dbResponse );
     })
     .catch(function( error ) {
       console.log( "Some kind of error in dataService.getByTypeAndId" );
