@@ -14,7 +14,6 @@ export default edDiscoverService = {
   },
 
   getGenreTracks( genreId ) {
-    console.log( "idddd", edUserService.currentProfile.id );
     var data = {
       id: edUserService.currentProfile.id,
       genreId

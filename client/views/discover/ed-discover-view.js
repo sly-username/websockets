@@ -23,8 +23,6 @@
         discoverGenreHandler = function( event ) {
           var tmpId = parseInt( event.target.getAttribute( "data-id" ), 10 );
 
-          console.log( typeof tmpId );
-
           if ( tmpId != null ) {
             playerService.queueTracksAndPlay( tmpId );
           }
