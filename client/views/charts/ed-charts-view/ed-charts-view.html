@@ -5,11 +5,17 @@
     <template>
         <link rel="stylesheet" href="./ed-charts-view.css">
         <div class="charts-wrapper">
+            <div class="charts-title-bar">
+                <button id="menu-trigger">
+                    <ed-icon name="burger"></ed-icon>
+                </button>
+                <h1 id="charts-title">Ranking</h1>
+            </div>
             <div class="charts-header">
                 <header>
                     <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
                     <ed-icon id="arrow-right" class="chart-arrows" name="arrow-forward-teal"></ed-icon>
-                    <h1>Highest Rated Song</h1>
+                    <h1 class="chart-title-text">Highest Rated Song</h1>
                     <p class="month">April 2015</p>
                 </header>
                 <div class="ranks-badge-wrapper">
@@ -30,9 +36,6 @@
                     </li>
                 </template>
             </ul>
-            <ed-mini-player id="mini-player"
-                            song="Track Title" artist="Artist Name"
-                            image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
         </div>
     </template>
     <script src="./ed-charts-view.js"></script>

@@ -5,7 +5,8 @@
 @import "mixins/breakpoints/mixins.less";
 @import "ed/buttons.mixin.less";
 @import "ed/colors.vars.less";
-
+@import "mixins/prefixes/transforms.less";
+@import "mixins/prefixes/animations.less";
 
 html {
   font-size: 62.5%;
@@ -41,6 +42,7 @@ body {
   height: 100%;
   overflow: auto;
   opacity: 0;
+  z-index: 5;
   transition: opacity ease-in 0.2s;
   svg {
     width: 100%;
@@ -58,5 +60,44 @@ body {
   }
 }
 
+#animation-wrapper {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  max-width: 59.6rem;
+  overflow: hidden;
+}
+
+.hide-router {
+  .animation( slideRouterOut .33s ease-in-out forwards);
+}
+
+.show-router {
+  .animation( slideRouterIn .33s ease-in-out forwards);
+}
+
+
+.keyframes( slideRouterOut, {
+0% {
+  .transform( translateX( 0% ));
+}
+100% {
+  .transform( translateX( 84% ));
+}
+
+});
+
+.keyframes( slideRouterIn, {
+0% {
+  .transform( translateX( 84% ));
+}
+100% {
+  .transform( translateX( 0% ));
+}
+});
+
+
+
 .hidden();
+
 

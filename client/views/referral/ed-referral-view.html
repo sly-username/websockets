@@ -5,19 +5,17 @@
     <link rel="stylesheet" href="./ed-referral-view.css">
     <div id="referral-wrapper">
       <div class="referral-title-bar">
-        <button>
+        <button id="menu-trigger">
           <ed-icon name="burger"></ed-icon>
         </button>
-        <h1>invite friends</h1>
+        <h1 id="referral-title">Invite Friends</h1>
       </div>
-
-      <ed-icon name="invite-friends"></ed-icon>
-
-      <p>
+      <ed-icon class="friends-icon" name="invite-friends"></ed-icon>
+      <p class="referral-text">
         {{ userService.currentProfile.raw.firstName }}, you have {{ userService.referralsRemaining }}<br>invites left
       </p>
-
-      <ed-form-input type="email" class="email" placeholder="Friend's Email" icon="envelope"></ed-form-input>
+      <ed-form-input id="email-input" type="email" class="email" placeholder="Friend's Email"
+                     icon="envelope"></ed-form-input>
       <button id="referral-submit" class="invalid" disabled>SEND INVITE</button>
     </div>
   </template>
