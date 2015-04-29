@@ -34,7 +34,17 @@ setCurrentTrack = function( edTrack ) {
 
 rateCurrentlyPlaying = function( number ) {
   if ( number != null ) {
-    //currentTrack.rate( number );
+    return currentTrack.rate( number )
+      .then(function( response ) {
+        // adding in fake ID for now
+        edAnalyticsService.send( "rate", {
+          trackId: currentTrack.id || 10,
+          timecode: currentTrack.currentTime,
+          rating: number
+        });
+
+        return response;
+      });
   }
 };
 
@@ -169,6 +179,11 @@ export default edPlayerService = {
 
         setCurrentTrack( audio );
 
+        edAnalyticsService.send( "play", {
+          trackId: currentTrack.id || 10,
+          timecode: currentTrack.currentTime
+        });
+
         return response;
       });
   },
@@ -182,6 +197,11 @@ export default edPlayerService = {
 
     currentTrack.pause();
 
+    edAnalyticsService.send( "pause", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime
+    });
+
     return this.isPaused;
   },
 
@@ -191,11 +211,24 @@ export default edPlayerService = {
       currentTrack.removeAttribute( "src" );
       currentTrack = null;
     }
+
+    edAnalyticsService.send( "quit", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime,
+      action: "stop"
+    });
     return true;
   },
 
   scrubTo: function( value ) {
+    var scrubFrom = currentTrack.currentTime;
     currentTrack.currentTime = value;
+
+    edAnalyticsService.send( "scrub", {
+      trackId: currentTrack.id || 10,
+      timeStart: scrubFrom,
+      timeEnd: value
+    });
   },
 
   enqueue: function( edTrack ) {
@@ -217,6 +250,12 @@ export default edPlayerService = {
       }
       return this.play( this.dequeue() );
     }
+
+    edAnalyticsService.send( "quit", {
+      trackId: currentTrack.id || 10,
+      timecode: currentTrack.currentTime,
+      action: "skip"
+    });
   },
 
   skipTo: function( index ) {

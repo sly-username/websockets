@@ -1,19 +1,18 @@
 <polymer-element name="ed-bubble-select" attributes="name view-type genre value disabled required checked">
   <template>
     <link rel="stylesheet" href="./ed-bubble-select.css">
-    <div class="ed-bubble-select-wrapper">
-      <template if="{{checked}}">
-        <div class="ed-bubble"><content></content></div>
-      </template>
-      <template if="{{!checked}}">
-        <div class="ed-bubble"><content></content></div>
-      </template>
-      <input id="checkbox-field" type="checkbox"
-          name={{name}} value={{value}}
-          disabled?="{{disabled}}"
-          required?="{{required}}"
+    <template if="{{checked}}">
+      <div class="ed-bubble">
+        <span><content></content></span>
+      </div>
+    </template>
+    <template if="{{!checked}}">
+      <div class="ed-bubble">
+        <span><content></content></span>
+      </div>
+    </template>
+    <input id="checkbox-field" type="checkbox" name={{name}} value={{value}} disabled?="{{disabled}}" required?="{{required}}"
           checked?="{{checked}}"/>
-    </div>
   </template>
   <script src="ed-bubble-select.js"></script>
 </polymer-element>

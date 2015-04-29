@@ -39,6 +39,7 @@ export default edAnalyticsService = {
       location: this.locationBlock,
       time: this.formattedTime,
       user: edUserService.currentUserId,
+      profile: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
       viewRoute: window.location.pathname + window.location.hash,
       viewState: this.viewStateBlock,
       session: this.sessionBlock
