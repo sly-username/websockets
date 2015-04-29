@@ -261,13 +261,13 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  queueTracksAndPlay: function( track, show ) {
+  queueTracksAndPlay: function( data, show ) {
     if ( show ) {
       document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
       document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
     }
 
-    return edDiscoverService.getBlendTracks()
+    return edDiscoverService.getDiscoverTrackList( data )
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
         tracksCollection.get( 0 ).then(( edTrack ) => {
