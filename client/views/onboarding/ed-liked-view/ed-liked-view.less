@@ -4,36 +4,28 @@
 
 .genre-container {
   background-color: @darkPurple2;
-  margin: 0 auto 13rem auto;
-  padding-top: 10%;
-  overflow-x: hidden;
-}
-
-.header {
-  .edType( heading-M );
-  text-align: center;
-  text-transform: uppercase;
-  color: @originalTeal;
-  span {
-    display: block;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 59.6rem;
+  position: relative;
+  .header {
+    .edType( heading-M );
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    padding-top: 5rem;
+    color: @originalTeal;
+    span {
+      display: block;
+    }
+  }
+  form {
+    margin-top: 4rem;
+  }
+  #next-button {
+    .edPrimaryButton();
+    position: absolute;
+    bottom: 7rem;
   }
 }
-
-.ed-genre-bubbles {
-  float: right;
-  width: 82%;
-  margin: 25% 2% 0 2%;
-}
-.alternate-bubbles {
-  float: left;
-  width: 82%;
-  margin: -4% 2% 0 2%;
-  clear: both;
-}
-
-#next-button {
-  .edPrimaryButton();
-  margin-top: 25%;
-  bottom: 13rem;
-}
-
