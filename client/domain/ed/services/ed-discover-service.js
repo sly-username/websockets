@@ -57,7 +57,7 @@ export default edDiscoverService = {
     } else if ( typeof data === "number" ) {
       return this.getGenreTracks( data );
     } else {
-      throw new Error( "Error getting discover track list in discover service" );
+      throw new Error( "Error getting track list in Discover Service" );
     }
   },
 
