@@ -13,7 +13,13 @@ export default edDiscoverService = {
   },
 
   getGenreTracks( genreID ) {
-    return edConnectionService.request( "discover/list", 10, genreID )
+    var data = {
+      id: 115,
+      genreID,
+      count: 10
+    };
+
+    return edConnectionService.request( "discover/list", 10, { data: data } )
       .then( msg => {
         trackIDList = msg;
         return trackIDList;
@@ -25,14 +31,13 @@ export default edDiscoverService = {
 
   getBlendTracks() {
     var data = {
-      data: {
-        id: 115
-      }
+      id: edUserService.currentProfile.id,
+      count: 10
     };
 
-    return edConnectionService.request( "profile/blend/get", 10, data )
-      .then( msg => {
-        trackIDList = msg;
+    return edConnectionService.request( "discover/blend/list", 10, { data: data } )
+      .then( response => {
+        trackIDList = response.data.tracks;
         return trackIDList;
       })
       .catch( error => {

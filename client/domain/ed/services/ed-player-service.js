@@ -1,9 +1,11 @@
 import EDTrack from "domain/ed/objects/media/EDTrack";
-//import EDCollection from "domain/ed/storage/EDCollection";
+import EDCollection from "domain/ed/storage/EDCollection";
+
 import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edDiscoverService from "domain/ed/services/ed-discover-service";
 import edDataService from "domain/ed/services/ed-data-service";
+
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 
@@ -11,11 +13,13 @@ var
   queue = [],
   currentTrack = null,
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
-  audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
+  //audio = new Audio( "http://mediaelementjs.com/media/AirReview-Landmarks-02-ChasingCorporate.mp3" ) || document.createElement( "audio" ),
+  audio = new Audio() || document.createElement( "audio" ),
   setCurrentTrack,
   edPlayerService,
   rateCurrentlyPlaying,
-  getTracksQueue;
+  getTracksQueue,
+  trackCollection;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -147,25 +151,26 @@ export default edPlayerService = {
   },
 
   play: function( edTrack ) {
-    //if ( !( edTrack instanceof EDTrack ) ) {
-    //  throw new TypeError( "Track is not an EDTrack object" );
-    //}
-
-    if ( !edTrack ) {
-      edTrack = audio;
+    if ( !edTrack instanceof EDTrack ) {
+      throw new TypeError( "Track is not an EDTrack object" );
     }
 
-    this.emitter.dispatch( createEvent( "playerUpdate", {
-      detail: {
-        type: "play"
-      }
-    }));
+    return edTrack.getUrl()
+      .then(( response ) => {
+        console.log( "play response", response );
+        //audio.src = response;
+        audio.play();
 
-    edTrack.play();
+        this.emitter.dispatch( createEvent( "playerUpdate", {
+          detail: {
+            type: "play"
+          }
+        }));
 
-    setCurrentTrack( edTrack );
+        setCurrentTrack( audio );
 
-    return true;
+        return response;
+      });
   },
 
   pause: function() {
@@ -230,18 +235,23 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  getTracksQueue: function( data ) {
-    return edDiscoverService.getDiscoverTrackList( data )
+  queueTracksAndPlay: function( track, show ) {
+    if ( show ) {
+      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
+      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+    }
+
+    return edDiscoverService.getBlendTracks()
       .then(( response ) => {
-        //this.queue.push( response );
-        return response.data;
+        trackCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
+        console.log( "tracker", trackCollection.get( 0 ) );
+        //this.play( trackCollection.ids[ 0 ] );
+
+        return response;
       })
       .catch(( error ) => {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
-      })
-      .then(( response ) => {
-        //edDataService.getTrackById
       });
   }
 };
