@@ -6,7 +6,7 @@ import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
+import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
@@ -40,6 +40,8 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
+  // todo should we keep this flag?
+  // todo since we're using whether they have a currentProfileBlend as indication of onboarding
   hasOnboarded: {
     configurable: false,
     enumerable: false,
@@ -84,6 +86,11 @@ edUserService.getReferrals = function() {
     .then( response => {
       referralsRemaining = response.data.count;
       return referralsRemaining;
+    })
+    .catch( error => {
+      console.log( "the user has no referrals remaining" );
+      referralsRemaining = 0;
+      return referralsRemaining;
     });
 };
 
@@ -114,15 +121,13 @@ edUserService.login = function( email, password ) {
         }
       }));
 
-      edUserService.getReferrals();
-      //console.log( this.referralsRemaining );
+      // analytics
+      edAnalytics.send( "login", {
+        time: ( new Date() ).toISOString()
+      });
 
-      // todo analytics
-      // edAnalyticsService.send(
-      //  edAnalyticsService.createEvent( "login", {
-      //    timestamp: new Date()
-      //  })
-      // );
+      edUserService.getReferrals();
+
       return currentProfile;
     })
     .catch(( error ) => {
@@ -130,6 +135,7 @@ edUserService.login = function( email, password ) {
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
+      hasOnboarded = false;
       referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
@@ -157,12 +163,9 @@ edUserService.logout = function() {
         }
       }));
 
-      // todo analytics
-      // edAnalyticsService.send(
-      // edAnalyticsService.createEvent( "logout", {
-      //   timestamp: new Date()
-      // })
-      // );
+      edAnalytics.send( "logout", {
+        time: ( new Date() ).toISOString()
+      });
 
       return true;
     })
@@ -189,8 +192,6 @@ edUserService.changeProfileImage = function( image ) {
 };
 
 edUserService.referral = function( email ) {
-  // todo need to send userId, friend's email
-  // todo save referral remaining information
   var json = {
     data: {
       // todo
@@ -200,13 +201,19 @@ edUserService.referral = function( email ) {
     }
   };
 
+  // todo need to prevent submitting when there are no referrals left
   return edConnectionService.request( "referral/create", 10, json )
     .then( response => {
-      console.log( response );
       if ( response && response.status && response.status.code && response.status.code === 1 ) {
+
+        edAnalytics.send( "invite", {
+          // todo doesn't return invite code that is created by server
+          code: response.data.inviteCode,
+          recipient: response.data.email
+        });
+
         referralsRemaining = response.data.referralsRemaining;
         return referralsRemaining;
-        // todo any notifications?36
       }
     })
     .catch( error => {
@@ -229,8 +236,16 @@ edUserService.register = function( args ) {
         typeof response.data.id === "string" ) {
         console.log( "response validated %o", response );
 
+        edAnalytics.send( "register", {
+          code: response.data.inviteCode
+        });
+
         return response;
       }
+
+      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
+      //  return response;
+      //}
     })
     .catch( error => {
       console.log( "Error registering new user in User Service" );
@@ -240,6 +255,9 @@ edUserService.register = function( args ) {
     })
     .then( response => {
       return edUserService.login( authBlock.email, authBlock.password );
+      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
+      //  return response;
+      //}
     });
 };
 

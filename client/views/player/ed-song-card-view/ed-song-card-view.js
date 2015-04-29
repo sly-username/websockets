@@ -44,7 +44,7 @@
       }
 
       if ( eventType === "rate" ) {
-        playerService.rateSong( currentVal );
+        //playerService.rateSong( currentVal );
       }
 
       if ( eventType === "skip" ) {
@@ -57,12 +57,10 @@
 
       switch( tmpId ) {
         case "minify-icon":
-          console.log( "minify it" );
           this.mainPlayerWrapper.setAttribute( "class", "hidden" );
           this.miniPlayer.setAttribute( "class", "active" );
           break;
         case "mini-player":
-          console.log( "heeeeyyyyaaa" );
           this.mainPlayerWrapper.setAttribute( "class", "active" );
           this.miniPlayer.setAttribute( "class", "hidden" );
           break;
@@ -94,6 +92,8 @@
 
         this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
+
+        playerService.queueTracksAndPlay();
       },
       detached: function() {
         clearInterval( this.intervalId );

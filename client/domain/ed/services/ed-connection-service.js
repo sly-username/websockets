@@ -91,3 +91,5 @@ export default edConnectionService = {
     return edSocket.request( data ).then( parseSocketMessage );
   }
 };
+
+window.edConnectionService = edConnectionService;

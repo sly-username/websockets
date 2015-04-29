@@ -14,7 +14,13 @@ export default edDiscoverService = {
   },
 
   getGenreTracks( genreID ) {
-    return edConnectionService.request( genreID )
+    var data = {
+      id: 115,
+      genreID,
+      count: 10
+    };
+
+    return edConnectionService.request( "discover/list", 10, { data } )
       .then( msg => {
         trackIDList = msg;
         return trackIDList;
@@ -25,12 +31,20 @@ export default edDiscoverService = {
   },
 
   getBlendTracks() {
-    return edConnectionService.request( "profileBlend" )
-      .then( msg => {
-        trackIDList = msg;
+    var data = {
+      id: edUserService.currentProfile.id,
+      count: 100
+    };
+
+    return edConnectionService.request( "discover/blend/list", 10, { data } )
+      .then( response => {
+        trackIDList = response.data.tracks;
+        // todo when route gets updated remove this line
+        trackIDList = trackIDList.map( obj => obj.trackId );
         return trackIDList;
       })
       .catch( error => {
+        console.log( "no" );
         throw error;
       });
   },

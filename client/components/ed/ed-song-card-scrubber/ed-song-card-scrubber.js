@@ -109,6 +109,9 @@
         this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+      },
+      mouseOutHandler = function() {
+        this.mouseDown = false;
       };
 
     polymer( "ed-song-card-scrubber", {
@@ -133,7 +136,8 @@
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
-          playPauseEvent: playPauseEventHandler.bind( this )
+          playPauseEvent: playPauseEventHandler.bind( this ),
+          mouseOut: mouseOutHandler.bind( this )
         };
 
         // init
@@ -147,6 +151,7 @@
         this.skipBtn.addEventListener( "click", this.handler.skipSong );
         this.addEventListener( "mouseup", this.handler.scrubFire );
         this.addEventListener( "mousemove", this.handler.triggerMove );
+        this.addEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
         this.playBtn.addEventListener( "tap", this.handler.swapIcon );
@@ -167,6 +172,7 @@
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.removeEventListener( "mouseup", this.handler.scrubFire );
         this.removeEventListener( "mousemove", this.handler.triggerMove );
+        this.removeEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
         this.playBtn.removeEventListener( "tap", this.handler.swapIcon );

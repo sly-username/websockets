@@ -48,7 +48,7 @@
       }
     },
     ready: function() {
-      this.fallBack = this.shadowRoot.getElementsByClassName( "fall-back" )[ 0 ];
+      this.fallBack = this.shadowRoot.querySelectorAll( ".fall-back" )[ 0 ];
     },
     attached: function() {
       this.updateSrc();

@@ -9,6 +9,12 @@
       },
       high: {
         reflect: true
+      },
+      min: {
+        reflect: true
+      },
+      max: {
+        reflect: true
       }
     },
     ready: function() {},

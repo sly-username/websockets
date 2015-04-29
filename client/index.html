@@ -40,7 +40,10 @@
   </script>
 </section>
 
-<app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
+<ed-side-menu id="side-menu" class="hide-menu"></ed-side-menu>
+
+<div id="animation-wrapper" class="show-router">
+  <app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
   <app-route path="/home">
     <template>
       <h1>Testing, is this thing on? You are home now.</h1>
@@ -128,7 +131,8 @@
       </nav>
     </template>
   </app-route>
-</app-router>
+  </app-router>
+</div>
 
 <!-- APPLICATION SCRIPT -->
 <script src="domain/main.script.js" type="text/javascript"></script>
