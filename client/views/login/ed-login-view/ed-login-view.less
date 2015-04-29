@@ -17,9 +17,6 @@
 }
 
 .ed-login-body {
-  fieldset {
-    border: 0;
-  }
   ed-form-input {
     margin: .5rem;
     text-align: center;
@@ -27,6 +24,9 @@
 }
 
 #login-submit {
+  &:disabled {
+    .edPrimaryButton( @backgroundColor: @lightGrey1; @activeColor: @lightGrey1 );
+  }
   .edPrimaryButton();
   bottom: 0;
   margin: 3% auto 0 auto;
