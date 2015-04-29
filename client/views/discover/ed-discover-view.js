@@ -51,6 +51,8 @@
         detached: function() {
           this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
           this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
+
+          this.discoverList.removeEventListener( "click", this.handlers.discoverGenre );
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
