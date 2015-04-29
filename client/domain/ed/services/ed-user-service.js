@@ -121,6 +121,11 @@ edUserService.login = function( email, password ) {
         }
       }));
 
+      // analytics
+      edAnalytics.send( "login", {
+        time: ( new Date() ).toISOString()
+      });
+
       edUserService.getReferrals();
 
       return currentProfile;

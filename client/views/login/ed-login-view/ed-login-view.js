@@ -63,11 +63,6 @@
             .then(function( edProfile ) {
               var redirectTo;
 
-              // analytics
-              edAnalytics.send( "login", {
-                time: ( new Date() ).toISOString()
-              });
-
               if ( typeChecker.isArtist( edProfile ) ) {
                 redirectTo = "/artist/" + edProfile.id;
               // todo needs to check if fan has onboarded
