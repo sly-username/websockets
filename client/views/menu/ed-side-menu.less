@@ -6,11 +6,11 @@
 @import "../../styles/mixins/prefixes/animations.less";
 
 :host([class="show-menu"]) {
-  .animation( slideMenuIn 1s forwards);
+  .animation( slideMenuIn .33s ease-in-out forwards);
 }
 
 :host([class="hide-menu"]) {
-  .animation( slideMenuOut 1s forwards );
+  .animation( slideMenuOut .33s ease-in-out forwards );
 }
 
 :host {

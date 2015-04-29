@@ -8,18 +8,6 @@
   font-family: "Ubuntu";
 }
 
-:host([class="show-settings"]) {
-  .settings-wrapper {
-    .animation( slideSettingsIn 1s forwards);
-  }
-}
-
-:host([class="hide-settings"]) {
-  .settings-wrapper {
-    .animation(slideSettingsOut 1s forwards);
-  }
-}
-
 .settings-wrapper {
   background-color: @darkPurple3;
   height: 100%;
@@ -52,24 +40,4 @@
     }
   }
 }
-
-
-.keyframes( slideSettingsOut, {
-0% {
-  .transform( translateX( 0% ));
-}
-100% {
-  .transform( translateX( 84% ));
-}
-
-});
-
-.keyframes( slideSettingsIn, {
-0% {
-  .transform( translateX( 84% ));
-}
-100% {
-  .transform( translateX( 0% ));
-}
-});
 

@@ -6,16 +6,19 @@
       var
         discoverService = imported.default,
         triggerMenuHandler = function() {
-          if ( !this.edMenu.hasAttribute( "class" ) ) {
-            this.edMenu.setAttribute( "class", "show-menu" );
+          if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
+            this.edMenu.setAttribute( "class", "hide-menu" );
+            this.appRouter.setAttribute( "class", "show-router" );
           } else {
-            this.edMenu.removeAttribute( "class" );
+            this.edMenu.setAttribute( "class", "show-menu" );
+            this.appRouter.setAttribute( "class", "hide-router" );
           }
-        }
+        };
 
       polymer( "ed-discover-view", {
         ready: function() {
           this.edMenu = document.getElementById( "side-menu" );
+          this.appRouter = document.getElementById( "animation-wrapper" );
           this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
           this.handlers = {
             triggerMenu: triggerMenuHandler.bind( this )

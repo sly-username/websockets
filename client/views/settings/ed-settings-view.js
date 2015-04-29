@@ -3,10 +3,10 @@
   var triggerMenuHandler = function() {
     if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
       this.edMenu.setAttribute( "class", "hide-menu" );
-      this.setAttribute( "class", "show-settings" );
+      this.appRouter.setAttribute( "class", "show-router" );
     } else {
       this.edMenu.setAttribute( "class", "show-menu" );
-      this.setAttribute( "class", "hide-settings" );
+      this.appRouter.setAttribute( "class", "hide-router" );
     }
   },
     logOutTriggerHandler = function() {
@@ -23,6 +23,7 @@
     /* LIFECYCLE */
     ready: function() {
       this.edMenu = document.getElementById( "side-menu" );
+      this.appRouter = document.getElementById( "animation-wrapper" );
       this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
       this.logOut = this.shadowRoot.getElementById( "log-out-button" );
       this.handlers = {
