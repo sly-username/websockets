@@ -1,10 +1,12 @@
 ( function( polymer ) {
   "use strict";
   var triggerMenuHandler = function() {
-    if ( !this.edMenu.hasAttribute( "class" ) ) {
-      this.edMenu.setAttribute( "class", "show-menu" );
+    if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
+      this.edMenu.setAttribute( "class", "hide-menu" );
+      this.setAttribute( "class", "show-settings" );
     } else {
-      this.edMenu.removeAttribute( "class" );
+      this.edMenu.setAttribute( "class", "show-menu" );
+      this.setAttribute( "class", "hide-settings" );
     }
   },
     logOutTriggerHandler = function() {

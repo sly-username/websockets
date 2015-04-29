@@ -3,16 +3,24 @@
 @import "../../styles/ed/colors.vars.less";
 @import "../../styles/ed/alignments.mixin.less";
 @import "../../styles/mixins/prefixes/transforms.less";
+@import "../../styles/mixins/prefixes/animations.less";
+
+:host([class="show-menu"]) {
+  .animation( slideMenuIn 1s forwards);
+}
+
+:host([class="hide-menu"]) {
+  .animation( slideMenuOut 1s forwards );
+}
 
 :host {
+  position: absolute;
   float: left;
   width: 84%;
   padding-top: 6rem;
   margin: 0;
   height: 100vh;
   background: @originalWhite;
-  position: absolute;
-  .transform( translateX( -100% ));
 }
 
 .menu-wrapper {
@@ -58,3 +66,22 @@
     }
   }
 }
+
+.keyframes( slideMenuOut, {
+0% {
+  .transform( translateX( 0% ));
+}
+100% {
+  .transform( translateX( -100% ));
+}
+
+});
+
+.keyframes( slideMenuIn, {
+0% {
+  .transform( translateX( -100% ));
+}
+100% {
+  .transform( translateX( 0% ));
+}
+});
