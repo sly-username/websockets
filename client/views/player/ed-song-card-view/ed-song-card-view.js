@@ -44,7 +44,7 @@
       }
 
       if ( eventType === "rate" ) {
-        playerService.rateSong( currentVal );
+        //playerService.rateSong( currentVal );
       }
 
       if ( eventType === "skip" ) {
