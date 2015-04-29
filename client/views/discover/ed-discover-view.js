@@ -3,14 +3,11 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-discover-service" ),
-    System.import( "domain/ed/services/ed-data-service" ),
     System.import( "domain/ed/services/ed-player-service" )
   ]).then(function( imported ) {
       var
         discoverService = imported[ 0 ].default,
-        dataService = imported[ 1 ].default,
-        playerService = imported[ 2 ].default,
-        clickEvents = [ "mousedown", "touchstart" ],
+        playerService = imported[ 1 ].default,
         triggerMenuHandler = function() {
           if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
             this.edMenu.setAttribute( "class", "hide-menu" );
