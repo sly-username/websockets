@@ -3,14 +3,12 @@
 
   Promise.all([
     System.import( "domain/ed/objects/model-type-checker" ),
-    System.import( "domain/ed/services/ed-user-service" ),
-    System.import( "domain/ed/analytics/ed-analytics-service" )
+    System.import( "domain/ed/services/ed-user-service" )
   ])
     .then( function( imported ) {
       var
         typeChecker = imported[ 0 ].default,
         userService = imported[ 1 ].default,
-        edAnalytics = imported[ 2 ].default,
         clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-login-view", {
