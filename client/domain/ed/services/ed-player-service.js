@@ -261,18 +261,12 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  queueTracksAndPlay: function( data, show ) {
-    if ( show ) {
-      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
-      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
-    }
-
-    return edDiscoverService.getDiscoverTrackList( data )
+  retrieveDiscoverTracks: function( type ) {
+    return edDiscoverService.getDiscoverTrackList( type )
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
-        tracksCollection.get( 0 ).then(( edTrack ) => {
-          this.play( edTrack );
-        });
+
+        this.queueTracksAndPlay( tracksCollection );
 
         return response;
       })
@@ -280,6 +274,19 @@ export default edPlayerService = {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
       });
+  },
+
+  queueTracksAndPlay: function( tracks, show ) {
+    if ( show ) {
+      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
+      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+    }
+
+    return tracks.get( 0 ).then(( edTrack ) => {
+      this.play( edTrack );
+
+      return edTrack;
+    });
   }
 };
 

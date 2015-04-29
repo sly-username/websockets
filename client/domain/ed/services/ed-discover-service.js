@@ -16,7 +16,8 @@ export default edDiscoverService = {
   getGenreTracks( genreId ) {
     var data = {
       id: edUserService.currentProfile.id,
-      genreId
+      genreId//,
+      //count: 100 TODO add this once server side accepts this param
     };
 
     return edConnectionService.request( "discover/list", 10, { data } )
@@ -56,7 +57,7 @@ export default edDiscoverService = {
     } else if ( typeof data === "number" ) {
       return this.getGenreTracks( data );
     } else {
-      throw Error;
+      throw new Error( "Error getting discover track list in discover service" );
     }
   },
 

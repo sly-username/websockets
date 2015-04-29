@@ -93,7 +93,7 @@
         this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
 
-        playerService.queueTracksAndPlay( "profileBlend", true );
+        playerService.retrieveDiscoverTracks( "profileBlend" );
       },
       detached: function() {
         clearInterval( this.intervalId );
