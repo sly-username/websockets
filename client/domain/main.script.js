@@ -8,7 +8,7 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-data-service" ),
-    System.import( "domain/ed/services/ed-connection-service" )
+    System.import( "domain/ed/services/ed-connection-service" ),
   ]).then( imports => {
     console.log( "PromisedDB/edDataService Loaded %o", imports );
   })

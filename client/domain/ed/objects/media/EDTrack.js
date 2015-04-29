@@ -43,7 +43,8 @@ export default class EDTrack extends EDMedia {
   getUrl() {
     return edConnectionService.request( "track/url/get", 10, {
       data: {
-        id: this.id
+        id: this.id,
+        format: "original"
       }
     });
   }
