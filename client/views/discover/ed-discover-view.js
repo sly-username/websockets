@@ -21,7 +21,7 @@
           var tmpId = parseInt( event.target.getAttribute( "data-id" ), 10 );
 
           if ( tmpId != null ) {
-            playerService.retrieveDiscoverTracks( tmpId );
+            playerService.startMusicDiscovery( tmpId );
           }
         };
 

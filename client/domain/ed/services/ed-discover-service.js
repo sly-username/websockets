@@ -15,7 +15,7 @@ export default edDiscoverService = {
 
   getGenreTracks( genreId ) {
     var data = {
-      id: edUserService.currentProfile.id,
+      id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
       genreId//,
       //count: 100 TODO add this once server side accepts this param
     };
@@ -34,7 +34,7 @@ export default edDiscoverService = {
 
   getBlendTracks() {
     var data = {
-      id: edUserService.currentProfile.id,
+      id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
       count: 100
     };
 
