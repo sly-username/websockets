@@ -13,16 +13,18 @@ export default edDiscoverService = {
     return currentProfileBlend;
   },
 
-  getGenreTracks( genreID ) {
+  getGenreTracks( genreId ) {
     var data = {
-      id: 115,
-      genreID,
-      count: 10
+      id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
+      genreId//,
+      //count: 100 TODO add this once server side accepts this param
     };
 
     return edConnectionService.request( "discover/list", 10, { data } )
-      .then( msg => {
-        trackIDList = msg;
+      .then( response => {
+        trackIDList = response.data.tracks;
+        // todo when route gets updated remove this line
+        trackIDList = trackIDList.map( obj => obj.trackId );
         return trackIDList;
       })
       .catch( error => {
@@ -32,7 +34,7 @@ export default edDiscoverService = {
 
   getBlendTracks() {
     var data = {
-      id: edUserService.currentProfile.id,
+      id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
       count: 100
     };
 
@@ -52,10 +54,10 @@ export default edDiscoverService = {
   getDiscoverTrackList( data ) {
     if ( data === "profileBlend" ) {
       return this.getBlendTracks();
-    } else if ( data instanceof EDGenre ) {
-      return this.getGenreTracks();
+    } else if ( typeof data === "number" ) {
+      return this.getGenreTracks( data );
     } else {
-      throw Error;
+      throw new Error( "Error getting track list in Discover Service" );
     }
   },
 
