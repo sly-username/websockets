@@ -23,6 +23,9 @@
   &:active, &:hover {
     background-color: @activeColor;
   }
+  &:disabled {
+    background-color: @lightGrey1;
+  }
 }
 
 .edSecondaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1 ) when ( iscolor(@backgroundColor) ) {
