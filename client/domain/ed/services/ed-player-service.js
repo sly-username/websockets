@@ -18,7 +18,9 @@ var
   edPlayerService,
   rateCurrentlyPlaying,
   tracksCollection,
-  queueTracksAndPlay;
+  queueTracksAndPlay,
+  trackName = null,
+  artistName = null;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -166,19 +168,18 @@ export default edPlayerService = {
       //throw new TypeError( "Track is not an EDTrack object" );
     }
 
+    setCurrentTrack( edTrack );
+
     return edTrack.getUrl()
       .then(( response ) => {
-        console.log( "play response", response.data.url );
-        audio.src = response.data.url;
-        audio.play();
-
         this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
           }
         }));
 
-        setCurrentTrack( edTrack );
+        audio.src = response.data.url;
+        audio.play();
 
         edAnalyticsService.send( "play", {
           trackId: currentTrack.id || 10,

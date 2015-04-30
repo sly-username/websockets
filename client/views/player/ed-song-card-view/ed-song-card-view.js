@@ -98,6 +98,9 @@
       detached: function() {
         clearInterval( this.intervalId );
 
+        this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
+        this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
+
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
