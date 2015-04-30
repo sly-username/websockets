@@ -47,6 +47,13 @@
           bubbleCounter--;
         }
 
+        // disables button
+        if ( bubbleCounter > 0 ) {
+          this.nextBtn.removeAttribute( "disabled" );
+        } else {
+          this.nextBtn.setAttribute( "disabled", "" );
+        }
+
         return this.handlers.bubblesDisliked();
       },
       bubblesDislikedHandler = function( event ) {
