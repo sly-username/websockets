@@ -2,10 +2,12 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-discover-service" )
+    System.import( "domain/ed/services/ed-discover-service" ),
+    System.import( "domain/ed/services/ed-player-service" )
   ]).then(function( imported ) {
     var
       discoverService = imported[ 0 ].default,
+      playerService = imported[ 1 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
       triggerBubblesHandler = function( event ) {
@@ -22,8 +24,10 @@
         console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );
         return discoverService.setCurrentProfileBlend( this.likedBubbles, bubbleArray )
           .then(function( response ) {
-            console.log( response );
             // todo go to song card and start playing discover blend
+            playerService.startMusicDiscovery( "profileBlend" );
+
+            return response;
           }.bind( this ));
       },
       // hides bubbles on ready
