@@ -35,6 +35,7 @@ rewriteInPipe = function( toReplace ) {
     pathObj.name = "urls";
 
     file.path = path.relative( config.client, path.format( pathObj ) );
+
     this.push( file );
     done();
   });
@@ -56,9 +57,12 @@ cleanUp = function( path ) {
 
 // DEV TASKS
 gulp.task( "envBuild:dev:copy", function() {
-  return runCopy( config.envBuild.src.dev, config.dev, "dev" );
+  var src = path.join( config.dev, config.envBuild.src.dev );
+  return runCopy( src, config.dev, "dev" );
 });
-gulp.task( "envBuild:dev:cleanup", cleanUp( config.envBuild.remove.dev ));
+gulp.task( "envBuild:dev:cleanup", cleanUp(
+  path.join( config.dev, config.envBuild.remove.dev )
+));
 
 gulp.task( "envBuild:dev", gulp.series(
   "envBuild:dev:copy",
@@ -68,9 +72,12 @@ gulp.task( "envBuild:dev", gulp.series(
 
 // PROD TASKS
 gulp.task( "envBuild:prod:copy", function() {
-  return runCopy( config.envBuild.src.prod, config.prod, "prod" );
+  var src = path.join( config.prod, config.envBuild.src[ thisEnv ] );
+  return runCopy( src, config.prod, thisEnv );
 });
-gulp.task( "envBuild:prod:cleanup", cleanUp( config.envBuild.remove.prod ));
+gulp.task( "envBuild:prod:cleanup", cleanUp(
+  path.join( config.prod, config.envBuild.remove[ thisEnv ] )
+));
 
 gulp.task( "envBuild:prod", gulp.series(
   "envBuild:prod:copy",
