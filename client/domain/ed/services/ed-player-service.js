@@ -17,7 +17,8 @@ var
   setCurrentTrack,
   edPlayerService,
   rateCurrentlyPlaying,
-  tracksCollection;
+  tracksCollection,
+  queueTracksAndPlay;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -45,6 +46,19 @@ setCurrentTrack = function( edTrack ) {
 //      });
 //  }
 //};
+
+queueTracksAndPlay = function( tracks, show ) {
+  if ( show ) {
+    document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
+    document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+  }
+
+  return tracks.get( 0 ).then(( edTrack ) => {
+    edPlayerService.play( edTrack );
+
+    return edTrack;
+  });
+};
 
 export default edPlayerService = {
   get emitter() {
@@ -266,27 +280,15 @@ export default edPlayerService = {
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
 
-        this.queueTracksAndPlay( tracksCollection );
+        queueTracksAndPlay( tracksCollection );
 
         return response;
       })
       .catch(( error ) => {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
+        throw error;
       });
-  },
-
-  queueTracksAndPlay: function( tracks, show ) {
-    if ( show ) {
-      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
-      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
-    }
-
-    return tracks.get( 0 ).then(( edTrack ) => {
-      this.play( edTrack );
-
-      return edTrack;
-    });
   }
 };
 
