@@ -326,18 +326,14 @@ paths.svgstore = {
 /*** ask about qa paths ***/
 paths.envBuild = {
   src: {
-    dev:  join( paths.dev, "domain", "ed", "urls", "dev.js" ),
-    prod: join( paths.prod, "domain", "ed", "urls", "prod.js" ),
-    qa:   join( paths.prod, "domain", "ed", "urls", "qa.js" )
-  },
-  out: {
-    dev:  join( paths.dev, "domain", "ed" ),
-    prod: join( paths.prod, "domain", "ed" )
+    dev:  join( "domain", "ed", "urls", "dev.js" ),
+    prod: join( "domain", "ed", "urls", "prod.js" ),
+    qa:   join( "domain", "ed", "urls", "qa.js" )
   },
   remove: {
-    dev:  join( paths.dev, "domain", "ed", "urls" ),
-    prod: join( paths.prod, "domain", "ed", "urls" ),
-    qa:   join( paths.prod, "domain", "ed", "urls" )
+    dev:  join( "domain", "ed", "urls" ),
+    prod: join( "domain", "ed", "urls" ),
+    qa:   join( "domain", "ed", "urls" )
   }
 };
 
