@@ -3,117 +3,138 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/alignments.mixin.less";
 
+// Variables
+
+@baseURL: '../../../assets/background-images/genre-pics/';
+
+@rockDislike: 'selected-dislike/02.jpg';
+@countryDislike: 'selected-dislike/04.jpg';
+@hiphopDislike: 'selected-dislike/05.jpg';
+@popDislike: 'selected-dislike/01.jpg';
+@alternativeDislike: 'selected-dislike/03.jpg';
+@danceDislike: 'selected-dislike/06.jpg';
+
+@rockLike: 'selected-like/02.jpg';
+@countryLike: 'selected-like/04.jpg';
+@hiphopLike: 'selected-like/05.jpg';
+@popLike: 'selected-like/01.jpg';
+@alternativeLike: 'selected-like/03.jpg';
+@danceLike: 'selected-like/06.jpg';
+
+@rockDeselected: 'deselected/02.jpg';
+@countryDeselected: 'deselected/04.jpg';
+@hiphopDeselected: 'deselected/05.jpg';
+@popDeselected: 'deselected/01.jpg';
+@alternativeDeselected: 'deselected/03.jpg';
+@danceDeselected: 'deselected/06.jpg';
+
+
+// Mixins
+.applyBackgroundActive( @genreURL ){
+  background: url( '@{baseURL}@{genreURL}' ) no-repeat center;
+  background-size: cover;
+  color: @originalWhite;
+}
+
+.applyBackgroundInactive( @genreURL ){
+  background: url( '@{baseURL}@{genreURL}' ) no-repeat center;
+  background-size: cover;
+  color: @lightGrey1;
+}
+
 // dislike views
 :host([view-type="dislike"][genre="rock"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-dislike/02.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @rockDislike );
   }
 }
 :host([view-type="dislike"][genre="country"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-dislike/04.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @countryDislike );
   }
 }
 :host([view-type="dislike"][genre="hip-hop"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-dislike/05.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @hiphopDislike );
   }
 }
 :host([view-type="dislike"][genre="pop"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-dislike/01.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @popDislike );
   }
 }
 :host([view-type="dislike"][genre="dance"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-dislike/06.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @danceDislike );
   }
 }
 :host([view-type="dislike"][genre="alternative"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-dislike/03.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @alternativeDislike );
   }
 }
 
 // like views
 :host([view-type="like"][genre="rock"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-like/02.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @rockLike );
   }
 }
 :host([view-type="like"][genre="country"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-like/04.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @countryLike );
   }
 }
 :host([view-type="like"][genre="hip-hop"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-like/05.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @hiphopLike );
   }
 }
 :host([view-type="like"][genre="pop"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-like/01.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @popLike );
   }
 }
 :host([view-type="like"][genre="dance"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-like/06.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @danceLike );
   }
 }
 :host([view-type="like"][genre="alternative"][checked]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/selected-like/03.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundActive( @alternativeLike );
   }
 }
 
 // deselected View
 :host([genre="rock"]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/deselected/02.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundInactive( @rockDeselected );
   }
 }
 :host([genre="country"]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/deselected/04.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundInactive( @countryDeselected );
   }
 }
 :host([genre="hip-hop"]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/deselected/05.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundInactive( @hiphopDeselected );
   }
 }
 :host([genre="pop"]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/deselected/01.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundInactive( @popDeselected );
   }
 }
 :host([genre="dance"]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/deselected/06.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundInactive( @danceDeselected );
   }
 }
 :host([genre="alternative"]) {
   .ed-bubble {
-    background: url(../../../assets/background-images/genre-pics/deselected/03.jpg) no-repeat center;
-    background-size: cover;
+    .applyBackgroundInactive( @alternativeDeselected );
   }
 }
 
