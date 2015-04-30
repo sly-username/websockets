@@ -8,6 +8,7 @@ import EDAnalyticsNameEvent from "domain/ed/analytics/events/EDAnalyticsEventNam
 */
 
 // Player Events
+import EDAnalyticsCompletedListenEvent from "domain/ed/analytics/events/player/EDAnalyticsCompletedListenEvent";
 import EDAnalyticsPlayEvent from "domain/ed/analytics/events/player/EDAnalyticsPlayEvent";
 import EDAnalyticsPauseEvent from "domain/ed/analytics/events/player/EDAnalyticsPauseEvent";
 import EDAnalyticsQuitEvent from "domain/ed/analytics/events/player/EDAnalyticsQuitEvent";
