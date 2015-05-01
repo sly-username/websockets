@@ -1,0 +1,155 @@
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
+@import "../../../styles/ed/backgrounds.mixin.less";
+@import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/title-bar.mixin.less";
+
+
+.chart-wrapper {
+  background-color: @originalPurple;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 59.6rem;
+  overflow-x: hidden;
+  position: relative;
+  .chart-title-bar {
+    .edTitleBar();
+    button {
+      outline: none;
+    }
+  }
+  .chart-header {
+    text-align: center;
+    .chart-title-text {
+      //todo where is the font style for this text?
+      .edType( heading-L );
+      // todo where is the margin coming from?
+      margin: 0;
+      white-space: pre;
+      font-style: italic;
+      font-weight: 500;
+    }
+    .chart-subtitle-text {
+      //todo where is the margin coming from?
+      margin: 0;
+      white-space: pre;
+      // todo where is the font size for this?
+      .edType( paragraph-S );
+      line-height: 65%;
+      padding-top: .4rem;
+    }
+    .chart-arrows {
+      position: absolute;
+      width: 20%;
+      height: 5rem;
+      z-index: 2;
+      &::shadow {
+        svg {
+          position: static;
+          top: 0;
+          // todo mixin?
+          -webkit-transform: translateY(0%);
+          -ms-transform: translateY(0%);
+          transform: translateY(0%);
+          fill: @originalWhite;
+        }
+      }
+    }
+    // todo why is there separate styles for the header?
+    header {
+      background: @lightPurple1;
+      color: @originalWhite;
+      .edType( heading-s );
+      padding: 1rem 0 1.5rem;
+      font-style: italic;
+      position: relative;
+    }
+  }
+
+  #arrow-left {
+    left: 0;
+  }
+
+  #arrow-right {
+    right: 0;
+    // todo mixin?
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+
+  #badge-hrs {
+    &::shadow {
+      svg {
+        width: 18rem;
+        height: 18rem;
+        position: static;
+        top: 0;
+        -webkit-transform: translateY( 0% );
+        -ms-transform: translateY( 0% );
+        transform: translateY( 0% );
+      }
+    }
+  }
+
+  .ranks-badge-wrapper {
+    color: @originalTeal;
+
+    .time-left {
+      white-space: pre;
+      .edType( heading-XXS );
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .countdown-timer {
+      white-space: pre;
+      .edType( paragraph-M );
+      // todo where is the default margin coming from?
+      margin: 0 0 1rem 0;
+      font-weight: 500;
+    }
+  }
+  .options {
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    li {
+      overflow: auto;
+      height: 4rem;
+      //margin-top: -0.3rem;
+      width: 100%;
+      //display: inline-block;
+      background: @darkPurple3;
+      color: @originalWhite;
+      border-bottom: .1rem solid @originalGrey;
+      .edType( heading-XS );
+      .img-container {
+        width: 3.5rem;
+        padding: .2rem 0 0 3rem;
+        float: left;
+      }
+      .chart-rank {
+        float: left;
+        margin: 0;
+        padding: 1rem 0 0 1rem;
+      }
+      .chart-name {
+        float: left;
+        margin: 0;
+        padding: 1rem 0 0 1rem;
+      }
+      .chart-points {
+        float: right;
+        margin: 0;
+        padding: 1rem 1rem 0 0;
+      }
+    }
+    // todo need to figure out how to line up left AND right sides
+    li:nth-child(-n+10) {
+      padding-left: 1rem;
+    }
+  }
+}
