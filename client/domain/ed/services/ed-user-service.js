@@ -261,4 +261,22 @@ edUserService.register = function( args ) {
     });
 };
 
+edUserService.forgotPassword = function( email ) {
+  var json = {
+    data: {
+      email
+    }
+  };
+
+  return edConnectionService.request( "user/password/get", 10, json )
+    .then( response => {
+      return response;
+    })
+    .catch( error => {
+      console.log( "forgot password email was not successfully sent" );
+      console.log( error );
+      throw error;
+    });
+};
+
 export default edUserService;
