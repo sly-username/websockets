@@ -14,37 +14,57 @@ var
   currentTrack = null,
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
+  hasScrubbed = false,
   setCurrentTrack,
   edPlayerService,
   rateCurrentlyPlaying,
-  tracksCollection;
-
-audio.setAttribute( "id", "hiddenAudioPlayer" );
-audio.setAttribute( "preload", "auto" );
-
-audio.style.display = "none";
-audio.style.visibility = "hidden";
+  tracksCollection,
+  hasScrubbedHandler,
+  trackEndedHandler;
 
 // helpers
 setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
 };
 
-//rateCurrentlyPlaying = function( number ) {
-//  if ( number != null && currentTrack ) {
-//    return currentTrack.rate( number )
-//      .then(function( response ) {
-//        // adding in fake ID for now
-//        edAnalyticsService.send( "rate", {
-//          trackId: currentTrack.id || 10,
-//          timecode: currentTrack.currentTime,
-//          rating: number
-//        });
-//
-//        return response;
-//      });
-//  }
-//};
+hasScrubbedHandler = function( event ) {
+  console.log( "event SCRUBBBER", event );
+};
+
+trackEndedHandler = function() {
+  if ( !hasScrubbed ) {
+    edAnalyticsService.send( "completed-listen", {
+      trackId: currentTrack.id
+    });
+  }
+};
+
+rateCurrentlyPlaying = function( number ) {
+  if ( number != null && currentTrack ) {
+    return currentTrack.rate( number )
+      .then(function( response ) {
+        // adding in fake ID for now
+        edAnalyticsService.send( "rate", {
+          trackId: currentTrack.id || 10,
+          timecode: currentTrack.currentTime,
+          rating: number
+        });
+
+        return response;
+      });
+  }
+};
+
+// init audio element
+audio.setAttribute( "id", "hiddenAudioPlayer" );
+audio.setAttribute( "preload", "auto" );
+
+audio.style.display = "none";
+audio.style.visibility = "hidden";
+
+// TODO where to unbind this?
+audio.addEventListener( "seeked", hasScrubbedHandler );
+audio.addEventListener( "ended", trackEndedHandler );
 
 export default edPlayerService = {
   get emitter() {
@@ -210,6 +230,8 @@ export default edPlayerService = {
   scrubTo: function( value ) {
     var scrubFrom = currentTrack.currentTime;
     audio.currentTime = value;
+
+    hasScrubbed = true;
 
     edAnalyticsService.send( "scrub", {
       trackId: currentTrack.id || 10,

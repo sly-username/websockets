@@ -33,6 +33,7 @@ eventMap = {
   */
 
   // Player Events
+  [ EDAnalyticsCompletedListenEvent.TYPE ]: EDAnalyticsCompletedListenEvent,
   [ EDAnalyticsPlayEvent.TYPE ]: EDAnalyticsPlayEvent,
   [ EDAnalyticsPauseEvent.TYPE ]: EDAnalyticsPauseEvent,
   [ EDAnalyticsQuitEvent.TYPE ]: EDAnalyticsQuitEvent,

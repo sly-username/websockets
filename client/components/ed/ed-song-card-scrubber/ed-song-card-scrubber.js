@@ -118,14 +118,14 @@
       complete: false,
       ready: function() {
         // selectors
-        this.svg            = this.shadowRoot.getElementById( "svg-circle" );
-        this.mid            = this.shadowRoot.getElementById( "mid-circle" );
-        this.front          = this.shadowRoot.getElementById( "front-circle" );
-        this.scrubber       = this.shadowRoot.getElementById( "circle-scrubber" );
+        this.svg = this.shadowRoot.getElementById( "svg-circle" );
+        this.mid = this.shadowRoot.getElementById( "mid-circle" );
+        this.front = this.shadowRoot.getElementById( "front-circle" );
+        this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
         this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
-        this.playBtn        = this.shadowRoot.getElementById( "play-btn" );
-        this.playIcon       = this.shadowRoot.getElementById( "play-icon" );
-        this.skipBtn        = this.shadowRoot.getElementById( "skip-btn" );
+        this.playBtn = this.shadowRoot.getElementById( "play-btn" );
+        this.playIcon = this.shadowRoot.getElementById( "play-icon" );
+        this.skipBtn = this.shadowRoot.getElementById( "skip-btn" );
 
         // event Handler
         this.handler = {
