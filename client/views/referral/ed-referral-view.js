@@ -12,15 +12,6 @@
             this.submitButton.setAttribute( "disabled", "" );
           }
         },
-        triggerMenuHandler = function() {
-          if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
-            this.edMenu.setAttribute( "class", "hide-menu" );
-            this.appRouter.setAttribute( "class", "show-router" );
-          } else {
-            this.edMenu.setAttribute( "class", "show-menu" );
-            this.appRouter.setAttribute( "class", "hide-router" );
-          }
-        },
         clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-referral-view", {
@@ -29,17 +20,9 @@
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
-          this.edMenu = document.getElementById( "side-menu" );
-          this.appRouter = document.getElementById( "animation-wrapper" );
-          this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
-          this.handlers = {
-            triggerMenu: triggerMenuHandler.bind( this )
-          };
         },
         attached: function() {
           this.emailInput.setAttribute( "autofocus", "" );
-          this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
-          this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
 
           clickEvents.forEach( function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
@@ -53,8 +36,6 @@
           }.bind( this ));
 
           this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
-          this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
-          this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
         },
         submitCheck: function() {
           if ( userService.referralsRemaining === 0 ) {
