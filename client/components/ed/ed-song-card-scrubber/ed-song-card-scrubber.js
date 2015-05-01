@@ -36,6 +36,8 @@
           this.playIcon.setAttribute( "name", "play" );
         }
 
+        console.log( "state", state );
+
         this.dispatchEvent( createUpdateEvent( state ));
       },
       scrubFireHandler = function() {
@@ -102,6 +104,8 @@
         if ( eventType === "pause" ) {
           this.playIcon.setAttribute( "name", "play" );
         }
+
+        this.dispatchEvent( createUpdateEvent( eventType ));
       },
       initScrubberHandler = function() {
         // calculates the circumference of circles

@@ -149,24 +149,33 @@ export default edPlayerService = {
     return mm + ":" + ss;
   },
 
-  play: function( edTrack ) {
+  playTrack: function( edTrack ) {
     if ( !edTrack instanceof EDTrack ) {
       console.warn( "not an instance of edTrack" );
       //throw new TypeError( "Track is not an EDTrack object" );
+    }
+
+    if ( currentTrack != null && edTrack === currentTrack ) {
+      if( this.isPlaying ){
+        return this.pause();
+      }
+      if( this.isPaused ){
+        return this.play();
+      }
     }
 
     setCurrentTrack( edTrack );
 
     return edTrack.getUrl()
       .then(( response ) => {
+        audio.src = response.data.url;
+        audio.play();
+
         this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
           }
         }));
-
-        audio.src = response.data.url;
-        audio.play();
 
         edAnalyticsService.send( "play", {
           trackId: currentTrack.id || 10,
@@ -175,6 +184,18 @@ export default edPlayerService = {
 
         return response;
       });
+  },
+
+  play: function( content ) {
+    if( content == null && this.isPaused && !!audio.src ){
+      audio.play();
+      return true;
+    }
+
+    // Do content type check, call specific play method
+    if( content instanceof EDTrack ) {
+      return this.playSong( content );
+    }
   },
 
   pause: function() {
@@ -286,7 +307,7 @@ export default edPlayerService = {
     }
 
     return tracks.get( 0 ).then(( edTrack ) => {
-      this.play( edTrack );
+      this.playTrack( edTrack );
 
       return edTrack;
     });
