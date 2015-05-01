@@ -2,41 +2,44 @@
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
 <polymer-element name="ed-charts-view" attributes="">
-    <template>
-        <link rel="stylesheet" href="./ed-charts-view.css">
-        <div class="charts-wrapper">
-            <div class="charts-title-bar">
-                <button id="menu-trigger">
-                    <ed-icon name="burger"></ed-icon>
-                </button>
-                <h1 id="charts-title">Ranking</h1>
-            </div>
-            <div class="charts-header">
-                <header>
-                    <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
-                    <ed-icon id="arrow-right" class="chart-arrows" name="arrow-forward-teal"></ed-icon>
-                    <h1 class="chart-title-text">Highest Rated Song</h1>
-                    <p class="month">April 2015</p>
-                </header>
-                <div class="ranks-badge-wrapper">
-                    <ed-icon id="badge-hrs" name="badge-hrs"></ed-icon>
-                    <p class="time-left">Time Left</p>
-                    <h2 class="countdown-timer">03d 10h 15m</h2>
-                </div>
-            </div>
-            <ul id="ranks-list" class="options">
-                <template repeat="{{opt in _options}}">
-                    <li>
-                        <p class="chart-rank">{{opt.rank}}</p>
-                        <div class="img-container">
-                            <img-placeholder src="{{ opt.image }}" image="fillmurray"></img-placeholder>
-                        </div>
-                        <p class="chart-points">{{opt.points}}</p>
-                        <p class="chart-name">{{opt.name}}</p>
-                    </li>
-                </template>
-            </ul>
+  <template>
+    <link rel="stylesheet" href="./ed-charts-view.css">
+    <div class="charts-wrapper">
+      <div class="charts-title-bar">
+        <button id="menu-trigger">
+          <ed-icon name="burger"></ed-icon>
+        </button>
+        <h1 id="charts-title">Ranking</h1>
+      </div>
+      <div class="charts-header">
+        <header>
+          <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
+          <ed-icon id="arrow-right" class="chart-arrows" name="arrow-back"></ed-icon>
+          <h1 class="chart-title-text">Highest Rated Song</h1>
+          <p class="month">April 2015</p>
+        </header>
+        <div class="ranks-badge-wrapper">
+          <ed-icon id="badge-hrs" name="badge-hrs"></ed-icon>
+          <p class="time-left">Time Left</p>
+
+          <h2 class="countdown-timer">03d 10h 15m</h2>
         </div>
-    </template>
-    <script src="./ed-charts-view.js"></script>
+      </div>
+      <ul id="ranks-list" class="options">
+        <template repeat="{{opt in _options}}">
+          <li>
+            <p class="chart-rank">{{opt.rank}}</p>
+
+            <div class="img-container">
+              <img-placeholder src="{{ opt.image }}" image="fillmurray"></img-placeholder>
+            </div>
+            <p class="chart-points">{{opt.points}}</p>
+
+            <p class="chart-name">{{opt.name}}</p>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </template>
+  <script src="./ed-charts-view.js"></script>
 </polymer-element>
