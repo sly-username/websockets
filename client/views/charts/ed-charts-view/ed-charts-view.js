@@ -10,7 +10,7 @@
     }
   };
 
-  polymer( "ed-chart-view", {
+  polymer( "ed-charts-view", {
     /* LIFECYCLE */
     // placeholder data, replace with data object
     _options: [
