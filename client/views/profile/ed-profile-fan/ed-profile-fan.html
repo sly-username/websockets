@@ -12,8 +12,7 @@
       <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
-          {{ edFan.displayName || "Emma Wilson" }}
-          <span>Fan</span>
+          <span>{{ edFan.raw.firstName }} {{ edFan.raw.lastName }}</span>
         </div>
         <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
       </section>

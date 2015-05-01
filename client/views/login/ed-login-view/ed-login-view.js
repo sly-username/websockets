@@ -7,18 +7,29 @@
   ])
     .then( function( imported ) {
       var
-        userService = imported[ 1 ].default,
         typeChecker = imported[ 0 ].default,
+        userService = imported[ 1 ].default,
         clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-login-view", {
         /* LIFECYCLE */
         ready: function() {
-          this.loginForm = this.shadowRoot.getElementById( "login-form" );
+          this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
+          this.passwordInput = this.shadowRoot.querySelector( ".password" ).shadowRoot.querySelector( "input" );
+          this.inputsArray = [ this.emailInput, this.passwordInput ];
           this.submitButton = this.shadowRoot.getElementById( "login-submit" );
           this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
+          this.errorDiv = this.shadowRoot.getElementById( "errorDiv" );
         },
         attached: function() {
+          this.emailInput.setAttribute( "autofocus", "" );
+          this.submitButton.setAttribute( "disabled", "" );
+
+          // check inputs to see if they're empty before pressing submit
+          this.inputsArray.forEach( function( formInput ) {
+            formInput.addEventListener( "keyup", this.validateFields.bind( this ));
+          }.bind( this ));
+
           clickEvents.forEach(function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitForm.bind( this ));
             this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
@@ -32,14 +43,19 @@
             return false;
           }.bind( this ));
         },
+        validateFields: function() {
+          if ( this.emailInput.value !== "" && this.passwordInput.value !== "" ) {
+            this.submitButton.removeAttribute( "disabled" );
+          } else {
+            this.submitButton.setAttribute( "disabled", "" );
+          }
+        },
         submitForm: function( event ) {
           event.preventDefault();
 
           var
-            email = this.loginForm.querySelector( ".email" )
-              .shadowRoot.querySelector( "input" ).value,
-            password = this.loginForm.querySelector( ".password" )
-              .shadowRoot.querySelector( "input" ).value;
+            email = this.emailInput.value,
+            password = this.passwordInput.value;
 
           userService.login( email, password )
             .then(function( edProfile ) {
@@ -47,12 +63,18 @@
 
               if ( typeChecker.isArtist( edProfile ) ) {
                 redirectTo = "/artist/" + edProfile.id;
-              } else {
+              // todo needs to check if fan has onboarded
+              } else if ( typeChecker.isFan( edProfile ) && userService.hasOnboarded ) {
                 redirectTo = "/fan/" + edProfile.id;
+              } else if ( typeChecker.isFan( edProfile ) && !userService.hasOnboarded ) {
+                redirectTo = "/onboarding/like";
               }
 
               this.router.go( redirectTo );
-            }.bind( this ));
+            }.bind( this ))
+          .catch( function() {
+            this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
+          }.bind( this ));
         },
         goToSignUpPage: function() {
           this.router.go( "/register" );

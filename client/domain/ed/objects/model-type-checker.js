@@ -20,65 +20,72 @@ import EDFan from "domain/ed/objects/profile/EDFan";
 import EDBadge from "domain/ed/objects/EDBadge";
 import EDGenre from "domain/ed/objects/EDGenre";
 
+var constructorMap = {
+  [ EDModel.MODEL_TYPE ]: EDModel,
+  [ EDMedia.MODEL_TYPE ]: EDMedia,
+  [ EDTrack.MODEL_TYPE ]: EDTrack,
+  [ EDUser.MODEL_TYPE ]: EDUser,
+  [ EDProfile.MODEL_TYPE ]: EDProfile,
+  [ EDFan.MODEL_TYPE ]: EDFan,
+  [ EDArtist.MODEL_TYPE ]: EDArtist,
+  [ EDArtistGroup.MODEL_TYPE ]: EDArtistGroup,
+  [ EDBadge.MODEL_TYPE ]: EDBadge,
+  [ EDGenre.MODEL_TYPE ]: EDGenre
+};
+
 export default {
-  constructorMap: {
-    [ EDModel.TYPE ]: EDModel,
-    [ EDMedia.TYPE ]: EDMedia,
-    [ EDTrack.TYPE ]: EDTrack,
-    [ EDUser.TYPE ]: EDUser,
-    [ EDProfile.TYPE ]: EDProfile,
-    [ EDFan.TYPE ]: EDFan,
-    [ EDArtist.TYPE ]: EDArtist,
-    [ EDArtistGroup.TYPE ]: EDArtistGroup,
-    [ EDBadge.TYPE ]: EDBadge,
-    [ EDGenre.TYPE ]: EDGenre
+  get constructorMap() {
+    return constructorMap;
   },
   hasValidType( object ) {
-    if ( typeof object.type === "string" ) {
-      return this.isValidType( object.type );
+    if ( typeof object.modelType === "string" ) {
+      return this.isValidType( object.modelType );
     }
 
     return false;
   },
-  isValidType( type ) {
-    return type in this.constructorMap;
+  isValidType( modelType ) {
+    return modelType in constructorMap;
   },
-  checkForInstanceOfType( type, object ) {
-    if ( !( "type" in object ) ) {
-      throw new TypeError( "No type found in object to check against" );
+  checkForInstanceOfType( modelType, object ) {
+    if ( !( "modelType" in object ) ) {
+      throw new TypeError( "No model type found in object to check against" );
     }
 
-    if ( type === object.type ) {
+    if ( modelType === object.modelType ) {
       return true;
     }
 
-    if ( !( type in this.constructorMap ) ) {
-      throw new TypeError( `Given type is not a valid EDModel type: ${type}` );
+    if ( !( modelType in constructorMap ) ) {
+      throw new TypeError( `Given model type is not a valid EDModel model type: ${modelType}` );
     }
 
-    if ( !( object.type in this.constructorMap ) ) {
-      throw new TypeError( `Given object with type, ${object.type} is not a valid EDModel type` );
+    if ( !( object.modelType in constructorMap ) ) {
+      throw new TypeError( `Given object with model type, ${object.modelType} is not a valid EDModel model type` );
     }
 
-    return this.constructorMap[ type ].isPrototypeOf( this.constructorMap[ object.type ] );
+    return constructorMap[ modelType ].isPrototypeOf( constructorMap[ object.modelType ] );
   },
   fuzzyMatch( type, object ) {
-    if ( object == null || typeof object.type !== "string" ) {
+    if ( object == null || typeof object.modelType !== "string" ) {
       throw new TypeError( "Object type is not a string" );
     }
 
-    return object.type.indexOf( type ) > -1;
+    return object.modelType.indexOf( type ) > -1;
   },
   isProfileType( object ) {
-    return this.checkForInstanceOfType( EDProfile.TYPE, object );
+    return this.checkForInstanceOfType( EDProfile.MODEL_TYPE, object );
   },
   isFan( object ) {
-    return this.checkForInstanceOfType( EDFan.TYPE, object );
+    return this.checkForInstanceOfType( EDFan.MODEL_TYPE, object );
   },
   isArtist( object ) {
-    return this.checkForInstanceOfType( EDArtist.TYPE, object );
+    return this.checkForInstanceOfType( EDArtist.MODEL_TYPE, object );
   },
   isMediaType( object ) {
-    return this.checkForInstanceOfType( EDMedia.TYPE, object );
+    return this.checkForInstanceOfType( EDMedia.MODEL_TYPE, object );
+  },
+  isGenreType( object ) {
+    return this.checkForInstanceOfType( EDGenre.MODEL_TYPE, object );
   }
 };

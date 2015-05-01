@@ -3,117 +3,159 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/alignments.mixin.less";
 
-@redTransparent: linear-gradient(to bottom, fade(@originalRed, 50%), fade(@originalRed, 50%));
-@tealTransparent: linear-gradient(to bottom, fade(@originalTeal, 50%), fade(@originalTeal, 50%));
+// Variables
 
-:host {
-  float: left;
-  width: 28rem;
-  max-width: 33.3%
+@baseURL: '../../../assets/background-images/genre-pics/';
+
+@rockDislike: 'selected-dislike/02.jpg';
+@countryDislike: 'selected-dislike/04.jpg';
+@hiphopDislike: 'selected-dislike/05.jpg';
+@popDislike: 'selected-dislike/01.jpg';
+@alternativeDislike: 'selected-dislike/03.jpg';
+@danceDislike: 'selected-dislike/06.jpg';
+
+@rockLike: 'selected-like/02.jpg';
+@countryLike: 'selected-like/04.jpg';
+@hiphopLike: 'selected-like/05.jpg';
+@popLike: 'selected-like/01.jpg';
+@alternativeLike: 'selected-like/03.jpg';
+@danceLike: 'selected-like/06.jpg';
+
+@rockDeselected: 'deselected/02.jpg';
+@countryDeselected: 'deselected/04.jpg';
+@hiphopDeselected: 'deselected/05.jpg';
+@popDeselected: 'deselected/01.jpg';
+@alternativeDeselected: 'deselected/03.jpg';
+@danceDeselected: 'deselected/06.jpg';
+
+
+// Mixins
+.applyBackgroundActive( @genreURL ){
+  background: url( '@{baseURL}@{genreURL}' ) no-repeat center;
+  background-size: cover;
+  color: @originalWhite;
+}
+
+.applyBackgroundInactive( @genreURL ){
+  background: url( '@{baseURL}@{genreURL}' ) no-repeat center;
+  background-size: cover;
+  color: @lightGrey1;
 }
 
 // dislike views
 :host([view-type="dislike"][genre="rock"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @rockDislike );
   }
 }
 :host([view-type="dislike"][genre="country"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @countryDislike );
   }
 }
 :host([view-type="dislike"][genre="hip-hop"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @hiphopDislike );
   }
 }
 :host([view-type="dislike"][genre="pop"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @popDislike );
   }
 }
 :host([view-type="dislike"][genre="dance"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @danceDislike );
   }
 }
 :host([view-type="dislike"][genre="alternative"][checked]) {
   .ed-bubble {
-    background: @redTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @alternativeDislike );
   }
 }
 
 // like views
 :host([view-type="like"][genre="rock"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @rockLike );
   }
 }
 :host([view-type="like"][genre="country"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @countryLike );
   }
 }
 :host([view-type="like"][genre="hip-hop"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @hiphopLike );
   }
 }
 :host([view-type="like"][genre="pop"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @popLike );
   }
 }
 :host([view-type="like"][genre="dance"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @danceLike );
   }
 }
 :host([view-type="like"][genre="alternative"][checked]) {
   .ed-bubble {
-    background: @tealTransparent, url(http://fillmurray.com/g/200/300);
+    .applyBackgroundActive( @alternativeLike );
   }
 }
 
-:host([view-type="dislike"]) {
+// deselected View
+:host([genre="rock"]) {
   .ed-bubble {
-    background: @darkOrange1;
+    .applyBackgroundInactive( @rockDeselected );
   }
 }
-
-:host([view-type="like"]) {
+:host([genre="country"]) {
   .ed-bubble {
-    background: @originalPurple;
+    .applyBackgroundInactive( @countryDeselected );
+  }
+}
+:host([genre="hip-hop"]) {
+  .ed-bubble {
+    .applyBackgroundInactive( @hiphopDeselected );
+  }
+}
+:host([genre="pop"]) {
+  .ed-bubble {
+    .applyBackgroundInactive( @popDeselected );
+  }
+}
+:host([genre="dance"]) {
+  .ed-bubble {
+    .applyBackgroundInactive( @danceDeselected );
+  }
+}
+:host([genre="alternative"]) {
+  .ed-bubble {
+    .applyBackgroundInactive( @alternativeDeselected );
   }
 }
 
 input[type="checkbox"] {
-  visibility: hidden;
+  display: none;
   margin: 0;
   padding: 0;
   opacity: 1;
 }
 
-.ed-bubble-select-wrapper {
-  position: relative;
-  width: 100%;
-  float: left;
-}
-
 .ed-bubble {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  height: 0;
-  padding: 50% 0;
-  border-radius: 50%;
+  float: left;
+  width: 50%;
+  height: 12rem;
   color: @originalWhite;
   text-align: center;
   .edType( heading-XS );
-  line-height: 0;
   text-transform: uppercase;
-  .verticalAlign();
-  .transform( rotate(-30deg) );
+  span {
+    display: inline-block;
+    .verticalAlign();
+  }
 }
 

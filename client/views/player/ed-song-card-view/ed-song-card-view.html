@@ -7,35 +7,41 @@
 <polymer-element name="ed-song-card-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-song-card-view.css">
-  <div class="song-card-wrapper">
-    <ed-mini-player id="mini-player"
-        song="Track Title" artist="Artist Name"
-        image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
-    <section id="user-ranking">
-      <button id="minify-button">
-        <ed-icon id="minify-icon" name="arrow-down"></ed-icon>
-      </button>
-      <ed-user-ranking id="songs-rated" top="songs" bottom="rated" rank="76"></ed-user-ranking>
-      <ed-user-ranking id="your-rank" teal top="your" bottom="rank" rank="276"></ed-user-ranking>
+  <div id="song-card-wrapper" class="song-card-wrapper">
+    <section id="mini-player-wrapper">
+      <ed-mini-player id="mini-player"
+          song="Track Title" artist="Artist Name"
+          image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
     </section>
-    <ed-song-card-scrubber id="main-player" min="0" max="0" value
-                           image="http://i.imgur.com/NEr8ka0.jpg"></ed-song-card-scrubber>
-    <ed-star-rating id="star-rating"></ed-star-rating>
-    <section id="brief-bio">
-      <div class='responsive-box'>
-        <div class='responsive-content'>
-          <h3>Artist/Band Biography</h3>
-          <button id="bio-button">
-            <ed-icon id="bio-icon" name="arrow-forward-teal"></ed-icon>
-          </button>
-          <p>Do you see any Teletubbies in here? Do you see a slender plastic tag clipped to my shirt with my
-            name printed on it? Do you see a little Asian child with a blank expression on his face sitting outside
-            on a mechanical helicopter that shakes when you put quarters in it? No? Well, that's what you see at a
-            toy store. And you must think you're in a toy store, because you're here shopping for an infant named
-            Jeb.</p>
+    <section id="main-player-wrapper">
+      <section id="user-ranking">
+        <button id="minify-button">
+          <ed-icon id="minify-icon" name="arrow-back" rotation="270"></ed-icon>
+        </button>
+        <ed-user-ranking id="songs-rated" top="songs" bottom="rated" rank="76"></ed-user-ranking>
+        <ed-user-ranking id="your-rank" teal top="your" bottom="rank" rank="276"></ed-user-ranking>
+      </section>
+      <ed-song-card-scrubber id="main-player" min="0" max="0" value
+                             image="http://i.imgur.com/NEr8ka0.jpg"></ed-song-card-scrubber>
+      <ed-star-rating id="star-rating"></ed-star-rating>
+      <section id="brief-bio">
+        <div class='responsive-box'>
+          <div class='responsive-content'>
+            <h3>Artist/Band Biography</h3>
+            <button id="bio-button">
+              <ed-icon id="bio-icon" name="arrow-back" rotation="180"></ed-icon>
+            </button>
+            <p>
+              Do you see any Teletubbies in here? Do you see a slender plastic tag clipped to my shirt with my
+              name printed on it? Do you see a little Asian child with a blank expression on his face sitting outside
+              on a mechanical helicopter that shakes when you put quarters in it? No? Well, that's what you see at a
+              toy store. And you must think you're in a toy store, because you're here shopping for an infant named
+              Jeb.
+            </p>
+          </div>
         </div>
-      </div>
 
+      </section>
     </section>
   </div>
   </template>

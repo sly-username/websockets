@@ -4,13 +4,16 @@ import define from "domain/ed/define-properties";
 import EDModel from "domain/ed/objects/EDModel";
 
 export default class EDBadge extends EDModel {
-  static get TYPE() {
+  static get MODEL_TYPE() {
     return "badge";
   }
 
   constructor( args ) {
     super( args );
-    define.readOnly( this, [
+
+    // TODO where does "dateAquired" go?
+
+    define.enumReadOnly( this, [
       "name",
       "badgeType"
     ], args );

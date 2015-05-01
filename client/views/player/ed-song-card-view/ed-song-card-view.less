@@ -1,11 +1,39 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/mixins/prefixes/animations.less";
+@import "../../../styles/mixins/prefixes/transforms.less";
 
 .song-card-wrapper {
   background: @darkPurple3;
   width: 100%;
   max-width: 59.6rem;
   overflow: hidden;
+}
+
+#mini-player-wrapper {
+  position: fixed;
+  bottom: 100%;
+
+  &.active {
+    .animation( slideMiniPlayerDown .8s forwards );
+    z-index: 2;
+  }
+
+  &.hidden {
+    .animation( slideMiniPlayerUp .8s forwards );
+  }
+}
+
+#main-player-wrapper {
+  overflow: hidden;
+
+  &.active {
+    .animation( slidePlayerUp .8s forwards );
+  }
+
+  &.hidden {
+    .animation( slidePlayerDown .8s forwards );
+  }
 }
 
 #user-ranking {
@@ -47,22 +75,24 @@
     color: @originalWhite;
     text-align: center;
     p {
-      color: @darkPurple5;
+      color: @darkPurple3;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 85%;
       white-space: nowrap;
-      .edType(paragraph-N);
+      .edType( paragraph-M );
+      margin: 0;
     }
     h3 {
       text-align: left;
       vertical-align: middle;
       color: @originalTeal;
-      .edType(heading-XS);
+      .edType( heading-XXS );
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
   }
 }
-
 
 #bio-button {
   height: 55%;
@@ -77,8 +107,50 @@
   border: none;
   #bio-icon {
     fill: @originalTeal;
-    height: 66%;
-    width: 66%;
+    height: 64%;
+    width: 64%;
+    position: inherit;
+    margin: 2.7rem -2rem 0 0;
   }
 }
 
+.keyframes( slidePlayerDown, {
+  0% {
+    .transform( translateY( 0% ));
+  }
+  100% {
+    .transform( translateY( 100% ));
+  }
+});
+
+
+.keyframes( slidePlayerUp, {
+  0% {
+    .transform( translateY( 100% ));
+  }
+  100% {
+    .transform( translateY( 0% ));
+  }
+});
+
+.keyframes( slideMiniPlayerDown, {
+  0% {
+    //.transform( translateY( 0% ));
+    bottom: 100%;
+  }
+  100% {
+    //.transform( translateY( 88% ));
+    bottom: 0;
+  }
+});
+
+.keyframes( slideMiniPlayerUp, {
+0% {
+  //.transform( translateY( 0% ));
+  bottom: 0%;
+}
+100% {
+  //.transform( translateY( 88% ));
+  bottom: 100%;
+}
+});

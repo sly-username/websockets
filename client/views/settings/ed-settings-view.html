@@ -5,16 +5,17 @@
     <link rel="stylesheet" href="./ed-settings-view.css">
     <div class="settings-wrapper">
       <div class="settings-title-bar">
-        <button>
+        <button id="menu-trigger">
           <ed-icon name="burger"></ed-icon>
         </button>
-        <h1>Settings</h1>
+        <h1 id="settings-title">Settings</h1>
       </div>
       <ul class="settings-list">
+        <li class="version-title"> Version: <span>1.2.0.2385</span></li>
         <li id="log-out-button">Log Out</li>
-        <li id="About-button">About</li>
-        <li id="Terms-button">Terms &amp; Conditions</li>
-        <li id="report-button">Report a Bug</li>
+        <li id="About-button"><a href="#">About</a></li>
+        <li id="Terms-button"><a href="#">Terms &amp; Conditions</a></li>
+        <li id="report-button"><a href="#/report">Report a Bug</a></li>
       </ul>
     </div>
   </template>

@@ -4,8 +4,6 @@ node_js:
 - iojs
 before_install:
 - rm -rf ./node_modules
-- mkdir ./logs
-- mkdir ./logs/gulp
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start

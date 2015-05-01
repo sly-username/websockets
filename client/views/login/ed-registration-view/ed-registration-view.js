@@ -1,95 +1,181 @@
 ( function( polymer, System ) {
   "use strict";
 
-  Promise.all([
-    System.import( "domain/ed/objects/model-type-checker" ),
-    System.import( "domain/ed/services/ed-user-service" )
-  ]).then(function( imported ) {
-    var
-      userService = imported[ 1 ].default,
-      typeChecker = imported[ 0 ].default,
-      validateFormInputValues;
+  System.import( "domain/ed/services/ed-user-service" )
+    .then(function( imported ) {
+      var
+        userService = imported.default,
+        eventNames = [ "mousedown", "touchstart" ],
 
-    validateFormInputValues = function( self ) {
-      var i,
-        length = self.formInputs.length;
+      validateEmail = function( self ) {
+        var regexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
 
-      for ( i = 0; i < length; i++) {
-        var value = self.formInputs[ i ].shadowRoot.querySelector( "input" ).value;
-        return value !== "";
-      }
+        return self.emailInput.validity.valid && regexPattern.test( self.emailInput.value );
+      },
+      validateZipCode = function( self ) {
+        var inputtedZip = /^(\d{5})?$/;
 
-      return false;
-    };
+        return inputtedZip.test( self.zipcodeInput.value );
+      },
+      validateFormInputValues = function( self ) {
+        var i, value;
 
+        for ( i = 0; i < self.edformInputsArray.length; i++ ) {
+          value = self.edformInputsArray[ i ].shadowRoot.querySelector( "input" ).value;
+
+          if ( value === "" ) {
+            return false;
+          }
+        }
+        return true;
+      };
     polymer( "ed-registration-view", {
       /* LIFECYCLE */
       ready: function() {
-        this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
-        this.formContainer = this.shadowRoot.getElementById( "registration-form" );
-        this.submitButton = this.shadowRoot.getElementById( "registration-submit" );
-        // TODO maybe a better way to grab the form inputs
-        this.formInputs = this.formContainer.querySelectorAll( "ed-form-input" );
-      },
-      attached: function() {
-        // this.formContainer.addEventListener( "keyup", this.submitCheck.bind( this ) );
-        this.formContainer.addEventListener( "keypress", this.handleEvent.bind( this ) );
-        this.submitButton.addEventListener( "click", this.handleEvent.bind( this ), false);
-      },
-      handleEvent: function( event ) {
-        if ( event.type === "keypress" && event.keyCode === 13) {
-          this.submitForm( event );
-        }
+        this.submitButton = this.shadowRoot.querySelector( "#registration-submit" );
 
-        if ( event.type === "click" ) {
-          this.submitForm( event );
-        }
+        this.firstNameInput = this.shadowRoot.querySelector( ".name-first" )
+          .shadowRoot.querySelector( "input" );
+        this.lastNameInput = this.shadowRoot.querySelector( ".name-last" )
+          .shadowRoot.querySelector( "input" );
+        this.emailInput = this.shadowRoot.querySelector( ".email" )
+          .shadowRoot.querySelector( "input" );
+        this.inviteCodeInput = this.shadowRoot.querySelector( ".invite-code" )
+          .shadowRoot.querySelector( "input" );
+        this.yearOfBirthInput = this.shadowRoot.querySelector( ".birthday" )
+          .shadowRoot.querySelector( "input" );
+        this.zipcodeInput = this.shadowRoot.querySelector( ".zipcode" )
+          .shadowRoot.querySelector( "input" );
+
+        this.pairedInput = this.shadowRoot.querySelectorAll( "ed-paired-input" )[0];
+        this.passwordInput = this.shadowRoot.querySelector( ".password" )
+          .shadowRoot.querySelector( "input#primary-box" );
+        this.passwordConfirmInput = this.shadowRoot.querySelector( ".password" )
+          .shadowRoot.querySelector( "input#confirm-box" );
+
+        this.emailField = this.shadowRoot.querySelector( ".email" )
+          .shadowRoot.querySelector( ".form-input-container" );
+        this.zipField = this.shadowRoot.querySelector( ".zipcode" )
+          .shadowRoot.querySelector( ".form-input-container" );
+
+        this.edformInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
+        this.pairedInputsArray = [ this.passwordInput, this.passwordConfirmInput ];
+        this.formInputsArray = this.edformInputsArray.concat( this.pairedInputsArray );
       },
-      submitCheck: function( event ) {
-        if ( this.pairedInput.isValid ) {
+
+      attached: function() {
+        this.submitButton.setAttribute( "disabled", "" );
+
+        // submit form on mousedown and touchstart events
+        eventNames.forEach( function( event ) {
+          this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
+        }.bind( this ));
+
+        // submit check happens on keyup of all input fields
+        this.formInputsArray.forEach( function( formInput ) {
+          formInput.addEventListener( "keyup", this.submitCheck.bind( this ));
+        }.bind( this ));
+
+        // email and zip validation happens on blur of each of these fields
+        this.emailInput.addEventListener( "blur", this.emailCheck.bind( this ));
+        this.zipcodeInput.addEventListener( "blur", this.zipCheck.bind( this ));
+      },
+
+      // checks whether all fields are filled in before enabling submit button
+      // or allowing submit on enter
+      submitCheck: function() {
+        var areValidInputs = validateFormInputValues( this ),
+          validZip = validateZipCode( this ),
+          validEmail = validateEmail( this );
+
+        if ( areValidInputs && validZip && validEmail && this.pairedInput.isValid ) {
           this.submitButton.removeAttribute( "disabled" );
+
+          // submit happens on enter
+          this.formInputsArray.forEach( function( formInput ) {
+            formInput.addEventListener( "keyup", function( event ) {
+              if ( event.keyCode === 13 ) {
+                this.submitForm( event );
+              }
+              return false;
+            }.bind( this ));
+          }.bind( this ));
+
         } else {
           this.submitButton.setAttribute( "disabled", "" );
         }
       },
+
+      emailCheck: function() {
+        var errorEmail = this.shadowRoot.getElementById( "errorEmail" ),
+          validEmail = validateEmail( this );
+
+        if ( !validEmail ) {
+          this.emailField.classList.add( "invalid-field" );
+          errorEmail.innerHTML = "Please enter a valid email address";
+        } else {
+          this.emailField.classList.remove( "invalid-field" );
+          errorEmail.innerHTML = "";
+        }
+      },
+
+      zipCheck: function() {
+        var errorZip = this.shadowRoot.getElementById( "errorZip" ),
+          validZip = validateZipCode( this );
+
+        if ( !validZip ) {
+          this.zipField.classList.add( "invalid-field" );
+          errorZip.innerHTML = "Please enter a valid zip code";
+        } else {
+          this.zipField.classList.remove( "invalid-field" );
+          errorZip.innerHTML = "";
+        }
+      },
+
       submitForm: function( event ) {
-        var authBlock, registrationDataBlock, areValidInputs;
+        var registrationDataBlock;
         // TODO remove debug
         event.preventDefault();
 
-        areValidInputs = validateFormInputValues( this );
+        registrationDataBlock = {
+          type: "fan",
+          email: this.emailInput.value,
+          password: this.passwordInput.value,
+          passwordConfirmation: this.passwordConfirmInput.value,
+          name: {
+            first: this.firstNameInput.value,
+            last: this.lastNameInput.value
+          },
+          inviteCode: this.inviteCodeInput.value,
+          yearOfBirth: this.yearOfBirthInput.value,
+          zipcode: this.zipcodeInput.value
+        };
 
-        if ( areValidInputs ) {
-          // refactor these selectors...
-          registrationDataBlock = {
-            type: "user",
-            email: this.formContainer.querySelector( "ed-form-input.email" ).shadowRoot.querySelector( "input" ).value,
-            password: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#primary-box" ).value,
-            passwordConfirmation: this.formContainer.querySelector( "ed-paired-input" ).shadowRoot.querySelector( "#confirm-box" ).value,
-            name: {
-              first: this.formContainer.querySelector( "ed-form-input.name-first" ).shadowRoot.querySelector( "input" ).value,
-              last: this.formContainer.querySelector( "ed-form-input.name-last" ).shadowRoot.querySelector( "input" ).value
-            },
-            inviteCode: this.formContainer.querySelector( "ed-form-input.invite-code" ).shadowRoot.querySelector( "input" ).value,
-            yearOfBirth: this.formContainer.querySelector( "ed-form-input.birthday" ).shadowRoot.querySelector( "input" ).valueAsDate.getFullYear(),
-            zipcode: this.formContainer.querySelector( "ed-form-input.zipcode" ).shadowRoot.querySelector( "input" ).value
-          };
+        userService.register( registrationDataBlock )
+          .then( function( response ) {
 
-          userService.register( registrationDataBlock )
-            .then(function( edProfile ) {
-              var redirectTo;
-
-              if ( typeChecker.isArtist( edProfile ) ) {
-                redirectTo = "/artist/" + edProfile.id;
-              } else {
-                redirectTo = "/fan/" + edProfile.id;
-              }
-
-              this.router.go( redirectTo );
-            }.bind( this ));
-        }
+            // todo error messages for invalid referral code and already registered email
+            //var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
+            //  errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
+            //
+            //if ( ( /invite/ ).test( response.message )) {
+            //  errorReferralCode.innerHTML = "Please reenter your referral code";
+            //} else if ( ( /email/ ).test( response.message )) {
+            //  errorUsedEmail.innerHTML = "This email address has already been registered";
+            //} else {
+              this.router.go( "/onboarding/like" );
+            //}
+          }.bind( this ))
+          .catch( function( error ) {
+            this.router.go( "/registration" );
+            return error;
+          });
       },
-      detached: function() {},
+      detached: function() {
+        this.formInputsArray.forEach( function( formInput ) {
+          formInput.removeEventListener( "keyup", this.submitCheck.bind( this ));
+        }.bind( this ));
+      },
       attributeChanged: function( attrName, oldValue, newValue ) {}
     });
   });

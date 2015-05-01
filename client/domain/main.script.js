@@ -8,11 +8,10 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-data-service" ),
-    System.import( "domain/ed/services/ed-connection-service" )
+    System.import( "domain/ed/services/ed-connection-service" ),
+    System.import( "domain/ed/services/ed-user-service" )
   ]).then( imports => {
     console.log( "PromisedDB/edDataService Loaded %o", imports );
-    // TODO REMOVE DEBUG
-    imports[ 1 ].default.authenticateConnection( "intdev@eardish.com", "intdevpass" );
   })
   .catch( error => {
     console.error( error.message );

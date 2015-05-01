@@ -2,80 +2,102 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/title-bar.mixin.less";
 
-.charts-header {
-  text-align: center;
-  .chart-arrows {
-    position: absolute;
-    width: 20%;
-    height: 7rem;
-    z-index: 2;
+
+.charts-wrapper {
+  background-color: @originalPurple;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 59.6rem;
+  overflow-x: hidden;
+  position: relative;
+  .charts-title-bar {
+    .edTitleBar();
+    button {
+      outline: none;
+    }
+  }
+  .charts-header {
+    text-align: center;
+    .chart-title-text {
+      padding: 0 7rem;
+      white-space: pre;
+    }
+    .month {
+      padding: 0 7rem;
+      white-space: pre;
+    }
+    .chart-arrows {
+      position: absolute;
+      width: 20%;
+      height: 7rem;
+      z-index: 2;
+      &::shadow {
+        svg {
+          position: static;
+          top: 0;
+          -webkit-transform: translateY(0%);
+          -ms-transform: translateY(0%);
+          transform: translateY(0%);
+          fill: @originalWhite;
+        }
+      }
+    }
+    header {
+      background: @lightPurple1;
+      color: @originalWhite;
+      .edType( heading-s );
+      padding: 0.5rem 0;
+      font-style: italic;
+      position: relative;
+
+      .month {
+        font-style: normal;
+        .edType( paragraph-M );
+      }
+    }
+  }
+
+  #arrow-left {
+    left: 0;
+  }
+
+  #arrow-right {
+    right: 0;
+  }
+
+  #badge-hrs {
+    margin-top: 1rem;
+
     &::shadow {
       svg {
         position: static;
         top: 0;
-        -webkit-transform: translateY(0%);
-        -ms-transform: translateY(0%);
-        transform: translateY(0%);
-        fill: @originalWhite;
+        -webkit-transform: translateY( 0% );
+        -ms-transform: translateY( 0% );
+        transform: translateY( 0% );
       }
     }
   }
-  header {
-    background: @lightPurple1;
-    color: @originalWhite;
-    .edType( heading-s );
-    padding: 0.5rem 0;
-    font-style: italic;
-    position: relative;
 
-    .month {
-      font-style: normal;
+  .ranks-badge-wrapper {
+    color: @originalTeal;
+
+    .time-left {
+      padding: 0 7rem;
+      white-space: pre;
       .edType( paragraph-M );
+      margin: 0;
+    }
+
+    .countdown-timer {
+      padding: 0 7rem;
+      white-space: pre;
+      .edType( paragraph-L );
+      margin-top: 0;
     }
   }
-}
-
-#arrow-left {
-  left: 0;
-}
-
-#arrow-right {
-  right: 0;
-}
-
-#badge-hrs {
-  margin-top: 1rem;
-
-  &::shadow {
-    svg {
-      position: static;
-      top: 0;
-      -webkit-transform: translateY( 0% );
-      -ms-transform: translateY( 0% );
-      transform: translateY( 0% );
-    }
-  }
-}
-
-.ranks-badge-wrapper {
-  color: @originalTeal;
-
-  .time-left {
-    .edType( paragraph-M );
-    margin: 0;
-  }
-
-  .countdown-timer {
-    .edType( paragraph-L );
-    margin-top: 0;
-  }
-}
-
-.charts-wrapper {
-  max-width: 59.6rem;
-  margin: 0 auto;
-  background: @originalPurple;
   .options {
     list-style-type: none;
     width: 100%;
@@ -83,6 +105,7 @@
     padding: 0;
     margin-bottom: -0.3rem;
     li {
+      overflow: auto;
       height: 7rem;
       margin-top: -0.3rem;
       width: 100%;
@@ -90,7 +113,6 @@
       background: @darkPurple3;
       color: @originalWhite;
       .edType( heading-XS );
-      font-weight: 500;
       .img-container {
         width: 4.5rem;
         margin: 1.3rem 0 0 2.5rem;
@@ -110,32 +132,6 @@
         float: right;
         padding-right: 2rem;
         margin-top: 2.8rem;
-      }
-    }
-  }
-}
-
-#mini-player {
-  &::shadow {
-    #ad-banner {
-      display: none;
-    }
-
-    .player-container {
-      padding-bottom: 15%;
-      padding-top: 2%;
-
-      .text-container {
-        margin: 0;
-        
-        h1 {
-          margin: 0;
-          line-height: 1;
-        }
-        
-        #name {
-          margin: 0;
-        }
       }
     }
   }

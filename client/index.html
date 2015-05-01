@@ -40,7 +40,10 @@
   </script>
 </section>
 
-<app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
+<ed-side-menu id="side-menu" class="hide-menu"></ed-side-menu>
+
+<div id="animation-wrapper" class="show-router">
+  <app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
   <app-route path="/home">
     <template>
       <h1>Testing, is this thing on? You are home now.</h1>
@@ -78,6 +81,18 @@
   <!-- DISCOVER -->
   <app-route path="/discover" element="ed-discover-view"></app-route>
 
+  <!-- ABOUT -->
+  <app-route path="/about" element="ed-about-view"></app-route>
+
+  <!-- TOS -->
+  <app-route path="/tos" element="ed-tos-view"></app-route>
+
+  <!-- REFERRAL -->
+  <app-route path="/referral" element="ed-referral-view"></app-route>
+
+  <!-- REPORT -->
+  <app-route path="/report" element="ed-report-view"></app-route>
+
   <!--<app-route path=""-->
 
   <!-- catch all route, 404 page? or redirect... -->
@@ -108,11 +123,16 @@
         <a href="#/player">Song Card</a>
         <a href="#/charts">Charts</a>
         <a href="#/settings">Settings</a>
+        <a href="#/about">About</a>
+        <a href="#/tos">Terms of Service</a>
         <a href="#/discover">Discover Music</a>
+        <a href="#/referral">Invite Friends</a>
+        <a href="#/report">Report A Bug</a>
       </nav>
     </template>
   </app-route>
-</app-router>
+  </app-router>
+</div>
 
 <!-- APPLICATION SCRIPT -->
 <script src="domain/main.script.js" type="text/javascript"></script>
