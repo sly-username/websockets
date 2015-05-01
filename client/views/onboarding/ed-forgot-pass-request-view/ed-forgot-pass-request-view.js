@@ -16,9 +16,10 @@
       triggerSubmitHandler = function( event ) {
         event.preventDefault();
 
-        return userService.forgotPassword( this.emailInput.value )
+        return userService.forgotPasswordGet( this.emailInput.value )
           .then(function( response ) {
             console.log( response );
+            this.router.go( "/forgot-pass/reset" );
             return response;
           }.bind( this ));
       };

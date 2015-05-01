@@ -261,7 +261,7 @@ edUserService.register = function( args ) {
     });
 };
 
-edUserService.forgotPassword = function( email ) {
+edUserService.forgotPasswordGet = function( email ) {
   var json = {
     data: {
       email
@@ -274,6 +274,25 @@ edUserService.forgotPassword = function( email ) {
     })
     .catch( error => {
       console.log( "forgot password email was not successfully sent" );
+      console.log( error );
+      throw error;
+    });
+};
+
+edUserService.forgotPasswordSet = function( resetCode, newPassword ) {
+  var json = {
+    data: {
+      resetCode,
+      newPassword
+    }
+  };
+
+  return edConnectionService.request( "user/password/set", 10, json )
+    .then( response => {
+      return response;
+    })
+    .catch( error => {
+      console.log( "new password was not successfully sent" );
       console.log( error );
       throw error;
     });
