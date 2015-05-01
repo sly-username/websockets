@@ -37,6 +37,8 @@
       if ( eventType === "play" ) {
         playerService.play();
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
       }
 
       if ( eventType === "scrubStart" ) {
@@ -58,11 +60,11 @@
       switch( tmpId ) {
         case "minify-icon":
           this.mainPlayerWrapper.setAttribute( "class", "hidden" );
-          this.miniPlayer.setAttribute( "class", "active" );
+          this.miniPlayerWrapper.setAttribute( "class", "active" );
           break;
         case "mini-player":
           this.mainPlayerWrapper.setAttribute( "class", "active" );
-          this.miniPlayer.setAttribute( "class", "hidden" );
+          this.miniPlayerWrapper.setAttribute( "class", "hidden" );
           break;
         default:
           break;
@@ -77,7 +79,8 @@
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
 
-        this.miniPlayer = this.$[ "mini-player-wrapper" ];
+        this.miniPlayer = this.$[ "mini-player" ];
+        this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
 
         // Event Handler
         this.handler = {

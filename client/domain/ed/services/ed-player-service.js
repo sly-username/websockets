@@ -19,6 +19,7 @@ var
   rateCurrentlyPlaying,
   tracksCollection,
   queueTracksAndPlay,
+  currentIndexPlaying = 0,
   trackName = null,
   artistName = null;
 
@@ -39,7 +40,7 @@ setCurrentTrack = function( edTrack ) {
 //      .then(function( response ) {
 //        // adding in fake ID for now
 //        edAnalyticsService.send( "rate", {
-//          trackId: currentTrack.id || 10,
+//          trackId: currentTrack.id,
 //          timecode: currentTrack.currentTime,
 //          rating: number
 //        });
@@ -149,17 +150,26 @@ export default edPlayerService = {
     return mm + ":" + ss;
   },
 
+  getEDTrack: function( tracks, currentIndex ) {
+    return tracks.get( currentIndex )
+      .then( edTrack => {
+        this.playTrack( edTrack );
+        return edTrack;
+      });
+  },
+
   playTrack: function( edTrack ) {
     if ( !edTrack instanceof EDTrack ) {
-      console.warn( "not an instance of edTrack" );
-      //throw new TypeError( "Track is not an EDTrack object" );
+      throw new TypeError( "Track is not an EDTrack object" );
     }
 
+    // playing same track toggles the play pause events
     if ( currentTrack != null && edTrack === currentTrack ) {
-      if( this.isPlaying ){
+      if ( this.isPlaying ) {
         return this.pause();
       }
-      if( this.isPaused ){
+
+      if ( this.isPaused ) {
         return this.play();
       }
     }
@@ -178,7 +188,7 @@ export default edPlayerService = {
         }));
 
         edAnalyticsService.send( "play", {
-          trackId: currentTrack.id || 10,
+          trackId: currentTrack.id,
           timecode: currentTrack.currentTime
         });
 
@@ -208,7 +218,7 @@ export default edPlayerService = {
     audio.pause();
 
     edAnalyticsService.send( "pause", {
-      trackId: currentTrack.id || 10,
+      trackId: currentTrack.id,
       timecode: audio.currentTime
     });
 
@@ -223,7 +233,7 @@ export default edPlayerService = {
     }
 
     edAnalyticsService.send( "quit", {
-      trackId: currentTrack.id || 10,
+      trackId: currentTrack.id,
       timecode: audio.currentTime,
       action: "stop"
     });
@@ -235,7 +245,7 @@ export default edPlayerService = {
     audio.currentTime = value;
 
     edAnalyticsService.send( "scrub", {
-      trackId: currentTrack.id || 10,
+      trackId: currentTrack.id,
       timeStart: scrubFrom,
       timeEnd: value
     });
@@ -262,7 +272,7 @@ export default edPlayerService = {
     }
 
     edAnalyticsService.send( "quit", {
-      trackId: currentTrack.id || 10,
+      trackId: currentTrack.id,
       timecode: audio.currentTime,
       action: "skip"
     });
@@ -288,6 +298,7 @@ export default edPlayerService = {
     return edDiscoverService.getDiscoverTrackList( type )
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
+        console.log(  )
 
         this.queueTracksAndPlay( tracksCollection );
 
@@ -306,11 +317,8 @@ export default edPlayerService = {
       document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
     }
 
-    return tracks.get( 0 ).then(( edTrack ) => {
-      this.playTrack( edTrack );
-
-      return edTrack;
-    });
+    console.log( "tracks", tracks );
+    return this.getEDTrack( tracks, currentIndexPlaying );
   }
 };
 

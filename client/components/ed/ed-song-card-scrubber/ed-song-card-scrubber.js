@@ -36,8 +36,6 @@
           this.playIcon.setAttribute( "name", "play" );
         }
 
-        console.log( "state", state );
-
         this.dispatchEvent( createUpdateEvent( state ));
       },
       scrubFireHandler = function() {
