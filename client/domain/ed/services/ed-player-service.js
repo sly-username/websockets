@@ -49,19 +49,6 @@ setCurrentTrack = function( edTrack ) {
 //  }
 //};
 
-queueTracksAndPlay = function( tracks, show ) {
-  if ( show ) {
-    document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
-    document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
-  }
-
-  return tracks.get( 0 ).then(( edTrack ) => {
-    edPlayerService.play( edTrack );
-
-    return edTrack;
-  });
-};
-
 export default edPlayerService = {
   get emitter() {
     return emitter;
@@ -276,12 +263,12 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  retrieveDiscoverTracks: function( type ) {
+  startMusicDiscovery: function( type ) {
     return edDiscoverService.getDiscoverTrackList( type )
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
 
-        queueTracksAndPlay( tracksCollection );
+        this.queueTracksAndPlay( tracksCollection );
 
         return response;
       })
@@ -290,6 +277,19 @@ export default edPlayerService = {
         console.error( error );
         throw error;
       });
+  },
+
+  queueTracksAndPlay: function( tracks, show ) {
+    if ( show ) {
+      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
+      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+    }
+
+    return tracks.get( 0 ).then(( edTrack ) => {
+      this.play( edTrack );
+
+      return edTrack;
+    });
   }
 };
 
