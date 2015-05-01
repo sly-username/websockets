@@ -15,13 +15,12 @@ var
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
   setCurrentTrack,
+  setCurrentArtist,
   edPlayerService,
   rateCurrentlyPlaying,
   tracksCollection,
-  queueTracksAndPlay,
   currentIndexPlaying = 0,
-  trackName = null,
-  artistName = null;
+  currentArtist = null;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -32,6 +31,10 @@ audio.style.visibility = "hidden";
 // helpers
 setCurrentTrack = function( edTrack ) {
   currentTrack = edTrack;
+};
+
+setCurrentArtist = function( edArtist ) {
+  currentArtist = edArtist;
 };
 
 //rateCurrentlyPlaying = function( number ) {
@@ -58,6 +61,7 @@ export default edPlayerService = {
   get currentStats() {
     return {
       playing: currentTrack,
+      currentArtist: currentArtist,
       time: this.formattedTime,
       hours: this.currentHours,
       minutes: this.currentMinutes,
@@ -153,8 +157,17 @@ export default edPlayerService = {
   getEDTrack: function( tracks, currentIndex ) {
     return tracks.get( currentIndex )
       .then( edTrack => {
-        this.playTrack( edTrack );
         return edTrack;
+      })
+      .then( edTrack => {
+        return edDataService.getArtistById( edTrack.profileId, 10 )
+          .then( edArtist => {
+            setCurrentArtist( edArtist );
+
+            this.playTrack( edTrack );
+
+            return edArtist;
+          });
       });
   },
 
@@ -268,14 +281,15 @@ export default edPlayerService = {
       if ( this.isPlaying || this.isPaused ) {
         audio.pause();
       }
+
+      edAnalyticsService.send( "quit", {
+        trackId: currentTrack.id,
+        timecode: audio.currentTime,
+        action: "skip"
+      });
+
       return this.play( this.dequeue() );
     }
-
-    edAnalyticsService.send( "quit", {
-      trackId: currentTrack.id,
-      timecode: audio.currentTime,
-      action: "skip"
-    });
   },
 
   skipTo: function( index ) {

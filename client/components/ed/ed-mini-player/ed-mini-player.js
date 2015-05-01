@@ -33,7 +33,7 @@
         if ( eventType === "play" ) {
           this.playIcon.setAttribute( "name", "pause" );
           this.$[ "title" ].innerText = playerService.currentStats.playing.name;
-          this.$[ "name" ].innerText = playerService.currentStats.playing.name;
+          this.$[ "name" ].innerText = playerService.currentStats.currentArtist.name != null ? playerService.currentStats.currentArtist.name : "FPO Bandname";
         }
 
         if ( eventType === "pause" ) {

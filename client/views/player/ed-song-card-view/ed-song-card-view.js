@@ -39,6 +39,7 @@
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "scrubStart" ) {
@@ -81,6 +82,8 @@
 
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
+
+        this.bioText = this.$[ "bio-copy" ];
 
         // Event Handler
         this.handler = {

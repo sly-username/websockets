@@ -79,7 +79,7 @@
         this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
       },
       skipSongHandler = function( event ) {
-        this.dispatchEvent( createUpdateEvent( "skip"));
+        this.dispatchEvent( createUpdateEvent( "skip" ));
       },
       playServiceEventHandler = function( event ) {
         var

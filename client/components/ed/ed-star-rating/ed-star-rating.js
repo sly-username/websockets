@@ -56,7 +56,7 @@
 
     playerUpdateHandler = function() {
       this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
-      this.$[ "artist-name" ].innerText = playerService.currentStats.playing.name;
+      this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.name != null ? playerService.currentStats.currentArtist.name : "FPO Bandname";
     };
 
     polymer( "ed-star-rating", {
