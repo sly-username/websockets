@@ -5,7 +5,7 @@
     System.import( "domain/ed/services/ed-user-service" )
   ]).then(function( imported ) {
     var
-      userService = imported.default,
+      userService = imported[ 0 ].default,
       emailCheckHandler = function() {
       if ( this.emailInput.validity.valid ) {
         this.submitBtn.removeAttribute( "disabled" );

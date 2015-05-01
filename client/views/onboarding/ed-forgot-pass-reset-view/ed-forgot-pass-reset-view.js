@@ -5,7 +5,7 @@
     System.import( "domain/ed/services/ed-user-service" )
   ]).then(function( imported ) {
     var
-      userService = imported.default,
+      userService = imported[ 0 ].default,
       passwordCheckHandler = function() {
         if ( this.pairedInput.isValid ) {
           this.submitButton.removeAttribute( "disabled" );

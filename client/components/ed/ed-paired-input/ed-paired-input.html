@@ -3,13 +3,15 @@
 <polymer-element name="ed-paired-input" attributes="icon type placeholder">
   <template>
     <link rel="stylesheet" href="ed-paired-input.css">
-      <div id="error"></div>
+    <!-- TODO error messages to display on top of the form -->
+      <!--<div id="error"></div>-->
       <div class="ed-paired-input-primary-wrapper">
         <ed-icon class="inner-icon align" name="{{icon}}"></ed-icon>
         <input class="align" id="primary-box" type="{{type}}"
                pattern="^\w{8,}"
                placeholder="{{placeholder}}" />
       </div>
+      <p class="password-req-text"> *8 characters minimum </p>
       <div class="ed-paired-input-confirm-wrapper confirm-container">
         <ed-icon name="{{icon}}-check"></ed-icon>
         <input class="align" id="confirm-box" type="{{type}}" placeholder="Type {{placeholder}} Again" />

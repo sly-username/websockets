@@ -279,11 +279,11 @@ edUserService.forgotPasswordGet = function( email ) {
     });
 };
 
-edUserService.forgotPasswordSet = function( resetCode, newPassword ) {
+edUserService.forgotPasswordSet = function( resetCode, password ) {
   var json = {
     data: {
       resetCode,
-      newPassword
+      password
     }
   };
 
