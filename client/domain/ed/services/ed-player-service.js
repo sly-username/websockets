@@ -19,12 +19,8 @@ var
   edPlayerService,
   rateCurrentlyPlaying,
   tracksCollection,
-<<<<<<< HEAD
   hasScrubbedHandler,
   trackEndedHandler;
-=======
-  queueTracksAndPlay;
->>>>>>> dev
 
 // helpers
 setCurrentTrack = function( edTrack ) {
