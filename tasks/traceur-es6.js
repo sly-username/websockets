@@ -12,6 +12,7 @@ var gulp = require( "gulp" ),
   traceurOptions,
   compileES6,
   runCompileFromToWithOptions,
+  isProduction = ( /^(PRODUCTION|QA)$/ ).test( process.env.GULP_ENVIRONMENT ),
   sourceMapRewriteLocation = process.env.ED_SOURCE_LOCATION;
 
 // Compiler Options
@@ -51,7 +52,6 @@ compileES6 = function( options ) {
     es5 = traceur.compile( es6, opts );
 
     // update source map url
-    // TODO need to replace the /home/vagrant with where the repo is in the HOST OS
     if ( typeof sourceMapRewriteLocation === "string" && sourcePath.indexOf( "vagrant" ) > -1 ) {
       sourcePath = sourcePath.replace(
         path.join( path.sep + "home", "vagrant" ),
@@ -59,7 +59,12 @@ compileES6 = function( options ) {
       );
     }
 
-    es5 = es5.replace( "<compile-source>", "file://" + sourcePath );
+    if ( isProduction ) {
+      // remove source map
+      es5 = es5.replace( /\/\/#.*[\n]?$/, "" );
+    } else {
+      es5 = es5.replace( "<compile-source>", "file://" + sourcePath );
+    }
 
     // Update File Object
     file.contents = new Buffer( es5 );
