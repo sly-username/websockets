@@ -7,11 +7,39 @@
   #rating-form {
     opacity:0;
     #input-field {
-    pointer-events: none;
-  }
+      pointer-events: none;
+    }
   }
   #disable-text {
     opacity: 1;
+  }
+}
+
+#dynamic-details {
+  &.loading-track {
+    .track-title {
+      opacity: 0;
+    }
+  }
+
+  &.loading-artist {
+    .artist-name {
+      opacity: 0;
+    }
+  }
+
+  &.loaded-track {
+    .track-title {
+      transition: opacity 1s;
+      opacity: 1;
+    }
+  }
+
+  &.loaded-artist {
+    .artist-name {
+      transition: opacity 1s;
+      opacity: 1;
+    }
   }
 }
 
