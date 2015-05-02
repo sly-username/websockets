@@ -1,22 +1,19 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
-<link rel="import" href="../../../components/ed/ed-hamburger-header/ed-hamburger-header.html"/>
-
+<link rel="import" href="../../../components/ed/ed-menu-button/ed-menu-button.html"/>
 
 <polymer-element name="ed-profile-fan" attributes="ed-id">
   <template>
     <link rel="stylesheet" href="./ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
-      <ed-hamburger-header></ed-hamburger-header>
-      <div class="user-rank-container">
-        <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
-        <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
-      </div>
+      <ed-menu-button></ed-menu-button>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
       <section class="image-wrapper">
-      <div class="profile-name">
-        <span>{{ edFan.raw.firstName }} {{ edFan.raw.lastName }}</span>
-      </div>
-      <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
+        <div class="profile-name">
+          <span>{{ edFan.raw.firstName }} {{ edFan.raw.lastName }}</span>
+        </div>
+        <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
       </section>
       <section class="icon-section">
         <div class="icon-header">Rewards
