@@ -3,16 +3,19 @@
 <polymer-element name="ed-charts-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-charts-view.css">
-    <div class="chart-title-bar">
-      <button id="menu-trigger">
-        <ed-icon name="burger"></ed-icon>
-      </button>
-      <h1 id="chart-title">Charts</h1>
-    </div>
+    <div class="chart-wrapper">
+      <div class="chart-title-bar">
+        <button id="menu-trigger">
+          <ed-icon name="burger"></ed-icon>
+        </button>
+        <h1 id="chart-title">Charts</h1>
+      </div>
+
       <ed-single-chart chart-title="Top Rater" chart-subtitle="Fans who rated the most songs" chart-badge="badge-fan-msr"></ed-single-chart>
-      <ed-single-chart chart-title="Top Listener" chart-subtitle="Fans with the most complete listens" chart-badge="badge-fan-mcl"></ed-single-chart>
-      <ed-single-chart chart-title="Most Completed Listens" chart-subtitle="Songs people loved all the way through" chart-badge="badge-artist-mcl"></ed-single-chart>
-      <ed-single-chart chart-title="Highest Rated Song" chart-subtitle="This week's most popular song" chart-badge="badge-hrs"></ed-single-chart>
+      <!--<ed-single-chart chart-title="Top Listener" chart-subtitle="Fans with the most complete listens" chart-badge="badge-fan-mcl"></ed-single-chart>-->
+      <!--<ed-single-chart chart-title="Most Completed Listens" chart-subtitle="Songs people loved all the way through" chart-badge="badge-artist-mcl"></ed-single-chart>-->
+      <!--<ed-single-chart chart-title="Highest Rated Song" chart-subtitle="This week's most popular song" chart-badge="badge-hrs"></ed-single-chart>-->
+    </div>
   </template>
   <script src="./ed-charts-view.js"></script>
 </polymer-element>
