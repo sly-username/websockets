@@ -23,19 +23,6 @@
   margin: 0 auto;
   .rating {
     border: none;
-    #star-field {
-      position: absolute;
-      left: 0;
-      pointer-events: none;
-      .userSelect(none);
-    }
-    #overlap-field {
-      position: absolute;
-      left: 0;
-      pointer-events: none;
-      .transform(translateX(-100%));
-      .userSelect(none);
-    }
     ed-icon {
       width: 20%;
       height: 13rem;
@@ -61,6 +48,37 @@
         width: 20%;
         margin: 0;
         float: left;
+      }
+    }
+  }
+}
+
+#star-field {
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  .userSelect(none);
+
+  ed-icon {
+    &::shadow {
+      svg {
+        fill: @originalGrey;
+      }
+    }
+  }
+}
+
+#overlap-field {
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  .transform(translateX(-100%));
+  .userSelect(none);
+
+  ed-icon {
+    &::shadow {
+      svg {
+        fill: @originalPurple;
       }
     }
   }
