@@ -16,7 +16,7 @@
       triggerSubmitHandler = function( event ) {
         event.preventDefault();
 
-        return userService.forgotPasswordGet( this.emailInput.value )
+        userService.requestPasswordReset( this.emailInput.value )
           .then(function( response ) {
             console.log( response );
             this.router.go( "/forgot-pass/reset" );
@@ -30,7 +30,6 @@
         this.submitBtn = this.shadowRoot.getElementById( "forgot-submit" );
         this.emailInput = this.shadowRoot.querySelector( ".email" )
           .shadowRoot.querySelector( "input" );
-        console.log( this.emailInput );
         this.handlers = {
           triggerSubmit: triggerSubmitHandler.bind( this ),
           emailCheck: emailCheckHandler.bind( this )

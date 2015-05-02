@@ -13,10 +13,10 @@
           this.submitButton.setAttribute( "disabled", "" );
         }
       },
-      submitCheckHandler = function() {
+      submitCheckHandler = function( event ) {
         event.preventDefault();
 
-        return userService.forgotPasswordSet( this.resetCodeInput.value, this.passwordConfirmInput.value )
+        userService.resetPassword( this.resetCodeInput.value, this.passwordConfirmInput.value )
           .then(function( response ) {
             console.log( response );
             return response;

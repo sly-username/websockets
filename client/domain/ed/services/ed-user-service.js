@@ -261,7 +261,7 @@ edUserService.register = function( args ) {
     });
 };
 
-edUserService.forgotPasswordGet = function( email ) {
+edUserService.requestPasswordReset = function( email ) {
   var json = {
     data: {
       email
@@ -270,6 +270,7 @@ edUserService.forgotPasswordGet = function( email ) {
 
   return edConnectionService.request( "user/password/get", 10, json )
     .then( response => {
+      // TODO: still needs validation of integration with the server
       return response;
     })
     .catch( error => {
@@ -279,7 +280,7 @@ edUserService.forgotPasswordGet = function( email ) {
     });
 };
 
-edUserService.forgotPasswordSet = function( resetCode, password ) {
+edUserService.resetPassword = function( resetCode, password ) {
   var json = {
     data: {
       resetCode,
@@ -289,6 +290,7 @@ edUserService.forgotPasswordSet = function( resetCode, password ) {
 
   return edConnectionService.request( "user/password/set", 10, json )
     .then( response => {
+      // TODO: still needs validation of integration with the server
       return response;
     })
     .catch( error => {
