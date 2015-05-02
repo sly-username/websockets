@@ -4,8 +4,7 @@ import define from "domain/ed/define-properties";
 import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 
 var eventKeys = [
-  "trackId",
-  "timecode"
+  "trackId"
 ];
 
 export default class EDAnalyticsCompletedListenEvent extends EDAnalyticsEvent {
