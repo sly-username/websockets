@@ -32,80 +32,80 @@
     get chartBadge() {
       return this[ "chart-badge" ];
     },
-    //_options: [
-    //  {
-    //    rank: 1,
-    //    image: "http://www.placecage.com/200/300",
-    //    name: "Place Cage",
-    //    points: 212732
-    //  },
-    //  {
-    //    rank: 2,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 112732
-    //  },
-    //  {
-    //    rank: 3,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 10732
-    //  },
-    //  {
-    //    rank: 4,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 9732
-    //  },
-    //  {
-    //    rank: 5,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 4732
-    //  },
-    //  {
-    //    rank: 6,
-    //    image: "http://www.placecage.com/200/300",
-    //    name: "Place Cage",
-    //    points: 732
-    //  },
-    //  {
-    //    rank: 7,
-    //    image: "http://www.placecage.com/200/300",
-    //    name: "Place Cage",
-    //    points: 10
-    //  },
-    //  {
-    //    rank: 8,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 9
-    //  },
-    //  {
-    //    rank: 9,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 8
-    //  },
-    //  {
-    //    rank: 10,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 7
-    //  },
-    //  {
-    //    rank: 11,
-    //    image: "http://www.fillmurray.com/200/300",
-    //    name: "Fill Murray",
-    //    points: 6
-    //  },
-    //  {
-    //    rank: 12,
-    //    image: "http://www.placecage.com/200/300",
-    //    name: "Place Cage",
-    //    points: 5
-    //  }
-    //],
+    _options: [
+      {
+        rank: 1,
+        image: "http://www.placecage.com/200/300",
+        name: "Place Cage",
+        points: 212732
+      },
+      {
+        rank: 2,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 112732
+      },
+      {
+        rank: 3,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 10732
+      },
+      {
+        rank: 4,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 9732
+      },
+      {
+        rank: 5,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 4732
+      },
+      {
+        rank: 6,
+        image: "http://www.placecage.com/200/300",
+        name: "Place Cage",
+        points: 732
+      },
+      {
+        rank: 7,
+        image: "http://www.placecage.com/200/300",
+        name: "Place Cage",
+        points: 10
+      },
+      {
+        rank: 8,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 9
+      },
+      {
+        rank: 9,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 8
+      },
+      {
+        rank: 10,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 7
+      },
+      {
+        rank: 11,
+        image: "http://www.fillmurray.com/200/300",
+        name: "Fill Murray",
+        points: 6
+      },
+      {
+        rank: 12,
+        image: "http://www.placecage.com/200/300",
+        name: "Place Cage",
+        points: 5
+      }
+    ],
     ready: function() {
       this.edMenu = document.getElementById( "side-menu" );
       this.appRouter = document.getElementById( "animation-wrapper" );
