@@ -4,7 +4,7 @@
   "use strict";
   var expect = chai.expect,
     // get wrapper from document or for karma, create a new div and append it to the DOM
-    testingWrapper = document.getElementById( "ed-hamburger-header-test-wrapper" ) ||
+    testingWrapper = document.getElementById( "ed-menu-button-test-wrapper" ) ||
       ( function() {
         var wrapper = document.createElement( "div" );
         document.body.appendChild( wrapper );
@@ -17,7 +17,7 @@
       testingWrapper.innerHTML = "";
     };
 
-  suite( "<ed-hamburger-header>", function() {
+  suite( "<ed-menu-button>", function() {
     suite( "Life Cycle", function() {
       teardown( function() {
         resetWrapper();
@@ -25,21 +25,21 @@
 
       test( "ready: can create from document.createElement", function() {
         var createdSpy = sinon.spy(
-          polymer.getRegisteredPrototype( "ed-hamburger-header" ),
+          polymer.getRegisteredPrototype( "ed-menu-button" ),
           "ready"
         );
 
-        expect( document.createElement( "ed-hamburger-header" ) )
+        expect( document.createElement( "ed-menu-button" ) )
           .to.have.property( "outerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<ed-hamburger-header></ed-hamburger-header>" );
+          .and.equals( "<ed-menu-button></ed-menu-button>" );
 
         expect( createdSpy ).to.have.callCount( 1 );
         createdSpy.restore();
       });
 
       test( "attached: can be added to another DOM Element", function() {
-        var newElement = document.createElement( "ed-hamburger-header" ),
+        var newElement = document.createElement( "ed-menu-button" ),
           attachedSpy = sinon.spy( newElement, "attached" );
 
         testingWrapper.appendChild( newElement );
@@ -49,13 +49,13 @@
         expect( testingWrapper )
           .to.have.property( "innerHTML" )
           .that.is.a( "string" )
-          .and.equals( "<ed-hamburger-header></ed-hamburger-header>" );
+          .and.equals( "<ed-menu-button></ed-menu-button>" );
 
         attachedSpy.restore();
       });
 
       test( "detached: can be removed from another DOM element", function() {
-        var newElement = document.createElement( "ed-hamburger-header" ),
+        var newElement = document.createElement( "ed-menu-button" ),
           detachedSpy = sinon.spy( newElement, "detached" );
 
         testingWrapper.appendChild( newElement );

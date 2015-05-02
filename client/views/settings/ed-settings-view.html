@@ -1,11 +1,14 @@
 <link rel="import" href="../../components/ed/ed-icon/ed-icon.html"/>
-<link rel="import" href="../../components/ed/ed-hamburger-header/ed-hamburger-header.html"/>
+<link rel="import" href="../../components/ed/ed-menu-button/ed-menu-button.html"/>
 
 <polymer-element name="ed-settings-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-settings-view.css">
     <div class="settings-wrapper">
-      <ed-hamburger-header header="settings"></ed-hamburger-header>
+      <div class="settings-title-bar">
+        <ed-menu-button></ed-menu-button>
+        <h1 id="settings-title">Settings</h1>
+      </div>
       <ul class="settings-list">
         <li class="version-title"> Version: <span>1.2.0.2385</span></li>
         <li id="log-out-button">Log Out</li>
