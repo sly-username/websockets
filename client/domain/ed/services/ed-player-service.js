@@ -28,7 +28,11 @@ setCurrentTrack = function( edTrack ) {
 };
 
 hasScrubbedHandler = function( event ) {
-  console.log( "event SCRUBBBER", event );
+  if ( !hasScrubbed ) {
+    hasScrubbed = true;
+  }
+
+  return hasScrubbed;
 };
 
 trackEndedHandler = function() {
