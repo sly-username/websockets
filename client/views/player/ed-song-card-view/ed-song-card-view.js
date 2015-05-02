@@ -50,6 +50,10 @@
       if ( eventType === "skip" ) {
         playerService.next();
       }
+
+      if ( eventType === "showRatings" ) {
+        this.ratingsForm.setAttribute( "class", "show" );
+      }
     };
 
     togglePlayerHandler = function( event ) {
@@ -78,6 +82,8 @@
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
 
         this.miniPlayer = this.$[ "mini-player-wrapper" ];
+
+        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
 
         // Event Handler
         this.handler = {

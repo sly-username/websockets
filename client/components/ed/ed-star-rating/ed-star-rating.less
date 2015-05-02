@@ -15,6 +15,17 @@
   }
 }
 
+#rating-form-wrapper {
+  visibility: hidden;
+  opacity: 0;
+
+  &.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 1s;
+  }
+}
+
 #rating-form {
   position: relative;
   height: 11rem;
