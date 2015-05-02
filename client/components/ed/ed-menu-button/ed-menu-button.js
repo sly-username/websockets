@@ -10,7 +10,7 @@
       }
     };
 
-  polymer( "ed-hamburger-header", {
+  polymer( "ed-menu-button", {
     /* LIFECYCLE */
     ready: function() {
       this.edMenu = document.getElementById( "side-menu" );

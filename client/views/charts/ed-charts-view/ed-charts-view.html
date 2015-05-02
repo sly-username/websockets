@@ -1,12 +1,16 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
-<link rel="import" href="../../../components/ed/ed-hamburger-header/ed-hamburger-header.html"/>
 
 <polymer-element name="ed-charts-view" attributes="">
     <template>
         <link rel="stylesheet" href="./ed-charts-view.css">
         <div class="charts-wrapper">
-            <ed-hamburger-header header="Rankings"></ed-hamburger-header>
+            <div class="charts-title-bar">
+                <button id="menu-trigger">
+                    <ed-icon name="burger"></ed-icon>
+                </button>
+                <h1 id="charts-title">Ranking</h1>
+            </div>
             <div class="charts-header">
                 <header>
                     <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
