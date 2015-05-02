@@ -12,27 +12,32 @@
           <h1 class="chart-title-text">{{chartTitle}}</h1>
           <p class="chart-subtitle-text">{{chartSubtitle}}</p>
         </header>
-        <div class="ranks-badge-wrapper">
+      </div>
+
+      <div class="ranks-badge-wrapper">
+        <div class="badges">
           <ed-icon id="badge-hrs" name="{{chartBadge}}"></ed-icon>
           <p class="time-left">Time Left</p>
 
           <h2 class="countdown-timer">03d 10h 15m</h2>
         </div>
+
+        <ul id="ranks-list" class="options">
+          <template repeat="{{opt in _options}}">
+            <li>
+              <p class="chart-rank">{{opt.rank}}</p>
+
+              <div class="img-container">
+                <img-placeholder src="{{ opt.image }}" image="fillmurray"></img-placeholder>
+              </div>
+              <p class="chart-points">{{opt.points}}</p>
+
+              <p class="chart-name">{{opt.name}}</p>
+            </li>
+          </template>
+        </ul>
       </div>
-      <ul id="ranks-list" class="options">
-        <template repeat="{{opt in _options}}">
-          <li>
-            <p class="chart-rank">{{opt.rank}}</p>
 
-            <div class="img-container">
-              <img-placeholder src="{{ opt.image }}" image="fillmurray"></img-placeholder>
-            </div>
-            <p class="chart-points">{{opt.points}}</p>
-
-            <p class="chart-name">{{opt.name}}</p>
-          </li>
-        </template>
-      </ul>
     </div>
   </template>
   <script src="./ed-single-chart.js"></script>
