@@ -87,8 +87,6 @@
         this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
         this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
         this.likedBubbles     = this.getUrlVar();
-      },
-      attached: function() {
         // handlers
         this.handlers = {
           hideBubbles: hideBubblesHandler.bind( this ),
@@ -96,7 +94,8 @@
           bubblesDisliked: bubblesDislikedHandler.bind( this ),
           triggerBubbles: triggerBubblesHandler.bind( this )
         };
-
+      },
+      attached: function() {
         this.bubbleContainer.addEventListener( "click", this.handlers.triggerCounter );
         this.nextBtn.addEventListener( "click", this.handlers.triggerBubbles );
         this.handlers.hideBubbles();

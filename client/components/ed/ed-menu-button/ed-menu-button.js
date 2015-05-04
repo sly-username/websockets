@@ -1,14 +1,9 @@
 ( function( polymer ) {
   "use strict";
   var triggerMenuHandler = function() {
-      if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
-        this.edMenu.setAttribute( "class", "hide-menu" );
-        this.appRouter.setAttribute( "class", "show-router" );
-      } else {
-        this.edMenu.setAttribute( "class", "show-menu" );
-        this.appRouter.setAttribute( "class", "hide-router" );
-      }
-    };
+    this.edMenu.classList.toggle( "show-menu" );
+    this.appRouter.classList.toggle( "hide-router" );
+  };
 
   polymer( "ed-menu-button", {
     /* LIFECYCLE */
@@ -21,12 +16,10 @@
       };
     },
     attached: function() {
-      this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
-      this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
+      this.triggerBtn.addEventListener( "mouseup", this.handlers.triggerMenu );
     },
     detached: function() {
-      this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
-      this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
+      this.triggerBtn.removeEventListener( "mouseup", this.handlers.triggerMenu );
     },
     attributeChanged: function( attrName, oldValue, newValue ) {}
     /* PROPERTIES */
