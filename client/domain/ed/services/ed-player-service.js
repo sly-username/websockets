@@ -17,7 +17,8 @@ var
   setCurrentTrack,
   edPlayerService,
   rateCurrentlyPlaying,
-  tracksCollection;
+  tracksCollection,
+  queueTracksAndPlay;
 
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -261,25 +262,33 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  queueTracksAndPlay: function( track, show ) {
-    if ( show ) {
-      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
-      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
-    }
-
-    return edDiscoverService.getBlendTracks()
+  startMusicDiscovery: function( type ) {
+    return edDiscoverService.getDiscoverTrackList( type )
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
-        tracksCollection.get( 0 ).then(( edTrack ) => {
-          this.play( edTrack );
-        });
+
+        this.queueTracksAndPlay( tracksCollection );
 
         return response;
       })
       .catch(( error ) => {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
+        throw error;
       });
+  },
+
+  queueTracksAndPlay: function( tracks, show ) {
+    if ( show ) {
+      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
+      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+    }
+
+    return tracks.get( 0 ).then(( edTrack ) => {
+      this.play( edTrack );
+
+      return edTrack;
+    });
   }
 };
 
