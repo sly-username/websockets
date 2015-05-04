@@ -34,14 +34,14 @@
     attached: function() {
       this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
       this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
-      this.logOut.addEventListener( "tap", this.handler.logOutTrigger );
-      this.logOut.addEventListener( "click", this.handler.logOutTrigger );
+      this.logOut.addEventListener( "tap", this.handlers.logOutTrigger );
+      this.logOut.addEventListener( "click", this.handlers.logOutTrigger );
     },
     detached: function() {
       this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
       this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
-      this.logOut.removeEventListener( "tap", this.handler.logOutTrigger );
-      this.logOut.removeEventListener( "click", this.handler.logOutTrigger );
+      this.logOut.removeEventListener( "tap", this.handlers.logOutTrigger );
+      this.logOut.removeEventListener( "click", this.handlers.logOutTrigger );
     },
     attributeChanged: function( attrName, oldValue, newValue ) {}
     /* PROPERTIES */
