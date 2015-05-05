@@ -2,7 +2,6 @@
   "use strict";
   var triggerMenuHandler = function() {
     this.edMenu.classList.toggle( "show-menu" );
-    this.appRouter.classList.toggle( "hide-router" );
   };
 
   polymer( "ed-menu-button", {

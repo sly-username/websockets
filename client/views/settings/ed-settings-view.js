@@ -20,11 +20,9 @@
       };
     },
     attached: function() {
-      this.logOut.addEventListener( "tap", this.handlers.logOutTrigger );
       this.logOut.addEventListener( "click", this.handlers.logOutTrigger );
     },
     detached: function() {
-      this.logOut.removeEventListener( "tap", this.handlers.logOutTrigger );
       this.logOut.removeEventListener( "click", this.handlers.logOutTrigger );
     }
   });
