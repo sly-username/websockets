@@ -62,7 +62,7 @@ export default edAnalyticsService = {
 
     return {
       playerState: {
-        trackId: currentPlayerStats.playing == null ? null : currentPlayerStatus.playing.id,
+        trackId: currentPlayerStats.playing == null ? null : currentPlayerStats.playing.id,
         playing: edPlayerService.isPlaying,
         timecode: currentPlayerStats.time,
         queueLength: edPlayerService.queue.length
