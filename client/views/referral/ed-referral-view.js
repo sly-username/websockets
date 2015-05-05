@@ -23,7 +23,6 @@
         },
         attached: function() {
           this.emailInput.setAttribute( "autofocus", "" );
-          this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
 
           clickEvents.forEach( function( eventName ) {
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
@@ -37,7 +36,6 @@
           }.bind( this ));
 
           this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
-          this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
         },
         submitCheck: function() {
           if ( userService.referralsRemaining === 0 ) {
