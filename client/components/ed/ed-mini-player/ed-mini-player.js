@@ -53,13 +53,11 @@
       },
       attached: function() {
         this.playBtn.addEventListener( "click", this.handler.swapIcon );
-        this.playBtn.addEventListener( "tap", this.handler.swapIcon );
 
         playerService.emitter.on( "playerUpdate", this.handler.playPauseEvent )
       },
       detached: function() {
         this.playBtn.removeEventListener( "click", this.handler.swapIcon );
-        this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
 
         playerService.emitter.off( "playerUpdate", this.handler.playPauseEvent )
       }

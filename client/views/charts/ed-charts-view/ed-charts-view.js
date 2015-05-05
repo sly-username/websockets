@@ -61,11 +61,9 @@
     },
     attached: function() {
       this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
-      this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
     },
     detached: function() {
       this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
-      this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
     },
     attributeChanged: function( attrName, oldValue, newValue ) {}
     /* PROPERTIES */
