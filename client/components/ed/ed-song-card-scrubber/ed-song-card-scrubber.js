@@ -112,6 +112,9 @@
       },
       mouseOutHandler = function() {
         this.mouseDown = false;
+      },
+      showRatingsHandler = function() {
+        this.dispatchEvent( createUpdateEvent( "showRatings" ));
       };
 
     polymer( "ed-song-card-scrubber", {
@@ -137,7 +140,8 @@
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
           playPauseEvent: playPauseEventHandler.bind( this ),
-          mouseOut: mouseOutHandler.bind( this )
+          mouseOut: mouseOutHandler.bind( this ),
+          showRatings: showRatingsHandler.bind( this )
         };
 
         // init
@@ -198,6 +202,10 @@
         } else {
           this.complete = false;
           this.removeAttribute( "complete" );
+        }
+
+        if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
+          this.handler.showRatings();
         }
       }
     });
