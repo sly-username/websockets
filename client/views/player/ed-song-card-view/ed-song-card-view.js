@@ -57,12 +57,18 @@
 
       switch( tmpId ) {
         case "minify-icon":
-          this.mainPlayerWrapper.setAttribute( "class", "hidden" );
-          this.miniPlayer.setAttribute( "class", "active" );
+          this.miniPlayer.classList.remove( "hide-mini" );
+          this.miniPlayer.classList.add( "show-mini" );
+
+          this.songCardWrapper.classList.remove( "show-main" );
+          this.songCardWrapper.classList.add( "hide-main" );
           break;
         case "mini-player":
-          this.mainPlayerWrapper.setAttribute( "class", "active" );
-          this.miniPlayer.setAttribute( "class", "hidden" );
+          this.songCardWrapper.classList.remove( "hide-main" );
+          this.songCardWrapper.classList.add( "show-main" );
+
+          this.miniPlayer.classList.remove( "show-mini" );
+          this.miniPlayer.classList.add( "hide-mini" );
           break;
         default:
           break;
@@ -76,6 +82,8 @@
         // dom selectors
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
+
+        this.songCardWrapper = this.$[ "song-card-wrapper" ];
 
         this.miniPlayer = this.$[ "mini-player-wrapper" ];
 
