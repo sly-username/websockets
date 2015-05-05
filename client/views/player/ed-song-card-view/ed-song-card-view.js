@@ -64,18 +64,14 @@
 
       switch( tmpId ) {
         case "minify-icon":
-          this.miniPlayerWrapper.classList.remove( "hide-mini" );
           this.miniPlayerWrapper.classList.add( "show-mini" );
-
-          this.mainPlayerWrapper.classList.remove( "show-main" );
           this.mainPlayerWrapper.classList.add( "hide-main" );
+          this.songCardWrapper.classList.add( "minimized" );
           break;
         case "mini-player":
-          this.mainPlayerWrapper.classList.remove( "hide-main" );
-          this.mainPlayerWrapper.classList.add( "show-main" );
-
           this.miniPlayerWrapper.classList.remove( "show-mini" );
-          this.miniPlayerWrapper.classList.add( "hide-mini" );
+          this.mainPlayerWrapper.classList.remove( "hide-main" );
+          this.songCardWrapper.classList.remove( "minimized" );
           break;
         default:
           break;
@@ -87,9 +83,9 @@
       playerService: playerService,
       ready: function() {
         // dom selectors
+        this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
-        this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
         this.bioText = this.$[ "bio-copy" ];
