@@ -43,15 +43,15 @@
       },
       getLeaderBoard: function( chartName ) {
         return discoverService.getLeaderboardCharts( chartName )
-          .then( function( response ) {
+          .then( ( response ) => {
             this.leaders = response.leaderboard;
             return this.leaders;
-          }.bind( this ));
+          });
       },
       getLeaderProfiles: function( chartName ) {
-        // todo how to tell difference between artist and fan?
         this.getLeaderBoard( chartName );
 
+        // todo how to tell difference between artist and fan?
         return this.leaders.forEach( ( leader, index ) => {
           dataService.getByTypeAndId( "artist", leader.profileId )
             .then( rankedUser => {
@@ -66,7 +66,3 @@
     });
   });
 })( window.Polymer, window.System );
-
-
-
-
