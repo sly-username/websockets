@@ -2,14 +2,14 @@
   "use strict";
 
   var currentView = 1,
+    updateChartClass = function( classesRemoveArray, classAdd, self ) {
+      classesRemoveArray.forEach( function( classNumber ) {
+        self.singleChartWrapper.classList.remove( classNumber );
+        self.singleChartWrapper.classList.add( classAdd );
+      });
+    },
     updateChartsViewHandler = function( event ) {
-      var eventType = event.detail.name,
-        updateChartClass = function( classesRemoveArray, classAdd, self ) {
-          classesRemoveArray.forEach( function( classNumber ) {
-            self.singleChartWrapper.classList.remove( classNumber );
-            self.singleChartWrapper.classList.add( classAdd );
-          });
-        };
+      var eventType = event.detail.name;
 
       if ( eventType === "moveLeft" ) {
         switch ( currentView ) {

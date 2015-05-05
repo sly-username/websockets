@@ -35,9 +35,6 @@
         },
         "chart-badge": {
           reflect: true
-        },
-        "chart-position": {
-          reflect: true
         }
       },
       get chartTitle() {
