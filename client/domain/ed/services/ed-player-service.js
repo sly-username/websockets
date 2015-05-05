@@ -24,10 +24,6 @@ var
   trackEndedHandler;
 
 // helpers
-setCurrentTrack = function( edTrack ) {
-  currentTrack = edTrack;
-};
-
 hasScrubbedHandler = function( event ) {
   if ( !hasScrubbed ) {
     hasScrubbed = true;
