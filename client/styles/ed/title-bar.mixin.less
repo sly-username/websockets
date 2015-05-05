@@ -1,5 +1,6 @@
 @import "../../styles/ed/colors.vars.less";
 @import "../../styles/fonts/edTypeStyles.less";
+@import "../../styles/ed/menu-button.mixin.less";
 
 .edTitleBar() {
   color: @originalWhite;
@@ -8,37 +9,9 @@
   border: 0;
   background-color: @darkPurple2;
   text-align: center;
-  button {
-    position: absolute;
-    left: 0;
-    height: 9rem;
-    width: 9rem;
-    border: none;
-    background: transparent;
-    outline: none;
-    ed-icon {
-      width: 3rem;
-      height: 3rem;
-      fill: @lightGrey1;
-      margin-left: -1.1rem;
-    }
-  }
+  .edMenuButton();
   ed-menu-button::shadow {
-    button {
-      position: absolute;
-      left: 0;
-      height: 9rem;
-      width: 9rem;
-      border: none;
-      background: transparent;
-      outline: none;
-      ed-icon {
-        width: 3rem;
-        height: 3rem;
-        fill: @lightGrey1;
-        margin-left: -1.1rem;
-      }
-    }
+    .edMenuButton();
   }
   h1 {
     .edType( heading-L );
