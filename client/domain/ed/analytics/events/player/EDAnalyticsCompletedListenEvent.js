@@ -9,7 +9,7 @@ var eventKeys = [
 
 export default class EDAnalyticsCompletedListenEvent extends EDAnalyticsEvent {
   static get TYPE() {
-    return "completed-listen";
+    return "completedListen";
   }
 
   constructor( args ) {
