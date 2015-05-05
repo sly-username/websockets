@@ -52,7 +52,7 @@
       }
 
       if ( eventType === "showRatings" ) {
-        this.ratingsForm.setAttribute( "class", "show" );
+        this.ratingsForm.classList.add( "show" );
       }
     };
 
