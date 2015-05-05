@@ -2,15 +2,17 @@
 @import "../../../styles/ed/colors.vars.less";
 .user-rank {
   float: right;
-  margin: 2.5rem 2rem 2.5rem 0;
+  margin: 2.5rem 1.5rem 2.5rem 0;
   text-transform: uppercase;
   color: @lightGrey1;
   .rank-text {
     opacity: 0.5;
     float: left;
-    padding: 0.4rem 0.6rem;
+    padding: .4rem .6rem;
     .edType( heading-XXS );
+    letter-spacing: -.1rem;
     line-height: 100%;
+    text-align: right;
     span {
       display: block;
     }
@@ -18,10 +20,11 @@
   .rank-box {
     opacity: 0.5;
     float: right;
-    padding: 0rem 0.9rem;
+    padding: 0rem .9rem;
     border: 0.2rem solid @originalPurple;
     .edType( heading-M );
     line-height: 135%;
+    letter-spacing: -.15rem;
   }
 }
 :host([teal]) {
