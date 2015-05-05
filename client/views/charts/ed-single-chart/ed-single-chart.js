@@ -3,10 +3,26 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-discover-service" ),
-    System.import( "domain/ed/services/ed-data-service" )
+    System.import( "domain/ed/services/ed-data-service" ),
+    System.import( "domain/lib/event/create-event" )
   ]).then( function( imported ) {
     var discoverService = imported[0].default,
-      dataService = imported[1].default;
+      dataService = imported[1].default,
+      createEvent = imported[2].default,
+      createUpdateEvent = function( name, detail ) {
+        detail = detail || {};
+        detail.name = name;
+
+        return createEvent( "chartsUpdate", {
+          detail: detail
+        });
+      },
+      leftMoveHandler = function() {
+        this.dispatchEvent( createUpdateEvent( "moveLeft" ));
+      },
+      rightMoveHandler = function() {
+        this.dispatchEvent( createUpdateEvent( "moveRight" ));
+      };
 
     polymer( "ed-single-chart", {
       // todo placeholder data, replace with data object
@@ -33,37 +49,24 @@
       get chartBadge() {
         return this[ "chart-badge" ];
       },
-      get chartPosition() {
-        return this[ "chart-position" ];
-      },
       leaders: [],
       rankedUsers: [],
       ready: function() {
-        this.arrowLeft = this.shadowRoot.querySelector( "#left-arrow" );
-        this.arrowRight = this.shadowRoot.querySelector( "right-arrow" );
+        this.arrowLeft = this.$[ "arrow-left" ];
+        this.arrowRight = this.$[ "arrow-right" ];
       },
       attached: function() {
-        this.arrowLeft.addEventListener( "click", function() {
-          if ( this.chartPosition === "first" ) {
-            this.chartPosition.setAttribute( "chart-position", "second" );
-            this.classList.remove( "first" );
-            this.classList.add( "second" );
-          } else if ( this.chartPosition === "second" ) {
-            this.chartPosition.setAttribute( "chart-position", "third" );
-            this.classList.remove( "second" );
-            this.classList.add( "third" );
-          } else if ( this.chartPosition === "third" ) {
-            this.chartPosition.setAttribute( "chart-position", "fourth" );
-            this.classList.remove( "third" );
-            this.classList.add( "fourth" );
-          } else if ( this.chartPosition === "fourth" ) {
-            this.chartPosition.setAttribute( "chart-position", "first" );
-            this.classList.remove( "fourth" );
-            this.classList.add( "first" );
-          }
-        });
+        this.handler = {
+          leftMove: leftMoveHandler.bind( this ),
+          rightMove: rightMoveHandler.bind( this )
+        };
+        this.arrowLeft.addEventListener( "click", this.handler.leftMove );
+        this.arrowRight.addEventListener( "click", this.handler.rightMove );
       },
       detached: function() {
+        this.arrows.forEach( function( arrow ) {
+          arrow.removeEventListener( "click", this.moveHandler.bind( this ));
+        });
       },
       getLeaderBoard: function( chartName ) {
         return discoverService.getLeaderboardCharts( chartName )
@@ -88,8 +91,7 @@
       getDateEnds: function() {
 
       },
-      attributeChanged: function( attrName, oldValue, newValue ) {
-
+      attributeChanged: function( attrName, oldVal, newVal ) {
       }
     });
   });

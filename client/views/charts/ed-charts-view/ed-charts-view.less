@@ -28,3 +28,43 @@
   left: 0;
   height: 100%;
 }
+
+#single-chart-wrapper {
+  transform: translateX(0);
+  transition: transform 1s ease-in;
+  width: 100%;
+
+  .first {
+    transform: translateX(0);
+  }
+
+  .second {
+    transform: translateX(100%);
+  }
+
+  .third {
+    transform: translateX(200%);
+  }
+
+  .fourth {
+    transform: translateX(300%);
+  }
+
+  &.one {
+    transform: translateX(0);
+  }
+
+  &.two {
+    .transform( translate3d( -100%, 0, 0 ));
+  }
+
+  &.three {
+    transform: translateX(-200%);
+  }
+
+  &.four {
+    transform: translateX(-300%);
+  }
+}
+
+
