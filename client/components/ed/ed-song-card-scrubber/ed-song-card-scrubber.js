@@ -78,7 +78,7 @@
 
         this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
       },
-      skipSongHandler = function( event ) {
+      skipSongHandler = function() {
         this.dispatchEvent( createUpdateEvent( "skip" ));
       },
       playServiceEventHandler = function( event ) {
@@ -153,7 +153,7 @@
         this.addEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
-        this.playBtn.addEventListener( "tap", this.handler.playServiceEvent );
+        this.playBtn.addEventListener( "touchstart", this.handler.playServiceEvent );
         this.scrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.addEventListener( "touchend", this.handler.scrubFire );
@@ -174,7 +174,7 @@
         this.removeEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
-        this.playBtn.removeEventListener( "tap", this.handler.playServiceEvent );
+        this.playBtn.removeEventListener( "touchstart", this.handler.playServiceEvent );
         this.scrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.removeEventListener( "touchend", this.handler.scrubFire );

@@ -15,8 +15,6 @@ var
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
   hasScrubbed = false,
-  setCurrentTrack,
-  setCurrentArtist,
   edPlayerService,
   rateCurrentlyPlaying,
   tracksCollection,
@@ -70,14 +68,6 @@ audio.style.display = "none";
 audio.style.visibility = "hidden";
 
 // helpers
-setCurrentTrack = function( edTrack ) {
-  currentTrack = edTrack;
-};
-
-setCurrentArtist = function( edArtist ) {
-  currentArtist = edArtist;
-};
-
 //rateCurrentlyPlaying = function( number ) {
 //  if ( number != null && currentTrack ) {
 //    return currentTrack.rate( number )
@@ -93,6 +83,7 @@ setCurrentArtist = function( edArtist ) {
 //      });
 //  }
 //};
+
 // TODO where to unbind this?
 audio.addEventListener( "seeked", hasScrubbedHandler );
 audio.addEventListener( "ended", trackEndedHandler );
@@ -201,12 +192,9 @@ export default edPlayerService = {
   getEDTrack: function( tracks, currentIndex ) {
     return tracks.get( currentIndex )
       .then( edTrack => {
-        return edTrack;
-      })
-      .then( edTrack => {
         return edDataService.getArtistById( edTrack.profileId, 10 )
           .then( edArtist => {
-            setCurrentArtist( edArtist );
+            currentArtist = edArtist;
 
             this.playTrack( edTrack );
 
@@ -231,7 +219,7 @@ export default edPlayerService = {
       }
     }
 
-    setCurrentTrack( edTrack );
+    currentTrack = edTrack;
 
     return edTrack.getUrl()
       .then(( response ) => {
