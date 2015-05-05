@@ -25,12 +25,12 @@
           };
         },
         attached: function() {
-          this.discoverList.addEventListener( "click", this.handlers.discoverGenre );
           this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
+          this.discoverList.addEventListener( "click", this.handlers.discoverGenre );
         },
         detached: function() {
-          this.discoverList.removeEventListener( "click", this.handlers.discoverGenre );
           this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
+          this.discoverList.removeEventListener( "click", this.handlers.discoverGenre );
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
