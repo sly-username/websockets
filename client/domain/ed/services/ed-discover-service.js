@@ -5,7 +5,18 @@ import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
 
 var currentProfileBlend = {},
   trackIDList = [],
-  edDiscoverService;
+  edDiscoverService,
+  dateEnds;
+
+Object.defineProperties( edDiscoverService, {
+  dataEnds: {
+    configurable: false,
+    enumerable: false,
+    get: function () {
+      return dataEnds;
+    }
+  }
+});
 
 export default edDiscoverService = {
 
@@ -80,6 +91,17 @@ export default edDiscoverService = {
         editDiscoverBlend: currentProfileBlend
       });
 
+      return response;
+    });
+  },
+
+  getLeaderboardCharts( chartName ) {
+    return edConnectionService.request( "chart/list", 10, {
+      data: {
+        chartName
+      }
+    }).then( response => {
+      dateEnds = response.dateEnds;
       return response;
     });
   }

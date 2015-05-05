@@ -19,20 +19,19 @@
           <ed-icon id="badge-hrs" name="{{chartBadge}}"></ed-icon>
           <p class="time-left">Time Left</p>
 
-          <h2 class="countdown-timer">03d 10h 15m</h2>
+          <h2 class="countdown-timer">{{dateEnds}}</h2>
         </div>
 
-        <ul id="ranks-list" class="options">
-          <template repeat="{{opt in _options}}">
-            <li>
-              <p class="chart-rank">{{opt.rank}}</p>
+        <ul id="ranks-list" class="rankings">
+          <template repeat="{{rankedUser in rankedUsers}}">
+            <li ed-id="{{rankedUser.id}}">
+              <p class="chart-rank">{{rankedUser[ index ] + 1}}</p>
 
               <div class="img-container">
-                <img-placeholder src="{{ opt.image }}" image="fillmurray"></img-placeholder>
+                <img-placeholder src="{{rankedUser.art}}"></img-placeholder>
               </div>
-              <p class="chart-points">{{opt.points}}</p>
-
-              <p class="chart-name">{{opt.name}}</p>
+              <p class="chart-points">{{rankedUser.num}}</p>
+              <p class="chart-name">{{rankedUser.name}}</p>
             </li>
           </template>
         </ul>
