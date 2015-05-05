@@ -19,6 +19,9 @@
         },
         "chart-badge": {
           reflect: true
+        },
+        "chart-position": {
+          reflect: true
         }
       },
       get chartTitle() {
@@ -30,11 +33,35 @@
       get chartBadge() {
         return this[ "chart-badge" ];
       },
+      get chartPosition() {
+        return this[ "chart-position" ];
+      },
       leaders: [],
       rankedUsers: [],
       ready: function() {
+        this.arrowLeft = this.shadowRoot.querySelector( "#left-arrow" );
+        this.arrowRight = this.shadowRoot.querySelector( "right-arrow" );
       },
       attached: function() {
+        this.arrowLeft.addEventListener( "click", function() {
+          if ( this.chartPosition === "first" ) {
+            this.chartPosition.setAttribute( "chart-position", "second" );
+            this.classList.remove( "first" );
+            this.classList.add( "second" );
+          } else if ( this.chartPosition === "second" ) {
+            this.chartPosition.setAttribute( "chart-position", "third" );
+            this.classList.remove( "second" );
+            this.classList.add( "third" );
+          } else if ( this.chartPosition === "third" ) {
+            this.chartPosition.setAttribute( "chart-position", "fourth" );
+            this.classList.remove( "third" );
+            this.classList.add( "fourth" );
+          } else if ( this.chartPosition === "fourth" ) {
+            this.chartPosition.setAttribute( "chart-position", "first" );
+            this.classList.remove( "fourth" );
+            this.classList.add( "first" );
+          }
+        });
       },
       detached: function() {
       },

@@ -1,14 +1,14 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
-<polymer-element name="ed-single-chart" attributes="ed-id chart-title chart-subtitle chart-badge">
+<polymer-element name="ed-single-chart" attributes="ed-id chart-position chart-title chart-subtitle chart-badge">
   <template>
     <link rel="stylesheet" href="./ed-single-chart.css">
     <div class="single-wrapper">
       <div class="single-header">
         <header>
-          <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
-          <ed-icon id="arrow-right" class="chart-arrows" name="arrow-back"></ed-icon>
+          <button><ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon></button>
+          <button><ed-icon id="arrow-right" class="chart-arrows" name="arrow-back"></ed-icon></button>
           <h1 class="chart-title-text">{{chartTitle}}</h1>
           <p class="chart-subtitle-text">{{chartSubtitle}}</p>
         </header>

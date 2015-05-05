@@ -155,6 +155,27 @@
         padding: 1rem 1rem 0 0;
       }
     }
+
+    .first {
+      transform: translateX(0);
+      transition: transform 1s ease-in;
+    }
+
+    .second {
+      transform: translateX(100%);
+      transition: transform 1s ease-in;
+    }
+
+    .third {
+      transform: translateX(200%);
+      transition: transform 1s ease-in;
+    }
+
+    .fourth {
+      transform: translateX(-100%);
+      transition: transform 1s ease-in;
+    }
+
     // todo need to figure out how to line up left AND right sides
     li:nth-child(-n+10) {
       padding-left: 1rem;
