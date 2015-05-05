@@ -37,6 +37,9 @@
       if ( eventType === "play" ) {
         playerService.play();
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "scrubStart" ) {
@@ -62,11 +65,11 @@
       switch( tmpId ) {
         case "minify-icon":
           this.mainPlayerWrapper.setAttribute( "class", "hidden" );
-          this.miniPlayer.setAttribute( "class", "active" );
+          this.miniPlayerWrapper.setAttribute( "class", "active" );
           break;
         case "mini-player":
           this.mainPlayerWrapper.setAttribute( "class", "active" );
-          this.miniPlayer.setAttribute( "class", "hidden" );
+          this.miniPlayerWrapper.setAttribute( "class", "hidden" );
           break;
         default:
           break;
@@ -81,7 +84,10 @@
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
 
-        this.miniPlayer = this.$[ "mini-player-wrapper" ];
+        this.miniPlayer = this.$[ "mini-player" ];
+        this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
+
+        this.bioText = this.$[ "bio-copy" ];
 
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
 
@@ -101,6 +107,9 @@
       },
       detached: function() {
         clearInterval( this.intervalId );
+
+        this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
+        this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },

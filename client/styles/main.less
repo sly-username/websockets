@@ -61,6 +61,14 @@ body {
   }
 }
 
+ed-side-menu.show-menu + #animation-wrapper {
+  .animation( slideRouterOut .33s ease-in-out forwards);
+}
+
+ed-side-menu + #animation-wrapper {
+  .animation( slideRouterIn .33s ease-in-out forwards);
+}
+
 #animation-wrapper {
   height: 100%;
   width: 100%;
@@ -69,15 +77,6 @@ body {
   position: absolute;
   max-width: 59.6rem;
 }
-
-.hide-router {
-  .animation( slideRouterOut .33s ease-in-out forwards);
-}
-
-.show-router {
-  .animation( slideRouterIn .33s ease-in-out forwards);
-}
-
 
 .keyframes( slideRouterOut, {
 0% {
@@ -97,8 +96,6 @@ body {
   .transform( translateX( 0% ));
 }
 });
-
-
 
 .hidden();
 
