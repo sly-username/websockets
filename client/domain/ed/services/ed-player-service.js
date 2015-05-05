@@ -46,8 +46,8 @@ rateCurrentlyPlaying = function( number ) {
       .then(function( response ) {
         // adding in fake ID for now
         edAnalyticsService.send( "rate", {
-          trackId: currentTrack.id || 10,
-          timecode: currentTrack.currentTime,
+          trackId: currentTrack.id,
+          timecode: audio.currentTime,
           rating: number
         });
 
@@ -62,23 +62,6 @@ audio.setAttribute( "preload", "auto" );
 
 audio.style.display = "none";
 audio.style.visibility = "hidden";
-
-// helpers
-//rateCurrentlyPlaying = function( number ) {
-//  if ( number != null && currentTrack ) {
-//    return currentTrack.rate( number )
-//      .then(function( response ) {
-//        // adding in fake ID for now
-//        edAnalyticsService.send( "rate", {
-//          trackId: currentTrack.id,
-//          timecode: currentTrack.currentTime,
-//          rating: number
-//        });
-//
-//        return response;
-//      });
-//  }
-//};
 
 // TODO where to unbind this?
 audio.addEventListener( "seeked", hasScrubbedHandler );
