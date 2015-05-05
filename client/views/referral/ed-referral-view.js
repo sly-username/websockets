@@ -28,6 +28,7 @@
             this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
           }.bind( this ));
 
+          this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
           this.emailInput.addEventListener( "keyup", validateEmail.bind( this ));
         },
         detached: function() {
@@ -35,6 +36,7 @@
             this.submitButton.removeEventListener( eventName, this.submitFriendEmail.bind( this ));
           }.bind( this ));
 
+          this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
           this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
         },
         submitCheck: function() {
