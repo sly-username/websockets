@@ -11,17 +11,18 @@ import createEvent from "domain/lib/event/create-event";
 
 var
   queue = [],
+  currentArtist = null,
   currentTrack = null,
+  currentIndex = 0,
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
   hasScrubbed = false,
   edPlayerService,
-  rateCurrentlyPlaying,
   tracksCollection,
-  currentIndexPlaying = 0,
-  currentArtist = null,
   hasScrubbedHandler,
-  trackEndedHandler;
+  trackEndedHandler,
+  rateCurrentlyPlaying,
+  updateCurrentIndex;
 
 // helpers
 hasScrubbedHandler = function( event ) {
@@ -56,6 +57,11 @@ rateCurrentlyPlaying = function( number ) {
   }
 };
 
+updateCurrentIndex = function( newIndex ) {
+  currentIndex = newIndex;
+  tracksCollection.getRange( newIndex, newIndex + 3 );
+};
+
 // init audio element
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
@@ -63,7 +69,6 @@ audio.setAttribute( "preload", "auto" );
 audio.style.display = "none";
 audio.style.visibility = "hidden";
 
-// TODO where to unbind this?
 audio.addEventListener( "seeked", hasScrubbedHandler );
 audio.addEventListener( "ended", trackEndedHandler );
 
@@ -168,8 +173,8 @@ export default edPlayerService = {
     return mm + ":" + ss;
   },
 
-  getEDTrack: function( tracks, currentIndex ) {
-    return tracks.get( currentIndex )
+  getEDTrack: function( tracks, index ) {
+    return tracks.get( index )
       .then( edTrack => {
         return edDataService.getArtistById( edTrack.profileId, 10 )
           .then( edArtist => {
@@ -277,8 +282,8 @@ export default edPlayerService = {
     });
   },
 
-  enqueue: function( edTrack ) {
-    return this.queue.push( edTrack );
+  enqueue: function( ids ) {
+    tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, tracksCollection.ids.concat( ids ));
   },
 
   enqueueNext: function( edTrack ) {
@@ -295,13 +300,15 @@ export default edPlayerService = {
         audio.pause();
       }
 
+      updateCurrentIndex( currentIndex + 1 );
+
       edAnalyticsService.send( "quit", {
         trackId: currentTrack.id,
         timecode: audio.currentTime,
         action: "skip"
       });
 
-      return this.play( this.dequeue() );
+      return this.play( this.getEDTrack( tracksCollection, currentIndex ));
     }
   },
 
@@ -343,8 +350,9 @@ export default edPlayerService = {
       document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
     }
 
-    console.log( "tracks", tracks );
-    return this.getEDTrack( tracks, currentIndexPlaying );
+    this.enqueue( tracks.ids );
+
+    return this.getEDTrack( tracks, currentIndex );
   }
 };
 
