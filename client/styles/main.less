@@ -61,11 +61,11 @@ body {
   }
 }
 
-.hide-router {
+ed-side-menu[class="show-menu"] + #animation-wrapper {
   .animation( slideRouterOut .33s ease-in-out forwards);
 }
 
-ed-side-menu + div {
+ed-side-menu + #animation-wrapper {
   .animation( slideRouterIn .33s ease-in-out forwards);
 }
 
@@ -96,8 +96,6 @@ ed-side-menu + div {
   .transform( translateX( 0% ));
 }
 });
-
-
 
 .hidden();
 
