@@ -19,11 +19,13 @@
         updateChartClass( [ "one", "two", "four" ], "four", this );
       } else if ( "view four" ) {
         updateChartClass( [ "two", "three", "four" ], "one", this );
+        // todo disable final view from going left
       }
     }
 
     if ( eventType === "moveRight" ) {
       if ( "view one" ) {
+        // todo disable first view from going right
         updateChartClass( [ "one", "three", "four" ], "two", this );
       } else if ( "view two" ) {
         updateChartClass( [ "one", "two", "four" ], "three", this );
