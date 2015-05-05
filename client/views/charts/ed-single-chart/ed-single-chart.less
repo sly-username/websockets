@@ -4,21 +4,22 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/title-bar.mixin.less";
 
-.chart-wrapper {
+.single-wrapper {
   background-color: @originalPurple;
   height: 100%;
   margin: 0 auto;
   max-width: 59.6rem;
   overflow-x: hidden;
-  //position: relative;
+  width: 100%;
 
-  //display: flex;
-  //position: absolute;
-  //top: 7rem;
-  //right: 0;
-  //left: 0;
-  .chart-header {
+  display: flex;
+  .single-header {
+    position: absolute;
+    top: 0;
+    left: 0;
     text-align: center;
+    width: 100%;
+    z-index: 2;
     .chart-title-text {
       //todo where is the font style for this text?
       .edType( heading-L );
@@ -78,18 +79,10 @@
     transform: scaleX(-1);
   }
 
-  #badge-hrs {
-    &::shadow {
-      svg {
-        width: 18rem;
-        height: 18rem;
-        position: static;
-        top: 0;
-        -webkit-transform: translateY( 0% );
-        -ms-transform: translateY( 0% );
-        transform: translateY( 0% );
-      }
-    }
+  .ranks-badge-wrapper {
+    position: relative;
+    top: 8rem;
+    width: 100%;
   }
 
   .badges {
@@ -111,6 +104,21 @@
       font-weight: 500;
     }
   }
+
+  #badge-hrs {
+    &::shadow {
+      svg {
+        width: 18rem;
+        height: 18rem;
+        position: static;
+        top: 0;
+        -webkit-transform: translateY( 0% );
+        -ms-transform: translateY( 0% );
+        transform: translateY( 0% );
+      }
+    }
+  }
+
   .rankings {
     list-style-type: none;
     width: 100%;
