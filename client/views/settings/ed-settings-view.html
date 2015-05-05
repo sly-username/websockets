@@ -1,13 +1,12 @@
 <link rel="import" href="../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../components/ed/ed-menu-button/ed-menu-button.html"/>
 
 <polymer-element name="ed-settings-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-settings-view.css">
     <div class="settings-wrapper">
       <div class="settings-title-bar">
-        <button id="menu-trigger">
-          <ed-icon name="burger"></ed-icon>
-        </button>
+        <ed-menu-button></ed-menu-button>
         <h1 id="settings-title">Settings</h1>
       </div>
       <ul class="settings-list">

@@ -8,7 +8,8 @@
     var
       playerService = imported[ 0 ].default,
       createEvent = imported[ 1 ].default,
-      triggerRatingHandler;
+      triggerRatingHandler,
+      playerUpdateHandler;
 
     // helpers
     triggerRatingHandler= function( event ) {
@@ -53,13 +54,28 @@
       }));
     };
 
+    playerUpdateHandler = function( event ) {
+      console.log( "star rating event", event );
+
+      this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
+
+      if ( playerService.currentStats.currentArtist.name != null ) {
+        this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.name;
+      } else {
+        this.$[ "artist-name" ].innerText = "FPO Bandname";
+      }
+
+      this.$[ "dynamic-details" ].setAttribute( "class", "loaded-track loaded-artist" );
+    };
+
     polymer( "ed-star-rating", {
       /* LIFECYCLE */
       disable: false,
       playerService: playerService,
       ready: function() {
         this.handlers = {
-          triggerRating: triggerRatingHandler.bind( this )
+          triggerRating: triggerRatingHandler.bind( this ),
+          playerUpdate: playerUpdateHandler.bind( this )
         };
         this.inputField = this.shadowRoot.getElementById( "input-field" );
         this.overlapField = this.shadowRoot.getElementById( "overlap-field" );
@@ -71,10 +87,15 @@
       attached: function() {
         this.inputField.addEventListener( "click", this.handlers.triggerRating );
         this.inputField.addEventListener( "mouseover", this.handlers.triggerRating );
+
+        // bind player updates through the service
+        playerService.emitter.on( "playerUpdate", this.handlers.playerUpdate );
       },
       detached: function() {
         this.inputField.removeEventListener( "click", this.handlers.triggerRating );
         this.inputField.removeEventListener( "mouseover", this.handlers.triggerRating );
+
+        playerService.emitter.off( "playerUpdate", this.handlers.playerUpdate );
       },
 
       transformOverlap: function( percent ) {

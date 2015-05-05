@@ -27,11 +27,17 @@
 
         this.dispatchEvent( createUpdateEvent( state ));
       },
-      playPauseEventHandler = function( event ) {
+      playerUpdateHandler = function( event ) {
         var eventType = event.detail.type;
 
         if ( eventType === "play" ) {
           this.playIcon.setAttribute( "name", "pause" );
+          this.$[ "title" ].innerText = playerService.currentStats.playing.name;
+          this.$[ "name" ].innerText = playerService.currentStats.currentArtist.name != null ? playerService.currentStats.currentArtist.name : "FPO Bandname";
+        }
+
+        if ( eventType === "pause" ) {
+          this.playIcon.setAttribute( "name", "play" );
         }
 
         if ( eventType === "pause" ) {
@@ -48,20 +54,20 @@
         // event handler
         this.handler = {
           swapIcon: swapIconHandler.bind( this ),
-          playPauseEvent: playPauseEventHandler.bind( this )
+          playerUpdate: playerUpdateHandler.bind( this )
         };
       },
       attached: function() {
         this.playBtn.addEventListener( "click", this.handler.swapIcon );
         this.playBtn.addEventListener( "tap", this.handler.swapIcon );
 
-        playerService.emitter.on( "playerUpdate", this.handler.playPauseEvent )
+        playerService.emitter.on( "playerUpdate", this.handler.playerUpdate )
       },
       detached: function() {
         this.playBtn.removeEventListener( "click", this.handler.swapIcon );
         this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
 
-        playerService.emitter.off( "playerUpdate", this.handler.playPauseEvent )
+        playerService.emitter.off( "playerUpdate", this.handler.playerUpdate )
       }
     });
   });
