@@ -38,14 +38,13 @@
   polymer( "ed-charts-view", {
     /* LIFECYCLE */
     ready: function() {
-      this.singleChartsWrapper = this.$[ "single-chart-wrapper" ];
+      this.singleChartWrapper = this.$[ "single-chart-wrapper" ];
     },
     attached: function() {
       this.handler = {
         updateChartView: updateChartsViewHandler.bind( this )
       };
       this.addEventListener( "chartsUpdate", this.handler.updateChartView );
-
     },
     detached: function() {},
     attributeChanged: function( attrName, oldValue, newValue ) {}

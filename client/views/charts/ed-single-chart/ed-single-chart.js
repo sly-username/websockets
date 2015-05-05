@@ -13,7 +13,7 @@
         detail = detail || {};
         detail.name = name;
 
-        return createEvent( "chartsUpdate", {
+        return createEvent( "chartUpdate", {
           detail: detail
         });
       },
