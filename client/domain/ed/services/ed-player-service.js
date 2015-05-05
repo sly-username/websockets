@@ -342,7 +342,6 @@ export default edPlayerService = {
     return edDiscoverService.getDiscoverTrackList( type )
       .then(( response ) => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
-        console.log(  )
 
         this.queueTracksAndPlay( tracksCollection );
 
