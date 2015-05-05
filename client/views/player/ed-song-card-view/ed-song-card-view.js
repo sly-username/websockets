@@ -53,6 +53,10 @@
       if ( eventType === "skip" ) {
         playerService.next();
       }
+
+      if ( eventType === "showRatings" ) {
+        this.ratingsForm.classList.add( "show" );
+      }
     };
 
     togglePlayerHandler = function( event ) {
@@ -84,6 +88,8 @@
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
 
         this.bioText = this.$[ "bio-copy" ];
+
+        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
 
         // Event Handler
         this.handler = {

@@ -108,20 +108,23 @@
       },
       mouseOutHandler = function() {
         this.mouseDown = false;
+      },
+      showRatingsHandler = function() {
+        this.dispatchEvent( createUpdateEvent( "showRatings" ));
       };
 
     polymer( "ed-song-card-scrubber", {
       complete: false,
       ready: function() {
         // selectors
-        this.svg            = this.shadowRoot.getElementById( "svg-circle" );
-        this.mid            = this.shadowRoot.getElementById( "mid-circle" );
-        this.front          = this.shadowRoot.getElementById( "front-circle" );
-        this.scrubber       = this.shadowRoot.getElementById( "circle-scrubber" );
+        this.svg = this.shadowRoot.getElementById( "svg-circle" );
+        this.mid = this.shadowRoot.getElementById( "mid-circle" );
+        this.front = this.shadowRoot.getElementById( "front-circle" );
+        this.scrubber = this.shadowRoot.getElementById( "circle-scrubber" );
         this.shadowScrubber = this.shadowRoot.getElementById( "shadow-scrubber" );
-        this.playBtn        = this.shadowRoot.getElementById( "play-btn" );
-        this.playIcon       = this.shadowRoot.getElementById( "play-icon" );
-        this.skipBtn        = this.shadowRoot.getElementById( "skip-btn" );
+        this.playBtn = this.shadowRoot.getElementById( "play-btn" );
+        this.playIcon = this.shadowRoot.getElementById( "play-icon" );
+        this.skipBtn = this.shadowRoot.getElementById( "skip-btn" );
 
         // event Handler
         this.handler = {
@@ -132,7 +135,8 @@
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
           playServiceEvent: playServiceEventHandler.bind( this ),
-          mouseOut: mouseOutHandler.bind( this )
+          mouseOut: mouseOutHandler.bind( this ),
+          showRatings: showRatingsHandler.bind( this )
         };
 
         // init
@@ -193,6 +197,10 @@
         } else {
           this.complete = false;
           this.removeAttribute( "complete" );
+        }
+
+        if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
+          this.handler.showRatings();
         }
       }
     });

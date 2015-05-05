@@ -14,14 +14,55 @@ var
   currentTrack = null,
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
+  hasScrubbed = false,
   setCurrentTrack,
   setCurrentArtist,
   edPlayerService,
   rateCurrentlyPlaying,
   tracksCollection,
   currentIndexPlaying = 0,
-  currentArtist = null;
+  currentArtist = null,
+  hasScrubbedHandler,
+  trackEndedHandler;
 
+// helpers
+setCurrentTrack = function( edTrack ) {
+  currentTrack = edTrack;
+};
+
+hasScrubbedHandler = function( event ) {
+  if ( !hasScrubbed ) {
+    hasScrubbed = true;
+  }
+
+  return hasScrubbed;
+};
+
+trackEndedHandler = function() {
+  if ( !hasScrubbed ) {
+    edAnalyticsService.send( "completedListen", {
+      trackId: currentTrack.id
+    });
+  }
+};
+
+rateCurrentlyPlaying = function( number ) {
+  if ( number != null && currentTrack ) {
+    return currentTrack.rate( number )
+      .then(function( response ) {
+        // adding in fake ID for now
+        edAnalyticsService.send( "rate", {
+          trackId: currentTrack.id || 10,
+          timecode: currentTrack.currentTime,
+          rating: number
+        });
+
+        return response;
+      });
+  }
+};
+
+// init audio element
 audio.setAttribute( "id", "hiddenAudioPlayer" );
 audio.setAttribute( "preload", "auto" );
 
@@ -52,6 +93,9 @@ setCurrentArtist = function( edArtist ) {
 //      });
 //  }
 //};
+// TODO where to unbind this?
+audio.addEventListener( "seeked", hasScrubbedHandler );
+audio.addEventListener( "ended", trackEndedHandler );
 
 export default edPlayerService = {
   get emitter() {
@@ -256,6 +300,8 @@ export default edPlayerService = {
   scrubTo: function( value ) {
     var scrubFrom = currentTrack.currentTime;
     audio.currentTime = value;
+
+    hasScrubbed = true;
 
     edAnalyticsService.send( "scrub", {
       trackId: currentTrack.id,
