@@ -221,7 +221,7 @@ export default edPlayerService = {
   },
 
   play: function( content ) {
-    if( content == null && this.isPaused && !!audio.src ){
+    if ( content == null && this.isPaused && !!audio.src ) {
       audio.play();
       return true;
     }
@@ -323,12 +323,12 @@ export default edPlayerService = {
 
   startMusicDiscovery: function( type ) {
     return edDiscoverService.getDiscoverTrackList( type )
-      .then(( response ) => {
-        tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, response );
+      .then(( trackIds ) => {
+        tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, trackIds );
 
         this.queueTracksAndPlay( tracksCollection );
 
-        return response;
+        return trackIds;
       })
       .catch(( error ) => {
         console.warn( "Error getting tracks in player service" );
