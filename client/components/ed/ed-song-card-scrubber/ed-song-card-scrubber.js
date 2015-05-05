@@ -154,6 +154,7 @@
         this.addEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
+        this.playBtn.addEventListener( "tap", this.handler.swapIcon );
         this.scrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.addEventListener( "touchend", this.handler.scrubFire );
@@ -166,6 +167,7 @@
         this.handler.initScrubber();
       },
       detached: function() {
+        this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
         this.playBtn.removeEventListener( "click", this.handler.swapIcon );
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
