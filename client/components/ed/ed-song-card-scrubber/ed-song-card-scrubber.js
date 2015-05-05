@@ -27,17 +27,6 @@
           this.svgBox.top + top + this.svgBox.height / 2
         ];
       },
-      swapIconHandler = function() {
-        var state = this.playIcon.getAttribute( "name" );
-
-        if ( this.playIcon.getAttribute( "name" ) === "play" ) {
-          this.playIcon.setAttribute( "name", "pause" );
-        } else {
-          this.playIcon.setAttribute( "name", "play" );
-        }
-
-        this.dispatchEvent( createUpdateEvent( state ));
-      },
       scrubFireHandler = function() {
         this.mouseDown = false;
 
@@ -89,19 +78,26 @@
 
         this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
       },
-      skipSongHandler = function( event ) {
-        this.dispatchEvent( createUpdateEvent( "skip"));
+      skipSongHandler = function() {
+        this.dispatchEvent( createUpdateEvent( "skip" ));
       },
-      playPauseEventHandler = function( event ) {
-        var eventType = event.detail.type;
+      playServiceEventHandler = function( event ) {
+        var
+          eventName,
+          eventType = event.detail.type,
+          state = this.playIcon.getAttribute( "name" );
 
-        if ( eventType === "play" ) {
+        if ( eventType === "play" || state === "play" ) {
+          eventName = "play";
           this.playIcon.setAttribute( "name", "pause" );
         }
 
-        if ( eventType === "pause" ) {
+        if ( eventType === "pause" || state === "pause" ) {
+          eventName = "pause";
           this.playIcon.setAttribute( "name", "play" );
         }
+
+        this.dispatchEvent( createUpdateEvent( eventName ));
       },
       initScrubberHandler = function() {
         // calculates the circumference of circles
@@ -133,13 +129,12 @@
         // event Handler
         this.handler = {
           initScrubber: initScrubberHandler.bind( this ),
-          swapIcon: swapIconHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
-          playPauseEvent: playPauseEventHandler.bind( this ),
+          playServiceEvent: playServiceEventHandler.bind( this ),
           mouseOut: mouseOutHandler.bind( this ),
           showRatings: showRatingsHandler.bind( this )
         };
@@ -149,7 +144,7 @@
       },
       attached: function() {
         // mouse events
-        this.playBtn.addEventListener( "click", this.handler.swapIcon );
+        this.playBtn.addEventListener( "click", this.handler.playServiceEvent );
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.skipBtn.addEventListener( "click", this.handler.skipSong );
@@ -158,20 +153,20 @@
         this.addEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
-        this.playBtn.addEventListener( "tap", this.handler.swapIcon );
+        this.playBtn.addEventListener( "touchstart", this.handler.playServiceEvent );
         this.scrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.addEventListener( "touchend", this.handler.scrubFire );
         this.addEventListener( "touchmove", this.handler.triggerMove );
 
         // bind player updates through the service
-        playerService.emitter.on( "playerUpdate", this.handler.playPauseEvent );
+        playerService.emitter.on( "playerUpdate", this.handler.playServiceEvent );
 
         // init
         this.handler.initScrubber();
       },
       detached: function() {
-        this.playBtn.removeEventListener( "click", this.handler.swapIcon );
+        this.playBtn.removeEventListener( "click", this.handler.playServiceEvent );
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.removeEventListener( "mouseup", this.handler.scrubFire );
@@ -179,13 +174,13 @@
         this.removeEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
-        this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
+        this.playBtn.removeEventListener( "touchstart", this.handler.playServiceEvent );
         this.scrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.removeEventListener( "touchend", this.handler.scrubFire );
         this.removeEventListener( "touchmove", this.handler.triggerMove );
 
-        playerService.emitter.off( "playerUpdate", this.handler.playPauseEvent );
+        playerService.emitter.off( "playerUpdate", this.handler.playServiceEvent );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
         if ( attrName === "value" ) {
