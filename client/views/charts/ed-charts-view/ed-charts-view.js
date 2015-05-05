@@ -1,41 +1,66 @@
 ( function( polymer ) {
   "use strict";
 
-  var updateChartsViewHandler = function( event ) {
-    var eventType = event.detail.name,
-      updateChartClass = function( classesRemoveArray, classAdd, self ) {
-        classesRemoveArray.forEach( function( classNumber ) {
-          self.singleChartWrapper.classList.remove( classNumber );
-          self.singleChartWrapper.classList.add( classAdd );
-        });
+  var currentView = 1,
+    updateChartsViewHandler = function( event ) {
+      var eventType = event.detail.name,
+        updateChartClass = function( classesRemoveArray, classAdd, self ) {
+          classesRemoveArray.forEach( function( classNumber ) {
+            self.singleChartWrapper.classList.remove( classNumber );
+            self.singleChartWrapper.classList.add( classAdd );
+          });
+        };
+
+      if ( eventType === "moveLeft" ) {
+        switch ( currentView ) {
+          case 1:
+            updateChartClass( [ "one", "three", "four" ], "two", this );
+            currentView = 2;
+            break;
+          case 2:
+            updateChartClass( [ "one", "two", "four" ], "three", this );
+            currentView = 3;
+            break;
+          case 3:
+            updateChartClass( [ "one", "two", "four" ], "four", this );
+            currentView = 4;
+            break;
+          case 4:
+            updateChartClass( [ "two", "three", "four" ], "one", this );
+            // todo disable final view from going left
+            currentView = 1;
+            break;
+          default:
+            // fall through
+            break;
+        }
+      }
+
+      if ( eventType === "moveRight" ) {
+        switch ( currentView ) {
+          case 1:
+            // todo disable first view from going right
+            updateChartClass( [ "one", "three", "four" ], "two", this );
+            currentView = 2;
+            break;
+          case 2:
+            updateChartClass( [ "one", "two", "four" ], "three", this );
+            currentView = 3;
+            break;
+          case 3:
+            updateChartClass( [ "one", "two", "four" ], "four", this );
+            currentView = 4;
+            break;
+          case 4:
+            updateChartClass( [ "two", "three", "four" ], "one", this );
+            currentView = 1;
+            break;
+          default:
+            // fall through
+            break;
+        }
+      }
     };
-
-    if ( eventType === "moveLeft" ) {
-      if ( "view one" ) {
-        updateChartClass( [ "one", "three", "four" ], "two", this );
-      } else if ( "view two" ) {
-        updateChartClass( [ "one", "two", "four" ], "three", this );
-      } else if ( "view three" ) {
-        updateChartClass( [ "one", "two", "four" ], "four", this );
-      } else if ( "view four" ) {
-        updateChartClass( [ "two", "three", "four" ], "one", this );
-        // todo disable final view from going left
-      }
-    }
-
-    if ( eventType === "moveRight" ) {
-      if ( "view one" ) {
-        // todo disable first view from going right
-        updateChartClass( [ "one", "three", "four" ], "two", this );
-      } else if ( "view two" ) {
-        updateChartClass( [ "one", "two", "four" ], "three", this );
-      } else if ( "view three" ) {
-        updateChartClass( [ "one", "two", "four" ], "four", this );
-      } else if ( "view four" ) {
-        updateChartClass( [ "two", "three", "four" ], "one", this );
-      }
-    }
-  };
 
   polymer( "ed-charts-view", {
     /* LIFECYCLE */
