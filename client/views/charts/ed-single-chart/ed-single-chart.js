@@ -30,9 +30,6 @@
       get chartBadge() {
         return this[ "chart-badge" ];
       },
-      get dateEnds() {
-        return discoverService.dateEnds;
-      },
       leaders: [],
       rankedUsers: [],
       ready: function() {
@@ -43,22 +40,26 @@
       },
       getLeaderBoard: function( chartName ) {
         return discoverService.getLeaderboardCharts( chartName )
-          .then( ( response ) => {
+          .then( function( response ) {
+            this.dateEnds = response.dateEnds;
             this.leaders = response.leaderboard;
             return this.leaders;
-          });
+          }.bind( this ));
       },
       getLeaderProfiles: function( chartName ) {
         this.getLeaderBoard( chartName );
 
         // todo how to tell difference between artist and fan?
-        return this.leaders.forEach( ( leader, index ) => {
+        return this.leaders.forEach( function( leader, index ) {
           dataService.getByTypeAndId( "artist", leader.profileId )
-            .then( rankedUser => {
+            .then( function( rankedUser ) {
               this.leaders[ index ] = rankedUser;
               return this.rankedUsers.push( rankedUser );
-            });
-        });
+            }.bind( this ));
+        }.bind( this ));
+      },
+      getDateEnds: function() {
+
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 

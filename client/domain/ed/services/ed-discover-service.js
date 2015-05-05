@@ -8,16 +8,6 @@ var currentProfileBlend = {},
   edDiscoverService,
   dateEnds;
 
-Object.defineProperties( edDiscoverService, {
-  dataEnds: {
-    configurable: false,
-    enumerable: false,
-    get: function () {
-      return dataEnds;
-    }
-  }
-});
-
 export default edDiscoverService = {
 
   get currentProfileBlend() {
