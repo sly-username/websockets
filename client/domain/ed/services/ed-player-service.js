@@ -37,7 +37,7 @@ hasScrubbedHandler = function( event ) {
 
 trackEndedHandler = function() {
   if ( !hasScrubbed ) {
-    edAnalyticsService.send( "completed-listen", {
+    edAnalyticsService.send( "completedListen", {
       trackId: currentTrack.id
     });
   }
