@@ -3,47 +3,42 @@
 @import "../../../styles/mixins/prefixes/animations.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
 
-.overflow-wrapper {
-  overflow: hidden;
-  min-height: 100%;
-}
-
 #song-card-wrapper {
   background: @darkPurple3;
   width: 100%;
-  min-height: 100%;
+  overflow-y: hidden;
+  height: 100vh;
   max-width: 59.6rem;
-  //overflow-y: hidden;
-
-  &.show-main {
-    .animation( slidePlayerUp .8s forwards );
-  }
-
-  &.hide-main {
-    .animation( slidePlayerDown .8s forwards );
-  }
 }
 
 #mini-player-wrapper {
-  position: fixed;
+  position: absolute;
   bottom: 100%;
+  .transform( translate3d( 0, 0, 0 ));
+  -webkit-transition: transform .8s;
+  transition: transform .8s;
 
   &.show-mini {
-    //.animation( slideMiniPlayerDown 0s .8s forwards );
+    .transform( translate3d( 0, 100vh, 0 ));
+    -webkit-transition: transform .8s;
+    transition: transform .8s;
     z-index: 2;
-    bottom: 0;
-    transition: bottom 0s .8s;
-    //visibility: visible;
-  }
-
-  &.hide-mini {
-    .animation( slideMiniPlayerUp 0s .8s forwards );
-    //visibility: hidden;
   }
 }
 
 #main-player-wrapper {
   .transform( translate3d( 0, 0, 0 ));
+  -webkit-transition: transform .8s;
+  transition: transform .8s;
+  z-index: 2;
+  background: @darkPurple3;
+
+  &.hide-main {
+    .transform( translate3d( 0, 100vh, 0 ));
+    -webkit-transition: transform .8s;
+    transition: transform .8s;
+    z-index: 2;
+  }
 }
 
 #user-ranking {
@@ -55,6 +50,7 @@
   height: 15vh;
   background: transparent;
   border: none;
+  outline: none;
 }
 
 #minify-icon {
@@ -130,50 +126,3 @@
     margin: 2.7rem -2rem 0 0;
   }
 }
-
-.keyframes( slidePlayerDown, {
-  0% {
-    .transform( translate3d( 0, 0, 0 ));
-  }
-  100% {
-    .transform( translate3d( 0, 100%, 0 ));
-  }
-});
-
-
-.keyframes( slidePlayerUp, {
-  0% {
-    .transform( translate3d( 0, 100%, 0 ));
-  }
-  100% {
-    .transform( translate3d( 0, 0, 0 ));
-  }
-});
-
-.keyframes( slideMiniPlayerDown, {
-  0% {
-    //.transform( translateY( 0% ));
-    bottom: 100%;
-  }
-  100% {
-    //.transform( translateY( 88% ));
-    bottom: 0;
-  }
-});
-
-.keyframes( slideMiniPlayerUp, {
-0% {
-  //.transform( translateY( 88% ));
-  bottom: 0;
-}
-100% {
-  //.transform( translateY( 0% ));
-  bottom: 100%;
-}
-});
-
-.keyframes( fixedMiniPlayer, {
-to {
-  bottom: 0;
-}
-});

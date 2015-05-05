@@ -64,18 +64,18 @@
 
       switch( tmpId ) {
         case "minify-icon":
-          this.miniPlayer.classList.remove( "hide-mini" );
-          this.miniPlayer.classList.add( "show-mini" );
+          this.miniPlayerWrapper.classList.remove( "hide-mini" );
+          this.miniPlayerWrapper.classList.add( "show-mini" );
 
-          this.songCardWrapper.classList.remove( "show-main" );
-          this.songCardWrapper.classList.add( "hide-main" );
+          this.mainPlayerWrapper.classList.remove( "show-main" );
+          this.mainPlayerWrapper.classList.add( "hide-main" );
           break;
         case "mini-player":
-          this.songCardWrapper.classList.remove( "hide-main" );
-          this.songCardWrapper.classList.add( "show-main" );
+          this.mainPlayerWrapper.classList.remove( "hide-main" );
+          this.mainPlayerWrapper.classList.add( "show-main" );
 
-          this.miniPlayer.classList.remove( "show-mini" );
-          this.miniPlayer.classList.add( "hide-mini" );
+          this.miniPlayerWrapper.classList.remove( "show-mini" );
+          this.miniPlayerWrapper.classList.add( "hide-mini" );
           break;
         default:
           break;
