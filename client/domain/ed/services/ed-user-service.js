@@ -261,4 +261,43 @@ edUserService.register = function( args ) {
     });
 };
 
+edUserService.requestPasswordReset = function( email ) {
+  var json = {
+    data: {
+      email
+    }
+  };
+
+  return edConnectionService.request( "user/password/get", 10, json )
+    .then( response => {
+      // TODO: still needs validation of integration with the server
+      return response;
+    })
+    .catch( error => {
+      console.log( "forgot password email was not successfully sent" );
+      console.log( error );
+      throw error;
+    });
+};
+
+edUserService.resetPassword = function( resetCode, password ) {
+  var json = {
+    data: {
+      resetCode,
+      password
+    }
+  };
+
+  return edConnectionService.request( "user/password/set", 10, json )
+    .then( response => {
+      // TODO: still needs validation of integration with the server
+      return response;
+    })
+    .catch( error => {
+      console.log( "new password was not successfully sent" );
+      console.log( error );
+      throw error;
+    });
+};
+
 export default edUserService;

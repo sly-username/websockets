@@ -15,12 +15,11 @@
           <span>enter it below and type your</span>
           <span>new password:</span>
         </div>
-        <form id="forgot-form" method="post" role="form" action="#">
+        <form id="forgot-form" action="#">
           <fieldset>
-            <ed-form-input type="email" placeholder="Your Email" icon="add189"></ed-form-input>
-            <span class="password-req-text"> *8 characters minimum </span>
-            <ed-paired-input type="password" placeholder="Password"
-                             icon="alarm52"></ed-paired-input>
+            <ed-form-input type="text" class="reset-code" placeholder="Security Code" icon="security-code"></ed-form-input>
+            <ed-paired-input class="password" type="password" placeholder="Password"
+                             icon="password"></ed-paired-input>
           </fieldset>
           <button id="forgot-submit" type="submit" disabled>Set new password</button>
         </form>

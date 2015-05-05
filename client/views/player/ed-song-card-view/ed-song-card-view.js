@@ -37,6 +37,9 @@
       if ( eventType === "play" ) {
         playerService.play();
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "scrubStart" ) {
@@ -49,6 +52,10 @@
 
       if ( eventType === "skip" ) {
         playerService.next();
+      }
+
+      if ( eventType === "showRatings" ) {
+        this.ratingsForm.classList.add( "show" );
       }
     };
 
@@ -82,10 +89,11 @@
         // dom selectors
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
-
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
-
-        this.miniPlayer = this.$[ "mini-player-wrapper" ];
+        this.miniPlayer = this.$[ "mini-player" ];
+        this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
+        this.bioText = this.$[ "bio-copy" ];
+        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
 
         // Event Handler
         this.handler = {
@@ -103,6 +111,9 @@
       },
       detached: function() {
         clearInterval( this.intervalId );
+
+        this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
+        this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },

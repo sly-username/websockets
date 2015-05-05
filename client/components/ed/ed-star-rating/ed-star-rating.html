@@ -1,39 +1,44 @@
 <polymer-element name="ed-star-rating" attributes="disable">
   <template>
     <link rel="stylesheet" href="./ed-star-rating.css">
-    <p class="track-title">{{}}</p>
-    <p class="artist-name">{{}}</p>
+    <div id="dynamic-details" class="loading-track loading-artist">
+      <p id="track-name" class="track-title"></p>
+      <p id="artist-name" class="artist-name"></p>
+    </div>
     <p class="rate-song">RATE SONG:</p>
    <div id="disable-text">
       <p>You must listen to at least half of the song without
         <span>scrubbing to rate it</span>
       </p>
-   </div>
-    <form id="rating-form">
-      <fieldset class="rating">
-        <div id="input-field">
-          <input id="rate1" type="radio" name="rating" value="1">
-          <input id="rate2" type="radio" name="rating" value="2">
-          <input id="rate3" type="radio" name="rating" value="3">
-          <input id="rate4" type="radio" name="rating" value="4">
-          <input id="rate5" type="radio" name="rating" value="5">
-        </div>
-        <div id="star-field">
-          <ed-icon name="star-rating-1"></ed-icon>
-          <ed-icon name="star-rating-1"></ed-icon>
-          <ed-icon name="star-rating-1"></ed-icon>
-          <ed-icon name="star-rating-1"></ed-icon>
-          <ed-icon name="star-rating-1"></ed-icon>
-        </div>
-        <div id="overlap-field">
-          <ed-icon name="star-rating-2"></ed-icon>
-          <ed-icon name="star-rating-2"></ed-icon>
-          <ed-icon name="star-rating-2"></ed-icon>
-          <ed-icon name="star-rating-2"></ed-icon>
-          <ed-icon name="star-rating-2"></ed-icon>
-        </div>
-      </fieldset>
-    </form>
+    </div>
+    <div id="rating-form-wrapper">
+      <p class="rate-song">RATE SONG:</p>
+      <form id="rating-form">
+        <fieldset class="rating">
+          <div id="input-field">
+            <input id="rate1" type="radio" name="rating" value="1">
+            <input id="rate2" type="radio" name="rating" value="2">
+            <input id="rate3" type="radio" name="rating" value="3">
+            <input id="rate4" type="radio" name="rating" value="4">
+            <input id="rate5" type="radio" name="rating" value="5">
+          </div>
+          <div id="star-field">
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+          </div>
+          <div id="overlap-field">
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star"></ed-icon>
+          </div>
+        </fieldset>
+      </form>
+    </div>
   </template>
   <script src="ed-star-rating.js"></script>
 </polymer-element>
