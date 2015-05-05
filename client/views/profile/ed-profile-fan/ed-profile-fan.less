@@ -2,6 +2,7 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/ed/menu-button.mixin.less";
 
 * {
   font-family: "Ubuntu";
@@ -20,19 +21,7 @@ hr {
   width: 100%;
   max-width: 59.6rem;
   ed-menu-button::shadow {
-    button {
-      height: 9rem;
-      border: none;
-      background: transparent;
-      outline: none;
-      ed-icon {
-        width: 3rem;
-        height: 3rem;
-        display: block;
-        padding-left: 1.4rem;
-        fill: @lightGrey1;
-      }
-    }
+  .edMenuButton();
   }
   .image-wrapper {
     width: 100%;
