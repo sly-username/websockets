@@ -1,0 +1,44 @@
+<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
+
+<polymer-element name="ed-single-chart" attributes="chart-position chart-title chart-subtitle chart-badge">
+  <template>
+    <link rel="stylesheet" href="./ed-single-chart.css">
+    <div class="single-wrapper">
+      <div class="single-header">
+        <header>
+          <!--todo deal with button tags-->
+          <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
+          <ed-icon id="arrow-right" class="chart-arrows" name="arrow-back" rotation="180"></ed-icon>
+          <h1 class="chart-title-text">{{chartTitle}}</h1>
+          <p class="chart-subtitle-text">{{chartSubtitle}}</p>
+        </header>
+      </div>
+
+      <div class="ranks-badge-wrapper">
+        <div class="badges">
+          <ed-icon id="badge-hrs" name="{{chartBadge}}"></ed-icon>
+          <p class="time-left">Time Left</p>
+
+          <h2 class="countdown-timer">{{edChart.dateEnds}}</h2>
+        </div>
+
+        <ul id="ranks-list" class="rankings">
+          <template repeat="{{rankedUser in rankingsList}}">
+            <li ed-id="{{rankedUser.profileId}}">
+              <p class="chart-rank">{{edChart.getRankForId[ "ed-id" ]}}</p>
+
+              <div class="img-container">
+                <!--todo not sure how this information is returned to us yet-->
+                <img-placeholder src="{{rankedUser.art}}"></img-placeholder>
+              </div>
+              <p class="chart-points">{{rankedUser.num}}</p>
+              <p class="chart-name">{{rankedUser.name}}</p>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+  </template>
+  <script src="./ed-single-chart.js"></script>
+</polymer-element>

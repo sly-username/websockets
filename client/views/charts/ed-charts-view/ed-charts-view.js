@@ -1,74 +1,80 @@
 ( function( polymer ) {
   "use strict";
-  var triggerMenuHandler = function() {
-    if ( this.edMenu.getAttribute( "class" ) === "show-menu" ) {
-      this.edMenu.setAttribute( "class", "hide-menu" );
-      this.appRouter.setAttribute( "class", "show-router" );
-    } else {
-      this.edMenu.setAttribute( "class", "show-menu" );
-      this.appRouter.setAttribute( "class", "hide-router" );
-    }
-  };
+
+  var currentView = 1,
+    updateChartClass = function( classesRemoveArray, classAdd, self ) {
+      classesRemoveArray.forEach( function( classNumber ) {
+        self.singleChartWrapper.classList.remove( classNumber );
+        self.singleChartWrapper.classList.add( classAdd );
+      });
+    },
+    updateChartsViewHandler = function( event ) {
+      var eventType = event.detail.name;
+      if ( eventType === "moveLeft" ) {
+        switch ( currentView ) {
+          case 1:
+            updateChartClass( [ "one", "three", "four" ], "two", this );
+            currentView = 2;
+            break;
+          case 2:
+            updateChartClass( [ "one", "two", "four" ], "three", this );
+            currentView = 3;
+            break;
+          case 3:
+            updateChartClass( [ "one", "two", "four" ], "four", this );
+            currentView = 4;
+            break;
+          case 4:
+            updateChartClass( [ "two", "three", "four" ], "one", this );
+            // todo disable final view from going left
+            currentView = 1;
+            break;
+          default:
+            // fall through
+            break;
+        }
+      }
+
+      if ( eventType === "moveRight" ) {
+        switch ( currentView ) {
+          case 1:
+            // todo disable first view from going right
+            updateChartClass( [ "one", "three", "four" ], "two", this );
+            currentView = 2;
+            break;
+          case 2:
+            updateChartClass( [ "one", "two", "four" ], "three", this );
+            currentView = 3;
+            break;
+          case 3:
+            updateChartClass( [ "one", "two", "four" ], "four", this );
+            currentView = 4;
+            break;
+          case 4:
+            updateChartClass( [ "two", "three", "four" ], "one", this );
+            currentView = 1;
+            break;
+          default:
+            // fall through
+            break;
+        }
+      }
+    };
 
   polymer( "ed-charts-view", {
     /* LIFECYCLE */
-    // placeholder data, replace with data object
-    _options: [
-      {
-        rank: 1,
-        image: "http://www.placecage.com/200/300",
-        name: "Place Cage",
-        points: 212732
-      },
-      {
-        rank: 2,
-        image: "http://www.fillmurray.com/200/300",
-        name: "Fill Murray",
-        points: 112732
-      },
-      {
-        rank: 3,
-        image: "http://www.fillmurray.com/200/300",
-        name: "Fill Murray",
-        points: 10732
-      },
-      {
-        rank: 4,
-        image: "http://www.fillmurray.com/200/300",
-        name: "Fill Murray",
-        points: 9732
-      },
-      {
-        rank: 5,
-        image: "http://www.fillmurray.com/200/300",
-        name: "Fill Murray",
-        points: 4732
-      },
-      {
-        rank: 6,
-        image: "http://www.placecage.com/200/300",
-        name: "Place Cage",
-        points: 732
-      }
-    ],
     ready: function() {
-      this.edMenu = document.getElementById( "side-menu" );
-      this.appRouter = document.getElementById( "animation-wrapper" );
-      this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
-      this.handlers = {
-        triggerMenu: triggerMenuHandler.bind( this )
-      };
+      this.singleChartWrapper = this.$[ "single-chart-wrapper" ];
     },
     attached: function() {
-      this.triggerBtn.addEventListener( "click", this.handlers.triggerMenu );
-      this.triggerBtn.addEventListener( "tap", this.handlers.triggerMenu );
+      this.handler = {
+        updateChartView: updateChartsViewHandler.bind( this )
+      };
+      this.addEventListener( "chartsUpdate", this.handler.updateChartView );
     },
-    detached: function() {
-      this.triggerBtn.removeEventListener( "click", this.handlers.triggerMenu );
-      this.triggerBtn.removeEventListener( "tap", this.handlers.triggerMenu );
-    },
+    detached: function() {},
     attributeChanged: function( attrName, oldValue, newValue ) {}
     /* PROPERTIES */
     /* METHODS */
   });
-})( window.Polymer );
+})( window.Polymer )
