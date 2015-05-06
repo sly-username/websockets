@@ -3,12 +3,10 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-discover-service" ),
-    System.import( "domain/ed/services/ed-data-service" ),
     System.import( "domain/lib/event/create-event" )
   ]).then( function( imported ) {
     var discoverService = imported[0].default,
-      dataService = imported[1].default,
-      createEvent = imported[2].default,
+      createEvent = imported[1].default,
       createUpdateEvent = function( name, detail ) {
         detail = detail || {};
         detail.name = name;
@@ -19,13 +17,16 @@
       },
       leftMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveLeft" ));
+        this.getLeaderBoard( "highest-rated-artist" );
       },
       rightMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveRight" ));
+        this.getLeaderBoard( "highest-rated-artist" );
       };
 
     polymer( "ed-single-chart", {
       // todo placeholder data, replace with data object
+      discoverService: discoverService,
       publish: {
         "chart-title": {
           reflect: true
@@ -46,8 +47,6 @@
       get chartBadge() {
         return this[ "chart-badge" ];
       },
-      leaders: [],
-      rankedUsers: [],
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
         this.arrowRight = this.$[ "arrow-right" ];
@@ -66,23 +65,21 @@
       },
       getLeaderBoard: function( chartName ) {
         return discoverService.getLeaderboardCharts( chartName )
-          .then( function( response ) {
-            this.dateEnds = response.dateEnds;
-            this.leaders = response.leaderboard;
-            return this.leaders;
+          .then( function( edChart ) {
+            console.log( edChart );
+            this.edChart = edChart;
+            this.rankingsList = edChart.leaderboardCollection.getInSequence();
+            return edChart;
           }.bind( this ));
-      },
-      getLeaderProfiles: function( chartName ) {
-        this.getLeaderBoard( chartName );
 
         // todo how to tell difference between artist and fan?
-        return this.leaders.forEach( function( leader, index ) {
-          dataService.getByTypeAndId( "artist", leader.profileId )
-            .then( function( rankedUser ) {
-              this.leaders[ index ] = rankedUser;
-              return this.rankedUsers.push( rankedUser );
-            }.bind( this ));
-        }.bind( this ));
+        //return this.leaders.forEach( function( leader, index ) {
+        //  dataService.getByTypeAndId( "artist", leader.profileId )
+        //    .then( function( rankedUser ) {
+        //      this.leaders[ index ] = rankedUser;
+        //      return this.rankedUsers.push( rankedUser );
+        //    }.bind( this ));
+        //}.bind( this ));
       },
       getDateEnds: function() {
 

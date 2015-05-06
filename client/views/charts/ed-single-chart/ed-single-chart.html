@@ -1,7 +1,7 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
-<polymer-element name="ed-single-chart" attributes="ed-id chart-position chart-title chart-subtitle chart-badge">
+<polymer-element name="ed-single-chart" attributes="chart-position chart-title chart-subtitle chart-badge">
   <template>
     <link rel="stylesheet" href="./ed-single-chart.css">
     <div class="single-wrapper">
@@ -20,13 +20,13 @@
           <ed-icon id="badge-hrs" name="{{chartBadge}}"></ed-icon>
           <p class="time-left">Time Left</p>
 
-          <h2 class="countdown-timer">{{dateEnds}}</h2>
+          <h2 class="countdown-timer">{{edChart.dateEnds}}</h2>
         </div>
 
         <ul id="ranks-list" class="rankings">
-          <template repeat="{{rankedUser in rankedUsers}}">
-            <li ed-id="{{rankedUser.id}}">
-              <p class="chart-rank">{{rankedUser[ index ] + 1}}</p>
+          <template repeat="{{rankedUser in rankingsList}}">
+            <li ed-id="{{rankedUser.profileId}}">
+              <p class="chart-rank">{{edChart.getRankForId[ "ed-id" ]}}</p>
 
               <div class="img-container">
                 <!--todo not sure how this information is returned to us yet-->
