@@ -1,13 +1,12 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
+<link rel="import" href="../../../components/ed/ed-menu-button/ed-menu-button.html"/>
 
 <polymer-element name="ed-profile-fan" attributes="ed-id">
   <template>
     <link rel="stylesheet" href="./ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
-      <button class="back-icon">
-        <ed-icon name="arrow-back"></ed-icon>
-      </button>
+      <ed-menu-button></ed-menu-button>
       <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
       <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
       <section class="image-wrapper">

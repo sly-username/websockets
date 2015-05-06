@@ -1,3 +1,6 @@
+<link rel="import" href="../../components/ui/img-placeholder/img-placeholder.html"/>
+<link rel="import" href="../../components/ed/ed-icon/ed-icon.html"/>
+
 <polymer-element name="ed-side-menu" attributes="ed-id hide">
   <template>
     <link rel="stylesheet" href="./ed-side-menu.css">
@@ -20,12 +23,13 @@
           Settings
         </a>
       </nav>
-      <div class="profile-bar">
+      <!-- TODO replace with an actual profile id  -->
+      <a class="profile-bar" href="#/fan/10">
         <div class="img-container">
           <img-placeholder src="{{ edFan.displayImage }}" image="fillmurray"></img-placeholder>
         </div>
         <p>{{ edFan.displayName || "Jeff Lin" }}</p>
-      </div>
+      </a>
     </div>
   </template>
   <script src="ed-side-menu.js"></script>

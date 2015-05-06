@@ -37,6 +37,9 @@
       if ( eventType === "play" ) {
         playerService.play();
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "scrubStart" ) {
@@ -50,6 +53,10 @@
       if ( eventType === "skip" ) {
         playerService.next();
       }
+
+      if ( eventType === "showRatings" ) {
+        this.ratingsForm.classList.add( "show" );
+      }
     };
 
     togglePlayerHandler = function( event ) {
@@ -57,12 +64,14 @@
 
       switch( tmpId ) {
         case "minify-icon":
-          this.mainPlayerWrapper.setAttribute( "class", "hidden" );
-          this.miniPlayer.setAttribute( "class", "active" );
+          this.miniPlayerWrapper.classList.add( "show-mini" );
+          this.mainPlayerWrapper.classList.add( "hide-main" );
+          this.songCardWrapper.classList.add( "minimized" );
           break;
         case "mini-player":
-          this.mainPlayerWrapper.setAttribute( "class", "active" );
-          this.miniPlayer.setAttribute( "class", "hidden" );
+          this.miniPlayerWrapper.classList.remove( "show-mini" );
+          this.mainPlayerWrapper.classList.remove( "hide-main" );
+          this.songCardWrapper.classList.remove( "minimized" );
           break;
         default:
           break;
@@ -74,10 +83,13 @@
       playerService: playerService,
       ready: function() {
         // dom selectors
+        this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
-
-        this.miniPlayer = this.$[ "mini-player-wrapper" ];
+        this.miniPlayer = this.$[ "mini-player" ];
+        this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
+        this.bioText = this.$[ "bio-copy" ];
+        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
 
         // Event Handler
         this.handler = {
@@ -95,6 +107,9 @@
       },
       detached: function() {
         clearInterval( this.intervalId );
+
+        this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
+        this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },

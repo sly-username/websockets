@@ -37,7 +37,7 @@ export default edAnalyticsService = {
       device: this.deviceBlock,
       clientVersion: this.version,
       location: this.locationBlock,
-      time: this.formattedTime,
+      time: this.time,
       user: edUserService.currentUserId,
       profile: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
       viewRoute: window.location.pathname + window.location.hash,
@@ -62,7 +62,7 @@ export default edAnalyticsService = {
 
     return {
       playerState: {
-        trackId: currentPlayerStats.playing == null ? null : currentPlayerStatus.playing.id,
+        trackId: currentPlayerStats.playing == null ? null : currentPlayerStats.playing.id,
         playing: edPlayerService.isPlaying,
         timecode: currentPlayerStats.time,
         queueLength: edPlayerService.queue.length

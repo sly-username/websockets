@@ -9,10 +9,6 @@
   .animation( slideMenuIn .33s ease-in-out forwards);
 }
 
-:host([class="hide-menu"]) {
-  .animation( slideMenuOut .33s ease-in-out forwards );
-}
-
 :host {
   position: absolute;
   float: left;
@@ -21,6 +17,7 @@
   margin: 0;
   height: 100vh;
   background: @originalWhite;
+  .animation( slideMenuOut .33s ease-in-out forwards );
 }
 
 .menu-wrapper {
@@ -45,13 +42,14 @@
         fill: @lightGrey1;
       }
       &:hover, :focus {
-        border-left: 2.1rem solid @originalPurple;
+        border-left-color: @originalPurple;
       }
     }
   }
   .profile-bar {
     position: absolute;
     bottom: 8rem;
+    border-left: 2.1rem solid transparent;
     .img-container {
       height: 6.8rem;
       width: 6.8rem;
@@ -63,6 +61,9 @@
       padding-left: 1.5rem;
       .edType( heading-S );
       color: @darkPurple3;
+    }
+    &:hover, :focus {
+      border-left-color: @originalPurple;
     }
   }
 }
