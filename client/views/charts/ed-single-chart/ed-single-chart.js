@@ -61,9 +61,8 @@
         this.arrowRight.addEventListener( "click", this.handler.rightMove );
       },
       detached: function() {
-        this.arrows.forEach( function( arrow ) {
-          arrow.removeEventListener( "click", this.moveHandler.bind( this ));
-        });
+        this.arrowLeft.removeEventListener( "click", this.handler.leftMove );
+        this.arrowRight.removeEventListener( "click", this.handler.rightMove );
       },
       getLeaderBoard: function( chartName ) {
         return discoverService.getLeaderboardCharts( chartName )
