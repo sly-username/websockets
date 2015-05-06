@@ -24,6 +24,9 @@
     },
     detached: function() {
       this.logOut.removeEventListener( "click", this.handlers.logOutTrigger );
-    }
+    },
+    attributeChanged: function( attrName, oldValue, newValue ) {}
+    /* PROPERTIES */
+    /* METHODS */
   });
 })( window.Polymer );

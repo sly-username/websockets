@@ -2,6 +2,7 @@ import edConnectionService from "domain/ed/services/ed-connection-service";
 import edUserService from "domain/ed/services/ed-user-service";
 import EDGenre from "domain/ed/objects/EDGenre";
 import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
+import EDChart from "domain/ed/objects/EDChart";
 
 var currentProfileBlend = {},
   trackIDList = [],
@@ -81,6 +82,18 @@ export default edDiscoverService = {
       });
 
       return response;
+    });
+  },
+  getLeaderboardCharts( chartName ) {
+    return edConnectionService.request( "chart/list", 10, {
+      data: {
+        chartName
+      }
+    }).then( response => {
+      console.log( response );
+      var edChart = new EDChart( response );
+      console.log( edChart );
+      return edChart;
     });
   }
 };
