@@ -47,7 +47,7 @@
       }
 
       if ( eventType === "rate" ) {
-        //playerService.rateSong( currentVal );
+        playerService.rateTrack( currentVal );
       }
 
       if ( eventType === "skip" ) {
@@ -62,7 +62,7 @@
     togglePlayerHandler = function( event ) {
       var tmpId = event.target.id;
 
-      switch( tmpId ) {
+      switch ( tmpId ) {
         case "minify-icon":
           this.miniPlayerWrapper.classList.add( "show-mini" );
           this.mainPlayerWrapper.classList.add( "hide-main" );

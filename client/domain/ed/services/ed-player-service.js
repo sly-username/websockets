@@ -45,7 +45,6 @@ rateCurrentlyPlaying = function( number ) {
   if ( number != null && currentTrack ) {
     return currentTrack.rate( number )
       .then(function( response ) {
-        // adding in fake ID for now
         edAnalyticsService.send( "rate", {
           trackId: currentTrack.id,
           timecode: audio.currentTime,
@@ -173,20 +172,6 @@ export default edPlayerService = {
     return mm + ":" + ss;
   },
 
-  getEDTrack: function( tracks, index ) {
-    return tracks.get( index )
-      .then( edTrack => {
-        return edDataService.getArtistById( edTrack.profileId, 10 )
-          .then( edArtist => {
-            currentArtist = edArtist;
-
-            this.playTrack( edTrack );
-
-            return edArtist;
-          });
-      });
-  },
-
   playTrack: function( edTrack ) {
     if ( !edTrack instanceof EDTrack ) {
       throw new TypeError( "Track is not an EDTrack object" );
@@ -231,9 +216,9 @@ export default edPlayerService = {
       return true;
     }
 
-    // Do content type check, call specific play method
-    if( content instanceof EDTrack ) {
-      return this.playSong( content );
+    // Do content type check, call specific playTrack method
+    if ( content instanceof EDTrack ) {
+      return this.playTrack( content );
     }
   },
 
@@ -324,7 +309,7 @@ export default edPlayerService = {
     }
   },
 
-  rateSong: function( number ) {
+  rateTrack: function( number ) {
     return rateCurrentlyPlaying( number );
   },
 
@@ -353,6 +338,20 @@ export default edPlayerService = {
     this.enqueue( tracks.ids );
 
     return this.getEDTrack( tracks, currentIndex );
+  },
+
+  getEDTrack: function( tracks, index ) {
+    return tracks.get( index )
+      .then( edTrack => {
+        return edDataService.getArtistById( edTrack.profileId, 10 )
+          .then( edArtist => {
+            currentArtist = edArtist;
+
+            this.playTrack( edTrack );
+
+            return edArtist;
+          });
+      });
   }
 };
 
