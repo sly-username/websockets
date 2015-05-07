@@ -65,7 +65,7 @@
         this.$[ "artist-name" ].innerText = "FPO Bandname";
       }
 
-      this.$[ "dynamic-details" ].setAttribute( "class", "loaded-track loaded-artist" );
+      this.$[ "dynamic-details" ].classList.add( "loaded-track", "loaded-artist" );
     };
 
     polymer( "ed-star-rating", {
