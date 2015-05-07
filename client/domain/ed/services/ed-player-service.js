@@ -180,6 +180,7 @@ export default edPlayerService = {
     // playing same track toggles the play pause events
     if ( currentTrack != null && edTrack === currentTrack ) {
       if ( this.isPlaying ) {
+        console.log( "is it playig?" );
         return this.pause();
       }
 
@@ -311,33 +312,6 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  startMusicDiscovery: function( type ) {
-    return edDiscoverService.getDiscoverTrackList( type )
-      .then(( trackIds ) => {
-        tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, trackIds );
-
-        this.queueTracksAndPlay( tracksCollection );
-
-        return trackIds;
-      })
-      .catch(( error ) => {
-        console.warn( "Error getting tracks in player service" );
-        console.error( error );
-        throw error;
-      });
-  },
-
-  queueTracksAndPlay: function( tracks, show ) {
-    if ( show ) {
-      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
-      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
-    }
-
-    this.enqueue( tracks.ids );
-
-    return this.getEDTrack( tracks, currentIndex );
-  },
-
   getEDTrack: function( tracks, index ) {
     return tracks.get( index )
       .then( edTrack => {
@@ -349,6 +323,31 @@ export default edPlayerService = {
 
             return edArtist;
           });
+      });
+  },
+
+  queueTracksAndPlay: function( tracks, show ) {
+    if ( show ) {
+      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
+      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+    }
+
+    this.enqueue( tracks );
+
+    return this.getEDTrack( tracksCollection, currentIndex );
+  },
+
+  startMusicDiscovery: function( type ) {
+    return edDiscoverService.getDiscoverTrackList( type )
+      .then(( trackIds ) => {
+        this.queueTracksAndPlay( trackIds );
+
+        return trackIds;
+      })
+      .catch(( error ) => {
+        console.warn( "Error getting tracks in player service" );
+        console.error( error );
+        throw error;
       });
   }
 };
