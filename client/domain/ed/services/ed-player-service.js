@@ -287,6 +287,12 @@ export default edPlayerService = {
 
     updateCurrentIndex( currentIndex + 1 );
 
+    this.emitter.dispatch( createEvent( "playerUpdate", {
+      detail: {
+        type: "skip"
+      }
+    }));
+
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id,
       timecode: audio.currentTime,
@@ -334,12 +340,16 @@ export default edPlayerService = {
 
     this.enqueue( tracks );
 
+    console.log( "tracksCollection", tracksCollection );
+
     return this.getEDTrack( tracksCollection, currentIndex );
   },
 
   startMusicDiscovery: function( type ) {
     return edDiscoverService.getDiscoverTrackList( type )
-      .then(( trackIds ) => {
+      .then( trackIds => {
+        tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, trackIds );
+
         this.queueTracksAndPlay( trackIds );
 
         return trackIds;

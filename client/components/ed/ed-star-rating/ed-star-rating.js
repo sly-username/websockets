@@ -57,6 +57,8 @@
     playerUpdateHandler = function( event ) {
       console.log( "star rating event", event );
 
+      if ( event.detail.type === "play" || event.detail.type === "skip" ) {}
+
       this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
 
       if ( playerService.currentStats.currentArtist.name != null ) {

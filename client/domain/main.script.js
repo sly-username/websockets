@@ -12,7 +12,7 @@
     System.import( "domain/ed/services/ed-user-service" )
   ]).then( imports => {
     console.log( "PromisedDB/edDataService Loaded %o", imports );
-    //imports[ 2 ].default.login( "intdevuser+nocode@eardish.com", "intdevpass" );
+    imports[ 2 ].default.login( "intdevuser+nocode@eardish.com", "intdevpass" );
   })
   .catch( error => {
     console.error( error.message );

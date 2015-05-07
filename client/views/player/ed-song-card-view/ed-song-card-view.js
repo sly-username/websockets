@@ -51,7 +51,7 @@
       }
 
       if ( eventType === "skip" ) {
-        console.log( "eventType", eventType )
+        console.log( "eventType", eventType );
         playerService.next();
       }
 
