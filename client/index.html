@@ -44,96 +44,98 @@
 
 <div id="animation-wrapper">
   <app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
-  <app-route path="/home">
-    <template>
-      <h1>Testing, is this thing on? You are home now.</h1>
-      <a href="#/">Go Back to Main</a>
-    </template>
-  </app-route>
+    <app-route path="/home">
+      <template>
+        <h1>Testing, is this thing on? You are home now.</h1>
+        <a href="#/">Go Back to Main</a>
+      </template>
+    </app-route>
 
-  <!-- LOGIN -->
-  <app-route path="/login" element="ed-login-view" bindRouter></app-route>
+    <!-- LOGIN -->
+    <app-route path="/" element="ed-login-view" bindRouter></app-route>
 
-  <!-- REGISTRATION -->
-  <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view" bindRouter></app-route>
+    <!-- REGISTRATION -->
+    <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view" bindRouter></app-route>
 
-  <!-- ONBOARDING -->
-  <app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>
-  <app-route path="/onboarding" redirect="/onboarding/like"></app-route>
+    <!-- ONBOARDING -->
+    <app-route path="/onboarding/**" element="ed-onboarding-view"></app-route>
+    <app-route path="/onboarding" redirect="/onboarding/like"></app-route>
 
-  <!-- PROFILE -->
-  <app-route path="/profile/edit" element="ed-profile-edit"></app-route>
-  <app-route path="/artist/:ed-id" element="ed-profile-artist" onUrlChange="updateModel"></app-route>
-  <app-route path="/fan/:ed-id" element="ed-profile-fan" onUrlChange="updateModel"></app-route>
+    <!-- PROFILE -->
+    <app-route path="/profile/edit" element="ed-profile-edit"></app-route>
+    <app-route path="/artist/:ed-id" element="ed-profile-artist" onUrlChange="updateModel"></app-route>
+    <app-route path="/fan/:ed-id" element="ed-profile-fan" onUrlChange="updateModel"></app-route>
 
-  <!-- RETRIEVE PASSWORD -->
-  <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
+    <!-- RETRIEVE PASSWORD -->
+    <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
 
-  <!-- PLAYER -->
-  <app-route path="/player" element="ed-song-card-view"></app-route>
+    <!-- PLAYER -->
+    <app-route path="/player" element="ed-song-card-view"></app-route>
 
-  <!-- CHARTS -->
-  <app-route path="/charts" element="ed-charts-view"></app-route>
+    <!-- CHARTS -->
+    <app-route path="/charts" element="ed-charts-view"></app-route>
 
-  <!-- SETTINGS -->
-  <app-route path="/settings" element="ed-settings-view"></app-route>
+    <!-- SETTINGS -->
+    <app-route path="/settings" element="ed-settings-view"></app-route>
 
-  <!-- DISCOVER -->
-  <app-route path="/discover" element="ed-discover-view"></app-route>
+    <!-- DISCOVER -->
+    <app-route path="/discover" element="ed-discover-view"></app-route>
 
-  <!-- ABOUT -->
-  <app-route path="/about" element="ed-about-view"></app-route>
+    <!-- ABOUT -->
+    <app-route path="/about" element="ed-about-view"></app-route>
 
-  <!-- TOS -->
-  <app-route path="/tos" element="ed-tos-view"></app-route>
+    <!-- TOS -->
+    <app-route path="/tos" element="ed-tos-view"></app-route>
 
-  <!-- REFERRAL -->
-  <app-route path="/referral" element="ed-referral-view"></app-route>
+    <!-- REFERRAL -->
+    <app-route path="/referral" element="ed-referral-view"></app-route>
 
-  <!-- REPORT -->
-  <app-route path="/report" element="ed-report-view"></app-route>
+    <!-- REPORT -->
+    <app-route path="/report" element="ed-report-view"></app-route>
 
-  <!--<app-route path=""-->
+    <!--<app-route path=""-->
 
-  <!-- catch all route, 404 page? or redirect... -->
-  <app-route path="*">
-    <template>
-      <style>
-        nav {
-          font-size: 1.5rem;
-          margin: 20px;
-        }
+    <!-- catch all route, 404 page? or redirect... -->
+    <app-route path="/debug">
+      <template>
+        <style>
+          nav {
+            font-size: 1.5rem;
+            margin: 20px;
+          }
 
-        nav > a {
-          float: left;
-          clear: both;
-        }
-      </style>
-      <h1>Routes</h1>
-      <nav>
-        <a href="#/home">Home</a>
-        <a href="#/login">Login</a>
-        <a href="#/register">Register (/register)</a>
-        <a href="#/registration">Register (/registration)</a>
-        <a href="#/onboarding">Onboarding</a>
-        <a href="#/profile/edit">Profile /Edit</a>
-        <a href="#/artist/22">Artist</a>
-        <a href="#/fan/10">Fan</a>
-        <a href="#/forgot-pass/request">Forgot Password Request</a>
-        <a href="#/forgot-pass/reset">Forgot Password Reset</a>
-        <a href="#/player">Song Card</a>
-        <a href="#/charts">Charts</a>
-        <a href="#/settings">Settings</a>
-        <a href="#/about">About</a>
-        <a href="#/tos">Terms of Service</a>
-        <a href="#/discover">Discover Music</a>
-        <a href="#/referral">Invite Friends</a>
-        <a href="#/report">Report A Bug</a>
-      </nav>
-    </template>
-  </app-route>
+          nav > a {
+            float: left;
+            clear: both;
+          }
+        </style>
+        <h1>Routes</h1>
+        <nav>
+          <a href="#/home">Home</a>
+          <a href="#/login">Login</a>
+          <a href="#/register">Register (/register)</a>
+          <a href="#/registration">Register (/registration)</a>
+          <a href="#/onboarding">Onboarding</a>
+          <a href="#/profile/edit">Profile /Edit</a>
+          <a href="#/artist/22">Artist</a>
+          <a href="#/fan/10">Fan</a>
+          <a href="#/forgot-pass/request">Forgot Password Request</a>
+          <a href="#/forgot-pass/reset">Forgot Password Reset</a>
+          <a href="#/player">Song Card</a>
+          <a href="#/charts">Charts</a>
+          <a href="#/settings">Settings</a>
+          <a href="#/about">About</a>
+          <a href="#/tos">Terms of Service</a>
+          <a href="#/discover">Discover Music</a>
+          <a href="#/referral">Invite Friends</a>
+          <a href="#/report">Report A Bug</a>
+        </nav>
+      </template>
+    </app-route>
   </app-router>
 </div>
+
+<ed-song-card-view id="song-card" class="hidden"></ed-song-card-view>
 
 <!-- APPLICATION SCRIPT -->
 <script src="domain/main.script.js" type="text/javascript"></script>

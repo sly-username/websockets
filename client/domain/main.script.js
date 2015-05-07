@@ -11,6 +11,29 @@
     System.import( "domain/ed/services/ed-connection-service" ),
     System.import( "domain/ed/services/ed-user-service" )
   ]).then( imports => {
+    // TODO make polymer component?
+    var
+      animationWrapper = document.getElementById( "animation-wrapper" ),
+      songCard = document.getElementById( "song-card" ),
+      router = document.querySelector( "app-router" );
+
+    router.addEventListener( "state-change", function( event ) {
+      // TODO add additional routes
+      if ( event.detail.path === "/" ) {
+        songCard.classList.add( "hidden" );
+        animationWrapper.classList.remove( "player-padding" );
+      } else {
+        songCard.classList.remove( "hidden" );
+
+        if ( !songCard.classList.contains( "hidden" ) && !animationWrapper.classList.contains( "player-padding" )) {
+          animationWrapper.classList.add( "player-padding" );
+        }
+      }
+    });
+
+    //need to init manually to ensure event binding
+    router.init();
+
     console.log( "PromisedDB/edDataService Loaded %o", imports );
   })
   .catch( error => {
