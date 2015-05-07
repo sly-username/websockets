@@ -15,8 +15,9 @@ var profileTypeForChartName = function( chartName ) {
     return EDFan.MODEL_TYPE;
   } else if ( ( /artist$/ ).test( chartName ) ) {
     return EDArtist.MODEL_TYPE;
+  } else if ( ( /track$/ ).test( chartName ) ) {
+    return EDChart.MODEL_TYPE;
   }
-
   return EDProfile.MODEL_TYPE;
 };
 
@@ -27,8 +28,9 @@ export default class EDChart extends EDModel {
 
   constructor( args ) {
     var argsCopy = Object.assign({}, args );
-
-    super( args );
+    argsCopy.id = null;
+    argsCopy.type = null;
+    super( argsCopy );
 
     if ( args.dateEnds ) {
       argsCopy.dateEnds = new Date( args.dateEnds );
@@ -42,15 +44,31 @@ export default class EDChart extends EDModel {
     define.enumReadOnlyDeep( this, [ "leaderboard" ], args );
 
     this.leaderboardCollection = new EDCollection(
-      profileTypeForChartName( args.chartName ),
-      args.leaderboard.map( value => value.profileId )
+      profileTypeForChartName( args.data.chartName ),
+      args.data.leaderboard.map( value => value.id || value.profileId )
+      // todo remove profileId
     );
   }
 
+  get timeRemaining() {
+    var end = this.raw.data.dateEnds,
+      current = new Date(),
+      timeLeft = end - current,
+      _seconds = 1000,
+      _minutes = _seconds * 60,
+      _hours = _minutes * 60,
+      _days = _hours * 24,
+      daysLeft = Math.floor( timeLeft / _days ),
+      hoursLeft = Math.floor( timeLeft % _days / _hours ),
+      minutesLeft = Math.floor( timeLeft % _hours / _minutes );
+
+    return `${daysLeft}d ${hoursLeft}h ${minutesLeft}m`;
+  }
+
   getRankForId( profileId ) {
-    for ( let i = 0 ; i < this.leaderboard.length ; i++ ) {
-      if ( this.leaderboard[ i ].profileId === profileId ) {
-        return this.leaderboard[ i ].num;
+    for ( let i = 0 ; i < this.chartList.data.leaderboard.length ; i++ ) {
+      if ( this.chartList.data.leaderboard.profileId === profileId ) {
+        return this.chartList.data.leaderboard[ i ].num;
       }
     }
 

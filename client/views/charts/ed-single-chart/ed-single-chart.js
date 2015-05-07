@@ -17,15 +17,12 @@
       },
       leftMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveLeft" ));
-        this.getLeaderBoard( "highest-rated-artist" );
       },
       rightMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveRight" ));
-        this.getLeaderBoard( "highest-rated-artist" );
       };
 
     polymer( "ed-single-chart", {
-      // todo placeholder data, replace with data object
       discoverService: discoverService,
       publish: {
         "chart-title": {
@@ -35,6 +32,9 @@
           reflect: true
         },
         "chart-badge": {
+          reflect: true
+        },
+        "chart-name": {
           reflect: true
         }
       },
@@ -47,11 +47,16 @@
       get chartBadge() {
         return this[ "chart-badge" ];
       },
+      get chartIdentifier() {
+        return this[ "chart-name" ];
+      },
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
         this.arrowRight = this.$[ "arrow-right" ];
       },
       attached: function() {
+        this.getLeaderBoard();
+
         this.handler = {
           leftMove: leftMoveHandler.bind( this ),
           rightMove: rightMoveHandler.bind( this )
@@ -63,29 +68,28 @@
         this.arrowLeft.removeEventListener( "click", this.handler.leftMove );
         this.arrowRight.removeEventListener( "click", this.handler.rightMove );
       },
-      getLeaderBoard: function( chartName ) {
-        return discoverService.getLeaderboardCharts( chartName )
+      getLeaderBoard: function() {
+        var chartIdentifier = this.chartIdentifier;
+        return discoverService.getLeaderboardCharts( chartIdentifier )
           .then( function( edChart ) {
             console.log( edChart );
             this.edChart = edChart;
-            this.rankingsList = edChart.leaderboardCollection.getInSequence();
+            this.dateEnds = edChart.dateEnds;
+            edChart.leaderboardCollection.getInSequence( 0, 10, true )
+              .then( function( chartList ) {
+                this.rankingsList = chartList;
+                // todo change to id when updated
+                this.score = edChart.getRankForId( chartList.data.leaderboard.profileId );
+                this.countdown = edChart.timeRemaining;
+                console.log( chartList );
+              }.bind( this ));
             return edChart;
           }.bind( this ));
-
-        // todo how to tell difference between artist and fan?
-        //return this.leaders.forEach( function( leader, index ) {
-        //  dataService.getByTypeAndId( "artist", leader.profileId )
-        //    .then( function( rankedUser ) {
-        //      this.leaders[ index ] = rankedUser;
-        //      return this.rankedUsers.push( rankedUser );
-        //    }.bind( this ));
-        //}.bind( this ));
-      },
-      getDateEnds: function() {
-
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
       }
     });
   });
 })( window.Polymer, window.System );
+
+// [ "completed-listens-fan", "most-tracks-rated-fan", "completed-listens-artist", "highest-rated-artist" ],
