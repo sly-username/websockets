@@ -55,19 +55,19 @@
     };
 
     playerUpdateHandler = function( event ) {
-      console.log( "star rating event", event );
+      if ( event.type === "playerUpdate" ) {
+        //if ( event.detail.type === "play" || event.detail.type === "skip" ) {}
 
-      if ( event.detail.type === "play" || event.detail.type === "skip" ) {}
+        this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
 
-      this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
+        if ( playerService.currentStats.currentArtist.name != null ) {
+          this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.name;
+        } else {
+          this.$[ "artist-name" ].innerText = "FPO Bandname";
+        }
 
-      if ( playerService.currentStats.currentArtist.name != null ) {
-        this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.name;
-      } else {
-        this.$[ "artist-name" ].innerText = "FPO Bandname";
+        this.$[ "dynamic-details" ].classList.add( "loaded-track", "loaded-artist" );
       }
-
-      this.$[ "dynamic-details" ].classList.add( "loaded-track", "loaded-artist" );
     };
 
     polymer( "ed-star-rating", {

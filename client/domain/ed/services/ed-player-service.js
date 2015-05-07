@@ -224,18 +224,20 @@ export default edPlayerService = {
   },
 
   pause: function() {
-    this.emitter.dispatch( createEvent( "playerUpdate", {
-      detail: {
-        type: "pause"
-      }
-    }));
+    if ( this.isPlaying ) {
+      audio.pause();
 
-    audio.pause();
+      this.emitter.dispatch( createEvent( "playerUpdate", {
+        detail: {
+          type: "pause"
+        }
+      }));
 
-    edAnalyticsService.send( "pause", {
-      trackId: currentTrack.id,
-      timecode: audio.currentTime
-    });
+      edAnalyticsService.send( "pause", {
+        trackId: currentTrack.id,
+        timecode: audio.currentTime
+      });
+    }
 
     return this.isPaused;
   },
