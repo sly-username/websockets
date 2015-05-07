@@ -298,4 +298,26 @@ edUserService.resetPassword = function( resetCode, password ) {
     });
 };
 
+edUserService.editProfile = function( first, last ) {
+  var json = {
+    data: {
+      id: edUserService.currentProfile.id,
+      name: {
+        first,
+        last
+      }
+    }
+  };
+
+  return edConnectionService.request( "profile/set", 10, json )
+    .then( response => {
+      return response;
+    })
+    .catch( error => {
+      console.log( "profile update was not successfully sent" );
+      console.log( error );
+      throw error;
+    });
+};
+
 export default edUserService;
