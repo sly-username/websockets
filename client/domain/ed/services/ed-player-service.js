@@ -280,21 +280,19 @@ export default edPlayerService = {
   },
 
   next: function() {
-    if ( this.queue.length ) {
-      if ( this.isPlaying || this.isPaused ) {
-        audio.pause();
-      }
-
-      updateCurrentIndex( currentIndex + 1 );
-
-      edAnalyticsService.send( "quit", {
-        trackId: currentTrack.id,
-        timecode: audio.currentTime,
-        action: "skip"
-      });
-
-      return this.play( this.getEDTrack( tracksCollection, currentIndex ));
+    if ( this.isPlaying || this.isPaused ) {
+      audio.pause();
     }
+
+    updateCurrentIndex( currentIndex + 1 );
+
+    edAnalyticsService.send( "quit", {
+      trackId: currentTrack.id,
+      timecode: audio.currentTime,
+      action: "skip"
+    });
+
+    return this.getEDTrack( tracksCollection, currentIndex );
   },
 
   skipTo: function( index ) {

@@ -114,6 +114,8 @@ edUserService.login = function( email, password ) {
       sessionAuthJSON = json;
       loggedInDate = new Date();
 
+      console.log( "45454545", isOpenSession );
+
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
           userId: currentUserId,
