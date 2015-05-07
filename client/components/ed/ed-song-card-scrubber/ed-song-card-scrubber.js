@@ -81,7 +81,7 @@
       skipSongHandler = function() {
         this.dispatchEvent( createUpdateEvent( "skip" ));
       },
-      playServiceEventHandler = function( event ) {
+      playerServiceEventHandler = function( event ) {
         var
           eventName,
           eventType = event.detail.type,
@@ -134,7 +134,7 @@
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
-          playServiceEvent: playServiceEventHandler.bind( this ),
+          playerServiceEvent: playerServiceEventHandler.bind( this ),
           mouseOut: mouseOutHandler.bind( this ),
           showRatings: showRatingsHandler.bind( this )
         };
@@ -144,7 +144,7 @@
       },
       attached: function() {
         // mouse events
-        this.playBtn.addEventListener( "click", this.handler.playServiceEvent );
+        this.playBtn.addEventListener( "click", this.handler.playerServiceEvent );
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.skipBtn.addEventListener( "click", this.handler.skipSong );
@@ -153,20 +153,20 @@
         this.addEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
-        this.playBtn.addEventListener( "touchstart", this.handler.playServiceEvent );
+        this.playBtn.addEventListener( "touchstart", this.handler.playerServiceEvent );
         this.scrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.addEventListener( "touchend", this.handler.scrubFire );
         this.addEventListener( "touchmove", this.handler.triggerMove );
 
         // bind player updates through the service
-        playerService.emitter.on( "playerUpdate", this.handler.playServiceEvent );
+        playerService.emitter.on( "playerUpdate", this.handler.playerServiceEvent );
 
         // init
         this.handler.initScrubber();
       },
       detached: function() {
-        this.playBtn.removeEventListener( "click", this.handler.playServiceEvent );
+        this.playBtn.removeEventListener( "click", this.handler.playerServiceEvent );
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.removeEventListener( "mouseup", this.handler.scrubFire );
@@ -174,13 +174,13 @@
         this.removeEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
-        this.playBtn.removeEventListener( "touchstart", this.handler.playServiceEvent );
+        this.playBtn.removeEventListener( "touchstart", this.handler.playerServiceEvent );
         this.scrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.removeEventListener( "touchend", this.handler.scrubFire );
         this.removeEventListener( "touchmove", this.handler.triggerMove );
 
-        playerService.emitter.off( "playerUpdate", this.handler.playServiceEvent );
+        playerService.emitter.off( "playerUpdate", this.handler.playerServiceEvent );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
         if ( attrName === "value" ) {
