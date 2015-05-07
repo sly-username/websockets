@@ -74,13 +74,13 @@
           .then( function( edChart ) {
             console.log( edChart );
             this.edChart = edChart;
-            this.dateEnds = edChart.dateEnds;
+            this.dateEnds = edChart.raw.data.dateEnds;
             edChart.leaderboardCollection.getInSequence( 0, 10, true )
               .then( function( chartList ) {
                 this.rankingsList = chartList;
                 // todo change to id when updated
-                this.score = edChart.getRankForId( chartList.data.leaderboard.profileId );
                 this.countdown = edChart.timeRemaining;
+                //this.score = edChart.getRankForId( chartList.data.leaderboard.profileId );
                 console.log( chartList );
               }.bind( this ));
             return edChart;

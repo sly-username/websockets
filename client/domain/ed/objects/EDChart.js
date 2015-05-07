@@ -32,9 +32,11 @@ export default class EDChart extends EDModel {
     argsCopy.type = null;
     super( argsCopy );
 
-    if ( args.dateEnds ) {
-      argsCopy.dateEnds = new Date( args.dateEnds );
-    }
+    //if ( args.data.dateEnds ) {
+    //  argsCopy.dateEnds = new Date( args.data.dateEnds );
+    //}
+    var dateThing = new Date( args.data.dateEnds );
+    console.log( dateThing );
 
     define.enumReadOnly( this, [
       "chartName",
@@ -42,6 +44,7 @@ export default class EDChart extends EDModel {
     ], argsCopy );
 
     define.enumReadOnlyDeep( this, [ "leaderboard" ], args );
+    console.log( args );
 
     this.leaderboardCollection = new EDCollection(
       profileTypeForChartName( args.data.chartName ),
@@ -51,26 +54,28 @@ export default class EDChart extends EDModel {
   }
 
   get timeRemaining() {
-    var end = this.raw.data.dateEnds,
+    var end = new Date( this.raw.data.dateEnds ),
       current = new Date(),
-      timeLeft = end - current,
-      _seconds = 1000,
-      _minutes = _seconds * 60,
-      _hours = _minutes * 60,
-      _days = _hours * 24,
-      daysLeft = Math.floor( timeLeft / _days ),
-      hoursLeft = Math.floor( timeLeft % _days / _hours ),
-      minutesLeft = Math.floor( timeLeft % _hours / _minutes );
+     timeLeft = end - current,
+    _seconds = 1000,
+    _minutes = _seconds * 60,
+    _hours = _minutes * 60,
+    _days = _hours * 24,
+     daysLeft = Math.floor( timeLeft / _days ),
+     hoursLeft = Math.floor( timeLeft % _days / _hours ),
+     minutesLeft = Math.floor( timeLeft % _hours / _minutes );
 
     return `${daysLeft}d ${hoursLeft}h ${minutesLeft}m`;
   }
 
   getRankForId( profileId ) {
-    for ( let i = 0 ; i < this.chartList.data.leaderboard.length ; i++ ) {
-      if ( this.chartList.data.leaderboard.profileId === profileId ) {
-        return this.chartList.data.leaderboard[ i ].num;
-      }
-    }
+    console.log( "chartlist", this.chartlist );
+    console.log( this.args );
+    //for ( let i = 0 ; i < this.chartList.data.leaderboard.length ; i++ ) {
+    //  if ( this.chartList.data.leaderboard.profileId === profileId ) {
+    //    return this.chartList.data.leaderboard[ i ].num;
+    //  }
+    //}
 
     return -1;
   }
