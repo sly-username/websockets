@@ -5,10 +5,8 @@
     .then(function( imported ) {
       var
         dataService = imported.default,
-        triggerMenuHandler = function( event ) {
-          if ( event.target.hasAttribute( "href" ) ) {
-            this.edMenu.classList.toggle( "show-menu" );
-          }
+        triggerMenuHandler = function( ) {
+          this.edMenu.classList.toggle( "show-menu" );
         };
 
       polymer( "ed-side-menu", {
@@ -22,19 +20,18 @@
                 console.dir( this );
               }.bind( this ));
           }
-          this.menuList = this.shadowRoot.getElementById( "menu-list" );
           this.edMenu = document.getElementById( "side-menu" );
-
+          this.router = document.getElementById( "root-app-router" );
           // handlers
           this.handlers = {
             triggerMenu: triggerMenuHandler.bind( this )
           };
         },
         attached: function() {
-          this.menuList.addEventListener( "click", this.handlers.triggerMenu );
+          this.router.addEventListener( "activate-route-end", this.handlers.triggerMenu );
         },
         detached: function() {
-          this.menuList.removeEventListener( "click", this.handlers.triggerMenu );
+          this.router.removeEventListener( "activate-route-end", this.handlers.triggerMenu );
         },
         "ed-idChanged": function() {
           this.attributeChanged( "ed-id" );
