@@ -33,7 +33,6 @@
       /* LIFECYCLE */
       ready: function() {
         this.submitButton = this.shadowRoot.querySelector( "#registration-submit" );
-        this.errorPass = this.shadowRoot.getElementById( "errorPassword" );
 
         this.firstNameInput = this.shadowRoot.querySelector( ".name-first" )
           .shadowRoot.querySelector( "input" );
@@ -58,6 +57,12 @@
           .shadowRoot.querySelector( ".form-input-container" );
         this.zipField = this.shadowRoot.querySelector( ".zipcode" )
           .shadowRoot.querySelector( ".form-input-container" );
+        this.firstNameField = this.shadowRoot.querySelector( ".name-first" )
+          .shadowRoot.querySelector( ".form-input-container" );
+        this.lastNameField = this.shadowRoot.querySelector( ".name-last" )
+          .shadowRoot.querySelector( ".form-input-container" );
+        this.dateField = this.shadowRoot.querySelector( ".birthday" )
+          .shadowRoot.querySelector( ".form-input-container" );
 
         this.edformInputsArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-form-input" ));
         this.pairedInputsArray = [ this.passwordInput, this.passwordConfirmInput ];
@@ -65,23 +70,23 @@
       },
 
       attached: function() {
-        this.submitButton.setAttribute( "disabled", "" );
+        // this.submitButton.setAttribute( "disabled", "" );
 
         // submit form on mousedown and touchstart events
         eventNames.forEach( function( event ) {
-          this.submitButton.addEventListener( event, this.submitForm.bind( this ), false );
+          this.submitButton.addEventListener( event, this.submitCheck.bind( this ), false );
         }.bind( this ));
 
         // submit check happens on keyup of all input fields
-        this.formInputsArray.forEach( function( formInput ) {
-          formInput.addEventListener( "keyup", this.submitCheck.bind( this ));
-        }.bind( this ));
+        //this.formInputsArray.forEach( function( formInput ) {
+        //  formInput.addEventListener( "keyup", this.submitCheck.bind( this ));
+        //}.bind( this ));
 
         // email and zip validation happens on blur of each of these fields
-        this.emailInput.addEventListener( "blur", this.emailCheck.bind( this ));
-        this.zipcodeInput.addEventListener( "blur", this.zipCheck.bind( this ));
-        this.passwordInput.addEventListener( "blur", this.validateRegexPassword.bind( this ));
-        this.passwordConfirmInput.addEventListener( "blur", this.validateKeyPassword.bind( this ));
+        //this.emailInput.addEventListener( "blur", this.emailCheck.bind( this ));
+        //this.zipcodeInput.addEventListener( "blur", this.zipCheck.bind( this ));
+        //this.passwordInput.addEventListener( "blur", this.validateRegexPassword.bind( this ));
+        //this.passwordConfirmInput.addEventListener( "blur", this.validateKeyPassword.bind( this ));
       },
 
       // checks whether all fields are filled in before enabling submit button
@@ -91,9 +96,18 @@
           validZip = validateZipCode( this ),
           validEmail = validateEmail( this );
 
-        if ( areValidInputs && validZip && validEmail && this.pairedInput.isValid ) {
-          this.submitButton.removeAttribute( "disabled" );
+        // Check all inputs on submit
+        this.emailCheck();
+        this.zipCheck();
+        this.validateRegexPassword();
+        this.validateKeyPassword();
+        this.firstNameCheck();
+        this.lastNameCheck();
+        this.dateCheck();
 
+        if ( areValidInputs && validZip && validEmail && this.pairedInput.isValid ) {
+          // this.submitButton.removeAttribute( "disabled" );
+          console.log( "hit" );
           // submit happens on enter
           this.formInputsArray.forEach( function( formInput ) {
             formInput.addEventListener( "keyup", function( event ) {
@@ -103,10 +117,10 @@
               return false;
             }.bind( this ));
           }.bind( this ));
-
-        } else {
-          this.submitButton.setAttribute( "disabled", "" );
         }
+        // else {
+        //  this.submitButton.setAttribute( "disabled", "" );
+        // }
       },
 
       emailCheck: function() {
@@ -136,23 +150,61 @@
       },
 
       validateRegexPassword: function() {
+        var errorPass = this.shadowRoot.getElementById( "errorPassword" );
+
         if ( this.passwordInput.validity.valid ) {
-          this.errorPass.innerHTML = "";
+          errorPass.innerHTML = "";
           this.pairedInput.removeAttribute( "invalid-primary" );
         } else {
-          this.errorPass.innerHTML = "Password is not 8 characters long";
+          errorPass.innerHTML = "Password is not 8 characters long";
           this.pairedInput.setAttribute( "invalid-primary", "" );
         }
       },
       validateKeyPassword: function() {
+        var errorConf = this.shadowRoot.getElementById( "errorConfirm" );
+
         if ( this.pairedInput.isValid && this.passwordInput !== "" && this.passwordConfirmInput !== "" ) {
-          this.errorPass.innerHTML = "";
+          errorConf.innerHTML = "";
           this.pairedInput.removeAttribute( "invalid-confirm" );
         } else {
-          this.errorPass.innerHTML = "Passwords must match";
+          errorConf.innerHTML = "Passwords must match";
           this.pairedInput.setAttribute( "invalid-confirm", "" );
         }
       },
+      firstNameCheck: function() {
+        var errorFirst = this.shadowRoot.getElementById( "errorFirstName" );
+
+        if ( this.firstNameInput.value === "" ) {
+          errorFirst.innerHTML = "First Name is Required"
+          this.firstNameField.classList.add( "invalid-field" );
+        } else {
+          errorFirst.innerHTML = "";
+          this.firstNameField.classList.remove( "invalid-field" );
+        }
+      },
+      lastNameCheck: function() {
+        var errorLast = this.shadowRoot.getElementById( "errorLastName" );
+
+        if ( this.lastNameInput.value === "" ) {
+          errorLast.innerHTML = "Last Name is Required";
+          this.lastNameField.classList.add( "invalid-field" );
+        } else {
+          errorLast.innerHTML = "";
+          this.lastNameField.classList.remove( "invalid-field" );
+        }
+      },
+      dateCheck: function() {
+        var errorDate = this.shadowRoot.getElementById( "errorDate" );
+
+        if ( this.yearOfBirthInput.value === "" ) {
+          errorDate.innerHTML = "Birth Date is Required";
+          this.dateField.classList.add( "invalid-field" );
+        } else {
+          errorDate.innerHTML = "";
+          this.dateField.classList.remove( "invalid-field" );
+        }
+      },
+
       submitForm: function( event ) {
         var registrationDataBlock;
         // TODO remove debug
