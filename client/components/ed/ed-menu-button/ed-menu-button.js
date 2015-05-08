@@ -8,7 +8,6 @@
     /* LIFECYCLE */
     ready: function() {
       this.edMenu = document.getElementById( "side-menu" );
-      this.appRouter = document.getElementById( "animation-wrapper" );
       this.triggerBtn = this.shadowRoot.getElementById( "menu-trigger" );
       this.handlers = {
         triggerMenu: triggerMenuHandler.bind( this )
