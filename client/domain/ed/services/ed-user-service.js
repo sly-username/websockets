@@ -243,9 +243,9 @@ edUserService.register = function( args ) {
         return response;
       }
 
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        return response;
+      }
     })
     .catch( error => {
       console.log( "Error registering new user in User Service" );

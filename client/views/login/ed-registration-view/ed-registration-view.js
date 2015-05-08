@@ -38,17 +38,19 @@
           this.zipCheck();
           this.validateRegexPassword();
           this.validateKeyPassword();
-          this.checkForEmptyValue( "errorFirstName", this.firstNameInput, this.firstNameField, "First Name" );
-          this.checkForEmptyValue( "errorLastName", this.lastNameInput, this.lastNameField, "Last Name" );
-          this.checkForEmptyValue( "errorDate", this.yearOfBirthInput, this.dateField, "Birth Date" );
-          this.checkForEmptyValue( "errorInvite", this.inviteCodeInput, this.inviteField, "Referral Code" );
+          this.checkForEmptyValue( "errorFirstName", this.firstNameInput,
+            this.firstNameField, "First Name" );
+          this.checkForEmptyValue( "errorLastName", this.lastNameInput,
+            this.lastNameField, "Last Name" );
+          this.checkForEmptyValue( "errorDate", this.yearOfBirthInput,
+            this.dateField, "Birth Date" );
+          this.checkForEmptyValue( "errorInvite", this.inviteCodeInput,
+            this.inviteField, "Referral Code" );
 
           if ( areValidInputs && validZip && validEmail && this.pairedInput.isValid ) {
             this.submitForm();
           }
         };
-
-
       polymer( "ed-registration-view", {
         /* LIFECYCLE */
         ready: function() {
@@ -176,6 +178,9 @@
           };
           userService.register( registrationDataBlock )
             .then( function( response ) {
+              if ( response.status.code === 10 ) {
+                console.log( "error referral code response hit" );
+              }
 //              // todo error messages for invalid referral code and already registered email
 //              var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
 //                errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
