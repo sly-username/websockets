@@ -60,9 +60,7 @@
     };
 
     togglePlayerHandler = function( event ) {
-      var tmpId = event.target.id;
-
-      switch ( tmpId ) {
+      switch ( event.target.id ) {
         case "minify-icon":
           this.miniPlayerWrapper.classList.add( "show-mini" );
           this.mainPlayerWrapper.classList.add( "hide-main" );
@@ -104,8 +102,7 @@
 
         this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
-
-        playerService.startMusicDiscovery( "profileBlend" );
+        //playerService.startMusicDiscovery( "profileBlend" );
       },
       detached: function() {
         clearInterval( this.intervalId );
