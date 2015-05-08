@@ -5,8 +5,10 @@
     .then(function( imported ) {
       var
         dataService = imported.default,
-        triggerMenuHandler = function( ) {
-          this.edMenu.classList.toggle( "show-menu" );
+        triggerMenuHandler = function() {
+          if ( this.edMenu.classList.contains( "show-menu" ) ) {
+            this.edMenu.classList.remove( "show-menu" );
+          }
         };
 
       polymer( "ed-side-menu", {
