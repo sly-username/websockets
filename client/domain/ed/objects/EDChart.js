@@ -68,8 +68,9 @@ export default class EDChart extends EDModel {
   }
 
   getRankForId( id ) {
+    console.log( this.leaderboard );
     for ( let i = 0 ; i < this.leaderboard.length ; i++ ) {
-      if ( this.leaderboard.id === id ) {
+      if ( this.leaderboard[ i ].id === id ) {
         return this.leaderboard[ i ].value;
       }
     }

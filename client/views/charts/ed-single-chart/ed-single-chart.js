@@ -37,7 +37,7 @@
         "chart-name": {
           reflect: true
         },
-        "chart-delay": {
+        "default-copy": {
           reflect: true
         }
       },
@@ -53,8 +53,8 @@
       get chartIdentifier() {
         return this[ "chart-name" ];
       },
-      get chartDelay() {
-        return this[ "chart-delay" ];
+      get defaultCopy() {
+        return this[ "default-copy" ];
       },
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
@@ -72,6 +72,8 @@
           this.isFan = false;
           this.isTrack = true;
         }
+
+
 
         //var chartDelay = parseInt( this.chartDelay, 10 );
         //
@@ -93,11 +95,19 @@
         return discoverService.getLeaderboardCharts( chartIdentifier )
           .then( function( edChart ) {
             this.edChart = edChart;
+
+            if ( edChart.leaderboard === [] ) {
+              this.noRankings = true;
+              this.areRankings = false;
+            } else {
+              this.noRankings = false;
+              this.areRankings = true;
+            }
+
             this.dateEnds = edChart.dateEnds;
             edChart.leaderboardCollection.getInSequence( 0, 10, true )
               .then( function( chartList ) {
                 this.rankingsList = chartList;
-                //this.rank = edChart.
                 this.countdown = edChart.timeRemaining;
                 // todo change to id when updated
                 this.score = edChart.getRankForId( edChart.leaderboard.id );
