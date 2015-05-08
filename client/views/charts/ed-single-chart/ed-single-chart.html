@@ -29,15 +29,20 @@
               <p class="chart-rank">{{rankIndex +1}}</p>
 
               <div class="img-container">
-                <img-placeholder src="{{rankedUser.artUrl}}"></img-placeholder>
+                <template if="{{isFan}}">
+                  <img-placeholder src="{{rankedUser.artUrl}}"></img-placeholder>
+                </template>
+                <template if="{{isTrack}}">
+                  <img-placeholder src="{{rankedUser.art.original}}"></img-placeholder>
+                </template>
               </div>
               <p class="chart-points">{{score}}</p>
               <template if="{{isFan}}">
-                <p class="fan-name">{{edChart.displayName}} Fan</p>
+                <p class="fan-name">{{rankedUser.displayName}} Fan</p>
               </template>
               <template if="{{isTrack}}">
-                <p class="track-name">{{edChart.name}} Artist</p>
-                <p class="artist-name">{{edChart.displayName}}</p>
+                <p class="track-name">{{rankedUser.name}}</p>
+                <p class="artist-name">{{rankedUser.displayName}}Artist</p>
               </template>
             </li>
           </template>

@@ -68,7 +68,7 @@
         if (( /fan$/ ).test( this.chartIdentifier )) {
           this.isFan = true;
           this.isTrack = false;
-        } else if (( /fan$/ ).test( this.chartIdentifier )) {
+        } else if (( /track$/ ).test( this.chartIdentifier )) {
           this.isFan = false;
           this.isTrack = true;
         }
