@@ -2,9 +2,9 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 import EDCollection from "domain/ed/storage/EDCollection";
 
 import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
-import edConnectionService from "domain/ed/services/ed-connection-service";
 import edDiscoverService from "domain/ed/services/ed-discover-service";
 import edDataService from "domain/ed/services/ed-data-service";
+import edUserService from "domain/ed/services/ed-user-service";
 
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
@@ -287,6 +287,8 @@ export default edPlayerService = {
 
       updateCurrentIndex( currentIndex + 1 );
 
+      this.getUserStats();
+
       edAnalyticsService.send( "quit", {
         trackId: currentTrack.id,
         timecode: audio.currentTime,
@@ -351,6 +353,13 @@ export default edPlayerService = {
 
             return edArtist;
           });
+      });
+  },
+
+  getUserStats: function() {
+    return edUserService.getStats()
+      .then( stats => {
+        console.log( "stats", stats );
       });
   }
 };

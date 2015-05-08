@@ -9,7 +9,8 @@
       intervalTime = 500,
       updateTimeHandler,
       playerServiceEventHandler,
-      togglePlayerHandler;
+      togglePlayerHandler,
+      injectStatsHandler;
 
     // helpers
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -78,6 +79,10 @@
       }
     };
 
+    injectStatsHandler = function( event ) {
+      playerService.getUserStats();
+    };
+
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
@@ -95,7 +100,8 @@
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          togglePlayer: togglePlayerHandler.bind( this )
+          togglePlayer: togglePlayerHandler.bind( this ),
+          injectStats: injectStatsHandler.bind( this )
         };
       },
       attached: function() {
@@ -106,6 +112,8 @@
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
 
         playerService.startMusicDiscovery( "profileBlend" );
+
+        this.handler.injectStats();
       },
       detached: function() {
         clearInterval( this.intervalId );
