@@ -22,7 +22,8 @@ var
   hasScrubbedHandler,
   trackEndedHandler,
   rateCurrentlyPlaying,
-  updateCurrentIndex;
+  updateCurrentIndex,
+  getEDTrack;
 
 // helpers
 hasScrubbedHandler = function( event ) {
@@ -59,6 +60,20 @@ rateCurrentlyPlaying = function( number ) {
 updateCurrentIndex = function( newIndex ) {
   currentIndex = newIndex;
   tracksCollection.getRange( newIndex, newIndex + 2 );
+};
+
+getEDTrack = function( tracks, index ) {
+  return tracks.get( index )
+    .then( edTrack => {
+      return edDataService.getArtistById( edTrack.profileId, 10 )
+        .then( edArtist => {
+          currentArtist = edArtist;
+
+          edPlayerService.playTrack( edTrack );
+
+          return edArtist;
+        });
+    });
 };
 
 // init audio element
@@ -294,7 +309,7 @@ export default edPlayerService = {
       action: "skip"
     });
 
-    return this.getEDTrack( tracksCollection, currentIndex );
+    return getEDTrack( tracksCollection, currentIndex );
   },
 
   skipTo: function( index ) {
@@ -313,20 +328,6 @@ export default edPlayerService = {
     return rateCurrentlyPlaying( number );
   },
 
-  getEDTrack: function( tracks, index ) {
-    return tracks.get( index )
-      .then( edTrack => {
-        return edDataService.getArtistById( edTrack.profileId, 10 )
-          .then( edArtist => {
-            currentArtist = edArtist;
-
-            this.playTrack( edTrack );
-
-            return edArtist;
-          });
-      });
-  },
-
   queueTracksAndPlay: function( tracks, show ) {
     if ( show ) {
       document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
@@ -337,7 +338,7 @@ export default edPlayerService = {
 
     updateCurrentIndex( currentIndex );
 
-    return this.getEDTrack( tracksCollection, currentIndex );
+    return getEDTrack( tracksCollection, currentIndex );
   },
 
   startMusicDiscovery: function( type ) {
