@@ -33,6 +33,7 @@
       /* LIFECYCLE */
       ready: function() {
         this.submitButton = this.shadowRoot.querySelector( "#registration-submit" );
+        this.errorPass = this.shadowRoot.getElementById( "errorPassword" );
 
         this.firstNameInput = this.shadowRoot.querySelector( ".name-first" )
           .shadowRoot.querySelector( "input" );
@@ -79,6 +80,8 @@
         // email and zip validation happens on blur of each of these fields
         this.emailInput.addEventListener( "blur", this.emailCheck.bind( this ));
         this.zipcodeInput.addEventListener( "blur", this.zipCheck.bind( this ));
+        this.passwordInput.addEventListener( "blur", this.validateRegexPassword.bind( this ));
+        this.passwordConfirmInput.addEventListener( "blur", this.validateKeyPassword.bind( this ));
       },
 
       // checks whether all fields are filled in before enabling submit button
@@ -132,6 +135,24 @@
         }
       },
 
+      validateRegexPassword: function() {
+        if ( this.passwordInput.validity.valid ) {
+          this.errorPass.innerHTML = "";
+          this.pairedInput.removeAttribute( "invalid-primary" );
+        } else {
+          this.errorPass.innerHTML = "Password is not 8 characters long";
+          this.pairedInput.setAttribute( "invalid-primary", "" );
+        }
+      },
+      validateKeyPassword: function() {
+        if ( this.pairedInput.isValid && this.passwordInput !== "" && this.passwordConfirmInput !== "" ) {
+          this.errorPass.innerHTML = "";
+          this.pairedInput.removeAttribute( "invalid-confirm" );
+        } else {
+          this.errorPass.innerHTML = "Passwords must match";
+          this.pairedInput.setAttribute( "invalid-confirm", "" );
+        }
+      },
       submitForm: function( event ) {
         var registrationDataBlock;
         // TODO remove debug
