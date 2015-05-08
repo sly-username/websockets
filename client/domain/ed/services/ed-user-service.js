@@ -131,7 +131,7 @@ edUserService.login = function( email, password ) {
       return currentProfile;
     })
     .catch(( error ) => {
-      console.error( error );
+      console.error( error.stack );
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
