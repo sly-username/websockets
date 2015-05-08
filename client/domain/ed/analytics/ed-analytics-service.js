@@ -120,6 +120,7 @@ export default edAnalyticsService = {
     } catch ( error ) {
       console.warn( "Suppressing exception on analytics call" );
       console.warn( "Original Message: %s", error.message );
+      console.error( error.stack );
     }
   },
 
@@ -150,11 +151,20 @@ export default edAnalyticsService = {
 // Attach listener for route request event
 document.getElementById( "root-app-router" )
   .addEventListener( "activate-route-end", function( event ) {
-    // TODO REMOVE DEBUG
-    console.log( "saw route change %o", event.detail );
+    // remove "router" from event model since is causes a circular reference
+    var
+      params = Object.keys( event.detail.model )
+        .reduce(function( accumulator, key ) {
+          if ( key === "router" ) {
+            return accumulator;
+          }
+
+          accumulator[ key ] = event.detail.model[ key ];
+          return accumulator;
+        }, {});
 
     edAnalyticsService.send( "routeRequest", {
       route: event.detail.path,
-      params: event.detail.model
+      params
     });
   });
