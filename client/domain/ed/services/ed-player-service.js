@@ -58,7 +58,7 @@ rateCurrentlyPlaying = function( number ) {
 
 updateCurrentIndex = function( newIndex ) {
   currentIndex = newIndex;
-  tracksCollection.getRange( newIndex, newIndex + 3 );
+  tracksCollection.getRange( newIndex, newIndex + 2 );
 };
 
 // init audio element
@@ -180,7 +180,6 @@ export default edPlayerService = {
     // playing same track toggles the play pause events
     if ( currentTrack != null && edTrack === currentTrack ) {
       if ( this.isPlaying ) {
-        console.log( "is it playig?" );
         return this.pause();
       }
 
@@ -224,7 +223,7 @@ export default edPlayerService = {
   },
 
   pause: function() {
-    if ( this.isPlaying ) {
+    if ( this.isPlaying || this.isPaused ) {
       audio.pause();
 
       this.emitter.dispatch( createEvent( "playerUpdate", {
@@ -233,7 +232,7 @@ export default edPlayerService = {
         }
       }));
 
-      edAnalyticsService.send( "pause", {
+      edAnalyticsService.send ( "pause", {
         trackId: currentTrack.id,
         timecode: audio.currentTime
       });
@@ -282,18 +281,12 @@ export default edPlayerService = {
     return this.queue.shift();
   },
 
-  next: function() {
+  skip: function() {
     if ( this.isPlaying || this.isPaused ) {
       audio.pause();
     }
 
     updateCurrentIndex( currentIndex + 1 );
-
-    this.emitter.dispatch( createEvent( "playerUpdate", {
-      detail: {
-        type: "skip"
-      }
-    }));
 
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id,
@@ -342,7 +335,7 @@ export default edPlayerService = {
 
     this.enqueue( tracks );
 
-    console.log( "tracksCollection", tracksCollection );
+    updateCurrentIndex( currentIndex );
 
     return this.getEDTrack( tracksCollection, currentIndex );
   },

@@ -51,8 +51,7 @@
       }
 
       if ( eventType === "skip" ) {
-        console.log( "eventType", eventType );
-        playerService.next();
+        playerService.skip();
       }
 
       if ( eventType === "showRatings" ) {
