@@ -110,6 +110,7 @@
                 this.rankingsList = chartList;
                 this.countdown = edChart.timeRemaining;
                 // todo change to id when updated
+                console.log( edChart );
                 this.score = edChart.getRankForId( edChart.leaderboard.id );
               }.bind( this ));
             return edChart;
