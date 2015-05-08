@@ -61,9 +61,7 @@
     };
 
     togglePlayerHandler = function( event ) {
-      var tmpId = event.target.id;
-
-      switch ( tmpId ) {
+      switch ( event.target.id ) {
         case "minify-icon":
           this.miniPlayerWrapper.classList.add( "show-mini" );
           this.mainPlayerWrapper.classList.add( "hide-main" );
