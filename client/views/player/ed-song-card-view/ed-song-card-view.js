@@ -104,8 +104,6 @@
 
         this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
-
-        playerService.startMusicDiscovery( 3 );
       },
       detached: function() {
         clearInterval( this.intervalId );
