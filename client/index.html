@@ -44,15 +44,11 @@
 
 <div id="animation-wrapper">
   <app-router id="root-app-router" mode="auto" trailingSlash="ignore" typecast="string">
-    <app-route path="/home">
-      <template>
-        <h1>Testing, is this thing on? You are home now.</h1>
-        <a href="#/">Go Back to Main</a>
-      </template>
-    </app-route>
+    <!-- ROOT -->
+    <app-route path="/" redirect="/login"></app-route>
 
     <!-- LOGIN -->
-    <app-route path="/" element="ed-login-view" bindRouter></app-route>
+    <app-route path="/login" element="ed-login-view" bindRouter></app-route>
 
     <!-- REGISTRATION -->
     <app-route regex path="/^\/(register|registration)$/i" element="ed-registration-view" bindRouter></app-route>
@@ -68,9 +64,6 @@
 
     <!-- RETRIEVE PASSWORD -->
     <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
-
-    <!-- PLAYER -->
-    <app-route path="/player" element="ed-song-card-view"></app-route>
 
     <!-- CHARTS -->
     <app-route path="/charts" element="ed-charts-view"></app-route>
@@ -96,6 +89,9 @@
     <!--<app-route path=""-->
 
     <!-- catch all route, 404 page? or redirect... -->
+    <app-route path="*" redirect="/login"></app-route>
+
+    <!-- DEBUG PAGE -->
     <app-route path="/debug">
       <template>
         <style>
