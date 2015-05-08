@@ -96,13 +96,16 @@
           .then( function( edChart ) {
             this.edChart = edChart;
 
-            if ( edChart.leaderboard === [] ) {
-              this.noRankings = true;
-              this.areRankings = false;
-            } else {
-              this.noRankings = false;
-              this.areRankings = true;
-            }
+            //if ( edChart.leaderboard === [] ) {
+            //  this.noRankings = true;
+            //  this.areRankings = false;
+            //} else {
+            //  this.noRankings = false;
+            //  this.areRankings = true;
+            //}
+
+            //this.noRankings = true;
+            this.areRankings = true;
 
             this.dateEnds = edChart.dateEnds;
             edChart.leaderboardCollection.getInSequence( 0, 10, true )
@@ -110,7 +113,6 @@
                 this.rankingsList = chartList;
                 this.countdown = edChart.timeRemaining;
                 // todo change to id when updated
-                console.log( edChart );
                 this.score = edChart.getRankForId( edChart.leaderboard.id );
               }.bind( this ));
             return edChart;
