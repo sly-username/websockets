@@ -3,7 +3,13 @@
 
   System.import( "domain/ed/services/ed-data-service" )
     .then(function( imported ) {
-      var dataService = imported.default;
+      var
+        dataService = imported.default,
+        triggerMenuHandler = function() {
+          if ( this.edMenu.classList.contains( "show-menu" ) ) {
+            this.edMenu.classList.remove( "show-menu" );
+          }
+        };
 
       polymer( "ed-side-menu", {
         /* LIFECYCLE */
@@ -16,9 +22,19 @@
                 console.dir( this );
               }.bind( this ));
           }
+          this.edMenu = document.getElementById( "side-menu" );
+          this.router = document.getElementById( "root-app-router" );
+          // handlers
+          this.handlers = {
+            triggerMenu: triggerMenuHandler.bind( this )
+          };
         },
-        attached: function() {},
-        detached: function() {},
+        attached: function() {
+          this.router.addEventListener( "activate-route-end", this.handlers.triggerMenu );
+        },
+        detached: function() {
+          this.router.removeEventListener( "activate-route-end", this.handlers.triggerMenu );
+        },
         "ed-idChanged": function() {
           this.attributeChanged( "ed-id" );
         },
