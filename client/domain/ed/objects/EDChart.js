@@ -7,6 +7,7 @@ import EDModel from "domain/ed/objects/EDModel";
 import EDProfile from "domain/ed/objects/profile/EDProfile";
 import EDFan from "domain/ed/objects/profile/EDFan";
 import EDArtist from "domain/ed/objects/profile/EDArtist";
+import EDTrack from "domain/ed/objects/media/EDTrack";
 
 import EDCollection from "domain/ed/storage/EDCollection";
 
@@ -16,7 +17,7 @@ var profileTypeForChartName = function( chartName ) {
   } else if ( ( /artist$/ ).test( chartName ) ) {
     return EDArtist.MODEL_TYPE;
   } else if ( ( /track$/ ).test( chartName ) ) {
-    return EDChart.MODEL_TYPE;
+    return EDTrack.MODEL_TYPE;
   }
   return EDProfile.MODEL_TYPE;
 };
@@ -32,19 +33,17 @@ export default class EDChart extends EDModel {
     argsCopy.type = null;
     super( argsCopy );
 
-    //if ( args.data.dateEnds ) {
-    //  argsCopy.dateEnds = new Date( args.data.dateEnds );
-    //}
-    var dateThing = new Date( args.data.dateEnds );
-    console.log( dateThing );
+    // todo won't let me add another property
+    if ( args.dateEnds ) {
+      argsCopy.dateEnds = new Date( args.dateEnds );
+    }
 
     define.enumReadOnly( this, [
       "chartName",
       "dateEnds"
-    ], argsCopy );
+    ], argsCopy.data );
 
-    define.enumReadOnlyDeep( this, [ "leaderboard" ], args );
-    console.log( args );
+    define.enumReadOnlyDeep( this, [ "leaderboard" ], args.data );
 
     this.leaderboardCollection = new EDCollection(
       profileTypeForChartName( args.data.chartName ),
@@ -54,7 +53,7 @@ export default class EDChart extends EDModel {
   }
 
   get timeRemaining() {
-    var end = new Date( this.raw.data.dateEnds ),
+    var end = new Date( this.dateEnds ),
       current = new Date(),
      timeLeft = end - current,
     _seconds = 1000,
@@ -68,14 +67,12 @@ export default class EDChart extends EDModel {
     return `${daysLeft}d ${hoursLeft}h ${minutesLeft}m`;
   }
 
-  getRankForId( profileId ) {
-    console.log( "chartlist", this.chartlist );
-    console.log( this.args );
-    //for ( let i = 0 ; i < this.chartList.data.leaderboard.length ; i++ ) {
-    //  if ( this.chartList.data.leaderboard.profileId === profileId ) {
-    //    return this.chartList.data.leaderboard[ i ].num;
-    //  }
-    //}
+  getRankForId( id ) {
+    for ( let i = 0 ; i < this.leaderboard.length ; i++ ) {
+      if ( this.leaderboard.id === id ) {
+        return this.leaderboard[ i ].value;
+      }
+    }
 
     return -1;
   }

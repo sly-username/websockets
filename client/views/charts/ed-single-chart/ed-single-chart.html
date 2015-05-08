@@ -24,15 +24,21 @@
         </div>
 
         <ul id="ranks-list" class="rankings">
-          <template repeat="{{rankedUser in rankingsList}}">
-            <li ed-id="{{rankedUser.data.leaderboard.profileId}}">
-              <p class="chart-rank">{{rankedUser[i] + 1}}</p>
+          <template repeat="{{rankedUser, rankIndex in rankingsList}}">
+            <li ed-id="{{rankedUser.leaderboard.profileId}}">
+              <p class="chart-rank">{{rankIndex +1}}</p>
 
               <div class="img-container">
                 <img-placeholder src="{{rankedUser.artUrl}}"></img-placeholder>
               </div>
               <p class="chart-points">{{score}}</p>
-              <p class="chart-name">{{rankedUser.displayName}}</p>
+              <template if="{{isFan}}">
+                <p class="fan-name">{{edChart.displayName}} Fan</p>
+              </template>
+              <template if="{{isTrack}}">
+                <p class="track-name">{{edChart.name}} Artist</p>
+                <p class="artist-name">{{edChart.displayName}}</p>
+              </template>
             </li>
           </template>
         </ul>

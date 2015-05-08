@@ -36,6 +36,9 @@
         },
         "chart-name": {
           reflect: true
+        },
+        "chart-delay": {
+          reflect: true
         }
       },
       get chartTitle() {
@@ -50,12 +53,29 @@
       get chartIdentifier() {
         return this[ "chart-name" ];
       },
+      get chartDelay() {
+        return this[ "chart-delay" ];
+      },
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
         this.arrowRight = this.$[ "arrow-right" ];
       },
       attached: function() {
         this.getLeaderBoard();
+
+        console.log( this.chartIdentifier );
+
+        if (( /fan$/ ).test( this.chartIdentifier )) {
+          this.isFan = true;
+          this.isTrack = false;
+        } else if (( /fan$/ ).test( this.chartIdentifier )) {
+          this.isFan = false;
+          this.isTrack = true;
+        }
+
+        //var chartDelay = parseInt( this.chartDelay, 10 );
+        //
+        //this.async( this.getLeaderBoard(), chartDelay );
 
         this.handler = {
           leftMove: leftMoveHandler.bind( this ),
@@ -72,16 +92,15 @@
         var chartIdentifier = this.chartIdentifier;
         return discoverService.getLeaderboardCharts( chartIdentifier )
           .then( function( edChart ) {
-            console.log( edChart );
             this.edChart = edChart;
-            this.dateEnds = edChart.raw.data.dateEnds;
+            this.dateEnds = edChart.dateEnds;
             edChart.leaderboardCollection.getInSequence( 0, 10, true )
               .then( function( chartList ) {
                 this.rankingsList = chartList;
-                // todo change to id when updated
+                //this.rank = edChart.
                 this.countdown = edChart.timeRemaining;
-                //this.score = edChart.getRankForId( chartList.data.leaderboard.profileId );
-                console.log( chartList );
+                // todo change to id when updated
+                this.score = edChart.getRankForId( edChart.leaderboard.id );
               }.bind( this ));
             return edChart;
           }.bind( this ));
