@@ -298,4 +298,16 @@ edUserService.resetPassword = function( resetCode, password ) {
     });
 };
 
+edUserService.getStats = function() {
+  return edConnectionService.request( "user/stats/get", 10 )
+    .then( response => {
+      return response.data.stats;
+    })
+    .catch( error => {
+      console.warn( "error retrieving user stats in user service" );
+      console.log( error );
+      throw error;
+    });
+};
+
 export default edUserService;

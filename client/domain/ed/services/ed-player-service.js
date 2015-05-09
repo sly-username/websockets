@@ -2,9 +2,9 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 import EDCollection from "domain/ed/storage/EDCollection";
 
 import edAnalyticsService from "domain/ed/analytics/ed-analytics-service";
-import edConnectionService from "domain/ed/services/ed-connection-service";
 import edDiscoverService from "domain/ed/services/ed-discover-service";
 import edDataService from "domain/ed/services/ed-data-service";
+import edUserService from "domain/ed/services/ed-user-service";
 
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
@@ -17,6 +17,8 @@ var
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
   hasScrubbed = false,
+  completedListens = null,
+  ratedTracks = null,
   edPlayerService,
   tracksCollection,
   hasScrubbedHandler,
@@ -100,6 +102,13 @@ export default edPlayerService = {
       minutes: this.currentMinutes,
       seconds: this.currentSeconds,
       length: this.trackLength
+    };
+  },
+
+  get userStats() {
+    return {
+      completedListens,
+      ratedTracks
     };
   },
 
@@ -210,6 +219,8 @@ export default edPlayerService = {
         audio.src = response.data.url;
         audio.play();
 
+        this.getCurrentUserStats();
+
         this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
@@ -303,6 +314,8 @@ export default edPlayerService = {
 
     updateCurrentIndex( currentIndex + 1 );
 
+    this.getUserStats();
+
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id,
       timecode: audio.currentTime,
@@ -348,12 +361,24 @@ export default edPlayerService = {
 
         this.queueTracksAndPlay( trackIds );
 
+        this.getCurrentUserStats();
+
         return trackIds;
       })
       .catch(( error ) => {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
         throw error;
+      });
+  },
+
+  getCurrentUserStats: function() {
+    return edUserService.getStats()
+      .then( stats => {
+        completedListens = stats.completedListens;
+        ratedTracks = stats.ratedTracks;
+
+        return stats;
       });
   }
 };
