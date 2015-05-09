@@ -9,7 +9,8 @@
       intervalTime = 500,
       updateTimeHandler,
       playerServiceEventHandler,
-      togglePlayerHandler;
+      togglePlayerHandler,
+      injectStatsHandler;
 
     // helpers
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -36,10 +37,13 @@
 
       if ( eventType === "play" ) {
         playerService.play();
+
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.bioText.innerText = playerService.currentStats.currentArtist.bio;
+
+        this.handler.injectStats();
       }
 
       if ( eventType === "scrubStart" ) {
@@ -76,6 +80,12 @@
       }
     };
 
+    injectStatsHandler = function() {
+      console.log( "test" );
+      this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
+      this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
+    };
+
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
@@ -93,7 +103,8 @@
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          togglePlayer: togglePlayerHandler.bind( this )
+          togglePlayer: togglePlayerHandler.bind( this ),
+          injectStats: injectStatsHandler.bind( this )
         };
       },
       attached: function() {

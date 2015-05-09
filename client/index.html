@@ -88,9 +88,6 @@
 
     <!--<app-route path=""-->
 
-    <!-- catch all route, 404 page? or redirect... -->
-    <app-route path="*" redirect="/login"></app-route>
-
     <!-- DEBUG PAGE -->
     <app-route path="/debug">
       <template>
@@ -128,6 +125,9 @@
         </nav>
       </template>
     </app-route>
+
+    <!-- catch all route, 404 page? or redirect... -->
+    <app-route path="*" redirect="/login"></app-route>
   </app-router>
 </div>
 
