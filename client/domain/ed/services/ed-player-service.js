@@ -17,8 +17,8 @@ var
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
   hasScrubbed = false,
-  completedListens,
-  ratedTracks,
+  completedListens = null,
+  ratedTracks = null,
   edPlayerService,
   tracksCollection,
   hasScrubbedHandler,
@@ -361,6 +361,8 @@ export default edPlayerService = {
 
         this.queueTracksAndPlay( trackIds );
 
+        this.getCurrentUserStats();
+        
         return trackIds;
       })
       .catch(( error ) => {
