@@ -3,7 +3,7 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import edDataService from "domain/ed/services/ed-data-service";
+import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
@@ -311,7 +311,12 @@ edUserService.editProfile = function( first, last ) {
 
   return edConnectionService.request( "profile/set", 10, json )
     .then( response => {
-      return response;
+      // TODO REMOVE THIS HACK WHEN FIXED BY SERVERSIDE
+      if ( response.meta.modelType === "fan" ) {
+        response.meta.modelType = "profile-fan";
+      }
+
+      return updateModel( response );
     })
     .catch( error => {
       console.log( "profile update was not successfully sent" );
