@@ -178,22 +178,19 @@
           };
           userService.register( registrationDataBlock )
             .then( function( response ) {
-              if ( response.status.code === 10 ) {
-                console.log( "error referral code response hit" );
-              }
-//              // todo error messages for invalid referral code and already registered email
-//              var errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
-//                errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
-//
-//              if ( ( /invite/ ).test( response.message )) {
-//                errorReferralCode.innerHTML = "Please reenter your referral code";
-//              } else if ( ( /email/ ).test( response.message )) {
-//                errorUsedEmail.innerHTML = "This email address has already been registered";
-//              } else {
-//                this.router.go( "/onboarding/like" );
-//              }
+              this.router.go( "/onboarding/like" );
             }.bind( this ))
             .catch( function( error ) {
+              // todo error messages for invalid referral code and already registered email
+//              var
+//                errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
+//                errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
+//
+//              if ( error.invalidFields.error === "10" ) {
+//                errorReferralCode.innerHTML = "Please reenter your referral code";
+//                this.inviteField.classList.add( "invalid-field" );
+//              }
+
               this.router.go( "/registration" );
               return error;
             });

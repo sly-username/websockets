@@ -244,7 +244,9 @@ edUserService.register = function( args ) {
       }
 
       if ( response && response.status && response.status.code && response.status.code === 10 ) {
-        return response;
+        let tError = new TypeError( "Problem with Registration" );
+        tError.invlidFields = response.meta.invalidFields;
+        throw tError;
       }
     })
     .catch( error => {
@@ -255,9 +257,6 @@ edUserService.register = function( args ) {
     })
     .then( response => {
       return edUserService.login( authBlock.email, authBlock.password );
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
     });
 };
 
