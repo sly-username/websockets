@@ -305,11 +305,6 @@ edUserService.editProfile = function( args ) {
       args
     }
   }).then( response => {
-    // TODO REMOVE THIS HACK WHEN FIXED BY SERVERSIDE
-    if ( response.meta.modelType === "fan" ) {
-      response.meta.modelType = "profile-fan";
-    }
-
     return updateModel( response );
   })
     .catch( error => {
