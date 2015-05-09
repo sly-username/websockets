@@ -82,22 +82,17 @@
         this.dispatchEvent( createUpdateEvent( "skip" ));
       },
       playerServiceEventHandler = function( event ) {
-        var
-          eventName,
-          eventType = event.detail.type,
-          state = this.playIcon.getAttribute( "name" );
+        var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
-        if ( eventType === "play" || state === "play" ) {
-          eventName = "play";
+        if ( eventType === "play" ) {
           this.playIcon.setAttribute( "name", "pause" );
         }
 
-        if ( eventType === "pause" || state === "pause" ) {
-          eventName = "pause";
+        if ( eventType === "pause" ) {
           this.playIcon.setAttribute( "name", "play" );
         }
 
-        this.dispatchEvent( createUpdateEvent( eventName ));
+        this.dispatchEvent( createUpdateEvent( eventType ));
       },
       initScrubberHandler = function() {
         // calculates the circumference of circles
@@ -144,7 +139,6 @@
       },
       attached: function() {
         // mouse events
-        this.playBtn.addEventListener( "click", this.handler.playerServiceEvent );
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.skipBtn.addEventListener( "click", this.handler.skipSong );
@@ -166,7 +160,6 @@
         this.handler.initScrubber();
       },
       detached: function() {
-        this.playBtn.removeEventListener( "click", this.handler.playerServiceEvent );
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.removeEventListener( "mouseup", this.handler.scrubFire );
