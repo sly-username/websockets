@@ -37,10 +37,13 @@
 
       if ( eventType === "play" ) {
         playerService.play();
+
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.bioText.innerText = playerService.currentStats.currentArtist.bio;
+
+        this.handler.injectStats();
       }
 
       if ( eventType === "scrubStart" ) {
@@ -78,7 +81,8 @@
     };
 
     injectStatsHandler = function( event ) {
-      playerService.getUserStats();
+      this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box ").innerText = playerService.userStats.completedListens;
+      this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box ").innerText = playerService.userStats.ratedTracks;
     };
 
     polymer( "ed-song-card-view", {
@@ -108,10 +112,6 @@
 
         this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
-
-        playerService.startMusicDiscovery( "profileBlend" );
-
-        this.handler.injectStats();
       },
       detached: function() {
         clearInterval( this.intervalId );

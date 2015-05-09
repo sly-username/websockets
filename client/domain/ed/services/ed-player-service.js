@@ -17,6 +17,8 @@ var
   emitter = new EventEmitter([ "play", "pause", "stop", "skip" ]),
   audio = new Audio() || document.createElement( "audio" ),
   hasScrubbed = false,
+  completedListens,
+  ratedTracks,
   edPlayerService,
   tracksCollection,
   hasScrubbedHandler,
@@ -85,6 +87,13 @@ export default edPlayerService = {
       minutes: this.currentMinutes,
       seconds: this.currentSeconds,
       length: this.trackLength
+    };
+  },
+
+  get userStats() {
+    return {
+      completedListens: completedListens,
+      ratedTracks: ratedTracks
     };
   },
 
@@ -194,6 +203,8 @@ export default edPlayerService = {
       .then(( response ) => {
         audio.src = response.data.url;
         audio.play();
+
+        this.getCurrentUserStats();
 
         this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
@@ -356,10 +367,13 @@ export default edPlayerService = {
       });
   },
 
-  getUserStats: function() {
+  getCurrentUserStats: function() {
     return edUserService.getStats()
       .then( stats => {
-        console.log( "stats", stats );
+        completedListens = stats.completedListens;
+        ratedTracks = stats.ratedTracks;
+
+        return stats;
       });
   }
 };
