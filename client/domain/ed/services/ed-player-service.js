@@ -107,8 +107,8 @@ export default edPlayerService = {
 
   get userStats() {
     return {
-      completedListens: completedListens,
-      ratedTracks: ratedTracks
+      completedListens,
+      ratedTracks
     };
   },
 
@@ -362,7 +362,7 @@ export default edPlayerService = {
         this.queueTracksAndPlay( trackIds );
 
         this.getCurrentUserStats();
-        
+
         return trackIds;
       })
       .catch(( error ) => {
