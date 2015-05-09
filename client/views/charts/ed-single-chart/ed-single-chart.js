@@ -39,6 +39,9 @@
         },
         "default-copy": {
           reflect: true
+        },
+        "chart-object": {
+          reflect: true
         }
       },
       get chartTitle() {
@@ -56,15 +59,19 @@
       get defaultCopy() {
         return this[ "default-copy" ];
       },
+      get chartObject() {
+        return this[ "chart-object" ];
+      },
+      set chartObject( value ) {
+        this[ "chart-object" ] = value;
+        return value;
+      },
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
         this.arrowRight = this.$[ "arrow-right" ];
+        this.countdown = this.chartObject.timeRemaining;
       },
       attached: function() {
-        this.getLeaderBoard();
-
-        console.log( this.chartIdentifier );
-
         if (( /fan$/ ).test( this.chartIdentifier )) {
           this.isFan = true;
           this.isTrack = false;
@@ -72,12 +79,6 @@
           this.isFan = false;
           this.isTrack = true;
         }
-
-
-
-        //var chartDelay = parseInt( this.chartDelay, 10 );
-        //
-        //this.async( this.getLeaderBoard(), chartDelay );
 
         this.handler = {
           leftMove: leftMoveHandler.bind( this ),
@@ -91,31 +92,21 @@
         this.arrowRight.removeEventListener( "click", this.handler.rightMove );
       },
       getLeaderBoard: function() {
-        var chartIdentifier = this.chartIdentifier;
-        return discoverService.getLeaderboardCharts( chartIdentifier )
-          .then( function( edChart ) {
-            this.edChart = edChart;
+        //if ( edChart.leaderboard === [] ) {
+        //  this.noRankings = true;
+        //  this.areRankings = false;
+        //} else {
+        //  this.noRankings = false;
+        //  this.areRankings = true;
+        //}
+        //this.noRankings = true;
+        //  this.areRankings = true;
 
-            //if ( edChart.leaderboard === [] ) {
-            //  this.noRankings = true;
-            //  this.areRankings = false;
-            //} else {
-            //  this.noRankings = false;
-            //  this.areRankings = true;
-            //}
-
-            //this.noRankings = true;
-            this.areRankings = true;
-
-            this.dateEnds = edChart.dateEnds;
-            edChart.leaderboardCollection.getInSequence( 0, 10, true )
-              .then( function( chartList ) {
-                this.rankingsList = chartList;
-                this.countdown = edChart.timeRemaining;
-                // todo change to id when updated
-                this.score = edChart.getRankForId( edChart.leaderboard.id );
-              }.bind( this ));
-            return edChart;
+        console.log( this.chartObject.leaderboardCollection );
+        this.chartObject.leaderboardCollection.getInSequence( 0, 10, true )
+          .then( function( chartList ) {
+            this.rankingsList = chartList;
+            this.score = this.chartObject.getRankForId( this.chartObject.leaderboard.id );
           }.bind( this ));
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
