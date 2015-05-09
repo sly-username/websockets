@@ -309,7 +309,11 @@ edUserService.editProfile = function( args ) {
   })
     .catch( error => {
       console.log( "profile update was not successfully sent" );
-=======
+      console.log( error );
+      throw error;
+    });
+};
+
 edUserService.getStats = function() {
   return edConnectionService.request( "user/stats/get", 10 )
     .then( response => {
@@ -317,7 +321,6 @@ edUserService.getStats = function() {
     })
     .catch( error => {
       console.warn( "error retrieving user stats in user service" );
->>>>>>> dev
       console.log( error );
       throw error;
     });
