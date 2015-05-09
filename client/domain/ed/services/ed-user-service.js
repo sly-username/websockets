@@ -298,26 +298,20 @@ edUserService.resetPassword = function( resetCode, password ) {
     });
 };
 
-edUserService.editProfile = function( first, last ) {
-  var json = {
+edUserService.editProfile = function( args ) {
+  return edConnectionService.request( "profile/set", 10, {
     data: {
       id: edUserService.currentProfile.id,
-      name: {
-        first,
-        last
-      }
+      args
     }
-  };
+  }).then( response => {
+    // TODO REMOVE THIS HACK WHEN FIXED BY SERVERSIDE
+    if ( response.meta.modelType === "fan" ) {
+      response.meta.modelType = "profile-fan";
+    }
 
-  return edConnectionService.request( "profile/set", 10, json )
-    .then( response => {
-      // TODO REMOVE THIS HACK WHEN FIXED BY SERVERSIDE
-      if ( response.meta.modelType === "fan" ) {
-        response.meta.modelType = "profile-fan";
-      }
-
-      return updateModel( response );
-    })
+    return updateModel( response );
+  })
     .catch( error => {
       console.log( "profile update was not successfully sent" );
       console.log( error );
