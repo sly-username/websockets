@@ -80,9 +80,10 @@
       }
     };
 
-    injectStatsHandler = function( event ) {
-      this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box ").innerText = playerService.userStats.completedListens;
-      this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box ").innerText = playerService.userStats.ratedTracks;
+    injectStatsHandler = function() {
+      console.log( "test" );
+      this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
+      this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
 
     polymer( "ed-song-card-view", {

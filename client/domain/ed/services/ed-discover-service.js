@@ -24,8 +24,6 @@ export default edDiscoverService = {
     return edConnectionService.request( "discover/list", 10, { data } )
       .then( response => {
         trackIDList = response.data.tracks;
-        // todo when route gets updated remove this line
-        trackIDList = trackIDList.map( obj => obj.trackId );
         return trackIDList;
       })
       .catch( error => {
