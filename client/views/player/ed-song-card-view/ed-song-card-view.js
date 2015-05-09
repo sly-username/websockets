@@ -55,7 +55,7 @@
       }
 
       if ( eventType === "skip" ) {
-        playerService.next();
+        playerService.skip();
       }
 
       if ( eventType === "showRatings" ) {
