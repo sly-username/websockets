@@ -244,8 +244,9 @@ edUserService.register = function( args ) {
       }
 
       if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        console.log( "response on error",response );
         let tError = new TypeError( "Problem with Registration" );
-        tError.invlidFields = response.meta.invalidFields;
+        tError.invalidFields = response.meta.invalidFields;
         throw tError;
       }
     })

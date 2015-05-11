@@ -181,19 +181,22 @@
               this.router.go( "/onboarding/like" );
             }.bind( this ))
             .catch( function( error ) {
-              // todo error messages for invalid referral code and already registered email
-//              var
-//                errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
-//                errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
-//
-//              if ( error.invalidFields.error === "10" ) {
-//                errorReferralCode.innerHTML = "Please reenter your referral code";
-//                this.inviteField.classList.add( "invalid-field" );
-//              }
+              var
+                errorUsedEmail = this.shadowRoot.getElementById( "errorUsedEmail" ),
+                errorReferralCode = this.shadowRoot.getElementById( "errorReferralCode" );
 
-              this.router.go( "/registration" );
+              if ( error.invalidFields[0].name === "inviteCode" ) {
+                errorReferralCode.innerHTML = "Please reenter your referral code";
+                this.inviteField.classList.add( "invalid-field" );
+              }
+
+              if ( error.invalidFields[0].name || error.invalidFields[1].name === "inviteCode" ) {
+                errorUsedEmail.innerHTML = "That email has been taken";
+                this.emailField.classList.add( "invalid-field" );
+              }
+
               return error;
-            });
+            }.bind( this ));
         },
         detached: function() {
           this.submitButton.removeEventListener( "click", this.handlers.submitCheck );
