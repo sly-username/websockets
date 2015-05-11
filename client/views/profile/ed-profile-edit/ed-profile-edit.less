@@ -69,6 +69,16 @@ hr {
     overflow: hidden;
     li {
       background-color: @darkPurple2;
+      padding: 0;
+      
+      label {
+        padding: 3.5rem 2rem;
+        display: block;
+      }
+
+      input {
+        display: none;
+      }
     }
     .music-pref {
       .edType( heading-XS );
@@ -84,6 +94,7 @@ hr {
 
 #edit-music-button {
   position: relative;
+  padding: 3.5rem 2rem;
   ed-icon {
     float: right;
     padding-right: 4rem;

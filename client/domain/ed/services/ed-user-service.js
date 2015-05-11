@@ -175,20 +175,41 @@ edUserService.logout = function() {
 };
 
 edUserService.changeProfileImage = function( image ) {
-  // todo a lot
-  /*
-   // send "I'm going to send an image" -- ws.binaryType = "blob";
-   send({
-   "action":{ route:"profile/image/set" }
-   });
-   send( image );
-   new Promise()
-   "onmessage" --> check for a "image upload complete"
-   resolve( dataservice.getUserById( currentProfile ) )
-   */
+  var
+    json,
+    s3 = new AWS.S3({
+      accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
+      secretAccessKey: "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",
+      region: "us-west-2"
+    });
 
-  // need to match new image to appropriate user
-  return Promise.resolve( null );
+  s3.upload({
+    Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+    ContentType: image.type,
+    Body: image,
+    Bucket: "eardish.dev.images",
+    CopySource: "eardish.dev.images/" + image.name
+  }, ( error, data ) => {
+    json = {
+      data: {
+        profileId: currentProfile.id,
+        artTitle: image.name,
+        description: image.type,
+        artUrl: data.Location,
+        artType: "avatar"
+      }
+    };
+
+    return edConnectionService.request( "profile/art/create", 10, json )
+      .then( response => {
+        return response;
+      })
+      .catch( error => {
+        console.log( "image upload was not successfully completed" );
+        console.log( error );
+        throw error;
+      });
+  });
 };
 
 edUserService.referral = function( email ) {
