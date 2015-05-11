@@ -2,87 +2,107 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/objects/model-type-checker" ),
+    System.import( "domain/ed/services/ed-discover-service" ),
     System.import( "domain/ed/services/ed-user-service" )
   ])
     .then( function( imported ) {
       var
-        typeChecker = imported[ 0 ].default,
+        discoverService = imported[ 0 ].default,
         userService = imported[ 1 ].default,
         clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-login-view", {
         /* LIFECYCLE */
         ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
-          this.passwordInput = this.shadowRoot.querySelector( ".password" ).shadowRoot.querySelector( "input" );
-          this.inputsArray = [ this.emailInput, this.passwordInput ];
+          this.emailInput = this.shadowRoot.querySelector( ".email" )
+            .shadowRoot.querySelector( "input" );
+          this.passwordInput = this.shadowRoot.querySelector( ".password" )
+            .shadowRoot.querySelector( "input" );
+          this.inputFieldsArray = [ this.emailInput, this.passwordInput ];
           this.submitButton = this.shadowRoot.getElementById( "login-submit" );
           this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
           this.errorDiv = this.shadowRoot.getElementById( "errorDiv" );
+
+          this.emailField = this.shadowRoot.querySelector( ".email" )
+            .shadowRoot.querySelector( ".form-input-container" );
+          this.passwordField = this.shadowRoot.querySelector( ".password" )
+            .shadowRoot.querySelector( ".form-input-container" );
         },
         attached: function() {
+          //this.inputFieldsArray.forEach( function( field ) {
+          //  field.classList.remove( "invalid-field" );
+          //});
           this.emailInput.setAttribute( "autofocus", "" );
-          this.submitButton.setAttribute( "disabled", "" );
-
-          // check inputs to see if they're empty before pressing submit
-          this.inputsArray.forEach( function( formInput ) {
-            formInput.addEventListener( "keyup", this.validateFields.bind( this ));
-          }.bind( this ));
 
           clickEvents.forEach(function( eventName ) {
-            this.submitButton.addEventListener( eventName, this.submitForm.bind( this ));
+            this.submitButton.addEventListener( eventName, this.validateFields.bind( this ));
             this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
           }.bind( this ));
 
-          this.submitButton.addEventListener( "keydown", function( event ) {
-            if ( event.keyCode === 13 ) {
-              this.submitForm( event );
+          // enter key event listener
+          this.submitButton.addEventListener( "keypress", function( event ) {
+            if ( event.keycode === 13 ) {
+              this.validateFields.bind( this );
             }
-
-            return false;
           }.bind( this ));
         },
         validateFields: function() {
           if ( this.emailInput.value !== "" && this.passwordInput.value !== "" ) {
-            this.submitButton.removeAttribute( "disabled" );
+            this.inputFieldsArray.forEach( function( field ) {
+              field.classList.remove( "invalid-field" );
+            });
+            this.submitForm();
+          }
+
+          if ( this.emailInput.value === "" ) {
+            console.log( "something" );
+            this.emailField.classList.add( "invalid-field" );
+          }
+
+          if ( this.passwordInput.value === "" ) {
+            console.log( "other thing" );
+            this.passwordField.classList.add( "invalid-field" );
+          }
+          // todo will there be a problem changing the field back to valid if
+          // the user updates the fields?
+        },
+        confirmOnboarding: function() {
+          if ( userService.hasOnboarded ) {
+            this.router.go( "/onboarding/like" );
           } else {
-            this.submitButton.setAttribute( "disabled", "" );
+            this.router.go( "/discover" );
           }
         },
-        submitForm: function( event ) {
-          event.preventDefault();
-
+        submitForm: function() {
           var
             email = this.emailInput.value,
             password = this.passwordInput.value;
 
-          userService.login( email, password )
-            .then(function( edProfile ) {
-              var redirectTo;
-
-              if ( typeChecker.isArtist( edProfile ) ) {
-                redirectTo = "/artist/" + edProfile.id;
-              // todo needs to check if fan has onboarded
-              } else if ( typeChecker.isFan( edProfile ) && userService.hasOnboarded ) {
-                redirectTo = "/fan/" + edProfile.id;
-              } else if ( typeChecker.isFan( edProfile ) && !userService.hasOnboarded ) {
-                redirectTo = "/onboarding/like";
-              }
-
-              this.router.go( redirectTo );
-            }.bind( this ))
-          .catch( function() {
-            this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
-          }.bind( this ));
+          return userService.login( email, password )
+            .then( function() {
+              this.confirmOnboarding();
+            })
+            .catch( function() {
+              this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
+            }.bind( this ));
         },
         goToSignUpPage: function() {
           this.router.go( "/register" );
         },
-        detached: function() {},
+        detached: function() {
+          clickEvents.forEach(function( eventName ) {
+            this.submitButton.removeEventListener( eventName, this.validateFields.bind( this ));
+            this.signUpButton.removeEventListener( eventName, this.goToSignUpPage.bind( this ));
+          }.bind( this ));
+
+          // enter key event listener
+          this.submitButton.removeEventListener( "keypress", function( event ) {
+            if ( event.keycode === 13 ) {
+              this.validateFields.bind( this );
+            }
+          }.bind( this ));
+        },
         attributeChanged: function( attrName, oldValue, newValue ) {}
-        /* PROPERTIES */
-        /* METHODS */
       });
     });
 })( window.Polymer, window.System );

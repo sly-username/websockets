@@ -4,6 +4,7 @@ import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService from "domain/ed/services/ed-data-service";
+import edDiscoverService from "domain/ed/services/ed-discover-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
@@ -13,6 +14,7 @@ var
   currentProfile = null,
   currentUserId = null,
   isOpenSession = false,
+  // todo is onboarded flag needed?
   hasOnboarded = false,
   sessionAuthJSON = null,
   loggedInDate = null,
@@ -81,7 +83,23 @@ Object.defineProperties( edUserService, {
 // todo remove
 window.edUserService = edUserService;
 
-edUserService.getReferrals = function() {
+edUserService.confirmOnboarding = () => {
+  return edDiscoverService.getBlendTracks()
+    .then( response => {
+      if ( response.length !== 0 ) {
+        hasOnboarded = true;
+      } else {
+        hasOnboarded = false;
+        console.log( "or here?" );
+      }
+    })
+    .catch( error => {
+      console.log( "unable to get user's genre blend" );
+      return hasOnboarded = false;
+    });
+};
+
+edUserService.getReferrals = () => {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
       referralsRemaining = response.data.count;
@@ -114,6 +132,7 @@ edUserService.login = function( email, password ) {
       sessionAuthJSON = json;
       loggedInDate = new Date();
 
+
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
           userId: currentUserId,
@@ -126,7 +145,7 @@ edUserService.login = function( email, password ) {
         time: ( new Date() ).toISOString()
       });
 
-      edUserService.getReferrals();
+      edUserService.confirmOnboarding();
 
       return currentProfile;
     })
@@ -135,11 +154,15 @@ edUserService.login = function( email, password ) {
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
+      // todo is this needed?
       hasOnboarded = false;
       referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
+    //.then( () => {
+    //  edUserService.getReferrals();
+    //});
 };
 
 edUserService.logout = function() {
