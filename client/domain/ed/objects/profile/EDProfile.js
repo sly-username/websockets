@@ -29,4 +29,8 @@ export default class EDProfile extends EDModel {
       "badgesEarned"
     ], args );
   }
+
+  get fullName() {
+    return `${this.name.first} ${this.name.last}`;
+  }
 }
