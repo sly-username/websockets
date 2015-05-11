@@ -177,6 +177,7 @@ edUserService.logout = function() {
 edUserService.changeProfileImage = function( image ) {
   var
     json,
+    // TODO need to grab this info from aws/token/get
     s3 = new AWS.S3({
       accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
       secretAccessKey: "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",
