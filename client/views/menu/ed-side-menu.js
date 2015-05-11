@@ -21,9 +21,11 @@
             triggerMenu: triggerMenuHandler.bind( this )
           };
 
-          userService.on( "edLogin", function( event ) {
-            console.log( event );
-          });
+          userService.on( "edLogin", function() {
+            if ( userService.isOpenSession ) {
+              this.userId = userService.currentProfile.id;
+            }
+          }.bind( this ));
         },
         attached: function() {
           this.router.addEventListener( "activate-route-end", this.handlers.triggerMenu );
