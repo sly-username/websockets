@@ -11,7 +11,8 @@
     polymer( "ed-forgot-pass-request-view", {
       /* LIFECYCLE */
       ready: function() {
-        this.submitButton = this.shadowRoot.getElementById( "forgot-submit" );
+        this.submitButton = this.shadowRoot.querySelector( "#forgot-submit" );
+        this.backButton = this.shadowRoot.querySelector( "#back-button" );
         this.emailInput = this.shadowRoot.querySelector( ".email" )
           .shadowRoot.querySelector( "input" );
         this.emailField = this.shadowRoot.querySelector( ".email" )
@@ -26,22 +27,33 @@
 
         clickEvents.forEach( function( eventName ) {
           this.submitButton.addEventListener( eventName, this.validateEmail.bind( this ));
+          this.backButton.addEventListener( eventName, this.goToBackToLogin.bind( this ));
         }.bind( this ));
 
         this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
+        this.backButton.addEventListener( "keypress", this.goToBackToLogin.bind( this ));
       },
       detached: function() {
         clickEvents.forEach( function( eventName ) {
           this.submitButton.removeEventListener( eventName, this.validateEmail.bind( this ));
+          this.backButton.removeEventListener( eventName, this.enterToReturnToLogin.bind( this ));
         }.bind( this ));
 
         this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ));
+        this.backButton.removeEventListener( "keypress", this.enterToReturnToLogin.bind( this ));
       },
       validateAfterEnter: function( event ) {
         event.preventDefault();
 
         if ( event.keyCode === 13 ) {
           this.validateEmail();
+        }
+      },
+      enterToReturnToLogin: function( event ) {
+        event.preventDefault();
+
+        if ( event.keyCode === 13 ) {
+          this.goToBackToLogin();
         }
       },
       checkEmailFormat: function() {
@@ -77,6 +89,9 @@
           .catch( function() {
             console.log( "password request did not go through" );
           });
+      },
+      goToBackToLogin: function() {
+        this.router.go( "/login" );
       }
     });
   });
