@@ -39,11 +39,18 @@
             this.validateEmail();
           }
         },
+        checkEmailFormat: function() {
+          var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+
+          return this.emailInput.validity.valid && re.test( this.emailInput.value );
+        },
         validateEmail: function() {
-          // todo do we also need to check if it has the syntax of a valid email?
+          var checkEmailFormat = this.checkEmailFormat();
           if ( this.emailInput.value === "" ) {
             this.emailField.classList.add( "invalid-field" );
-          } else if ( this.emailInput.value !== "" ) {
+          } else if ( !checkEmailFormat ) {
+            this.emailField.classList.add( "invalid-field" );
+          } else if ( checkEmailFormat ) {
             this.emailField.classList.remove( "invalid-field" );
             this.submitFriendEmail();
           }
