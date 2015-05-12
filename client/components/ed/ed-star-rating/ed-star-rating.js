@@ -55,14 +55,12 @@
     };
 
     playerUpdateHandler = function( event ) {
-      if ( event.type === "playerUpdate" ) {
-        this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
-        this.$[ "track-name" ].classList.remove( "loading" );
+      this.trackName.innerText = playerService.currentStats.playing.name;
+      this.trackName.classList.remove( "loading" );
 
-        if ( event.detail.type === "artistUpdate" ) {
-          this.$[ "artist-name" ].classList.remove( "loading" );
-          this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.displayName;
-        }
+      if ( event.detail.type === "artistUpdate" ) {
+        this.artistName.innerText = playerService.currentStats.currentArtist.displayName;
+        this.artistName.classList.remove( "loading" );
       }
     };
 
@@ -81,6 +79,8 @@
         this.thirdInput = this.shadowRoot.getElementById( "rate3" );
         this.forthInput = this.shadowRoot.getElementById( "rate4" );
         this.fifthInput = this.shadowRoot.getElementById( "rate5" );
+        this.artistName = this.$[ "artist-name" ];
+        this.trackName = this.$[ "track-name" ];
       },
       attached: function() {
         this.inputField.addEventListener( "click", this.handlers.triggerRating );

@@ -56,6 +56,7 @@
       if ( eventType === "skip" ) {
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
+
         playerService.skip();
       }
 
@@ -86,7 +87,6 @@
     };
 
     injectStatsHandler = function() {
-      console.log( "test" );
       this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
@@ -101,12 +101,11 @@
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
-        this.bioText = this.$[ "bio-copy" ];
-        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
-
         this.trackName = this.$[ "star-rating" ].shadowRoot.querySelector( "#track-name" );
         this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
-
+        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
+        this.bioText = this.$[ "bio-copy" ];
+        this.minify = this.$[ "minify-icon" ];
 
         // Event Handler
         this.handler = {
@@ -119,17 +118,15 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-
-        this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
-        this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
+        this.minify.addEventListener( "click", this.handler.togglePlayer );
+        this.miniPlayerWrapper.addEventListener( "click", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
-        this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
-        this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
-
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
+        this.minify.removeEventListener( "click", this.handler.togglePlayer );
+        this.miniPlayerWrapper.removeEventListener( "click", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 
