@@ -31,9 +31,15 @@
         this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
       },
       detached: function() {
+        clickEvents.forEach( function( eventName ) {
+          this.submitButton.removeEventListener( eventName, this.validateEmail.bind( this ));
+        }.bind( this ));
+
+        this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ));
       },
       validateAfterEnter: function( event ) {
         event.preventDefault();
+
         if ( event.keyCode === 13 ) {
           this.validateEmail();
         }
@@ -60,10 +66,14 @@
         return userService.requestPasswordReset( registeredEmail )
           .then( function( response ) {
             console.log( response );
-            //if ( response !== null ) {
-            //  this.router.go( "/debug" );
-            //}
-          })
+
+            if ( response !== null && response.status.code === 2 ) {
+              this.router.go( "/forgot-pass/reset" );
+            } else if ( response !== null && response.status.code === 10 ) {
+              // todo when product/design team figures out what to do about this error
+              this.emailField.classList.add( "invalid-field" );
+            }
+          }.bind( this ))
           .catch( function() {
             console.log( "password request did not go through" );
           });
