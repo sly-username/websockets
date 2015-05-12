@@ -15,7 +15,8 @@
     "system.js": "=0.15.0",
     "director": "=1.2.8",
     "app-router": "=2.6.0",
-    "normalize.css": "~3.0.2"
+    "normalize.css": "~3.0.2",
+    "aws-sdk-js": "~2.1.27"
   },
   "license": "To Be Decided",
   "description": "The Client Application for the Eardish Platform"
