@@ -1,47 +1,72 @@
 ( function( polymer ) {
   "use strict";
 
-  Promise.all([
-    System.import( "domain/ed/services/ed-user-service" )
-  ]).then(function( imported ) {
-    var
-      userService = imported[ 0 ].default,
-      emailCheckHandler = function() {
-      if ( this.emailInput.validity.valid ) {
-        this.submitBtn.removeAttribute( "disabled" );
-      } else {
-        this.submitBtn.setAttribute( "disabled", "" );
-      }
-    },
-      triggerSubmitHandler = function( event ) {
-        event.preventDefault();
 
-        userService.requestPasswordReset( this.emailInput.value )
-          .then(function( response ) {
-            console.log( response );
-            this.router.go( "/forgot-pass/reset" );
-            return response;
-          }.bind( this ));
-      };
+  System.import( "domain/ed/services/ed-user-service" )
+    .then(function( imported ) {
+      var
+        userService = imported.default,
+        clickEvents = [ "mousedown", "touchstart" ];
 
     polymer( "ed-forgot-pass-request-view", {
       /* LIFECYCLE */
       ready: function() {
-        this.submitBtn = this.shadowRoot.getElementById( "forgot-submit" );
+        this.submitButton = this.shadowRoot.getElementById( "forgot-submit" );
         this.emailInput = this.shadowRoot.querySelector( ".email" )
           .shadowRoot.querySelector( "input" );
-        this.handlers = {
-          triggerSubmit: triggerSubmitHandler.bind( this ),
-          emailCheck: emailCheckHandler.bind( this )
-        };
+        this.emailField = this.shadowRoot.querySelector( ".email" )
+          .shadowRoot.querySelector( ".form-input-container" );
+
+        console.log( this.emailInput );
+        console.log( this.emailField );
+
       },
       attached: function() {
-        this.submitBtn.addEventListener( "click", this.handlers.triggerSubmit );
-        this.emailInput.addEventListener( "keyup", this.handlers.emailCheck );
+        this.emailInput.setAttribute( "autofocus", "" );
+
+        clickEvents.forEach( function( eventName ) {
+          this.submitButton.addEventListener( eventName, this.validateEmail.bind( this ));
+        }.bind( this ));
+
+        this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
       },
       detached: function() {
-        this.submitBtn.removeEventListener( "click", this.handlers.triggerSubmit );
-        this.emailInput.addEventListener( "keyup", this.handlers.emailCheck );
+      },
+      validateAfterEnter: function( event ) {
+        event.preventDefault();
+        if ( event.keyCode === 13 ) {
+          this.validateEmail();
+        }
+      },
+      checkEmailFormat: function() {
+        var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+
+        return this.emailInput.validity.valid && re.test( this.emailInput.value );
+      },
+      validateEmail: function() {
+        var checkEmailFormat = this.checkEmailFormat();
+
+        if ( this.emailInput.value === "" ) {
+          this.emailField.classList.add( "invalid-field" );
+        } else if ( !checkEmailFormat ) {
+          this.emailField.classList.add( "invalid-field" );
+        } else if ( checkEmailFormat ) {
+          this.emailField.classList.remove( "invalid-field" );
+          this.submitPasswordRequest();
+        }
+      },
+      submitPasswordRequest: function() {
+        var registeredEmail = this.emailInput.value;
+        return userService.requestPasswordReset( registeredEmail )
+          .then( function( response ) {
+            console.log( response );
+            //if ( response !== null ) {
+            //  this.router.go( "/debug" );
+            //}
+          })
+          .catch( function() {
+            console.log( "password request did not go through" );
+          });
       }
     });
   });
