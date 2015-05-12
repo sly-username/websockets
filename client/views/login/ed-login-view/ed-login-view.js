@@ -83,7 +83,7 @@
               this.confirmOnboarding();
             }.bind( this ))
             .catch( function() {
-              this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
+              this.errorDiv.innerHTML = "Wrong.";
             }.bind( this ));
         },
         goToSignUpPage: function() {
