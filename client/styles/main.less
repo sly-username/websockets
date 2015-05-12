@@ -62,11 +62,11 @@ body {
 }
 
 ed-side-menu.show-menu + #animation-wrapper {
-  .animation( slideRouterOut .33s ease-in-out forwards);
+  .transform( translateX( 84% ));
 }
 
 ed-side-menu + #animation-wrapper {
-  .animation( slideRouterIn .33s ease-in-out forwards);
+  .transform( translateX( 0 ));
 }
 
 #animation-wrapper {
@@ -77,31 +77,11 @@ ed-side-menu + #animation-wrapper {
   margin: 0;
   position: absolute;
   max-width: 59.6rem;
+  transition: transform .33s ease-in-out;
 
   &.player-padding {
     padding-bottom: 6rem;
   }
 }
 
-.keyframes( slideRouterOut, {
-0% {
-  .transform( translateX( 0% ));
-}
-100% {
-  .transform( translateX( 84% ));
-}
-
-});
-
-.keyframes( slideRouterIn, {
-0% {
-  .transform( translateX( 84% ));
-}
-100% {
-  .transform( translateX( 0% ));
-}
-});
-
 .hidden();
-
-
