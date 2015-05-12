@@ -9,9 +9,15 @@
   border: 0;
   background-color: @darkPurple2;
   text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
   &, ed-menu-button::shadow {
     .edMenuButton();
   }
+
   h1 {
     .edType( heading-L );
     font-weight: 500;
@@ -19,4 +25,8 @@
     padding: 3rem 7.5rem;
     pointer-events: none;
   }
+}
+
+.edContentStyle() {
+  margin-top: 9rem;
 }
