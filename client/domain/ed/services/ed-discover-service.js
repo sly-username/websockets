@@ -40,6 +40,12 @@ export default edDiscoverService = {
     return edConnectionService.request( "discover/blend/list", 10, { data } )
       .then( response => {
         trackIDList = response.data.tracks;
+
+        if ( trackIDList.length === 0 ) {
+          edUserService.hasOnboarded = false;
+        } else {
+          edUserService.hasOnboarded = true;
+        }
         return trackIDList;
       })
       .catch( error => {

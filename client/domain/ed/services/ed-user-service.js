@@ -83,23 +83,26 @@ Object.defineProperties( edUserService, {
 // todo remove
 window.edUserService = edUserService;
 
-edUserService.confirmOnboarding = () => {
-  return edDiscoverService.getBlendTracks()
-    .then( response => {
-      if ( response.length === 0 ) {
-        hasOnboarded = false;
-        return hasOnboarded;
-      } else {
-        hasOnboarded = true;
-        return hasOnboarded;
-      }
-    })
-    .catch( error => {
-      console.log( "unable to get user's genre blend" );
-      hasOnboarded = false;
-      return hasOnboarded;
-    });
-};
+//edUserService.confirmOnboarding = () => {
+//  return edDiscoverService.getBlendTracks()
+//    .then( response => {
+//      //if ( response.length === 0 ) {
+//      //  edUserService.hasOnboarded = false;
+//      //  return edUserService.hasOnboarded;
+//      //} else {
+//      //  edUserService.hasOnboarded = true;
+//      //  return edUserService.hasOnboarded;
+//      //}
+//
+//      hasOnboarded = false;
+//      return hasOnboarded;
+//    })
+//    .catch( error => {
+//      console.log( "unable to get user's genre blend" );
+//      hasOnboarded = false;
+//      return hasOnboarded;
+//    });
+//};
 
 edUserService.getReferrals = () => {
   return edConnectionService.request( "referral/get", 10 )
@@ -146,6 +149,8 @@ edUserService.login = function( email, password ) {
         time: ( new Date() ).toISOString()
       });
 
+      edUserService.getReferrals();
+
       return currentProfile;
     })
     .catch(( error ) => {
@@ -157,12 +162,6 @@ edUserService.login = function( email, password ) {
       referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
-    })
-    .then( () => {
-      edUserService.confirmOnboarding();
-    })
-    .then( () => {
-      edUserService.getReferrals();
     });
 };
 
