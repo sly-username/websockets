@@ -61,17 +61,23 @@ rateCurrentlyPlaying = function( number ) {
 
 updateCurrentIndex = function( newIndex ) {
   currentIndex = newIndex;
-  tracksCollection.getRange( newIndex, newIndex + 2 );
+  tracksCollection.getRange( newIndex, newIndex + 3 );
 };
 
 getEDTrack = function( tracks, index ) {
   return tracks.get( index )
     .then( edTrack => {
+      edPlayerService.playTrack( edTrack );
+
       return edDataService.getArtistById( edTrack.profileId, 10 )
         .then( edArtist => {
           currentArtist = edArtist;
 
-          edPlayerService.playTrack( edTrack );
+          edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
+            detail: {
+              type: "artistUpdate"
+            }
+          }));
 
           return edArtist;
         });
@@ -249,7 +255,7 @@ export default edPlayerService = {
   },
 
   pause: function() {
-    if ( this.isPlaying || this.isPaused ) {
+    if ( this.isPlaying ) {
       audio.pause();
 
       this.emitter.dispatch( createEvent( "playerUpdate", {
@@ -258,7 +264,7 @@ export default edPlayerService = {
         }
       }));
 
-      edAnalyticsService.send ( "pause", {
+      edAnalyticsService.send( "pause", {
         trackId: currentTrack.id,
         timecode: audio.currentTime
       });
@@ -313,8 +319,6 @@ export default edPlayerService = {
     }
 
     updateCurrentIndex( currentIndex + 1 );
-
-    this.getUserStats();
 
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id,

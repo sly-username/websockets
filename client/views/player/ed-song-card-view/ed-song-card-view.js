@@ -41,7 +41,6 @@
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
-        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
 
         this.handler.injectStats();
       }
@@ -55,7 +54,13 @@
       }
 
       if ( eventType === "skip" ) {
+        this.trackName.classList.add( "loading" );
+        this.artistName.classList.add( "loading" );
         playerService.skip();
+      }
+
+      if ( eventType === "artistUpdate" ) {
+        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "showRatings" ) {
@@ -98,6 +103,10 @@
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
         this.bioText = this.$[ "bio-copy" ];
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
+
+        this.trackName = this.$[ "star-rating" ].shadowRoot.querySelector( "#track-name" );
+        this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
+
 
         // Event Handler
         this.handler = {
