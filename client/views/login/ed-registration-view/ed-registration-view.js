@@ -36,8 +36,7 @@
           // Check all inputs on submit
           this.emailCheck();
           this.zipCheck();
-          this.validateRegexPassword();
-          this.validateKeyPassword();
+          this.validatePassword();
           this.checkForEmptyValue( "errorFirstName", this.firstNameInput,
             this.firstNameField, "First Name" );
           this.checkForEmptyValue( "errorLastName", this.lastNameInput,
@@ -126,25 +125,16 @@
             errorZip.innerHTML = "";
           }
         },
-        validateRegexPassword: function() {
+        validatePassword: function() {
           var errorPass = this.shadowRoot.getElementById( "errorPassword" );
 
-          if ( this.passwordInput.validity.valid && this.passwordInput.value !== "" ) {
+          if ( this.pairedInput.isValid ) {
             errorPass.innerHTML = "";
             this.pairedInput.removeAttribute( "invalid-primary" );
-          } else {
-            errorPass.innerHTML = "Password is not 8 characters long";
-            this.pairedInput.setAttribute( "invalid-primary", "" );
-          }
-        },
-        validateKeyPassword: function() {
-          var errorConf = this.shadowRoot.getElementById( "errorConfirm" );
-
-          if ( this.pairedInput.isValid && this.passwordInput !== "" && this.passwordConfirmInput !== "" ) {
-            errorConf.innerHTML = "";
             this.pairedInput.removeAttribute( "invalid-confirm" );
           } else {
-            errorConf.innerHTML = "Passwords must match";
+            errorPass.innerHTML = "Passwords do not meet requirements";
+            this.pairedInput.setAttribute( "invalid-primary", "" );
             this.pairedInput.setAttribute( "invalid-confirm", "" );
           }
         },
