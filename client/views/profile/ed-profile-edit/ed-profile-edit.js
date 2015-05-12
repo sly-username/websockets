@@ -8,31 +8,26 @@
       var
         dataService = imported[ 0 ].default,
         userService = imported[ 1 ].default,
-        // Todo make helper function for handlers functions?
-        autoSubmitFirstHandler = function() {
-          if ( this.innerFirst.value !== "" ) {
-            userService.editProfile( {
-              name: {
-                first: this.innerFirst.value
-              }
-            } )
-              .then( function( response ) {
-                console.log( response );
-                return response;
-              }.bind( this ) );
-          }
+        updateProfileName = function( nameKey, nameValue ) {
+          var nameData = {};
+          nameData[ nameKey ] = nameValue;
+          return userService.editProfile({
+            name: nameData
+          });
         },
-        autoSubmitLastHandler = function() {
-          if ( this.innerLast.value !== "" ) {
-            userService.editProfile( {
-              name: {
-                last: this.innerLast.value
-              }
-            } )
-              .then( function( response ) {
-                console.log( response );
-                return response;
-              }.bind( this ) );
+        nameInputHandler = function( event ) {
+          var
+            self = this,
+            target = event.target,
+            targetInput = event.target.shadowRoot.querySelector( "input" );
+
+          if ( targetInput.tagName === "INPUT" && targetInput.value !== "" && ( /^(first|last)-name$/ ).test( target.id ) ) {
+            updateProfileName( target.id.split( "-" )[0], targetInput.value )
+              .then(function( edProfile ) {
+                /* do any view updates if needed like perhaps */
+                self.edProfile = edProfile;
+                return edProfile;
+              });
           }
         };
       polymer( "ed-profile-edit", {
@@ -48,24 +43,21 @@
           }
           this.firstName = this.shadowRoot.getElementById( "first-name" );
           this.lastName = this.shadowRoot.getElementById( "last-name" );
-          this.innerFirst = this.shadowRoot.getElementById( "first-name" ).shadowRoot.querySelector( "input" );
-          this.innerLast = this.shadowRoot.getElementById( "last-name" ).shadowRoot.querySelector( "input" );
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
           this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
           this.handler = {
-            autoSubmitFirst: autoSubmitFirstHandler.bind( this ),
-            autoSubmitLast: autoSubmitLastHandler.bind( this )
+            nameInput: nameInputHandler.bind( this )
           };
         },
         attached: function() {
-          this.firstName.addEventListener( "blur", this.handler.autoSubmitFirst );
-          this.lastName.addEventListener( "blur", this.handler.autoSubmitLast );
+          this.firstName.addEventListener( "blur", this.handler.nameInput, true );
+          this.lastName.addEventListener( "blur", this.handler.nameInput, true );
 //          this.choosePhoto.addEventListener( "change", this.handler.autoSubmit );
 //          this.takePhoto.addEventListener( "change", this.handler.autoSubmit );
         },
         detached: function() {
-          this.firstName.removeEventListener( "blur", this.handler.autoSubmitFirst );
-          this.lastName.removeEventListener( "blur", this.handler.autoSubmitLast );
+          this.firstName.removeEventListener( "blur", this.handler.nameInput, true );
+          this.lastName.removeEventListener( "blur", this.handler.nameInput, true );
 //          this.choosePhoto.removeEventListener( "change", this.handler.autoSubmit );
 //          this.takePhoto.removeEventListener( "change", this.handler.autoSubmit );
         },

@@ -6,6 +6,7 @@ import typeChecker from "domain/ed/objects/model-type-checker";
 import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
+import EDFan from "domain/ed/objects/profile/EDFan"
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
@@ -299,17 +300,20 @@ edUserService.resetPassword = function( resetCode, password ) {
 };
 
 edUserService.editProfile = function( args ) {
-  return edConnectionService.request( "profile/set", 10, {
-    data: {
-      id: edUserService.currentProfile.id,
-      args
-    }
-  }).then( response => {
-    return updateModel( response );
-  })
+  var json = {};
+
+  json.data = Object.assign({
+    id: currentProfile == null ? null : currentProfile.id,
+    type: EDFan.MODEL_TYPE
+  }, args );
+
+  return edConnectionService.request( "profile/set", 10, json )
+    .then( response => {
+      return updateModel( response );
+    })
     .catch( error => {
-      console.log( "profile update was not successfully sent" );
-      console.log( error );
+      console.warn( "profile update was not successfully sent" );
+      console.error( error );
       throw error;
     });
 };
