@@ -10,7 +10,8 @@
       updateTimeHandler,
       playerServiceEventHandler,
       togglePlayerHandler,
-      injectStatsHandler;
+      injectStatsHandler,
+      linkArtistHandler;
 
     // helpers
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -42,7 +43,7 @@
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.bioText.innerText = playerService.currentStats.currentArtist.bio;
-
+        this.bioLink.setAttribute( "href", window.location.origin + "/#/artist/" + playerService.currentStats.currentArtist.id );
         this.handler.injectStats();
       }
 
@@ -81,9 +82,16 @@
     };
 
     injectStatsHandler = function() {
-      console.log( "test" );
       this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
+    };
+
+    linkArtistHandler = function( event ) {
+      console.log( event );
+
+      this.miniPlayerWrapper.classList.add( "show-mini" );
+      this.mainPlayerWrapper.classList.add( "hide-main" );
+      this.songCardWrapper.classList.add( "minimized" );
     };
 
     polymer( "ed-song-card-view", {
@@ -98,13 +106,18 @@
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
         this.bioText = this.$[ "bio-copy" ];
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
+        this.bioLink = this.$[ "bio-button" ];
+        this.bioIcon = this.$[ "brief-bio" ].querySelector( "#bio-icon" );
+
+        console.log( this.bioIcon );
 
         // Event Handler
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           togglePlayer: togglePlayerHandler.bind( this ),
-          injectStats: injectStatsHandler.bind( this )
+          injectStats: injectStatsHandler.bind( this ),
+          linkArtist: linkArtistHandler.bind( this )
         };
       },
       attached: function() {
@@ -113,12 +126,14 @@
 
         this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
+        this.$[ "bio-button" ].addEventListener( "touchstart", this.linkArtist );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
         this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
+        this.$[ "bio-button" ].removeEventListener( "touchstart", this.linkArtist );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
