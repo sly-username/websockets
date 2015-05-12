@@ -2,12 +2,10 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-data-service" ),
     System.import( "domain/ed/services/ed-user-service" )
   ]).then(function( imported ) {
       var
-        dataService = imported[ 0 ].default,
-        userService = imported[ 1 ].default,
+        userService = imported[ 0 ].default,
         updateProfileName = function( nameKey, nameValue ) {
           var nameData = {};
           nameData[ nameKey ] = nameValue;
@@ -16,62 +14,52 @@
           });
         },
         nameInputHandler = function( event ) {
-          var
-            self = this,
-            target = event.target,
-            targetInput = event.target.shadowRoot.querySelector( "input" );
+          var target = event.target;
 
-          if ( targetInput.tagName === "INPUT" && targetInput.value !== "" && ( /^(first|last)-name$/ ).test( target.id ) ) {
-            updateProfileName( target.id.split( "-" )[0], targetInput.value )
+          if ( target.tagName === "ED-FORM-INPUT" && target.value !== "" && ( /^(first|last)-name$/ ).test( target.id ) ) {
+            updateProfileName( target.id.split( "-" )[0], target.value )
               .then(function( edProfile ) {
                 /* do any view updates if needed like perhaps */
-                self.edProfile = edProfile;
+                this.edFan = edProfile;
                 return edProfile;
-              });
+              }.bind( this ));
           }
         };
       polymer( "ed-profile-edit", {
         /* LIFECYCLE */
         ready: function() {
-          if ( this[ "ed-id" ] ) {
-            dataService.getFanById( this[ "ed-id" ] )
-              .then(function( edFan ) {
-                this.edFan = edFan;
-                console.log( "artist got: %o", edFan );
-                console.dir( this );
-              }.bind( this ));
+          if ( userService.isOpenSession ) {
+            this.edFan = userService.currentProfile;
+          } else {
+            userService.once( "edLogin", function() {
+              this.edFan = userService.currentProfile;
+            }.bind( this ));
           }
-          this.firstName = this.shadowRoot.getElementById( "first-name" );
-          this.lastName = this.shadowRoot.getElementById( "last-name" );
+
+          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
+
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
           this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
+
           this.handler = {
             nameInput: nameInputHandler.bind( this )
           };
         },
         attached: function() {
-          this.firstName.addEventListener( "blur", this.handler.nameInput, true );
-          this.lastName.addEventListener( "blur", this.handler.nameInput, true );
+          this.edFan = userService.currentProfile;
+
+          this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
+
 //          this.choosePhoto.addEventListener( "change", this.handler.autoSubmit );
 //          this.takePhoto.addEventListener( "change", this.handler.autoSubmit );
         },
         detached: function() {
-          this.firstName.removeEventListener( "blur", this.handler.nameInput, true );
-          this.lastName.removeEventListener( "blur", this.handler.nameInput, true );
+          this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
+
 //          this.choosePhoto.removeEventListener( "change", this.handler.autoSubmit );
 //          this.takePhoto.removeEventListener( "change", this.handler.autoSubmit );
         },
-        "ed-idChanged": function() {
-          this.attributeChanged( "ed-id" );
-        },
-        attributeChanged: function( attrName ) {
-          if ( attrName === "ed-id" ) {
-            dataService.getFanById( this[ "ed-id" ] )
-              .then(function( edFan ) {
-                this.edFan = edFan;
-              }.bind( this ));
-          }
-        }
+        attributeChanged: function( attrName ) {}
       });
     });
 })( window.Polymer, window.System );

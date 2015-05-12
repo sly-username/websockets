@@ -303,8 +303,7 @@ edUserService.editProfile = function( args ) {
   var json = {};
 
   json.data = Object.assign({
-    id: currentProfile == null ? null : currentProfile.id,
-    type: EDFan.MODEL_TYPE
+    id: currentProfile == null ? null : currentProfile.id
   }, args );
 
   return edConnectionService.request( "profile/set", 10, json )
@@ -313,7 +312,7 @@ edUserService.editProfile = function( args ) {
     })
     .catch( error => {
       console.warn( "profile update was not successfully sent" );
-      console.error( error );
+      console.error( error.stack );
       throw error;
     });
 };
