@@ -75,16 +75,22 @@
         },
         submitForm: function() {
           var
+            self = this,
             email = this.emailInput.value,
             password = this.passwordInput.value;
 
           return userService.login( email, password )
             .then( function( response ) {
-              this.nothing();
-            }.bind( this ))
+              if ( response != null ) {
+                self.router.go( "/discover" );
+                // todo need to do the has onboarded check
+              } else {
+                self.errorDiv.innerHTML = "Wrong.";
+              }
+            })
             .catch( function( error ) {
-              this.errorDiv.innerHTML = "Wrong.";
-            }.bind( this ));
+              console.log( "yay. great." );
+            });
         },
         goToSignUpPage: function() {
           this.router.go( "/register" );
