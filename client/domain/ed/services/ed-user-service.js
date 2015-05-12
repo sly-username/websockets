@@ -86,16 +86,18 @@ window.edUserService = edUserService;
 edUserService.confirmOnboarding = () => {
   return edDiscoverService.getBlendTracks()
     .then( response => {
-      if ( response.length !== 0 ) {
-        hasOnboarded = true;
-      } else {
+      if ( response.length === 0 ) {
         hasOnboarded = false;
-        console.log( "or here?" );
+        return hasOnboarded;
+      } else {
+        hasOnboarded = true;
+        return hasOnboarded;
       }
     })
     .catch( error => {
       console.log( "unable to get user's genre blend" );
-      return hasOnboarded = false;
+      hasOnboarded = false;
+      return hasOnboarded;
     });
 };
 
@@ -132,7 +134,6 @@ edUserService.login = function( email, password ) {
       sessionAuthJSON = json;
       loggedInDate = new Date();
 
-
       edUserService.dispatch( createEvent( "edLogin", {
         detail: {
           userId: currentUserId,
@@ -145,8 +146,6 @@ edUserService.login = function( email, password ) {
         time: ( new Date() ).toISOString()
       });
 
-      edUserService.confirmOnboarding();
-
       return currentProfile;
     })
     .catch(( error ) => {
@@ -154,15 +153,17 @@ edUserService.login = function( email, password ) {
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
-      // todo is this needed?
       hasOnboarded = false;
       referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
+    })
+    .then( () => {
+      edUserService.confirmOnboarding();
+    })
+    .then( () => {
+      edUserService.getReferrals();
     });
-    //.then( () => {
-    //  edUserService.getReferrals();
-    //});
 };
 
 edUserService.logout = function() {

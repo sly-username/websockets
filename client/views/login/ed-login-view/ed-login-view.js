@@ -66,13 +66,13 @@
           // todo will there be a problem changing the field back to valid if
           // the user updates the fields?
         },
-        confirmOnboarding: function() {
-          if ( userService.hasOnboarded ) {
-            this.router.go( "/onboarding/like" );
-          } else {
-            this.router.go( "/discover" );
-          }
-        },
+        //confirmOnboarding: function() {
+        //  if ( userService.hasOnboarded === false ) {
+        //    this.router.go( "/onboarding/like" );
+        //  } else {
+        //    this.router.go( "/discover" );
+        //  }
+        //},
         submitForm: function() {
           var
             email = this.emailInput.value,
@@ -81,7 +81,7 @@
           return userService.login( email, password )
             .then( function() {
               this.confirmOnboarding();
-            })
+            }.bind( this ))
             .catch( function() {
               this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
             }.bind( this ));
