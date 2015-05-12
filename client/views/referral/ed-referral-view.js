@@ -45,7 +45,6 @@
             this.emailField.classList.add( "invalid-field" );
           } else if ( this.emailInput.value !== "" ) {
             this.emailField.classList.remove( "invalid-field" );
-            console.log( "does it know to get here?" );
             this.submitFriendEmail();
           }
         },
@@ -53,12 +52,10 @@
           var friendEmail = this.emailInput.value;
           return userService.referral( friendEmail )
             .then( function( response ) {
-              console.log( "walking?" );
               this.referralsRemaining = response;
               this.emailInput.value = "";
             }.bind( this ))
             .catch( function() {
-              console.log( "referral request was unsuccesful" );
             });
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
