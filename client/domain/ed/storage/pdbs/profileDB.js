@@ -3,14 +3,35 @@
 
 import promisedDB from "domain/lib/storage/PromisedDB/promisedDB";
 
-export default promisedDB.open( "profile", 1, [{
-  objects: {
-    options: {
-      keyPath: "id"
-    },
-    indexes: {
-      type: [ "type", { unique: false }],
-      userId: [ "userId", { unique: false }]
+var
+  openProfileDB,
+  onError,
+  dbConfig = [
+    // Version 1
+    {
+      objects: {
+        options: {
+          keyPath: "id"
+        },
+        indexes: {
+          type: [ "type", { unique: false }],
+          userId: [ "userId", { unique: false }]
+        }
+      }
     }
-  }
-}]);
+  ];
+
+openProfileDB = function() {
+  return promisedDB.open( "profile", 1, dbConfig )
+    .catch( onError );
+};
+
+onError = function( error ) {
+  console.warn( "Error opening Profile DB" );
+  console.error( error.stack );
+
+  window.indexedDB.deleteDatabase( "profile" );
+  return openProfileDB();
+};
+
+export default openProfileDB();
