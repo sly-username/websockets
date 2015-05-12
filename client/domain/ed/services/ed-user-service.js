@@ -94,7 +94,7 @@ window.edUserService = edUserService;
 //      //  return edUserService.hasOnboarded;
 //      //}
 //
-//      hasOnboarded = false;
+//      hasOnboarded = true;
 //      return hasOnboarded;
 //    })
 //    .catch( error => {
@@ -150,9 +150,12 @@ edUserService.login = function( email, password ) {
       });
 
       edUserService.getReferrals();
-
+      console.log( edUserService.hasOnboarded );
       return currentProfile;
     })
+    //.then( () => {
+    //  edUserService.confirmOnboarding();
+    //})
     .catch(( error ) => {
       console.error( error );
       currentProfile = null;

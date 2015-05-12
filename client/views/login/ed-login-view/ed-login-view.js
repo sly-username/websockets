@@ -81,15 +81,17 @@
 
           return userService.login( email, password )
             .then( function( response ) {
-              if ( response != null ) {
+              if ( response != null && userService.hasOnboarded === true ) {
                 self.router.go( "/discover" );
                 // todo need to do the has onboarded check
+              } else if ( response != null && userService.hasOnboarded === false ) {
+                self.router.go( "/onboarding/like" );
               } else {
                 self.errorDiv.innerHTML = "Wrong.";
               }
             })
             .catch( function( error ) {
-              console.log( "yay. great." );
+              console.log( "user service login function is broken" );
             });
         },
         goToSignUpPage: function() {
