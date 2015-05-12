@@ -22,6 +22,8 @@
           };
 
           if ( userService.isOpenSession ) {
+            this.profileId = userService.currentProfile.id;
+          } else {
             userService.on( "edLogin", function() {
               this.profileId = userService.currentProfile.id;
             }.bind( this ) );
