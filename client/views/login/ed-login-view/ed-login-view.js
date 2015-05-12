@@ -42,11 +42,13 @@
 
         },
         validateAfterEnter: function( event ) {
+          event.preventDefault();
           if ( event.keyCode === 13 ) {
             this.validateFields();
           }
         },
         enterToSignUp: function( event ) {
+          event.preventDefault();
           if ( event.keyCode === 13 ) {
             this.goToSignUpPage();
           }
