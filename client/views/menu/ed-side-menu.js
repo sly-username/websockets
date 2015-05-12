@@ -23,11 +23,10 @@
 
           if ( userService.isOpenSession ) {
             this.profileId = userService.currentProfile.id;
-          } else {
-            userService.on( "edLogin", function() {
-              this.profileId = userService.currentProfile.id;
-            }.bind( this ) );
           }
+          userService.on( "edLogin", function() {
+            this.profileId = userService.currentProfile.id;
+          }.bind( this ) );
         },
         attached: function() {
           this.router.addEventListener( "activate-route-end", this.handlers.triggerMenu );
