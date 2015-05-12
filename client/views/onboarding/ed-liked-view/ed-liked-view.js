@@ -68,6 +68,7 @@
         this.inputBubbles     = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
         this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
         this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
+        bubbleCounter = 0;
 
         // handlers
         this.handlers = {
