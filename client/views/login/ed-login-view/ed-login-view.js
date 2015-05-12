@@ -29,9 +29,6 @@
             .shadowRoot.querySelector( ".form-input-container" );
         },
         attached: function() {
-          //this.inputFieldsArray.forEach( function( field ) {
-          //  field.classList.remove( "invalid-field" );
-          //});
           this.emailInput.setAttribute( "autofocus", "" );
 
           clickEvents.forEach(function( eventName ) {
@@ -39,32 +36,40 @@
             this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
           }.bind( this ));
 
-          // enter key event listener
-          this.submitButton.addEventListener( "keypress", function( event ) {
-            if ( event.keycode === 13 ) {
-              this.validateFields.bind( this );
-            }
-          }.bind( this ));
+          // enter key event listeners
+          this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
+          this.signUpButton.addEventListener( "keypress", this.enterToSignUp.bind( this ));
+
+        },
+        validateAfterEnter: function( event ) {
+          if ( event.keyCode === 13 ) {
+            this.validateFields();
+          }
+        },
+        enterToSignUp: function( event ) {
+          if ( event.keyCode === 13 ) {
+            this.goToSignUpPage();
+          }
         },
         validateFields: function() {
+          if ( this.emailInput.value === "" ) {
+            this.emailField.classList.add( "invalid-field" );
+          } else if ( this.emailInput.value !== "" ) {
+            this.emailField.classList.remove( "invalid-field" );
+          }
+
+          if ( this.passwordInput.value === "" ) {
+            this.passwordField.classList.add( "invalid-field" );
+          } else if ( this.passwordInput.value !== "" ) {
+            this.passwordField.classList.remove( "invalid-field" );
+          }
+
           if ( this.emailInput.value !== "" && this.passwordInput.value !== "" ) {
             this.inputFieldsArray.forEach( function( field ) {
               field.classList.remove( "invalid-field" );
             });
             this.submitForm();
           }
-
-          if ( this.emailInput.value === "" ) {
-            console.log( "something" );
-            this.emailField.classList.add( "invalid-field" );
-          }
-
-          if ( this.passwordInput.value === "" ) {
-            console.log( "other thing" );
-            this.passwordField.classList.add( "invalid-field" );
-          }
-          // todo will there be a problem changing the field back to valid if
-          // the user updates the fields?
         },
         submitForm: function() {
           var
@@ -72,14 +77,10 @@
             password = this.passwordInput.value;
 
           return userService.login( email, password )
-            .then( function() {
-              if ( userService.hasOnboarded === false ) {
-                this.router.go( "/onboarding/like" );
-              } else if ( userService.hasOnboarded === true ) {
-                this.router.go( "/discover" );
-              }
+            .then( function( response ) {
+              this.nothing();
             }.bind( this ))
-            .catch( function() {
+            .catch( function( error ) {
               this.errorDiv.innerHTML = "Wrong.";
             }.bind( this ));
         },
@@ -92,12 +93,9 @@
             this.signUpButton.removeEventListener( eventName, this.goToSignUpPage.bind( this ));
           }.bind( this ));
 
-          // enter key event listener
-          this.submitButton.removeEventListener( "keypress", function( event ) {
-            if ( event.keycode === 13 ) {
-              this.validateFields.bind( this );
-            }
-          }.bind( this ));
+          // enter key event listeners
+          this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ));
+          this.signUpButton.removeEventListener( "keypress", this.enterToSignUp.bind( this ));
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
