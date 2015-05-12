@@ -29,6 +29,8 @@
           clickEvents.forEach( function( eventName ) {
             this.submitButton.removeEventListener( eventName, this.validateEmail.bind( this ));
           }.bind( this ));
+
+          this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ));
         },
         validateAfterEnter: function( event ) {
           event.preventDefault();
