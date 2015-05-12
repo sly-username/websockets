@@ -12,11 +12,11 @@
       </div>
       <ed-icon class="friends-icon" name="invite-friends"></ed-icon>
       <p class="referral-text">
-        {{ userService.currentProfile.raw.firstName }}, you have {{ userService.referralsRemaining }}<br>invites left
+        {{ userService.data.firstName }}, you have {{ userService.referralsRemaining }}<br>invites left
       </p>
       <ed-form-input id="email-input" type="email" class="email" placeholder="Friend's Email"
                      icon="envelope"></ed-form-input>
-      <button id="referral-submit" class="invalid" disabled>SEND INVITE</button>
+      <button id="referral-submit">SEND INVITE</button>
     </div>
   </template>
   <script src="ed-referral-view.js"></script>

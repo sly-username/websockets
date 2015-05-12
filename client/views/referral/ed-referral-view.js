@@ -4,14 +4,6 @@
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
       var userService = imported.default,
-        validateEmail = function( self ) {
-          var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
-          if ( this.emailInput.validity.valid && re.test( this.emailInput.value )) {
-            this.submitCheck();
-          } else {
-            this.submitButton.setAttribute( "disabled", "" );
-          }
-        },
         clickEvents = [ "mousedown", "touchstart" ];
 
       polymer( "ed-referral-view", {
@@ -24,44 +16,47 @@
         attached: function() {
           this.emailInput.setAttribute( "autofocus", "" );
 
+          this.emailField = this.shadowRoot.querySelector( ".email" )
+            .shadowRoot.querySelector( ".form-input-container" );
+
           clickEvents.forEach( function( eventName ) {
-            this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
+            this.submitButton.addEventListener( eventName, this.validateEmail.bind( this ));
           }.bind( this ));
 
-          this.emailInput.addEventListener( "keyup", validateEmail.bind( this ));
+          this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
         },
         detached: function() {
           clickEvents.forEach( function( eventName ) {
-            this.submitButton.removeEventListener( eventName, this.submitFriendEmail.bind( this ));
+            this.submitButton.removeEventListener( eventName, this.validateEmail.bind( this ));
           }.bind( this ));
-
-          this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
         },
-        submitCheck: function() {
-          if ( userService.referralsRemaining === 0 ) {
-            this.submitButton.setAttribute( "disabled", "" );
-          } else if ( userService.referralsRemaining > 0 ) {
-            this.submitButton.removeAttribute( "disabled" );
-
-            // todo, if you press tab and enter, it'll reload the page
-            this.emailInput.addEventListener( "submit", function( event ) {
-              if ( event.keyCode === 13 ) {
-                event.preventDefault();
-                this.submitFriendEmail( event );
-              }
-              return false;
-            }.bind( this ));
+        validateAfterEnter: function( event ) {
+          event.preventDefault();
+          if ( event.keyCode === 13 ) {
+            this.validateEmail();
           }
         },
-        submitFriendEmail: function( event ) {
+        validateEmail: function() {
+          // todo do we also need to check if it has the syntax of a valid email?
+          if ( this.emailInput.value === "" ) {
+            this.emailField.classList.add( "invalid-field" );
+          } else if ( this.emailInput.value !== "" ) {
+            this.emailField.classList.remove( "invalid-field" );
+            console.log( "does it know to get here?" );
+            this.submitFriendEmail();
+          }
+        },
+        submitFriendEmail: function() {
           var friendEmail = this.emailInput.value;
-          event.preventDefault();
-
           return userService.referral( friendEmail )
             .then( function( response ) {
+              console.log( "walking?" );
               this.referralsRemaining = response;
               this.emailInput.value = "";
-            }.bind( this ));
+            }.bind( this ))
+            .catch( function() {
+              console.log( "referral request was unsuccesful" );
+            });
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
