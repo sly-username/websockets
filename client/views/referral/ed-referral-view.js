@@ -10,7 +10,8 @@
         /* LIFECYCLE */
         userService: userService,
         ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
+          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" )
+            .shadowRoot.querySelector( "input" );
           this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
         },
         attached: function() {
