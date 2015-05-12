@@ -13,16 +13,11 @@
 
           if ( tmpId != null ) {
             playerService.startMusicDiscovery( tmpId );
-            this.mainPlayerWrapper.classList.remove( "hide-main" );
-            this.songCardWrapper.classList.remove( "minimized" );
           }
         };
 
       polymer( "ed-discover-view", {
         ready: function() {
-          this.edPlayer = document.getElementById( "song-card" );
-          this.songCardWrapper = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
-          this.mainPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "main-player-wrapper" );
           this.discoverList = this.shadowRoot.getElementsByClassName( "discover-list" )[0];
           // handler
           this.handlers = {

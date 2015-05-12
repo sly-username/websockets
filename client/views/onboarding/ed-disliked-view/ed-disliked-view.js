@@ -2,10 +2,12 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-discover-service" )
+    System.import( "domain/ed/services/ed-discover-service" ),
+    System.import( "domain/ed/services/ed-player-service" )
   ]).then(function( imported ) {
     var
       discoverService = imported[ 0 ].default,
+      playerService = imported[ 1 ].default,
       bubbleCounter = 0,
       bubbleArray = [],
       triggerBubblesHandler = function( event ) {
@@ -22,6 +24,9 @@
         console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );
         return discoverService.setCurrentProfileBlend( this.likedBubbles, bubbleArray )
           .then(function( response ) {
+            playerService.startMusicDiscovery( "profileBlend" );
+            this.mainPlayerWrapper.classList.remove( "hide-main" );
+            this.songCardWrapper.classList.remove( "minimized" );
             this.router.go( "/discover" );
             return response;
           }.bind( this ));
@@ -82,6 +87,9 @@
         this.inputBubbles     = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
         this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
         this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
+        this.edPlayer         = document.getElementById( "song-card" );
+        this.songCardWrapper  = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
+        this.mainPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "main-player-wrapper" );
         this.likedBubbles     = this.getUrlVar();
         // handlers
         this.handlers = {
