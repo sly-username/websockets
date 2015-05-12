@@ -17,6 +17,9 @@
         reflect: true
       }
     },
+    get value() {
+      return this.$.input.value;
+    },
     ready: function() {},
     attached: function() {},
     detached: function() {},
