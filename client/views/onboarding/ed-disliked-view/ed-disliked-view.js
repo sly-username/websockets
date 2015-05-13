@@ -24,9 +24,10 @@
         console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );
         return discoverService.setCurrentProfileBlend( this.likedBubbles, bubbleArray )
           .then(function( response ) {
-            // todo go to song card and start playing discover blend
             playerService.startMusicDiscovery( "profileBlend" );
-
+            this.mainPlayerWrapper.classList.remove( "hide-main" );
+            this.songCardWrapper.classList.remove( "minimized" );
+            this.router.go( "/discover" );
             return response;
           }.bind( this ));
       },
@@ -86,6 +87,9 @@
         this.inputBubbles     = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
         this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
         this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
+        this.edPlayer         = document.getElementById( "song-card" );
+        this.songCardWrapper  = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
+        this.mainPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "main-player-wrapper" );
         this.likedBubbles     = this.getUrlVar();
         // handlers
         this.handlers = {
