@@ -25,6 +25,10 @@ export default class EDCollection {
     this[ datalist ] = ids.slice( 0 );
   }
 
+  get length() {
+    return this.ids.length;
+  }
+
   /**
    *
    * @method get
@@ -32,6 +36,10 @@ export default class EDCollection {
    * @returns {*}
    */
   get( index ) {
+    if ( index >= this.length ) {
+      return Promise.reject( new RangeError( `Index: ${index} is out of bounds for EDCollection with length ${this.length}` ) );
+    }
+
     if ( !( this[ datalist ][ index ] instanceof Promise ) ) {
       this[ datalist ][ index ] = dataService.getByTypeAndId( this.type, this.ids[ index ] );
     }

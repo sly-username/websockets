@@ -1,7 +1,7 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
 <link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
 
-<polymer-element name="ed-single-chart" attributes="chart-position chart-title chart-subtitle chart-badge">
+<polymer-element name="ed-single-chart" attributes="chart-position chart-name chart-title chart-subtitle chart-badge chart-object">
   <template>
     <link rel="stylesheet" href="./ed-single-chart.css">
     <div class="single-wrapper">
@@ -20,20 +20,29 @@
           <ed-icon id="badge-hrs" name="{{chartBadge}}"></ed-icon>
           <p class="time-left">Time Left</p>
 
-          <h2 class="countdown-timer">{{edChart.dateEnds}}</h2>
+          <h2 class="countdown-timer">{{countdown}}</h2>
         </div>
 
-        <ul id="ranks-list" class="rankings">
-          <template repeat="{{rankedUser in rankingsList}}">
-            <li ed-id="{{rankedUser.profileId}}">
-              <p class="chart-rank">{{edChart.getRankForId[ "ed-id" ]}}</p>
+        <div class="default-view" hidden?="{{noRankings}}">
+          <p class="default-copy">{{defaultCopy}}</p>
+        </div>
+
+        <ul id="ranks-list" class="rankings" hidden?="{{!noRankings}}">
+          <template repeat="{{rankedProfile, rankIndex in rankingsList}}">
+            <li ed-id="{{rankedProfile.id}}">
+              <p class="chart-rank">{{rankIndex + 1}}</p>
 
               <div class="img-container">
-                <!--todo not sure how this information is returned to us yet-->
-                <img-placeholder src="{{rankedUser.art}}"></img-placeholder>
+                <img-placeholder src="{{rankedProfile.art.original}}"></img-placeholder>
               </div>
-              <p class="chart-points">{{rankedUser.num}}</p>
-              <p class="chart-name">{{rankedUser.name}}</p>
+              <p class="chart-points">{{getRankForId( rankedProfile.id )}}</p>
+              <template if="{{isFan}}">
+                <p class="fan-name">{{rankedProfile.displayName}}</p>
+              </template>
+              <template if="{{isTrack}}">
+                <p class="track-name">{{rankedProfile.name}}</p>
+                <p class="artist-name">{{rankedProfile.artistName}}</p>
+              </template>
             </li>
           </template>
         </ul>

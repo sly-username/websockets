@@ -1,8 +1,13 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/title-bar.mixin.less";
+@import "../../../styles/ed/ellipsis-overflow.mixin.less";
+@import "../../../styles/ed/chart-name.mixin.less";
+
+.hidden();
 
 .single-wrapper {
   background-color: @originalPurple;
@@ -11,8 +16,8 @@
   max-width: 59.6rem;
   overflow-x: hidden;
   width: 100%;
-
   display: flex;
+
   .single-header {
     position: absolute;
     top: 0;
@@ -72,22 +77,32 @@
 
   #arrow-right {
     right: 0;
-    //// todo mixin?
-    //-moz-transform: scaleX(-1);
-    //-o-transform: scaleX(-1);
-    //-webkit-transform: scaleX(-1);
-    //transform: scaleX(-1);
   }
 
   .ranks-badge-wrapper {
-    position: relative;
-    top: 8rem;
+    //position: absolute;
+    //top: 7rem;
     width: 100%;
+
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+
+    padding-top: 8rem;
   }
 
   .badges {
     color: @originalTeal;
     text-align: center;
+
+    //position: fixed;
+    //right: 0;
+    //left: 0;
+    //height: 30%;
+    //top: 8rem;
+    background-color: @originalPurple;
+
+    //padding-top: 8rem;
 
     .time-left {
       white-space: pre;
@@ -100,7 +115,7 @@
       white-space: pre;
       .edType( paragraph-M );
       // todo where is the default margin coming from?
-      margin: 0 0 1rem 0;
+      margin: 0 0 2rem 0;
       font-weight: 500;
     }
   }
@@ -119,40 +134,75 @@
     }
   }
 
+  .default-view {
+    .edType( heading-XS );
+    color: @lightGrey1;
+    background: @darkPurple3;
+
+    flex: 1;
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    top: 32rem;
+
+    .default-copy {
+
+    }
+  }
+
   .rankings {
+    flex: 1;
     list-style-type: none;
     width: 100%;
     margin: 0;
     padding: 0;
+    //position: absolute;
+    //top: 25rem;
     li {
       overflow: auto;
-      height: 4rem;
-      //margin-top: -0.3rem;
+      height: 5.5rem;
       width: 100%;
-      //display: inline-block;
       background: @darkPurple3;
       color: @originalWhite;
       border-bottom: .1rem solid @originalGrey;
       .edType( heading-XS );
       .img-container {
         width: 3.5rem;
-        padding: .2rem 0 0 3rem;
+        padding: 1rem 0 0 3rem;
         float: left;
       }
       .chart-rank {
         float: left;
         margin: 0;
-        padding: 1rem 0 0 1rem;
+        padding: 1.5rem 0 0 1.5rem;
       }
-      .chart-name {
-        float: left;
-        margin: 0;
-        padding: 1rem 0 0 1rem;
+      .fan-name {
+        .edEllipsisOverflow();
+        .edChartName();
+        padding-top: 1.5rem;
+        height: 2.5rem;
+      }
+      .track-name{
+        .edEllipsisOverflow();
+        .edChartName();
+        // todo did not use any of the font mixins
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 100%;
+        padding-top: 1rem;
+      }
+      .artist-name {
+        .edEllipsisOverflow();
+        .edChartName();
+        // todo did not use any of the font mixins
+        font-size: 1.3rem;
+        font-weight: 500;
+        padding-top: 0;
       }
       .chart-points {
         float: right;
         margin: 0;
-        padding: 1rem 1rem 0 0;
+        padding: 1.5rem 3rem 0 0;
       }
     }
 

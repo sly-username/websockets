@@ -266,9 +266,12 @@ edUserService.register = function( args ) {
         return response;
       }
 
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        console.log( "response on error", response );
+        let tError = new TypeError( "Problem with Registration" );
+        tError.invalidFields = response.meta.invalidFields;
+        throw tError;
+      }
     })
     .catch( error => {
       console.log( "Error registering new user in User Service" );
@@ -278,9 +281,6 @@ edUserService.register = function( args ) {
     })
     .then( response => {
       return edUserService.login( authBlock.email, authBlock.password );
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
     });
 };
 
@@ -312,10 +312,20 @@ edUserService.resetPassword = function( resetCode, password ) {
 
   return edConnectionService.request( "user/password/set", 10, json )
     .then( response => {
-      return response;
+      if ( response && response.status && response.status.code && response.status.code === 2 ) {
+        console.log( "sucessful password/set", response );
+        return response;
+      }
+
+      // TODO the code for this will be 11
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        let resetError = new TypeError( "Problem with Reseting the Password" );
+        resetError = response.status.code;
+        throw resetError;
+      }
     })
     .catch( error => {
-      console.log( "new password was not successfully sent" );
+      console.log( "new password was not successfully set" );
       console.log( error );
       throw error;
     });
