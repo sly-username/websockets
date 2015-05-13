@@ -23,38 +23,34 @@
           <h2 class="countdown-timer">{{countdown}}</h2>
         </div>
 
-        <template if="{{noRankings}}">
-        <div class="default-view">
+        <div class="default-view" hidden?="{{noRankings}}">
           <p class="default-copy">{{defaultCopy}}</p>
         </div>
-        </template>
 
-        <template if="{{areRankings}}">
-          <ul id="ranks-list" class="rankings">
-            <template repeat="{{rankedUser, rankIndex in rankingsList}}">
-              <li ed-id="{{rankedUser.leaderboard.profileId}}">
-                <p class="chart-rank">{{rankIndex +1}}</p>
+        <ul id="ranks-list" class="rankings" hidden?="{{!noRankings}}">
+          <template repeat="{{rankedProfile, rankIndex in rankingsList}}">
+            <li ed-id="{{rankedProfile.id}}">
+              <p class="chart-rank">{{rankIndex + 1}}</p>
 
-                <div class="img-container">
-                  <template if="{{isFan}}">
-                    <img-placeholder src="{{rankedUser.artUrl}}"></img-placeholder>
-                  </template>
-                  <template if="{{isTrack}}">
-                    <img-placeholder src="{{rankedUser.art.original}}"></img-placeholder>
-                  </template>
-                </div>
-                <p class="chart-points">{{score}}</p>
+              <div class="img-container">
                 <template if="{{isFan}}">
-                  <p class="fan-name">{{rankedUser.displayName}}Fan</p>
+                  <img-placeholder src="{{rankedProfile.art.original}}"></img-placeholder>
                 </template>
                 <template if="{{isTrack}}">
-                  <p class="track-name">{{rankedUser.name}}</p>
-                  <p class="artist-name">{{rankedUser.displayName}}Artist</p>
+                  <img-placeholder src="{{rankedProfile.art.original}}"></img-placeholder>
                 </template>
-              </li>
-            </template>
-          </ul>
-        </template>
+              </div>
+              <p class="chart-points">{{getRankForId( rankedProfile.id )}}</p>
+              <template if="{{isFan}}">
+                <p class="fan-name">{{rankedProfile.displayName}}</p>
+              </template>
+              <template if="{{isTrack}}">
+                <p class="track-name">{{rankedProfile.name}}</p>
+                <p class="artist-name">{{rankedProfile.artistName}}</p>
+              </template>
+            </li>
+          </template>
+        </ul>
       </div>
     </div>
   </template>

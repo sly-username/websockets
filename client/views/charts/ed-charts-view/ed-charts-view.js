@@ -71,16 +71,21 @@
       /* LIFECYCLE */
       ready: function() {
         this.singleChartWrapper = this.$[ "single-chart-wrapper" ];
-        this.singleChartArray = [].slice.call( this.shadowRoot.querySelectorAll( "ed-single-chart" ));
-        console.log( this.singleChartArray );
+
+        this.chartElementsByName = {};
+
+        Array.prototype.forEach.call( this.shadowRoot.querySelectorAll( "ed-single-chart" ), function( chartElement ) {
+          this.chartElementsByName[ chartElement.chartIdentifier ] = chartElement;
+        }, this );
       },
       attached: function() {
-        this.getEdChartObject();
-
         this.handler = {
           updateChartView: updateChartsViewHandler.bind( this )
         };
+
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
+
+        this.getEdChartObject();
       },
       detached: function() {
         this.removeEventListener( "chartsUpdate", this.handler.updateChartView );
@@ -89,32 +94,30 @@
         var
           chartIndex = 0,
           maxIndex = chartNames.length,
-          componentAssignment = function( response ) {
-            console.log( response );
-            this.singleChartArray.forEach( function( singleChart ) {
-              if ( response.chartName === singleChart.chartIdentifier ) {
-                singleChart.chartObject = response;
-                console.log( singleChart.chartObject );
-                return singleChart.chartObject;
-              }
-              return response;
-            });
+          componentAssignment = function( edChart ) {
+            if ( edChart.chartName in this.chartElementsByName ) {
+              this.chartElementsByName[ edChart.chartName ].chartObject = edChart;
+
+              console.dir( this.chartElementsByName[ edChart.chartName ] );
+              console.dir( edChart );
+            }
+
+            return edChart;
           }.bind( this ),
           nextGet = function( nextIndex ) {
-            return function( response ) {
+            return function( edChart ) {
               if ( nextIndex >= maxIndex ) {
-                return componentAssignment( response );
+                return componentAssignment( edChart );
               }
 
-              return discoverService.getLeaderboardCharts( chartNames[ nextIndex ])
-                .then( function() {
-                  return componentAssignment( response );
-                })
+              return discoverService.getLeaderboardCharts( chartNames[ nextIndex ] )
+                .then( componentAssignment )
                 .then( nextGet( nextIndex + 1 ));
             };
           };
 
-        return discoverService.getLeaderboardCharts( chartNames[ chartIndex ])
+        return discoverService.getLeaderboardCharts( chartNames[ chartIndex ] )
+          .then( componentAssignment )
           .then( nextGet( chartIndex + 1 ));
       },
       attributeChanged: function( attrName, oldValue, newValue ) {}

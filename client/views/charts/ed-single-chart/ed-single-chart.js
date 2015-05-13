@@ -20,6 +20,28 @@
       },
       rightMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveRight" ));
+      },
+      requestArtists = function( trackList ) {
+        console.log( "need to find artsits for: %o", trackList );
+        var nextThen = function( nextIndex, currentTrack ) {
+          return function( edArtist ) {
+            currentTrack.artistName = edArtist.displayName;
+
+            if ( nextIndex >= trackList.length ) {
+              return edArtist;
+            }
+
+            return trackList[ nextIndex ].getArtist()
+              .then( nextThen( nextIndex + 1, trackList[ nextIndex ] ) );
+          };
+        };
+
+        if ( trackList.length === 0 ) {
+          return;
+        }
+
+        trackList[ 0 ].getArtist()
+          .then( nextThen( 1, trackList[ 0 ] ) );
       };
 
     polymer( "ed-single-chart", {
@@ -63,13 +85,28 @@
         return this[ "chart-object" ];
       },
       set chartObject( value ) {
+        if ( value.constructor.MODEL_TYPE !== "chart" ) {
+          return this[ "chart-object" ];
+        }
+
         this[ "chart-object" ] = value;
+
+        this.countdown = value.timeRemaining;
+        this.noRanking = value.leaderboard.length !== 0;
+
+        this.getLeaderBoard();
         return value;
+      },
+      getRankForId: function( id ) {
+        if ( this.chartObject != null ) {
+          return this.chartObject.getRankForId( id );
+        }
+
+        return -1;
       },
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
         this.arrowRight = this.$[ "arrow-right" ];
-        this.countdown = this.chartObject.timeRemaining;
       },
       attached: function() {
         if (( /fan$/ ).test( this.chartIdentifier )) {
@@ -84,33 +121,42 @@
           leftMove: leftMoveHandler.bind( this ),
           rightMove: rightMoveHandler.bind( this )
         };
+
         this.arrowLeft.addEventListener( "click", this.handler.leftMove );
         this.arrowRight.addEventListener( "click", this.handler.rightMove );
+
+        // default values
+        if ( this.noRankings == null ) {
+          this.noRankings = true;
+        }
       },
       detached: function() {
         this.arrowLeft.removeEventListener( "click", this.handler.leftMove );
         this.arrowRight.removeEventListener( "click", this.handler.rightMove );
       },
       getLeaderBoard: function() {
-        //if ( edChart.leaderboard === [] ) {
-        //  this.noRankings = true;
-        //  this.areRankings = false;
-        //} else {
-        //  this.noRankings = false;
-        //  this.areRankings = true;
-        //}
-        //this.noRankings = true;
-        //  this.areRankings = true;
-
         console.log( this.chartObject.leaderboardCollection );
-        this.chartObject.leaderboardCollection.getInSequence( 0, 10, true )
-          .then( function( chartList ) {
-            this.rankingsList = chartList;
-            this.score = this.chartObject.getRankForId( this.chartObject.leaderboard.id );
-          }.bind( this ));
+
+        if ( this.chartObject.leaderboard.length === 0 ) {
+          console.log( "empty chart :(" );
+          return;
+        }
+
+        this.chartObject
+          .leaderboardCollection
+            .getInSequence( 0, this.chartObject.leaderboard.length, true )
+              .then(function( chartList ) {
+                this.rankingsList = chartList;
+
+                if ( this.isTrack ) {
+                  requestArtists( chartList );
+                }
+              }.bind( this ))
+              .catch(function( error ) {
+                console.error( error.stack );
+              });
       },
-      attributeChanged: function( attrName, oldVal, newVal ) {
-      }
+      attributeChanged: function( attrName, oldVal, newVal ) {}
     });
   });
 })( window.Polymer, window.System );

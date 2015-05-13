@@ -11,16 +11,21 @@ import EDTrack from "domain/ed/objects/media/EDTrack";
 
 import EDCollection from "domain/ed/storage/EDCollection";
 
-var profileTypeForChartName = function( chartName ) {
-  if ( ( /fan$/ ).test( chartName ) ) {
-    return EDFan.MODEL_TYPE;
-  } else if ( ( /artist$/ ).test( chartName ) ) {
-    return EDArtist.MODEL_TYPE;
-  } else if ( ( /track$/ ).test( chartName ) ) {
-    return EDTrack.MODEL_TYPE;
-  }
-  return EDProfile.MODEL_TYPE;
-};
+var
+  profileTypeForChartName = function( chartName ) {
+    if ( ( /fan$/ ).test( chartName ) ) {
+      return EDFan.MODEL_TYPE;
+    } else if ( ( /artist$/ ).test( chartName ) ) {
+      return EDArtist.MODEL_TYPE;
+    } else if ( ( /track$/ ).test( chartName ) ) {
+      return EDTrack.MODEL_TYPE;
+    }
+    return EDProfile.MODEL_TYPE;
+  },
+  seconds = 1000,
+  minutes = 1000 * 60,
+  hours = 1000 * 60 * 60,
+  days = 1000 * 60 * 60 * 24;
 
 export default class EDChart extends EDModel {
   static get MODEL_TYPE() {
@@ -28,20 +33,19 @@ export default class EDChart extends EDModel {
   }
 
   constructor( args ) {
-    var argsCopy = Object.assign({}, args );
     args.id = null;
     args.type = null;
-    super( args );
 
-    // todo won't let me add another property
     if ( args.dateEnds ) {
-      argsCopy.dateEnds = new Date( args.dateEnds );
+      args.dateEnds = new Date( args.dateEnds );
     }
+
+    super( args );
 
     define.enumReadOnly( this, [
       "chartName",
       "dateEnds"
-    ], argsCopy );
+    ], args );
 
     define.enumReadOnlyDeep( this, [ "leaderboard" ], args );
 
@@ -53,22 +57,16 @@ export default class EDChart extends EDModel {
 
   get timeRemaining() {
     var
-      end = new Date( this.dateEnds ),
-      current = new Date(),
-      timeLeft = end - current,
-      _seconds = 1000,
-      _minutes = _seconds * 60,
-      _hours = _minutes * 60,
-      _days = _hours * 24,
-      daysLeft = Math.floor( timeLeft / _days ),
-      hoursLeft = Math.floor( timeLeft % _days / _hours ),
-      minutesLeft = Math.floor( timeLeft % _hours / _minutes );
+      now = Date.now(),
+      timeLeft = this.dateEnds - now,
+      daysLeft = Math.floor( timeLeft / days ),
+      hoursLeft = Math.floor( timeLeft % days / hours ),
+      minutesLeft = Math.floor( timeLeft % hours / minutes );
 
     return `${daysLeft}d ${hoursLeft}h ${minutesLeft}m`;
   }
 
   getRankForId( id ) {
-    console.log( this.leaderboard );
     for ( let i = 0 ; i < this.leaderboard.length ; i++ ) {
       if ( this.leaderboard[ i ].id === id ) {
         return this.leaderboard[ i ].value;
