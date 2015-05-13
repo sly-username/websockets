@@ -3,9 +3,10 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import edDataService from "domain/ed/services/ed-data-service";
+import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
+import EDFan from "domain/ed/objects/profile/EDFan"
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
@@ -131,7 +132,7 @@ edUserService.login = function( email, password ) {
       return currentProfile;
     })
     .catch(( error ) => {
-      console.error( error );
+      console.error( error.stack );
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
@@ -243,9 +244,12 @@ edUserService.register = function( args ) {
         return response;
       }
 
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        console.log( "response on error",response );
+        let tError = new TypeError( "Problem with Registration" );
+        tError.invalidFields = response.meta.invalidFields;
+        throw tError;
+      }
     })
     .catch( error => {
       console.log( "Error registering new user in User Service" );
@@ -255,9 +259,6 @@ edUserService.register = function( args ) {
     })
     .then( response => {
       return edUserService.login( authBlock.email, authBlock.password );
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
     });
 };
 
@@ -294,6 +295,24 @@ edUserService.resetPassword = function( resetCode, password ) {
     .catch( error => {
       console.log( "new password was not successfully sent" );
       console.log( error );
+      throw error;
+    });
+};
+
+edUserService.editProfile = function( args ) {
+  var json = {};
+
+  json.data = Object.assign({
+    id: currentProfile == null ? null : currentProfile.id
+  }, args );
+
+  return edConnectionService.request( "profile/set", 10, json )
+    .then( response => {
+      return updateModel( response );
+    })
+    .catch( error => {
+      console.warn( "profile update was not successfully sent" );
+      console.error( error.stack );
       throw error;
     });
 };

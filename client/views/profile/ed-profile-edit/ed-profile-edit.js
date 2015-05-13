@@ -1,57 +1,65 @@
 ( function( polymer, System ) {
   "use strict";
 
-  System.import( "domain/ed/services/ed-data-service" )
-    .then(function( imported ) {
-      var dataService = imported.default,
+  Promise.all([
+    System.import( "domain/ed/services/ed-user-service" )
+  ]).then(function( imported ) {
+      var
+        userService = imported[ 0 ].default,
+        updateProfileName = function( nameKey, nameValue ) {
+          var nameData = {};
+          nameData[ nameKey ] = nameValue;
+          return userService.editProfile({
+            name: nameData
+          });
+        },
+        nameInputHandler = function( event ) {
+          var target = event.target;
 
-      autoSubmitHandler = function() {
-        this.editForm.submit();
-      };
-
+          if ( target.tagName === "ED-FORM-INPUT" && target.value !== "" && ( /^(first|last)-name$/ ).test( target.id ) ) {
+            updateProfileName( target.id.split( "-" )[0], target.value )
+              .then(function( edProfile ) {
+                /* do any view updates if needed like perhaps */
+                this.edFan = edProfile;
+                return edProfile;
+              }.bind( this ));
+          }
+        };
       polymer( "ed-profile-edit", {
         /* LIFECYCLE */
         ready: function() {
-          if ( this[ "ed-id" ] ) {
-            dataService.getFanById( this[ "ed-id" ] )
-              .then(function( edFan ) {
-                this.edFan = edFan;
-                console.log( "artist got: %o", edFan );
-                console.dir( this );
-              }.bind( this ));
+          if ( userService.isOpenSession ) {
+            this.edFan = userService.currentProfile;
+          } else {
+            userService.once( "edLogin", function() {
+              this.edFan = userService.currentProfile;
+            }.bind( this ));
           }
-          this.editForm = this.shadowRoot.getElementById( "edit-form" );
-          this.firstName = this.shadowRoot.getElementById( "first-name" );
-          this.lastName = this.shadowRoot.getElementById( "last-name" );
+
+          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
+
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
           this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
+
           this.handler = {
-            autoSubmit: autoSubmitHandler.bind( this )
+            nameInput: nameInputHandler.bind( this )
           };
         },
         attached: function() {
-          this.firstName.addEventListener( "blur", this.handler.autoSubmit );
-          this.lastName.addEventListener( "blur", this.handler.autoSubmit );
-          this.choosePhoto.addEventListener( "change", this.handler.autoSubmit );
-          this.takePhoto.addEventListener( "change", this.handler.autoSubmit );
+          this.edFan = userService.currentProfile;
+
+          this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
+
+//          this.choosePhoto.addEventListener( "change", this.handler.autoSubmit );
+//          this.takePhoto.addEventListener( "change", this.handler.autoSubmit );
         },
         detached: function() {
-          this.firstName.removeEventListener( "blur", this.handler.autoSubmit );
-          this.lastName.removeEventListener( "blur", this.handler.autoSubmit );
-          this.choosePhoto.removeEventListener( "change", this.handler.autoSubmit );
-          this.takePhoto.removeEventListener( "change", this.handler.autoSubmit );
+          this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
+
+//          this.choosePhoto.removeEventListener( "change", this.handler.autoSubmit );
+//          this.takePhoto.removeEventListener( "change", this.handler.autoSubmit );
         },
-        "ed-idChanged": function() {
-          this.attributeChanged( "ed-id" );
-        },
-        attributeChanged: function( attrName ) {
-          if ( attrName === "ed-id" ) {
-            dataService.getFanById( this[ "ed-id" ] )
-              .then(function( edFan ) {
-                this.edFan = edFan;
-              }.bind( this ));
-          }
-        }
+        attributeChanged: function( attrName ) {}
       });
     });
 })( window.Polymer, window.System );
