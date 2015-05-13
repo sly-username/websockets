@@ -52,11 +52,9 @@
           };
         },
         attached: function() {
-          this.submitButton.addEventListener( "click", this.handlers.submitCheck );
           this.registrationBodyDiv.addEventListener( "blur", this.handlers.cleanup, true );
         },
         detached: function() {
-          this.submitButton.removeEventListener( "click", this.handlers.submitCheck );
           this.registrationBodyDiv.removeEventListener( "blur", this.handlers.cleanup );
         },
 
