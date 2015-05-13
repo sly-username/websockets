@@ -303,7 +303,7 @@ edUserService.resetPassword = function( resetCode, password ) {
       }
     })
     .catch( error => {
-      console.log( "new password was not successfully sent" );
+      console.log( "new password was not successfully set" );
       console.log( error );
       throw error;
     });

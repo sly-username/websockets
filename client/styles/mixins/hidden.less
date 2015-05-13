@@ -1,21 +1,21 @@
 
 .hidden(display) {
-  &.hidden, &.hide {
+  &.hidden, &.hide, &[hidden] {
     display: none;
   }
 }
 .hidden(visibility) {
-  &.hidden, &.hide {
+  &.hidden, &.hide, &[hidden] {
     visibility: hidden;
   }
 }
 .hidden(opacity) {
-  &.hidden, &.hide {
+  &.hidden, &.hide, &[hidden] {
     opacity: 0;
   }
 }
 .hidden() {
-  &.hidden, &.hide {
+  &.hidden, &.hide, &[hidden] {
     display: none;
     visibility: hidden;
   }
