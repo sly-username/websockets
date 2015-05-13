@@ -1,113 +1,112 @@
 ( function( polymer, System ) {
   "use strict";
 
-  Promise.all([
-    System.import( "domain/ed/services/ed-discover-service" ),
-    System.import( "domain/ed/services/ed-user-service" )
-  ])
-    .then( function( imported ) {
+  System.import( "domain/ed/services/ed-user-service" )
+    .then(function( imported ) {
       var
-        discoverService = imported[ 0 ].default,
-        userService = imported[ 1 ].default,
-        clickEvents = [ "mousedown", "touchstart" ];
-
-      polymer( "ed-login-view", {
-        /* LIFECYCLE */
-        ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( ".email" )
-            .shadowRoot.querySelector( "input" );
-          this.passwordInput = this.shadowRoot.querySelector( ".password" )
-            .shadowRoot.querySelector( "input" );
-          this.inputFieldsArray = [ this.emailInput, this.passwordInput ];
-          this.submitButton = this.shadowRoot.getElementById( "login-submit" );
-          this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
-          this.errorDiv = this.shadowRoot.getElementById( "errorDiv" );
-
-          this.emailField = this.shadowRoot.querySelector( ".email" )
-            .shadowRoot.querySelector( ".form-input-container" );
-          this.passwordField = this.shadowRoot.querySelector( ".password" )
-            .shadowRoot.querySelector( ".form-input-container" );
+        userService = imported.default,
+        emailRegexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/,
+        passwordRegexPattern = /^\w{8,}/,
+        inputPropertyNameToValidGetter = function( inputName ) {
+          var name = inputName[ 0 ].toUpperCase() + inputName.slice( 1 );
+          return "valid" + name;
         },
-        attached: function() {
-          this.emailInput.setAttribute( "autofocus", "" );
+        cleanupErrorHandler = function( event ) {
+          this.cleanupErrors();
+        };
 
-          clickEvents.forEach(function( eventName ) {
-            this.submitButton.addEventListener( eventName, this.validateFields.bind( this ));
-            this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
-          }.bind( this ));
+    polymer( "ed-login-view", {
+      /* LIFECYCLE */
+      ready: function() {
+        this.submitButton = this.shadowRoot.querySelector( "#login-submit" );
+        this.loginBody = this.shadowRoot.querySelector( ".ed-login-body" );
+        this.errorServer = this.shadowRoot.querySelector( "#errorServer" );
 
-          // enter key event listeners
-          this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
-          this.signUpButton.addEventListener( "keypress", this.enterToSignUp.bind( this ));
+        this.formInputs = {
+          email: this.shadowRoot.querySelector( ".email" ),
+          password: this.shadowRoot.querySelector( ".password" )
+        };
 
-        },
-        validateAfterEnter: function( event ) {
-          event.preventDefault();
-          if ( event.keyCode === 13 ) {
-            this.validateFields();
+        this.errorDivs = {
+          errorEmail: this.shadowRoot.querySelector( "#errorEmail" ),
+          errorPassword: this.shadowRoot.querySelector( "#errorPassword" ),
+        };
+
+        this.handlers = {
+          cleanup: cleanupErrorHandler.bind( this )
+        };
+      },
+      attached: function() {
+        this.formInputs.email.setAttribute( "autofocus", "" );
+        this.loginBody.addEventListener( "blur", this.handlers.cleanup, true );
+
+      },
+      detached: function() {
+        this.loginBody.removeEventListener( "blur", this.handlers.cleanup, true );
+      },
+
+      get validEmail() {
+        return this.formInputs.email.validity.valid && emailRegexPattern.test( this.formInputs.email.value );
+      },
+      get validPassword() {
+        return passwordRegexPattern.test( this.formInputs.password.value );
+      },
+      get canSubmit() {
+        return Object.keys( this.formInputs ).every(function( current ) {
+          return this[ inputPropertyNameToValidGetter( current ) ];
+        }, this );
+      },
+
+      postEarlyErrors: function() {
+        Object.keys( this.formInputs ).forEach(function( current ) {
+          if ( !this[ inputPropertyNameToValidGetter( current ) ] ) {
+            this.errorDivs[ current ].classList.remove( "hidden" );
+            this.formInputs[ current ].classList.add( "invalid" );
           }
-        },
-        enterToSignUp: function( event ) {
-          event.preventDefault();
-          if ( event.keyCode === 13 ) {
-            this.goToSignUpPage();
-          }
-        },
-        validateFields: function() {
-          if ( this.emailInput.value === "" ) {
-            this.emailField.classList.add( "invalid-field" );
-          } else if ( this.emailInput.value !== "" ) {
-            this.emailField.classList.remove( "invalid-field" );
-          }
+        }, this );
+      },
 
-          if ( this.passwordInput.value === "" ) {
-            this.passwordField.classList.add( "invalid-field" );
-          } else if ( this.passwordInput.value !== "" ) {
-            this.passwordField.classList.remove( "invalid-field" );
+      cleanupErrors: function() {
+        Object.keys( this.formInputs ).forEach(function( current ) {
+          if ( this[ inputPropertyNameToValidGetter( current ) ] ) {
+            this.errorDivs[ current ].classList.add( "hidden" );
+            this.formInputs[ current ].classList.remove( "invalid" );
           }
+        }, this );
+      },
 
-          if ( this.emailInput.value !== "" && this.passwordInput.value !== "" ) {
-            this.inputFieldsArray.forEach( function( field ) {
-              field.classList.remove( "invalid-field" );
-            });
-            this.submitForm();
-          }
-        },
-        submitForm: function() {
-          var
-            self = this,
-            email = this.emailInput.value,
-            password = this.passwordInput.value;
+      submitForm: function() {
+        event.preventDefault();
 
-          return userService.login( email, password )
-            .then( function( response ) {
-              if ( response != null && userService.hasOnboarded === true ) {
-                self.router.go( "/discover" );
-                // todo need to do the has onboarded check
-              } else if ( response != null && userService.hasOnboarded === false ) {
-                self.router.go( "/onboarding/like" );
-              } else {
-                self.errorDiv.innerHTML = "Wrong.";
-              }
-            })
-            .catch( function( error ) {
-              console.log( "user service login function is broken" );
-            });
-        },
-        goToSignUpPage: function() {
-          this.router.go( "/register" );
-        },
-        detached: function() {
-          clickEvents.forEach(function( eventName ) {
-            this.submitButton.removeEventListener( eventName, this.validateFields.bind( this ));
-            this.signUpButton.removeEventListener( eventName, this.goToSignUpPage.bind( this ));
-          }.bind( this ));
+        var
+          email = this.formInputs.email.value,
+          password = this.formInputs.password.value;
 
-          // enter key event listeners
-          this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ));
-          this.signUpButton.removeEventListener( "keypress", this.enterToSignUp.bind( this ));
-        },
-        attributeChanged: function( attrName, oldValue, newValue ) {}
-      });
+        if ( !this.canSubmit ) {
+          this.postEarlyErrors();
+          window.scrollTo( 0, 0 );
+          return;
+        }
+
+        userService.login( email, password )
+          .then( function( response ) {
+            if ( response != null && userService.hasOnboarded === true ) {
+              this.router.go( "/discover" );
+              // todo need to do the has onboarded check
+            } else if ( response != null && userService.hasOnboarded === false ) {
+              this.router.go( "/onboarding/like" );
+            } else {
+              // todo need to hide error message?
+              this.errorServer.classList.remove( "hidden" );
+            }
+          })
+          .catch( function( error ) {
+            console.log( "user service login function is broken" );
+            window.scrollTo( 0, 0 );
+            return error;
+          });
+      },
+      attributeChanged: function( attrName, oldValue, newValue ) {}
     });
+  });
 })( window.Polymer, window.System );

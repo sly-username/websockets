@@ -7,20 +7,24 @@
     <div class="login-container">
       <div class="ed-logo-header">
         <ed-icon name="eardish-logo-with-slogan"></ed-icon>
-        <div id="errorDiv"></div>
+        <div id="errorEmail" class="hidden">Wrong. Email is in the wrong format.</div>
+        <div id="errorPassword" class="hidden">Wrong. Password must be at least 8 characters.</div>
+        <div id="errorServer" class="hidden">
+          <p>Wrong login Credentials.</p>
+          <p>Please check your email/password and try again.</p>
+        </div>
       </div>
       <div class="ed-login-body">
         <ed-form-input type="email" class="email" placeholder="Your Email" icon="envelope"></ed-form-input>
-
         <ed-form-input type="password" class="password" placeholder="Password" icon="password"></ed-form-input>
 
         <a id="login-forgot-password" href="#/forgot-pass/request">Forgot Password?</a>
-        <button id="login-submit" type="submit">Login</button>
+        <button id="login-submit" class="invalid" on-click="{{submitForm}}">Login</button>
 
-        <button id="sign-up-button" type="button">
+        <a id="sign-up-button" type="button" href="#/register">
           <span class="small-text">Don't have an account?</span>
           <br />Sign Up Here
-        </button>
+        </a>
       </div>
     </div>
   </template>
