@@ -33,12 +33,7 @@
               <p class="chart-rank">{{rankIndex + 1}}</p>
 
               <div class="img-container">
-                <template if="{{isFan}}">
-                  <img-placeholder src="{{rankedProfile.art.original}}"></img-placeholder>
-                </template>
-                <template if="{{isTrack}}">
-                  <img-placeholder src="{{rankedProfile.art.original}}"></img-placeholder>
-                </template>
+                <img-placeholder src="{{rankedProfile.art.original}}"></img-placeholder>
               </div>
               <p class="chart-points">{{getRankForId( rankedProfile.id )}}</p>
               <template if="{{isFan}}">
