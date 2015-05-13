@@ -120,13 +120,13 @@
             this.formInputs.password.removeAttribute( "invalid-confirm" );
           }
 
-          if ( !this.formInputs.password.inputMatchConfirm ) {
+          if ( this.formInputs.password.inputMatchConfirm ) {
             this.errorDivs.passwordMismatch.classList.add( "hidden" );
             this.formInputs.password.removeAttribute( "invalid-primary" );
             this.formInputs.password.removeAttribute( "invalid-confirm" );
           }
 
-          if ( !this.formInputs.password.regexConfirm ) {
+          if ( this.formInputs.password.regexConfirm ) {
             this.errorDivs.passwordWeak.classList.add( "hidden" );
             this.formInputs.password.removeAttribute( "invalid-primary" );
             this.formInputs.password.removeAttribute( "invalid-confirm" );
@@ -164,6 +164,7 @@
 
           if ( !this.canSubmit ) {
             this.postEarlyErrors();
+            window.scrollTo( 0, 0 );
             return;
           }
 
@@ -186,7 +187,6 @@
             .catch(function( error ) {
               error.invalidFields.forEach(function( invalidField ) {
                 if ( invalidField.name === "inviteCode" ) {
-                  console.log( "trigger" );
                   this.errorDivs.inviteCode.classList.remove( "hidden" );
                   this.formInputs.inviteCode.classList.add( "invalid" );
                 } else if ( invalidField.name === "email" ) {
@@ -194,7 +194,7 @@
                   this.formInputs.email.classList.add( "invalid" );
                 }
               }, this );
-
+              window.scrollTo( 0, 0 );
               return error;
             }.bind( this ));
         }
