@@ -3,10 +3,10 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import edDataService from "domain/ed/services/ed-data-service";
-import edDiscoverService from "domain/ed/services/ed-discover-service";
+import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
+import EDFan from "domain/ed/objects/profile/EDFan"
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
@@ -157,7 +157,7 @@ edUserService.login = function( email, password ) {
     //  edUserService.confirmOnboarding();
     //})
     .catch(( error ) => {
-      console.error( error );
+      console.error( error.stack );
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
@@ -320,6 +320,24 @@ edUserService.resetPassword = function( resetCode, password ) {
     .catch( error => {
       console.log( "new password was not successfully sent" );
       console.log( error );
+      throw error;
+    });
+};
+
+edUserService.editProfile = function( args ) {
+  var json = {};
+
+  json.data = Object.assign({
+    id: currentProfile == null ? null : currentProfile.id
+  }, args );
+
+  return edConnectionService.request( "profile/set", 10, json )
+    .then( response => {
+      return updateModel( response );
+    })
+    .catch( error => {
+      console.warn( "profile update was not successfully sent" );
+      console.error( error.stack );
       throw error;
     });
 };
