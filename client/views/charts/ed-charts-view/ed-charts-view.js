@@ -6,6 +6,7 @@
   ]).then( function( imported ) {
     var discoverService = imported[ 0 ].default,
       currentView = 1,
+      chartNames = [ "most-tracks-rated-fan", "completed-listens-fan", "completed-listens-track", "highest-rated-track" ],
       updateChartClass = function( classesRemoveArray, classAdd, self ) {
         classesRemoveArray.forEach( function( classNumber ) {
           self.singleChartWrapper.classList.remove( classNumber );
@@ -87,9 +88,9 @@
       getEdChartObject: function() {
         var
           chartIndex = 0,
-          chartNames = [ "most-tracks-rated-fan", "completed-listens-fan", "completed-listens-track", "highest-rated-track" ],
           maxIndex = chartNames.length,
           componentAssignment = function( response ) {
+            console.log( response );
             this.singleChartArray.forEach( function( singleChart ) {
               if ( response.chartName === singleChart.chartIdentifier ) {
                 singleChart.chartObject = response;
