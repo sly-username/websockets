@@ -9,7 +9,8 @@
       playerService = imported[ 0 ].default,
       createEvent = imported[ 1 ].default,
       triggerRatingHandler,
-      playerUpdateHandler;
+      playerUpdateHandler,
+      minimizePlayerHandler;
 
     // helpers
     triggerRatingHandler= function( event ) {
@@ -56,18 +57,26 @@
 
     playerUpdateHandler = function( event ) {
       if ( event.type === "playerUpdate" ) {
-        //if ( event.detail.type === "play" || event.detail.type === "skip" ) {}
+        if ( event.detail.type === "play" || event.detail.type === "skip" ) {
+          this.artistLink.setAttribute( "href", window.location.origin + "/#/artist/" + playerService.currentStats.currentArtist.id );
+        }
 
         this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
 
         if ( playerService.currentStats.currentArtist.name != null ) {
-          this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.name;
+          this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.displayName;
         } else {
           this.$[ "artist-name" ].innerText = "FPO Bandname";
         }
 
         this.$[ "dynamic-details" ].classList.add( "loaded-track", "loaded-artist" );
       }
+    };
+
+    minimizePlayerHandler = function() {
+      this.miniPlayer.classList.add( "show-mini" );
+      this.mainPlayer.classList.add( "hide-main" );
+      this.songCardWrapper.classList.add( "minimized" );
     };
 
     polymer( "ed-star-rating", {
@@ -77,7 +86,8 @@
       ready: function() {
         this.handlers = {
           triggerRating: triggerRatingHandler.bind( this ),
-          playerUpdate: playerUpdateHandler.bind( this )
+          playerUpdate: playerUpdateHandler.bind( this ),
+          minimizePlayer: minimizePlayerHandler.bind( this )
         };
         this.inputField = this.shadowRoot.getElementById( "input-field" );
         this.overlapField = this.shadowRoot.getElementById( "overlap-field" );
@@ -85,10 +95,20 @@
         this.thirdInput = this.shadowRoot.getElementById( "rate3" );
         this.forthInput = this.shadowRoot.getElementById( "rate4" );
         this.fifthInput = this.shadowRoot.getElementById( "rate5" );
+        this.artistName = this.$[ "artist-name" ];
+        this.artistLink = this.$[ "artist-link" ];
+
       },
       attached: function() {
         this.inputField.addEventListener( "click", this.handlers.triggerRating );
         this.inputField.addEventListener( "mouseover", this.handlers.triggerRating );
+
+        this.artistName.addEventListener( "touchstart", this.handlers.minimizePlayer )
+
+        this.songCard = document.getElementById( "song-card" );
+        this.songCardWrapper = document.getElementById( "song-card-wrapper" );
+        this.mainPlayer = this.songCard.shadowRoot.querySelector( "#main-player-wrapper" );
+        this.miniPlayer = this.songCard.shadowRoot.querySelector( "#mini-player-wrapper" );
 
         // bind player updates through the service
         playerService.emitter.on( "playerUpdate", this.handlers.playerUpdate );

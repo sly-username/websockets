@@ -43,7 +43,7 @@
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.bioText.innerText = playerService.currentStats.currentArtist.bio;
-        this.bioLink.setAttribute( "href", window.location.origin + "/#/artist/" + playerService.currentStats.currentArtist.id );
+
         this.handler.injectStats();
       }
 
@@ -106,10 +106,7 @@
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
         this.bioText = this.$[ "bio-copy" ];
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
-        this.bioLink = this.$[ "bio-button" ];
-        this.bioIcon = this.$[ "brief-bio" ].querySelector( "#bio-icon" );
 
-        console.log( this.bioIcon );
 
         // Event Handler
         this.handler = {
