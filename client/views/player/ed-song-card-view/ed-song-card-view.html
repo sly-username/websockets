@@ -7,14 +7,14 @@
 <polymer-element name="ed-song-card-view" attributes="">
   <template>
     <link rel="stylesheet" href="./ed-song-card-view.css">
-    <div id="song-card-wrapper">
+    <div id="song-card-wrapper" class="minimized">
       <section id="mini-player-wrapper">
         <ed-mini-player id="mini-player"
             song="Track Title" artist="Artist Name"
             image="http://www.clashmusic.com/sites/default/files/styles/article_feature/public/field/image/DP%20square.jpg"></ed-mini-player>
       </section>
 
-      <section id="main-player-wrapper">
+      <section id="main-player-wrapper" class="hide-main">
         <section id="user-ranking">
           <button id="minify-button">
             <ed-icon id="minify-icon" name="arrow-back" rotation="270"></ed-icon>

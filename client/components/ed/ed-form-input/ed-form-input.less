@@ -37,10 +37,16 @@ ed-icon {
   .verticalAlign();
 }
 
-.form-input-container{
+.form-input-container {
   &.invalid-field {
     background-color: @originalRed;
     border-color: @darkRed1;
   }
 }
 
+:host(.invalid) {
+  .form-input-container {
+    background-color: @originalRed;
+    border-color: @darkRed1;
+  }
+}
