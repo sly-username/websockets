@@ -17,10 +17,6 @@
           .shadowRoot.querySelector( "input" );
         this.emailField = this.shadowRoot.querySelector( ".email" )
           .shadowRoot.querySelector( ".form-input-container" );
-
-        console.log( this.emailInput );
-        console.log( this.emailField );
-
       },
       attached: function() {
         this.emailInput.setAttribute( "autofocus", "" );
