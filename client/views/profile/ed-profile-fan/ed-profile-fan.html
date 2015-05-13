@@ -1,45 +1,35 @@
 <link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
-<link rel="import" href="../../../components/ed/ed-form-input/ed-form-input.html"/>
-<link rel="import" href="../../../components/ed/ed-paired-input/ed-paired-input.html"/>
+<link rel="import" href="../../../components/ui/img-placeholder/img-placeholder.html"/>
+<link rel="import" href="../../../components/ed/ed-menu-button/ed-menu-button.html"/>
 
-<polymer-element name="ed-registration-view" attributes="">
+<polymer-element name="ed-profile-fan" attributes="ed-id">
   <template>
-    <link rel="stylesheet" href="./ed-registration-view.css">
-    <div class="registration-container">
-      <div class="ed-logo-header">
-        <ed-icon name="eardish-logo-with-slogan"></ed-icon>
-      </div>
-      <div class="ed-registration-body">
-        <section class="error-messages">
-          <!-- todo update with proper copy -->
-          <div id="errorFirstName" class="hidden">Problem with First Name</div>
-          <div id="errorLastName" class="hidden">Problem with last name</div>
-          <div id="errorEmail" class="hidden">problem with email</div>
-          <div id="errorEmailTaken" class="hidden">email is already used</div>
-          <div id="errorYearOfBirth" class="hidden">problem with date</div>
-          <div id="errorZipcode" class="hidden">problem with zip</div>
-          <div id="errorPasswordShort" class="hidden">Password is too short</div>
-          <div id="errorPasswordMismatch" class="hidden">Password fields do not match</div>
-          <div id="errorPasswordWeak" class="hidden">Password does not meet the requirements</div>
-          <div id="errorInviteCode" class="hidden">problem with referral code</div>
-        </section>
-        <ed-form-input type="text"  class="name-first" placeholder="First Name" icon="name-first" required></ed-form-input>
-        <ed-form-input type="text"  class="name-last" placeholder="Last Name" icon="name-last" required></ed-form-input>
-        <ed-form-input type="email" class="email" placeholder="Your Email" icon="envelope" required></ed-form-input>
-        <!--todo add -->
-        <ed-form-input type="number"  class="birthday" min="1901" max="2015" placeholder="Year of Birth" icon="birthday" required></ed-form-input>
-        <ed-form-input type="text"  class="zipcode" placeholder="Zip Code" icon="zip" required></ed-form-input>
-        <p class="password-req-text"> *8 characters minimum </p>
-        <ed-paired-input type="password" class="password" placeholder="Password"
-                         icon="password"></ed-paired-input>
-        <ed-form-input type="text" class="invite-code" id="referral-code" placeholder="Referral Code" icon="star" required></ed-form-input>
-        <button id="registration-submit" class="invalid" on-click="{{submitForm}}">Sign Up</button>
-        <a id="sign-up-button" type="button" href="#/login">
-          <span class="small-text">Have an account already?</span>
-          <br />Login Here
-        </a>
-      </div>
+    <link rel="stylesheet" href="./ed-profile-fan.css">
+    <div class="ed-profile-fan-wrapper">
+      <ed-menu-button></ed-menu-button>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
+      <section class="image-wrapper">
+        <div class="profile-name">
+          <span>{{ edFan.name.first }} {{ edFan.name.last }}</span>
+        </div>
+        <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
+      </section>
+      <section class="icon-section">
+        <div class="icon-header">Rewards
+          <button>
+            Edit Profile
+            <ed-icon id="btn-icon" name="pencil"></ed-icon>
+          </button>
+        </div>
+        <hr>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <hr>
+      </section>
     </div>
   </template>
-  <script src="ed-registration-view.js"></script>
+  <script src="ed-profile-fan.js"></script>
 </polymer-element>
