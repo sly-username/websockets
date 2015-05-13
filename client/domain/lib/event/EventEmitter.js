@@ -51,9 +51,9 @@ export default class EventEmitter {
    * @returns {EventEmitter}
    */
   once( eventName, handler ) {
-    var toRemove = ( event ) => {
+    var toRemove = ( event, ...extraArgs ) => {
       this.off( eventName, toRemove );
-      handler.call( this, event );
+      handler.call( this, event, ...extraArgs );
     };
 
     this.on( eventName, toRemove );

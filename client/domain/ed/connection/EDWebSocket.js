@@ -51,7 +51,7 @@ export default class EDWebSocket extends HealingWebSocket {
         try {
           response = JSON.parse( event.data );
         } catch ( error ) {
-          console.error( error );
+          console.error( error.stack );
           reject( error );
           return;
         }
@@ -93,7 +93,7 @@ export default class EDWebSocket extends HealingWebSocket {
       throw new TypeError( "EDWebSocket request function only accepts simple objects" );
     }
 
-    console.log( "request called with data: %o", data );
+//    console.log( "request called with data: %o", data );
 
     if ( !data.hasOwnProperty( "action" ) ) {
       data.action = {};

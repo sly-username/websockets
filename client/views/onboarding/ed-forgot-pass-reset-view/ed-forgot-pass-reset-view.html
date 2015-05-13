@@ -11,18 +11,25 @@
       <div class="ed-forgot-body">
         <div class="forgot-text">
           <span>We've sent a security code</span>
-          <span>to your email. Once you get it</span>
+          <span>to your email. Once you get it,</span>
           <span>enter it below and type your</span>
           <span>new password:</span>
         </div>
-        <form id="forgot-form" action="#">
-          <fieldset>
-            <ed-form-input type="text" class="reset-code" placeholder="Security Code" icon="security-code"></ed-form-input>
-            <ed-paired-input class="password" type="password" placeholder="Password"
-                             icon="password"></ed-paired-input>
-          </fieldset>
-          <button id="forgot-submit" type="submit" disabled>Set new password</button>
-        </form>
+        <section class="error-messages">
+          <!-- todo update with proper copy -->
+          <div id="errorResetCode" class="hidden">Problem with Security code</div>
+          <div id="errorPasswordShort" class="hidden">Password is too Short</div>
+          <div id="errorPasswordMismatch" class="hidden">Password fields do not match</div>
+          <div id="errorPasswordWeak" class="hidden">Password does not meet the requirements</div>
+        </section>
+        <div id="forgot-form">
+          <ed-form-input type="text" class="reset-code" placeholder="Security Code" icon="security-code" required
+              ></ed-form-input>
+          <p class="password-req-text"> *Passwords need to have 8 characters minimum </p>
+          <ed-paired-input class="password" type="password" placeholder="Password"
+                           icon="password"></ed-paired-input>
+          <button id="forgot-submit" type="submit">Set new password</button>
+        </div>
       </div>
     </div>
   </template>

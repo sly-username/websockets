@@ -15,6 +15,10 @@
   .mainPicturedBackground();
 }
 
+.hidden {
+  display: none;
+}
+
 .ed-registration-body {
   text-align: center;
   fieldset {
@@ -27,9 +31,15 @@
   .password-req-text {
     color: @originalTeal;
     .edType( heading-XS );
-    margin-top: -.2rem;
+    margin-top: 1rem;
     margin-bottom: .9rem;
   }
+}
+
+.error-messages {
+  text-align: center;
+  .edType( heading-S );
+  color: @originalTeal;
 }
 
 #registration-submit {
@@ -42,4 +52,5 @@
   .edSecondaryButton();
   bottom: 13rem;
   margin: 0 auto;
+  text-decoration: none;
 }
