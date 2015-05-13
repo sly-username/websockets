@@ -32,9 +32,21 @@
   fieldset {
     border: 0;
   }
+  .error-messages {
+    text-align: center;
+    .edType( heading-S );
+    color: @originalTeal;
+  }
   ed-form-input {
     margin: .5rem;
     text-align: center;
+  }
+  .password-req-text {
+    text-align: center;
+    color: @originalTeal;
+    .edType( heading-XS );
+    margin-top: 1rem;
+    margin-bottom: .9rem;
   }
 }
 
@@ -42,4 +54,8 @@
   .edPrimaryButton();
   margin-top: 4%;
   bottom: 0;
+}
+
+.hidden {
+  display: none;
 }
