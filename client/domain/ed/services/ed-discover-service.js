@@ -86,10 +86,7 @@ export default edDiscoverService = {
         chartName
       }
     }).then( response => {
-      console.log( response );
-      var edChart = new EDChart( response );
-      console.log( edChart );
-      return edChart;
+      return new EDChart( response.data );
     });
   }
 };
