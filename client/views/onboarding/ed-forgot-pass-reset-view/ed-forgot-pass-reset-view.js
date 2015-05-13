@@ -98,8 +98,7 @@
       },
       submitResetPassword: function() {
         return userService.resetPassword( this.resetCodeInput.value, this.confirmInput.value )
-          .then ( function ( response ) {
-            console.log ( response );
+          .then( function( response ) {
             return response;
           });
       }
