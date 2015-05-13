@@ -22,7 +22,6 @@ import connectionService from "domain/ed/services/ed-connection-service";
 var
   dataService = {},
   syncControllers = {},
-  updateModel,
   pdbMap = {},
   lruMap = {
     profile: new EDLRUCache( 250 ),
@@ -207,7 +206,7 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     })
     .catch(function( error ) {
       console.log( "Some kind of error in dataService.getByTypeAndId" );
-      console.error( error );
+      console.error( error.stack );
       throw error;
     });
 };
@@ -249,14 +248,17 @@ dataService.getAllGenres = function() {
   });
 };
 
-updateModel = function( newModel ) {
+export var updateModel = function( response ) {
   var
-    json,
     oldModel,
-    { pdb, lru } = getDBAndLRUForType( newModel.modelType );
+    newModel = response.data,
+    { pdb, lru } = getDBAndLRUForType( response.meta.modelType );
+
+  // Set model type
+  newModel.modelType = response.meta.modelType;
 
   if ( !typeChecker.isProfileType( newModel ) && !typeChecker.isMediaType( newModel )) {
-    throw new TypeError( "Do not recognize type passed to dataService updateModel function" );
+    throw new TypeError( "Do not recognize type passed to data service updateModel function" );
   }
 
   return pdb.objects.get( newModel.id )
@@ -268,19 +270,8 @@ updateModel = function( newModel ) {
       console.log( "Error adding model update to DB: " + pdb.name );
       throw error;
     })
-    .then(() => {
-      // TODO FIGURE OUT WHAT JSON SHOULD BE
-      return connectionService.formattedRequest( json );
-    })
-    .then( response => {
-      // todo status check
-      if ( response.status && response.status.code ) {
-        // all good
-        return lru.get( newModel.id );
-      }
-
-      // revert model
-      return pdb.objects.put( oldModel ).then( id => lru.get( id ) );
+    .then( dbId => {
+      return lru.get( newModel.id );
     });
 };
 
