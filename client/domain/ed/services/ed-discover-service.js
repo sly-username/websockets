@@ -89,7 +89,7 @@ export default edDiscoverService = {
       }
     }).then( response => {
       console.log( response );
-      var edChart = new EDChart( response );
+      var edChart = new EDChart( response.data );
       return edChart;
     });
   }

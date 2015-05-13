@@ -29,9 +29,9 @@ export default class EDChart extends EDModel {
 
   constructor( args ) {
     var argsCopy = Object.assign({}, args );
-    argsCopy.id = null;
-    argsCopy.type = null;
-    super( argsCopy );
+    args.id = null;
+    args.type = null;
+    super( args );
 
     // todo won't let me add another property
     if ( args.dateEnds ) {
@@ -41,28 +41,28 @@ export default class EDChart extends EDModel {
     define.enumReadOnly( this, [
       "chartName",
       "dateEnds"
-    ], argsCopy.data );
+    ], argsCopy );
 
-    define.enumReadOnlyDeep( this, [ "leaderboard" ], args.data );
+    define.enumReadOnlyDeep( this, [ "leaderboard" ], args );
 
     this.leaderboardCollection = new EDCollection(
-      profileTypeForChartName( args.data.chartName ),
-      args.data.leaderboard.map( value => value.id || value.profileId )
-      // todo remove profileId
+      profileTypeForChartName( args.chartName ),
+      args.leaderboard.map( value => value.id )
     );
   }
 
   get timeRemaining() {
-    var end = new Date( this.dateEnds ),
+    var
+      end = new Date( this.dateEnds ),
       current = new Date(),
-     timeLeft = end - current,
-    _seconds = 1000,
-    _minutes = _seconds * 60,
-    _hours = _minutes * 60,
-    _days = _hours * 24,
-     daysLeft = Math.floor( timeLeft / _days ),
-     hoursLeft = Math.floor( timeLeft % _days / _hours ),
-     minutesLeft = Math.floor( timeLeft % _hours / _minutes );
+      timeLeft = end - current,
+      _seconds = 1000,
+      _minutes = _seconds * 60,
+      _hours = _minutes * 60,
+      _days = _hours * 24,
+      daysLeft = Math.floor( timeLeft / _days ),
+      hoursLeft = Math.floor( timeLeft % _days / _hours ),
+      minutesLeft = Math.floor( timeLeft % _hours / _minutes );
 
     return `${daysLeft}d ${hoursLeft}h ${minutesLeft}m`;
   }
