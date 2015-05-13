@@ -10,7 +10,7 @@
 * This mixin is used to make the standard eardish button
 *
 */
-.edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1) when ( iscolor(@backgroundColor) ) {
+.edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1; @disabledColor: @lightGrey1 ) when ( iscolor(@backgroundColor) ) {
   .edType( heading-L );
   color: @originalWhite;
   width: 100%;
@@ -22,6 +22,9 @@
   display: inherit;
   &:active, &:hover {
     background-color: @activeColor;
+  }
+  &:disabled {
+    background-color: @disabledColor;
   }
 }
 
