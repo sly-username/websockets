@@ -42,7 +42,6 @@
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
-        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
 
         this.handler.injectStats();
       }
@@ -56,7 +55,14 @@
       }
 
       if ( eventType === "skip" ) {
+        this.trackName.classList.add( "loading" );
+        this.artistName.classList.add( "loading" );
+
         playerService.skip();
+      }
+
+      if ( eventType === "artistUpdate" ) {
+        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "showRatings" ) {
@@ -104,8 +110,11 @@
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
-        this.bioText = this.$[ "bio-copy" ];
+        this.trackName = this.$[ "star-rating" ].shadowRoot.querySelector( "#track-name" );
+        this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
+        this.bioText = this.$[ "bio-copy" ];
+        this.minify = this.$[ "minify-icon" ];
 
 
         // Event Handler
@@ -120,19 +129,15 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-
-        this.$[ "minify-icon" ].addEventListener( "click", this.handler.togglePlayer );
-        this.$[ "mini-player-wrapper" ].addEventListener( "click", this.handler.togglePlayer );
-        this.$[ "bio-button" ].addEventListener( "touchstart", this.linkArtist );
+        this.minify.addEventListener( "click", this.handler.togglePlayer );
+        this.miniPlayerWrapper.addEventListener( "click", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
-        this.$[ "minify-icon" ].removeEventListener( "click", this.handler.togglePlayer );
-        this.$[ "mini-player-wrapper" ].removeEventListener( "click", this.handler.togglePlayer );
-        this.$[ "bio-button" ].removeEventListener( "touchstart", this.linkArtist );
-
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
+        this.minify.removeEventListener( "click", this.handler.togglePlayer );
+        this.miniPlayerWrapper.removeEventListener( "click", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 

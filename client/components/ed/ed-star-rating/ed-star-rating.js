@@ -56,20 +56,13 @@
     };
 
     playerUpdateHandler = function( event ) {
-      if ( event.type === "playerUpdate" ) {
-        if ( event.detail.type === "play" || event.detail.type === "skip" ) {
-          this.artistLink.setAttribute( "href", window.location.origin + "/#/artist/" + playerService.currentStats.currentArtist.id );
-        }
+      this.trackName.innerText = playerService.currentStats.playing.name;
+      this.trackName.classList.remove( "loading" );
 
-        this.$[ "track-name" ].innerText = playerService.currentStats.playing.name;
-
-        if ( playerService.currentStats.currentArtist.name != null ) {
-          this.$[ "artist-name" ].innerText = playerService.currentStats.currentArtist.displayName;
-        } else {
-          this.$[ "artist-name" ].innerText = "FPO Bandname";
-        }
-
-        this.$[ "dynamic-details" ].classList.add( "loaded-track", "loaded-artist" );
+      if ( event.detail.type === "artistUpdate" ) {
+        this.artistName.innerText = playerService.currentStats.currentArtist.displayName;
+        this.artistLink.setAttribute( "href", window.location.origin + "/#/artist/" + playerService.currentStats.currentArtist.id );
+        this.artistName.classList.remove( "loading" );
       }
     };
 
@@ -95,9 +88,9 @@
         this.thirdInput = this.shadowRoot.getElementById( "rate3" );
         this.forthInput = this.shadowRoot.getElementById( "rate4" );
         this.fifthInput = this.shadowRoot.getElementById( "rate5" );
-        this.artistName = this.$[ "artist-name" ];
         this.artistLink = this.$[ "artist-link" ];
-
+        this.artistName = this.$[ "artist-name" ];
+        this.trackName = this.$[ "track-name" ];
       },
       attached: function() {
         this.inputField.addEventListener( "click", this.handlers.triggerRating );
