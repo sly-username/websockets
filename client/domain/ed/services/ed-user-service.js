@@ -82,6 +82,9 @@ Object.defineProperties( edUserService, {
 // todo remove
 window.edUserService = edUserService;
 
+/**
+ * @method getReferrals
+ */
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
@@ -95,6 +98,9 @@ edUserService.getReferrals = function() {
     });
 };
 
+/**
+ * @method login
+ */
 edUserService.login = function( email, password ) {
   var
     json = {
@@ -143,6 +149,9 @@ edUserService.login = function( email, password ) {
     });
 };
 
+/**
+ * @method logout
+ */
 edUserService.logout = function() {
   // todo will integrate with settings page
   var oldUserId = currentUserId,
@@ -175,6 +184,9 @@ edUserService.logout = function() {
     });
 };
 
+/**
+ * @method changeProfileImage
+ */
 edUserService.changeProfileImage = function( image ) {
   var
     json,
@@ -192,6 +204,14 @@ edUserService.changeProfileImage = function( image ) {
     Bucket: "eardish.dev.images",
     CopySource: "eardish.dev.images/" + image.name
   }, ( error, data ) => {
+
+    if ( error != null ) {
+      console.warn( "Issue uploading image to AWS" );
+      console.error( error.stack );
+      // TODO CLEANUP AWS S3???
+      return;
+    }
+
     json = {
       data: {
         profileId: currentProfile.id,
@@ -214,6 +234,9 @@ edUserService.changeProfileImage = function( image ) {
   });
 };
 
+/**
+ * @method referral
+ */
 edUserService.referral = function( email ) {
   var json = {
     data: {
@@ -246,6 +269,9 @@ edUserService.referral = function( email ) {
     });
 };
 
+/**
+ * @method register
+ */
 edUserService.register = function( args ) {
   var authBlock = {
     email: args.email,
@@ -284,6 +310,9 @@ edUserService.register = function( args ) {
     });
 };
 
+/**
+ * @method requestPasswordReset
+ */
 edUserService.requestPasswordReset = function( email ) {
   var json = {
     data: {
@@ -302,6 +331,9 @@ edUserService.requestPasswordReset = function( email ) {
     });
 };
 
+/**
+ * @method resetPassword
+ */
 edUserService.resetPassword = function( resetCode, password ) {
   var json = {
     data: {
@@ -331,6 +363,9 @@ edUserService.resetPassword = function( resetCode, password ) {
     });
 };
 
+/**
+ * @method editProfile
+ */
 edUserService.editProfile = function( args ) {
   var json = {};
 
@@ -349,6 +384,9 @@ edUserService.editProfile = function( args ) {
     });
 };
 
+/**
+ * @method getStats
+ */
 edUserService.getStats = function() {
   return edConnectionService.request( "user/stats/get", 10 )
     .then( response => {
