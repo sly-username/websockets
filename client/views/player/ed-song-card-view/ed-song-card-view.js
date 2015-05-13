@@ -10,8 +10,7 @@
       updateTimeHandler,
       playerServiceEventHandler,
       togglePlayerHandler,
-      injectStatsHandler,
-      linkArtistHandler;
+      injectStatsHandler;
 
     // helpers
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -92,14 +91,6 @@
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
 
-    linkArtistHandler = function( event ) {
-      console.log( event );
-
-      this.miniPlayerWrapper.classList.add( "show-mini" );
-      this.mainPlayerWrapper.classList.add( "hide-main" );
-      this.songCardWrapper.classList.add( "minimized" );
-    };
-
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
@@ -116,14 +107,12 @@
         this.bioText = this.$[ "bio-copy" ];
         this.minify = this.$[ "minify-icon" ];
 
-
         // Event Handler
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           togglePlayer: togglePlayerHandler.bind( this ),
-          injectStats: injectStatsHandler.bind( this ),
-          linkArtist: linkArtistHandler.bind( this )
+          injectStats: injectStatsHandler.bind( this )
         };
       },
       attached: function() {
