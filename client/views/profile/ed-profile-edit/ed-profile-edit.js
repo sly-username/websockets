@@ -2,74 +2,73 @@
   "use strict";
 
   Promise.all([
-    System.import( "domain/ed/services/ed-data-service" ),
     System.import( "domain/ed/services/ed-user-service" )
   ]).then(function( imported ) {
-    var
-      dataService = imported[ 0 ].default,
-      userService = imported[ 1 ].default,
-      autoSubmitHandler = function() {
-        this.editForm.submit();
-      },
-      uploadPhotoHandler = function( event ) {
-        userService.changeProfileImage( event.target.files[ 0 ] );
-      },
-      takePhotoHandler = function( event ) {
-        // TODO use cordova to handle image capturing
-        // navigator.camera.getPicture( function() {
-        //  userService.changeProfileImage( event.target.files[ 0 ] );
-        // }, cameraError, cameraOptions );
-      };
+      var
+        userService = imported[ 0 ].default,
+        updateProfileName = function( nameKey, nameValue ) {
+          var nameData = {};
+          nameData[ nameKey ] = nameValue;
+          return userService.editProfile({
+            name: nameData
+          });
+        },
+        nameInputHandler = function( event ) {
+          var target = event.target;
 
-    polymer( "ed-profile-edit", {
-      /* LIFECYCLE */
-      ready: function() {
-        if ( this[ "ed-id" ] ) {
-          dataService.getFanById( this[ "ed-id" ] )
-            .then(function( edFan ) {
-              this.edFan = edFan;
-              console.log( "artist got: %o", edFan );
-              console.dir( this );
-            }.bind( this ));
-        }
-
-        this.editForm = this.shadowRoot.getElementById( "edit-form" );
-        this.firstName = this.shadowRoot.getElementById( "first-name" );
-        this.lastName = this.shadowRoot.getElementById( "last-name" );
-        this.choosePhoto = this.shadowRoot.getElementById( "choose-photo-input" );
-        this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
-
-        this.handler = {
-          autoSubmit: autoSubmitHandler.bind( this ),
-          uploadPhoto: uploadPhotoHandler.bind( this ),
-          takePhoto: takePhotoHandler.bind( this )
+          if ( target.tagName === "ED-FORM-INPUT" && target.value !== "" && ( /^(first|last)-name$/ ).test( target.id ) ) {
+            updateProfileName( target.id.split( "-" )[0], target.value )
+              .then(function( edProfile ) {
+                /* do any view updates if needed like perhaps */
+                this.edFan = edProfile;
+                return edProfile;
+              }.bind( this ));
+          }
+        },
+        uploadPhotoHandler = function( event ) {
+          userService.changeProfileImage( event.target.files[ 0 ] );
+        },
+        takePhotoHandler = function( event ) {
+          // TODO use cordova to handle image capturing
+          // navigator.camera.getPicture( function() {
+          //  userService.changeProfileImage( event.target.files[ 0 ] );
+          // }, cameraError, cameraOptions );
         };
-      },
-      attached: function() {
-        this.firstName.addEventListener( "blur", this.handler.autoSubmit );
-        this.lastName.addEventListener( "blur", this.handler.autoSubmit );
-        this.choosePhoto.addEventListener( "change", this.handler.uploadPhoto );
-        this.takePhoto.addEventListener( "change", this.handler.takePhoto );
-      },
-      detached: function() {
-        this.firstName.removeEventListener( "blur", this.handler.autoSubmit );
-        this.lastName.removeEventListener( "blur", this.handler.autoSubmit );
-        this.choosePhoto.removeEventListener( "change", this.handler.uploadPhoto );
-        this.takePhoto.removeEventListener( "change", this.handler.takePhoto );
-      },
-      "ed-idChanged": function() {
-        this.attributeChanged( "ed-id" );
-      },
-      attributeChanged: function( attrName ) {
-        if ( attrName === "ed-id" ) {
-          dataService.getFanById( this[ "ed-id" ] )
-            .then(function( edFan ) {
-              this.edFan = edFan;
+
+      polymer( "ed-profile-edit", {
+        /* LIFECYCLE */
+        ready: function() {
+          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
+
+          this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
+          this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
+
+          this.handler = {
+            nameInput: nameInputHandler.bind( this ),
+            takePhoto: takePhotoHandler.bind( this )
+          };
+        },
+        attached: function() {
+          if ( userService.isOpenSession ) {
+            this.edFan = userService.currentProfile;
+          } else {
+            userService.once( "edLogin", function() {
+              this.edFan = userService.currentProfile;
             }.bind( this ));
-        }
-      }
+          }
+
+          this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
+
+          this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
+          this.takePhoto.addEventListener( "change", this.handler.takePhoto );
+        },
+        detached: function() {
+          this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
+
+          this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
+          this.takePhoto.removeEventListener( "change", this.handler.takePhoto );
+        },
+        attributeChanged: function( attrName ) {}
+      });
     });
-  });
 })( window.Polymer, window.System );
-
-

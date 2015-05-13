@@ -11,7 +11,7 @@
       <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
-          <span>{{ edFan.raw.firstName }} {{ edFan.raw.lastName }}</span>
+          <span>{{ edFan.name.first }} {{ edFan.name.last }}</span>
         </div>
         <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
       </section>
