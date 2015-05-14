@@ -13,6 +13,7 @@
 
           if ( tmpId != null ) {
             playerService.startMusicDiscovery( tmpId );
+            this.miniPlayerWrapper.classList.remove( "show-mini" );
             this.mainPlayerWrapper.classList.remove( "hide-main" );
             this.songCardWrapper.classList.remove( "minimized" );
           }
@@ -22,8 +23,9 @@
         ready: function() {
           this.discoverList = this.shadowRoot.getElementsByClassName( "discover-list" )[0];
           this.edPlayer = document.getElementById( "song-card" );
-          this.songCardWrapper  = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
+          this.songCardWrapper = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
           this.mainPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "main-player-wrapper" );
+          this.miniPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "mini-player-wrapper" );
           // handler
           this.handlers = {
             discoverGenre: discoverGenreHandler.bind( this )
