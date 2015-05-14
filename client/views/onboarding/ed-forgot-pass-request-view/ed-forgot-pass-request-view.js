@@ -69,8 +69,7 @@
           }
         },
         submitPasswordRequest: function() {
-          var registeredEmail = this.emailInput.value;
-          return userService.requestPasswordReset( registeredEmail )
+          return userService.requestPasswordReset( this.emailInput.value )
             .then( function( response ) {
               console.log( response );
 
