@@ -100,12 +100,19 @@
 }
 
 #disable-text {
-  opacity: 0;
+  opacity: 1;
   position: relative;
+
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1s;
+  }
   p {
     position: absolute;
     left: 8%;
     right: 8%;
+    padding-top: 4rem;
     text-align: center;
     color: @originalWhite;
     opacity: .25;
