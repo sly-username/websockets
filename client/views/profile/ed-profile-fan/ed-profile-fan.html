@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="./ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
       <ed-menu-button></ed-menu-button>
-      <ed-user-ranking top="Your" bottom="rank" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
+      <ed-user-ranking top="completed" bottom="plays" rank="{{ edFan.displayRank || 75 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="Rated" rank="{{ edFan.songsRated || 362 }}"></ed-user-ranking>
       <section class="image-wrapper">
-        <div class="profile-name">
-          <span>{{ edFan.name.first }} {{ edFan.name.last }}</span>
+        <div class="profile-name"> {{ edFan.name.first }} {{ edFan.name.last }}
+          <span>Fan</span>
         </div>
         <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
       </section>
