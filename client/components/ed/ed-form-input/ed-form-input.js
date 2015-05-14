@@ -15,7 +15,21 @@
       },
       max: {
         reflect: true
+      },
+      required: {
+        value: false,
+        reflect: true
       }
+    },
+    get value() {
+      return this.$.input.value;
+    },
+    set value( value ) {
+      this.$.input.value = value;
+      return value;
+    },
+    get validity() {
+      return this.$.input.validity;
     },
     ready: function() {},
     attached: function() {},

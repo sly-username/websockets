@@ -2,7 +2,7 @@
 <link rel="import" href="../../../components/ed/ed-form-input/ed-form-input.html"/>
 
 
-<polymer-element name="ed-profile-edit" attributes="ed-id">
+<polymer-element name="ed-profile-edit">
   <template>
     <link rel="stylesheet" href="./ed-profile-edit.css">
     <div class="ed-profile-edit-wrapper">
@@ -15,24 +15,31 @@
       <form id="edit-form">
         <div class="name-field">
           <p>NAME (First, Last)</p>
-          <ed-form-input id="first-name" icon="name-first" placeholder="Jeff"></ed-form-input>
-          <ed-form-input id="last-name" icon="name-last" placeholder="Lin"></ed-form-input>
+          <ed-form-input id="first-name" icon="name-first" placeholder="{{ edFan.name.first }}"></ed-form-input>
+          <ed-form-input id="last-name" icon="name-last" placeholder="{{ edFan.name.last }}"></ed-form-input>
         </div>
         <hr>
         <section class="image-field">
           <div class="image-container">
             <!-- placeholder until more info gets added to service -->
-            <img-placeholder src="{{ edArtist.displayImage }}" image="placecage"></img-placeholder>
+            <img-placeholder src="{{ edFan.displayImage }}" image="placecage"></img-placeholder>
           </div>
           <p>Change Profile Photo</p>
           <hr>
         </section>
         <ul class="edit-list">
-          <li id="choose-photo">Choose Existing Photo</li>
-          <li id="take-photo">Take Photo</li>
+          <li id="choose-photo">
+            <label for="choose-photo-input">Choose Existing Photo</label>
+            <input id="choose-photo-input" name="choose-photo-input" type="file" accept="image/*">
+          </li>
+          <li id="take-photo">
+            <label for="take-photo-input">Take Photo</label>
+            <input id="take-photo-input" name="take-photo-input" type="file" accept="image/*" capture="camera">
+          </li>
           <li class="music-pref">Music Preferences</li>
-          <li id="edit-music-button">Edit Music Taste
-            <ed-icon name="arrow-forward-teal"></ed-icon>
+          <li id="edit-music-button">
+            <a href="#/onboarding/like">Edit Music Taste</a>
+            <ed-icon name="arrow-back" rotation="180"></ed-icon>
           </li>
         </ul>
       </form>

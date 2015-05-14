@@ -14,11 +14,6 @@
       });
     };
 
-  // TODO REMOVE DEBUG
-  // REMOVE DATABASES
-  indexedDB.deleteDatabase( "profile" );
-  indexedDB.deleteDatabase( "track" );
-
   Promise.all([
     System.import( "domain/ed/services/ed-data-service" ),
     System.import( "domain/ed/services/ed-connection-service" ),
@@ -40,12 +35,9 @@
       console.log( "in state-change event: %o", event.detail );
 
       if ( !playerService.isPlaying || needToHidePlayerForRoute( event.detail.path ) ) {
-        songCard.classList.add( "hidden" );
         animationWrapper.classList.remove( "player-padding" );
       } else {
-        songCard.classList.remove( "hidden" );
-
-        if ( !songCard.classList.contains( "hidden" ) && !animationWrapper.classList.contains( "player-padding" )) {
+        if ( !animationWrapper.classList.contains( "player-padding" )) {
           animationWrapper.classList.add( "player-padding" );
         }
       }

@@ -17,15 +17,34 @@
       },
       leftMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveLeft" ));
-        this.getLeaderBoard( "highest-rated-artist" );
       },
       rightMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveRight" ));
-        this.getLeaderBoard( "highest-rated-artist" );
+      },
+      requestArtists = function( trackList ) {
+        console.log( "need to find artsits for: %o", trackList );
+        var nextThen = function( nextIndex, currentTrack ) {
+          return function( edArtist ) {
+            currentTrack.artistName = edArtist.displayName;
+
+            if ( nextIndex >= trackList.length ) {
+              return edArtist;
+            }
+
+            return trackList[ nextIndex ].getArtist()
+              .then( nextThen( nextIndex + 1, trackList[ nextIndex ] ) );
+          };
+        };
+
+        if ( trackList.length === 0 ) {
+          return;
+        }
+
+        trackList[ 0 ].getArtist()
+          .then( nextThen( 1, trackList[ 0 ] ) );
       };
 
     polymer( "ed-single-chart", {
-      // todo placeholder data, replace with data object
       discoverService: discoverService,
       publish: {
         "chart-title": {
@@ -35,6 +54,15 @@
           reflect: true
         },
         "chart-badge": {
+          reflect: true
+        },
+        "chart-name": {
+          reflect: true
+        },
+        "default-copy": {
+          reflect: true
+        },
+        "chart-object": {
           reflect: true
         }
       },
@@ -47,45 +75,90 @@
       get chartBadge() {
         return this[ "chart-badge" ];
       },
+      get chartIdentifier() {
+        return this[ "chart-name" ];
+      },
+      get defaultCopy() {
+        return this[ "default-copy" ];
+      },
+      get chartObject() {
+        return this[ "chart-object" ];
+      },
+      set chartObject( value ) {
+        if ( value.constructor.MODEL_TYPE !== "chart" ) {
+          return this[ "chart-object" ];
+        }
+
+        this[ "chart-object" ] = value;
+
+        this.countdown = value.timeRemaining;
+        this.noRanking = value.leaderboard.length !== 0;
+
+        this.getLeaderBoard();
+        return value;
+      },
+      getRankForId: function( id ) {
+        if ( this.chartObject != null ) {
+          return this.chartObject.getRankForId( id );
+        }
+
+        return -1;
+      },
       ready: function() {
         this.arrowLeft = this.$[ "arrow-left" ];
         this.arrowRight = this.$[ "arrow-right" ];
       },
       attached: function() {
+        if (( /fan$/ ).test( this.chartIdentifier )) {
+          this.isFan = true;
+          this.isTrack = false;
+        } else if (( /track$/ ).test( this.chartIdentifier )) {
+          this.isFan = false;
+          this.isTrack = true;
+        }
+
         this.handler = {
           leftMove: leftMoveHandler.bind( this ),
           rightMove: rightMoveHandler.bind( this )
         };
+
         this.arrowLeft.addEventListener( "click", this.handler.leftMove );
         this.arrowRight.addEventListener( "click", this.handler.rightMove );
+
+        // default values
+        if ( this.noRankings == null ) {
+          this.noRankings = true;
+        }
       },
       detached: function() {
         this.arrowLeft.removeEventListener( "click", this.handler.leftMove );
         this.arrowRight.removeEventListener( "click", this.handler.rightMove );
       },
-      getLeaderBoard: function( chartName ) {
-        return discoverService.getLeaderboardCharts( chartName )
-          .then( function( edChart ) {
-            console.log( edChart );
-            this.edChart = edChart;
-            this.rankingsList = edChart.leaderboardCollection.getInSequence();
-            return edChart;
-          }.bind( this ));
+      getLeaderBoard: function() {
+        console.log( this.chartObject.leaderboardCollection );
 
-        // todo how to tell difference between artist and fan?
-        //return this.leaders.forEach( function( leader, index ) {
-        //  dataService.getByTypeAndId( "artist", leader.profileId )
-        //    .then( function( rankedUser ) {
-        //      this.leaders[ index ] = rankedUser;
-        //      return this.rankedUsers.push( rankedUser );
-        //    }.bind( this ));
-        //}.bind( this ));
-      },
-      getDateEnds: function() {
+        if ( this.chartObject.leaderboard.length === 0 ) {
+          console.log( "empty chart :(" );
+          return;
+        }
 
+        this.chartObject
+          .leaderboardCollection
+            .getInSequence( 0, this.chartObject.leaderboard.length, true )
+              .then(function( chartList ) {
+                this.rankingsList = chartList;
+
+                if ( this.isTrack ) {
+                  requestArtists( chartList );
+                }
+              }.bind( this ))
+              .catch(function( error ) {
+                console.error( error.stack );
+              });
       },
-      attributeChanged: function( attrName, oldVal, newVal ) {
-      }
+      attributeChanged: function( attrName, oldVal, newVal ) {}
     });
   });
 })( window.Polymer, window.System );
+
+// [ "completed-listens-fan", "most-tracks-rated-fan", "completed-listens-artist", "highest-rated-artist" ],

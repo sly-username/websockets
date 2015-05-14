@@ -54,11 +54,13 @@ paths.vendor = {
 //    join( paths.bowerComponents, "system.js", "dist", "system.src.js" ),
     join( paths.bowerComponents, "system.js", "dist", "system.js.map" ),
 //    join( paths.bowerComponents, "director", "build", "director.js" ),
-    join( paths.bowerComponents, "app-router", "app-router.html" )
+    join( paths.bowerComponents, "app-router", "app-router.html" ),
+    join( paths.bowerComponents, "aws-sdk-js", "dist", "aws-sdk.js" )
   ],
   minMap: {
     "webcomponents.js": "webcomponents.min.js",
-    "polymer.js": "polymer.min.js"
+    "polymer.js": "polymer.min.js",
+    "aws-sdk.js": "aws-sdk.min.js"
 //    "director.js": "director.min.js"
   }
 };

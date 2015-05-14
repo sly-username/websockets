@@ -3,9 +3,10 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import edDataService from "domain/ed/services/ed-data-service";
+import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
+import EDFan from "domain/ed/objects/profile/EDFan"
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
@@ -81,6 +82,9 @@ Object.defineProperties( edUserService, {
 // todo remove
 window.edUserService = edUserService;
 
+/**
+ * @method getReferrals
+ */
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
@@ -94,6 +98,9 @@ edUserService.getReferrals = function() {
     });
 };
 
+/**
+ * @method login
+ */
 edUserService.login = function( email, password ) {
   var
     json = {
@@ -131,7 +138,7 @@ edUserService.login = function( email, password ) {
       return currentProfile;
     })
     .catch(( error ) => {
-      console.error( error );
+      console.error( error.stack );
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
@@ -142,6 +149,9 @@ edUserService.login = function( email, password ) {
     });
 };
 
+/**
+ * @method logout
+ */
 edUserService.logout = function() {
   // todo will integrate with settings page
   var oldUserId = currentUserId,
@@ -174,23 +184,59 @@ edUserService.logout = function() {
     });
 };
 
+/**
+ * @method changeProfileImage
+ */
 edUserService.changeProfileImage = function( image ) {
-  // todo a lot
-  /*
-   // send "I'm going to send an image" -- ws.binaryType = "blob";
-   send({
-   "action":{ route:"profile/image/set" }
-   });
-   send( image );
-   new Promise()
-   "onmessage" --> check for a "image upload complete"
-   resolve( dataservice.getUserById( currentProfile ) )
-   */
+  var
+    json,
+    // TODO need to grab this info from aws/token/get
+    s3 = new AWS.S3({
+      accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
+      secretAccessKey: "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",
+      region: "us-west-2"
+    });
 
-  // need to match new image to appropriate user
-  return Promise.resolve( null );
+  s3.upload({
+    Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+    ContentType: image.type,
+    Body: image,
+    Bucket: "eardish.dev.images",
+    CopySource: "eardish.dev.images/" + image.name
+  }, ( error, data ) => {
+
+    if ( error != null ) {
+      console.warn( "Issue uploading image to AWS" );
+      console.error( error.stack );
+      // TODO CLEANUP AWS S3???
+      return;
+    }
+
+    json = {
+      data: {
+        profileId: currentProfile.id,
+        artTitle: image.name,
+        description: image.type,
+        artUrl: data.Location,
+        artType: "avatar"
+      }
+    };
+
+    return edConnectionService.request( "profile/art/create", 10, json )
+      .then( response => {
+        return response;
+      })
+      .catch( error => {
+        console.log( "image upload was not successfully completed" );
+        console.log( error );
+        throw error;
+      });
+  });
 };
 
+/**
+ * @method referral
+ */
 edUserService.referral = function( email ) {
   var json = {
     data: {
@@ -223,6 +269,9 @@ edUserService.referral = function( email ) {
     });
 };
 
+/**
+ * @method register
+ */
 edUserService.register = function( args ) {
   var authBlock = {
     email: args.email,
@@ -243,9 +292,12 @@ edUserService.register = function( args ) {
         return response;
       }
 
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        console.log( "response on error", response );
+        let tError = new TypeError( "Problem with Registration" );
+        tError.invalidFields = response.meta.invalidFields;
+        throw tError;
+      }
     })
     .catch( error => {
       console.log( "Error registering new user in User Service" );
@@ -255,12 +307,12 @@ edUserService.register = function( args ) {
     })
     .then( response => {
       return edUserService.login( authBlock.email, authBlock.password );
-      //if ( response && response.status && response.status.code && response.status.code === 10 ) {
-      //  return response;
-      //}
     });
 };
 
+/**
+ * @method requestPasswordReset
+ */
 edUserService.requestPasswordReset = function( email ) {
   var json = {
     data: {
@@ -279,6 +331,9 @@ edUserService.requestPasswordReset = function( email ) {
     });
 };
 
+/**
+ * @method resetPassword
+ */
 edUserService.resetPassword = function( resetCode, password ) {
   var json = {
     data: {
@@ -289,15 +344,49 @@ edUserService.resetPassword = function( resetCode, password ) {
 
   return edConnectionService.request( "user/password/set", 10, json )
     .then( response => {
-      return response;
+      if ( response && response.status && response.status.code && response.status.code === 2 ) {
+        console.log( "sucessful password/set", response );
+        return response;
+      }
+
+      // TODO the code for this will be 11
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        let resetError = new TypeError( "Problem with Reseting the Password" );
+        resetError = response.status.code;
+        throw resetError;
+      }
     })
     .catch( error => {
-      console.log( "new password was not successfully sent" );
+      console.log( "new password was not successfully set" );
       console.log( error );
       throw error;
     });
 };
 
+/**
+ * @method editProfile
+ */
+edUserService.editProfile = function( args ) {
+  var json = {};
+
+  json.data = Object.assign({
+    id: currentProfile == null ? null : currentProfile.id
+  }, args );
+
+  return edConnectionService.request( "profile/set", 10, json )
+    .then( response => {
+      return updateModel( response );
+    })
+    .catch( error => {
+      console.warn( "profile update was not successfully sent" );
+      console.error( error.stack );
+      throw error;
+    });
+};
+
+/**
+ * @method getStats
+ */
 edUserService.getStats = function() {
   return edConnectionService.request( "user/stats/get", 10 )
     .then( response => {
