@@ -25,7 +25,7 @@
           };
         },
         attached: function() {
-          this.emailInput.setAttribute( "autofocus", "" );
+          this.emailInput.focus();
           this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
         },
         detached: function() {
