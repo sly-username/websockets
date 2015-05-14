@@ -37,7 +37,7 @@
         };
       },
       attached: function() {
-        this.formInputs.email.shadowRoot.querySelector( "input" ).setAttribute( "autofocus", "" );
+        this.formInputs.email.focus();
         this.loginBody.addEventListener( "blur", this.handlers.cleanup, true );
       },
       detached: function() {
