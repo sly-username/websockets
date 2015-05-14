@@ -50,8 +50,8 @@
       ready: function() {
         this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
         this.resetCode = this.shadowRoot.querySelector( ".reset-code" );
-        this.formContainer = this.shadowRoot.getElementById( "forgot-form" );
-        this.submitButton = this.shadowRoot.getElementById( "forgot-submit" );
+        this.formContainer = this.shadowRoot.querySelector( "#forgot-form" );
+        this.submitButton = this.shadowRoot.querySelector( "#forgot-submit" );
 
         this.handlers = {
           submitCheck: submitCheckHandler.bind( this ),
@@ -66,6 +66,8 @@
         };
       },
       attached: function() {
+        this.resetCode.focus();
+
         this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
         this.submitButton.addEventListener( "click", this.handlers.submitCheck );
       },
