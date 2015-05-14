@@ -8,8 +8,9 @@
       polymer( "ed-profile-fan", {
         /* LIFECYCLE */
         ready: function() {
+        },
+        attached: function() {
           if ( this[ "ed-id" ] ) {
-            console.log("ed-id hit");
             dataService.getFanById( this[ "ed-id" ] )
               .then(function( edFan ) {
                 this.edFan = edFan;
@@ -18,7 +19,6 @@
               }.bind( this ));
           }
         },
-        attached: function() {},
         detached: function() {},
         "ed-idChanged": function() {
           this.attributeChanged( "ed-id" );
