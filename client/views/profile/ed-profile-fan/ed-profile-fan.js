@@ -9,6 +9,7 @@
         /* LIFECYCLE */
         ready: function() {
           if ( this[ "ed-id" ] ) {
+            console.log("ed-id hit");
             dataService.getFanById( this[ "ed-id" ] )
               .then(function( edFan ) {
                 this.edFan = edFan;
