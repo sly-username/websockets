@@ -70,12 +70,14 @@
         Object.keys( this.formInputs ).forEach(function( current ) {
           if ( this[ inputPropertyNameToValidGetter( current ) ] ) {
             this.errorDivs[ current ].classList.add( "hidden" );
+            this.errorServer.classList.add( "hidden" );
             this.formInputs[ current ].classList.remove( "invalid" );
+            this.errorServer.classList.remove( "invalid" );
           }
         }, this );
       },
 
-      submitForm: function() {
+      submitForm: function( event ) {
         event.preventDefault();
 
         var
@@ -90,19 +92,25 @@
         }
 
         userService.login( email, password )
-          .then( function( response ) {
-            if ( userService.hasOnboarded === true ) {
+          .then( function( edFan ) {
+            // todo need to do the has onboarded check
+
+            if ( edFan != null ) {
               this.router.go( "/discover" );
-              // todo need to do the has onboarded check
-            } else if ( userService.hasOnboarded === false ) {
-              this.router.go( "/onboarding/like" );
+              console.log( "1" );
+              //this.router.go( "/onboarding/like" );
+            } else {
+              console.log( "4" );
+              errorServer.classList.remove( "hidden" );
             }
-          })
+            return edFan;
+          }.bind( this ))
           .catch( function( error ) {
+            console.log( "5" );
             errorServer.classList.remove( "hidden" );
             window.scrollTo( 0, 0 );
             return error;
-          }, this );
+          });
       },
       attributeChanged: function( attrName, oldValue, newValue ) {}
     });
