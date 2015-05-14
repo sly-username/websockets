@@ -48,7 +48,7 @@
       }
     },
     ready: function() {
-      this.fallBack = this.shadowRoot.querySelectorAll( ".fall-back" )[ 0 ];
+      this.fallBack = this.shadowRoot.querySelector( ".fall-back" );
     },
     attached: function() {
       this.updateSrc();
@@ -57,9 +57,11 @@
       this.updateSrc().setAttribute( "image", newVal );
     },
     updateSrc: function() {
-      this.checkSrc( this.src ).then( function( result ) {
-        this.fallBack.src = result ? this.src : globalMap[ this.image ];
-      }.bind( this ) );
+      if ( this.src ) {
+        this.checkSrc( this.src ).then( function( result ) {
+          this.fallBack.src = result ? this.src : globalMap[ this.image ];
+        }.bind( this ) );
+      }
       return this;
     },
     checkSrc: function( src ) {
