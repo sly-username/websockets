@@ -92,20 +92,15 @@
 
         userService.login( email, password )
           .then( function( edFan ) {
-            // todo need to do the has onboarded check
-
-            if ( edFan != null ) {
+            if ( userService.hasOnboarded ) {
               this.router.go( "/discover" );
-              console.log( "1" );
-              //this.router.go( "/onboarding/like" );
             } else {
-              console.log( "4" );
-              errorServer.classList.remove( "hidden" );
+              this.router.go( "/onboarding/like" );
             }
+
             return edFan;
           }.bind( this ))
           .catch( function( error ) {
-            console.log( "5" );
             errorServer.classList.remove( "hidden" );
             window.scrollTo( 0, 0 );
             return error;
