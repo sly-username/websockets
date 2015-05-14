@@ -28,8 +28,8 @@
         };
 
         this.errorDivs = {
-          errorEmail: this.shadowRoot.querySelector( "#errorEmail" ),
-          errorPassword: this.shadowRoot.querySelector( "#errorPassword" ),
+          email: this.shadowRoot.querySelector( "#errorEmail" ),
+          password: this.shadowRoot.querySelector( "#errorPassword" )
         };
 
         this.handlers = {
@@ -80,7 +80,8 @@
 
         var
           email = this.formInputs.email.value,
-          password = this.formInputs.password.value;
+          password = this.formInputs.password.value,
+          errorServer = this.errorServer;
 
         if ( !this.canSubmit ) {
           this.postEarlyErrors();
@@ -90,21 +91,18 @@
 
         userService.login( email, password )
           .then( function( response ) {
-            if ( response != null && userService.hasOnboarded === true ) {
+            if ( userService.hasOnboarded === true ) {
               this.router.go( "/discover" );
               // todo need to do the has onboarded check
-            } else if ( response != null && userService.hasOnboarded === false ) {
+            } else if ( userService.hasOnboarded === false ) {
               this.router.go( "/onboarding/like" );
-            } else {
-              // todo need to hide error message?
-              this.errorServer.classList.remove( "hidden" );
             }
           })
           .catch( function( error ) {
-            console.log( "user service login function is broken" );
+            errorServer.classList.remove( "hidden" );
             window.scrollTo( 0, 0 );
             return error;
-          });
+          }, this );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {}
     });

@@ -7,14 +7,11 @@
     <div class="login-container">
       <div class="ed-logo-header">
         <ed-icon name="eardish-logo-with-slogan"></ed-icon>
-        <div id="errorEmail" class="hidden">Wrong. Email is in the wrong format.</div>
-        <div id="errorPassword" class="hidden">Wrong. Password must be at least 8 characters.</div>
-        <div id="errorServer" class="hidden">
-          <p>Wrong login Credentials.</p>
-          <p>Please check your email/password and try again.</p>
-        </div>
+        <div id="errorServer" class="hidden">Whoops! Your email or password is wrong. Let's try that again.</div>
       </div>
       <div class="ed-login-body">
+        <div id="errorEmail" class="hidden">Please enter a valid email address</div>
+        <div id="errorPassword" class="hidden">Your password needs to be at least 8 characters</div>
         <ed-form-input type="email" class="email" placeholder="Your Email" icon="envelope"></ed-form-input>
         <ed-form-input type="password" class="password" placeholder="Password" icon="password"></ed-form-input>
 
