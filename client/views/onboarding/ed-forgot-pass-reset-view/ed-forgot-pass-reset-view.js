@@ -61,7 +61,6 @@
         this.errorDivs = {
           passwordShort: this.shadowRoot.querySelector( "#errorPasswordShort" ),
           passwordMismatch: this.shadowRoot.querySelector( "#errorPasswordMismatch" ),
-          passwordWeak: this.shadowRoot.querySelector( "#errorPasswordWeak" ),
           // server side checks
           resetCodeError: this.shadowRoot.querySelector( "#errorResetCode" )
         };
@@ -94,13 +93,6 @@
           this.pairedInput.setAttribute( "invalid-primary", "" );
           this.pairedInput.setAttribute( "invalid-confirm", "" );
         }
-
-        if ( !this.pairedInput.regexConfirm ) {
-          // password to "weak"
-          this.errorDivs.passwordWeak.classList.remove( "hidden" );
-          this.pairedInput.setAttribute( "invalid-primary", "" );
-          this.pairedInput.setAttribute( "invalid-confirm", "" );
-        }
       },
       cleanUpErrors: function() {
         if ( this.validResetCode ) {
@@ -117,12 +109,6 @@
 
         if ( this.pairedInput.inputMatchConfirm ) {
           this.errorDivs.passwordMismatch.classList.add( "hidden" );
-          this.pairedInput.removeAttribute( "invalid-primary" );
-          this.pairedInput.removeAttribute( "invalid-confirm" );
-        }
-
-        if ( this.pairedInput.regexConfirm ) {
-          this.errorDivs.passwordWeak.classList.add( "hidden" );
           this.pairedInput.removeAttribute( "invalid-primary" );
           this.pairedInput.removeAttribute( "invalid-confirm" );
         }
