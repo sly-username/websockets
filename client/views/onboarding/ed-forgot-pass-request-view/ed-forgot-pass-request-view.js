@@ -13,7 +13,6 @@
       polymer( "ed-forgot-pass-request-view", {
         /* LIFECYCLE */
         ready: function() {
-          this.forgotBody = this.shadowRoot.querySelector( ".ed-forgot-body" );
           this.submitButton = this.shadowRoot.querySelector( "#forgot-submit" );
 
           this.emailInput = this.shadowRoot.querySelector( ".email" );
@@ -27,10 +26,10 @@
         },
         attached: function() {
           this.emailInput.setAttribute( "autofocus", "" );
-          this.forgotBody.addEventListener( "blur", this.handlers.cleanup, true );
+          this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
         },
         detached: function() {
-          this.forgotBody.removeEventListener( "blur", this.handlers.cleanup );
+          this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
         },
         get validEmail() {
           return this.emailInput.validity.valid && emailRegexPattern.test( this.emailInput.value );
