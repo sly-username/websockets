@@ -1,6 +1,11 @@
 /*jshint strict: false*/
 
+// 5 min -- 300000
+// 2.5 min -- 150000
+
 var generateToken,
+  EDWebSocketTimeoutError,
+  requestTimeout = 150000,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0;
 
@@ -13,6 +18,26 @@ generateToken = function() {
   return ++token;
 };
 
+// Create a custom error class
+// Can't extend builtins so we have to do it old school
+EDWebSocketTimeoutError = function( message ) {
+  this.message = message || "EDWebSocket request timed out";
+
+  if ( "captureStackTrace" in Error ) {
+    Error.captureStackTrace( this, EDWebSocketTimeoutError );
+  } else {
+    this.stack = ( new Error() ).stack;
+  }
+};
+
+EDWebSocketTimeoutError.prototype = Object.create( Error.prototype );
+EDWebSocketTimeoutError.prototype.name = "EDWebSocketTimeoutError";
+EDWebSocketTimeoutError.prototype.constructor = EDWebSocketTimeoutError;
+
+/**
+ * @class EDWebSocket
+ * @extends HealingWebSocket
+ */
 export default class EDWebSocket extends HealingWebSocket {
   constructor() {
     super( url.path );
@@ -103,25 +128,35 @@ export default class EDWebSocket extends HealingWebSocket {
     data.action.responseToken = newToken;
 
     return new Promise(( resolve, reject ) => {
-      var handler = ( event ) => {
-        var responseData;
+      var
+        timeoutId,
+        handler = ( event ) => {
+          var responseData;
 
-        try {
-          responseData = JSON.parse( event.data );
-        } catch ( error ) {
-          console.warn( "error in request handler" );
-          console.error( error );
-          responseData = event;
-        }
+          try {
+            responseData = JSON.parse( event.data );
+          } catch ( error ) {
+            console.warn( "error in request handler" );
+            console.error( error );
+            responseData = event;
+          }
 
-        if ( "meta" in responseData && responseData.meta.responseToken === newToken ) {
-          resolve( event );
-          this.off( "message", handler );
-        }
-      }; // end handler function
+          if ( "meta" in responseData && responseData.meta.responseToken === newToken ) {
+            resolve( event );
+            window.clearTimeout( timeoutId );
+            this.off( "message", handler );
+          }
+        }; // end handler function
 
       this.on( "message", handler );
       this.send( data );
+
+      // Set a timeout to reject promise if request takes too long
+      timeoutId = window.setTimeout(() => {
+        console.warn( "timeout! %o", data );
+        reject( new EDWebSocketTimeoutError( `Request to ${data.action.route} with response token ${ data.action.responseToken } timed out` ) );
+        this.off( "message", handler );
+      }, requestTimeout );
     });
   }
 
