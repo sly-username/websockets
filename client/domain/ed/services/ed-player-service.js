@@ -45,6 +45,7 @@ trackEndedHandler = function() {
 };
 
 rateCurrentlyPlaying = function( number ) {
+  console.log( "currentTrackcurrentTrack", currentTrack );
   if ( number != null && currentTrack ) {
     return currentTrack.rate( number )
       .then(function( response ) {
@@ -61,26 +62,14 @@ rateCurrentlyPlaying = function( number ) {
 
 updateCurrentIndex = function( newIndex ) {
   currentIndex = newIndex;
-  tracksCollection.getRange( newIndex, newIndex + 3 );
+  tracksCollection.getInSequence( newIndex, newIndex + 3 );
 };
 
 getEDTrack = function( tracks, index ) {
   return tracks.get( index )
     .then( edTrack => {
       edPlayerService.playTrack( edTrack );
-
-      return edDataService.getArtistById( edTrack.profileId, 10 )
-        .then( edArtist => {
-          currentArtist = edArtist;
-
-          edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
-            detail: {
-              type: "artistUpdate"
-            }
-          }));
-
-          return edArtist;
-        });
+      return edTrack;
     });
 };
 
@@ -221,11 +210,9 @@ export default edPlayerService = {
     currentTrack = edTrack;
 
     return edTrack.getUrl()
-      .then(( response ) => {
+      .then( response => {
         audio.src = response.data.url;
         audio.play();
-
-        this.getCurrentUserStats();
 
         this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
@@ -233,12 +220,28 @@ export default edPlayerService = {
           }
         }));
 
+        this.getCurrentUserStats();
+
         edAnalyticsService.send( "play", {
           trackId: currentTrack.id,
           timecode: currentTrack.currentTime
         });
 
-        return response;
+        return edTrack;
+      })
+      .then( edTrack => {
+        return edDataService.getArtistById( edTrack.profileId, 10 )
+          .then( edArtist => {
+            currentArtist = edArtist;
+
+            edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
+              detail: {
+                type: "artistUpdate"
+              }
+            }));
+
+            return edArtist;
+          });
       });
   },
 
@@ -318,7 +321,10 @@ export default edPlayerService = {
       audio.pause();
     }
 
-    updateCurrentIndex( currentIndex + 1 );
+    currentIndex += 1;
+    console.log( "currentIndex", currentIndex );
+
+    updateCurrentIndex( currentIndex );
 
     edAnalyticsService.send( "quit", {
       trackId: currentTrack.id,
@@ -365,11 +371,9 @@ export default edPlayerService = {
 
         this.queueTracksAndPlay( trackIds );
 
-        this.getCurrentUserStats();
-
         return trackIds;
       })
-      .catch(( error ) => {
+      .catch( error => {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
         throw error;
