@@ -14,8 +14,6 @@
         userService: userService,
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( ".email" );
-          this.emailField = this.shadowRoot.querySelector( ".email" )
-            .shadowRoot.querySelector( ".form-input-container" );
 
           this.submitButton = this.shadowRoot.querySelector( "#referral-submit" );
 
@@ -37,7 +35,7 @@
         },
         cleanupErrors: function() {
           this.emailError.classList.add( "hidden" );
-          this.emailField.classList.remove( "invalid" );
+          this.emailInput.classList.remove( "invalid" );
         },
         submitFriendEmail: function( event ) {
           event.preventDefault();
