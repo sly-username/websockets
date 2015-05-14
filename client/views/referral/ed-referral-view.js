@@ -4,65 +4,60 @@
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
       var userService = imported.default,
-        clickEvents = [ "mousedown", "touchstart" ];
+        emailRegexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/,
+        cleanupErrorHandler = function() {
+          this.cleanupErrors();
+        };
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
         userService: userService,
         ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" )
-            .shadowRoot.querySelector( "input" );
-          this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
-        },
-        attached: function() {
-          this.emailInput.setAttribute( "autofocus", "" );
-
+          this.emailInput = this.shadowRoot.querySelector( ".email" );
           this.emailField = this.shadowRoot.querySelector( ".email" )
             .shadowRoot.querySelector( ".form-input-container" );
 
-          clickEvents.forEach( function( eventName ) {
-            this.submitButton.addEventListener( eventName, this.validateEmail.bind( this ));
-          }.bind( this ));
+          this.submitButton = this.shadowRoot.querySelector( "#referral-submit" );
 
-          this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ));
+          this.emailError = this.shadowRoot.querySelector( "#errorEmail" );
+
+          this.handlers = {
+            cleanup: cleanupErrorHandler.bind( this )
+          };
+        },
+        attached: function() {
+          this.emailInput.focus();
+          this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
         },
         detached: function() {
-          clickEvents.forEach( function( eventName ) {
-            this.submitButton.removeEventListener( eventName, this.validateEmail.bind( this ));
-          }.bind( this ));
-
-          this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ));
+          this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
         },
-        validateAfterEnter: function( event ) {
+        get validEmail() {
+          return this.emailInput.validity.valid && emailRegexPattern.test( this.emailInput.value );
+        },
+        cleanupErrors: function() {
+          this.emailError.classList.add( "hidden" );
+          this.emailField.classList.remove( "invalid" );
+        },
+        submitFriendEmail: function( event ) {
           event.preventDefault();
-          if ( event.keyCode === 13 ) {
-            this.validateEmail();
-          }
-        },
-        checkEmailFormat: function() {
-          var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
 
-          return this.emailInput.validity.valid && re.test( this.emailInput.value );
-        },
-        validateEmail: function() {
-          var checkEmailFormat = this.checkEmailFormat();
-          if ( this.emailInput.value === "" ) {
-            this.emailField.classList.add( "invalid-field" );
-          } else if ( !checkEmailFormat ) {
-            this.emailField.classList.add( "invalid-field" );
-          } else if ( checkEmailFormat ) {
-            this.emailField.classList.remove( "invalid-field" );
-            this.submitFriendEmail();
+          if ( !this.validEmail ) {
+            this.emailInput.classList.add( "invalid" );
+            this.emailError.classList.remove( "hidden" );
+            window.scrollTo( 0, 0 );
+            return;
           }
-        },
-        submitFriendEmail: function() {
-          var friendEmail = this.emailInput.value;
-          return userService.referral( friendEmail )
+
+          return userService.referral( this.emailInput.value )
             .then( function( response ) {
               this.referralsRemaining = response;
               this.emailInput.value = "";
+              this.emailError.classList.add( "hidden" );
+              this.emailInput.classList.remove( "invalid" );
             }.bind( this ))
             .catch( function() {
+              console.log( "referral request did not go through" );
             });
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
