@@ -11,7 +11,6 @@
         discoverGenreHandler = function( event ) {
 
           var tmpId = event.target.getAttribute( "data-id" );
-          console.log( tmpId );
 
           if ( tmpId !== "profileBlend" ) {
             tmpId = parseInt( tmpId, 10 );
