@@ -157,31 +157,27 @@ edUserService.logout = function() {
   var oldUserId = currentUserId,
     oldProfile = currentProfile;
 
-  return edConnectionService.deauthenticateSocket()
-    .then( () => {
-      currentProfile = null;
-      currentUserId = null;
-      isOpenSession = false;
-      sessionAuthJSON = null;
-      loggedInDate = null;
-      referralsRemaining = 0;
+  currentProfile = null;
+  currentUserId = null;
+  isOpenSession = false;
+  sessionAuthJSON = null;
+  loggedInDate = null;
+  referralsRemaining = 0;
 
-      edUserService.dispatch( createEvent( "edLogout", {
-        detail: {
-          userId: oldUserId,
-          profile: oldProfile
-        }
-      }));
+  edUserService.dispatch( createEvent( "edLogout", {
+    detail: {
+      userId: oldUserId,
+      profile: oldProfile
+    }
+  }));
 
-      edAnalytics.send( "logout", {
-        time: ( new Date() ).toISOString()
-      });
+  edAnalytics.send( "logout", {
+    time: ( new Date() ).toISOString()
+  });
 
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+  edConnectionService.deauthenticateSocket();
+
+  return true;
 };
 
 /**
