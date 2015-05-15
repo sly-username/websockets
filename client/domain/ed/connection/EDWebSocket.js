@@ -137,7 +137,7 @@ export default class EDWebSocket extends HealingWebSocket {
             responseData = JSON.parse( event.data );
           } catch ( error ) {
             console.warn( "error in request handler" );
-            console.error( error );
+            console.error( error.stack );
             responseData = event;
           }
 
