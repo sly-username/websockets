@@ -133,8 +133,6 @@ edUserService.login = function( email, password ) {
         time: ( new Date() ).toISOString()
       });
 
-      edUserService.getReferrals();
-
       return currentProfile;
     })
     .catch(( error ) => {
@@ -146,6 +144,10 @@ edUserService.login = function( email, password ) {
       referralsRemaining = 0;
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
+    })
+    .then( profile => {
+      edUserService.getReferrals();
+      return profile;
     });
 };
 

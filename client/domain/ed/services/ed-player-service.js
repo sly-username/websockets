@@ -61,33 +61,36 @@ rateCurrentlyPlaying = function( number ) {
 
 updateCurrentIndex = function( newIndex ) {
   currentIndex = newIndex;
-  tracksCollection.getInSequence( newIndex, newIndex + 3 );
+  return tracksCollection.getInSequence( newIndex, newIndex + 3 );
 };
 
 getTrackAndArtist = function( tracks, index ) {
+  var trackObject;
+
   return tracks.get( index )
     .then( edTrack => {
-      edPlayerService.playTrack( edTrack );
-      return edTrack;
+      trackObject = edTrack;
+      return edPlayerService.playTrack( edTrack );
     })
-    .catch(function( error ) {
+    .catch( error => {
       if ( error.name === "EDWebSocketTimeoutError" ) {
         console.log( "getting edTrack timed out!" );
       }
     })
-    .then( edTrack => {
-      return edDataService.getArtistById( edTrack.profileId, 10 )
-        .then( edArtist => {
-          currentArtist = edArtist;
+    .then(() => {
+      return edDataService.getArtistById( trackObject.profileId, 10 )
+    })
+    .then( edArtist => {
+      currentArtist = edArtist;
 
-          edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
-            detail: {
-              type: "artistUpdate"
-            }
-          }));
-
-          return edArtist;
-        });
+      return edArtist;
+    })
+    .then(() => {
+      return edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
+        detail: {
+          type: "artistUpdate"
+        }
+      }));
     });
 };
 // end helpers
@@ -233,26 +236,27 @@ export default edPlayerService = {
         audio.src = response.data.url;
         audio.play();
 
-        this.emitter.dispatch( createEvent( "playerUpdate", {
+        return edTrack;
+      })
+      .catch( error => {
+        if ( error.name === "EDWebSocketTimeoutError" ) {
+          console.log( "getting track url timed out!" );
+        }
+      })
+      .then(() => {
+        return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
           }
         }));
-
-        //this.getCurrentUserStats();
-
-        edAnalyticsService.send( "play", {
-          trackId: currentTrack.id,
-          timecode: currentTrack.currentTime
-        });
-
-        return edTrack;
-      })
-      .catch(function( error ) {
-        if ( error.name === "EDWebSocketTimeoutError" ) {
-          console.log( "getting track url timed out!" );
-        }
       });
+      // TODO this analytics event blocks the profile/get requests
+      //.then(() => {
+      //  return edAnalyticsService.send( "play", {
+      //    trackId: currentTrack.id,
+      //    timecode: audio.currentTime
+      //  });
+      //});
   },
 
   play: function( content ) {
@@ -333,15 +337,17 @@ export default edPlayerService = {
 
     currentIndex += 1;
 
-    updateCurrentIndex( currentIndex );
-
-    edAnalyticsService.send( "quit", {
-      trackId: currentTrack.id,
-      timecode: audio.currentTime,
-      action: "skip"
-    });
-
-    return getTrackAndArtist( tracksCollection, currentIndex );
+    return updateCurrentIndex( currentIndex )
+      .then(() => {
+        return getTrackAndArtist( tracksCollection, currentIndex );
+      })
+      .then(() => {
+        return edAnalyticsService.send( "quit", {
+          trackId: currentTrack.id,
+          timecode: audio.currentTime,
+          action: "skip"
+        });
+      });
   },
 
   skipTo: function( index ) {
@@ -371,9 +377,11 @@ export default edPlayerService = {
 
     this.enqueue( tracks );
 
-    updateCurrentIndex( currentIndex );
-
-    return getTrackAndArtist( tracksCollection, currentIndex );
+    return updateCurrentIndex( currentIndex )
+      .then( response => {
+        getTrackAndArtist( tracksCollection, currentIndex );
+        return response;
+      });
   },
 
   startMusicDiscovery: function( type ) {
@@ -389,6 +397,9 @@ export default edPlayerService = {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
         throw error;
+      })
+      .then(() => {
+        return this.getCurrentUserStats();
       });
   },
 
