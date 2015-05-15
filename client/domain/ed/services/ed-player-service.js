@@ -45,7 +45,6 @@ trackEndedHandler = function() {
 };
 
 rateCurrentlyPlaying = function( number ) {
-  console.log( "currentTrackcurrentTrack", currentTrack );
   if ( number != null && currentTrack ) {
     return currentTrack.rate( number )
       .then(function( response ) {
@@ -70,6 +69,11 @@ getEDTrack = function( tracks, index ) {
     .then( edTrack => {
       edPlayerService.playTrack( edTrack );
       return edTrack;
+    })
+    .catch(function( error ) {
+      if ( error.name === "EDWebSocketTimeoutError" ) {
+        console.log( "getting edTrack timed out!" );
+      }
     });
 };
 
@@ -229,6 +233,11 @@ export default edPlayerService = {
 
         return edTrack;
       })
+      .catch(function( error ) {
+        if ( error.name === "EDWebSocketTimeoutError" ) {
+          console.log( "getting track url timed out!" );
+        }
+      })
       .then( edTrack => {
         return edDataService.getArtistById( edTrack.profileId, 10 )
           .then( edArtist => {
@@ -322,7 +331,6 @@ export default edPlayerService = {
     }
 
     currentIndex += 1;
-    console.log( "currentIndex", currentIndex );
 
     updateCurrentIndex( currentIndex );
 

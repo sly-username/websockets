@@ -14,6 +14,8 @@
           if ( tmpId != null ) {
             playerService.startMusicDiscovery( tmpId );
           }
+          //TODO remove debug
+          document.getElementById( "song-card").shadowRoot.querySelector( "#main-player-wrapper" ).classList.remove( "hide-main" );
         };
 
       polymer( "ed-discover-view", {
