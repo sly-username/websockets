@@ -69,10 +69,10 @@
         Object.keys( this.formInputs ).forEach(function( current ) {
           if ( this[ inputPropertyNameToValidGetter( current ) ] ) {
             this.errorDivs[ current ].classList.add( "hidden" );
-            this.errorServer.classList.add( "hidden" );
             this.formInputs[ current ].classList.remove( "invalid" );
-            this.errorServer.classList.remove( "invalid" );
           }
+          this.errorServer.classList.add( "hidden" );
+          this.errorServer.classList.remove( "invalid" );
         }, this );
       },
 
@@ -93,7 +93,7 @@
         userService.login( email, password )
           .then( function( edFan ) {
             console.log( edFan );
-            if ( edFan != null && userService.hasOnboarded === "t" ) {
+            if ( edFan != null && userService.hasOnboarded ) {
               this.router.go( "/discover" );
             } else if ( edFan != null ) {
               this.router.go( "/onboarding/like" );
