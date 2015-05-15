@@ -367,20 +367,23 @@ export default edPlayerService = {
   },
 
   queueTracksAndPlay: function( tracks, show ) {
-    if ( show ) {
-      //this.emitter.dispatch( createEvent( "playerUpdate", {
-      //  detail: {
-      //    type: "showMainPlayer"
-      //  }
-      //}));
-    }
-
     this.enqueue( tracks );
 
     return updateCurrentIndex( currentIndex )
-      .then( response => {
-        getTrackAndArtist( tracksCollection, currentIndex );
-        return response;
+      .then(() => {
+        return getTrackAndArtist( tracksCollection, currentIndex );
+      })
+      .then(() => {
+        if ( show ) {
+          return this.emitter.dispatch( createEvent( "playerUpdate", {
+            detail: {
+              type: "showMainPlayer"
+            }
+          }));
+        }
+      })
+      .then(() => {
+        return this.getCurrentUserStats();
       });
   },
 
@@ -389,17 +392,12 @@ export default edPlayerService = {
       .then( trackIds => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, trackIds );
 
-        this.queueTracksAndPlay( trackIds, true );
-
-        return trackIds;
+        return this.queueTracksAndPlay( trackIds, true );
       })
       .catch( error => {
         console.warn( "Error getting tracks in player service" );
         console.error( error );
         throw error;
-      })
-      .then(() => {
-        return this.getCurrentUserStats();
       });
   },
 
