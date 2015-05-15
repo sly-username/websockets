@@ -41,8 +41,6 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  // todo should we keep this flag?
-  // todo since we're using whether they have a currentProfileBlend as indication of onboarding
   hasOnboarded: {
     configurable: false,
     enumerable: false,
@@ -88,7 +86,7 @@ window.edUserService = edUserService;
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
-      referralsRemaining = response.data.count;
+      referralsRemaining = response.data.referralsRemaining;
       return referralsRemaining;
     })
     .catch( error => {
@@ -113,6 +111,7 @@ edUserService.login = function( email, password ) {
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
       currentUserId = raw.userId;
+      hasOnboarded = ( raw.onboarded === "t" );
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
@@ -144,7 +143,6 @@ edUserService.login = function( email, password ) {
       isOpenSession = false;
       hasOnboarded = false;
       referralsRemaining = 0;
-      // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
 };
@@ -190,7 +188,7 @@ edUserService.logout = function() {
 edUserService.changeProfileImage = function( image ) {
   var
     json,
-    // TODO need to grab this info from aws/token/get
+  // TODO need to grab this info from aws/token/get
     s3 = new AWS.S3({
       accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
       secretAccessKey: "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",
