@@ -92,7 +92,7 @@
 
         userService.login( email, password )
           .then( function( edFan ) {
-            if ( userService.hasOnboarded ) {
+            if ( userService.hasOnboarded === "t" ) {
               this.router.go( "/discover" );
             } else {
               this.router.go( "/onboarding/like" );
