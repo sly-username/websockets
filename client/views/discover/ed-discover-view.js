@@ -9,7 +9,13 @@
         discoverService = imported[ 0 ].default,
         playerService = imported[ 1 ].default,
         discoverGenreHandler = function( event ) {
-          var tmpId = parseInt( event.target.getAttribute( "data-id" ), 10 );
+
+          var tmpId = event.target.getAttribute( "data-id" );
+          console.log( tmpId );
+
+          if ( tmpId !== "profileBlend" ) {
+            tmpId = parseInt( tmpId, 10 );
+          }
 
           if ( tmpId != null ) {
             playerService.startMusicDiscovery( tmpId );
