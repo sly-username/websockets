@@ -145,9 +145,8 @@ edUserService.login = function( email, password ) {
       // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     })
-    .then( profile => {
-      edUserService.getReferrals();
-      return profile;
+    .then(() => {
+      return edUserService.getReferrals();
     });
 };
 

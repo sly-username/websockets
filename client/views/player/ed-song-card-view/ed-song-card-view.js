@@ -56,6 +56,7 @@
       if ( eventType === "skip" ) {
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
+        this.ratingsForm.classList.remove( "show" );
 
         playerService.skip();
       }
