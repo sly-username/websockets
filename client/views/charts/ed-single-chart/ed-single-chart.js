@@ -92,7 +92,7 @@
         this[ "chart-object" ] = value;
 
         this.countdown = value.timeRemaining;
-        this.noRanking = value.leaderboard.length !== 0;
+        this.noRankings = value.leaderboard.length;
 
         this.getLeaderBoard();
         return value;
@@ -112,9 +112,11 @@
         if (( /fan$/ ).test( this.chartIdentifier )) {
           this.isFan = true;
           this.isTrack = false;
+          console.log( "thinks it's fan" );
         } else if (( /track$/ ).test( this.chartIdentifier )) {
           this.isFan = false;
           this.isTrack = true;
+          console.log( "thinks it's track" );
         }
 
         this.handler = {
