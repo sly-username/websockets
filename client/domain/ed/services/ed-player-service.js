@@ -25,7 +25,7 @@ var
   trackEndedHandler,
   rateCurrentlyPlaying,
   updateCurrentIndex,
-  getEDTrack;
+  getTrackAndArtist;
 
 // helpers
 hasScrubbedHandler = function( event ) {
@@ -64,7 +64,7 @@ updateCurrentIndex = function( newIndex ) {
   tracksCollection.getInSequence( newIndex, newIndex + 3 );
 };
 
-getEDTrack = function( tracks, index ) {
+getTrackAndArtist = function( tracks, index ) {
   return tracks.get( index )
     .then( edTrack => {
       edPlayerService.playTrack( edTrack );
@@ -74,8 +74,23 @@ getEDTrack = function( tracks, index ) {
       if ( error.name === "EDWebSocketTimeoutError" ) {
         console.log( "getting edTrack timed out!" );
       }
+    })
+    .then( edTrack => {
+      return edDataService.getArtistById( edTrack.profileId, 10 )
+        .then( edArtist => {
+          currentArtist = edArtist;
+
+          edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
+            detail: {
+              type: "artistUpdate"
+            }
+          }));
+
+          return edArtist;
+        });
     });
 };
+// end helpers
 
 // init audio element
 audio.setAttribute( "id", "hiddenAudioPlayer" );
@@ -86,6 +101,7 @@ audio.style.visibility = "hidden";
 
 audio.addEventListener( "seeked", hasScrubbedHandler );
 audio.addEventListener( "ended", trackEndedHandler );
+// end init audio element
 
 export default edPlayerService = {
   get emitter() {
@@ -95,12 +111,12 @@ export default edPlayerService = {
   get currentStats() {
     return {
       playing: currentTrack,
-      currentArtist: currentArtist,
       time: this.formattedTime,
       hours: this.currentHours,
       minutes: this.currentMinutes,
       seconds: this.currentSeconds,
-      length: this.trackLength
+      length: this.trackLength,
+      currentArtist
     };
   },
 
@@ -135,10 +151,6 @@ export default edPlayerService = {
     return 0;
   },
 
-  set currentTime( value ) {
-    return audio.currentTime;
-  },
-
   get currentSeconds() {
     return Math.floor( this.currentTime % 60 );
   },
@@ -151,17 +163,21 @@ export default edPlayerService = {
     return Math.floor( 60 / this.currentTime );
   },
 
-  get formattedTimeDisplay() {
-    return this.formattedTime + " / " + this.formattedLength;
+  get trackLength() {
+    if ( currentTrack != null ) {
+      return audio.duration;
+    }
+
+    return 0;
   },
 
-  get formattedTime() {
+  get formattedCurrentTime() {
     var ss = this.currentSeconds,
       mm = this.currentMinutes,
       hh = this.currentHours;
-    ss = ss < 10 ? "0" + ss : ss;
-    mm = mm < 10 ? "0" + mm : mm;
-    hh = hh < 10 ? "0" + hh : hh;
+    ss = ss < 10 ? `0${ ss }` : ss;
+    mm = mm < 10 ? `0${ mm }` : mm;
+    hh = hh < 10 ? `0${ hh }` : hh;
 
     if ( this.isPlaying || this.isPaused ) {
       //if ( hh !== "00" ) {
@@ -174,25 +190,24 @@ export default edPlayerService = {
   },
 
   get formattedLength() {
-    return this.formatTime( this.trackLength );
-  },
-
-  get trackLength() {
-    if ( currentTrack != null ) {
-      return audio.duration;
+    if ( this.isPlaying || this.isPaused ) {
+      return this.formatTime( this.trackLength );
     }
 
-    return 0;
+    return "00:00";
   },
 
-  // To be removed once integrated with player service
+  get formattedDisplayTime() {
+    return this.formattedCurrentTime + " / " + this.formattedLength;
+  },
+
   formatTime: function( time ) {
     var ss = Math.floor( time % 60 ),
       mm = Math.floor( time / 60 );
-    ss = ss < 10 ? "0" + ss : ss;
-    mm = mm < 10 ? "0" + mm : mm;
+    ss = ss < 10 ? `0${ ss }` : ss;
+    mm = mm < 10 ? `0${ mm }` : mm;
 
-    return mm + ":" + ss;
+    return `${ mm }:${ ss }`;
   },
 
   playTrack: function( edTrack ) {
@@ -224,7 +239,7 @@ export default edPlayerService = {
           }
         }));
 
-        this.getCurrentUserStats();
+        //this.getCurrentUserStats();
 
         edAnalyticsService.send( "play", {
           trackId: currentTrack.id,
@@ -237,20 +252,6 @@ export default edPlayerService = {
         if ( error.name === "EDWebSocketTimeoutError" ) {
           console.log( "getting track url timed out!" );
         }
-      })
-      .then( edTrack => {
-        return edDataService.getArtistById( edTrack.profileId, 10 )
-          .then( edArtist => {
-            currentArtist = edArtist;
-
-            edPlayerService.emitter.dispatch( createEvent( "playerUpdate", {
-              detail: {
-                type: "artistUpdate"
-              }
-            }));
-
-            return edArtist;
-          });
       });
   },
 
@@ -340,7 +341,7 @@ export default edPlayerService = {
       action: "skip"
     });
 
-    return getEDTrack( tracksCollection, currentIndex );
+    return getTrackAndArtist( tracksCollection, currentIndex );
   },
 
   skipTo: function( index ) {
@@ -361,15 +362,18 @@ export default edPlayerService = {
 
   queueTracksAndPlay: function( tracks, show ) {
     if ( show ) {
-      document.getElementById( "main-player-wrapper" ).setAttribute( "class", "active" );
-      document.getElementById( "mini-player" ).setAttribute( "class", "hidden" );
+      //this.emitter.dispatch( createEvent( "playerUpdate", {
+      //  detail: {
+      //    type: "showMainPlayer"
+      //  }
+      //}));
     }
 
     this.enqueue( tracks );
 
     updateCurrentIndex( currentIndex );
 
-    return getEDTrack( tracksCollection, currentIndex );
+    return getTrackAndArtist( tracksCollection, currentIndex );
   },
 
   startMusicDiscovery: function( type ) {
@@ -377,7 +381,7 @@ export default edPlayerService = {
       .then( trackIds => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, trackIds );
 
-        this.queueTracksAndPlay( trackIds );
+        this.queueTracksAndPlay( trackIds, true );
 
         return trackIds;
       })

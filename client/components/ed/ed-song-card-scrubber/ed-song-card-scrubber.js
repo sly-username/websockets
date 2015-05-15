@@ -76,7 +76,7 @@
         //this.front.style.webkitAnimation = "dashoffsetFill " + this.max + "s linear";
         //this.mid.style.animation = "dashoffsetFill " + this.max + "s linear";
 
-        this.$["song-timer"].innerText = playerService.formattedTimeDisplay;
+        this.$["song-timer"].innerText = playerService.formattedDisplayTime;
       },
       skipSongHandler = function() {
         this.dispatchEvent( createUpdateEvent( "skip" ));

@@ -67,6 +67,12 @@
       if ( eventType === "showRatings" ) {
         this.ratingsForm.classList.add( "show" );
       }
+
+      if ( eventType === "showMainPlayer" ) {
+        this.miniPlayerWrapper.classList.remove( "show-mini" );
+        this.mainPlayerWrapper.classList.remove( "hide-main" );
+        this.songCardWrapper.classList.remove( "minimized" );
+      }
     };
 
     togglePlayerHandler = function( event ) {
