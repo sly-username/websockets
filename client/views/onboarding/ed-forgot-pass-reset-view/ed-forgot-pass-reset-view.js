@@ -27,7 +27,7 @@
 
         userService.resetPassword( this.resetCode.value, this.pairedInput.val )
           .then(function( response ) {
-            // TODO route somewhere?
+            this.router.go( "/discover" );
             return response;
           }.bind( this ))
           .catch(function( error ) {

@@ -338,7 +338,7 @@ edUserService.resetPassword = function( resetCode, password ) {
 
   return edConnectionService.request( "user/password/set", 10, json )
     .then( response => {
-      if ( response && response.status && response.status.code && response.status.code === 2 ) {
+      if ( response && response.status && response.status.code && response.status.code === 1 ) {
         console.log( "sucessful password/set", response );
         return response;
       }
@@ -354,6 +354,9 @@ edUserService.resetPassword = function( resetCode, password ) {
       console.log( "new password was not successfully set" );
       console.log( error );
       throw error;
+    })
+    .then( response => {
+      return edUserService.login( response.data.email, json.data.password );
     });
 };
 
