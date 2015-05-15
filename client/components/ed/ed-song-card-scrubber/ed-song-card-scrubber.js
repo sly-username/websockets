@@ -37,7 +37,12 @@
           radians;
 
         if ( this.mouseDown ) {
-          radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
+          if ( event.touches ) {
+            radians = Math.atan2( event.touches[ 0 ].pageX - this.scrubCenter[ 0 ], event.touches[ 0 ].pageY - this.scrubCenter[ 1 ] );
+          } else {
+            radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
+          }
+
           angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
           this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
 
