@@ -1,6 +1,6 @@
 {
-  "name": "eardish-intdev",
-  "start_url": "http://clientdev.eardishcorp.com/",
+  "name": "eardish",
+  "start_url": "index.html",
   "display": "standalone",
   "orientation": "portrait",
   "csp": "script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'self'",
