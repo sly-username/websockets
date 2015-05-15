@@ -92,10 +92,13 @@
 
         userService.login( email, password )
           .then( function( edFan ) {
-            if ( userService.hasOnboarded === "t" ) {
+            console.log( edFan );
+            if ( edFan != null && userService.hasOnboarded === "t" ) {
               this.router.go( "/discover" );
-            } else {
+            } else if ( edFan != null ) {
               this.router.go( "/onboarding/like" );
+            } else {
+              errorServer.classList.remove( "hidden" );
             }
 
             return edFan;
