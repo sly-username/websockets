@@ -10,17 +10,17 @@
       </div>
       <div class="ed-forgot-body">
         <div class="forgot-text">
-          <span>We've sent a security code</span>
-          <span>to your email. Once you get it,</span>
-          <span>enter it below and type your</span>
-          <span>new password:</span>
+          <span>We've sent a security code your way.</span>
+          <span>Enter it below and create a new password:</span>
         </div>
         <section class="error-messages">
           <!-- todo update with proper copy -->
-          <div id="errorResetCode" class="hidden">Problem with Security code</div>
-          <div id="errorPasswordShort" class="hidden">Password is too Short</div>
-          <div id="errorPasswordMismatch" class="hidden">Password fields do not match</div>
-          <div id="errorPasswordWeak" class="hidden">Password does not meet the requirements</div>
+          <div id="errorResetCode" class="hidden">
+            <span>Your security code isn't quite right.</span>
+            <span>Check your caps key and give it another shot!</span>
+          </div>
+          <div id="errorPasswordShort" class="hidden">Your password needs to be at least 8 characters</div>
+          <div id="errorPasswordMismatch" class="hidden">Your passwords don't match, please try again</div>
         </section>
         <div id="forgot-form">
           <ed-form-input type="text" class="reset-code" placeholder="Security Code" icon="security-code" required

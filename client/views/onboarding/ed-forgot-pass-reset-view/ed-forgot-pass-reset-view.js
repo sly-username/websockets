@@ -50,8 +50,8 @@
       ready: function() {
         this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
         this.resetCode = this.shadowRoot.querySelector( ".reset-code" );
-        this.formContainer = this.shadowRoot.getElementById( "forgot-form" );
-        this.submitButton = this.shadowRoot.getElementById( "forgot-submit" );
+        this.formContainer = this.shadowRoot.querySelector( "#forgot-form" );
+        this.submitButton = this.shadowRoot.querySelector( "#forgot-submit" );
 
         this.handlers = {
           submitCheck: submitCheckHandler.bind( this ),
@@ -61,12 +61,13 @@
         this.errorDivs = {
           passwordShort: this.shadowRoot.querySelector( "#errorPasswordShort" ),
           passwordMismatch: this.shadowRoot.querySelector( "#errorPasswordMismatch" ),
-          passwordWeak: this.shadowRoot.querySelector( "#errorPasswordWeak" ),
           // server side checks
           resetCodeError: this.shadowRoot.querySelector( "#errorResetCode" )
         };
       },
       attached: function() {
+        this.resetCode.focus();
+
         this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
         this.submitButton.addEventListener( "click", this.handlers.submitCheck );
       },
@@ -94,13 +95,6 @@
           this.pairedInput.setAttribute( "invalid-primary", "" );
           this.pairedInput.setAttribute( "invalid-confirm", "" );
         }
-
-        if ( !this.pairedInput.regexConfirm ) {
-          // password to "weak"
-          this.errorDivs.passwordWeak.classList.remove( "hidden" );
-          this.pairedInput.setAttribute( "invalid-primary", "" );
-          this.pairedInput.setAttribute( "invalid-confirm", "" );
-        }
       },
       cleanUpErrors: function() {
         if ( this.validResetCode ) {
@@ -117,12 +111,6 @@
 
         if ( this.pairedInput.inputMatchConfirm ) {
           this.errorDivs.passwordMismatch.classList.add( "hidden" );
-          this.pairedInput.removeAttribute( "invalid-primary" );
-          this.pairedInput.removeAttribute( "invalid-confirm" );
-        }
-
-        if ( this.pairedInput.regexConfirm ) {
-          this.errorDivs.passwordWeak.classList.add( "hidden" );
           this.pairedInput.removeAttribute( "invalid-primary" );
           this.pairedInput.removeAttribute( "invalid-confirm" );
         }
