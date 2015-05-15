@@ -71,9 +71,9 @@
             this.errorDivs[ current ].classList.add( "hidden" );
             this.formInputs[ current ].classList.remove( "invalid" );
           }
-          this.errorServer.classList.add( "hidden" );
-          this.errorServer.classList.remove( "invalid" );
         }, this );
+        this.errorServer.classList.add( "hidden" );
+        this.errorServer.classList.remove( "invalid" );
       },
 
       submitForm: function( event ) {
