@@ -1,7 +1,7 @@
 {
   "name": "es6-module-loader",
   "description": "An ES6 Module Loader shim",
-  "version": "0.15.0",
+  "version": "0.16.6",
   "homepage": "https://github.com/ModuleLoader/es6-module-loader",
   "author": {
     "name": "Guy Bedford, Luke Hoban, Addy Osmani",
@@ -22,6 +22,7 @@
     }
   ],
   "devDependencies": {
+    "babel-core": "^5.0.10",
     "expect.js": "^0.3.1",
     "gesalakacula": "^1.0.0",
     "grunt": "~0.4.1",
@@ -42,7 +43,8 @@
     "karma-sauce-launcher": "^0.2.10",
     "minimist": "^1.1.0",
     "mocha": "^2.0.1",
-    "regenerator": "^0.8.9"
+    "regenerator": "^0.8.9",
+    "traceur": "0.0.87"
   },
   "keywords": [
     "script",
@@ -53,7 +55,6 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "main": "lib/index-traceur",
   "scripts": {
     "test": "npm run test:node && npm run test:browser",
     "test:node": "mocha test/_node-traceur.js && mocha test/_node-babel.js",
@@ -63,8 +64,6 @@
     "test:browser:perf": "karma start karma-benchmark.conf.js --single-run"
   },
   "dependencies": {
-    "babel-core": "^4.6.6",
-    "traceur": "0.0.86",
     "when": "^3.7.2"
   }
 }

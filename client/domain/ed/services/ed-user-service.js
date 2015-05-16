@@ -132,8 +132,6 @@ edUserService.login = function( email, password ) {
         time: ( new Date() ).toISOString()
       });
 
-      edUserService.getReferrals();
-
       return currentProfile;
     })
     .catch(( error ) => {
@@ -144,6 +142,9 @@ edUserService.login = function( email, password ) {
       hasOnboarded = false;
       referralsRemaining = 0;
       console.log( "this person was unable to login" );
+    })
+    .then(() => {
+      return edUserService.getReferrals();
     });
 };
 

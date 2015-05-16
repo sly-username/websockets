@@ -22,10 +22,10 @@
           };
 
           if ( userService.isOpenSession ) {
-            this.profileId = userService.currentProfile.id;
+            this.edFan = userService.currentProfile;
           }
           userService.on( "edLogin", function() {
-            this.profileId = userService.currentProfile.id;
+            this.edFan = userService.currentProfile;
           }.bind( this ) );
         },
         attached: function() {
