@@ -1,4 +1,4 @@
-(function( window, Promise, indexedDB ) {
+(function( window, Promise ) {
   "use strict";
 
   var
@@ -14,40 +14,43 @@
       });
     };
 
-  Promise.all([
-    System.import( "domain/ed/services/ed-data-service" ),
-    System.import( "domain/ed/services/ed-connection-service" ),
-    System.import( "domain/ed/services/ed-user-service" ),
-    System.import( "domain/ed/services/ed-player-service" )
-  ]).then( imports => {
-    var
-      [
-        dataService,
-        connectionService,
-        userService,
-        playerService
-      ] = imports.map( imported => imported.default ),
-      animationWrapper = document.getElementById( "animation-wrapper" ),
-      songCard = document.getElementById( "song-card" ),
-      router = document.querySelector( "app-router" );
+  window.addEventListener( "polymer-ready", function( readyEvent ) {
+    Promise.all([
+      System.import( "domain/ed/services/ed-data-service" ),
+      System.import( "domain/ed/services/ed-connection-service" ),
+      System.import( "domain/ed/services/ed-user-service" ),
+      System.import( "domain/ed/services/ed-player-service" )
+    ])
+      .then( imports => {
+        var
+          [
+            dataService,
+            connectionService,
+            userService,
+            playerService
+          ] = imports.map( imported => imported.default ),
+          animationWrapper = document.getElementById( "animation-wrapper" ),
+          songCard = document.getElementById( "song-card" ),
+          router = document.querySelector( "app-router" );
 
-    router.addEventListener( "state-change", function( event ) {
-      console.log( "in state-change event: %o", event.detail );
+        router.addEventListener( "state-change", function( event ) {
+          console.log( "in state-change event: %o", event.detail );
 
-      if ( !playerService.isPlaying || needToHidePlayerForRoute( event.detail.path ) ) {
-        animationWrapper.classList.remove( "player-padding" );
-      } else {
-        if ( !animationWrapper.classList.contains( "player-padding" )) {
-          animationWrapper.classList.add( "player-padding" );
-        }
-      }
-    });
+          if ( !playerService.isPlaying || needToHidePlayerForRoute( event.detail.path ) ) {
+            animationWrapper.classList.remove( "player-padding" );
+          } else {
+            if ( !animationWrapper.classList.contains( "player-padding" )) {
+              animationWrapper.classList.add( "player-padding" );
+            }
+          }
+        });
 
-    // need to init manually to ensure event binding
-    router.init();
-  })
-  .catch( error => {
-    console.error( "Problem in main script" );
-    console.error( error.stack );
+        // need to init manually to ensure event binding
+        router.init();
+      })
+      .catch( error => {
+        console.error( "Problem in main script" );
+        console.error( error.stack );
+      });
   });
-})( window, window.Promise, window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB );
+})( window, window.Promise );

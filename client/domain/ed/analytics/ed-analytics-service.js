@@ -149,22 +149,24 @@ export default edAnalyticsService = {
 };
 
 // Attach listener for route request event
-document.getElementById( "root-app-router" )
-  .addEventListener( "activate-route-end", function( event ) {
-    // remove "router" from event model since is causes a circular reference
-    var
-      params = Object.keys( event.detail.model )
-        .reduce(function( accumulator, key ) {
-          if ( key === "router" ) {
+window.addEventListener( "polymer-ready", function( readyEvent ) {
+  document.getElementById( "root-app-router" )
+    .addEventListener( "activate-route-end", function( event ) {
+      // remove "router" from event model since is causes a circular reference
+      var
+        params = Object.keys( event.detail.model )
+          .reduce(function( accumulator, key ) {
+            if ( key === "router" ) {
+              return accumulator;
+            }
+
+            accumulator[ key ] = event.detail.model[ key ];
             return accumulator;
-          }
+          }, {});
 
-          accumulator[ key ] = event.detail.model[ key ];
-          return accumulator;
-        }, {});
-
-    edAnalyticsService.send( "routeRequest", {
-      route: event.detail.path,
-      params
+      edAnalyticsService.send( "routeRequest", {
+        route: event.detail.path,
+        params
+      });
     });
-  });
+});

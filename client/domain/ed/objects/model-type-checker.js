@@ -19,6 +19,7 @@ import EDFan from "domain/ed/objects/profile/EDFan";
 // Misc Types
 import EDBadge from "domain/ed/objects/EDBadge";
 import EDGenre from "domain/ed/objects/EDGenre";
+import EDChart from "domain/ed/objects/EDChart";
 
 var constructorMap = {
   [ EDModel.MODEL_TYPE ]: EDModel,
@@ -26,11 +27,12 @@ var constructorMap = {
   [ EDTrack.MODEL_TYPE ]: EDTrack,
   [ EDUser.MODEL_TYPE ]: EDUser,
   [ EDProfile.MODEL_TYPE ]: EDProfile,
-  [ EDFan.MODEL_TYPE ]: EDFan,
   [ EDArtist.MODEL_TYPE ]: EDArtist,
   [ EDArtistGroup.MODEL_TYPE ]: EDArtistGroup,
+  [ EDFan.MODEL_TYPE ]: EDFan,
   [ EDBadge.MODEL_TYPE ]: EDBadge,
-  [ EDGenre.MODEL_TYPE ]: EDGenre
+  [ EDGenre.MODEL_TYPE ]: EDGenre,
+  [ EDChart.MODEL_TYPE ]: EDChart
 };
 
 export default {
