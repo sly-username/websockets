@@ -107,6 +107,6 @@
     "through2": "=0.6.3"
   },
   "dependencies": {
-    "traceur": "=0.0.87"
+    "traceur": "=0.0.89"
   }
 }
