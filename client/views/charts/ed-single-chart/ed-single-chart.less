@@ -26,19 +26,15 @@
     width: 100%;
     z-index: 2;
     .chart-title-text {
-      //todo where is the font style for this text?
       .edType( heading-L );
-      // todo where is the margin coming from?
       margin: 0;
       white-space: pre;
       font-style: italic;
       font-weight: 500;
     }
     .chart-subtitle-text {
-      //todo where is the margin coming from?
       margin: 0;
       white-space: pre;
-      // todo where is the font size for this?
       .edType( paragraph-S );
       line-height: 65%;
       padding-top: .4rem;
@@ -48,7 +44,6 @@
       width: 20%;
       height: 5rem;
     }
-    // todo why is there separate styles for the header?
     header {
       background: @lightPurple1;
       color: @originalWhite;
@@ -68,30 +63,17 @@
   }
 
   .ranks-badge-wrapper {
-    //position: absolute;
-    //top: 7rem;
     width: 100%;
-
     display:flex;
     flex-direction: column;
     height: 100%;
-
     padding-top: 8rem;
   }
 
   .badges {
     color: @originalTeal;
     text-align: center;
-
-    //position: fixed;
-    //right: 0;
-    //left: 0;
-    //height: 30%;
-    //top: 8rem;
     background-color: @originalPurple;
-
-    //padding-top: 8rem;
-
     .time-left {
       white-space: pre;
       .edType( heading-XXS );
@@ -102,7 +84,6 @@
     .countdown-timer {
       white-space: pre;
       .edType( paragraph-M );
-      // todo where is the default margin coming from?
       margin: 0 0 2rem 0;
       font-weight: 500;
     }
@@ -126,15 +107,16 @@
     .edType( heading-XS );
     color: @lightGrey1;
     background: @darkPurple3;
-
     flex: 1;
     width: 100%;
-    //position: fixed;
-    //height: 100%;
-    //top: 32rem;
-
-    .default-copy {
-
+    .copy {
+      width: 35rem;
+      margin: 0 auto;
+      padding-top: 5rem;
+      p {
+        display: table-cell;
+        text-align: center;
+      }
     }
   }
 
@@ -144,8 +126,6 @@
     width: 100%;
     margin: 0;
     padding: 0;
-    //position: absolute;
-    //top: 25rem;
     li {
       overflow: auto;
       height: 5.5rem;

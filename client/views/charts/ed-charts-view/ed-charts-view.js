@@ -43,7 +43,6 @@
         if ( eventType === "moveRight" ) {
           switch ( currentView ) {
             case 1:
-              // todo disable first view from going right
               updateChartClass( [ "one", "three", "four" ], "two", this );
               currentView = 2;
               break;
