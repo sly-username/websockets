@@ -127,12 +127,12 @@ edUserService.login = function( email, password ) {
         }
       }));
 
+      edUserService.getReferrals();
+
       // analytics
       edAnalytics.send( "login", {
         time: ( new Date() ).toISOString()
       });
-
-      edUserService.getReferrals();
 
       return currentProfile;
     })
