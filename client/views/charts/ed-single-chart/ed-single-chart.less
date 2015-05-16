@@ -43,22 +43,10 @@
       line-height: 65%;
       padding-top: .4rem;
     }
-    .chart-arrows {
+    .direction-divs {
       position: absolute;
       width: 20%;
       height: 5rem;
-      z-index: 2;
-      &::shadow {
-        svg {
-          position: static;
-          top: 0;
-          // todo mixin?
-          -webkit-transform: translateY(0%);
-          -ms-transform: translateY(0%);
-          transform: translateY(0%);
-          fill: @originalWhite;
-        }
-      }
     }
     // todo why is there separate styles for the header?
     header {
@@ -71,11 +59,11 @@
     }
   }
 
-  #arrow-left {
+  #move-left {
     left: 0;
   }
 
-  #arrow-right {
+  #move-right {
     right: 0;
   }
 

@@ -105,8 +105,8 @@
         return -1;
       },
       ready: function() {
-        this.arrowLeft = this.$[ "arrow-left" ];
-        this.arrowRight = this.$[ "arrow-right" ];
+        this.moveLeft = this.$[ "move-left" ];
+        this.moveRight = this.$[ "move-right" ];
       },
       attached: function() {
         if (( /fan$/ ).test( this.chartIdentifier )) {
@@ -124,8 +124,8 @@
           rightMove: rightMoveHandler.bind( this )
         };
 
-        this.arrowLeft.addEventListener( "click", this.handler.leftMove );
-        this.arrowRight.addEventListener( "click", this.handler.rightMove );
+        this.moveLeft.addEventListener( "click", this.handler.leftMove );
+        this.moveRight.addEventListener( "click", this.handler.rightMove );
 
         // default values
         if ( this.noRankings == null ) {
@@ -133,8 +133,8 @@
         }
       },
       detached: function() {
-        this.arrowLeft.removeEventListener( "click", this.handler.leftMove );
-        this.arrowRight.removeEventListener( "click", this.handler.rightMove );
+        this.moveLeft.removeEventListener( "click", this.handler.leftMove );
+        this.moveRight.removeEventListener( "click", this.handler.rightMove );
       },
       getLeaderBoard: function() {
         console.log( this.chartObject.leaderboardCollection );

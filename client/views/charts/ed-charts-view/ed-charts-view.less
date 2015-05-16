@@ -20,6 +20,33 @@
   overflow: hidden;
 }
 
+.chart-arrows {
+  position: absolute;
+  width: 20%;
+  height: 25rem;
+  pointer-events: none;
+  z-index: 1;
+  &::shadow {
+    svg {
+      position: static;
+      top: 0;
+      // todo mixin?
+      -webkit-transform: translateY(0%);
+      -ms-transform: translateY(0%);
+      transform: translateY(0%);
+      fill: @originalWhite;
+    }
+  }
+}
+
+#arrow-right {
+  right: 2rem;
+}
+
+#arrow-left {
+  left: 2rem;
+}
+
 .single-chart {
   position: absolute;
   top: 9rem;
