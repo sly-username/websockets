@@ -5,6 +5,7 @@
     System.import( "domain/ed/services/ed-discover-service" )
   ]).then( function( imported ) {
     var discoverService = imported[ 0 ].default,
+      router = document.querySelector( "app-router" ),
       currentView = 1,
       chartNames = [ "most-tracks-rated-fan", "completed-listens-fan", "completed-listens-track", "highest-rated-track" ],
       updateChartClass = function( classesRemoveArray, classAdd, self ) {
@@ -63,6 +64,9 @@
               break;
           }
         }
+      },
+      resetChartViewHandler = function() {
+        currentView = 1;
       };
 
     polymer( "ed-charts-view", {
@@ -81,12 +85,15 @@
           updateChartView: updateChartsViewHandler.bind( this )
         };
 
+        router.addEventListener( "state-change", resetChartViewHandler );
+
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
 
         this.getEdChartObject();
       },
       detached: function() {
         this.removeEventListener( "chartsUpdate", this.handler.updateChartView );
+        router.removeEventListener( "state-change", resetChartViewHandler );
       },
       getEdChartObject: function() {
         var
