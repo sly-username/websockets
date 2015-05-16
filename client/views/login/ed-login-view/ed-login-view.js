@@ -1,88 +1,115 @@
 ( function( polymer, System ) {
   "use strict";
 
-  Promise.all([
-    System.import( "domain/ed/objects/model-type-checker" ),
-    System.import( "domain/ed/services/ed-user-service" )
-  ])
-    .then( function( imported ) {
+  System.import( "domain/ed/services/ed-user-service" )
+    .then(function( imported ) {
       var
-        typeChecker = imported[ 0 ].default,
-        userService = imported[ 1 ].default,
-        clickEvents = [ "mousedown", "touchstart" ];
-
-      polymer( "ed-login-view", {
-        /* LIFECYCLE */
-        ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( ".email" ).shadowRoot.querySelector( "input" );
-          this.passwordInput = this.shadowRoot.querySelector( ".password" ).shadowRoot.querySelector( "input" );
-          this.inputsArray = [ this.emailInput, this.passwordInput ];
-          this.submitButton = this.shadowRoot.getElementById( "login-submit" );
-          this.signUpButton = this.shadowRoot.getElementById( "sign-up-button" );
-          this.errorDiv = this.shadowRoot.getElementById( "errorDiv" );
+        userService = imported.default,
+        emailRegexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/,
+        passwordRegexPattern = /^\w{8,}/,
+        inputPropertyNameToValidGetter = function( inputName ) {
+          var name = inputName[ 0 ].toUpperCase() + inputName.slice( 1 );
+          return "valid" + name;
         },
-        attached: function() {
-          this.emailInput.setAttribute( "autofocus", "" );
-          this.submitButton.setAttribute( "disabled", "" );
+        cleanupErrorHandler = function( event ) {
+          this.cleanupErrors();
+        };
 
-          // check inputs to see if they're empty before pressing submit
-          this.inputsArray.forEach( function( formInput ) {
-            formInput.addEventListener( "keyup", this.validateFields.bind( this ));
-          }.bind( this ));
+    polymer( "ed-login-view", {
+      /* LIFECYCLE */
+      ready: function() {
+        this.submitButton = this.shadowRoot.querySelector( "#login-submit" );
+        this.loginBody = this.shadowRoot.querySelector( ".ed-login-body" );
+        this.errorServer = this.shadowRoot.querySelector( "#errorServer" );
 
-          clickEvents.forEach(function( eventName ) {
-            this.submitButton.addEventListener( eventName, this.submitForm.bind( this ));
-            this.signUpButton.addEventListener( eventName, this.goToSignUpPage.bind( this ));
-          }.bind( this ));
+        this.formInputs = {
+          email: this.shadowRoot.querySelector( ".email" ),
+          password: this.shadowRoot.querySelector( ".password" )
+        };
 
-          this.submitButton.addEventListener( "keydown", function( event ) {
-            if ( event.keyCode === 13 ) {
-              this.submitForm( event );
+        this.errorDivs = {
+          email: this.shadowRoot.querySelector( "#errorEmail" ),
+          password: this.shadowRoot.querySelector( "#errorPassword" )
+        };
+
+        this.handlers = {
+          cleanup: cleanupErrorHandler.bind( this )
+        };
+      },
+      attached: function() {
+        this.formInputs.email.focus();
+        this.loginBody.addEventListener( "blur", this.handlers.cleanup, true );
+      },
+      detached: function() {
+        this.loginBody.removeEventListener( "blur", this.handlers.cleanup, true );
+      },
+
+      get validEmail() {
+        return this.formInputs.email.validity.valid && emailRegexPattern.test( this.formInputs.email.value );
+      },
+      get validPassword() {
+        return passwordRegexPattern.test( this.formInputs.password.value );
+      },
+      get canSubmit() {
+        return Object.keys( this.formInputs ).every(function( current ) {
+          return this[ inputPropertyNameToValidGetter( current ) ];
+        }, this );
+      },
+
+      postEarlyErrors: function() {
+        Object.keys( this.formInputs ).forEach(function( current ) {
+          if ( !this[ inputPropertyNameToValidGetter( current ) ] ) {
+            this.errorDivs[ current ].classList.remove( "hidden" );
+            this.formInputs[ current ].classList.add( "invalid" );
+          }
+        }, this );
+      },
+
+      cleanupErrors: function() {
+        Object.keys( this.formInputs ).forEach(function( current ) {
+          if ( this[ inputPropertyNameToValidGetter( current ) ] ) {
+            this.errorDivs[ current ].classList.add( "hidden" );
+            this.formInputs[ current ].classList.remove( "invalid" );
+          }
+        }, this );
+        this.errorServer.classList.add( "hidden" );
+        this.errorServer.classList.remove( "invalid" );
+      },
+
+      submitForm: function( event ) {
+        event.preventDefault();
+
+        var
+          email = this.formInputs.email.value,
+          password = this.formInputs.password.value,
+          errorServer = this.errorServer;
+
+        if ( !this.canSubmit ) {
+          this.postEarlyErrors();
+          window.scrollTo( 0, 0 );
+          return;
+        }
+
+        userService.login( email, password )
+          .then( function( edFan ) {
+            console.log( edFan );
+            if ( edFan != null && userService.hasOnboarded ) {
+              this.router.go( "/discover" );
+            } else if ( edFan != null ) {
+              this.router.go( "/onboarding/like" );
+            } else {
+              errorServer.classList.remove( "hidden" );
             }
 
-            return false;
-          }.bind( this ));
-        },
-        validateFields: function() {
-          if ( this.emailInput.value !== "" && this.passwordInput.value !== "" ) {
-            this.submitButton.removeAttribute( "disabled" );
-          } else {
-            this.submitButton.setAttribute( "disabled", "" );
-          }
-        },
-        submitForm: function( event ) {
-          event.preventDefault();
-
-          var
-            email = this.emailInput.value,
-            password = this.passwordInput.value;
-
-          userService.login( email, password )
-            .then(function( edProfile ) {
-              var redirectTo;
-
-              if ( typeChecker.isArtist( edProfile ) ) {
-                redirectTo = "/artist/" + edProfile.id;
-              // todo needs to check if fan has onboarded
-              } else if ( typeChecker.isFan( edProfile ) && userService.hasOnboarded ) {
-                redirectTo = "/fan/" + edProfile.id;
-              } else if ( typeChecker.isFan( edProfile ) && !userService.hasOnboarded ) {
-                redirectTo = "/onboarding/like";
-              }
-
-              this.router.go( redirectTo );
-            }.bind( this ))
-          .catch( function() {
-            this.errorDiv.innerHTML = "Wrong login credentials. Please check you email/password and try again.";
-          }.bind( this ));
-        },
-        goToSignUpPage: function() {
-          this.router.go( "/register" );
-        },
-        detached: function() {},
-        attributeChanged: function( attrName, oldValue, newValue ) {}
-        /* PROPERTIES */
-        /* METHODS */
-      });
+            return edFan;
+          }.bind( this ))
+          .catch( function( error ) {
+            errorServer.classList.remove( "hidden" );
+            window.scrollTo( 0, 0 );
+            return error;
+          });
+      },
+      attributeChanged: function( attrName, oldValue, newValue ) {}
     });
+  });
 })( window.Polymer, window.System );
