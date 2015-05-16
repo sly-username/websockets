@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="../ed-profile-fan/ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
       <ed-menu-button></ed-menu-button>
-      <ed-user-ranking top="Your" bottom="rank" rank="{{ edArtist.displayRank || 362 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 75 }}"></ed-user-ranking>
+      <ed-user-ranking top="Your" bottom="rank" rank="{{ yourRank || 0 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name">
           <span>{{ edArtist.raw.displayName }}</span>
