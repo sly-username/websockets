@@ -50,7 +50,7 @@ export default class EDTrack extends EDMedia {
   }
 
   rate( rating ) {
-    return edConnectionService.send( "track/rate/set", 10, {
+    return edConnectionService.request( "track/rate/set", 10, {
       data: {
         profileId: edUserService.currentProfile.id,
         trackId: this.id,
