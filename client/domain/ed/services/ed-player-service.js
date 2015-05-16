@@ -91,6 +91,13 @@ getTrackAndArtist = function( tracks, index ) {
           type: "artistUpdate"
         }
       }));
+    })
+    // TODO weird place to put this, but it wont work after the play method
+    .then(() => {
+      return edAnalyticsService.send( "play", {
+        trackId: currentTrack.id,
+        timecode: audio.currentTime
+      });
     });
 };
 // end helpers
@@ -250,13 +257,6 @@ export default edPlayerService = {
           }
         }));
       });
-      // TODO this analytics event blocks the profile/get requests
-      //.then(() => {
-      //  return edAnalyticsService.send( "play", {
-      //    trackId: currentTrack.id,
-      //    timecode: audio.currentTime
-      //  });
-      //});
   },
 
   play: function( content ) {
