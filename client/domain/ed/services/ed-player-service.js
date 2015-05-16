@@ -337,6 +337,10 @@ export default edPlayerService = {
 
     currentIndex += 1;
 
+    if ( tracksCollection.ids.length === currentIndex ) {
+      return this.startMusicDiscovery( "profileBlend" );
+    }
+
     return updateCurrentIndex( currentIndex )
       .then(() => {
         return getTrackAndArtist( tracksCollection, currentIndex );
