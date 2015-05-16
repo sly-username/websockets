@@ -18,7 +18,7 @@
             return element.hasAttribute( "checked" );
           })
           .map(function( element ) {
-            return element.getAttribute( "data-id" );
+            return parseInt( element.getAttribute( "data-id" ), 10 );
           });
 
         console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );

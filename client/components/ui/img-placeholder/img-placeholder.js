@@ -14,12 +14,12 @@
     };
 
   globalMap = (function() {
-    var urlPrefix = "http://",
-      urlPostfix = ".com/200/300",
+    var urlPrefix = "../../../assets/placeholder-images/avatar-",
+      urlPostfix = ".svg",
       map = {},
       imageNames = [
-        "fillmurray",
-        "placecage"
+        "artist",
+        "fan"
       ];
 
     imageNames.forEach(function( imageName ) {

@@ -40,7 +40,6 @@
             zipcode: this.shadowRoot.querySelector( "#errorZipcode" ),
             passwordShort: this.shadowRoot.querySelector( "#errorPasswordShort" ),
             passwordMismatch: this.shadowRoot.querySelector( "#errorPasswordMismatch" ),
-            passwordWeak: this.shadowRoot.querySelector( "#errorPasswordWeak" ),
             // server side checks
             inviteCode: this.shadowRoot.querySelector( "#errorInviteCode" ),
             emailTaken: this.shadowRoot.querySelector( "#errorEmailTaken" )
@@ -102,13 +101,6 @@
             this.formInputs.password.setAttribute( "invalid-primary", "" );
             this.formInputs.password.setAttribute( "invalid-confirm", "" );
           }
-
-          if ( !this.formInputs.password.regexConfirm ) {
-            // password to "weak"
-            this.errorDivs.passwordWeak.classList.remove( "hidden" );
-            this.formInputs.password.setAttribute( "invalid-primary", "" );
-            this.formInputs.password.setAttribute( "invalid-confirm", "" );
-          }
         },
 
         cleanupPasswordErrors: function() {
@@ -120,12 +112,6 @@
 
           if ( this.formInputs.password.inputMatchConfirm ) {
             this.errorDivs.passwordMismatch.classList.add( "hidden" );
-            this.formInputs.password.removeAttribute( "invalid-primary" );
-            this.formInputs.password.removeAttribute( "invalid-confirm" );
-          }
-
-          if ( this.formInputs.password.regexConfirm ) {
-            this.errorDivs.passwordWeak.classList.add( "hidden" );
             this.formInputs.password.removeAttribute( "invalid-primary" );
             this.formInputs.password.removeAttribute( "invalid-confirm" );
           }
