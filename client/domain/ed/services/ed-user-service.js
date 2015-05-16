@@ -127,12 +127,15 @@ edUserService.login = function( email, password ) {
         }
       }));
 
-      // analytics
-      edAnalytics.send( "login", {
-        time: ( new Date() ).toISOString()
-      });
+      return edUserService.getReferrals()
+        .then(function() {
+          // analytics
+          edAnalytics.send( "login", {
+            time: ( new Date() ).toISOString()
+          });
 
-      return currentProfile;
+          return currentProfile;
+        });
     })
     .catch(( error ) => {
       console.error( error.stack );
@@ -142,9 +145,6 @@ edUserService.login = function( email, password ) {
       hasOnboarded = false;
       referralsRemaining = 0;
       console.log( "this person was unable to login" );
-    })
-    .then(() => {
-      return edUserService.getReferrals();
     });
 };
 
