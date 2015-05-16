@@ -24,10 +24,31 @@
                 return edProfile;
               }.bind( this ));
           }
+        },
+        uploadPhotoHandler = function( event ) {
+          userService.changeProfileImage( event.target.files[ 0 ] );
+        },
+        takePhotoHandler = function( event ) {
+          // TODO use cordova to handle image capturing
+          // navigator.camera.getPicture( function() {
+          //  userService.changeProfileImage( event.target.files[ 0 ] );
+          // }, cameraError, cameraOptions );
         };
+
       polymer( "ed-profile-edit", {
         /* LIFECYCLE */
         ready: function() {
+          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
+
+          this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
+          this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
+
+          this.handler = {
+            nameInput: nameInputHandler.bind( this ),
+            takePhoto: takePhotoHandler.bind( this )
+          };
+        },
+        attached: function() {
           if ( userService.isOpenSession ) {
             this.edFan = userService.currentProfile;
           } else {
@@ -36,32 +57,18 @@
             }.bind( this ));
           }
 
-          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
-
-          this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
-          this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
-
-          this.handler = {
-            nameInput: nameInputHandler.bind( this )
-          };
-        },
-        attached: function() {
-          this.edFan = userService.currentProfile;
-
           this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
 
-//          this.choosePhoto.addEventListener( "change", this.handler.autoSubmit );
-//          this.takePhoto.addEventListener( "change", this.handler.autoSubmit );
+          this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
+          this.takePhoto.addEventListener( "change", this.handler.takePhoto );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
 
-//          this.choosePhoto.removeEventListener( "change", this.handler.autoSubmit );
-//          this.takePhoto.removeEventListener( "change", this.handler.autoSubmit );
+          this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
+          this.takePhoto.removeEventListener( "change", this.handler.takePhoto );
         },
         attributeChanged: function( attrName ) {}
       });
     });
 })( window.Polymer, window.System );
-
-

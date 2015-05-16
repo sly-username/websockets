@@ -41,8 +41,6 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  // todo should we keep this flag?
-  // todo since we're using whether they have a currentProfileBlend as indication of onboarding
   hasOnboarded: {
     configurable: false,
     enumerable: false,
@@ -82,10 +80,13 @@ Object.defineProperties( edUserService, {
 // todo remove
 window.edUserService = edUserService;
 
+/**
+ * @method getReferrals
+ */
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
-      referralsRemaining = response.data.count;
+      referralsRemaining = response.data.referralsRemaining;
       return referralsRemaining;
     })
     .catch( error => {
@@ -95,6 +96,9 @@ edUserService.getReferrals = function() {
     });
 };
 
+/**
+ * @method login
+ */
 edUserService.login = function( email, password ) {
   var
     json = {
@@ -107,6 +111,7 @@ edUserService.login = function( email, password ) {
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
       currentUserId = raw.userId;
+      hasOnboarded = ( raw.onboarded === "t" );
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
@@ -138,60 +143,94 @@ edUserService.login = function( email, password ) {
       isOpenSession = false;
       hasOnboarded = false;
       referralsRemaining = 0;
-      // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
 };
 
+/**
+ * @method logout
+ */
 edUserService.logout = function() {
   // todo will integrate with settings page
   var oldUserId = currentUserId,
     oldProfile = currentProfile;
 
-  return edConnectionService.deauthenticateSocket()
-    .then( () => {
-      currentProfile = null;
-      currentUserId = null;
-      isOpenSession = false;
-      sessionAuthJSON = null;
-      loggedInDate = null;
-      referralsRemaining = 0;
+  currentProfile = null;
+  currentUserId = null;
+  isOpenSession = false;
+  sessionAuthJSON = null;
+  loggedInDate = null;
+  referralsRemaining = 0;
 
-      edUserService.dispatch( createEvent( "edLogout", {
-        detail: {
-          userId: oldUserId,
-          profile: oldProfile
-        }
-      }));
+  edUserService.dispatch( createEvent( "edLogout", {
+    detail: {
+      userId: oldUserId,
+      profile: oldProfile
+    }
+  }));
 
-      edAnalytics.send( "logout", {
-        time: ( new Date() ).toISOString()
-      });
+  edAnalytics.send( "logout", {
+    time: ( new Date() ).toISOString()
+  });
 
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+  edConnectionService.deauthenticateSocket();
+
+  return true;
 };
 
+/**
+ * @method changeProfileImage
+ */
 edUserService.changeProfileImage = function( image ) {
-  // todo a lot
-  /*
-   // send "I'm going to send an image" -- ws.binaryType = "blob";
-   send({
-   "action":{ route:"profile/image/set" }
-   });
-   send( image );
-   new Promise()
-   "onmessage" --> check for a "image upload complete"
-   resolve( dataservice.getUserById( currentProfile ) )
-   */
+  var
+    json,
+  // TODO need to grab this info from aws/token/get
+    s3 = new AWS.S3({
+      accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
+      secretAccessKey: "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",
+      region: "us-west-2"
+    });
 
-  // need to match new image to appropriate user
-  return Promise.resolve( null );
+  s3.upload({
+    Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+    ContentType: image.type,
+    Body: image,
+    Bucket: "eardish.dev.images",
+    CopySource: "eardish.dev.images/" + image.name
+  }, ( error, data ) => {
+
+    if ( error != null ) {
+      console.warn( "Issue uploading image to AWS" );
+      console.error( error.stack );
+      // TODO CLEANUP AWS S3???
+      return;
+    }
+
+    json = {
+      data: {
+        profileId: currentProfile.id,
+        artTitle: image.name,
+        description: image.type,
+        artUrl: data.Location,
+        artType: "avatar"
+      }
+    };
+
+    return edConnectionService.request( "profile/art/create", 10, json )
+      .then( response => {
+        return response;
+      })
+      .catch( error => {
+        console.log( "image upload was not successfully completed" );
+        console.log( error );
+        throw error;
+      });
+  });
 };
 
+/**
+ * @method referral
+ */
 edUserService.referral = function( email ) {
   var json = {
     data: {
@@ -224,6 +263,9 @@ edUserService.referral = function( email ) {
     });
 };
 
+/**
+ * @method register
+ */
 edUserService.register = function( args ) {
   var authBlock = {
     email: args.email,
@@ -245,7 +287,7 @@ edUserService.register = function( args ) {
       }
 
       if ( response && response.status && response.status.code && response.status.code === 10 ) {
-        console.log( "response on error",response );
+        console.log( "response on error", response );
         let tError = new TypeError( "Problem with Registration" );
         tError.invalidFields = response.meta.invalidFields;
         throw tError;
@@ -262,6 +304,9 @@ edUserService.register = function( args ) {
     });
 };
 
+/**
+ * @method requestPasswordReset
+ */
 edUserService.requestPasswordReset = function( email ) {
   var json = {
     data: {
@@ -280,6 +325,9 @@ edUserService.requestPasswordReset = function( email ) {
     });
 };
 
+/**
+ * @method resetPassword
+ */
 edUserService.resetPassword = function( resetCode, password ) {
   var json = {
     data: {
@@ -290,15 +338,31 @@ edUserService.resetPassword = function( resetCode, password ) {
 
   return edConnectionService.request( "user/password/set", 10, json )
     .then( response => {
-      return response;
+      if ( response && response.status && response.status.code && response.status.code === 1 ) {
+        console.log( "sucessful password/set", response );
+        return response;
+      }
+
+      // TODO the code for this will be 11
+      if ( response && response.status && response.status.code && response.status.code === 10 ) {
+        let resetError = new TypeError( "Problem with Reseting the Password" );
+        resetError = response.status.code;
+        throw resetError;
+      }
     })
     .catch( error => {
       console.log( "new password was not successfully set" );
       console.log( error );
       throw error;
+    })
+    .then( response => {
+      return edUserService.login( response.data.email, json.data.password );
     });
 };
 
+/**
+ * @method editProfile
+ */
 edUserService.editProfile = function( args ) {
   var json = {};
 
@@ -317,6 +381,9 @@ edUserService.editProfile = function( args ) {
     });
 };
 
+/**
+ * @method getStats
+ */
 edUserService.getStats = function() {
   return edConnectionService.request( "user/stats/get", 10 )
     .then( response => {

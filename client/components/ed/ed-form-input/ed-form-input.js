@@ -31,6 +31,9 @@
     get validity() {
       return this.$.input.validity;
     },
+    focus: function() {
+      return this.$.input.focus();
+    },
     ready: function() {},
     attached: function() {},
     detached: function() {},

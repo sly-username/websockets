@@ -6,101 +6,114 @@
   ]).then(function( imported ) {
     var
       userService = imported[ 0 ].default,
-      clickEvents = [ "mousedown", "touchstart" ];
+      cleanUpHandler = function( event ) {
+        if ( event.target.tagName === "ED-FORM-INPUT" ) {
+          this.cleanUpErrors();
+        }
+
+        if ( event.target.tagName === "ED-PAIRED-INPUT" ) {
+          this.cleanUpPasswordErrors();
+        }
+      },
+      submitCheckHandler = function( event ) {
+        event.preventDefault();
+
+        if ( !this.validPassword || !this.validResetCode ) {
+          this.postEarlyErrors();
+          this.postPasswordEarlyErrors();
+          window.scrollTo( 0, 0 );
+          return;
+        }
+
+        userService.resetPassword( this.resetCode.value, this.pairedInput.val )
+          .then(function( response ) {
+            this.router.go( "/discover" );
+            return response;
+          }.bind( this ))
+          .catch(function( error ) {
+            // TODO go go error stuff
+            this.resetCode.classList.add( "invalid" );
+            this.errorDivs.resetCodeError.classList.remove( "hidden" );
+            window.scrollTo( 0, 0 );
+            return error;
+          }.bind( this ));
+      };
 
     polymer( "ed-forgot-pass-reset-view", {
       /* LIFECYCLE */
+      get validPassword() {
+        return this.pairedInput.isValid;
+      },
+      get validResetCode() {
+        return this.resetCode.value !== "";
+      },
       ready: function() {
+        this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
+        this.resetCode = this.shadowRoot.querySelector( ".reset-code" );
+        this.formContainer = this.shadowRoot.querySelector( "#forgot-form" );
         this.submitButton = this.shadowRoot.querySelector( "#forgot-submit" );
 
-        this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
-        this.primaryBox = this.shadowRoot.querySelector( ".password" )
-          .shadowRoot.querySelector( ".ed-paired-input-primary-wrapper" );
-        this.confirmBox = this.shadowRoot.querySelector( ".password" )
-          .shadowRoot.querySelector( ".ed-paired-input-confirm-wrapper" );
-        this.confirmInput = this.shadowRoot.querySelector( ".password" )
-          .shadowRoot.querySelector( "input#confirm-box" );
+        this.handlers = {
+          submitCheck: submitCheckHandler.bind( this ),
+          cleanUp: cleanUpHandler.bind( this )
+        };
 
-        // todo change to .value
-        this.resetCodeInput = this.shadowRoot.querySelector( ".reset-code" )
-          .shadowRoot.querySelector( "input" );
-        this.resetCodeBox = this.shadowRoot.querySelector( ".reset-code" )
-          .shadowRoot.querySelector( ".form-input-container" );
-
-        this.resetCodeError = this.shadowRoot.querySelector( ".reset-code-error" );
-        this.matchError = this.shadowRoot.querySelector( ".match-error" );
-        this.patternError = this.shadowRoot.querySelector( ".pattern-error" );
+        this.errorDivs = {
+          passwordShort: this.shadowRoot.querySelector( "#errorPasswordShort" ),
+          passwordMismatch: this.shadowRoot.querySelector( "#errorPasswordMismatch" ),
+          // server side checks
+          resetCodeError: this.shadowRoot.querySelector( "#errorResetCode" )
+        };
       },
       attached: function() {
-        clickEvents.forEach( function( eventName ) {
-          this.submitButton.addEventListener( eventName, this.submitCheck.bind( this ) );
-        }.bind( this ));
+        this.resetCode.focus();
 
-        this.submitButton.addEventListener( "keypress", this.validateAfterEnter.bind( this ) );
+        this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
+        this.submitButton.addEventListener( "click", this.handlers.submitCheck );
       },
       detached: function() {
-        clickEvents.forEach( function( eventName ) {
-          this.submitButton.removeEventListener( eventName, this.submitCheck.bind( this ) );
-        }.bind( this ));
-
-        this.submitButton.removeEventListener( "keypress", this.validateAfterEnter.bind( this ) );
+        this.formContainer.removeEventListener( "blur", this.handlers.cleanUp );
+        this.submitButton.removeEventListener( "click", this.handlers.submitCheck );
       },
-      validateCodeInput: function() {
-        if ( this.resetCodeInput.value !== "" ) {
-          this.resetCodeBox.classList.remove( "invalid-field" );
-          return true;
-        } else if ( this.resetCodeInput.value === "" ) {
-          this.resetCodeBox.classList.add( "invalid-field" );
-          this.resetCodeError.innerHTML = "Wrong. Please check your reset code and try again."
-          return false;
+      postEarlyErrors: function() {
+        if ( !this.validResetCode ) {
+          this.resetCode.classList.add( "invalid" );
+          this.errorDivs.resetCodeError.classList.remove( "hidden" );
         }
       },
-      validatePasswordPair: function() {
+      postPasswordEarlyErrors: function() {
+        if ( this.pairedInput.val == null || this.pairedInput.val.length < 8 ) {
+          // post password to short
+          this.errorDivs.passwordShort.classList.remove( "hidden" );
+          this.pairedInput.setAttribute( "invalid-primary", "" );
+          this.pairedInput.setAttribute( "invalid-confirm", "" );
+        }
+
+        if ( !this.pairedInput.inputMatchConfirm ) {
+          // passwords don't match
+          this.errorDivs.passwordMismatch.classList.remove( "hidden" );
+          this.pairedInput.setAttribute( "invalid-primary", "" );
+          this.pairedInput.setAttribute( "invalid-confirm", "" );
+        }
+      },
+      cleanUpErrors: function() {
+        if ( this.validResetCode ) {
+          this.resetCode.classList.remove( "invalid" );
+          this.errorDivs.resetCodeError.classList.add( "hidden" );
+        }
+      },
+      cleanUpPasswordErrors: function() {
+        if ( this.pairedInput.val !== null || this.pairedInput.val.length > 7 ) {
+          this.errorDivs.passwordShort.classList.add( "hidden" );
+          this.pairedInput.removeAttribute( "invalid-primary" );
+          this.pairedInput.removeAttribute( "invalid-confirm" );
+        }
+
         if ( this.pairedInput.inputMatchConfirm ) {
-          this.primaryBox.classList.remove( "invalid-field" );
-          this.confirmBox.classList.remove( "invalid-field" );
-          return true;
-        } else if ( !this.pairedInput.inputMatchConfirm ) {
-          this.primaryBox.classList.add( "invalid-field" );
-          this.confirmBox.classList.add( "invalid-field" );
-          this.matchError.innerHTML = "Wrong. Passwords Do Not Match.";
-          return false;
+          this.errorDivs.passwordMismatch.classList.add( "hidden" );
+          this.pairedInput.removeAttribute( "invalid-primary" );
+          this.pairedInput.removeAttribute( "invalid-confirm" );
         }
-      },
-      validateRegexPattern: function() {
-        if ( this.pairedInput.regexConfirm ) {
-          console.log( this.primaryBox );
-          this.primaryBox.classList.remove( "invalid-field" );
-          return true;
-        } else if ( !this.pairedInput.regexConfirm ) {
-          this.primaryBox.classList.add( "invalid-field" );
-          this.patternError.innerHTML = "Wrong. Password Must Be At Least 8 Characters.";
-          return false;
-        }
-      },
-      validateAfterEnter: function( event ) {
-        event.preventDefault();
-
-        if ( event.keyCode === 13 ) {
-          this.validatePasswordPair();
-          this.validateRegexPattern();
-          this.validateCodeInput();
-        }
-      },
-      submitCheck: function() {
-        var validateCode = this.validateCodeInput(),
-        validatePassword = this.validatePasswordPair(),
-        validateRegex = this.validateRegexPattern();
-        if ( validateCode && validatePassword && validateRegex ) {
-          console.log( "test" );
-          this.submitResetPassword();
-        }
-      },
-      submitResetPassword: function() {
-        return userService.resetPassword( this.resetCodeInput.value, this.confirmInput.value )
-          .then( function( response ) {
-            return response;
-          });
       }
     });
   });
