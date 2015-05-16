@@ -331,6 +331,9 @@ export default edPlayerService = {
   },
 
   skip: function() {
+    var oldTrack = currentTrack,
+      oldTrackCurrentTime = audio.currentTime;
+
     if ( this.isPlaying || this.isPaused ) {
       audio.pause();
     }
@@ -347,8 +350,8 @@ export default edPlayerService = {
       })
       .then(() => {
         return edAnalyticsService.send( "quit", {
-          trackId: currentTrack.id,
-          timecode: audio.currentTime,
+          trackId: oldTrack.id,
+          timecode: oldTrackCurrentTime,
           action: "skip"
         });
       });
