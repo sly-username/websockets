@@ -16,7 +16,7 @@
       },
       updateChartsViewHandler = function( event ) {
         var eventType = event.detail.name;
-        console.log( currentView );
+
         if ( eventType === "moveLeft" ) {
           switch ( currentView ) {
             case 1:
@@ -36,7 +36,6 @@
               currentView = 3;
               break;
             default:
-              // fall through
               break;
           }
         }
@@ -60,7 +59,6 @@
               currentView = 4;
               break;
             default:
-              // fall through
               break;
           }
         }
@@ -82,10 +80,11 @@
       },
       attached: function() {
         this.handler = {
-          updateChartView: updateChartsViewHandler.bind( this )
+          updateChartView: updateChartsViewHandler.bind( this ),
+          resetChartView: resetChartViewHandler.bind( this )
         };
 
-        router.addEventListener( "state-change", resetChartViewHandler );
+        router.addEventListener( "state-change", this.handler.resetChartView );
 
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
 
