@@ -57,7 +57,6 @@ export default edConnectionService = {
     }
 
     this.formattedSend( json );
-    return;
   },
 
   request( route, priority=10, data={} ) {
@@ -92,4 +91,5 @@ export default edConnectionService = {
   }
 };
 
+// TODO remove debug
 window.edConnectionService = edConnectionService;

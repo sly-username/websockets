@@ -14,13 +14,12 @@
         /* LIFECYCLE */
         ready: function() {
           // Get first model
-          this.updateProfileModel();
-
           this.handlers = {
             modelObserver: modelObserver.bind( this )
           };
         },
         attached: function() {
+          this.updateProfileModel();
           Object.observe( this, this.handlers.modelObserver );
         },
         detached: function() {

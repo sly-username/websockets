@@ -14,11 +14,19 @@ export default edDiscoverService = {
     return currentProfileBlend;
   },
 
-  getGenreTracks( genreId ) {
-    var data = {
+  getTracksForGenre( genreId ) {
+    var tempGenreId, data;
+
+    if ( genreId instanceof EDGenre ) {
+      tempGenreId = genreId.id;
+    } else {
+      tempGenreId = genreId;
+    }
+
+    data = {
       id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
-      genreId//,
-      //count: 100 TODO add this once server side accepts this param
+      genreId: tempGenreId,
+      count: 100
     };
 
     return edConnectionService.request( "discover/list", 10, { data } )
@@ -31,7 +39,7 @@ export default edDiscoverService = {
       });
   },
 
-  getBlendTracks() {
+  getTracksForProfileBlend() {
     var data = {
       id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
       count: 100
@@ -50,9 +58,9 @@ export default edDiscoverService = {
 
   getDiscoverTrackList( data ) {
     if ( data === "profileBlend" ) {
-      return this.getBlendTracks();
+      return this.getTracksForProfileBlend();
     } else if ( typeof data === "number" ) {
-      return this.getGenreTracks( data );
+      return this.getTracksForGenre( data );
     } else {
       throw new Error( "Error getting track list in Discover Service" );
     }
