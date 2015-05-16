@@ -41,8 +41,6 @@ Object.defineProperties( edUserService, {
       return isOpenSession;
     }
   },
-  // todo should we keep this flag?
-  // todo since we're using whether they have a currentProfileBlend as indication of onboarding
   hasOnboarded: {
     configurable: false,
     enumerable: false,
@@ -88,7 +86,7 @@ window.edUserService = edUserService;
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
     .then( response => {
-      referralsRemaining = response.data.count;
+      referralsRemaining = response.data.referralsRemaining;
       return referralsRemaining;
     })
     .catch( error => {
@@ -113,6 +111,7 @@ edUserService.login = function( email, password ) {
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
       currentUserId = raw.userId;
+      hasOnboarded = ( raw.onboarded === "t" );
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
@@ -144,7 +143,6 @@ edUserService.login = function( email, password ) {
       isOpenSession = false;
       hasOnboarded = false;
       referralsRemaining = 0;
-      // todo toast messages to user that login failed
       console.log( "this person was unable to login" );
     });
 };
@@ -157,31 +155,27 @@ edUserService.logout = function() {
   var oldUserId = currentUserId,
     oldProfile = currentProfile;
 
-  return edConnectionService.deauthenticateSocket()
-    .then( () => {
-      currentProfile = null;
-      currentUserId = null;
-      isOpenSession = false;
-      sessionAuthJSON = null;
-      loggedInDate = null;
-      referralsRemaining = 0;
+  currentProfile = null;
+  currentUserId = null;
+  isOpenSession = false;
+  sessionAuthJSON = null;
+  loggedInDate = null;
+  referralsRemaining = 0;
 
-      edUserService.dispatch( createEvent( "edLogout", {
-        detail: {
-          userId: oldUserId,
-          profile: oldProfile
-        }
-      }));
+  edUserService.dispatch( createEvent( "edLogout", {
+    detail: {
+      userId: oldUserId,
+      profile: oldProfile
+    }
+  }));
 
-      edAnalytics.send( "logout", {
-        time: ( new Date() ).toISOString()
-      });
+  edAnalytics.send( "logout", {
+    time: ( new Date() ).toISOString()
+  });
 
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+  edConnectionService.deauthenticateSocket();
+
+  return true;
 };
 
 /**
@@ -190,7 +184,7 @@ edUserService.logout = function() {
 edUserService.changeProfileImage = function( image ) {
   var
     json,
-    // TODO need to grab this info from aws/token/get
+  // TODO need to grab this info from aws/token/get
     s3 = new AWS.S3({
       accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
       secretAccessKey: "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",
@@ -344,7 +338,7 @@ edUserService.resetPassword = function( resetCode, password ) {
 
   return edConnectionService.request( "user/password/set", 10, json )
     .then( response => {
-      if ( response && response.status && response.status.code && response.status.code === 2 ) {
+      if ( response && response.status && response.status.code && response.status.code === 1 ) {
         console.log( "sucessful password/set", response );
         return response;
       }
@@ -360,6 +354,9 @@ edUserService.resetPassword = function( resetCode, password ) {
       console.log( "new password was not successfully set" );
       console.log( error );
       throw error;
+    })
+    .then( response => {
+      return edUserService.login( response.data.email, json.data.password );
     });
 };
 

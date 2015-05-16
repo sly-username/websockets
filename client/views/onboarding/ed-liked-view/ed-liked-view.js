@@ -17,7 +17,7 @@
             return element.hasAttribute( "checked" );
           })
           .map(function( element ) {
-            return element.getAttribute( "data-id" );
+            return parseInt( element.getAttribute( "data-id" ), 10 );
           });
 
         this.router.go( "/onboarding/dislike?genresliked=" + bubbleArray  );

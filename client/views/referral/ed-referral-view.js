@@ -4,64 +4,59 @@
   System.import( "domain/ed/services/ed-user-service" )
     .then( function( imported ) {
       var userService = imported.default,
-        validateEmail = function( self ) {
-          var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
-          if ( this.emailInput.validity.valid && re.test( this.emailInput.value )) {
-            this.submitCheck();
-          } else {
-            this.submitButton.setAttribute( "disabled", "" );
-          }
-        },
-        clickEvents = [ "mousedown", "touchstart" ];
+        emailRegexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/,
+        cleanupErrorHandler = function() {
+          this.cleanupErrors();
+        };
 
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
         userService: userService,
         ready: function() {
-          this.emailInput = this.shadowRoot.querySelector( "ed-form-input" ).shadowRoot.querySelector( "input" );
-          this.submitButton = this.shadowRoot.getElementById( "referral-submit" );
+          this.emailInput = this.shadowRoot.querySelector( ".email" );
+
+          this.submitButton = this.shadowRoot.querySelector( "#referral-submit" );
+
+          this.emailError = this.shadowRoot.querySelector( "#errorEmail" );
+
+          this.handlers = {
+            cleanup: cleanupErrorHandler.bind( this )
+          };
         },
         attached: function() {
-          this.emailInput.setAttribute( "autofocus", "" );
-
-          clickEvents.forEach( function( eventName ) {
-            this.submitButton.addEventListener( eventName, this.submitFriendEmail.bind( this ));
-          }.bind( this ));
-
-          this.emailInput.addEventListener( "keyup", validateEmail.bind( this ));
+          this.emailInput.focus();
+          this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
         },
         detached: function() {
-          clickEvents.forEach( function( eventName ) {
-            this.submitButton.removeEventListener( eventName, this.submitFriendEmail.bind( this ));
-          }.bind( this ));
-
-          this.emailInput.removeEventListener( "keyup", validateEmail.bind( this ));
+          this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
         },
-        submitCheck: function() {
-          if ( userService.referralsRemaining === 0 ) {
-            this.submitButton.setAttribute( "disabled", "" );
-          } else if ( userService.referralsRemaining > 0 ) {
-            this.submitButton.removeAttribute( "disabled" );
-
-            // todo, if you press tab and enter, it'll reload the page
-            this.emailInput.addEventListener( "submit", function( event ) {
-              if ( event.keyCode === 13 ) {
-                event.preventDefault();
-                this.submitFriendEmail( event );
-              }
-              return false;
-            }.bind( this ));
-          }
+        get validEmail() {
+          return this.emailInput.validity.valid && emailRegexPattern.test( this.emailInput.value );
+        },
+        cleanupErrors: function() {
+          this.emailError.classList.add( "hidden" );
+          this.emailInput.classList.remove( "invalid" );
         },
         submitFriendEmail: function( event ) {
-          var friendEmail = this.emailInput.value;
           event.preventDefault();
 
-          return userService.referral( friendEmail )
+          if ( !this.validEmail ) {
+            this.emailInput.classList.add( "invalid" );
+            this.emailError.classList.remove( "hidden" );
+            window.scrollTo( 0, 0 );
+            return;
+          }
+
+          return userService.referral( this.emailInput.value )
             .then( function( response ) {
               this.referralsRemaining = response;
               this.emailInput.value = "";
-            }.bind( this ));
+              this.emailError.classList.add( "hidden" );
+              this.emailInput.classList.remove( "invalid" );
+            }.bind( this ))
+            .catch( function() {
+              console.log( "referral request did not go through" );
+            });
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
