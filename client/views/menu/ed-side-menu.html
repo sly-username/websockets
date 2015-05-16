@@ -24,11 +24,11 @@
         </a>
       </nav>
       <!-- TODO replace with an actual profile id  -->
-      <a class="profile-bar" href="#/fan/{{ profileId }}">
+      <a class="profile-bar" href="#/fan/{{ edFan.id }}">
         <div class="img-container">
-          <img-placeholder src="{{ edFan.displayImage }}" image="fan"></img-placeholder>
+          <img-placeholder src="{{ edFan.art.original }}" image="fan"></img-placeholder>
         </div>
-        <p>{{ edFan.displayName }}</p>
+        <p>{{ edFan.fullName }}</p>
       </a>
     </div>
   </template>
