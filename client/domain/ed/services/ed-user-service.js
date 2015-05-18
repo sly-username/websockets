@@ -193,38 +193,37 @@ edUserService.changeProfileImage = function( image ) {
           region: awsToken.data.region
         });
 
-      return s3.upload({
-        Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
-        ContentType: image.type,
-        Body: image,
-        Bucket: "eardish.dev.images",
-        CopySource: "eardish.dev.images/" + image.name
-      }, ( error, data ) => {
-        if ( error != null ) {
-          console.warn( "Issue uploading image to AWS" );
-          console.error( error.stack );
-          // TODO CLEANUP AWS S3???
-          return;
-        }
-
-        json = {
-          data: {
-            profileId: currentProfile.id,
-            title: image.name,
-            url: data.Location,
-            type: "avatar"
+      return new Promise(function( resolve, reject ) {
+        s3.upload({
+          Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+          ContentType: image.type,
+          Body: image,
+          Bucket: "eardish.dev.images",
+          CopySource: "eardish.dev.images/" + image.name
+        }, function( error, data ) {
+          if ( error != null ) {
+            console.warn( "Issue uploading image to AWS" );
+            console.error( error.stack );
+            reject( error );
+            return;
           }
-        };
 
-        return edConnectionService.request( "profile/art/create", 10, json )
-          .then( response => {
-            return response;
-          })
-          .catch( error => {
-            console.log( "image upload was not successfully completed" );
-            console.log( error );
-            throw error;
-          });
+          json = {
+            data: {
+              profileId: currentProfile.id,
+              title: image.name,
+              url: data.Location,
+              type: "avatar"
+            }
+          };
+
+          return resolve( edConnectionService.request( "profile/art/create", 10, json ));
+        }); // end S3 callback
+      })
+      .catch(function( error ) {
+        console.warn( "image upload was not successfully completed" );
+        console.error( error.stack );
+        throw error;
       });
     });
 };
