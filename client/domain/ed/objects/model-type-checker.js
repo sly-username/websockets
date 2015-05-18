@@ -1,25 +1,23 @@
 /*jshint strict: false*/
-
 // Base EDModel
 import EDModel from "domain/ed/objects/EDModel";
 
-// User
-import EDUser from "domain/ed/objects/EDUser";
-
-// Profile Types
+// Parent Classes
 import EDProfile from "domain/ed/objects/profile/EDProfile";
-import EDArtist from "domain/ed/objects/profile/EDArtist";
-import EDArtistGroup from "domain/ed/objects/profile/EDArtistGroup";
-import EDFan from "domain/ed/objects/profile/EDFan";
-
-// Media Types
 import EDMedia from "domain/ed/objects/media/EDMedia";
-import EDTrack from "domain/ed/objects/media/EDTrack";
-
+import EDUser from "domain/ed/objects/EDUser";
 // Misc Types
 import EDBadge from "domain/ed/objects/EDBadge";
 import EDGenre from "domain/ed/objects/EDGenre";
 import EDChart from "domain/ed/objects/EDChart";
+
+// Profile Child Types
+import EDArtist from "domain/ed/objects/profile/EDArtist";
+import EDArtistGroup from "domain/ed/objects/profile/EDArtistGroup";
+import EDFan from "domain/ed/objects/profile/EDFan";
+
+// Media Child Types
+import EDTrack from "domain/ed/objects/media/EDTrack";
 
 var
   constructorMap = [
@@ -35,7 +33,7 @@ var
     EDGenre,
     EDChart
   ].reduce(function( map, currentModel, index ) {
-    console.log( "current("+index+"): %o", currentModel.MODEL_TYPE );
+//    console.log( "current("+index+"): %o", currentModel.MODEL_TYPE );
     map[ currentModel.MODEL_TYPE ] = currentModel;
     return map;
   }, {});
