@@ -192,6 +192,7 @@
           this.shadowScrubber.style.opacity = 0;
           this.playBtn.disabled = true;
           this.playIcon.style.opacity = 0.02;
+          this.playIcon.setAttribute( "name", "play");
         } else {
           this.complete = false;
           this.removeAttribute( "complete" );

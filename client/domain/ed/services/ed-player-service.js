@@ -251,6 +251,9 @@ export default edPlayerService = {
         }
       })
       .then(() => {
+        return this.getCurrentUserStats();
+      })
+      .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
@@ -379,9 +382,6 @@ export default edPlayerService = {
     return updateCurrentIndex( currentIndex )
       .then(() => {
         return getTrackAndArtist( tracksCollection, currentIndex );
-      })
-      .then(() => {
-        return this.getCurrentUserStats();
       })
       .then(() => {
         if ( show ) {
