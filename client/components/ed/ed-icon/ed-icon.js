@@ -1,5 +1,6 @@
 ( function( polymer ) {
   "use strict";
+  var baseUrl = "assets/icons/svg.svg#";
 
   polymer( "ed-icon", {
     publish: {
@@ -16,10 +17,10 @@
     },
     ready: function() {
       this.triggerSVG = this.shadowRoot.getElementById( "svg-use" );
-      this.getUrl = "/assets/icons/svg.svg#" + this.name;
+      this.getUrl = baseUrl + this.name;
     },
     attached: function() {
-      this.shadowRoot.querySelector( "svg" ).onload = console.log.bind(console);
+//      this.shadowRoot.querySelector( "svg" ).onload = console.log.bind(console);
       this.triggerSVG.setAttributeNS( "http://www.w3.org/1999/xlink", "xlink:href", this.getUrl );
     },
     rotationChanged: function( oldValue, newValue ) {
@@ -34,7 +35,7 @@
       }
     },
     changeSVG: function() {
-      this.getUrl = "/assets/icons/svg.svg#" + this.name;
+      this.getUrl = baseUrl + this.name;
       this.triggerSVG.setAttributeNS( "http://www.w3.org/1999/xlink", "xlink:href", this.getUrl );
     }
   });
