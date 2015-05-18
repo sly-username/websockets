@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="../ed-profile-fan/ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
       <ed-menu-button></ed-menu-button>
-      <ed-user-ranking top="Your" bottom="rank" rank="{{ edArtist.displayRank || 362 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="rated" rank="{{ edArtist.songsRated || 75 }}"></ed-user-ranking>
+      <ed-user-ranking top="Completed" bottom="Plays" rank="{{ edArtist.displayRank || 0 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="Rated" rank="{{ edArtist.songsRated || 0 }}"></ed-user-ranking>
       <section class="image-wrapper">
-        <div class="profile-name">
-          <span>{{ edArtist.raw.displayName }}</span>
+        <div class="profile-name"> {{ edArtist.displayName }}
+          <span>Artist/Band</span>
         </div>
-        <img-placeholder src="{{ edArtist.displayImage }}" image="artist"></img-placeholder>
+        <img-placeholder src="{{ edArtist.art.original }}" image="artist"></img-placeholder>
       </section>
       <section class="icon-section">
         <div class="icon-header">Rewards</div>
@@ -25,7 +25,7 @@
         <hr>
       </section>
       <section class="bio-section">
-        <div class="bio-header">Biography</div>
+        <div class="bio-header">Bio</div>
         <p class="bio-body">
           {{ edArtist.bio || "No Bio" }}
         </p>

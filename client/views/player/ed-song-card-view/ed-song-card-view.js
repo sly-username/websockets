@@ -56,6 +56,7 @@
       if ( eventType === "skip" ) {
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
+        this.ratingsForm.classList.remove( "show" );
 
         playerService.skip();
       }
@@ -66,6 +67,13 @@
 
       if ( eventType === "showRatings" ) {
         this.ratingsForm.classList.add( "show" );
+        this.disableText.classList.add( "hide" );
+      }
+
+      if ( eventType === "showMainPlayer" ) {
+        this.miniPlayerWrapper.classList.remove( "show-mini" );
+        this.mainPlayerWrapper.classList.remove( "hide-main" );
+        this.songCardWrapper.classList.remove( "minimized" );
       }
     };
 
@@ -104,6 +112,7 @@
         this.trackName = this.$[ "star-rating" ].shadowRoot.querySelector( "#track-name" );
         this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
+        this.disableText = this.$[ "star-rating" ].shadowRoot.getElementById( "disable-text" );
         this.bioText = this.$[ "bio-copy" ];
         this.minify = this.$[ "minify-icon" ];
 

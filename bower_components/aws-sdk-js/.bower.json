@@ -18,15 +18,14 @@
   ],
   "main": "dist/aws-sdk.js",
   "homepage": "https://github.com/aws/aws-sdk-js",
-  "version": "2.1.27",
-  "_release": "2.1.27",
+  "version": "2.1.28",
+  "_release": "2.1.28",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.27",
-    "commit": "ff0729150b7a0ea2d12b5482f6e853ff42321e96"
+    "tag": "v2.1.28",
+    "commit": "aabfbea4ebf2b01c06f7b1c9c1c1bcb07b92b8c8"
   },
   "_source": "git://github.com/aws/aws-sdk-js.git",
-  "_target": "~2.1.27",
-  "_originalSource": "aws-sdk-js",
-  "_direct": true
+  "_target": "=2.1.28",
+  "_originalSource": "aws-sdk-js"
 }
