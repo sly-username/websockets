@@ -197,7 +197,7 @@
           this.removeAttribute( "complete" );
         }
 
-        if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
+        if ( this.value === this.max || Math.floor( this.value ) > 29 ) {
           this.handler.showRatings();
         }
       }
