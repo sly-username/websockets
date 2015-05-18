@@ -13,6 +13,11 @@
         },
         cleanupErrorHandler = function( event ) {
           this.cleanupErrors();
+        },
+        goSubmitHandler = function( event ) {
+          if ( event.keyCode === 13 ) {
+            this.submitButton.dispatchEvent( new MouseEvent( "click" ) );
+          }
         };
 
     polymer( "ed-login-view", {
@@ -33,15 +38,18 @@
         };
 
         this.handlers = {
-          cleanup: cleanupErrorHandler.bind( this )
+          cleanup: cleanupErrorHandler.bind( this ),
+          goSubmit: goSubmitHandler.bind( this )
         };
       },
       attached: function() {
         this.formInputs.email.focus();
         this.loginBody.addEventListener( "blur", this.handlers.cleanup, true );
+        this.loginBody.addEventListener( "keyup", this.handlers.goSubmit );
       },
       detached: function() {
         this.loginBody.removeEventListener( "blur", this.handlers.cleanup, true );
+        this.loginBody.removeEventListener( "keyup", this.handlers.goSubmit );
       },
 
       get validEmail() {

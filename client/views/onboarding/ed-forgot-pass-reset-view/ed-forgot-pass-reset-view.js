@@ -17,11 +17,30 @@
       },
       submitCheckHandler = function( event ) {
         event.preventDefault();
-        this.userSubmit();
+
+        if ( !this.validPassword || !this.validResetCode ) {
+          this.postEarlyErrors();
+          this.postPasswordEarlyErrors();
+          window.scrollTo( 0, 0 );
+          return;
+        }
+
+        userService.resetPassword( this.resetCode.value, this.pairedInput.val )
+          .then(function( response ) {
+            this.router.go( "/discover" );
+            return response;
+          }.bind( this ))
+          .catch(function( error ) {
+            // TODO go go error stuff
+            this.resetCode.classList.add( "invalid" );
+            this.errorDivs.resetCodeError.classList.remove( "hidden" );
+            window.scrollTo( 0, 0 );
+            return error;
+          }.bind( this ));
       },
       goSubmitHandler = function( event ) {
         if ( event.keyCode === 13 ) {
-          this.userSubmit();
+          this.submitButton.dispatchEvent( new MouseEvent( "click" ) );
         }
       };
 
@@ -103,27 +122,6 @@
           this.pairedInput.removeAttribute( "invalid-primary" );
           this.pairedInput.removeAttribute( "invalid-confirm" );
         }
-      },
-      userSubmit: function() {
-        if ( !this.validPassword || !this.validResetCode ) {
-          this.postEarlyErrors();
-          this.postPasswordEarlyErrors();
-          window.scrollTo( 0, 0 );
-          return;
-        }
-
-        userService.resetPassword( this.resetCode.value, this.pairedInput.val )
-          .then(function( response ) {
-            this.router.go( "/discover" );
-            return response;
-          }.bind( this ))
-          .catch(function( error ) {
-            // TODO go go error stuff
-            this.resetCode.classList.add( "invalid" );
-            this.errorDivs.resetCodeError.classList.remove( "hidden" );
-            window.scrollTo( 0, 0 );
-            return error;
-          }.bind( this ));
       }
     });
   });
