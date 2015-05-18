@@ -183,50 +183,50 @@ edUserService.logout = function() {
  * @method changeProfileImage
  */
 edUserService.changeProfileImage = function( image ) {
-  var
-    json,
-  // TODO need to grab this info from aws/token/get
-    s3 = new AWS.S3({
-      accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
-      secretAccessKey: "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",
-      region: "us-west-2"
-    });
+  return edConnectionService.request( "aws/token/get", 10 )
+    .then( awsToken => {
+      var
+        json,
+        s3 = new AWS.S3({
+          accessKeyId: awsToken.data.id,
+          secretAccessKey: awsToken.data.key,
+          region: awsToken.data.region
+        });
 
-  s3.upload({
-    Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
-    ContentType: image.type,
-    Body: image,
-    Bucket: "eardish.dev.images",
-    CopySource: "eardish.dev.images/" + image.name
-  }, ( error, data ) => {
+      return s3.upload({
+        Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+        ContentType: image.type,
+        Body: image,
+        Bucket: "eardish.dev.images",
+        CopySource: "eardish.dev.images/" + image.name
+      }, ( error, data ) => {
+        if ( error != null ) {
+          console.warn( "Issue uploading image to AWS" );
+          console.error( error.stack );
+          // TODO CLEANUP AWS S3???
+          return;
+        }
 
-    if ( error != null ) {
-      console.warn( "Issue uploading image to AWS" );
-      console.error( error.stack );
-      // TODO CLEANUP AWS S3???
-      return;
-    }
+        json = {
+          data: {
+            profileId: currentProfile.id,
+            title: image.name,
+            url: data.Location,
+            type: "avatar"
+          }
+        };
 
-    json = {
-      data: {
-        profileId: currentProfile.id,
-        artTitle: image.name,
-        description: image.type,
-        artUrl: data.Location,
-        artType: "avatar"
-      }
-    };
-
-    return edConnectionService.request( "profile/art/create", 10, json )
-      .then( response => {
-        return response;
-      })
-      .catch( error => {
-        console.log( "image upload was not successfully completed" );
-        console.log( error );
-        throw error;
+        return edConnectionService.request( "profile/art/create", 10, json )
+          .then( response => {
+            return response;
+          })
+          .catch( error => {
+            console.log( "image upload was not successfully completed" );
+            console.log( error );
+            throw error;
+          });
       });
-  });
+    });
 };
 
 /**
