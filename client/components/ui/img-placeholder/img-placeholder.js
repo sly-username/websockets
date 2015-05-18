@@ -14,7 +14,7 @@
     };
 
   globalMap = (function() {
-    var urlPrefix = "../../../assets/placeholder-images/avatar-",
+    var urlPrefix = "assets/placeholder-images/avatar-",
       urlPostfix = ".svg",
       map = {},
       imageNames = [

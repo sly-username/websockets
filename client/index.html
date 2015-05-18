@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <base href="/" />
-  <title>Eardish</title>
+  <script>
+    (function() {
+      var
+        baseUrl = window.location.href.slice( 0, window.location.href.indexOf( "index.html" ) ),
+        base = document.createElement( "base" );
+
+      base.setAttribute( "href", baseUrl );
+      document.head.appendChild( base );
+    })();
+  </script>
+  <title>eardish</title>
   <link rel="shortcut icon" href="assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
@@ -21,14 +30,13 @@
 
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
-
 </head>
 
 <body unresolved>
 
 <section id="splash-screen">
   <svg>
-    <use xlink:href="/assets/icons/svg.svg#eardish-logo-with-slogan"></use>
+    <use xlink:href="assets/icons/svg.svg#eardish-logo-with-slogan"></use>
   </svg>
   <script>
     (function(){
@@ -77,8 +85,6 @@
 
     <!-- REFERRAL -->
     <app-route path="/referral" element="ed-referral-view"></app-route>
-
-    <!--<app-route path=""-->
 
     <!-- DEBUG PAGE -->
     <app-route path="/debug">

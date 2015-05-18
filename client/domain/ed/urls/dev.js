@@ -1,6 +1,5 @@
 export default {
   get path() {
-    return "ws://apidev.eardishcorp.com:80";
-    //return "ws://echo.websocket.org";
+    return "ws://apidev.eardishcorp.com";
   }
 }
