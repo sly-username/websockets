@@ -203,7 +203,6 @@ edUserService.changeProfileImage = function( image ) {
         }, function( error, data ) {
           if ( error != null ) {
             console.warn( "Issue uploading image to AWS" );
-            console.error( error.stack );
             reject( error );
             return;
           }
@@ -222,6 +221,7 @@ edUserService.changeProfileImage = function( image ) {
       })
       .catch(function( error ) {
         console.warn( "image upload was not successfully completed" );
+        console.error( error.stack );
         throw error;
       });
     });
