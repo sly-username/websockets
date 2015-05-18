@@ -1,5 +1,5 @@
 export default {
   get path() {
-    return "ws://api.eardish.com";
+    return "wss://api.eardish.com";
   }
 }

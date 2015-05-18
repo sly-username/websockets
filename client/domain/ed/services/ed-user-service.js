@@ -127,14 +127,15 @@ edUserService.login = function( email, password ) {
         }
       }));
 
-      // analytics
-      edAnalytics.send( "login", {
-        time: ( new Date() ).toISOString()
-      });
+      return edUserService.getReferrals()
+        .then(function() {
+          // analytics
+          edAnalytics.send( "login", {
+            time: ( new Date() ).toISOString()
+          });
 
-      edUserService.getReferrals();
-
-      return currentProfile;
+          return currentProfile;
+        });
     })
     .catch(( error ) => {
       console.error( error.stack );

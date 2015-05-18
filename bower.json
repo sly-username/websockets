@@ -10,13 +10,13 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.5",
-    "es6-module-loader": "=0.15.0",
-    "system.js": "=0.15.0",
+    "polymer": "Polymer/polymer#~0.5.6",
+    "es6-module-loader": "=0.16.6",
+    "system.js": "=0.16.11",
     "director": "=1.2.8",
-    "app-router": "=2.6.0",
-    "normalize.css": "~3.0.2",
-    "aws-sdk-js": "~2.1.27"
+    "app-router": "=2.6.1",
+    "normalize.css": "=3.0.3",
+    "aws-sdk-js": "=2.1.28"
   },
   "license": "To Be Decided",
   "description": "The Client Application for the Eardish Platform"

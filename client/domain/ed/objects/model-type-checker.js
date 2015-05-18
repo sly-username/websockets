@@ -1,37 +1,42 @@
 /*jshint strict: false*/
-
 // Base EDModel
 import EDModel from "domain/ed/objects/EDModel";
 
-// Media Types
-import EDMedia from "domain/ed/objects/media/EDMedia";
-import EDTrack from "domain/ed/objects/media/EDTrack";
-
-// User
-import EDUser from "domain/ed/objects/EDUser";
-
-// Profile Types
+// Parent Classes
 import EDProfile from "domain/ed/objects/profile/EDProfile";
+import EDMedia from "domain/ed/objects/media/EDMedia";
+import EDUser from "domain/ed/objects/EDUser";
+// Misc Types
+import EDBadge from "domain/ed/objects/EDBadge";
+import EDGenre from "domain/ed/objects/EDGenre";
+import EDChart from "domain/ed/objects/EDChart";
+
+// Profile Child Types
 import EDArtist from "domain/ed/objects/profile/EDArtist";
 import EDArtistGroup from "domain/ed/objects/profile/EDArtistGroup";
 import EDFan from "domain/ed/objects/profile/EDFan";
 
-// Misc Types
-import EDBadge from "domain/ed/objects/EDBadge";
-import EDGenre from "domain/ed/objects/EDGenre";
+// Media Child Types
+import EDTrack from "domain/ed/objects/media/EDTrack";
 
-var constructorMap = {
-  [ EDModel.MODEL_TYPE ]: EDModel,
-  [ EDMedia.MODEL_TYPE ]: EDMedia,
-  [ EDTrack.MODEL_TYPE ]: EDTrack,
-  [ EDUser.MODEL_TYPE ]: EDUser,
-  [ EDProfile.MODEL_TYPE ]: EDProfile,
-  [ EDFan.MODEL_TYPE ]: EDFan,
-  [ EDArtist.MODEL_TYPE ]: EDArtist,
-  [ EDArtistGroup.MODEL_TYPE ]: EDArtistGroup,
-  [ EDBadge.MODEL_TYPE ]: EDBadge,
-  [ EDGenre.MODEL_TYPE ]: EDGenre
-};
+var
+  constructorMap = [
+    EDModel,
+    EDUser,
+    EDProfile,
+    EDArtist,
+    EDArtistGroup,
+    EDFan,
+    EDMedia,
+    EDTrack,
+    EDBadge,
+    EDGenre,
+    EDChart
+  ].reduce(function( map, currentModel, index ) {
+//    console.log( "current("+index+"): %o", currentModel.MODEL_TYPE );
+    map[ currentModel.MODEL_TYPE ] = currentModel;
+    return map;
+  }, {});
 
 export default {
   get constructorMap() {

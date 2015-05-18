@@ -12,18 +12,19 @@
       polymer( "ed-profile-fan", {
         /* LIFECYCLE */
         ready: function() {
+        },
+        attached: function() {
           if ( this[ "ed-id" ] ) {
             dataService.getFanById( this[ "ed-id" ] )
               .then(function( edFan ) {
                 this.edFan = edFan;
-                console.log( "artist got: %o", edFan );
+                console.log( "Fan got: %o", edFan );
                 console.dir( this );
               }.bind( this ));
             this.songsRated = playerService.userStats.ratedTracks;
             this.yourRank = playerService.userStats.completedListens;
           }
         },
-        attached: function() {},
         detached: function() {},
         "ed-idChanged": function() {
           this.attributeChanged( "ed-id" );
