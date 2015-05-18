@@ -3,11 +3,11 @@
 
   Promise.all([
     System.import( "domain/ed/services/ed-data-service" ),
-    System.import( "domain/ed/services/ed-player-service" )
+    System.import( "domain/ed/services/ed-user-service" )
   ]).then(function( imported ) {
       var
         dataService = imported[ 0 ].default,
-        playerService = imported[ 1 ].default,
+        userService = imported[ 1 ].default,
         modelObserver = function( changes ) {
           if ( changes.some(function( change ) { return change.name === "ed-id"; }) ) {
             this.updateProfileModel();
@@ -36,8 +36,11 @@
                 this.edArtist = edArtist;
                 console.log( "profile artist got: %o", edArtist );
               }.bind( this ));
-            this.songsRated = playerService.userStats.ratedTracks;
-            this.yourRank = playerService.userStats.completedListens;
+            userService.getStats()
+              .then(function( response ) {
+                this.songsRated = response.ratedTracks;
+                this.yourRank = response.completedListens;
+              }.bind( this ));
           }
         },
         attributeChanged: function( attrName ) {
