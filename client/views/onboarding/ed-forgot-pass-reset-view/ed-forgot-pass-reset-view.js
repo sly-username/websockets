@@ -17,26 +17,12 @@
       },
       submitCheckHandler = function( event ) {
         event.preventDefault();
-
-        if ( !this.validPassword || !this.validResetCode ) {
-          this.postEarlyErrors();
-          this.postPasswordEarlyErrors();
-          window.scrollTo( 0, 0 );
-          return;
+        this.userSubmit();
+      },
+      goSubmitHandler = function( event ) {
+        if ( event.keyCode === 13 ) {
+          this.userSubmit();
         }
-
-        userService.resetPassword( this.resetCode.value, this.pairedInput.val )
-          .then(function( response ) {
-            this.router.go( "/discover" );
-            return response;
-          }.bind( this ))
-          .catch(function( error ) {
-            // TODO go go error stuff
-            this.resetCode.classList.add( "invalid" );
-            this.errorDivs.resetCodeError.classList.remove( "hidden" );
-            window.scrollTo( 0, 0 );
-            return error;
-          }.bind( this ));
       };
 
     polymer( "ed-forgot-pass-reset-view", {
@@ -55,7 +41,8 @@
 
         this.handlers = {
           submitCheck: submitCheckHandler.bind( this ),
-          cleanUp: cleanUpHandler.bind( this )
+          cleanUp: cleanUpHandler.bind( this ),
+          goSubmit: goSubmitHandler.bind( this )
         };
 
         this.errorDivs = {
@@ -70,10 +57,12 @@
 
         this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
         this.submitButton.addEventListener( "click", this.handlers.submitCheck );
+        this.formContainer.addEventListener( "keyup", this.handlers.goSubmit );
       },
       detached: function() {
         this.formContainer.removeEventListener( "blur", this.handlers.cleanUp );
         this.submitButton.removeEventListener( "click", this.handlers.submitCheck );
+        this.formContainer.removeEventListener( "keyup", this.handlers.goSubmit );
       },
       postEarlyErrors: function() {
         if ( !this.validResetCode ) {
@@ -114,6 +103,27 @@
           this.pairedInput.removeAttribute( "invalid-primary" );
           this.pairedInput.removeAttribute( "invalid-confirm" );
         }
+      },
+      userSubmit: function() {
+        if ( !this.validPassword || !this.validResetCode ) {
+          this.postEarlyErrors();
+          this.postPasswordEarlyErrors();
+          window.scrollTo( 0, 0 );
+          return;
+        }
+
+        userService.resetPassword( this.resetCode.value, this.pairedInput.val )
+          .then(function( response ) {
+            this.router.go( "/discover" );
+            return response;
+          }.bind( this ))
+          .catch(function( error ) {
+            // TODO go go error stuff
+            this.resetCode.classList.add( "invalid" );
+            this.errorDivs.resetCodeError.classList.remove( "hidden" );
+            window.scrollTo( 0, 0 );
+            return error;
+          }.bind( this ));
       }
     });
   });
