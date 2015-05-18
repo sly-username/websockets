@@ -218,11 +218,10 @@ edUserService.changeProfileImage = function( image ) {
           };
 
           return resolve( edConnectionService.request( "profile/art/create", 10, json ));
-        }); // end S3 callback
+        }); // end S3 callbac
       })
       .catch(function( error ) {
         console.warn( "image upload was not successfully completed" );
-        console.error( error.stack );
         throw error;
       });
     });
