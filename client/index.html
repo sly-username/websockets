@@ -28,6 +28,17 @@
   <script src="vendor/system.js"></script>
   <link rel="import" href="vendor/app-router.html" />
 
+  <script>
+    (function() {
+      var script;
+      if ( (/iPhone/).test( navigator.userAgent ) ) {
+        script = document.createElement( "script" );
+        script.setAttribute( "src", "cordova.js" );
+        document.head.appendChild( script );
+      }
+    })();
+  </script>
+
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
 </head>
