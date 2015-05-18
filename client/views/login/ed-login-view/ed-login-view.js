@@ -77,12 +77,15 @@
       },
 
       submitForm: function( event ) {
-        event.preventDefault();
-
         var
           email = this.formInputs.email.value,
           password = this.formInputs.password.value,
-          errorServer = this.errorServer;
+          errorServer = this.errorServer,
+          routerOptions = {
+            replace: true
+          };
+
+        event.preventDefault();
 
         if ( !this.canSubmit ) {
           this.postEarlyErrors();
@@ -92,11 +95,10 @@
 
         userService.login( email, password )
           .then( function( edFan ) {
-            console.log( edFan );
             if ( edFan != null && userService.hasOnboarded ) {
-              this.router.go( "/discover" );
+              this.router.go( "/discover", routerOptions );
             } else if ( edFan != null ) {
-              this.router.go( "/onboarding/like" );
+              this.router.go( "/onboarding/like", routerOptions );
             } else {
               errorServer.classList.remove( "hidden" );
             }
