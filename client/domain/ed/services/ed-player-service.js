@@ -381,6 +381,9 @@ export default edPlayerService = {
         return getTrackAndArtist( tracksCollection, currentIndex );
       })
       .then(() => {
+        return this.getCurrentUserStats();
+      })
+      .then(() => {
         if ( show ) {
           return this.emitter.dispatch( createEvent( "playerUpdate", {
             detail: {
@@ -388,9 +391,6 @@ export default edPlayerService = {
             }
           }));
         }
-      })
-      .then(() => {
-        return this.getCurrentUserStats();
       });
   },
 
