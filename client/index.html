@@ -2,6 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function() {
+      var
+        baseUrl = window.location.href.slice( 0, window.location.href.indexOf( "index.html" ) ),
+        base = document.createElement( "base" );
+
+      base.setAttribute( "href", baseUrl );
+      document.head.appendChild( base );
+    })();
+  </script>
   <title>eardish</title>
   <link rel="shortcut icon" href="assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />

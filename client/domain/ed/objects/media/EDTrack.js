@@ -1,7 +1,7 @@
 /*jshint strict: false*/
-
 import define from "domain/ed/define-properties";
 import EDMedia from "domain/ed/objects/media/EDMedia";
+
 import edDataService from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edUserService from "domain/ed/services/ed-user-service";
@@ -59,3 +59,4 @@ export default class EDTrack extends EDMedia {
     });
   }
 }
+
