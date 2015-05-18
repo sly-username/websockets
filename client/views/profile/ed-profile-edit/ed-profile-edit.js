@@ -33,6 +33,10 @@
           // navigator.camera.getPicture( function() {
           //  userService.changeProfileImage( event.target.files[ 0 ] );
           // }, cameraError, cameraOptions );
+        },
+        backButtonHandler = function( event ) {
+          event.preventDefault();
+          history.back();
         };
 
       polymer( "ed-profile-edit", {
@@ -42,10 +46,12 @@
 
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
           this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
+          this.goBackButton = this.shadowRoot.getElementById( "edit-back" );
 
           this.handler = {
             nameInput: nameInputHandler.bind( this ),
-            takePhoto: takePhotoHandler.bind( this )
+            takePhoto: takePhotoHandler.bind( this ),
+            backButton: backButtonHandler.bind( this )
           };
         },
         attached: function() {
@@ -61,12 +67,14 @@
 
           this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
           this.takePhoto.addEventListener( "change", this.handler.takePhoto );
+          this.goBackButton.addEventListener( "click", this.handler.backButton );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
 
           this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
           this.takePhoto.removeEventListener( "change", this.handler.takePhoto );
+          this.goBackButton.removeEventListener( "click", this.handler.backButton );
         },
         attributeChanged: function( attrName ) {}
       });
