@@ -127,6 +127,11 @@ edUserService.login = function( email, password ) {
         }
       }));
 
+      // save for login on app restart
+      if( localStorage ) {
+        localStorage.setItem( "edLoginInfo", JSON.stringify( json.auth ));
+      }
+
       return edUserService.getReferrals()
         .then(function() {
           // analytics
@@ -153,7 +158,8 @@ edUserService.login = function( email, password ) {
  */
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUserId = currentUserId,
+  var
+    oldUserId = currentUserId,
     oldProfile = currentProfile;
 
   currentProfile = null;
@@ -162,6 +168,11 @@ edUserService.logout = function() {
   sessionAuthJSON = null;
   loggedInDate = null;
   referralsRemaining = 0;
+
+  // Don't allow auto login on app restart
+  if ( localStorage ) {
+    localStorage.removeItem( "edLoginInfo" );
+  }
 
   edUserService.dispatch( createEvent( "edLogout", {
     detail: {
