@@ -5,7 +5,9 @@
     System.import( "domain/ed/services/ed-discover-service" ),
     System.import( "domain/lib/event/create-event" )
   ]).then( function( imported ) {
-    var discoverService = imported[0].default,
+    var
+      intervalTime = 200,
+      discoverService = imported[0].default,
       createEvent = imported[1].default,
       createUpdateEvent = function( name, detail ) {
         detail = detail || {};
@@ -42,6 +44,9 @@
 
         trackList[ 0 ].getArtist()
           .then( nextThen( 1, trackList[ 0 ] ) );
+      },
+      updateCountdownHandler = function() {
+        this.countdownLeft = this[ "chart-object" ].timeRemaining;
       };
 
     polymer( "ed-single-chart", {
@@ -90,11 +95,11 @@
         }
 
         this[ "chart-object" ] = value;
-
-        this.countdown = value.timeRemaining;
         this.noRankings = value.leaderboard.length;
-
         this.getLeaderBoard();
+
+        this.intervalId = setInterval( this.handler.updateCountdown, intervalTime );
+
         return value;
       },
       getRankForId: function( id ) {
@@ -119,7 +124,8 @@
 
         this.handler = {
           leftMove: leftMoveHandler.bind( this ),
-          rightMove: rightMoveHandler.bind( this )
+          rightMove: rightMoveHandler.bind( this ),
+          updateCountdown: updateCountdownHandler.bind( this )
         };
 
         this.moveLeft.addEventListener( "click", this.handler.leftMove );
