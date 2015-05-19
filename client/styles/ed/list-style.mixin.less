@@ -1,14 +1,10 @@
-@import "../fonts/edTypeStyles.less";
-@import "../../../styles/ed/colors.vars.less";
+@import "../../styles/ed/buttons.mixin.less";
 
 .edListStyle {
   padding: 0;
   margin: 0;
   list-style-type: none;
   li {
-    .edType( heading-M );
-    color: @originalWhite;
-    width: 100%;
-    border-bottom: 0.2rem solid @darkPurple1;
+    .edButtonTertiary();
   }
 }
