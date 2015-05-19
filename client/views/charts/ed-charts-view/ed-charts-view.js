@@ -90,8 +90,8 @@
         this.getEdChartObject();
       },
       detached: function() {
+        router.removeEventListener( "state-change", this.handler.resetChartView );
         this.removeEventListener( "chartsUpdate", this.handler.updateChartView );
-        router.removeEventListener( "state-change", resetChartViewHandler );
       },
       getEdChartObject: function() {
         var
