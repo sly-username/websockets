@@ -85,6 +85,7 @@
         };
 
         router.addEventListener( "state-change", this.handler.resetChartView );
+
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
 
         this.getEdChartObject();
@@ -124,6 +125,8 @@
           .then( nextGet( chartIndex + 1 ));
       },
       attributeChanged: function( attrName, oldValue, newValue ) {}
+      /* PROPERTIES */
+      /* METHODS */
     });
   });
 })( window.Polymer )
