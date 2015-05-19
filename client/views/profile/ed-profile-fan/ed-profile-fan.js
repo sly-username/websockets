@@ -32,11 +32,9 @@
           Object.unobserve( this, this.handlers.modelObserver );
         },
         "ed-idChanged": function() {
-          console.log( "prop trigger" );
           this.attributeChanged( "ed-id" );
         },
         attributeChanged: function( attrName ) {
-          console.log( "attr trigger" );
           if ( attrName === "ed-id" ) {
             this.updateProfileModel();
           }
