@@ -19,7 +19,6 @@
         ready: function() {
           this.iconContainer = this.shadowRoot.querySelector( ".icon-header" );
           this.editBtn = this.shadowRoot.querySelector( "#edit-btn" );
-          this.btnIcon = this.shadowRoot.querySelector( "#btn-icon" );
           this.handlers = {
             modelObserver: modelObserver.bind( this )
           };
@@ -57,7 +56,6 @@
               this.iconContainer.removeChild( this.editBtn );
             } else {
               this.iconContainer.appendChild( this.editBtn );
-              this.editBtn.appendChild( this.btnIcon );
             }
           }
         }
