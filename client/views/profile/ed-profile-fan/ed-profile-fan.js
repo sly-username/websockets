@@ -12,7 +12,8 @@
       polymer( "ed-profile-fan", {
         /* LIFECYCLE */
         ready: function() {
-
+          this.iconContainer = this.shadowRoot.querySelector( ".icon-header" );
+          this.editBtn = this.shadowRoot.querySelector( "#edit-btn" );
         },
         attached: function() {
           if ( this[ "ed-id" ] ) {
@@ -27,6 +28,10 @@
                 this.songsRated = response.ratedTracks;
                 this.yourRank = response.completedListens;
               }.bind( this ));
+
+            if ( userService.currentProfile.id !== this[ "ed-id" ] ) {
+              this.iconContainer.removeChild( this.editBtn );
+            }
           }
         },
         detached: function() {},
@@ -44,6 +49,10 @@
                 this.songsRated = response.ratedTracks;
                 this.yourRank = response.completedListens;
               }.bind( this ));
+
+            if ( userService.currentProfile.id !== this[ "ed-id" ] ) {
+              this.iconContainer.removeChild( this.editBtn );
+            }
           }
         }
       });
