@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="./ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
       <ed-menu-button></ed-menu-button>
-      <ed-user-ranking top="Completed" bottom="Plays" rank="{{ edFan.displayRank || 0 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="Rated" rank="{{ edFan.songsRated || 0 }}"></ed-user-ranking>
+      <ed-user-ranking top="Completed" bottom="Plays" rank="{{ completedPlays || 0 }}" teal></ed-user-ranking>
+      <ed-user-ranking top="Songs" bottom="Rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
       <section class="image-wrapper">
         <div class="profile-name"> {{ edFan.name.first }} {{ edFan.name.last }}
           <span>Fan</span>
@@ -17,10 +17,10 @@
       </section>
       <section class="icon-section">
         <div class="icon-header">Rewards
-          <button>
+          <a href="#/profile/edit">
             Edit Profile
             <ed-icon id="btn-icon" name="pencil"></ed-icon>
-          </button>
+          </a>
         </div>
         <hr>
         <ed-icon name="badge-empty"></ed-icon>
