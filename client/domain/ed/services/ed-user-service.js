@@ -3,7 +3,7 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
+import edDataService, { updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import EDFan from "domain/ed/objects/profile/EDFan"
