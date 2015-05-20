@@ -126,7 +126,6 @@ edUserService.login = function( email, password ) {
           profile: currentProfile
         }
       }));
-
       return edUserService.getReferrals()
         .then(function() {
           // analytics
