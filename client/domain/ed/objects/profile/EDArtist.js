@@ -23,7 +23,6 @@ export default class EDArtist extends EDProfile {
     define.enumReadOnly( this, [
       "genreId",
       "influencedBy",
-      "displayName",
       "yearFounded"
     ], argsCopy );
   }
