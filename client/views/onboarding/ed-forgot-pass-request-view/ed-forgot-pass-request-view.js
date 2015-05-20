@@ -8,6 +8,11 @@
         emailRegexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/,
         cleanupErrorHandler = function( event ) {
           this.cleanupErrors();
+        },
+        goSubmitHandler = function( event ) {
+          if ( event.keyCode === 13 ) {
+            this.submitButton.dispatchEvent( new MouseEvent( "click" ) );
+          }
         };
 
       polymer( "ed-forgot-pass-request-view", {
@@ -21,15 +26,18 @@
           this.emailError = this.shadowRoot.querySelector( "#errorEmail" );
 
           this.handlers = {
-            cleanup: cleanupErrorHandler.bind( this )
+            cleanup: cleanupErrorHandler.bind( this ),
+            goSubmit: goSubmitHandler.bind( this )
           };
         },
         attached: function() {
           this.emailInput.focus();
           this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
+          this.emailInput.addEventListener( "keyup", this.handlers.goSubmit );
         },
         detached: function() {
           this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
+          this.emailInput.addEventListener( "keyup", this.handlers.goSubmit );
         },
         get validEmail() {
           return this.emailInput.validity.valid && emailRegexPattern.test( this.emailInput.value );

@@ -8,8 +8,8 @@
       <div class="single-header">
         <header>
           <!--todo deal with button tags-->
-          <ed-icon id="arrow-left" class="chart-arrows" name="arrow-back"></ed-icon>
-          <ed-icon id="arrow-right" class="chart-arrows" name="arrow-back" rotation="180"></ed-icon>
+          <div id="move-left" class="direction-divs"></div>
+          <div id="move-right" class="direction-divs"></div>
           <h1 class="chart-title-text">{{chartTitle}}</h1>
           <p class="chart-subtitle-text">{{chartSubtitle}}</p>
         </header>
@@ -20,11 +20,13 @@
           <ed-icon id="badge-hrs" name="{{chartBadge}}"></ed-icon>
           <p class="time-left">Time Left</p>
 
-          <h2 class="countdown-timer">{{countdown}}</h2>
+          <h2 class="countdown-timer">{{ countdownLeft }}</h2>
         </div>
 
         <div class="default-view" hidden?="{{noRankings}}">
-          <p class="default-copy">{{defaultCopy}}</p>
+          <div class="copy">
+            <p class="default-copy">{{defaultCopy}}</p>
+          </div>
         </div>
 
         <ul id="ranks-list" class="rankings" hidden?="{{!noRankings}}">

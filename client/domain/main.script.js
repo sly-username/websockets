@@ -24,6 +24,7 @@
     ])
       .then( imports => {
         var
+          loginData,
           [
             dataService,
             connectionService,
@@ -68,6 +69,24 @@
 
         // need to init manually to ensure event binding
         router.init();
+
+        if ( localStorage ) {
+          loginData = localStorage.getItem( "edLoginInfo" );
+          if ( loginData ) {
+            loginData = JSON.parse( loginData );
+            if ( loginData.password && loginData.email ) {
+              userService.login( loginData.email, loginData.password )
+                .then(function() {
+                  router.go( "/discover", {
+                    replace: true
+                  });
+                })
+                .catch(function() {
+                  localStorage.removeItem( "edLoginInfo" );
+                });
+            }
+          }
+        }
       })
       .catch( error => {
         console.error( "Problem in main script" );

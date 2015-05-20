@@ -1,9 +1,13 @@
 ( function( polymer, System ) {
   "use strict";
 
-  System.import( "domain/ed/services/ed-data-service" )
-    .then(function( imported ) {
-      var dataService = imported.default,
+  Promise.all([
+    System.import( "domain/ed/services/ed-data-service" ),
+    System.import( "domain/ed/services/ed-user-service" )
+  ]).then(function( imported ) {
+      var
+        dataService = imported[ 0 ].default,
+        userService = imported[ 1 ].default,
         modelObserver = function( changes ) {
           if ( changes.some(function( change ) { return change.name === "ed-id"; }) ) {
             this.updateProfileModel();
@@ -31,6 +35,11 @@
               .then(function( edArtist ) {
                 this.edArtist = edArtist;
                 console.log( "profile artist got: %o", edArtist );
+              }.bind( this ));
+            userService.getStats()
+              .then(function( response ) {
+                this.songsRated = response.ratedTracks;
+                this.yourRank = response.completedListens;
               }.bind( this ));
           }
         },

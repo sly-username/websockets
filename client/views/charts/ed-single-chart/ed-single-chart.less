@@ -26,41 +26,24 @@
     width: 100%;
     z-index: 2;
     .chart-title-text {
-      //todo where is the font style for this text?
       .edType( heading-L );
-      // todo where is the margin coming from?
       margin: 0;
       white-space: pre;
       font-style: italic;
       font-weight: 500;
     }
     .chart-subtitle-text {
-      //todo where is the margin coming from?
       margin: 0;
       white-space: pre;
-      // todo where is the font size for this?
       .edType( paragraph-S );
       line-height: 65%;
       padding-top: .4rem;
     }
-    .chart-arrows {
+    .direction-divs {
       position: absolute;
       width: 20%;
       height: 5rem;
-      z-index: 2;
-      &::shadow {
-        svg {
-          position: static;
-          top: 0;
-          // todo mixin?
-          -webkit-transform: translateY(0%);
-          -ms-transform: translateY(0%);
-          transform: translateY(0%);
-          fill: @originalWhite;
-        }
-      }
     }
-    // todo why is there separate styles for the header?
     header {
       background: @lightPurple1;
       color: @originalWhite;
@@ -71,39 +54,26 @@
     }
   }
 
-  #arrow-left {
+  #move-left {
     left: 0;
   }
 
-  #arrow-right {
+  #move-right {
     right: 0;
   }
 
   .ranks-badge-wrapper {
-    //position: absolute;
-    //top: 7rem;
     width: 100%;
-
-    display:flex;
-    flex-direction: column;
     height: 100%;
-
-    padding-top: 8rem;
+    padding-top: 7rem;
+    background: @darkPurple3;
   }
 
   .badges {
     color: @originalTeal;
     text-align: center;
-
-    //position: fixed;
-    //right: 0;
-    //left: 0;
-    //height: 30%;
-    //top: 8rem;
     background-color: @originalPurple;
-
-    //padding-top: 8rem;
-
+    padding: 2rem 0;
     .time-left {
       white-space: pre;
       .edType( heading-XXS );
@@ -114,7 +84,6 @@
     .countdown-timer {
       white-space: pre;
       .edType( paragraph-M );
-      // todo where is the default margin coming from?
       margin: 0 0 2rem 0;
       font-weight: 500;
     }
@@ -137,16 +106,13 @@
   .default-view {
     .edType( heading-XS );
     color: @lightGrey1;
-    background: @darkPurple3;
-
     flex: 1;
     width: 100%;
-    position: fixed;
-    height: 100%;
-    top: 32rem;
-
-    .default-copy {
-
+    .copy {
+      width: 35rem;
+      margin: 0 auto;
+      padding-top: 5rem;
+      text-align: center;
     }
   }
 
@@ -155,14 +121,12 @@
     list-style-type: none;
     width: 100%;
     margin: 0;
-    padding: 0;
-    //position: absolute;
-    //top: 25rem;
+    padding: 0 0 10rem;
+    background: @darkPurple3;
     li {
       overflow: auto;
       height: 5.5rem;
       width: 100%;
-      background: @darkPurple3;
       color: @originalWhite;
       border-bottom: .1rem solid @originalGrey;
       .edType( heading-XS );

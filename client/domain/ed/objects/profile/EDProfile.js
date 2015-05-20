@@ -16,6 +16,7 @@ export default class EDProfile extends EDModel {
       "artId",
       "artUrl",
       "contactId",
+      "displayName",
       "bio",
       "website",
       "hometown"

@@ -37,6 +37,11 @@
             window.scrollTo( 0, 0 );
             return error;
           }.bind( this ));
+      },
+      goSubmitHandler = function( event ) {
+        if ( event.keyCode === 13 ) {
+          this.submitButton.dispatchEvent( new MouseEvent( "click" ) );
+        }
       };
 
     polymer( "ed-forgot-pass-reset-view", {
@@ -55,7 +60,8 @@
 
         this.handlers = {
           submitCheck: submitCheckHandler.bind( this ),
-          cleanUp: cleanUpHandler.bind( this )
+          cleanUp: cleanUpHandler.bind( this ),
+          goSubmit: goSubmitHandler.bind( this )
         };
 
         this.errorDivs = {
@@ -70,10 +76,12 @@
 
         this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
         this.submitButton.addEventListener( "click", this.handlers.submitCheck );
+        this.pairedInput.addEventListener( "keyup", this.handlers.goSubmit );
       },
       detached: function() {
         this.formContainer.removeEventListener( "blur", this.handlers.cleanUp );
         this.submitButton.removeEventListener( "click", this.handlers.submitCheck );
+        this.pairedInput.removeEventListener( "keyup", this.handlers.goSubmit );
       },
       postEarlyErrors: function() {
         if ( !this.validResetCode ) {

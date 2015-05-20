@@ -3,7 +3,7 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
+import edDataService, { updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import EDFan from "domain/ed/objects/profile/EDFan"
@@ -127,6 +127,11 @@ edUserService.login = function( email, password ) {
         }
       }));
 
+      // save for login on app restart
+      if( localStorage ) {
+        localStorage.setItem( "edLoginInfo", JSON.stringify( json.auth ));
+      }
+
       return edUserService.getReferrals()
         .then(function() {
           // analytics
@@ -153,7 +158,8 @@ edUserService.login = function( email, password ) {
  */
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUserId = currentUserId,
+  var
+    oldUserId = currentUserId,
     oldProfile = currentProfile;
 
   currentProfile = null;
@@ -162,6 +168,11 @@ edUserService.logout = function() {
   sessionAuthJSON = null;
   loggedInDate = null;
   referralsRemaining = 0;
+
+  // Don't allow auto login on app restart
+  if ( localStorage ) {
+    localStorage.removeItem( "edLoginInfo" );
+  }
 
   edUserService.dispatch( createEvent( "edLogout", {
     detail: {
@@ -183,50 +194,48 @@ edUserService.logout = function() {
  * @method changeProfileImage
  */
 edUserService.changeProfileImage = function( image ) {
-  var
-    json,
-  // TODO need to grab this info from aws/token/get
-    s3 = new AWS.S3({
-      accessKeyId: "AKIAJIH5HAFDNGLCT5DA",
-      secretAccessKey: "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",
-      region: "us-west-2"
-    });
+  return edConnectionService.request( "aws/token/get", 10 )
+    .then( awsToken => {
+      var
+        json,
+        s3 = new AWS.S3({
+          accessKeyId: awsToken.data.id,
+          secretAccessKey: awsToken.data.key,
+          region: awsToken.data.region
+        });
 
-  s3.upload({
-    Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
-    ContentType: image.type,
-    Body: image,
-    Bucket: "eardish.dev.images",
-    CopySource: "eardish.dev.images/" + image.name
-  }, ( error, data ) => {
+      return new Promise(function( resolve, reject ) {
+        s3.upload({
+          Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+          ContentType: image.type,
+          Body: image,
+          Bucket: "eardish.dev.images",
+          CopySource: "eardish.dev.images/" + image.name
+        }, function( error, data ) {
+          if ( error != null ) {
+            console.warn( "Issue uploading image to AWS" );
+            reject( error );
+            return;
+          }
 
-    if ( error != null ) {
-      console.warn( "Issue uploading image to AWS" );
-      console.error( error.stack );
-      // TODO CLEANUP AWS S3???
-      return;
-    }
+          json = {
+            data: {
+              profileId: currentProfile.id,
+              title: image.name,
+              url: data.Location,
+              type: "avatar"
+            }
+          };
 
-    json = {
-      data: {
-        profileId: currentProfile.id,
-        artTitle: image.name,
-        description: image.type,
-        artUrl: data.Location,
-        artType: "avatar"
-      }
-    };
-
-    return edConnectionService.request( "profile/art/create", 10, json )
-      .then( response => {
-        return response;
+          return resolve( edConnectionService.request( "profile/art/create", 10, json ));
+        }); // end S3 callbac
       })
-      .catch( error => {
-        console.log( "image upload was not successfully completed" );
-        console.log( error );
+      .catch(function( error ) {
+        console.warn( "image upload was not successfully completed" );
+        console.error( error.stack );
         throw error;
       });
-  });
+    });
 };
 
 /**

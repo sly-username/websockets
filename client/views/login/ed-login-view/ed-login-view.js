@@ -13,6 +13,11 @@
         },
         cleanupErrorHandler = function( event ) {
           this.cleanupErrors();
+        },
+        goSubmitHandler = function( event ) {
+          if ( event.keyCode === 13 ) {
+            this.submitButton.dispatchEvent( new MouseEvent( "click" ) );
+          }
         };
 
     polymer( "ed-login-view", {
@@ -21,6 +26,7 @@
         this.submitButton = this.shadowRoot.querySelector( "#login-submit" );
         this.loginBody = this.shadowRoot.querySelector( ".ed-login-body" );
         this.errorServer = this.shadowRoot.querySelector( "#errorServer" );
+        this.lastInput = this.shadowRoot.getElementById( "form-password" );
 
         this.formInputs = {
           email: this.shadowRoot.querySelector( ".email" ),
@@ -33,15 +39,18 @@
         };
 
         this.handlers = {
-          cleanup: cleanupErrorHandler.bind( this )
+          cleanup: cleanupErrorHandler.bind( this ),
+          goSubmit: goSubmitHandler.bind( this )
         };
       },
       attached: function() {
         this.formInputs.email.focus();
         this.loginBody.addEventListener( "blur", this.handlers.cleanup, true );
+        this.lastInput.addEventListener( "keyup", this.handlers.goSubmit );
       },
       detached: function() {
         this.loginBody.removeEventListener( "blur", this.handlers.cleanup, true );
+        this.lastInput.removeEventListener( "keyup", this.handlers.goSubmit );
       },
 
       get validEmail() {
@@ -77,12 +86,15 @@
       },
 
       submitForm: function( event ) {
-        event.preventDefault();
-
         var
           email = this.formInputs.email.value,
           password = this.formInputs.password.value,
-          errorServer = this.errorServer;
+          errorServer = this.errorServer,
+          routerOptions = {
+            replace: true
+          };
+
+        event.preventDefault();
 
         if ( !this.canSubmit ) {
           this.postEarlyErrors();
@@ -92,11 +104,10 @@
 
         userService.login( email, password )
           .then( function( edFan ) {
-            console.log( edFan );
             if ( edFan != null && userService.hasOnboarded ) {
-              this.router.go( "/discover" );
+              this.router.go( "/discover", routerOptions );
             } else if ( edFan != null ) {
-              this.router.go( "/onboarding/like" );
+              this.router.go( "/onboarding/like", routerOptions );
             } else {
               errorServer.classList.remove( "hidden" );
             }
