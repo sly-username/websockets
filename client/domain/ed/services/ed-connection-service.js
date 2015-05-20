@@ -78,7 +78,10 @@ export default edConnectionService = {
         return;
       }
 
-      resolve( this.formattedRequest( json ) );
+      //resolve( this.formattedRequest( json ) );
+      resolve( lastRequest = lastRequest.then( response => {
+        return this.formattedRequest( json );
+      }));
     });
   },
 
