@@ -4,6 +4,7 @@ import checkRoute from "domain/ed/connection/route-auth-check";
 var
   edConnectionService,
   needsAuth,
+  lastRequest = Promise.resolve( true ),
   edSocket = new EDWebSocket(),
   parseSocketMessage = function( response ) {
     if ( typeof response.data === "string" ) {
