@@ -3,7 +3,7 @@
 import EventEmitter from "domain/lib/event/EventEmitter";
 import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
-import { default as edDataService, updateModel } from "domain/ed/services/ed-data-service";
+import edDataService, { updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import EDFan from "domain/ed/objects/profile/EDFan"
@@ -127,6 +127,11 @@ edUserService.login = function( email, password ) {
         }
       }));
 
+      // save for login on app restart
+      if( localStorage ) {
+        localStorage.setItem( "edLoginInfo", JSON.stringify( json.auth ));
+      }
+
       return edUserService.getReferrals()
         .then(function() {
           // analytics
@@ -153,7 +158,8 @@ edUserService.login = function( email, password ) {
  */
 edUserService.logout = function() {
   // todo will integrate with settings page
-  var oldUserId = currentUserId,
+  var
+    oldUserId = currentUserId,
     oldProfile = currentProfile;
 
   currentProfile = null;
@@ -162,6 +168,11 @@ edUserService.logout = function() {
   sessionAuthJSON = null;
   loggedInDate = null;
   referralsRemaining = 0;
+
+  // Don't allow auto login on app restart
+  if ( localStorage ) {
+    localStorage.removeItem( "edLoginInfo" );
+  }
 
   edUserService.dispatch( createEvent( "edLogout", {
     detail: {

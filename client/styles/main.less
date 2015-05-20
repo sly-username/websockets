@@ -5,6 +5,7 @@
 @import "mixins/breakpoints/mixins.less";
 @import "ed/buttons.mixin.less";
 @import "ed/colors.vars.less";
+@import "ed/backgrounds.mixin.less";
 @import "mixins/prefixes/transforms.less";
 @import "mixins/prefixes/animations.less";
 
@@ -36,6 +37,7 @@ body {
 
 #splash-screen {
   position: absolute;
+  .mainPicturedBackground( "../" );
   background-color: @originalPurple;
   top: 0;
   left: 0;
@@ -46,7 +48,7 @@ body {
   z-index: 5;
   transition: opacity ease-in 0.2s;
   svg {
-    width: 100%;
+    width: 95%;
     margin: 25% auto 0;
     fill: white;
     opacity: 0;

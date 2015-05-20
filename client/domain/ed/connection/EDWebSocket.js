@@ -9,7 +9,7 @@ var generateToken,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0;
 
-import { default as HealingWebSocket, symbols } from "domain/lib/connection/HealingWebSocket";
+import HealingWebSocket, { symbols } from "domain/lib/connection/HealingWebSocket";
 import url from "domain/ed/urls";
 import createEvent from "domain/lib/event/create-event";
 import edUserService from "domain/ed/services/ed-user-service";

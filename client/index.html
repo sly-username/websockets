@@ -20,6 +20,17 @@
   <link rel="stylesheet" href="styles/main.css" />
 
   <!-- Vendor Scripts -->
+  <script>
+    // cordova.js
+    (function() {
+      var script;
+      if ( (/iPhone/).test( navigator.userAgent ) ) {
+        script = document.createElement( "script" );
+        script.setAttribute( "src", "cordova.js" );
+        document.head.appendChild( script );
+      }
+    })();
+  </script>
   <script src="vendor/aws-sdk.js"></script>
   <script src="vendor/webcomponents.js"></script>
   <script src="vendor/polymer.js"></script>
@@ -122,7 +133,7 @@
     </app-route>
 
     <!-- catch all route, 404 page? or redirect... -->
-    <app-route path="*" redirect="/login"></app-route>
+    <app-route path="*" redirect="/discover"></app-route>
   </app-router>
 </div>
 
