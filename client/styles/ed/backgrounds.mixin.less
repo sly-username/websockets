@@ -1,10 +1,10 @@
 @import "../ed/colors.vars.less";
 
-@baseURL: "../../../assets/background-images/";
+@baseURL: "assets/background-images/";
 @imageURL: "login_image__1080x1920.jpg";
 
-.mainPicturedBackground() {
-  background: url( '@{baseURL}@{imageURL}' ) no-repeat fixed center;
+.mainPicturedBackground( @relativePath: "../../../"; ) {
+  background: url( '@{relativePath}@{baseURL}@{imageURL}' ) no-repeat fixed center;
   background-size: cover;
   width: 100%;
   margin: 0 auto;

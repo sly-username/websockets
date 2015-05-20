@@ -83,7 +83,7 @@ export default class EventEmitter {
    * @returns {EventEmitter}
    */
   dispatch( event, ...extraArgs ) {
-    if ( event == null || !( event instanceof Event ) || event.type == null ) {
+    if ( event == null || event.type == null ) {
       throw new TypeError( "Dispatch was not called with proper Event object" );
     }
 
