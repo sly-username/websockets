@@ -58,11 +58,11 @@
         },
         attached: function() {
           this.registrationBodyDiv.addEventListener( "blur", this.handlers.cleanup, true );
-          this.registrationBodyDiv.addEventListener( "keyup", this.handlers.goSubmit );
+          this.formInputs.inviteCode.addEventListener( "keyup", this.handlers.goSubmit );
         },
         detached: function() {
           this.registrationBodyDiv.removeEventListener( "blur", this.handlers.cleanup );
-          this.registrationBodyDiv.removeEventListener( "keyup", this.handlers.goSubmit );
+          this.formInputs.inviteCode.removeEventListener( "keyup", this.handlers.goSubmit );
         },
 
         // Pre Server Call Validity Check Getters

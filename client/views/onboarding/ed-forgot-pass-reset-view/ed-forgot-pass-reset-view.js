@@ -76,12 +76,12 @@
 
         this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
         this.submitButton.addEventListener( "click", this.handlers.submitCheck );
-        this.formContainer.addEventListener( "keyup", this.handlers.goSubmit );
+        this.pairedInput.addEventListener( "keyup", this.handlers.goSubmit );
       },
       detached: function() {
         this.formContainer.removeEventListener( "blur", this.handlers.cleanUp );
         this.submitButton.removeEventListener( "click", this.handlers.submitCheck );
-        this.formContainer.removeEventListener( "keyup", this.handlers.goSubmit );
+        this.pairedInput.removeEventListener( "keyup", this.handlers.goSubmit );
       },
       postEarlyErrors: function() {
         if ( !this.validResetCode ) {
