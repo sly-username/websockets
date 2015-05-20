@@ -20,15 +20,8 @@
   <link rel="stylesheet" href="styles/main.css" />
 
   <!-- Vendor Scripts -->
-  <script src="vendor/aws-sdk.js"></script>
-  <script src="vendor/webcomponents.js"></script>
-  <script src="vendor/polymer.js"></script>
-  <script src="vendor/traceur-runtime.js"></script>
-  <script src="vendor/es6-module-loader.js"></script>
-  <script src="vendor/system.js"></script>
-  <link rel="import" href="vendor/app-router.html" />
-
   <script>
+    // cordova.js
     (function() {
       var script;
       if ( (/iPhone/).test( navigator.userAgent ) ) {
@@ -38,6 +31,13 @@
       }
     })();
   </script>
+  <script src="vendor/aws-sdk.js"></script>
+  <script src="vendor/webcomponents.js"></script>
+  <script src="vendor/polymer.js"></script>
+  <script src="vendor/traceur-runtime.js"></script>
+  <script src="vendor/es6-module-loader.js"></script>
+  <script src="vendor/system.js"></script>
+  <link rel="import" href="vendor/app-router.html" />
 
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
