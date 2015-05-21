@@ -4,6 +4,7 @@ import checkRoute from "domain/ed/connection/route-auth-check";
 var
   edConnectionService,
   needsAuth,
+  lastRequest = Promise.resolve( true ),
   edSocket = new EDWebSocket(),
   parseSocketMessage = function( response ) {
     if ( typeof response.data === "string" ) {
@@ -71,13 +72,17 @@ export default edConnectionService = {
     return new Promise(( resolve, reject ) => {
       if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
         edSocket.once( "authenticated", () => {
-          resolve( this.formattedRequest( json ) );
+          resolve( lastRequest = lastRequest.then( response => {
+            return this.formattedRequest( json );
+          }));
         });
 
         return;
       }
 
-      resolve( this.formattedRequest( json ) );
+      resolve( lastRequest = lastRequest.then(() => {
+        return this.formattedRequest( json );
+      }));
     });
   },
 
