@@ -263,6 +263,7 @@ export default edPlayerService = {
     if ( content == null && this.isPaused && !!audio.src ) {
       if ( this.isPaused ) {
         audio.play();
+
         this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
