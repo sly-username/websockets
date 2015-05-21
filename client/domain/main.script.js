@@ -77,12 +77,19 @@
             if ( loginData.password && loginData.email ) {
               userService.login( loginData.email, loginData.password )
                 .then(function() {
-                  router.go( "/discover", {
-                    replace: true
-                  });
+                  if ( userService.hasOnboarded ) {
+                    router.go( "/discover", {
+                      replace: true
+                    });
+                  } else {
+                    router.go( "/onboarding/like", {
+                      replace: true
+                    });
+                  }
                 })
                 .catch(function() {
                   localStorage.removeItem( "edLoginInfo" );
+                  router.go( "/login" );
                 });
             }
           }
