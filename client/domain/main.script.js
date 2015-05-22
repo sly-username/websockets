@@ -21,7 +21,7 @@
       System.import( "domain/ed/services/ed-user-service" ),
       System.import( "domain/ed/services/ed-player-service" ),
       System.import( "domain/ed/analytics/ed-analytics-service" ),
-      System.import( "domain/ed/admob/ed-admob-service" )
+      System.import( "domain/ed/cordova/ed-admob" )
     ])
       .then( imports => {
         var
@@ -95,10 +95,6 @@
                 });
             }
           }
-        }
-
-        if ( AdMob ) {
-          console.log( "edAdMob", edAdMob );
         }
       })
       .catch( error => {
