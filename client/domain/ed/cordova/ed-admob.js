@@ -1,5 +1,4 @@
 /*jshint strict: false*/
-
 var admobid = {};
 
 if ( /(android)/i.test( navigator.userAgent ) ) {
@@ -20,11 +19,11 @@ if ( /(android)/i.test( navigator.userAgent ) ) {
 }
 
 if ( AdMob ) {
-  AdMob.createBanner( {
+  AdMob.createBanner({
     adId: admobid.banner,
     position: AdMob.AD_POSITION.TOP_CENTER,
     autoShow: true
-  } );
+  });
 } else {
   console.warn( "AdMob module ran, but AdMob object not ready" );
 }
