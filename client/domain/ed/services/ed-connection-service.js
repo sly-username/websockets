@@ -63,43 +63,35 @@ export default edConnectionService = {
   request( route, priority=10, data={} ) {
     var json;
 
-    if ( route != null && priority != null ) {
-      json = joinData( data, {
-        action: {
-          route,
-          priority
-        }
-      });
-    } else {
-      json = joinData( data, {
-        action: {}
-      });
-    }
+    json = joinData( data, {
+      action: {
+        route,
+        priority
+      }
+    });
 
     return new Promise(( resolve, reject ) => {
       if ( checkRoute.needsAuth( route ) && !edSocket.isAuthenticated ) {
         edSocket.once( "authenticated", () => {
-          resolve( lastRequest = lastRequest.then( response => {
-            return this.formattedRequest( json );
-          }));
+          resolve( this.formattedRequest( json ));
         });
 
         return;
       }
 
-      resolve( lastRequest = lastRequest.then(() => {
-        return this.formattedRequest( json );
-      }));
+      resolve( this.formattedRequest( json ));
     });
   },
 
   // these two functions mainly used by analytics send requests
   formattedSend( data ) {
-    return edSocket.request( data ).then( parseSocketMessage );
+    return this.formattedRequest( data );
   },
 
   formattedRequest( data ) {
-    return edSocket.request( data ).then( parseSocketMessage );
+    return lastRequest = lastRequest.then(() => {
+      return edSocket.request( data ).then( parseSocketMessage );
+    });
   }
 };
 
