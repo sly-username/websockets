@@ -28,11 +28,20 @@
         uploadPhotoHandler = function( event ) {
           userService.changeProfileImage( event.target.files[ 0 ] );
         },
-        takePhotoHandler = function( event ) {
-          // TODO use cordova to handle image capturing
-          // navigator.camera.getPicture( function() {
-          //  userService.changeProfileImage( event.target.files[ 0 ] );
-          // }, cameraError, cameraOptions );
+        takePhotoHandler = function() {
+           navigator.camera.getPicture(
+             function( image ) {
+               console.log( "imageObject", image );
+               //userService.changeProfileImage( event.target.files[ 0 ] );
+             },
+             function( error ) {
+               console.error( error );
+             },
+             {
+               destinationType : Camera.DestinationType.DATA_URL,
+               sourceType : Camera.PictureSourceType.CAMERA
+             }
+           );
         },
         backButtonHandler = function( event ) {
           event.preventDefault();
