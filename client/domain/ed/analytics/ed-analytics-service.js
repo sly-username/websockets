@@ -50,10 +50,10 @@ export default edAnalyticsService = {
     // TODO to be pulled in by cordova
     return {
       type: window.navigator.userAgent,
-      make: "",
-      model: "",
+      make: device.manufacturer,
+      model: device.model,
       carrier: "",
-      OS: window.navigator.platform
+      OS: device.platform
     };
   },
 
