@@ -47,20 +47,22 @@ paths.vendor = {
     join( paths.bowerComponents, "webcomponentsjs", "webcomponents.js" ),
     join( paths.bowerComponents, "polymer", "polymer.js" ),
     join( paths.nodeModules, "traceur", "bin", "traceur-runtime.js" ),
-    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.js" ),
+    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader-sans-promises.js" ),
 //    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.src.js" ),
-    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader.js.map" ),
+    join( paths.bowerComponents, "es6-module-loader", "dist", "es6-module-loader-sans-promises.js.map" ),
     join( paths.bowerComponents, "system.js", "dist", "system.js" ),
 //    join( paths.bowerComponents, "system.js", "dist", "system.src.js" ),
     join( paths.bowerComponents, "system.js", "dist", "system.js.map" ),
 //    join( paths.bowerComponents, "director", "build", "director.js" ),
     join( paths.bowerComponents, "app-router", "app-router.html" ),
-    join( paths.bowerComponents, "aws-sdk-js", "dist", "aws-sdk.js" )
+    join( paths.bowerComponents, "aws-sdk-js", "dist", "aws-sdk.js" ),
+    join( paths.bowerComponents, "IndexedDBShim", "dist", "indexeddbshim.js" )
   ],
   minMap: {
     "webcomponents.js": "webcomponents.min.js",
     "polymer.js": "polymer.min.js",
     "aws-sdk.js": "aws-sdk.min.js"
+//    "indexeddbshim": "indexeddbshim.min.js"
 //    "director.js": "director.min.js"
   }
 };
