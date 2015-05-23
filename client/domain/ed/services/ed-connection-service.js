@@ -61,9 +61,7 @@ export default edConnectionService = {
   },
 
   request( route, priority=10, data={} ) {
-    var json;
-
-    json = joinData( data, {
+    var json = joinData( data, {
       action: {
         route,
         priority
