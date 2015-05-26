@@ -11,13 +11,15 @@
         return false;
       },
       redirectInAppHandler = function( event ) {
-        switch ( event.target.id ) {
-          case "Terms-button":
-            cordova.InAppBrowser.open( "http://www.eardish.com/terms", "_blank" );
-            break;
-          case "About-button":
-            cordova.InAppBrowser.open( "http://www.eardish.com/privacy", "_blank" );
-            break;
+        if ( cordova && cordova.InAppBrowser && typeof cordova.InAppBrowser.open === "function" ) {
+          switch ( event.target.id ) {
+            case "Terms-button":
+              cordova.InAppBrowser.open( "http://www.eardish.com/terms", "_blank" );
+              break;
+            case "About-button":
+              cordova.InAppBrowser.open( "http://www.eardish.com/privacy", "_blank" );
+              break;
+          }
         }
       };
 
