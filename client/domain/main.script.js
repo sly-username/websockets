@@ -20,7 +20,8 @@
       System.import( "domain/ed/services/ed-connection-service" ),
       System.import( "domain/ed/services/ed-user-service" ),
       System.import( "domain/ed/services/ed-player-service" ),
-      System.import( "domain/ed/analytics/ed-analytics-service" )
+      System.import( "domain/ed/analytics/ed-analytics-service" ),
+      System.import( "domain/ed/cordova/ed-admob" )
     ])
       .then( imports => {
         var
@@ -30,7 +31,8 @@
             connectionService,
             userService,
             playerService,
-            analyticsService
+            analyticsService,
+            edAdMob
           ] = imports.map( imported => imported.default ),
           animationWrapper = document.getElementById( "animation-wrapper" ),
           songCard = document.getElementById( "song-card" ),
