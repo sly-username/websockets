@@ -6,12 +6,8 @@
     var
       userService = imported[ 0 ].default,
       logOutTriggerHandler = function() {
-        var reallyLogout = confirm( "Are you sure you want to log out?" );
-
-        if ( reallyLogout ) {
-          userService.logout();
-          this.router.go( "/login" );
-        }
+        userService.logout();
+        this.router.go( "/login" );
         return false;
       };
 

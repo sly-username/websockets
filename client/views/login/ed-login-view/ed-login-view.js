@@ -44,9 +44,13 @@
         };
       },
       attached: function() {
-        this.formInputs.email.focus();
         this.loginBody.addEventListener( "blur", this.handlers.cleanup, true );
         this.lastInput.addEventListener( "keyup", this.handlers.goSubmit );
+
+        // go to discover if already logged in
+        if ( userService.isOpenSession ) {
+          this.router.go( "/discover" );
+        }
       },
       detached: function() {
         this.loginBody.removeEventListener( "blur", this.handlers.cleanup, true );
