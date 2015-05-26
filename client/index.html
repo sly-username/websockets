@@ -10,6 +10,20 @@
 
       base.setAttribute( "href", baseUrl );
       document.head.appendChild( base );
+
+      window.polymerReadyPromise = new Promise(function( resolve, reject ) {
+        document.addEventListener("polymer-ready", function( event ) {
+          console.log( "saw early polymer ready on window %o", event );
+          resolve( event );
+        });
+      });
+
+      window.deviceReadyPromise = new Promise(function( resolve, reject ) {
+        document.addEventListener( "deviceready", function( event ) {
+          console.log( "saw device ready %o", event );
+          resolve( event );
+        });
+      });
     })();
   </script>
   <title>eardish</title>
@@ -31,11 +45,12 @@
       }
     })();
   </script>
+  <script src="vendor/indexeddbshim.js"></script>
   <script src="vendor/aws-sdk.js"></script>
   <script src="vendor/webcomponents.js"></script>
   <script src="vendor/polymer.js"></script>
   <script src="vendor/traceur-runtime.js"></script>
-  <script src="vendor/es6-module-loader.js"></script>
+  <script src="vendor/es6-module-loader-sans-promises.js"></script>
   <script src="vendor/system.js"></script>
   <link rel="import" href="vendor/app-router.html" />
 
