@@ -24,7 +24,6 @@
       };
 
     polymer( "ed-settings-view", {
-      /* LIFECYCLE */
       ready: function() {
         this.logOut = this.shadowRoot.getElementById( "log-out-button" );
         this.termsBtn = this.shadowRoot.getElementById( "Terms-button" );
@@ -44,10 +43,7 @@
         this.logOut.removeEventListener( "touchstart", this.handlers.logOutTrigger );
         this.termsBtn.removeEventListener( "touchstart", this.handlers.redirectInApp );
         this.aboutBtn.removeEventListener( "touchstart", this.handlers.redirectInApp );
-      },
-      attributeChanged: function( attrName, oldValue, newValue ) {}
-      /* PROPERTIES */
-      /* METHODS */
-    } );
+      }
+    });
   });
 })( window.Polymer );
