@@ -16,7 +16,8 @@
     "director": "=1.2.8",
     "app-router": "=2.6.1",
     "normalize.css": "=3.0.3",
-    "aws-sdk-js": "=2.1.28"
+    "aws-sdk-js": "=2.1.28",
+    "IndexedDBShim": "=2.0.2"
   },
   "license": "To Be Decided",
   "description": "The Client Application for the Eardish Platform"
