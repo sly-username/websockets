@@ -26,11 +26,14 @@
           }
         },
         uploadPhotoHandler = function( event ) {
-          userService.changeProfileImage( event.target.files[ 0 ] );
+          console.log( "event target filessss", event.target.files[ 0 ]);
+          //userService.changeProfileImage( event.target.files[ 0 ] );
         },
         takePhotoHandler = function() {
            navigator.camera.getPicture(
-             function( image ) {
+             function( imageURI ) {
+               var image = new Image();
+               image.src = imageURI;
                console.log( "imageObject", image );
                //userService.changeProfileImage( event.target.files[ 0 ] );
              },
@@ -75,14 +78,14 @@
           this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
 
           this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
-          this.takePhoto.addEventListener( "change", this.handler.takePhoto );
+          this.takePhoto.addEventListener( "touchstart", this.handler.takePhoto );
           this.goBackButton.addEventListener( "click", this.handler.backButton );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
 
           this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
-          this.takePhoto.removeEventListener( "change", this.handler.takePhoto );
+          this.takePhoto.removeEventListener( "touchstart", this.handler.takePhoto );
           this.goBackButton.removeEventListener( "click", this.handler.backButton );
         },
         attributeChanged: function( attrName ) {}
