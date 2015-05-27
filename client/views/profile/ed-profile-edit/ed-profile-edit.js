@@ -25,26 +25,38 @@
               }.bind( this ));
           }
         },
+        resolveFileOnSuccess = function( fileEntry ) {
+          fileEntry.file(
+            function( image ) {
+              console.log( "image take photo", image );
+              userService.changeProfileImage( image );
+            },
+            function( error ) {
+              console.log( "error", error );
+            }
+          );
+        },
+        handleFileOnError = function( error ) {
+          console.warn( "Error in taking picture from camera" );
+          console.error( error );
+        },
         uploadPhotoHandler = function( event ) {
-          console.log( "event target filessss", event.target.files[ 0 ]);
-          //userService.changeProfileImage( event.target.files[ 0 ] );
+          console.log( "uploadphoto", event.target.files[ 0 ]);
+          userService.changeProfileImage( event.target.files[ 0 ]);
         },
         takePhotoHandler = function() {
-           navigator.camera.getPicture(
-             function( imageURI ) {
-               var image = new Image();
-               image.src = imageURI;
-               console.log( "imageObject", image );
-               //userService.changeProfileImage( event.target.files[ 0 ] );
-             },
-             function( error ) {
-               console.error( error );
-             },
-             {
-               destinationType : Camera.DestinationType.DATA_URL,
-               sourceType : Camera.PictureSourceType.CAMERA
-             }
-           );
+          if ( Camera ) {
+            navigator.camera.getPicture(
+              function( imageURI ) {
+                window.resolveLocalFileSystemURL( imageURI, resolveFileOnSuccess, handleFileOnError );
+              },
+              handleFileOnError,
+              {
+                destinationType : Camera.DestinationType.FILE_URI,
+                sourceType : Camera.PictureSourceType.CAMERA
+              }
+            );
+          }
         },
         backButtonHandler = function( event ) {
           event.preventDefault();

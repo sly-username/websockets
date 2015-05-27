@@ -206,7 +206,7 @@ edUserService.changeProfileImage = function( image ) {
 
       return new Promise(function( resolve, reject ) {
         s3.upload({
-          Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
+          Key: "public/profile/" + currentProfile.id + "/avatar/original/" + image.name,
           ContentType: image.type,
           Body: image,
           Bucket: "eardish.dev.images",
