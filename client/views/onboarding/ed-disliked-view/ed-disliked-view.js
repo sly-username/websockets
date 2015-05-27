@@ -118,7 +118,7 @@
           result[item[0]] = decodeURIComponent( item[1] );
         });
 
-        return result.genresliked.split( "," ).map(function( num ) { return parseInt( num, 10 ); };
+        return result.genresliked.split( "," ).map(function( num ) { return parseInt( num, 10 ); });
       }
       /* PROPERTIES */
       /* METHODS */
