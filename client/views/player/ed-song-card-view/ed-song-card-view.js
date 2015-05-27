@@ -10,9 +10,15 @@
       updateTimeHandler,
       playerServiceEventHandler,
       togglePlayerHandler,
-      injectStatsHandler;
+      injectStatsHandler,
+      resetRatingHandler;
 
     // helpers
+    resetRatingHandler = function() {
+      this.songCompleted = false;
+      this.hasRated = false;
+    };
+
     updateTimeHandler = function( tempValue, isScrubbing ) {
       var currentValue;
 
@@ -51,6 +57,12 @@
 
       if ( eventType === "rate" ) {
         playerService.rateTrack( currentVal );
+        this.hasRated = true;
+
+        if ( this.songCompleted ) {
+          this.handler.resetRating();
+          playerService.skip();
+        }
       }
 
       if ( eventType === "skip" ) {
@@ -70,6 +82,15 @@
         this.miniPlayerWrapper.classList.remove( "show-mini" );
         this.mainPlayerWrapper.classList.remove( "hide-main" );
         this.songCardWrapper.classList.remove( "minimized" );
+      }
+
+      if ( eventType === "songComplete" ) {
+        this.songCompleted = true;
+
+        if ( this.hasRated ) {
+          this.handler.resetRating();
+          playerService.skip();
+        }
       }
     };
 
@@ -98,6 +119,8 @@
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
+      hasRated: false,
+      songCompleted: false,
       ready: function() {
         // dom selectors
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
@@ -116,7 +139,8 @@
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           togglePlayer: togglePlayerHandler.bind( this ),
-          injectStats: injectStatsHandler.bind( this )
+          injectStats: injectStatsHandler.bind( this ),
+          resetRating: resetRatingHandler.bind( this )
         };
       },
       attached: function() {
