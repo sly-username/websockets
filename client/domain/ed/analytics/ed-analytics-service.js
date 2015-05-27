@@ -47,14 +47,16 @@ export default edAnalyticsService = {
   },
 
   get deviceBlock() {
-    // TODO to be pulled in by cordova
-    return {
-      type: window.navigator.userAgent,
-      make: device.manufacturer,
-      model: device.model,
-      carrier: "",
-      OS: device.platform
-    };
+    if ( device ) {
+      return {
+        type: window.navigator.userAgent,
+        make: device.manufacturer,
+        model: device.model,
+        carrier: "",
+        OS: `${ device.platform } ${ device.version }`,
+        UUID: device.uuid
+      };
+    }
   },
 
   get viewStateBlock() {
