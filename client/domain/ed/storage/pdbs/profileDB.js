@@ -27,7 +27,7 @@ openProfileDB = function() {
 };
 
 onError = function( error ) {
-  console.warn( "Error opening Profile DB" );
+  console.warn( "Error opening Profile DB: " + error.message );
   console.error( error.stack );
 
   window.indexedDB.deleteDatabase( "profile" );
