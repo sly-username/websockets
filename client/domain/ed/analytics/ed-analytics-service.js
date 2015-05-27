@@ -111,15 +111,12 @@ export default edAnalyticsService = {
         event = this.createEvent( ...args );
       }
 
-      /*
-      TODO turn on when analytics supports requestTokens
       edConnectionService.formattedSend({
         analytics: {
           common: this.commonBlock,
           event: event.eventBlock
         }
       });
-      */
     } catch ( error ) {
       console.warn( "Suppressing exception on analytics call" );
       console.warn( "Original Message: %s", error.message );
