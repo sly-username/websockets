@@ -39,8 +39,8 @@
         playerService.play();
 
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
-        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
-        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.phoneLarge );
+        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.phoneLarge );
 
         this.handler.injectStats();
       }
