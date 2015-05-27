@@ -26,6 +26,12 @@
         attached: function() {
           //this.emailInput.focus();
           this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
+
+          if ( userService.referralsRemaining === 1 ) {
+            this.invite = "invite";
+          } else {
+            this.invite = "invites";
+          }
         },
         detached: function() {
           this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
@@ -49,10 +55,10 @@
 
           return userService.referral( this.emailInput.value )
             .then( function( response ) {
-              this.referralsRemaining = response;
               this.emailInput.value = "";
               this.emailError.classList.add( "hidden" );
               this.emailInput.classList.remove( "invalid" );
+              this.referralsRemaining = response;
             }.bind( this ))
             .catch( function() {
               console.log( "referral request did not go through" );
