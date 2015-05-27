@@ -17,7 +17,7 @@ var
   createIndexOnObjectStore;
 
 // Find the right indexedDB reference
-indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 
 if ( !indexedDB ) {
   throw new Error( "This Environment doesn't support IndexedDB" );
