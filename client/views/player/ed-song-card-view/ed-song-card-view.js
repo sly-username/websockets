@@ -17,6 +17,9 @@
     resetRatingHandler = function() {
       this.songCompleted = false;
       this.hasRated = false;
+      this.starRating.transformOverlap( -100 );
+      this.ratingsForm.classList.remove( "show" );
+      this.disableText.classList.remove( "hide" );
     };
 
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -68,7 +71,7 @@
       if ( eventType === "skip" ) {
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
-        this.ratingsForm.classList.remove( "show" );
+        this.handler.resetRating();
 
         playerService.skip();
       }
@@ -123,6 +126,7 @@
       songCompleted: false,
       ready: function() {
         // dom selectors
+        this.starRating = this.$[ "star-rating" ];
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
