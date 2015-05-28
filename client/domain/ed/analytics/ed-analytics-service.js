@@ -166,6 +166,3 @@ export default edAnalyticsService = {
     return new eventMap[ eventName ]( eventArgs );
   }
 };
-
-// TODO degbug
-window.edAnalyticsService = edAnalyticsService;
