@@ -200,11 +200,7 @@ export default edPlayerService = {
   },
 
   get formattedLength() {
-    if ( isNaN( this.trackLength )) {
-      return "00:00";
-    }
-
-    if ( this.isPlaying || this.isPaused ) {
+    if ( !isNaN( this.trackLength ) && ( this.isPlaying || this.isPaused ) ) {
       return this.formatTime( this.trackLength );
     }
 
