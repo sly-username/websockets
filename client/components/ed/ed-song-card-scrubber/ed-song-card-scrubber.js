@@ -186,20 +186,30 @@
         }
 
         if ( this.value === this.max ) {
-          this.complete = true;
-          this.setAttribute( "complete", "" );
-          this.scrubber.style.opacity = 0;
-          this.shadowScrubber.style.opacity = 0;
-          this.playBtn.disabled = true;
-          this.playIcon.style.opacity = 0.02;
+          this.disableScrubber();
         } else {
-          this.complete = false;
-          this.removeAttribute( "complete" );
+          this.enableScrubber();
         }
 
         if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
           this.handler.showRatings();
         }
+      },
+      disableScrubber: function() {
+        this.complete = true;
+        this.setAttribute( "complete", "" );
+        this.scrubber.style.opacity = 0;
+        this.shadowScrubber.style.opacity = 0;
+        this.playBtn.disabled = true;
+        this.playIcon.style.opacity = 0.02;
+      },
+      enableScrubber: function() {
+        this.complete = false;
+        this.removeAttribute( "complete" );
+        this.scrubber.style.opacity = 1;
+        this.shadowScrubber.style.opacity = .4;
+        this.playBtn.disabled = false;
+        this.playIcon.style.opacity = 1;
       }
     });
   });
