@@ -40,7 +40,7 @@ import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 // try to get geo location data
 updateLocation();
 
-// try to get sim data
+// get sim card data
 getSimCardInfo();
 
 // Route request event attached below...
