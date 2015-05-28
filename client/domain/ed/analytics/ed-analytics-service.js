@@ -1,6 +1,7 @@
 /*jshint strict:false*/
 var
   edAnalyticsService,
+  simData = {},
   lastKnownLocation = {
     lat: 0,
     long: 0
@@ -11,6 +12,19 @@ var
         lastKnownLocation.lat = pos.coords.latitude;
         lastKnownLocation.long = pos.coords.longitude;
       });
+    }
+  },
+  getSimCardInfo = function () {
+    if ( plugins.sim ) {
+      return plugins.sim.getSimInfo(
+        ( sim ) => {
+          simData.carrier = sim.carrierName;
+        },
+        ( error ) => {
+          console.warn( "Error getting sim card information" );
+          console.error( error );
+        }
+      );
     }
   };
 
@@ -23,8 +37,11 @@ import edPlayerService from "domain/ed/services/ed-player-service";
 import eventMap from "domain/ed/analytics/event-map";
 import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 
-// try to get geo loaction data
+// try to get geo location data
 updateLocation();
+
+// try to get sim data
+getSimCardInfo();
 
 // Route request event attached below...
 
@@ -52,8 +69,8 @@ export default edAnalyticsService = {
         type: window.navigator.userAgent,
         make: device.manufacturer,
         model: device.model,
-        carrier: "",
-        OS: `${ device.platform } ${ device.version }`,
+        carrier: simData.carrier,
+        OS: device.platform + " " + device.version,
         UUID: device.uuid
       };
     }
@@ -149,3 +166,6 @@ export default edAnalyticsService = {
     return new eventMap[ eventName ]( eventArgs );
   }
 };
+
+// TODO degbug
+window.edAnalyticsService = edAnalyticsService;
