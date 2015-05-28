@@ -191,7 +191,7 @@
           this.enableScrubber();
         }
 
-        if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
+        if ( Math.floor( this.value ) === 30 ) {
           this.handler.showRatings();
         }
       },
