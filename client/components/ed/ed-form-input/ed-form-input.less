@@ -1,27 +1,26 @@
 @import "../../../styles/mixins/prefixes/placeholder.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
-@import "../../../styles/ed/alignments.mixin.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
 
 
 .form-input-container {
-  height: 7.5rem;
+  height: 10vh;
   width: 98%;
   max-width: 59.6rem;
   background-color: @darkPurple3;
-  margin: -.33rem auto;
+  margin: 0 auto;
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
 }
 input {
   .edType( heading-L );
-  .verticalAlign();
+  .transform( translateY(-50%) );
   color: @originalWhite;
   float: left;
   background: transparent;
   border: 0;
   outline: 0;
-  margin-right: -35rem;
+  padding-left: 20%;
   .input-placeholder( { color: @originalGrey } );
 }
 

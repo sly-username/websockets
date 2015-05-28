@@ -13,15 +13,18 @@
 
 .ed-logo-header {
   .logoFormHeader();
-  margin-bottom: 17rem;
+  flex: 1;
+  padding-bottom: 15%;
 }
 
 .login-container {
   .mainPicturedBackground();
-  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .ed-login-body {
+  flex: 2;
   text-align: center;
   ed-form-input {
     margin: .5rem;
@@ -44,8 +47,6 @@
 
 #login-submit {
   .edPrimaryButton();
-  bottom: 0;
-  margin: 3% auto 0 auto;
 }
 
 #login-forgot-password {
@@ -59,7 +60,6 @@
 
 #sign-up-button {
   .edSecondaryButton();
-  bottom: 13rem;
   margin: 0 auto;
   text-decoration: none;
 }
