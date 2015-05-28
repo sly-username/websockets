@@ -1,11 +1,13 @@
 @import "../../../styles/mixins/prefixes/placeholder.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
-@import "../../../styles/mixins/prefixes/transforms.less";
 
 
 .form-input-container {
-  height: 10vh;
+  // todo we have a height here
+  height: 6vh;
+  min-height: 3rem;
+  padding: 2% 0;
   width: 98%;
   max-width: 59.6rem;
   background-color: @darkPurple3;
@@ -13,27 +15,27 @@
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
 }
 input {
+  // todo font size
   .edType( heading-L );
-  .transform( translateY(-50%) );
+  font-size: 2rem;
   color: @originalWhite;
   float: left;
   background: transparent;
   border: 0;
   outline: 0;
-  padding-left: 20%;
+  width: 55%;
+  min-height: 20px;
   .input-placeholder( { color: @originalGrey } );
 }
 
 ed-icon {
 /* for svg height and width dimensions may both need to be declared and they work like regular CSS max-width or max-height
 */
-  width: 3rem;
-  height: 50%;
+  width: 20%;
+  height: 100%;
   fill: @originalGrey;
   pointer-events: none;
   float: left;
-  padding: 0 2rem;
-  .verticalAlign();
 }
 
 .form-input-container {

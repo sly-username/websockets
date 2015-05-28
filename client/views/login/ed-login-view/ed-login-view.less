@@ -14,10 +14,12 @@
 .ed-logo-header {
   .logoFormHeader();
   flex: 1;
-  padding-bottom: 15%;
 }
 
 .login-container {
+  // todo do we need height here?
+  // otherwise the height of the view is only as tall as the content
+  height: 100vh;
   .mainPicturedBackground();
   display: flex;
   flex-direction: column;
@@ -40,13 +42,14 @@
 }
 
 #errorEmail, #errorPassword {
-  .edType( heading-L );
+  .edType( paragraph-S );
   color: @originalTeal;
   text-align: center;
 }
 
 #login-submit {
   .edPrimaryButton();
+  padding: 4% 0;
 }
 
 #login-forgot-password {
@@ -55,12 +58,13 @@
   color: @lightGrey1;
   text-align: center;
   display: block;
-  margin: .5rem auto;
+  margin: 5% auto;
 }
 
 #sign-up-button {
   .edSecondaryButton();
-  margin: 0 auto;
+  padding: 2% 0;
+  margin: 3% auto 0;
   text-decoration: none;
 }
 
