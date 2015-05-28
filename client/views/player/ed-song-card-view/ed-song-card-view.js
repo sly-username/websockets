@@ -20,6 +20,7 @@
       this.starRating.transformOverlap( -100 );
       this.ratingsForm.classList.remove( "show" );
       this.disableText.classList.remove( "hide" );
+      this.mainPlayer.enableScrubber();
     };
 
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -62,7 +63,10 @@
         playerService.rateTrack( currentVal );
         this.hasRated = true;
 
+        console.log( "RATED SHITBIAUSHDBHDFIUHSJOAD" );
+
         if ( this.songCompleted ) {
+          console.log( "SONG COMPLETE RATED TRUEIUDSAHISAJ" );
           this.handler.resetRating();
           playerService.skip();
         }
@@ -89,8 +93,10 @@
 
       if ( eventType === "songComplete" ) {
         this.songCompleted = true;
+        console.log( "SONG HAS ENDED AUYIFUHOJSDA" );
 
         if ( this.hasRated ) {
+          console.log( "HAS RATED IS TRUE AND SONG IS COMPLETE" );
           this.handler.resetRating();
           playerService.skip();
         }

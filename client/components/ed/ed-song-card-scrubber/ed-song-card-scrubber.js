@@ -187,6 +187,7 @@
 
         if ( this.value === this.max ) {
           this.disableScrubber();
+          this.dispatchEvent( createUpdateEvent( "songComplete" ));
         } else {
           this.enableScrubber();
         }
