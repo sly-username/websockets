@@ -59,7 +59,6 @@
               this.emailInput.value = "";
               this.emailError.classList.add( "hidden" );
               this.emailInput.classList.remove( "invalid" );
-              this.test = userService.getReferrals();
 
               if ( this.referrals !== response ) {
                 this.referrals = response;
