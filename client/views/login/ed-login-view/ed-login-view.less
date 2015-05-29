@@ -28,27 +28,19 @@
 .ed-login-body {
   flex: 2;
   text-align: center;
-  ed-form-input {
-    display: block;
-    width: 100%;
-    height: 60px;
-    max-height: 80px;
-    margin: .5rem 0;
-    text-align: center;
-  }
+}
+
+#errorEmail, #errorPassword, #errorServer {
+  .edType( heading-XXS );
+  color: @originalTeal;
+  text-align: center;
+  margin: 0;
+  font-weight: 300;
 }
 
 #errorServer {
- .edType( heading-XL );
-  color: @originalTeal;
-  text-align: center;
-  padding-top: 9rem;
-}
-
-#errorEmail, #errorPassword {
-  .edType( paragraph-S );
-  color: @originalTeal;
-  text-align: center;
+  // todo not using edType mixin
+  font-size: 1.7rem;
 }
 
 #login-submit {
