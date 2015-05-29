@@ -25,37 +25,26 @@
               }.bind( this ));
           }
         },
-        resolveFileOnSuccess = function( fileEntry ) {
-          fileEntry.file(
-            function( image ) {
-              console.log( "image take photo", image );
-              userService.changeProfileImage( image );
-            },
-            function( error ) {
-              console.log( "error", error );
-            }
-          );
-        },
-        handleFileOnError = function( error ) {
-          console.warn( "Error in taking picture from camera" );
-          console.error( error );
-        },
         uploadPhotoHandler = function( event ) {
-          console.log( "uploadphoto", event.target.files[ 0 ]);
           userService.changeProfileImage( event.target.files[ 0 ]);
         },
         takePhotoHandler = function() {
+          var reader = new FileReader(),
+            imageFile;
+
+          reader.onloadend = function( event ) {
+            userService.changeProfileImage( event.target.result, imageFile );
+          };
+
           if ( Camera ) {
-            navigator.camera.getPicture(
-              function( imageURI ) {
-                window.resolveLocalFileSystemURL( imageURI, resolveFileOnSuccess, handleFileOnError );
-              },
-              handleFileOnError,
-              {
-                destinationType : Camera.DestinationType.FILE_URI,
-                sourceType : Camera.PictureSourceType.CAMERA
-              }
-            );
+            navigator.camera.getPicture(function( url ) {
+              window.resolveLocalFileSystemURL( url, function( fileObj ) {
+                fileObj.file(function( data ) {
+                  imageFile = data;
+                  reader.readAsArrayBuffer( data );
+                });
+              });
+            });
           }
         },
         backButtonHandler = function( event ) {
