@@ -21,8 +21,8 @@ var
           simData.carrier = sim.carrierName;
         },
         ( error ) => {
-          console.warn( "Error getting sim card information" );
-          console.error( error );
+          console.warn( "Error getting sim card info: " + error.message );
+          console.error( error.stack );
         }
       );
     }
@@ -64,16 +64,24 @@ export default edAnalyticsService = {
   },
 
   get deviceBlock() {
-    if ( device ) {
-      return {
+    var
+      block = {
         type: window.navigator.userAgent,
-        make: device.manufacturer,
-        model: device.model,
-        carrier: simData.carrier,
-        OS: device.platform + " " + device.version,
-        UUID: device.uuid
+        make: "",
+        model: "",
+        carrier: simData.carrier || "",
+        OS: "",
+        UUID: ""
       };
+
+    if ( device ) {
+      block.make = device.manufacturer;
+      block.model = device.model;
+      block.OS = device.platform + " " + device.version;
+      block.UUID = device.uuid;
     }
+
+    return block;
   },
 
   get viewStateBlock() {
