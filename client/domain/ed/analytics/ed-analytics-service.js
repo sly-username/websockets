@@ -14,9 +14,9 @@ var
       });
     }
   },
-  getSimCardInfo = function () {
-    if ( plugins.sim ) {
-      return plugins.sim.getSimInfo(
+  getSimCardInfo = function() {
+    if ( window.plugins != null && window.plugins.sim ) {
+      return window.plugins.sim.getSimInfo(
         ( sim ) => {
           simData.carrier = sim.carrierName;
         },
@@ -65,6 +65,7 @@ export default edAnalyticsService = {
 
   get deviceBlock() {
     var
+      device = window.device,
       block = {
         type: window.navigator.userAgent,
         make: "",
