@@ -5,36 +5,49 @@
 
 .form-input-container {
   // todo we have a height here
-  height: 6vh;
-  min-height: 3rem;
-  padding: 2% 0;
-  width: 98%;
+  height: inherit;
+  //min-height: 3rem;
+  //padding: 2% 0;
+  width: 100%;
   max-width: 59.6rem;
   background-color: @darkPurple3;
   margin: 0 auto;
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
 }
+
+label {
+  display: block;
+  float: left;
+  height: 100%;
+  width: 10%;
+  margin-left: 2%;
+  padding: 0;
+  overflow: auto;
+}
+
 input {
   // todo font size
   .edType( heading-L );
   font-size: 2rem;
   color: @originalWhite;
   float: left;
+  clear: none;
   background: transparent;
   border: 0;
   outline: 0;
-  width: 55%;
-  min-height: 20px;
+  width: 75%;
+  height: 100%;
   .input-placeholder( { color: @originalGrey } );
 }
 
 ed-icon {
 /* for svg height and width dimensions may both need to be declared and they work like regular CSS max-width or max-height
 */
-  width: 20%;
-  height: 100%;
+  width: 72%;
+  height: 72%;
+  margin: 23% auto;
   fill: @originalGrey;
-  pointer-events: none;
+  //pointer-events: none;
   float: left;
 }
 

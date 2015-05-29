@@ -12,13 +12,14 @@
       <div class="ed-login-body">
         <div id="errorEmail" class="hidden">Please enter a valid email address</div>
         <div id="errorPassword" class="hidden">Your password needs to be at least 8 characters</div>
-        <ed-form-input type="email" class="email" placeholder="Your Email" icon="envelope"></ed-form-input>
-        <ed-form-input id="form-password" type="password" class="password" placeholder="Password" icon="password"></ed-form-input>
 
-        <a id="login-forgot-password" href="#/forgot-pass/request">Forgot Password?</a>
-        <button id="login-submit" class="invalid" on-click="{{submitForm}}">Login</button>
+        <ed-form-input tabindex="1" type="email" class="email" placeholder="Your Email" icon="envelope"></ed-form-input>
+        <ed-form-input tabindex="2" id="form-password" type="password" class="password" placeholder="Password" icon="password"></ed-form-input>
 
-        <a id="sign-up-button" type="button" href="#/register">
+        <a tabindex="5" id="login-forgot-password" href="#/forgot-pass/request">Forgot Password?</a>
+        <button tabindex="3" id="login-submit" class="invalid" on-click="{{submitForm}}">Login</button>
+
+        <a tabindex="4" id="sign-up-button" type="button" href="#/register">
           <span class="small-text">Don't have an account?</span>
           <br />Sign Up Here
         </a>
