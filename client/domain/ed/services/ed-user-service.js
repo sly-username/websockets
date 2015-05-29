@@ -195,7 +195,7 @@ edUserService.logout = function() {
  */
 edUserService.changeProfileImage = function( image, fileData ) {
   var imageData = fileData != null ? fileData : image;
-  
+
   return edConnectionService.request( "aws/token/get", 10 )
     .then( awsToken => {
       var
@@ -216,7 +216,6 @@ edUserService.changeProfileImage = function( image, fileData ) {
         }, function( error, data ) {
           if ( error != null ) {
             console.warn( "Issue uploading image to AWS" );
-            console.log( "aws error", error );
             reject( error );
             return;
           }
