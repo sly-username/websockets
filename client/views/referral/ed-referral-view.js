@@ -24,11 +24,9 @@
           };
         },
         attached: function() {
-          //this.emailInput.focus();
           this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
 
           this.referrals = userService.referralsRemaining;
-          console.log( this.referrals );
 
           if ( this.referrals === 1 ) {
             this.invite = "invite";
@@ -61,9 +59,8 @@
               this.emailInput.value = "";
               this.emailError.classList.add( "hidden" );
               this.emailInput.classList.remove( "invalid" );
-              console.log( response );
               this.test = userService.getReferrals();
-              console.log( this.test );
+
               if ( this.referrals !== response ) {
                 this.referrals = response;
               }
