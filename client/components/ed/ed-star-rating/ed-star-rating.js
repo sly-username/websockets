@@ -65,8 +65,6 @@
         this.artistName.classList.remove( "loading" );
       }
 
-      console.log( "inside star ratings", event );
-
       if ( event.detail.type === "skip" ) {
         console.log( "resetted?" );
         this.transformOverlap( -100 );

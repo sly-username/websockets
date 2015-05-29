@@ -81,9 +81,9 @@ export default edDiscoverService = {
           genresDisliked
         };
 
-        //return edAnalyticsService.send( "editDiscoverBlend", {
-        //  editDiscoverBlend: currentProfileBlend
-        //});
+        return edAnalyticsService.send( "editDiscoverBlend", {
+          editDiscoverBlend: currentProfileBlend
+        });
       });
   },
   getLeaderboardCharts( chartName ) {
