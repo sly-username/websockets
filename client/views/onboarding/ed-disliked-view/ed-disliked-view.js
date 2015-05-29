@@ -94,6 +94,7 @@
         this.songCardWrapper  = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
         this.mainPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "main-player-wrapper" );
         this.likedBubbles     = this.getUrlVar();
+        console.log( this.likedBubbles );
         // handlers
         this.handlers = {
           hideBubbles: hideBubblesHandler.bind( this ),
@@ -120,7 +121,7 @@
           result[item[0]] = decodeURIComponent( item[1] );
         });
 
-        return result.genresliked.split( "," );
+        return result.genresliked.split( "," ).map(function( num ) { return parseInt( num, 10 ); });
       }
       /* PROPERTIES */
       /* METHODS */

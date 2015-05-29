@@ -39,8 +39,8 @@
         playerService.play();
 
         this.intervalId = setInterval( this.handler.updateTime, intervalTime );
-        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
-        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.original );
+        this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.phoneLarge );
+        this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.phoneLarge );
 
         this.handler.injectStats();
       }
@@ -59,10 +59,6 @@
         this.ratingsForm.classList.remove( "show" );
 
         playerService.skip();
-      }
-
-      if ( eventType === "artistUpdate" ) {
-        this.bioText.innerText = playerService.currentStats.currentArtist.bio;
       }
 
       if ( eventType === "showRatings" ) {
@@ -118,7 +114,6 @@
         this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
         this.disableText = this.$[ "star-rating" ].shadowRoot.getElementById( "disable-text" );
-        this.bioText = this.$[ "bio-copy" ];
         this.minify = this.$[ "minify-icon" ];
 
         // Event Handler

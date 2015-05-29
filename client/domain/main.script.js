@@ -20,7 +20,8 @@
       System.import( "domain/ed/services/ed-connection-service" ),
       System.import( "domain/ed/services/ed-user-service" ),
       System.import( "domain/ed/services/ed-player-service" ),
-      System.import( "domain/ed/analytics/ed-analytics-service" )
+      System.import( "domain/ed/analytics/ed-analytics-service" ),
+      System.import( "domain/ed/cordova/ed-admob" )
     ])
       .then( imports => {
         var
@@ -30,7 +31,8 @@
             connectionService,
             userService,
             playerService,
-            analyticsService
+            analyticsService,
+            edAdMob
           ] = imports.map( imported => imported.default ),
           animationWrapper = document.getElementById( "animation-wrapper" ),
           songCard = document.getElementById( "song-card" ),
@@ -77,12 +79,19 @@
             if ( loginData.password && loginData.email ) {
               userService.login( loginData.email, loginData.password )
                 .then(function() {
-                  router.go( "/discover", {
-                    replace: true
-                  });
+                  if ( userService.hasOnboarded ) {
+                    router.go( "/discover", {
+                      replace: true
+                    });
+                  } else {
+                    router.go( "/onboarding/like", {
+                      replace: true
+                    });
+                  }
                 })
                 .catch(function() {
                   localStorage.removeItem( "edLoginInfo" );
+                  router.go( "/login" );
                 });
             }
           }

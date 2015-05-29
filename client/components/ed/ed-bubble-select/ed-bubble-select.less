@@ -12,21 +12,18 @@
 @hiphopDislike: 'selected-dislike/05.jpg';
 @popDislike: 'selected-dislike/01.jpg';
 @alternativeDislike: 'selected-dislike/03.jpg';
-@danceDislike: 'selected-dislike/06.jpg';
 
 @rockLike: 'selected-like/02.jpg';
 @countryLike: 'selected-like/04.jpg';
 @hiphopLike: 'selected-like/05.jpg';
 @popLike: 'selected-like/01.jpg';
 @alternativeLike: 'selected-like/03.jpg';
-@danceLike: 'selected-like/06.jpg';
 
 @rockDeselected: 'deselected/02.jpg';
 @countryDeselected: 'deselected/04.jpg';
 @hiphopDeselected: 'deselected/05.jpg';
 @popDeselected: 'deselected/01.jpg';
 @alternativeDeselected: 'deselected/03.jpg';
-@danceDeselected: 'deselected/06.jpg';
 
 
 // Mixins
@@ -63,11 +60,6 @@
     .applyBackgroundActive( @popDislike );
   }
 }
-:host([view-type="dislike"][genre="dance"][checked]) {
-  .ed-bubble {
-    .applyBackgroundActive( @danceDislike );
-  }
-}
 :host([view-type="dislike"][genre="alternative"][checked]) {
   .ed-bubble {
     .applyBackgroundActive( @alternativeDislike );
@@ -95,11 +87,6 @@
     .applyBackgroundActive( @popLike );
   }
 }
-:host([view-type="like"][genre="dance"][checked]) {
-  .ed-bubble {
-    .applyBackgroundActive( @danceLike );
-  }
-}
 :host([view-type="like"][genre="alternative"][checked]) {
   .ed-bubble {
     .applyBackgroundActive( @alternativeLike );
@@ -125,11 +112,6 @@
 :host([genre="pop"]) {
   .ed-bubble {
     .applyBackgroundInactive( @popDeselected );
-  }
-}
-:host([genre="dance"]) {
-  .ed-bubble {
-    .applyBackgroundInactive( @danceDeselected );
   }
 }
 :host([genre="alternative"]) {
