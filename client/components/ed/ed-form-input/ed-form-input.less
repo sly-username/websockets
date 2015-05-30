@@ -2,15 +2,18 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 
+:host {
+  display: block;
+}
 
 .form-input-container {
   display: block;
-  width: 100%;
+  width: 95%;
   // todo we have a height here
-  height: 45px;
+  height: 50px;
   max-height: 80px;
   max-width: 59.6rem;
-  margin: .5rem 0;
+  margin: 1% auto 2%;
   text-align: center;
   background-color: @darkPurple3;
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
@@ -27,16 +30,18 @@ label {
 }
 
 input {
-  // todo font size
   .edType( heading-L );
+  // todo font mixin overrides
+  // i prefer a lower font weight
   font-size: 2rem;
+  font-weight: 300;
   color: @originalWhite;
   float: left;
   clear: none;
   background: transparent;
   border: 0;
   outline: 0;
-  width: 75%;
+  width: 88%;
   height: 100%;
   .input-placeholder( { color: @originalGrey } );
 }
@@ -45,10 +50,9 @@ ed-icon {
 /* for svg height and width dimensions may both need to be declared and they work like regular CSS max-width or max-height
 */
   width: 72%;
-  height: 92%;
-  margin: 23% auto;
+  height: 90%;
+  margin: 16% auto 0;
   fill: @originalGrey;
-  //pointer-events: none;
   float: left;
 }
 

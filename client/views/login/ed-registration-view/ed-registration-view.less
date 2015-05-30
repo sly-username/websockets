@@ -24,31 +24,37 @@
   fieldset {
     border: 0;
   }
-  ed-form-input {
-    margin: .25rem;
-    text-align: center;
-  }
   .password-req-text {
     color: @originalTeal;
     .edType( heading-XS );
-    margin-top: 1rem;
-    margin-bottom: .9rem;
+    // todo font override
+    font-weight: 300;
+    margin: 2% 0;
   }
 }
 
 .error-messages {
   text-align: center;
   .edType( heading-XXS );
+  // todo font override
+  font-weight: 300;
   color: @originalTeal;
+  margin-bottom: 4%
 }
 
 #registration-submit {
   .edPrimaryButton();
-  margin: 3% auto 0 auto;
+  margin: 4% auto 0;
+  padding: 4%;
+  // todo font override
+  font-weight: 100;
 }
 
 #sign-up-button {
   .edSecondaryButton();
-  margin: 0 auto;
+  margin: 4% auto 0;
+  padding: 2% 0;
   text-decoration: none;
+  // todo font override
+  font-weight: 100;
 }

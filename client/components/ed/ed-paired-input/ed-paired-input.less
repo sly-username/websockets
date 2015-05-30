@@ -1,7 +1,6 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/placeholder.less";
 @import "../../../styles/fonts/edTypeStyles.less";
-@import "../../../styles/ed/alignments.mixin.less";
 
 #primaryBox, #confirmBox {
   display: block;
@@ -9,29 +8,41 @@
 
 #error {
   color: @originalTeal;
-  font-size: 2.7rem;
+  font-size: 1.7rem;
 }
 
 .ed-paired-input-primary-wrapper, .ed-paired-input-confirm-wrapper {
-  height: 7.5rem;
-  width: 98%;
+  display: block;
+  width: 95%;
+  height: 50px;
+  max-height: 80px;
   max-width: 59.6rem;
+  margin: 1% auto 2%;
+  text-align: center;
   background-color: @darkPurple3;
-  margin: -.33rem auto;
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
+  label {
+    display: block;
+    float: left;
+    height: 100%;
+    width: 10%;
+    margin-left: 2%;
+    padding: 0;
+    overflow: auto;
+  }
   input {
+    // todo font size
     .edType( heading-L );
-    .verticalAlign();
+    font-size: 2rem;
+    font-weight: 300;
+    height: 100%;
+    width: 88%;
     color: @originalWhite;
     float: left;
     background: transparent;
     border: 0;
     outline: 0;
-    margin-right: -35rem;
     .input-placeholder( { color: @originalGrey } );
-  }
-  &.confirm-container {
-    margin-top: .8rem;
   }
   &.invalid-field {
     background-color: @originalRed;
@@ -42,13 +53,11 @@
 ed-icon {
   /* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
   */
-  width: 3rem;
-  height: 50%;
+  width: 72%;
+  height: 90%;
+  margin: 16% auto 0;
   fill: @originalGrey;
-  pointer-events: none;
   float: left;
-  padding: 0 2rem;
-  .verticalAlign();
 }
 
 :host([invalid-primary]) {
