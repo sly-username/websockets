@@ -123,8 +123,7 @@
             window.scrollTo( 0, 0 );
             return error;
           });
-      },
-      attributeChanged: function( attrName, oldValue, newValue ) {}
+      }
     });
   });
 })( window.Polymer, window.System );
