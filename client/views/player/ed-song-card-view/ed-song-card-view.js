@@ -114,7 +114,6 @@
         this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
         this.disableText = this.$[ "star-rating" ].shadowRoot.getElementById( "disable-text" );
-        this.minify = this.$[ "minify-icon" ];
 
         // Event Handler
         this.handler = {
@@ -127,16 +126,11 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-
-        this.minify.addEventListener( "touchstart", this.handler.togglePlayer );
-        this.miniPlayer.addEventListener( "touchstart", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.removeEventListener( "touchstart", this.handler.togglePlayer );
-        this.miniPlayer.removeEventListener( "touchstart", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 
