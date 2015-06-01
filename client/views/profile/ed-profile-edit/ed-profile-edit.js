@@ -26,13 +26,26 @@
           }
         },
         uploadPhotoHandler = function( event ) {
-          userService.changeProfileImage( event.target.files[ 0 ] );
+          userService.changeProfileImage( event.target.files[ 0 ]);
         },
-        takePhotoHandler = function( event ) {
-          // TODO use cordova to handle image capturing
-          // navigator.camera.getPicture( function() {
-          //  userService.changeProfileImage( event.target.files[ 0 ] );
-          // }, cameraError, cameraOptions );
+        takePhotoHandler = function() {
+          var reader = new FileReader(),
+            imageFile;
+
+          reader.onloadend = function( event ) {
+            userService.changeProfileImage( event.target.result, imageFile );
+          };
+
+          if ( Camera ) {
+            navigator.camera.getPicture(function( url ) {
+              window.resolveLocalFileSystemURL( url, function( fileObj ) {
+                fileObj.file(function( data ) {
+                  imageFile = data;
+                  reader.readAsArrayBuffer( data );
+                });
+              });
+            });
+          }
         },
         backButtonHandler = function( event ) {
           event.preventDefault();
@@ -66,14 +79,14 @@
           this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
 
           this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
-          this.takePhoto.addEventListener( "change", this.handler.takePhoto );
+          this.takePhoto.addEventListener( "touchstart", this.handler.takePhoto );
           this.goBackButton.addEventListener( "click", this.handler.backButton );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
 
           this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
-          this.takePhoto.removeEventListener( "change", this.handler.takePhoto );
+          this.takePhoto.removeEventListener( "touchstart", this.handler.takePhoto );
           this.goBackButton.removeEventListener( "click", this.handler.backButton );
         },
         attributeChanged: function( attrName ) {}
