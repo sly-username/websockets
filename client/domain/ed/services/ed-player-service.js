@@ -251,6 +251,9 @@ export default edPlayerService = {
         }
       })
       .then(() => {
+        return this.getCurrentUserStats();
+      })
+      .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
@@ -388,9 +391,6 @@ export default edPlayerService = {
             }
           }));
         }
-      })
-      .then(() => {
-        return this.getCurrentUserStats();
       });
   },
 

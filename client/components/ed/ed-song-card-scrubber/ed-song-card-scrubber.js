@@ -192,12 +192,13 @@
           this.shadowScrubber.style.opacity = 0;
           this.playBtn.disabled = true;
           this.playIcon.style.opacity = 0.02;
+          this.playIcon.setAttribute( "name", "play");
         } else {
           this.complete = false;
           this.removeAttribute( "complete" );
         }
 
-        if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
+        if ( this.value === this.max || Math.floor( this.value ) > 29 ) {
           this.handler.showRatings();
         }
       }
