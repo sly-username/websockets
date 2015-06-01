@@ -127,17 +127,28 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.addEventListener( "click", this.handler.togglePlayer );
         this.miniPlayerWrapper.addEventListener( "click", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.removeEventListener( "click", this.handler.togglePlayer );
         this.miniPlayerWrapper.removeEventListener( "click", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
+
+      },
+      open: function() {
+        this.miniPlayerWrapper.classList.remove( "show-mini" );
+        this.mainPlayerWrapper.classList.remove( "hide-main" );
+        this.songCardWrapper.classList.remove( "minimized" );
+      },
+      close: function() {
+        this.miniPlayerWrapper.classList.add( "show-mini" );
+        this.mainPlayerWrapper.classList.add( "hide-main" );
+        this.songCardWrapper.classList.add( "minimized" );
+      },
+      hide: function() {
 
       }
       /* PROPERTIES */
