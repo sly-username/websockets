@@ -193,7 +193,9 @@ edUserService.logout = function() {
 /**
  * @method changeProfileImage
  */
-edUserService.changeProfileImage = function( image ) {
+edUserService.changeProfileImage = function( image, fileData ) {
+  var imageData = fileData != null ? fileData : image;
+
   return edConnectionService.request( "aws/token/get", 10 )
     .then( awsToken => {
       var
@@ -204,13 +206,13 @@ edUserService.changeProfileImage = function( image ) {
           region: awsToken.data.region
         });
 
-      return new Promise(function( resolve, reject ) {
+      return new Promise(( resolve, reject ) => {
         s3.upload({
-          Key: "profile/" + currentProfile.id + "/profile/avatar/temp/" + image.name,
-          ContentType: image.type,
+          Key: "public/profile/" + currentProfile.id + "/avatar/original/" + imageData.name,
+          ContentType: imageData.type,
           Body: image,
           Bucket: "eardish.dev.images",
-          CopySource: "eardish.dev.images/" + image.name
+          CopySource: "eardish.dev.images/" + imageData.name
         }, function( error, data ) {
           if ( error != null ) {
             console.warn( "Issue uploading image to AWS" );
@@ -221,7 +223,7 @@ edUserService.changeProfileImage = function( image ) {
           json = {
             data: {
               profileId: currentProfile.id,
-              title: image.name,
+              title: imageData.name,
               url: data.Location,
               type: "avatar"
             }
