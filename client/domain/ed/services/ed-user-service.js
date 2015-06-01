@@ -5,6 +5,7 @@ import createEvent from "domain/lib/event/create-event";
 import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService, { updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
+import edPlayerService from "domain/ed/services/ed-player-service";
 import EDUser from "domain/ed/objects/EDUser";
 import EDFan from "domain/ed/objects/profile/EDFan"
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
@@ -180,6 +181,8 @@ edUserService.logout = function() {
       profile: oldProfile
     }
   }));
+
+  edPlayerService.stop();
 
   edAnalytics.send( "logout", {
     time: ( new Date() ).toISOString()

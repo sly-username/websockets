@@ -9,7 +9,6 @@
       intervalTime = 500,
       updateTimeHandler,
       playerServiceEventHandler,
-      togglePlayerHandler,
       injectStatsHandler;
 
     // helpers
@@ -78,23 +77,6 @@
       }
     };
 
-    togglePlayerHandler = function( event ) {
-      switch ( event.target.id ) {
-        case "minify-icon":
-          this.miniPlayerWrapper.classList.add( "show-mini" );
-          this.mainPlayerWrapper.classList.add( "hide-main" );
-          this.songCardWrapper.classList.add( "minimized" );
-          break;
-        case "mini-player":
-          this.miniPlayerWrapper.classList.remove( "show-mini" );
-          this.mainPlayerWrapper.classList.remove( "hide-main" );
-          this.songCardWrapper.classList.remove( "minimized" );
-          break;
-        default:
-          break;
-      }
-    };
-
     injectStatsHandler = function() {
       this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
@@ -105,6 +87,7 @@
       playerService: playerService,
       ready: function() {
         // dom selectors
+        this.songCard = document.getElementById( "song-card" );
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
@@ -119,7 +102,6 @@
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          togglePlayer: togglePlayerHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this )
         };
       },
@@ -136,17 +118,20 @@
 
       },
       open: function() {
-        this.miniPlayerWrapper.classList.remove( "show-mini" );
-        this.mainPlayerWrapper.classList.remove( "hide-main" );
+        this.miniPlayerWrapper.classList.remove( "close" );
+        this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
       },
       close: function() {
-        this.miniPlayerWrapper.classList.add( "show-mini" );
-        this.mainPlayerWrapper.classList.add( "hide-main" );
+        this.miniPlayerWrapper.classList.add( "close" );
+        this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
       },
+      show: function() {
+        this.songCard.classList.remove( "hidden" );
+      },
       hide: function() {
-
+        this.songCard.classList.add( "hidden" );
       }
       /* PROPERTIES */
       /* METHODS */

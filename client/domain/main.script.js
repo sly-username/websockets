@@ -41,10 +41,13 @@
         router.addEventListener( "state-change", function( event ) {
           console.log( "in state-change event: %o", event.detail );
 
-          if ( !playerService.isPlaying || needToHidePlayerForRoute( event.detail.path ) ) {
+          if ( needToHidePlayerForRoute( event.detail.path )) {
             animationWrapper.classList.remove( "player-padding" );
+            songCard.hide();
           } else {
-            if ( !animationWrapper.classList.contains( "player-padding" )) {
+            songCard.show();
+
+            if ( !animationWrapper.classList.contains( "player-padding" ) && playerService.isPlaying ) {
               animationWrapper.classList.add( "player-padding" );
             }
           }

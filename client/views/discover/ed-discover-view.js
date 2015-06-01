@@ -18,8 +18,8 @@
 
           if ( tmpId != null ) {
             playerService.startMusicDiscovery( tmpId );
-            this.miniPlayerWrapper.classList.remove( "show-mini" );
-            this.mainPlayerWrapper.classList.remove( "hide-main" );
+            this.miniPlayerWrapper.classList.remove( "close" );
+            this.mainPlayerWrapper.classList.remove( "close" );
             this.songCardWrapper.classList.remove( "minimized" );
           }
         };

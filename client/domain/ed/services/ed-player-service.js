@@ -302,17 +302,21 @@ export default edPlayerService = {
   },
 
   stop: function() {
-    if ( this.isPlaying ) {
+    var trackId = currentTrack.id,
+      timecode = audio.currentTime;
+
+    if ( this.isPlaying || this.isPaused ) {
       audio.pause();
       audio.removeAttribute( "src" );
       currentTrack = null;
     }
 
     edAnalyticsService.send( "quit", {
-      trackId: currentTrack.id,
-      timecode: audio.currentTime,
+      trackId,
+      timecode,
       action: "stop"
     });
+
     return true;
   },
 
