@@ -12,6 +12,7 @@
       polymer( "ed-referral-view", {
         /* LIFECYCLE */
         userService: userService,
+        referrals: 0,
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( ".email" );
 
@@ -24,8 +25,8 @@
           };
         },
         attached: function() {
-          this.emailInput.focus();
           this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
+          this.referrals = userService.referralsRemaining;
         },
         detached: function() {
           this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
@@ -49,16 +50,24 @@
 
           return userService.referral( this.emailInput.value )
             .then( function( response ) {
-              this.referralsRemaining = response;
               this.emailInput.value = "";
               this.emailError.classList.add( "hidden" );
               this.emailInput.classList.remove( "invalid" );
+
+              if ( this.referrals !== response ) {
+                this.referrals = response;
+              }
             }.bind( this ))
             .catch( function() {
               console.log( "referral request did not go through" );
             });
         },
-        attributeChanged: function( attrName, oldValue, newValue ) {}
+        updateReferralCount: function() {
+          return userService.getReferrals()
+            .then(function( referrals ) {
+              this.referrals = referrals
+            }.bind( this ))
+        }
       });
     });
 })( window.Polymer, window.System );

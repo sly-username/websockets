@@ -73,20 +73,18 @@ export default edDiscoverService = {
         genresLiked,
         genresDisliked
       }
-    }).then( response => {
-      currentProfileBlend = {
-        id: edUserService.currentProfile.id,
-        genresLiked,
-        genresDisliked
-      };
+    })
+      .then(() => {
+        currentProfileBlend = {
+          id: edUserService.currentProfile.id,
+          genresLiked,
+          genresDisliked
+        };
 
-      // analytics for discover blend changed
-      edAnalyticsService.send( "editDiscoverBlend", {
-        editDiscoverBlend: currentProfileBlend
+        return edAnalyticsService.send( "editDiscoverBlend", {
+          editDiscoverBlend: currentProfileBlend
+        });
       });
-
-      return response;
-    });
   },
   getLeaderboardCharts( chartName ) {
     return edConnectionService.request( "chart/list", 10, {
