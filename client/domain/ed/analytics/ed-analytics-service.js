@@ -1,6 +1,7 @@
 /*jshint strict:false*/
 var
   edAnalyticsService,
+  simData = {},
   lastKnownLocation = {
     lat: 0,
     long: 0
@@ -11,6 +12,19 @@ var
         lastKnownLocation.lat = pos.coords.latitude;
         lastKnownLocation.long = pos.coords.longitude;
       });
+    }
+  },
+  getSimCardInfo = function() {
+    if ( window.plugins != null && window.plugins.sim ) {
+      return window.plugins.sim.getSimInfo(
+        ( sim ) => {
+          simData.carrier = sim.carrierName;
+        },
+        ( error ) => {
+          console.warn( "Error getting sim card info: " + error.message );
+          console.error( error.stack );
+        }
+      );
     }
   };
 
@@ -23,8 +37,11 @@ import edPlayerService from "domain/ed/services/ed-player-service";
 import eventMap from "domain/ed/analytics/event-map";
 import EDAnalyticsEvent from "domain/ed/analytics/events/EDAnalyticsEvent";
 
-// try to get geo loaction data
+// try to get geo location data
 updateLocation();
+
+// get sim card data
+getSimCardInfo();
 
 // Route request event attached below...
 
@@ -47,14 +64,25 @@ export default edAnalyticsService = {
   },
 
   get deviceBlock() {
-    // TODO to be pulled in by cordova
-    return {
-      type: window.navigator.userAgent,
-      make: "",
-      model: "",
-      carrier: "",
-      OS: window.navigator.platform
-    };
+    var
+      device = window.device,
+      block = {
+        type: window.navigator.userAgent,
+        make: "",
+        model: "",
+        carrier: simData.carrier || "",
+        OS: "",
+        UUID: ""
+      };
+
+    if ( device ) {
+      block.make = device.manufacturer;
+      block.model = device.model;
+      block.OS = device.platform + " " + device.version;
+      block.UUID = device.uuid;
+    }
+
+    return block;
   },
 
   get viewStateBlock() {

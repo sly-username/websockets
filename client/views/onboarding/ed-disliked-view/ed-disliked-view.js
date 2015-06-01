@@ -11,6 +11,8 @@
       bubbleCounter = 0,
       bubbleArray = [],
       triggerBubblesHandler = function( event ) {
+        var self = this;
+
         event.preventDefault();
 
         bubbleArray = Array.from( this.inputBubbles )
@@ -23,13 +25,14 @@
 
         console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );
         return discoverService.setCurrentProfileBlend( this.likedBubbles, bubbleArray )
-          .then(function( response ) {
-            playerService.startMusicDiscovery( "profileBlend" );
-            this.mainPlayerWrapper.classList.remove( "hide-main" );
-            this.songCardWrapper.classList.remove( "minimized" );
-            this.router.go( "/discover" );
-            return response;
-          }.bind( this ));
+          .then(function() {
+            self.mainPlayerWrapper.classList.remove( "hide-main" );
+            self.songCardWrapper.classList.remove( "minimized" );
+            return playerService.startMusicDiscovery( "profileBlend" );
+          })
+          .then(function() {
+            self.router.go( "/discover" );
+          });
       },
       // hides bubbles on ready
       hideBubblesHandler = function( event ) {

@@ -1,5 +1,7 @@
 /*jshint strict: false*/
-var admobid = {};
+var
+  AdMob = window.AdMob,
+  admobid = {};
 
 if ( /(android)/i.test( navigator.userAgent ) ) {
   admobid = { // for Android

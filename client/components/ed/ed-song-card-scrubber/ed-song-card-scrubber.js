@@ -90,6 +90,7 @@
         var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
         if ( eventType === "play" ) {
+          console.log( "inside play event maiiiin" );
           this.playIcon.setAttribute( "name", "pause" );
         }
 
@@ -192,13 +193,14 @@
           this.shadowScrubber.style.opacity = 0;
           this.playBtn.disabled = true;
           this.playIcon.style.opacity = 0.02;
+          this.playIcon.setAttribute( "name", "play" );
           this.dispatchEvent( createUpdateEvent( "songComplete" ));
         } else {
           this.complete = false;
           this.removeAttribute( "complete" );
         }
 
-        if ( this.value === this.max || Math.floor( this.value ) === 30 ) {
+        if ( this.value === this.max || Math.floor( this.value ) > 29 ) {
           this.handler.showRatings();
         }
       }
