@@ -9,6 +9,7 @@
 
 .ed-logo-header {
   .logoFormHeader();
+  height: 46vh;
 }
 
 .registration-container {
@@ -21,33 +22,24 @@
 
 .ed-registration-body {
   text-align: center;
-  fieldset {
-    border: 0;
-  }
   .password-req-text {
+    // todo change font
+    .edType( sylvia-S );
     color: @originalTeal;
-    .edType( heading-XS );
-    // todo font override
-    font-weight: 300;
     margin: 2% 0;
   }
 }
 
 .error-messages {
   text-align: center;
-  .edType( heading-XXS );
-  // todo font override
-  font-weight: 300;
+  // todo change font
+  .edType( sylvia-XXS );
   color: @originalTeal;
   margin-bottom: 4%
 }
 
 #registration-submit {
   .edPrimaryButton();
-  margin: 4% auto 0;
-  padding: 4%;
-  // todo font override
-  font-weight: 100;
 }
 
 #sign-up-button {
@@ -55,6 +47,4 @@
   margin: 4% auto 0;
   padding: 2% 0;
   text-decoration: none;
-  // todo font override
-  font-weight: 100;
 }

@@ -8,43 +8,32 @@
   font-family: "Ubuntu";
 }
 
-.ed-logo-header {
-  .logoFormHeader();
-  margin-bottom: 7rem;
-}
-
-.forgot-container {
-  .mainPicturedBackground();
-  height: 100%;
-}
-
 .hidden {
   display: none;
 }
 
+.forgot-container {
+  .mainPicturedBackground();
+  height: 100vh;
+}
+
+.ed-logo-header {
+  .logoFormHeader();
+}
+
 .forgot-text, .forgot-second-text {
-  .edType( paragraph-L );
-  font-weight: 400;
-  font-size: 2.6rem;
+  .edType( sylvia-S );
   color: @originalWhite;
   opacity: .5;
   text-align: center;
-  span {
-    display: block;
-  }
 }
 
 .forgot-second-text {
   margin: 6% 2% 2%;
 }
 
-
 .ed-forgot-body {
   text-align: center;
-  fieldset {
-    border: 0;
-    margin-bottom: 0.5rem;
-  }
 }
 
 #errorEmail, #errorServer {
@@ -55,12 +44,9 @@
 
 #forgot-submit {
   .edPrimaryButton();
-  margin-bottom: 2rem;
-  bottom: 0;
 }
+
 #back-button {
   .edSecondaryButton();
-  bottom: 13rem;
-  margin: 0 auto;
   text-decoration: none;
 }

@@ -13,44 +13,37 @@
 
 .ed-logo-header {
   .logoFormHeader();
-  flex: 1;
+  height: 46vh;
 }
 
 .login-container {
-  // todo do we need height here?
-  // otherwise the height of the view is only as tall as the content
-  // height: 100vh;
   .mainPicturedBackground();
-  display: flex;
-  flex-direction: column;
 }
 
 .ed-login-body {
-  flex: 2;
   text-align: center;
 }
 
 #errorEmail, #errorPassword, #errorServer {
-  .edType( heading-XXS );
+  // todo update mixin
+  .edType( sylvia-XXS );
   color: @originalTeal;
   text-align: center;
   margin: 0;
-  font-weight: 300;
 }
 
 #errorServer {
-  // todo not using edType mixin
-  font-size: 1.7rem;
+  // todo update mixin
+  .edType( sylvia-XS );
 }
 
 #login-submit {
   .edPrimaryButton();
-  padding: 4% 0;
 }
 
 #login-forgot-password {
+  .edType( sylvia-M );
   text-decoration: none;
-  .edType( heading-S );
   color: @lightGrey1;
   text-align: center;
   display: block;
@@ -59,8 +52,6 @@
 
 #sign-up-button {
   .edSecondaryButton();
-  padding: 2% 0;
-  margin: 3% auto 0;
   text-decoration: none;
 }
 
