@@ -62,8 +62,13 @@
       }
 
       if ( eventType === "showRatings" ) {
-        this.ratingsForm.classList.add( "show" );
-        this.disableText.classList.add( "hide" );
+        if ( !this.ratingsForm.classList.contains( "show" )) {
+          this.ratingsForm.classList.add( "show" );
+        }
+
+        if ( !this.disableText.classList.contains( "hide" )) {
+          this.disableText.classList.add( "hide" );
+        }
       }
 
       if ( eventType === "showMainPlayer" ) {

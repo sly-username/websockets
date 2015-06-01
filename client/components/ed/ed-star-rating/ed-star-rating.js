@@ -64,6 +64,16 @@
         this.artistLink.setAttribute( "href", window.location.origin + "/#/artist/" + playerService.currentStats.currentArtist.id );
         this.artistName.classList.remove( "loading" );
       }
+
+      if ( event.detail.type === "skip" ) {
+        console.log( "resetted?" );
+        this.transformOverlap( -100 );
+        this.firstInput.checked = false;
+        this.secondInput.checked = false;
+        this.thirdInput.checked = false;
+        this.forthInput.checked = false;
+        this.fifthInput.checked = false;
+      }
     };
 
     minimizePlayerHandler = function() {
@@ -84,6 +94,7 @@
         };
         this.inputField = this.shadowRoot.getElementById( "input-field" );
         this.overlapField = this.shadowRoot.getElementById( "overlap-field" );
+        this.firstInput = this.shadowRoot.getElementById( "rate1" );
         this.secondInput = this.shadowRoot.getElementById( "rate2" );
         this.thirdInput = this.shadowRoot.getElementById( "rate3" );
         this.forthInput = this.shadowRoot.getElementById( "rate4" );
