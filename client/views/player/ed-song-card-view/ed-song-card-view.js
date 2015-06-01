@@ -127,13 +127,16 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.miniPlayerWrapper.addEventListener( "click", this.handler.togglePlayer );
+
+        this.minify.addEventListener( "touchstart", this.handler.togglePlayer );
+        this.miniPlayer.addEventListener( "touchstart", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.miniPlayerWrapper.removeEventListener( "click", this.handler.togglePlayer );
+        this.minify.removeEventListener( "touchstart", this.handler.togglePlayer );
+        this.miniPlayer.removeEventListener( "touchstart", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 
