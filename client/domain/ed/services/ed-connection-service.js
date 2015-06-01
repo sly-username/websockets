@@ -20,9 +20,6 @@ var
     }, jsonObject );
   };
 
-// todo remove for debug!
-window.edSocket = edSocket;
-
 export default edConnectionService = {
   authenticateConnection( email, password ) {
     return edSocket.authenticate( email, password )
@@ -94,4 +91,5 @@ export default edConnectionService = {
 };
 
 // TODO remove debug
+window.edSocket = edSocket;
 window.edConnectionService = edConnectionService;

@@ -4,11 +4,13 @@
 // 2.5 min -- 150000
 
 var
-  generateToken,
   EDWebSocketTimeoutError,
   requestTimeout = 150000,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
+  generateToken = function() {
+    return ++token;
+  },
   deAuthOnClose = function( self ) {
     return function( event ) {
       console.log( "socket was closed: %o, %o", event, self );
@@ -20,10 +22,6 @@ import HealingWebSocket, { symbols } from "domain/lib/connection/HealingWebSocke
 import url from "domain/ed/urls";
 import createEvent from "domain/lib/event/create-event";
 import edUserService from "domain/ed/services/ed-user-service";
-
-generateToken = function() {
-  return ++token;
-};
 
 // Create a custom error class
 // Can't extend builtins so we have to do it old school
@@ -71,6 +69,12 @@ export default class EDWebSocket extends HealingWebSocket {
         password
       }
     };
+
+    // can now use this.requests
+//    this.request( authBlock )
+//      .then(function( response ) {
+//
+//      });
 
     return new Promise(( resolve, reject ) => {
       var checkForAuthResponse = event => {
@@ -227,6 +231,7 @@ export default class EDWebSocket extends HealingWebSocket {
     if ( args.length === 0 || args.some( eventName => "close" === eventName ) ) {
       this.on( "close", deAuthOnClose( this ));
     }
+
     return toReturn;
   }
 }
