@@ -28,7 +28,7 @@ var routeMap = {
   "discover/list": true,
 
   // Profile
-  "profile/get": false,
+  "profile/get": true,
   "profile/update": true,
   "profile/set": true,
   "profile/create": true,
