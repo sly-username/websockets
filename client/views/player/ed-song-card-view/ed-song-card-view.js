@@ -142,6 +142,7 @@
       attributeChanged: function( attrName, oldValue, newValue ) {
 
       },
+      /* open/close methods slide player up & down */
       open: function() {
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
@@ -154,6 +155,7 @@
         this.songCardWrapper.classList.add( "minimized" );
         this.animationWrapper.classList.add( "player-padding" );
       },
+      /* show/hide methods toggle entire song cards display/visibility */
       show: function() {
         this.songCard.classList.remove( "hidden" );
       },
