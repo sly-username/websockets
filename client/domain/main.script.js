@@ -26,6 +26,7 @@
       .then( imports => {
         var
           loginData,
+          // destructing the default imports to their associated name
           [
             dataService,
             connectionService,
@@ -34,32 +35,44 @@
             analyticsService,
             edAdMob
           ] = imports.map( imported => imported.default ),
-          animationWrapper = document.getElementById( "animation-wrapper" ),
           songCard = document.getElementById( "song-card" ),
           router = document.querySelector( "#root-app-router" );
 
+        // Fires before the app router does anything regarding a route change
+        // Check if open session, if not, route back to login page
+        // This should solve all "in the app but no session" issues
         router.addEventListener( "state-change", function( event ) {
-          console.log( "in state-change event: %o", event.detail );
+          console.log( "in state-change: %o", event );
 
-          if ( !playerService.isPlaying || needToHidePlayerForRoute( event.detail.path ) ) {
-            animationWrapper.classList.remove( "player-padding" );
-          } else {
-            if ( !animationWrapper.classList.contains( "player-padding" )) {
-              animationWrapper.classList.add( "player-padding" );
-            }
+          if ( !userService.isOpenSession && !( /\/(login|register|registration|forgot-pass)/i ).test( event.detail.path )) {
+            console.log( "no open session, going to login page" );
+            event.preventDefault();
+            router.go( "/login", {
+              replace: true
+            });
           }
         });
 
+        // Fires before the new route is imported or rendered, manages song card visibility
+        router.addEventListener( "activate-route-start", function( event ) {
+          if ( needToHidePlayerForRoute( event.detail.path )) {
+            songCard.hide();
+          } else {
+            songCard.show();
+          }
+        });
+
+        // Fires at end of route load and render process, sends analytics "routeRequest" event
         router.addEventListener( "activate-route-end", function( event ) {
           // remove "router" from event model since is causes a circular reference
+          // which throws an error during JSON serialization
           var
             params = Object.keys( event.detail.model )
               .reduce(function( accumulator, key ) {
-                if ( key === "router" ) {
-                  return accumulator;
+                if ( key !== "router" ) {
+                  accumulator[ key ] = event.detail.model[ key ];
                 }
 
-                accumulator[ key ] = event.detail.model[ key ];
                 return accumulator;
               }, {});
 
@@ -74,8 +87,10 @@
 
         if ( localStorage ) {
           loginData = localStorage.getItem( "edLoginInfo" );
+
           if ( loginData ) {
             loginData = JSON.parse( loginData );
+
             if ( loginData.password && loginData.email ) {
               userService.login( loginData.email, loginData.password )
                 .then(function() {
@@ -98,7 +113,7 @@
         }
       })
       .catch( error => {
-        console.error( "Problem in main script" );
+        console.error( "Problem in main script: " + error.message );
         console.error( error.stack );
       });
   });
