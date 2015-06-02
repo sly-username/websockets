@@ -18,9 +18,9 @@
       this.songCompleted = false;
       this.hasRated = false;
       this.starRating.transformOverlap( -100 );
+      this.mainPlayer.enableScrubber();
       this.ratingsForm.classList.remove( "show" );
       this.disableText.classList.remove( "hide" );
-      this.mainPlayer.enableScrubber();
     };
 
     updateTimeHandler = function( tempValue, isScrubbing ) {

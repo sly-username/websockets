@@ -109,9 +109,6 @@
       },
       mouseOutHandler = function() {
         this.mouseDown = false;
-      },
-      showRatingsHandler = function() {
-        this.dispatchEvent( createUpdateEvent( "showRatings" ));
       };
 
     polymer( "ed-song-card-scrubber", {
@@ -136,8 +133,7 @@
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          mouseOut: mouseOutHandler.bind( this ),
-          showRatings: showRatingsHandler.bind( this )
+          mouseOut: mouseOutHandler.bind( this )
         };
 
         // init
@@ -195,7 +191,7 @@
         }
 
         if ( Math.floor( this.value ) > 29 ) {
-          this.handler.showRatings();
+          this.dispatchEvent( createUpdateEvent( "showRatings" ));
         }
       },
       disableScrubber: function() {
