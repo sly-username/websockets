@@ -69,9 +69,6 @@
         // need to init manually to ensure event binding
         router.init();
 
-        // bind logout
-        userService.on( "edLogout", function() { playerService.stop(); });
-
         if ( localStorage ) {
           loginData = localStorage.getItem( "edLoginInfo" );
           if ( loginData ) {

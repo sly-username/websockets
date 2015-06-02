@@ -157,18 +157,6 @@ edUserService.login = function( email, password ) {
  * @method logout
  */
 edUserService.logout = function() {
-  // todo will integrate with settings page
-  var
-    oldUserId = currentUserId,
-    oldProfile = currentProfile;
-
-  currentProfile = null;
-  currentUserId = null;
-  isOpenSession = false;
-  sessionAuthJSON = null;
-  loggedInDate = null;
-  referralsRemaining = 0;
-
   // Don't allow auto login on app restart
   if ( localStorage ) {
     localStorage.removeItem( "edLoginInfo" );
@@ -176,10 +164,17 @@ edUserService.logout = function() {
 
   edUserService.dispatch( createEvent( "edLogout", {
     detail: {
-      userId: oldUserId,
-      profile: oldProfile
+      userId: currentUserId,
+      profile: currentProfile
     }
   }));
+
+  currentProfile = null;
+  currentUserId = null;
+  isOpenSession = false;
+  sessionAuthJSON = null;
+  loggedInDate = null;
+  referralsRemaining = 0;
 
   edAnalytics.send( "logout", {
     time: ( new Date() ).toISOString()
