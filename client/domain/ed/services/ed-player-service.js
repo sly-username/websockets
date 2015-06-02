@@ -251,6 +251,9 @@ export default edPlayerService = {
         }
       })
       .then(() => {
+        return this.getCurrentUserStats();
+      })
+      .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
             type: "play"
@@ -261,7 +264,15 @@ export default edPlayerService = {
 
   play: function( content ) {
     if ( content == null && this.isPaused && !!audio.src ) {
-      audio.play();
+      if ( this.isPaused ) {
+        audio.play();
+
+        this.emitter.dispatch( createEvent( "playerUpdate", {
+          detail: {
+            type: "play"
+          }
+        }));
+      }
       return true;
     }
 
@@ -388,9 +399,6 @@ export default edPlayerService = {
             }
           }));
         }
-      })
-      .then(() => {
-        return this.getCurrentUserStats();
       });
   },
 

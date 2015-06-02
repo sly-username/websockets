@@ -90,6 +90,7 @@
         var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
         if ( eventType === "play" ) {
+          console.log( "inside play event maiiiin" );
           this.playIcon.setAttribute( "name", "pause" );
         }
 
@@ -193,7 +194,7 @@
           this.enableScrubber();
         }
 
-        if ( Math.floor( this.value ) === 30 ) {
+        if ( Math.floor( this.value ) > 29 ) {
           this.handler.showRatings();
         }
       },

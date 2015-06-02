@@ -78,8 +78,13 @@
       }
 
       if ( eventType === "showRatings" ) {
-        this.ratingsForm.classList.add( "show" );
-        this.disableText.classList.add( "hide" );
+        if ( !this.ratingsForm.classList.contains( "show" )) {
+          this.ratingsForm.classList.add( "show" );
+        }
+
+        if ( !this.disableText.classList.contains( "hide" )) {
+          this.disableText.classList.add( "hide" );
+        }
       }
 
       if ( eventType === "showMainPlayer" ) {
@@ -151,15 +156,15 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.addEventListener( "click", this.handler.togglePlayer );
-        this.miniPlayerWrapper.addEventListener( "click", this.handler.togglePlayer );
+        this.minify.addEventListener( "touchstart", this.handler.togglePlayer );
+        this.miniPlayer.addEventListener( "touchstart", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.removeEventListener( "click", this.handler.togglePlayer );
-        this.miniPlayerWrapper.removeEventListener( "click", this.handler.togglePlayer );
+        this.minify.removeEventListener( "touchstart", this.handler.togglePlayer );
+        this.miniPlayer.removeEventListener( "touchstart", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 
