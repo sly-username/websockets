@@ -169,16 +169,16 @@ edUserService.logout = function() {
     }
   }));
 
+  edAnalytics.send( "logout", {
+    time: ( new Date() ).toISOString()
+  });
+
   currentProfile = null;
   currentUserId = null;
   isOpenSession = false;
   sessionAuthJSON = null;
   loggedInDate = null;
   referralsRemaining = 0;
-
-  edAnalytics.send( "logout", {
-    time: ( new Date() ).toISOString()
-  });
 
   edConnectionService.deauthenticateSocket();
 
