@@ -6,7 +6,7 @@ import typeChecker from "domain/ed/objects/model-type-checker";
 import edDataService, { updateModel } from "domain/ed/services/ed-data-service";
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
-import EDFan from "domain/ed/objects/profile/EDFan"
+import EDFan from "domain/ed/objects/profile/EDFan";
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
 
 var
