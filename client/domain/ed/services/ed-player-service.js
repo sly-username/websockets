@@ -25,7 +25,9 @@ var
   trackEndedHandler,
   rateCurrentlyPlaying,
   updateCurrentIndex,
-  getTrackAndArtist;
+  getTrackAndArtist,
+  userService,
+  importUserService;
 
 // helpers
 hasScrubbedHandler = function( event ) {
@@ -100,6 +102,21 @@ getTrackAndArtist = function( tracks, index ) {
       });
     });
 };
+
+importUserService = function() {
+  return System.import( "domain/ed/services/ed-user-service" )
+    .then( imported => {
+      userService = imported.default;
+
+      userService.on( "edLogout", function() {
+        if ( edPlayerService.isPlaying || edPlayerService.isPaused ) {
+          edPlayerService.stop();
+        }
+      });
+
+      return userService;
+    });
+};
 // end helpers
 
 // init audio element
@@ -112,6 +129,8 @@ audio.style.visibility = "hidden";
 audio.addEventListener( "seeked", hasScrubbedHandler );
 audio.addEventListener( "ended", trackEndedHandler );
 // end init audio element
+
+importUserService();
 
 export default edPlayerService = {
   get emitter() {
@@ -302,17 +321,21 @@ export default edPlayerService = {
   },
 
   stop: function() {
-    if ( this.isPlaying ) {
+    var trackId = currentTrack.id,
+      timecode = audio.currentTime;
+
+    if ( this.isPlaying || this.isPaused ) {
       audio.pause();
       audio.removeAttribute( "src" );
       currentTrack = null;
     }
 
     edAnalyticsService.send( "quit", {
-      trackId: currentTrack.id,
-      timecode: audio.currentTime,
+      trackId,
+      timecode,
       action: "stop"
     });
+
     return true;
   },
 

@@ -35,7 +35,6 @@
             analyticsService,
             edAdMob
           ] = imports.map( imported => imported.default ),
-          animationWrapper = document.getElementById( "animation-wrapper" ),
           songCard = document.getElementById( "song-card" ),
           router = document.querySelector( "#root-app-router" );
 
@@ -56,12 +55,10 @@
 
         // Fires before the new route is imported or rendered, manages song card visibility
         router.addEventListener( "activate-route-start", function( event ) {
-          if ( !playerService.isPlaying || needToHidePlayerForRoute( event.detail.path ) ) {
-            animationWrapper.classList.remove( "player-padding" );
+          if ( needToHidePlayerForRoute( event.detail.path )) {
+            songCard.hide();
           } else {
-            if ( !animationWrapper.classList.contains( "player-padding" )) {
-              animationWrapper.classList.add( "player-padding" );
-            }
+            songCard.show();
           }
         });
 
