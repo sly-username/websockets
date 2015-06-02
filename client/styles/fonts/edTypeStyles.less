@@ -64,6 +64,17 @@
 
 
 // todo temporary fonts with lower font-weight
+
+.edType( @textSize ) when ( @textSize = fatsly-XXXL ) {
+  font-weight: 700;
+  font-size: 3.5rem;
+}
+
+.edType( @textSize ) when ( @textSize = fatsly-XXXS ) {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
 .edType( @textSize ) when ( @textSize = sylvia-XXL ) {
   font-weight: 300;
   font-size: 2.9rem;
@@ -99,10 +110,6 @@
   font-size: 1.4rem;
 }
 
-.edType( @textSize ) when ( @textSize = sylvia-XXXS ) {
-  font-weight: 700;
-  font-size: 1rem;
-}
 
 .edType( @textSize ) when ( @textSize = skinnysly-L ) {
   font-weight: 100;
