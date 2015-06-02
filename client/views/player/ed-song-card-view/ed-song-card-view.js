@@ -9,7 +9,6 @@
       intervalTime = 500,
       updateTimeHandler,
       playerServiceEventHandler,
-      togglePlayerHandler,
       injectStatsHandler,
       resetRatingHandler;
 
@@ -99,23 +98,6 @@
       }
     };
 
-    togglePlayerHandler = function( event ) {
-      switch ( event.target.id ) {
-        case "minify-icon":
-          this.miniPlayerWrapper.classList.add( "show-mini" );
-          this.mainPlayerWrapper.classList.add( "hide-main" );
-          this.songCardWrapper.classList.add( "minimized" );
-          break;
-        case "mini-player":
-          this.miniPlayerWrapper.classList.remove( "show-mini" );
-          this.mainPlayerWrapper.classList.remove( "hide-main" );
-          this.songCardWrapper.classList.remove( "minimized" );
-          break;
-        default:
-          break;
-      }
-    };
-
     injectStatsHandler = function() {
       this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
@@ -128,6 +110,8 @@
       songCompleted: false,
       ready: function() {
         // dom selectors
+        this.animationWrapper = document.getElementById( "animation-wrapper" );
+        this.songCard = document.getElementById( "song-card" );
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.mainPlayer = this.$[ "main-player" ];
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
@@ -137,13 +121,11 @@
         this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
         this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
         this.disableText = this.$[ "star-rating" ].shadowRoot.getElementById( "disable-text" );
-        this.minify = this.$[ "minify-icon" ];
 
         // Event Handler
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          togglePlayer: togglePlayerHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this ),
           resetRating: resetRatingHandler.bind( this )
         };
@@ -151,18 +133,36 @@
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.addEventListener( "touchstart", this.handler.togglePlayer );
-        this.miniPlayer.addEventListener( "touchstart", this.handler.togglePlayer );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.minify.removeEventListener( "touchstart", this.handler.togglePlayer );
-        this.miniPlayer.removeEventListener( "touchstart", this.handler.togglePlayer );
       },
       attributeChanged: function( attrName, oldValue, newValue ) {
 
+      },
+      /* open/close methods slide player up & down */
+      open: function() {
+        this.miniPlayerWrapper.classList.remove( "close" );
+        this.mainPlayerWrapper.classList.remove( "close" );
+        this.songCardWrapper.classList.remove( "minimized" );
+        this.animationWrapper.classList.remove( "player-padding" );
+      },
+      close: function() {
+        this.miniPlayerWrapper.classList.add( "close" );
+        this.mainPlayerWrapper.classList.add( "close" );
+        this.songCardWrapper.classList.add( "minimized" );
+        this.animationWrapper.classList.add( "player-padding" );
+      },
+      /* show/hide methods toggle entire song cards display/visibility */
+      show: function() {
+        this.songCard.classList.remove( "hidden" );
+      },
+      hide: function() {
+        this.miniPlayerWrapper.classList.remove( "close" );
+        this.songCard.classList.add( "hidden" );
+        this.animationWrapper.classList.remove( "player-padding" );
       }
       /* PROPERTIES */
       /* METHODS */

@@ -3,20 +3,26 @@
 // 5 min -- 300000
 // 2.5 min -- 150000
 
-var generateToken,
+var
   EDWebSocketTimeoutError,
   requestTimeout = 150000,
   isAuthenticated = Symbol( "isAuthenticated" ),
-  token = 0;
+  token = 0,
+  generateToken = function() {
+    return ++token;
+  },
+  deAuthOnClose = function( self ) {
+    return function( event ) {
+      console.log( "socket was closed: %o, %o", event, self );
+      self[ isAuthenticated ] = false;
+    };
+  };
 
 import HealingWebSocket, { symbols } from "domain/lib/connection/HealingWebSocket";
 import url from "domain/ed/urls";
 import createEvent from "domain/lib/event/create-event";
 import edUserService from "domain/ed/services/ed-user-service";
-
-generateToken = function() {
-  return ++token;
-};
+import EDJSONResponse from "domain/ed/connection/EDJSONResponse";
 
 // Create a custom error class
 // Can't extend builtins so we have to do it old school
@@ -43,17 +49,20 @@ export default class EDWebSocket extends HealingWebSocket {
     super( url.path );
     this[ isAuthenticated ] = false;
 
-    // TODO Account for if "clear" method is called
-    this.on( "close", () => {
-      console.log( "socket was closed" );
-      this[ isAuthenticated ] = false;
-    });
+    this.on( "close", deAuthOnClose( this ));
   }
 
+  /** @property isAuthenticated {boolean} */
   get isAuthenticated() {
     return this[ isAuthenticated ];
   }
 
+  /**
+   * @method authenticate
+   * @param email {string} - user's email
+   * @param password {string} - user's password
+   * @returns {Promise} - resolves to the websocket message event
+   */
   authenticate( email, password ) {
     var authBlock = {
       auth: {
@@ -62,50 +71,41 @@ export default class EDWebSocket extends HealingWebSocket {
       }
     };
 
-    return new Promise(( resolve, reject ) => {
-      var checkForAuthResponse = event => {
+    // can now use this.request
+    return this.request( authBlock )
+      .then( event => {
         var response;
 
-        if ( !this.isOpen ) {
-          this.once( "open", () => resolve( this.authenticate( email, password )));
-          return;
-        }
-
-//        console.log( "in socket auth received message event:", event );
-
         try {
-          response = JSON.parse( event.data );
+          // response = JSON.parse( event.data );
+          response = new EDJSONResponse( event.data );
         } catch ( error ) {
-          console.error( error.stack );
-          reject( error );
-          return;
+          console.warn( "Error parsing auth json: " + error.message );
+          throw error;
         }
 
-        // validate response
-        if ( response.status.code === 1 && "profileId" in response.data && "userId" in response.data ) {
-          resolve( event );
-
+        if ( response.hasStatus && response.hasStatusCode( 1 )) {
           this[ isAuthenticated ] = true;
 
-          this.dispatch( createEvent( "authenticated", {
-            detail: {
-              task: "for future self"
-            }
-          }));
-
-          this.off( "message", checkForAuthResponse );
-        } else if ( response.status.code === 11 ) {
-          resolve( event );
+          // authenticated event contains data block as event detail
+          this.dispatch(
+            createEvent( "authenticated", {
+              detail: response.data
+            })
+          );
+        } else {
           this[ isAuthenticated ] = false;
         }
-      };
 
-      // send to socket & bind message events
-      this.send( authBlock );
-      this.on( "message", checkForAuthResponse );
-    });
+        return event;
+      });
   }
 
+  /**
+   * @method request
+   * @param data {object} - the fully formed eardish formatted JSON object
+   * @returns {Promise} - resolves to the parsed JSON response
+   */
   request( data ) {
     var newToken;
 
@@ -136,7 +136,7 @@ export default class EDWebSocket extends HealingWebSocket {
           try {
             responseData = JSON.parse( event.data );
           } catch ( error ) {
-            console.warn( "error in request handler" );
+            console.warn( "error in socket request handler " + error.message );
             console.error( error.stack );
             responseData = event;
           }
@@ -160,9 +160,16 @@ export default class EDWebSocket extends HealingWebSocket {
     });
   }
 
+  /**
+   * @private
+   * @method Symbol(heal)
+   * @param [data] {object} -- optional formatted eardish JSON request to send after healing
+   */
   [ symbols.heal ]( data ) {
     console.log( "edSocket is being healed" );
 
+    // Call authenticate before super so that re-auth request goes before
+    // anything else does
     if ( edUserService.isOpenSession && edUserService.sessionAuthJSON != null ) {
       this.authenticate(
         edUserService.sessionAuthJSON.email,
@@ -171,5 +178,22 @@ export default class EDWebSocket extends HealingWebSocket {
     }
 
     super[ symbols.heal ]( data );
+  }
+
+  /**
+   * Overload EventEmitter.prototype.clear
+   *   This reattaches the listener that de-auths the socket after
+   *   All listeners are cleared
+   * @param args
+   * @returns {EventEmitter}
+   */
+  clear( ...args ) {
+    var toReturn = super.clear( ...args );
+
+    if ( args.length === 0 || args.some( eventName => "close" === eventName ) ) {
+      this.on( "close", deAuthOnClose( this ));
+    }
+
+    return toReturn;
   }
 }

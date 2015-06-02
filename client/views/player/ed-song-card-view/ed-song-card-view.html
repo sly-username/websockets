@@ -11,12 +11,12 @@
       <section id="mini-player-wrapper">
         <ed-mini-player id="mini-player"
             song="Track Title" artist="Artist Name"
-            image=""></ed-mini-player>
+            image="" on-tap="{{open}}"></ed-mini-player>
       </section>
 
-      <section id="main-player-wrapper" class="hide-main">
+      <section id="main-player-wrapper" class="close">
         <section id="user-ranking">
-          <button id="minify-button">
+          <button id="minify-button" on-tap="{{close}}">
             <ed-icon id="minify-icon" name="arrow-back" rotation="270"></ed-icon>
           </button>
           <ed-user-ranking id="complete-listens" teal top="Completed" bottom="Plays" rank="0"></ed-user-ranking>
