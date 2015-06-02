@@ -134,15 +134,16 @@ edTrackDB.then( trackDB => {
 // Populate Genre LRU
 loadGenres = function() {
   return connectionService.request( "genre/list", 10 )
-    .then(function( response ) {
-      if ( response.status && response.status.code === 1 ) {
-        response.data.genres.forEach( function( genreData ) {
+    .then(function( edJson ) {
+      if ( edJson.hasStatus && edJson.hasStatusCode( 1 )) {
+        edJson.data.genres.forEach( function( genreData ) {
           // Polyfill type and modelType
           genreData.type = EDGenre.MODEL_TYPE;
           genreData.modelType = EDGenre.MODEL_TYPE;
 
           lruMap.genre.set( new EDGenre( genreData ) );
         });
+
         return true;
       }
 
@@ -180,24 +181,26 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
     return Promise.reject( new TypeError( `Could not find route associated with ${type} in dataService` ) );
   }
 
-  return dbsReadyPromise.then( dbsLoaded => {
-    if ( pdb == null ) {
-      console.log( "pdb was not ready when getByType was called, re-setting pdb" );
-      pdb = getDBAndLRUForType( type ).pdb;
-    }
-
-    return connectionService.request( route, priority, json );
-  })
-    .then(function( response ) {
-      if ( false && response.status.code ) {
-        // todo add check for proper status code
+  return dbsReadyPromise.then(
+    dbsLoaded => {
+      if ( pdb == null ) {
+        console.log( "pdb was not ready when getByType was called, re-setting pdb" );
+        pdb = getDBAndLRUForType( type ).pdb;
       }
 
-      if ( response && response.data && response.meta && response.meta.modelType ) {
-        response.data.modelType = response.meta.modelType;
+      return connectionService.request( route, priority, json );
+    })
+    .then(function( edJson ) {
+      if ( !edJson.isSuccessful ) {
+        // todo do something when not successful
+        console.warn( "Non Successful status code in data service response, %s, %d", type, id );
       }
 
-      return pdb.objects.put( response.data );
+      if ( edJson.hasBlocks( "data", "meta" ) && edJson.hasProperty( "meta.modelType" ) ) {
+        edJson.data.modelType = edJson.meta.modelType;
+      }
+
+      return pdb.objects.put( edJson.data );
     })
     .then(function( dbResponse ) {
       console.log( "db response %o, original id %o", dbResponse, id );
@@ -248,14 +251,14 @@ dataService.getAllGenres = function() {
   });
 };
 
-export var updateModel = function( response ) {
+export var updateModel = function( edJson ) {
   var
     oldModel,
-    newModel = response.data,
-    { pdb, lru } = getDBAndLRUForType( response.meta.modelType );
+    newModel = edJson.data,
+    { pdb, lru } = getDBAndLRUForType( edJson.meta.modelType );
 
   // Set model type
-  newModel.modelType = response.meta.modelType;
+  newModel.modelType = edJson.meta.modelType;
 
   if ( !typeChecker.isProfileType( newModel ) && !typeChecker.isMediaType( newModel )) {
     throw new TypeError( "Do not recognize type passed to data service updateModel function" );

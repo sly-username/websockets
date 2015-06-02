@@ -1,16 +1,18 @@
+
 import EDWebSocket from "domain/ed/connection/EDWebSocket";
 import checkRoute from "domain/ed/connection/route-auth-check";
+import EDJSONResponse from "domain/ed/connection/EDJSONResponse";
 
 var
   edConnectionService,
-  needsAuth,
   lastRequest = Promise.resolve( true ),
   edSocket = new EDWebSocket(),
   parseSocketMessage = function( response ) {
     if ( typeof response.data === "string" ) {
-      return JSON.parse( response.data );
+      return new EDJSONResponse( response.data );
     }
 
+    console.warn( "Parse Socket Message bypassed creating an EDJSONResponse object! %o", response );
     return response.data;
   },
   joinData = function( dataObject, jsonObject ) {
@@ -20,24 +22,21 @@ var
     }, jsonObject );
   };
 
-// todo remove for debug!
-window.edSocket = edSocket;
-
 export default edConnectionService = {
   authenticateConnection( email, password ) {
     return edSocket.authenticate( email, password )
       .then( parseSocketMessage )
       .then( parsedResponse => {
-        // return dataBlock ( profileId, userId )
+        // return dataBlock ( profileId, userId, onboarded )
         return parsedResponse.data;
-      }).catch(( error ) => {
-        console.warn( "Issue authenticating in connection service" );
-        console.error( error );
+      }).catch( error => {
+        console.warn( "Issue authenticating in connection service: " + error.message );
+        console.error( error.stack );
         throw error;
       });
   },
 
-  deauthenticateSocket( ) {
+  deauthenticateSocket() {
     edSocket.close( 4000 );
   },
 
@@ -81,6 +80,9 @@ export default edConnectionService = {
     });
   },
 
+  // TODO Remove transactional request hack
+  //    reset formattedSend
+  //    remove lastRequest stuffs
   // these two functions mainly used by analytics send requests
   formattedSend( data ) {
     return this.formattedRequest( data );
@@ -94,4 +96,6 @@ export default edConnectionService = {
 };
 
 // TODO remove debug
+window.EDJSONResponse = EDJSONResponse;
+window.edSocket = edSocket;
 window.edConnectionService = edConnectionService;

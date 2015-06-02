@@ -85,12 +85,17 @@ window.edUserService = edUserService;
  */
 edUserService.getReferrals = function() {
   return edConnectionService.request( "referral/get", 10 )
-    .then( response => {
-      referralsRemaining = response.data.referralsRemaining;
+    .then( edJson => {
+      if ( edJson.isSuccessful && edJson.hasProperty( "data.referralsRemaining" )) {
+        referralsRemaining = edJson.data.referralsRemaining;
+      }
+
       return referralsRemaining;
     })
     .catch( error => {
-      console.log( "the user has no referrals remaining" );
+      console.warn( "Error on referral get: " + error.message );
+      // console.stack( error.stack );
+
       referralsRemaining = 0;
       return referralsRemaining;
     });
@@ -108,27 +113,31 @@ edUserService.login = function( email, password ) {
       }
     };
 
+  // conn service auth method returns only the "data" block of the response
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
       currentUserId = raw.userId;
-      hasOnboarded = ( raw.onboarded === "t" );
+      hasOnboarded = raw.onboarded;
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
       currentProfile = edProfile;
       isOpenSession = true;
-      sessionAuthJSON = json;
+      sessionAuthJSON = json.auth;
       loggedInDate = new Date();
 
-      edUserService.dispatch( createEvent( "edLogin", {
-        detail: {
-          userId: currentUserId,
-          profile: currentProfile
-        }
-      }));
+      edUserService.dispatch(
+        createEvent( "edLogin", {
+          detail: {
+            userId: currentUserId,
+            profile: currentProfile,
+            onboarded: hasOnboarded
+          }
+        })
+      );
 
       // save for login on app restart
-      if( localStorage ) {
+      if ( localStorage ) {
         localStorage.setItem( "edLoginInfo", JSON.stringify( json.auth ));
       }
 
@@ -140,16 +149,21 @@ edUserService.login = function( email, password ) {
           });
 
           return currentProfile;
+        })
+        .catch( error => {
+          console.warn( "Error with referral or analytics login during user-service login: " + error.message );
+          console.error( error.stack );
+          return currentProfile;
         });
     })
-    .catch(( error ) => {
-      console.error( error.stack );
+    .catch( error => {
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
       hasOnboarded = false;
       referralsRemaining = 0;
-      console.log( "this person was unable to login" );
+      console.warn( "this person was unable to login: " + error.message );
+      console.error( error.stack );
     });
 };
 
@@ -192,13 +206,13 @@ edUserService.changeProfileImage = function( image, fileData ) {
   var imageData = fileData != null ? fileData : image;
 
   return edConnectionService.request( "aws/token/get", 10 )
-    .then( awsToken => {
+    .then( edJson => {
       var
         json,
         s3 = new AWS.S3({
-          accessKeyId: awsToken.data.id,
-          secretAccessKey: awsToken.data.key,
-          region: awsToken.data.region
+          accessKeyId: edJson.data.id,
+          secretAccessKey: edJson.data.key,
+          region: edJson.data.region
         });
 
       return new Promise(( resolve, reject ) => {
@@ -225,10 +239,10 @@ edUserService.changeProfileImage = function( image, fileData ) {
           };
 
           return resolve( edConnectionService.request( "profile/art/create", 10, json ));
-        }); // end S3 callbac
+        }); // end S3 callback
       })
       .catch(function( error ) {
-        console.warn( "image upload was not successfully completed" );
+        console.warn( "image upload was not successfully completed: " + error.message );
         console.error( error.stack );
         throw error;
       });
@@ -248,24 +262,27 @@ edUserService.referral = function( email ) {
     }
   };
 
-  // todo need to prevent submitting when there are no referrals left
-  return edConnectionService.request( "referral/create", 10, json )
-    .then( response => {
-      if ( response && response.status && response.status.code && response.status.code === 1 ) {
+  if ( referralsRemaining === 0 ) {
+    return Promise.reject( new Error( "This user has used up all of their referrals" ) );
+  }
 
+  return edConnectionService.request( "referral/create", 10, json )
+    .then( edJson => {
+      if ( edJson.isSuccessful && edJson.hasData ) {
         edAnalytics.send( "invite", {
           // todo doesn't return invite code that is created by server
-          code: response.data.inviteCode,
-          recipient: response.data.email
+          code: edJson.data.inviteCode,
+          recipient: edJson.data.email
         });
 
-        referralsRemaining = response.data.referralsRemaining;
-        return referralsRemaining;
+        referralsRemaining = edJson.data.referralsRemaining;
       }
+
+      return referralsRemaining;
     })
     .catch( error => {
-      console.log( "referral email was not successfully sent" );
-      console.log( error );
+      console.warn( "referral email was not successfully sent: " + error.message );
+      console.error( error.stack );
       throw error;
     });
 };
@@ -274,40 +291,42 @@ edUserService.referral = function( email ) {
  * @method register
  */
 edUserService.register = function( args ) {
-  var authBlock = {
-    email: args.email,
-    password: args.password
-  };
+  var
+    json = {
+      data: args
+    };
 
-  return edConnectionService.request( "user/create", 10, { data: args } )
-    .then( response => {
+  return edConnectionService.request( "user/create", 10, json )
+    .then( edJson => {
       // validate response
-      if ( response && response.status && response.status.code && response.status.code === 1 &&
-        typeof response.data.id === "string" ) {
-        console.log( "response validated %o", response );
+      if ( edJson.isSuccessful && edJson.hasProperties( "data.id", "data.inviteCode" )) {
+        console.log( "response validated %o", edJson );
 
         edAnalytics.send( "register", {
-          code: response.data.inviteCode
+          code: edJson.data.inviteCode
         });
 
-        return response;
+        return edJson;
       }
 
-      if ( response && response.status && response.status.code && response.status.code === 10 ) {
-        console.log( "response on error", response );
+      if ( edJson.hasStatusCode( 10 )) {
+        console.log( "response on error", edJson );
         let tError = new TypeError( "Problem with Registration" );
-        tError.invalidFields = response.meta.invalidFields;
+        if ( edJson.hasProperty( "meta.invalidFields" )) {
+          tError.invalidFields = edJson.meta.invalidFields;
+        }
         throw tError;
       }
+
+      return edJson;
     })
     .catch( error => {
-      console.log( "Error registering new user in User Service" );
-      console.error( error );
-      // TODO throw proper error object
+      console.warn( "Error registering new user in User Service: " + error.message );
+      console.error( error.stack );
       throw error;
     })
-    .then( response => {
-      return edUserService.login( authBlock.email, authBlock.password );
+    .then(() => {
+      return edUserService.login( args.email, args.password );
     });
 };
 
@@ -322,12 +341,16 @@ edUserService.requestPasswordReset = function( email ) {
   };
 
   return edConnectionService.request( "user/password/get", 10, json )
-    .then( response => {
-      return response;
+    .then( edJson => {
+      if ( !edJson.isSuccessful ) {
+        console.warn( "non-successful status code in user/password/get response: %o", edJson );
+      }
+
+      return edJson;
     })
     .catch( error => {
-      console.log( "forgot password email was not successfully sent" );
-      console.log( error );
+      console.warn( "Forgot password email was not successfully sent: " + error.message );
+      console.error( error.stack );
       throw error;
     });
 };
@@ -344,26 +367,27 @@ edUserService.resetPassword = function( resetCode, password ) {
   };
 
   return edConnectionService.request( "user/password/set", 10, json )
-    .then( response => {
-      if ( response && response.status && response.status.code && response.status.code === 1 ) {
-        console.log( "sucessful password/set", response );
-        return response;
+    .then( edJson => {
+      if ( edJson.isSuccessful ) {
+        console.log( "successful password/set: %o", edJson );
       }
 
       // TODO the code for this will be 11
-      if ( response && response.status && response.status.code && response.status.code === 10 ) {
-        let resetError = new TypeError( "Problem with Reseting the Password" );
-        resetError = response.status.code;
+      if ( edJson.hasStatusCode( 11 ) || edJson.hasStatusCode( 10 ) ) {
+        let resetError = new Error( "Problem with Resetting the Password" );
+        resetError.response = edJson;
         throw resetError;
       }
+
+      return edJson;
     })
     .catch( error => {
-      console.log( "new password was not successfully set" );
-      console.log( error );
+      console.warn( "new password was not successfully set: " + error.message );
+      console.error( error.stack );
       throw error;
     })
-    .then( response => {
-      return edUserService.login( response.data.email, json.data.password );
+    .then( edJson => {
+      return edUserService.login( edJson.data.email, json.data.password );
     });
 };
 
@@ -378,8 +402,8 @@ edUserService.editProfile = function( args ) {
   }, args );
 
   return edConnectionService.request( "profile/set", 10, json )
-    .then( response => {
-      return updateModel( response );
+    .then( edJson => {
+      return updateModel( edJson );
     })
     .catch( error => {
       console.warn( "profile update was not successfully sent" );
@@ -393,8 +417,8 @@ edUserService.editProfile = function( args ) {
  */
 edUserService.getStats = function() {
   return edConnectionService.request( "user/stats/get", 10 )
-    .then( response => {
-      return response.data.stats;
+    .then( edJson => {
+      return edJson.data.stats;
     })
     .catch( error => {
       console.warn( "error retrieving user stats in user service" );
