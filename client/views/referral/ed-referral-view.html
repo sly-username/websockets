@@ -12,7 +12,7 @@
       </div>
       <ed-icon class="friends-icon" name="invite-friends"></ed-icon>
       <p class="referral-text">
-        {{ userService.currentProfile.name.first }}, you have {{ referrals }}<br>{{referrals === 1 ? "invite" : "invites"}} left
+        {{ userService.currentProfile.name.first }}, you have<br>{{ referrals }} {{referrals === 1 ? "invite" : "invites"}} left
       </p>
       <div id="errorEmail" class="hidden">Please enter a valid email address</div>
       <ed-form-input id="email-input" type="email" class="email" placeholder="Friend's Email"
