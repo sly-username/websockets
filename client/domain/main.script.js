@@ -34,7 +34,6 @@
             analyticsService,
             edAdMob
           ] = imports.map( imported => imported.default ),
-          animationWrapper = document.getElementById( "animation-wrapper" ),
           songCard = document.getElementById( "song-card" ),
           router = document.querySelector( "#root-app-router" );
 
@@ -42,14 +41,9 @@
           console.log( "in state-change event: %o", event.detail );
 
           if ( needToHidePlayerForRoute( event.detail.path )) {
-            animationWrapper.classList.remove( "player-padding" );
             songCard.hide();
           } else {
             songCard.show();
-
-            if ( !animationWrapper.classList.contains( "player-padding" ) && playerService.isPlaying ) {
-              animationWrapper.classList.add( "player-padding" );
-            }
           }
         });
 
@@ -74,6 +68,9 @@
 
         // need to init manually to ensure event binding
         router.init();
+
+        // bind logout
+        userService.on( "edLogout", function() { playerService.stop(); });
 
         if ( localStorage ) {
           loginData = localStorage.getItem( "edLoginInfo" );

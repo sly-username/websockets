@@ -9,7 +9,6 @@
       intervalTime = 500,
       updateTimeHandler,
       playerServiceEventHandler,
-      togglePlayerHandler,
       injectStatsHandler,
       resetRatingHandler;
 
@@ -111,6 +110,7 @@
       songCompleted: false,
       ready: function() {
         // dom selectors
+        this.animationWrapper = document.getElementById( "animation-wrapper" );
         this.songCard = document.getElementById( "song-card" );
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
         this.mainPlayer = this.$[ "main-player" ];
@@ -126,7 +126,6 @@
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          togglePlayer: togglePlayerHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this ),
           resetRating: resetRatingHandler.bind( this )
         };
@@ -147,17 +146,21 @@
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
+        this.animationWrapper.classList.remove( "player-padding" );
       },
       close: function() {
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
+        this.animationWrapper.classList.add( "player-padding" );
       },
       show: function() {
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
+        this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
+        this.animationWrapper.classList.remove( "player-padding" );
       }
       /* PROPERTIES */
       /* METHODS */

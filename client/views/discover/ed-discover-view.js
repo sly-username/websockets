@@ -9,7 +9,6 @@
         discoverService = imported[ 0 ].default,
         playerService = imported[ 1 ].default,
         discoverGenreHandler = function( event ) {
-
           var tmpId = event.target.getAttribute( "data-id" );
 
           if ( tmpId !== "profileBlend" ) {
@@ -18,29 +17,25 @@
 
           if ( tmpId != null ) {
             playerService.startMusicDiscovery( tmpId );
-            this.miniPlayerWrapper.classList.remove( "close" );
-            this.mainPlayerWrapper.classList.remove( "close" );
-            this.songCardWrapper.classList.remove( "minimized" );
+            this.songCard.open();
           }
         };
 
       polymer( "ed-discover-view", {
         ready: function() {
           this.discoverList = this.shadowRoot.querySelector( ".discover-list" );
-          this.edPlayer = document.querySelector( "#song-card" );
-          this.songCardWrapper = this.edPlayer.shadowRoot.querySelector( "#song-card-wrapper" );
-          this.mainPlayerWrapper = this.edPlayer.shadowRoot.querySelector( "#main-player-wrapper" );
-          this.miniPlayerWrapper = this.edPlayer.shadowRoot.querySelector( "#mini-player-wrapper" );
+          this.songCard = document.getElementById( "song-card" );
+
           // handler
           this.handlers = {
             discoverGenre: discoverGenreHandler.bind( this )
           };
         },
         attached: function() {
-          this.discoverList.addEventListener( "click", this.handlers.discoverGenre );
+          this.discoverList.addEventListener( "touchstart", this.handlers.discoverGenre );
         },
         detached: function() {
-          this.discoverList.removeEventListener( "click", this.handlers.discoverGenre );
+          this.discoverList.removeEventListener( "touchstart", this.handlers.discoverGenre );
         },
         attributeChanged: function( attrName, oldValue, newValue ) {}
       });
