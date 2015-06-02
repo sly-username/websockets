@@ -193,7 +193,8 @@
           this.shadowScrubber.style.opacity = 0;
           this.playBtn.disabled = true;
           this.playIcon.style.opacity = 0.02;
-          this.playIcon.setAttribute( "name", "play");
+          this.playIcon.setAttribute( "name", "play" );
+          this.dispatchEvent( createUpdateEvent( "songComplete" ));
         } else {
           this.complete = false;
           this.removeAttribute( "complete" );
