@@ -64,17 +64,14 @@
         this.hasRated = true;
 
         if ( this.songCompleted ) {
-          this.handler.resetRating();
           playerService.skip();
         }
       }
 
       if ( eventType === "skip" ) {
+        playerService.skip();
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
-        this.handler.resetRating();
-
-        playerService.skip();
       }
 
       if ( eventType === "showRatings" ) {
@@ -93,11 +90,14 @@
         this.songCardWrapper.classList.remove( "minimized" );
       }
 
+      if ( eventType === "resetCard" ) {
+        this.handler.resetRating();
+      }
+
       if ( eventType === "songComplete" ) {
         this.songCompleted = true;
 
         if ( this.hasRated ) {
-          this.handler.resetRating();
           playerService.skip();
         }
       }

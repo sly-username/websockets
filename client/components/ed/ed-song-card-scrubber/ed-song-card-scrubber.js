@@ -90,7 +90,6 @@
         var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
         if ( eventType === "play" ) {
-          console.log( "inside play event maiiiin" );
           this.playIcon.setAttribute( "name", "pause" );
         }
 

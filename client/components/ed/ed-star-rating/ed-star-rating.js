@@ -66,7 +66,6 @@
       }
 
       if ( event.detail.type === "skip" ) {
-        console.log( "resetted?" );
         this.transformOverlap( -100 );
         this.firstInput.checked = false;
         this.secondInput.checked = false;

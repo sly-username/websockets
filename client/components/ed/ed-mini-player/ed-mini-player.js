@@ -33,7 +33,6 @@
         var eventType = event.detail.type;
 
         if ( eventType === "play" ) {
-          console.log( "inside play event mini" );
           this.playIcon.setAttribute( "name", "pause" );
           this.$[ "title" ].innerText = playerService.currentStats.playing.name;
         }
