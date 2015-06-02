@@ -146,7 +146,7 @@
         // mouse events
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
-        this.skipBtn.addEventListener( "click", this.handler.skipSong );
+        this.skipBtn.addEventListener( "touchstart", this.handler.skipSong );
         this.addEventListener( "mouseup", this.handler.scrubFire );
         this.addEventListener( "mousemove", this.handler.triggerMove );
         this.addEventListener( "mouseout", this.handler.mouseOut );
@@ -167,6 +167,7 @@
       detached: function() {
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
+        this.skipBtn.removeEventListener( "touchstart", this.handler.skipSong );
         this.removeEventListener( "mouseup", this.handler.scrubFire );
         this.removeEventListener( "mousemove", this.handler.triggerMove );
         this.removeEventListener( "mouseout", this.handler.mouseOut );
