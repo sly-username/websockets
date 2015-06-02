@@ -110,8 +110,9 @@ edUserService.login = function( email, password ) {
 
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
+      console.log( raw );
       currentUserId = raw.userId;
-      hasOnboarded = ( raw.onboarded === "t" );
+      hasOnboarded = ( raw.onboarded );
       return edDataService.getProfileById( raw.profileId );
     })
     .then( edProfile => {
