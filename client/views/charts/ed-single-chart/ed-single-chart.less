@@ -72,36 +72,28 @@
     color: @originalTeal;
     text-align: center;
     background-color: @originalPurple;
-    padding: 2rem 0;
+    padding-bottom: 2%;
     .time-left {
       white-space: pre;
-      .edType( heading-XXS );
+      .edType( sylvia-XXXS );
       text-transform: uppercase;
       margin: 0;
     }
 
     .countdown-timer {
       white-space: pre;
-      .edType( paragraph-M );
-      margin: 0 0 2rem 0;
-      font-weight: 500;
+      .edType( heading-XS );
+      margin: 0;
     }
   }
 
   #badge-hrs {
-    &::shadow {
-      svg {
-        width: 18rem;
-        height: 18rem;
-        position: static;
-        top: 0;
-        .transform( translateY( 0% ) );
-      }
-    }
+    height: 100%;
+    width: 65%;
   }
 
   .default-view {
-    .edType( heading-XS );
+    .edType( paragraph-S );
     color: @lightGrey1;
     flex: 1;
     width: 100%;

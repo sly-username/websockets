@@ -8,7 +8,6 @@
     var
       intervalTime = 200,
       discoverService = imported[0].default,
-      clickEvents = [ "touchstart", "mousedown" ],
       createEvent = imported[1].default,
       createUpdateEvent = function( name, detail ) {
         detail = detail || {};
@@ -20,11 +19,9 @@
       },
       leftMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveLeft" ));
-        console.log( "move left" );
       },
       rightMoveHandler = function() {
         this.dispatchEvent( createUpdateEvent( "moveRight" ));
-        console.log( "move right" );
       },
       requestArtists = function( trackList ) {
         console.log( "need to find artsits for: %o", trackList );
@@ -131,13 +128,8 @@
           updateCountdown: updateCountdownHandler.bind( this )
         };
 
-        //clickEvents.forEach( function( event ) {
-        //  this.moveLeft.addEventListener( event, this.handler.leftMove );
-        //  this.moveRight.addEventListener( event, this.handler.rightMove );
-        //}, this );
-
-        this.moveLeft.addEventListener( "click", this.handler.leftMove );
-        this.moveRight.addEventListener( "click", this.handler.rightMove );
+        this.moveLeft.addEventListener( "touchstart", this.handler.leftMove );
+        this.moveRight.addEventListener( "touchstart", this.handler.rightMove );
 
         // default values
         if ( this.noRankings == null ) {
@@ -145,10 +137,8 @@
         }
       },
       detached: function() {
-        clickEvents.forEach( function( event ) {
-          this.moveLeft.removeEventListener( "click", this.handler.leftMove );
-          this.moveRight.removeEventListener( "click", this.handler.rightMove );
-        }, this );
+        this.moveLeft.removeEventListener( "touchstart", this.handler.leftMove );
+        this.moveRight.removeEventListener( "touchstart", this.handler.rightMove );
       },
       getLeaderBoard: function() {
         console.log( this.chartObject.leaderboardCollection );
