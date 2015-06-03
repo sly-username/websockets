@@ -16,6 +16,10 @@
     resetRatingHandler = function() {
       this.songCompleted = false;
       this.hasRated = false;
+      this.starRating.transformOverlap( -100 );
+      this.mainPlayer.setAttribute( "value", "" );
+      this.ratingsForm.classList.remove( "show" );
+      this.disableText.classList.remove( "hide" );
     };
 
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -59,17 +63,14 @@
         this.hasRated = true;
 
         if ( this.songCompleted ) {
-          this.handler.resetRating();
           playerService.skip();
         }
       }
 
       if ( eventType === "skip" ) {
+        playerService.skip();
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
-        this.ratingsForm.classList.remove( "show" );
-
-        playerService.skip();
       }
 
       if ( eventType === "showRatings" ) {
@@ -88,11 +89,15 @@
         this.songCardWrapper.classList.remove( "minimized" );
       }
 
+      if ( eventType === "resetSongCard" ) {
+        // TODO refactor to make a full reset for all songcard components
+        this.handler.resetRating();
+      }
+
       if ( eventType === "songComplete" ) {
         this.songCompleted = true;
 
         if ( this.hasRated ) {
-          this.handler.resetRating();
           playerService.skip();
         }
       }
@@ -110,6 +115,7 @@
       songCompleted: false,
       ready: function() {
         // dom selectors
+        this.starRating = this.$[ "star-rating" ];
         this.animationWrapper = document.getElementById( "animation-wrapper" );
         this.songCard = document.getElementById( "song-card" );
         this.songCardWrapper = this.$[ "song-card-wrapper" ];
@@ -142,7 +148,7 @@
       attributeChanged: function( attrName, oldValue, newValue ) {
 
       },
-      /* open/close methods slide player up & down */
+      /* open & close methods slide player up & down */
       open: function() {
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
@@ -155,7 +161,7 @@
         this.songCardWrapper.classList.add( "minimized" );
         this.animationWrapper.classList.add( "player-padding" );
       },
-      /* show/hide methods toggle entire song cards display/visibility */
+      /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
         this.songCard.classList.remove( "hidden" );
       },

@@ -90,7 +90,6 @@
         var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
         if ( eventType === "play" ) {
-          console.log( "inside play event maiiiin" );
           this.playIcon.setAttribute( "name", "pause" );
         }
 
@@ -107,11 +106,24 @@
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
       },
+      enableScrubberHandler = function() {
+        this.complete = false;
+        this.removeAttribute( "complete" );
+        this.scrubber.style.opacity = 1;
+        this.shadowScrubber.style.opacity = .4;
+        this.playBtn.disabled = false;
+        this.playIcon.style.opacity = 1;
+      },
+      disableScrubberHandler = function() {
+        this.complete = true;
+        this.setAttribute( "complete", "" );
+        this.scrubber.style.opacity = 0;
+        this.shadowScrubber.style.opacity = 0;
+        this.playBtn.disabled = true;
+        this.playIcon.style.opacity = 0.02;
+      },
       mouseOutHandler = function() {
         this.mouseDown = false;
-      },
-      showRatingsHandler = function() {
-        this.dispatchEvent( createUpdateEvent( "showRatings" ));
       };
 
     polymer( "ed-song-card-scrubber", {
@@ -131,13 +143,14 @@
         this.handler = {
           initScrubber: initScrubberHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
+          enableScrubber: enableScrubberHandler.bind( this ),
+          disableScrubber: disableScrubberHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
-          mouseOut: mouseOutHandler.bind( this ),
-          showRatings: showRatingsHandler.bind( this )
+          mouseOut: mouseOutHandler.bind( this )
         };
 
         // init
@@ -147,7 +160,7 @@
         // mouse events
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
-        this.skipBtn.addEventListener( "click", this.handler.skipSong );
+        this.skipBtn.addEventListener( "touchstart", this.handler.skipSong );
         this.addEventListener( "mouseup", this.handler.scrubFire );
         this.addEventListener( "mousemove", this.handler.triggerMove );
         this.addEventListener( "mouseout", this.handler.mouseOut );
@@ -168,6 +181,7 @@
       detached: function() {
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
+        this.skipBtn.removeEventListener( "touchstart", this.handler.skipSong );
         this.removeEventListener( "mouseup", this.handler.scrubFire );
         this.removeEventListener( "mousemove", this.handler.triggerMove );
         this.removeEventListener( "mouseout", this.handler.mouseOut );
@@ -187,21 +201,14 @@
         }
 
         if ( this.value === this.max ) {
-          this.complete = true;
-          this.setAttribute( "complete", "" );
-          this.scrubber.style.opacity = 0;
-          this.shadowScrubber.style.opacity = 0;
-          this.playBtn.disabled = true;
-          this.playIcon.style.opacity = 0.02;
-          this.playIcon.setAttribute( "name", "play" );
+          this.handler.disableScrubber();
           this.dispatchEvent( createUpdateEvent( "songComplete" ));
         } else {
-          this.complete = false;
-          this.removeAttribute( "complete" );
+          this.handler.enableScrubber();
         }
 
-        if ( this.value === this.max || Math.floor( this.value ) > 29 ) {
-          this.handler.showRatings();
+        if ( Math.floor( this.value ) > 29 ) {
+          this.dispatchEvent( createUpdateEvent( "showRatings" ));
         }
       }
     });

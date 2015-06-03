@@ -278,6 +278,13 @@ export default edPlayerService = {
             type: "play"
           }
         }));
+      })
+      .then(() => {
+        return this.emitter.dispatch( createEvent( "playerUpdate", {
+          detail: {
+            type: "resetSongCard"
+          }
+        }));
       });
   },
 
