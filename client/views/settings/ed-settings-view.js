@@ -19,6 +19,12 @@
             case "About-button":
               cordova.InAppBrowser.open( "http://www.eardish.com/privacy", "_blank" );
               break;
+            case "Support-button":
+              cordova.InAppBrowser.open( "http://www.eardish.com/support", "_blank" );
+              break;
+            default:
+              // do nothing
+              break;
           }
         }
       };
