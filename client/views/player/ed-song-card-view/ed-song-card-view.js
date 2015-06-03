@@ -90,7 +90,7 @@
       }
 
       if ( eventType === "resetSongCard" ) {
-        // TODO refactor to make a full reset for songcard components
+        // TODO refactor to make a full reset for all songcard components
         this.handler.resetRating();
       }
 
