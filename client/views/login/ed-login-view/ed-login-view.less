@@ -1,40 +1,37 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
 }
 
-.hidden {
-  display: none;
+.hidden();
+
+.login-container {
+  .mainPicturedBackground();
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
-  height: 46vh;
-}
-
-.login-container {
-  .mainPicturedBackground();
+  width: 100%;
+  height: 45vh;
 }
 
 .ed-login-body {
   text-align: center;
+  width: 100%;
+  height: 55vh;
 }
 
 #errorEmail, #errorPassword, #errorServer {
-  // todo update mixin
-  .edType( sylvia-XXS );
-  color: @originalTeal;
+  .edType( paragraph-S );
+  color: @lightGrey1;
   text-align: center;
-  margin: 0;
-}
-
-#errorServer {
-  // todo update mixin
-  .edType( sylvia-XS );
+  margin: 0 10px;
 }
 
 #login-submit {
@@ -42,12 +39,12 @@
 }
 
 #login-forgot-password {
-  .edType( sylvia-M );
-  text-decoration: none;
-  color: @lightGrey1;
-  text-align: center;
   display: block;
   margin: 5% auto;
+  .edType( heading-S );
+  color: @lightGrey1;
+  text-decoration: none;
+  text-align: center;
 }
 
 #sign-up-button {

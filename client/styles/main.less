@@ -17,12 +17,12 @@ html {
 }
 
 body {
-  background-color: @originalWhite;
+  background-color: @darkPurple3;
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   &[unresolved] {
     display: block;
     opacity: 1;
@@ -48,8 +48,8 @@ body {
   z-index: 5;
   transition: opacity ease-in 0.2s;
   svg {
-    width: 95%;
-    margin: 25% auto 0;
+    width: 94%;
+    padding: 0 3%;
     fill: white;
     opacity: 0;
     transition: inherit;
@@ -72,15 +72,14 @@ ed-side-menu + #animation-wrapper {
 }
 
 #animation-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
-  min-height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
-  position: absolute;
-  max-width: 59.6rem;
   transition: transform .33s ease-in-out;
-
   &.player-padding {
     padding-bottom: 6rem;
   }

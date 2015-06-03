@@ -34,9 +34,19 @@
     focus: function() {
       return this.$.input.focus();
     },
-    ready: function() {},
-    attached: function() {},
-    detached: function() {},
+    ready: function() {
+      this.handlers = {
+        focus: function() {
+          this.focus();
+        }.bind( this )
+      };
+    },
+    attached: function() {
+      this.addEventListener( "focus", this.handlers.focus );
+    },
+    detached: function() {
+      this.removeEventListener( "focus", this.handlers.focus );
+    },
     attributeChanged: function( attrName, oldValue, newValue ) {}
     /* PROPERTIES */
     /* METHODS */

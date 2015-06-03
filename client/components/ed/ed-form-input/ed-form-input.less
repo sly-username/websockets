@@ -6,6 +6,17 @@
   display: block;
 }
 
+:host(:focus) {
+  outline: none;
+}
+
+:host(.invalid) {
+  .form-input-container {
+    background-color: @originalRed;
+    border-color: @darkRed1;
+  }
+}
+
 .form-input-container {
   display: block;
   width: 95%;
@@ -30,8 +41,7 @@ label {
 }
 
 input {
-  // todo font mixin
-  .edType( sylvia-S );
+  .edType( heading-L );
   color: @originalWhite;
   float: left;
   clear: none;
@@ -55,13 +65,6 @@ ed-icon {
 
 .form-input-container {
   &.invalid-field {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
-}
-
-:host(.invalid) {
-  .form-input-container {
     background-color: @originalRed;
     border-color: @darkRed1;
   }

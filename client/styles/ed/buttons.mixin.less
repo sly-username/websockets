@@ -10,46 +10,35 @@
 * This mixin is used to make the standard eardish button
 *
 */
-.edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1; @disabledColor: @lightGrey1 ) when ( iscolor(@backgroundColor) ) {
-  .edType( sylvia-XL );
-  color: @originalWhite;
+.edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1; @disabledColor: @originalGrey ) when ( iscolor(@backgroundColor) ) {
+  .edType( heading-L );
+  display: inherit;
   width: 100%;
-  max-width: 59.6rem;
   margin: 4% auto 0;
   padding: 4%;
-  border: none;
+  border: 0;
+  color: @originalWhite;
   background-color: @backgroundColor;
   text-transform: uppercase;
-  display: inherit;
+  text-align: center;
   &:active, &:hover {
     background-color: @activeColor;
+    border: 0;
   }
   &:disabled {
     background-color: @disabledColor;
+    color: @lightGrey1;
   }
 }
 
 .edSecondaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1 ) when ( iscolor(@backgroundColor) ) {
   .edPrimaryButton( @backgroundColor; @activeColor );
-  .edType( sylvia-L );
+  .edType( heading-M );
   padding: 2% 0;
   margin: 3% auto 0;
   .small-text {
-    // todo change font
-    .edType( skinnysly-S );
-    color: #31AFAE;
+    .edType( heading-S );
+    color: @originalTeal;
     text-transform: none;
-  }
-}
-
-.edButtonTertiary() {
-  .edType( skinnysly-S );
-  color: @originalWhite;
-  padding: 4vh 6vw;
-  width: 100vw;
-  background-color: @darkPurple3;
-  border-bottom: 0.2rem solid @darkPurple1;
-  &:active, &:hover {
-    background-color: @darkPurple1;
   }
 }

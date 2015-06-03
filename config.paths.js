@@ -126,7 +126,7 @@ paths.less = {
   ].map( s => join( paths.client, s ) )
 };
 paths.less.compile = paths.less.included
-  .map( s => join( "!", s ) )
+  .map( s => "!" + s )
   .concat( paths.less.src );
 
 /*** Paths to JavaScript Files ***/
