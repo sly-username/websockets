@@ -282,7 +282,7 @@ export default edPlayerService = {
       .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
-            type: "resetScrubber"
+            type: "resetSongCard"
           }
         }));
       });

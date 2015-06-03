@@ -106,6 +106,22 @@
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
       },
+      enableScrubberHandler = function() {
+        this.complete = false;
+        this.removeAttribute( "complete" );
+        this.scrubber.style.opacity = 1;
+        this.shadowScrubber.style.opacity = .4;
+        this.playBtn.disabled = false;
+        this.playIcon.style.opacity = 1;
+      },
+      disableScrubberHandler = function() {
+        this.complete = true;
+        this.setAttribute( "complete", "" );
+        this.scrubber.style.opacity = 0;
+        this.shadowScrubber.style.opacity = 0;
+        this.playBtn.disabled = true;
+        this.playIcon.style.opacity = 0.02;
+      },
       mouseOutHandler = function() {
         this.mouseDown = false;
       };
@@ -127,6 +143,8 @@
         this.handler = {
           initScrubber: initScrubberHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
+          enableScrubber: enableScrubberHandler.bind( this ),
+          disableScrubber: disableScrubberHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
@@ -183,31 +201,15 @@
         }
 
         if ( this.value === this.max ) {
-          this.disableScrubber();
+          this.handler.disableScrubber();
           this.dispatchEvent( createUpdateEvent( "songComplete" ));
         } else {
-          this.enableScrubber();
+          this.handler.enableScrubber();
         }
 
         if ( Math.floor( this.value ) > 29 ) {
           this.dispatchEvent( createUpdateEvent( "showRatings" ));
         }
-      },
-      disableScrubber: function() {
-        this.complete = true;
-        this.setAttribute( "complete", "" );
-        this.scrubber.style.opacity = 0;
-        this.shadowScrubber.style.opacity = 0;
-        this.playBtn.disabled = true;
-        this.playIcon.style.opacity = 0.02;
-      },
-      enableScrubber: function() {
-        this.complete = false;
-        this.removeAttribute( "complete" );
-        this.scrubber.style.opacity = 1;
-        this.shadowScrubber.style.opacity = .4;
-        this.playBtn.disabled = false;
-        this.playIcon.style.opacity = 1;
       }
     });
   });

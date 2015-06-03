@@ -17,7 +17,7 @@
       this.songCompleted = false;
       this.hasRated = false;
       this.starRating.transformOverlap( -100 );
-      this.mainPlayer.enableScrubber();
+      this.mainPlayer.setAttribute( "value", "" );
       this.ratingsForm.classList.remove( "show" );
       this.disableText.classList.remove( "hide" );
     };
@@ -89,7 +89,8 @@
         this.songCardWrapper.classList.remove( "minimized" );
       }
 
-      if ( eventType === "resetCard" ) {
+      if ( eventType === "resetSongCard" ) {
+        // TODO refactor to make a full reset for songcard components
         this.handler.resetRating();
       }
 
@@ -147,7 +148,7 @@
       attributeChanged: function( attrName, oldValue, newValue ) {
 
       },
-      /* open/close methods slide player up & down */
+      /* open & close methods slide player up & down */
       open: function() {
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
@@ -160,7 +161,7 @@
         this.songCardWrapper.classList.add( "minimized" );
         this.animationWrapper.classList.add( "player-padding" );
       },
-      /* show/hide methods toggle entire song cards display/visibility */
+      /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
         this.songCard.classList.remove( "hidden" );
       },

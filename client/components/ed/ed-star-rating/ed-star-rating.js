@@ -76,9 +76,7 @@
     };
 
     minimizePlayerHandler = function() {
-      this.miniPlayer.classList.add( "show-mini" );
-      this.mainPlayer.classList.add( "hide-main" );
-      this.songCardWrapper.classList.add( "minimized" );
+      this.songCard.close();
     };
 
     polymer( "ed-star-rating", {
