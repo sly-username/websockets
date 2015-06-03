@@ -35,6 +35,7 @@ export default edDiscoverService = {
         return trackIDList;
       })
       .catch( error => {
+        console.warn( "Error getting tracks from genre id: " + error.message );
         throw error;
       });
   },
@@ -51,7 +52,7 @@ export default edDiscoverService = {
         return trackIDList;
       })
       .catch( error => {
-        console.log( "no" );
+        console.warn( "Error getting tracks from profile blend: " + error.message );
         throw error;
       });
   },
