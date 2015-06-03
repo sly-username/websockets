@@ -116,6 +116,7 @@ edUserService.login = function( email, password ) {
   // conn service auth method returns only the "data" block of the response
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
+      console.log( raw );
       currentUserId = raw.userId;
       hasOnboarded = raw.onboarded;
       return edDataService.getProfileById( raw.profileId );

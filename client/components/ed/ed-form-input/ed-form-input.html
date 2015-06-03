@@ -5,7 +5,9 @@
     <link rel="stylesheet" href="./ed-form-input.css">
 
     <div class="form-input-container">
-      <ed-icon name="{{icon}}"></ed-icon>
+      <label for="input">
+        <ed-icon name="{{icon}}"></ed-icon>
+      </label>
       <input id="input" type="{{type}}" min="{{min}}" max="{{max}}" placeholder="{{placeholder}}" required?="{{required}}"/>
     </div>
   </template>

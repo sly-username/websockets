@@ -128,8 +128,8 @@
           updateCountdown: updateCountdownHandler.bind( this )
         };
 
-        this.moveLeft.addEventListener( "click", this.handler.leftMove );
-        this.moveRight.addEventListener( "click", this.handler.rightMove );
+        this.moveLeft.addEventListener( "touchstart", this.handler.leftMove );
+        this.moveRight.addEventListener( "touchstart", this.handler.rightMove );
 
         // default values
         if ( this.noRankings == null ) {
@@ -137,8 +137,8 @@
         }
       },
       detached: function() {
-        this.moveLeft.removeEventListener( "click", this.handler.leftMove );
-        this.moveRight.removeEventListener( "click", this.handler.rightMove );
+        this.moveLeft.removeEventListener( "touchstart", this.handler.leftMove );
+        this.moveRight.removeEventListener( "touchstart", this.handler.rightMove );
       },
       getLeaderBoard: function() {
         console.log( this.chartObject.leaderboardCollection );

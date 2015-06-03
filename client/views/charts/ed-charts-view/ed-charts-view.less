@@ -7,23 +7,19 @@
 .chart-title-bar {
   .edTitleBar();
   z-index: 4;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
 }
 
 .chart-wrapper {
   position: relative;
   display:flex;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
 .chart-arrows {
   position: absolute;
+  top: 2.5%;
   width: 20%;
-  height: 25rem;
   pointer-events: none;
   z-index: 1;
   &::shadow {
@@ -37,16 +33,16 @@
 }
 
 #arrow-right {
-  right: 2rem;
+  right: 3%;
 }
 
 #arrow-left {
-  left: 2rem;
+  left: 3%;
 }
 
 .single-chart {
   position: absolute;
-  top: 9rem;
+  top: 11vh;
   right: 0;
   left: 0;
   height: 100%;

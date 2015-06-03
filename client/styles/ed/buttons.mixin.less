@@ -11,11 +11,12 @@
 *
 */
 .edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1; @disabledColor: @lightGrey1 ) when ( iscolor(@backgroundColor) ) {
-  .edType( heading-L );
+  .edType( sylvia-XL );
   color: @originalWhite;
   width: 100%;
   max-width: 59.6rem;
-  height: 9.2rem;
+  margin: 4% auto 0;
+  padding: 4%;
   border: none;
   background-color: @backgroundColor;
   text-transform: uppercase;
@@ -30,20 +31,22 @@
 
 .edSecondaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1 ) when ( iscolor(@backgroundColor) ) {
   .edPrimaryButton( @backgroundColor; @activeColor );
-  .edType( heading-M );
+  .edType( sylvia-L );
+  padding: 2% 0;
+  margin: 3% auto 0;
   .small-text {
-    .edType( heading-XS );
+    // todo change font
+    .edType( skinnysly-S );
     color: #31AFAE;
     text-transform: none;
-    margin-bottom: 0;
   }
 }
 
 .edButtonTertiary() {
-  .edType( heading-M );
+  .edType( skinnysly-S );
   color: @originalWhite;
-  padding: 3.5rem 2rem;
-  width: 100%;
+  padding: 4vh 6vw;
+  width: 100vw;
   background-color: @darkPurple3;
   border-bottom: 0.2rem solid @darkPurple1;
   &:active, &:hover {

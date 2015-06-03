@@ -10,14 +10,12 @@
       </div>
       <div class="ed-forgot-body">
         <div class="forgot-text">
-          <span>We've sent a security code your way.</span>
-          <span>Enter it below and create a new password:</span>
+          <p>We've sent a security code your way. Enter it below and create a new password:</p>
         </div>
         <section class="error-messages">
           <!-- todo update with proper copy -->
           <div id="errorResetCode" class="hidden">
-            <span>Your security code isn't quite right.</span>
-            <span>Check your caps key and give it another shot!</span>
+            <p>Your security code isn't quite right. Check your caps key and give it another shot!</p>
           </div>
           <div id="errorPasswordShort" class="hidden">Your password needs to be at least 8 characters</div>
           <div id="errorPasswordMismatch" class="hidden">Your passwords don't match, please try again</div>
@@ -25,7 +23,7 @@
         <div id="forgot-form">
           <ed-form-input type="text" class="reset-code" placeholder="Security Code" icon="security-code" required
               ></ed-form-input>
-          <p class="password-req-text"> *Passwords need to have 8 characters minimum </p>
+          <p class="password-req-text"> *8 characters minimum </p>
           <ed-paired-input class="password" type="password" placeholder="Password"
                            icon="password"></ed-paired-input>
           <button id="forgot-submit" type="submit">Set new password</button>

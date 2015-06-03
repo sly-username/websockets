@@ -79,6 +79,7 @@
         }, this );
       },
       attached: function() {
+        console.log( router );
         this.handler = {
           updateChartView: updateChartsViewHandler.bind( this ),
           resetChartView: resetChartViewHandler.bind( this )

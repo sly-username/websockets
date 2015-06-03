@@ -13,54 +13,45 @@
 
 .ed-logo-header {
   .logoFormHeader();
-  margin-bottom: 17rem;
+  height: 46vh;
 }
 
 .login-container {
   .mainPicturedBackground();
-  height: 100%;
 }
 
 .ed-login-body {
   text-align: center;
-  ed-form-input {
-    margin: .5rem;
-    text-align: center;
-  }
+}
+
+#errorEmail, #errorPassword, #errorServer {
+  // todo update mixin
+  .edType( sylvia-XXS );
+  color: @originalTeal;
+  text-align: center;
+  margin: 0;
 }
 
 #errorServer {
- .edType( heading-XL );
-  color: @originalTeal;
-  text-align: center;
-  padding-top: 9rem;
-}
-
-#errorEmail, #errorPassword {
-  .edType( heading-L );
-  color: @originalTeal;
-  text-align: center;
+  // todo update mixin
+  .edType( sylvia-XS );
 }
 
 #login-submit {
   .edPrimaryButton();
-  bottom: 0;
-  margin: 3% auto 0 auto;
 }
 
 #login-forgot-password {
+  .edType( sylvia-M );
   text-decoration: none;
-  .edType( heading-S );
   color: @lightGrey1;
   text-align: center;
   display: block;
-  margin: .5rem auto;
+  margin: 5% auto;
 }
 
 #sign-up-button {
   .edSecondaryButton();
-  bottom: 13rem;
-  margin: 0 auto;
   text-decoration: none;
 }
 
