@@ -57,11 +57,11 @@ cleanUp = function( path ) {
 
 // DEV TASKS
 gulp.task( "envBuild:dev:copy", function() {
-  var src = path.join( config.dev, config.envBuild.src.dev );
-  return runCopy( src, config.dev, "dev" );
+  var src = path.join( config.dev, config.envBuild.src[ thisEnv ] );
+  return runCopy( src, config.dev, thisEnv );
 });
 gulp.task( "envBuild:dev:cleanup", cleanUp(
-  path.join( config.dev, config.envBuild.remove.dev )
+  path.join( config.dev, config.envBuild.remove[ thisEnv ] )
 ));
 
 gulp.task( "envBuild:dev", gulp.series(

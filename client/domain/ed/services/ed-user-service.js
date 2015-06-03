@@ -116,7 +116,6 @@ edUserService.login = function( email, password ) {
   // conn service auth method returns only the "data" block of the response
   return edConnectionService.authenticateConnection( email, password )
     .then( raw => {
-      console.log( raw );
       currentUserId = raw.userId;
       hasOnboarded = raw.onboarded;
       return edDataService.getProfileById( raw.profileId );
@@ -313,6 +312,7 @@ edUserService.register = function( args ) {
       if ( edJson.hasStatusCode( 10 )) {
         console.log( "response on error", edJson );
         let tError = new TypeError( "Problem with Registration" );
+
         if ( edJson.hasProperty( "meta.invalidFields" )) {
           tError.invalidFields = edJson.meta.invalidFields;
         }
@@ -376,7 +376,7 @@ edUserService.resetPassword = function( resetCode, password ) {
       // TODO the code for this will be 11
       if ( edJson.hasStatusCode( 11 ) || edJson.hasStatusCode( 10 ) ) {
         let resetError = new Error( "Problem with Resetting the Password" );
-        resetError.response = edJson;
+        resetError.response = edJson.toJSON();
         throw resetError;
       }
 
@@ -422,8 +422,8 @@ edUserService.getStats = function() {
       return edJson.data.stats;
     })
     .catch( error => {
-      console.warn( "error retrieving user stats in user service" );
-      console.log( error );
+      console.warn( "error retrieving user stats in user service: " + error.message );
+      console.error( error.stack );
       throw error;
     });
 };
