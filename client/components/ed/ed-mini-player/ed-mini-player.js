@@ -16,17 +16,6 @@
           detail: detail
         });
       },
-      swapIconHandler = function() {
-        var state = this.playIcon.getAttribute( "name" );
-
-        if ( this.playIcon.getAttribute( "name" ) === "play" ) {
-          this.playIcon.setAttribute( "name", "pause" );
-        } else {
-          this.playIcon.setAttribute( "name", "play" );
-        }
-
-        this.dispatchEvent( createUpdateEvent( state ));
-      },
       playerUpdateHandler = function( event ) {
         var eventType = event.detail.type;
 
@@ -56,21 +45,30 @@
 
         // event handler
         this.handler = {
-          swapIcon: swapIconHandler.bind( this ),
           playerUpdate: playerUpdateHandler.bind( this )
         };
       },
       attached: function() {
-        this.playBtn.addEventListener( "click", this.handler.swapIcon );
-        this.playBtn.addEventListener( "tap", this.handler.swapIcon );
-
-        playerService.emitter.on( "playerUpdate", this.handler.playerUpdate )
+        playerService.emitter.on( "playerUpdate", this.handler.playerUpdate );
       },
       detached: function() {
-        this.playBtn.removeEventListener( "click", this.handler.swapIcon );
-        this.playBtn.removeEventListener( "tap", this.handler.swapIcon );
+        playerService.emitter.off( "playerUpdate", this.handler.playerUpdate );
+      },
+      toggleIcon: function( event ) {
+        var state = this.playIcon.getAttribute( "name" );
 
-        playerService.emitter.off( "playerUpdate", this.handler.playerUpdate )
+        event.stopPropagation();
+
+        if ( this.playIcon.getAttribute( "name" ) === "play" ) {
+          this.playIcon.setAttribute( "name", "pause" );
+        } else {
+          this.playIcon.setAttribute( "name", "play" );
+        }
+
+        this.dispatchEvent( createUpdateEvent( state ));
+      },
+      hideMini: function() {
+        this.classList.add( "hidden" );
       }
     });
   });
