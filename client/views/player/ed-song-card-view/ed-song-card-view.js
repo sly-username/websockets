@@ -154,8 +154,12 @@
         this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
         this.animationWrapper.classList.remove( "player-padding" );
+
+        window.AdMob.hideBanner();
       },
       close: function() {
+        window.AdMob.showBanner();
+
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
@@ -163,9 +167,13 @@
       },
       /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
+        window.AdMob.showBanner();
+
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
+        window.AdMob.hideBanner();
+
         this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
         this.animationWrapper.classList.remove( "player-padding" );
