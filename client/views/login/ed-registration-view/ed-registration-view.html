@@ -11,7 +11,6 @@
       </div>
       <div class="ed-registration-body">
         <section class="error-messages">
-          <!-- todo update with proper copy -->
           <div id="errorMissing" class="hidden errorFirstName errorLastName errorYearOfBirth">All fields are required</div>
           <div id="errorEmail" class="hidden">Please enter a valid email address</div>
           <div id="errorZipcode" class="hidden">Please provide a 5-digit zip code</div>
@@ -20,20 +19,58 @@
           <div id="errorEmailTaken" class="hidden">That email address is already in use</div>
           <div id="errorInviteCode" class="hidden">Your referral code isn't quite right. Check your caps key and give it another shot!</div>
         </section>
-        <ed-form-input type="text"  class="name-first" placeholder="First Name" icon="name-first" required></ed-form-input>
-        <ed-form-input type="text"  class="name-last" placeholder="Last Name" icon="name-last" required></ed-form-input>
-        <ed-form-input type="email" class="email" placeholder="Your Email" icon="envelope" required></ed-form-input>
-        <!--todo add -->
-        <ed-form-input type="number"  class="birthday" min="1901" max="2015" placeholder="Year of Birth" icon="birthday" required></ed-form-input>
-        <ed-form-input type="text"  class="zipcode" placeholder="Zip Code" icon="zip" required></ed-form-input>
-        <p class="password-req-text"> *8 characters minimum </p>
-        <ed-paired-input type="password" class="password" placeholder="Password"
-                         icon="password"></ed-paired-input>
-        <ed-form-input type="text" class="invite-code" id="referral-code" placeholder="Referral Code" icon="star" required></ed-form-input>
-        <button id="registration-submit" class="invalid" on-click="{{submitForm}}">Sign Up</button>
+        <ed-form-input type="text"
+                       class="name-first"
+                       placeholder="First Name"
+                       icon="name-first"
+                       required>
+        </ed-form-input>
+        <ed-form-input type="text"
+                       class="name-last"
+                       placeholder="Last Name"
+                       icon="name-last"
+                       required>
+        </ed-form-input>
+        <ed-form-input type="email"
+                       class="email"
+                       placeholder="Your Email"
+                       icon="envelope"
+                       required>
+        </ed-form-input>
+        <ed-form-input type="number"
+                       class="birthday"
+                       min="1901"
+                       max="2015"
+                       placeholder="Year of Birth"
+                       icon="birthday"
+                       required>
+        </ed-form-input>
+        <ed-form-input type="text"
+                       class="zipcode"
+                       placeholder="Zip Code"
+                       icon="zip"
+                       required>
+        </ed-form-input>
+        <p class="password-req-text">*8 characters minimum</p>
+        <ed-paired-input type="password"
+                         class="password"
+                         placeholder="Password"
+                         icon="password">
+        </ed-paired-input>
+        <ed-form-input type="text"
+                       class="invite-code"
+                       id="referral-code"
+                       placeholder="Referral Code"
+                       icon="star"
+                       required>
+        </ed-form-input>
+        <button id="registration-submit" class="invalid" on-click="{{submitForm}}">
+          Sign Up
+        </button>
         <a id="sign-up-button" type="button" href="#/login">
           <span class="small-text">Have an account already?</span>
-          <br />Login Here
+          <br />
+          Login Here
         </a>
       </div>
     </div>

@@ -1,27 +1,34 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/alignments.mixin.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
+}
+
+.hidden();
+
+.registration-container {
+  .mainPicturedBackground();
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
-  height: 46vh;
-}
-
-.registration-container {
-  .mainPicturedBackground();
-}
-
-.hidden {
-  display: none;
+  width: 100%;
+  height: 45vh;
+  overflow: auto;
 }
 
 .ed-registration-body {
+  display: inline-block;
   text-align: center;
+  width: 100%;
+  min-height: 55vh;
+  overflow-y: scroll;
   .password-req-text {
     .edType( heading-S );
     color: @originalTeal;
@@ -29,9 +36,15 @@
   }
 }
 
+ed-form-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 2% 1vh;
+}
+
 .error-messages {
-  text-align: center;
   .edType( heading-XXS );
+  text-align: center;
   color: @originalTeal;
   margin-bottom: 4%
 }
