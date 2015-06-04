@@ -1,21 +1,19 @@
+@import "../../styles/mixins/hidden.less";
 @import "../../styles/ed/title-bar.mixin.less";
 @import "../../styles/ed/colors.vars.less";
 @import "../../styles/ed/buttons.mixin.less";
 
-.hidden {
-  display: none;
-}
+.hidden();
 
 #referral-wrapper {
-  background-color: @darkPurple2;
-  height: 100%;
+  width: 100%;
+  height: 100vh;
   margin: 0 auto;
-  max-width: 59.6rem;
-  overflow: hidden;
-  position: relative;
   text-align: center;
+  background-color: @darkPurple2;
+  overflow-y: scroll;
   p {
-    .edType(heading-XL);
+    .edType( heading-XL );
     color: @lightGrey1;
     text-align: center;
   }
@@ -23,35 +21,30 @@
     .edTitleBar();
   }
   .friends-icon {
-    width: 11rem;
-    height: 11rem;
     margin: 0 auto;
+    padding: 5% 0;
     text-align: center;
     fill: @lightGrey1;
-    padding: 2rem 0 3rem;
     .edContentStyle();
   }
   .referral-text {
     margin: 0;
-    padding-bottom: 5rem;
+    padding-bottom: 12%;
   }
   #referral-submit {
     white-space: pre;
-    padding: 0 7rem;
     .edPrimaryButton();
-    bottom: 0;
-    margin: 3% auto 0 auto;
   }
-  ed-form-input {
-    bottom: 0;
-    margin: 3% auto 0 auto;
-    text-align: center;
-  }
+}
+
+ed-form-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 auto 1vh;
 }
 
 #errorEmail {
   text-align: center;
-  .edType( heading-S );
-  color: @originalTeal;
-  padding-bottom: 3rem;
+  .edType( heading-XS );
+  color: @lightGrey1;
 }

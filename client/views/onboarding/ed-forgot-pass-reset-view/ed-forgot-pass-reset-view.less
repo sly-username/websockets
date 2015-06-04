@@ -1,63 +1,59 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
+}
+
+.hidden();
+
+.forgot-container {
+  .mainPicturedBackground();
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
-  margin-bottom: 7rem;
+  width: 100%;
+  min-height: 25vh;
 }
 
-.forgot-container {
-  .mainPicturedBackground();
-}
+.ed-forgot-body {}
 
 .forgot-text {
-  text-align: center;
-  .edType( paragraph-L );
-  font-weight: 400;
-  font-size: 2.6rem;
+  .edType( heading-S );
   color: @lightGrey1;
-  margin-bottom: 4%;
-  span {
-    display: block;
-  }
+  text-align: center;
+  margin: 2%;
 }
 
-.ed-forgot-body {
-  fieldset {
-    border: 0;
-  }
-  .error-messages {
-    text-align: center;
-    .edType( heading-S );
-    color: @originalTeal;
-    span {
-      display: block;
-    }
-  }
-  ed-form-input {
-    margin: .5rem;
-    text-align: center;
-  }
-  .password-req-text {
-    text-align: center;
-    color: @originalTeal;
-    .edType( heading-XS );
-    margin: 1rem 0 .9rem 0;
-  }
+.error-messages {
+  .edType( heading-S );
+  text-align: center;
+  color: @lightGrey1;
+}
+
+ed-form-input, ed-paired-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 auto 1vh;
+}
+
+ed-paired-input {
+  height: 16vh;
+}
+
+.password-req-text {
+  .edType( heading-XS );
+  color: @originalTeal;
+  text-align: center;
+  margin: 2% 0;
 }
 
 #forgot-submit {
   .edPrimaryButton();
-  margin-top: 4%;
-  bottom: 0;
-}
-
-.hidden {
-  display: none;
 }

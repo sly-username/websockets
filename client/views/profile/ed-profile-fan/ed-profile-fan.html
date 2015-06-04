@@ -6,29 +6,33 @@
   <template>
     <link rel="stylesheet" href="./ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
-      <ed-menu-button></ed-menu-button>
-      <ed-user-ranking top="Completed" bottom="Plays" rank="{{ completedPlays || 0 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="Rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
+      <header class="top-bar">
+        <ed-menu-button></ed-menu-button>
+        <ed-user-ranking top="Completed" bottom="Plays" rank="{{ completedPlays || 0 }}" teal></ed-user-ranking>
+        <ed-user-ranking top="Songs" bottom="Rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
+      </header>
       <section class="image-wrapper">
-        <div class="profile-name"> {{ edFan.name.first }} {{ edFan.name.last }}
+        <div class="profile-name">
+          {{ edFan.name.first }} {{ edFan.name.last }}
           <span>Fan</span>
         </div>
-        <img-placeholder src="{{ edFan.art.original }}" image="fan"></img-placeholder>
+        <img-placeholder src="{{ edFan.art.phoneLarge }}" image="fan"></img-placeholder>
       </section>
       <section class="icon-section">
-        <div class="icon-header">Rewards
-          <a href="#/profile/edit" id="edit-btn">
-            Edit Profile
-            <ed-icon id="btn-icon" name="pencil"></ed-icon>
-          </a>
-        </div>
-        <hr>
-        <ed-icon name="badge-empty"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
-        <hr>
+        Rewards
+        <a href="#/profile/edit" id="edit-btn">
+          <ed-icon id="btn-icon" name="pencil"></ed-icon>
+          <span>Edit Profile</span>
+        </a>
       </section>
+      <hr>
+      <section class="badge-section">
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+      </section>
+      <hr>
     </div>
   </template>
   <script src="ed-profile-fan.js"></script>

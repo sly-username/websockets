@@ -1,63 +1,63 @@
-@import "edFont.less";
-
+@import (once) "edFont.less";
 
 .edType( @textSize ) {
   .edFont();
   font-style: normal;
-  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .edType( @textSize ) when (  @textSize = heading-XXXL ) {
   font-weight: 700;
-  font-size: 4.8rem;
+  font-size: 3rem;
 }
 
 .edType( @textSize ) when (  @textSize = heading-XXL ) {
   font-weight: 700;
-  font-size: 3.9rem;
+  font-size: 2.6rem;
 }
 
 .edType( @textSize ) when ( @textSize = heading-XL ) {
-  font-size: 3.3rem;
+  font-weight: 500;
+  font-size: 2.4rem;
 }
 
 .edType( @textSize ) when ( @textSize = heading-L ) {
   font-weight: 400;
-  font-size: 2.7rem;
+  font-size: 2rem;
 }
 
 .edType( @textSize ) when ( @textSize = heading-M ) {
   font-weight: 500;
-  font-size: 2.5rem
+  font-size: 1.8rem
 }
 
 .edType( @textSize ) when ( @textSize = heading-S ) {
   font-weight: 400;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
 }
 
 .edType( @textSize ) when ( @textSize = heading-XS ) {
-  font-size: 1.9rem;
   font-weight: 400;
+  font-size: 1.4rem;
 }
 
 .edType( @textSize ) when ( @textSize = heading-XXS ) {
-  font-size: 1.4rem;
   font-weight: 700;
+  font-size: 1.2rem;
 }
 
 .edType( @textSize ) when ( @textSize = paragraph-L ) {
-  font-size: 2.9rem;
+  font-weight: 500;
+  font-size: 2.4rem;
 }
 
 .edType( @textSize ) when ( @textSize = paragraph-M ) {
   font-weight: 400;
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 .edType( @textSize ) when ( @textSize = paragraph-S ) {
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }

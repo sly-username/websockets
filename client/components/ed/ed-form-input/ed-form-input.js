@@ -4,10 +4,13 @@
   polymer( "ed-form-input", {
     /* LIFECYCLE */
     publish: {
-      wide: {
+      icon: {
         reflect: true
       },
-      high: {
+      type: {
+        reflect: true
+      },
+      placeholder: {
         reflect: true
       },
       min: {
@@ -16,7 +19,14 @@
       max: {
         reflect: true
       },
+      pattern: {
+        reflect: true
+      },
       required: {
+        value: false,
+        reflect: true
+      },
+      disabled: {
         value: false,
         reflect: true
       }
@@ -34,11 +44,43 @@
     focus: function() {
       return this.$.input.focus();
     },
-    ready: function() {},
-    attached: function() {},
-    detached: function() {},
-    attributeChanged: function( attrName, oldValue, newValue ) {}
-    /* PROPERTIES */
-    /* METHODS */
+    ready: function() {
+      this.handlers = {
+        focus: function() {
+          this.focus();
+        }.bind( this )
+      };
+    },
+    attached: function() {
+      this.addEventListener( "focus", this.handlers.focus );
+    },
+    domReady: function() {
+      // after this.$.input is bound, cleanup attributes
+      this.cleanupAttributes();
+    },
+    detached: function() {
+      this.removeEventListener( "focus", this.handlers.focus );
+    },
+    attributeChanged: function( /*attrName, oldValue, newValue*/ ) {
+      if ( this.$ ) {
+        // attributeChanged gets called during bootstrap before
+        // this.$ has the input bound to it, need to wrap in this
+        // if to not cause "undefined lookups" on attached
+        this.cleanupAttributes();
+      }
+    },
+    cleanupAttributes: function() {
+      [
+        "pattern",
+        "min",
+        "max"
+      ].forEach(function( attrName ) {
+          var value = this.getAttribute( attrName );
+
+          if ( value === "" || value == null ) {
+            this.$.input.removeAttribute( attrName );
+          }
+        }, this );
+    }
   });
 })( window.Polymer );

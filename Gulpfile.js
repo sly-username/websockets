@@ -70,11 +70,12 @@ if ( currentTasks.length === 0 && process.argv.length === 2 ) {
 /* jshint -W098 */
 dummy = requiredir( "./tasks" );
 
+// Log datetime and what environment is being run
+gutil.log( ( new Date() ).toString() );
+gutil.log( "Running task for env: " + process.env.GULP_ENVIRONMENT );
+
 /*** MAGIC "START" TASK ***/
 gulp.task( "start", function( done ) {
-  gutil.log( ( new Date() ).toString() );
-  gutil.log( "Running task for env: " + process.env.GULP_ENVIRONMENT );
-
   switch ( process.env.GULP_ENVIRONMENT ) {
     case "DEVELOPMENT":
       gulp.series( "dev" )( done );

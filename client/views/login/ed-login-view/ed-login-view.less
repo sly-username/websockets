@@ -1,66 +1,62 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
 }
 
-.hidden {
-  display: none;
+.hidden();
+
+.login-container {
+  .mainPicturedBackground();
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
-  margin-bottom: 17rem;
-}
-
-.login-container {
-  .mainPicturedBackground();
-  height: 100%;
+  width: 100%;
+  height: 45vh;
 }
 
 .ed-login-body {
+  display: inline-block;
   text-align: center;
-  ed-form-input {
-    margin: .5rem;
-    text-align: center;
-  }
+  width: 100%;
+  min-height: 55vh;
 }
 
-#errorServer {
- .edType( heading-XL );
-  color: @originalTeal;
-  text-align: center;
-  padding-top: 9rem;
+ed-form-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 auto 1vh;
 }
 
-#errorEmail, #errorPassword {
-  .edType( heading-L );
-  color: @originalTeal;
+#errorEmail, #errorPassword, #errorServer {
+  .edType( paragraph-S );
+  color: @lightGrey1;
   text-align: center;
+  margin: 0 10px;
 }
 
 #login-submit {
   .edPrimaryButton();
-  bottom: 0;
-  margin: 3% auto 0 auto;
 }
 
 #login-forgot-password {
-  text-decoration: none;
+  display: block;
+  margin: 5% auto;
   .edType( heading-S );
   color: @lightGrey1;
+  text-decoration: none;
   text-align: center;
-  display: block;
-  margin: .5rem auto;
 }
 
 #sign-up-button {
   .edSecondaryButton();
-  bottom: 13rem;
-  margin: 0 auto;
   text-decoration: none;
 }
 

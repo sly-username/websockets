@@ -1,54 +1,60 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
-@import "../../../styles/ed/alignments.mixin.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
+}
+
+.hidden();
+
+.registration-container {
+  .mainPicturedBackground();
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
-}
-
-.registration-container {
-  .mainPicturedBackground();
-}
-
-.hidden {
-  display: none;
+  width: 100%;
+  height: 45vh;
 }
 
 .ed-registration-body {
+  display: inline-block;
   text-align: center;
-  fieldset {
-    border: 0;
-  }
-  ed-form-input {
-    margin: .25rem;
-    text-align: center;
-  }
+  width: 100%;
+  min-height: 55vh;
   .password-req-text {
+    .edType( heading-S );
     color: @originalTeal;
-    .edType( heading-XS );
-    margin-top: 1rem;
-    margin-bottom: .9rem;
+    margin: 2% 0;
   }
 }
 
+ed-form-input, ed-paired-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 auto 1vh;
+}
+
+ed-paired-input {
+  height: 16vh;
+}
+
 .error-messages {
+  .edType( heading-S );
+  color: @lightGrey1;
   text-align: center;
-  .edType( heading-XXS );
-  color: @originalTeal;
+  margin: 0 10px
 }
 
 #registration-submit {
   .edPrimaryButton();
-  margin: 3% auto 0 auto;
 }
 
 #sign-up-button {
   .edSecondaryButton();
-  margin: 0 auto;
   text-decoration: none;
 }

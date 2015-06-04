@@ -8,26 +8,23 @@
       <nav class="menu-list">
         <a id="discover-button" href="#/discover">
           <ed-icon name="discover"></ed-icon>
-          Discover
+          <span>Discover</span>
         </a>
         <a id="charts-button" href="#/charts">
           <ed-icon name="charts"></ed-icon>
-          Charts
+          <span>Charts</span>
         </a>
         <a id="invite-button" href="#/referral">
           <ed-icon name="invite-friends"></ed-icon>
-          Invite Friends
+          <span>Invite Friends</span>
         </a>
         <a id="settings-button" href="#/settings">
           <ed-icon name="settings"></ed-icon>
-          Settings
+          <span>Settings</span>
         </a>
       </nav>
-      <!-- TODO replace with an actual profile id  -->
       <a class="profile-bar" href="#/fan/{{ edFan.id }}">
-        <div class="img-container">
-          <img-placeholder src="{{ edFan.art.original }}" image="fan"></img-placeholder>
-        </div>
+        <img-placeholder class="img-container" src="{{ edFan.art.phoneLarge }}" image="fan"></img-placeholder>
         <p>{{ edFan.fullName }}</p>
       </a>
     </div>

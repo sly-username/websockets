@@ -1,67 +1,36 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/fonts/edTypeStyles.less";
-@import "../../../styles/ed/alignments.mixin.less";
 
-#primaryBox, #confirmBox {
+:host {
   display: block;
 }
 
-#error {
-  color: @originalTeal;
-  font-size: 2.7rem;
+:host(:focus) {
+  outline: none;
 }
 
-.ed-paired-input-primary-wrapper, .ed-paired-input-confirm-wrapper {
-  height: 7.5rem;
-  width: 98%;
-  max-width: 59.6rem;
-  background-color: @darkPurple3;
-  margin: -.33rem auto;
-  box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
-  input {
-    .edType( heading-L );
-    .verticalAlign();
-    color: @originalWhite;
-    float: left;
-    background: transparent;
-    border: 0;
-    outline: 0;
-    margin-right: -35rem;
-    .input-placeholder( { color: @originalGrey } );
-  }
-  &.confirm-container {
-    margin-top: .8rem;
-  }
-  &.invalid-field {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
+.container {
+  .flexContainer( column nowrap; space-between; center; stretch; );
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
-ed-icon {
-  /* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
-  */
-  width: 3rem;
-  height: 50%;
-  fill: @originalGrey;
-  pointer-events: none;
-  float: left;
-  padding: 0 2rem;
-  .verticalAlign();
+ed-form-input {
+  display: inline-block;
+  width: 100%;
+  height: 48%;
 }
 
-:host([invalid-primary]) {
-  .ed-paired-input-primary-wrapper {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
+#primaryBox {
+  .flexOrder( 1 );
+  margin-bottom: 1vh;
 }
 
-:host([invalid-confirm]) {
-  .ed-paired-input-confirm-wrapper {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
+#confirmBox {
+  .flexOrder( 2 );
 }
+
 

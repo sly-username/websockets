@@ -2,31 +2,35 @@
 @import "../../styles/fonts/edTypeStyles.less";
 @import "../../styles/ed/menu-button.mixin.less";
 
-.edTitleBar() {
-  color: @originalWhite;
-  height: 9rem;
-  text-transform: uppercase;
-  border: 0;
-  background-color: @darkPurple2;
-  text-align: center;
+.edTitleBar( no-button ) {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-
-  &, ed-menu-button::shadow {
-    .edMenuButton();
-  }
-
+  height: 10vh;
+  border: 0;
+  background-color: @darkPurple2;
+  color: @originalWhite;
+  text-transform: uppercase;
+  text-align: center;
+  z-index: 3;
   h1 {
+    float: left;
+    width: 80%;
     .edType( heading-L );
-    font-weight: 500;
-    margin: 0;
-    padding: 3rem 7.5rem;
+    line-height: 10vh;
+    margin: 0 auto;
     pointer-events: none;
   }
 }
 
+.edTitleBar() {
+  .edTitleBar( no-button );
+  ed-menu-button::shadow {
+    .edMenuButton();
+  }
+}
+
 .edContentStyle() {
-  margin-top: 9rem;
+  margin-top: 10vh;
 }

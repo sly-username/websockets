@@ -5,84 +5,63 @@
 @import "../../styles/mixins/prefixes/transforms.less";
 @import "../../styles/mixins/prefixes/animations.less";
 
-:host([class="show-menu"]) {
-  .animation( slideMenuIn .33s ease-in-out forwards);
-}
-
-:host {
-  position: absolute;
-  float: left;
-  width: 84%;
-  padding-top: 6rem;
-  margin: 0;
-  height: 100vh;
-  background: @originalWhite;
-  .animation( slideMenuOut .33s ease-in-out forwards );
-}
+// Note: ed-side-menu styles are in main.less
 
 .menu-wrapper {
+  height: 100%;
   .menu-list {
+    width: 100%;
+    height: 80vh;
+    margin-top: 2%;
     a {
-      text-decoration: none;
-      box-sizing: border-box;
-      height: 9.6rem;
       display: block;
+      float: left;
+      clear: left;
+      height: 12vh;
+      width: 98%;
+      box-sizing: border-box;
       .edType( heading-L );
       line-height: 3.5;
+      text-decoration: none;
       color: @darkPurple3;
-      vertical-align: middle;
-      padding-left: 2rem;
-      border-left: 2.1rem solid transparent;
+      border-left: 1.5rem solid transparent;
       ed-icon {
-        margin-right: 2rem;
         float: left;
-        width: 6rem;
+        margin: 0 5%;
+        width: 12vw;
         height: 100%;
         vertical-align: middle;
         fill: @lightGrey1;
       }
-      &:hover, :focus {
+      span {
+        display: inline-block;
+        height: 100%;
+        margin-top: 2%;
+      }
+      &:hover, &:focus, &:active {
         border-left-color: @originalPurple;
       }
     }
   }
   .profile-bar {
-    position: absolute;
-    bottom: 8rem;
-    border-left: 2.1rem solid transparent;
+    display: block;
+    width: 95%;
+    height: 10vh;
+    margin-bottom: 8vh;
+    border-left: 1.5rem solid transparent;
     .img-container {
-      height: 6.8rem;
-      width: 6.8rem;
       float: left;
-      padding-left: 2rem;
+      height: 18%;
+      width: 18%;
     }
     p {
       float: left;
-      padding-left: 1.5rem;
+      padding-left: 5%;
       .edType( heading-S );
       color: @darkPurple3;
     }
-    &:hover, :focus {
+    &:hover, &:focus, &:active {
       border-left-color: @originalPurple;
     }
   }
 }
-
-.keyframes( slideMenuOut, {
-0% {
-  .transform( translateX( 0% ));
-}
-100% {
-  .transform( translateX( -100% ));
-}
-
-});
-
-.keyframes( slideMenuIn, {
-0% {
-  .transform( translateX( -100% ));
-}
-100% {
-  .transform( translateX( 0% ));
-}
-});

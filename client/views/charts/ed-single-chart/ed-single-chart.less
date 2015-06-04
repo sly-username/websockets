@@ -5,52 +5,56 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/title-bar.mixin.less";
 @import "../../../styles/ed/ellipsis-overflow.mixin.less";
-@import "../../../styles/ed/chart-name.mixin.less";
 
 .hidden();
+
+// chart name mixin!
+.edChartName() {
+  margin: 0 0 0 1rem;
+  float: left;
+  width: 22rem;
+}
 
 .single-wrapper {
   background-color: @originalPurple;
   height: 100%;
-  margin: 0 auto;
-  max-width: 59.6rem;
-  overflow-x: hidden;
   width: 100%;
-  display: flex;
+  margin: 0 auto;
+  overflow: hidden;
 
   .single-header {
     position: absolute;
     top: 0;
     left: 0;
-    text-align: center;
     width: 100%;
+    height: 8vh;
+    text-align: center;
     z-index: 2;
     .chart-title-text {
-      .edType( heading-L );
       margin: 0;
+      padding-top: 1%;
+      .edType( heading-M );
       white-space: pre;
       font-style: italic;
-      font-weight: 500;
     }
     .chart-subtitle-text {
       margin: 0;
-      white-space: pre;
-      .edType( paragraph-S );
+      padding-top: 1.2%;
+      .edType( heading-XXS );
       line-height: 65%;
-      padding-top: .4rem;
+      white-space: pre;
     }
     .direction-divs {
       position: absolute;
-      width: 20%;
-      height: 5rem;
+      width: 33%;
+      height: 100%;
     }
     header {
+      position: relative;
+      width: 100%;
+      height: 100%;
       background: @lightPurple1;
       color: @originalWhite;
-      .edType( heading-s );
-      padding: 1rem 0 1.5rem;
-      font-style: italic;
-      position: relative;
     }
   }
 
@@ -65,114 +69,98 @@
   .ranks-badge-wrapper {
     width: 100%;
     height: 100%;
-    padding-top: 7rem;
+    margin-top: 10vh;
     background: @darkPurple3;
+    overflow: hidden;
   }
 
   .badges {
     color: @originalTeal;
     text-align: center;
     background-color: @originalPurple;
-    padding: 2rem 0;
+    padding-bottom: 2%;
     .time-left {
+      .edType( heading-XS );
       white-space: pre;
-      .edType( heading-XXS );
       text-transform: uppercase;
       margin: 0;
     }
 
     .countdown-timer {
+      .edType( heading-S );
       white-space: pre;
-      .edType( paragraph-M );
-      margin: 0 0 2rem 0;
-      font-weight: 500;
+      margin: 0;
     }
   }
 
   #badge-hrs {
-    &::shadow {
-      svg {
-        width: 18rem;
-        height: 18rem;
-        position: static;
-        top: 0;
-        -webkit-transform: translateY( 0% );
-        -ms-transform: translateY( 0% );
-        transform: translateY( 0% );
-      }
-    }
+    height: 100%;
+    width: 65%;
   }
 
   .default-view {
     .edType( heading-XS );
     color: @lightGrey1;
-    flex: 1;
     width: 100%;
     .copy {
-      width: 35rem;
+      width: 90vw;
       margin: 0 auto;
-      padding-top: 5rem;
+      padding-top: 6vh;
       text-align: center;
     }
   }
 
   .rankings {
-    flex: 1;
     list-style-type: none;
     width: 100%;
-    margin: 0;
-    padding: 0 0 10rem;
+    height: 48vh;
+    margin: 0 0 8vh;
+    padding: 0;
     background: @darkPurple3;
+    overflow-y: scroll;
     li {
       overflow: auto;
-      height: 5.5rem;
       width: 100%;
-      color: @originalWhite;
-      border-bottom: .1rem solid @originalGrey;
+      padding-bottom: 1%;
       .edType( heading-XS );
-      .img-container {
-        width: 3.5rem;
-        padding: 1rem 0 0 3rem;
-        float: left;
-      }
+      color: @originalWhite;
+      border-bottom: 0.1rem solid @originalGrey;
       .chart-rank {
         float: left;
-        margin: 0;
-        padding: 1.5rem 0 0 1.5rem;
+        margin: 1.5rem 0 0 1rem;
+        padding: 0;
+      }
+      &:nth-child(-n+10) .chart-rank {
+        // add extra margin to #1 through #9
+        margin-left: 1.8rem;
+      }
+      .img-container {
+        float: left;
+        width: 3.5rem;
+        padding: 1rem 0 0 1rem;
+      }
+      .chart-points {
+        float: right;
+        margin: 1.5rem 3rem 0 0;
+        padding: 0;
       }
       .fan-name {
         .edEllipsisOverflow();
         .edChartName();
-        padding-top: 1.5rem;
-        height: 2.5rem;
+        margin-top: 1.5rem;
       }
       .track-name{
         .edEllipsisOverflow();
         .edChartName();
-        // todo did not use any of the font mixins
-        font-size: 1.7rem;
-        font-weight: 700;
-        line-height: 100%;
-        padding-top: 1rem;
+        .edType( heading-M );
+        margin-top: 1rem;
       }
       .artist-name {
         .edEllipsisOverflow();
         .edChartName();
-        // todo did not use any of the font mixins
-        font-size: 1.3rem;
-        font-weight: 500;
+        .edType( heading-XXS );
         padding-top: 0;
       }
-      .chart-points {
-        float: right;
-        margin: 0;
-        padding: 1.5rem 3rem 0 0;
-      }
-    }
-
-    // todo need to figure out how to line up left AND right sides
-    li:nth-child(-n+10) {
-      padding-left: 1rem;
     }
   }
 }

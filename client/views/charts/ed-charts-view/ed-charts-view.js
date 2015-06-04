@@ -4,8 +4,9 @@
   Promise.all([
     System.import( "domain/ed/services/ed-discover-service" )
   ]).then( function( imported ) {
-    var discoverService = imported[ 0 ].default,
-      router = document.querySelector( "app-router" ),
+    var
+      discoverService = imported[ 0 ].default,
+      router = document.querySelector( "#root-app-router" ),
       currentView = 1,
       chartNames = [ "most-tracks-rated-fan", "completed-listens-fan", "completed-listens-track", "highest-rated-track" ],
       updateChartClass = function( classesRemoveArray, classAdd, self ) {
@@ -79,6 +80,8 @@
         }, this );
       },
       attached: function() {
+        router = router || document.querySelector( "#root-app-router" );
+
         this.handler = {
           updateChartView: updateChartsViewHandler.bind( this ),
           resetChartView: resetChartViewHandler.bind( this )
