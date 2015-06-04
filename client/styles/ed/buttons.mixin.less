@@ -13,6 +13,7 @@
 .edPrimaryButton( @backgroundColor: @originalPurple; @activeColor: @lightPurple1; @disabledColor: @originalGrey ) when ( iscolor(@backgroundColor) ) {
   .edType( heading-L );
   display: inherit;
+  box-sizing: border-box;
   width: 100%;
   margin: 4% auto 0;
   padding: 4%;
@@ -34,8 +35,8 @@
 .edSecondaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1 ) when ( iscolor(@backgroundColor) ) {
   .edPrimaryButton( @backgroundColor; @activeColor );
   .edType( heading-M );
-  padding: 2% 0;
   margin: 3% auto 0;
+  padding: 2% 0;
   .small-text {
     .edType( heading-S );
     color: @originalTeal;

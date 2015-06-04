@@ -12,8 +12,8 @@
 html {
   font-size: 62.5%;
   background: @darkPurple3;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 body {
@@ -51,7 +51,7 @@ body {
   svg {
     width: 94%;
     padding: 0 3%;
-    fill: white;
+    fill: @originalWhite;
     opacity: 0;
     transition: inherit;
   }
@@ -64,12 +64,24 @@ body {
   }
 }
 
-ed-side-menu.show-menu + #animation-wrapper {
-  .transform( translateX( 84% ));
-}
-
-ed-side-menu + #animation-wrapper {
-  .transform( translateX( 0 ));
+ed-side-menu {
+  position: absolute;
+  height: 100%;
+  width: 84%;
+  margin: 0;
+  padding-top: 2%;
+  background-color: @originalWhite;
+  transition: transform .33s ease-in-out;
+  .transform( translateX( -100% ));
+  &.show-menu {
+    .transform( translateX( 0% ));
+    & + .router-animation-wrapper {
+      .transform( translateX( 84% ));
+    }
+  }
+  & + .router-animation-wrapper {
+    .transform( translateX( 0 ));
+  }
 }
 
 #animation-wrapper {

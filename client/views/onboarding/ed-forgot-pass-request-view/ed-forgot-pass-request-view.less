@@ -1,3 +1,4 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
@@ -5,41 +6,44 @@
 
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
 }
 
-.hidden {
-  display: none;
-}
+.hidden();
 
 .forgot-container {
   .mainPicturedBackground();
   height: 100vh;
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
-}
-
-.forgot-text, .forgot-second-text {
-  .edType( heading-S );
-  color: @originalWhite;
-  opacity: .5;
-  text-align: center;
-}
-
-.forgot-second-text {
-  margin: 6% 2% 2%;
+  width: 100%;
+  height: 45vh;
 }
 
 .ed-forgot-body {
   text-align: center;
 }
 
-#errorEmail, #errorServer {
-  text-align: center;
+.forgot-text {
   .edType( heading-S );
-  color: @originalTeal;
+  color: @lightGrey1;
+  text-align: center;
+  margin: 2%;
+}
+
+#errorEmail, #errorServer {
+  .edType( heading-S );
+  color: @lightGrey1;
+  text-align: center;
+}
+
+ed-form-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 2% 1vh;
 }
 
 #forgot-submit {
@@ -47,6 +51,6 @@
 }
 
 #back-button {
-  .edSecondaryButton();
+  .edPrimaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1; );
   text-decoration: none;
 }

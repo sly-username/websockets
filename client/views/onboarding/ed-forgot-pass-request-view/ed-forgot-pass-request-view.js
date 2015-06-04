@@ -1,4 +1,4 @@
-( function( polymer ) {
+(function( polymer ) {
   "use strict";
 
   System.import( "domain/ed/services/ed-user-service" )

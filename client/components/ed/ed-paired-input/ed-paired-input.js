@@ -6,6 +6,9 @@
       type: {
         reflect: true
       },
+      icon: {
+        reflect: true
+      },
       placeholder: {
         reflect: true
       },
@@ -55,17 +58,32 @@
       return true;
     },
     ready: function() {
-      this._primaryBox = this.shadowRoot.getElementById( "primary-box" );
-      this._confirmBox = this.shadowRoot.getElementById( "confirm-box" );
+      this._primaryBox = this.shadowRoot.getElementById( "primary-box" ).$.input;
+      this._confirmBox = this.shadowRoot.getElementById( "confirm-box" ).$.input;
       this._errorDiv = this.shadowRoot.getElementById( "error" );
       this._boxes = [ this.primaryBox, this.confirmBox ];
     },
-    attributeChanged: function( attrName, oldVal, newVal ) {
+    attributeChanged: function( attrName, oldValue, newValue ) {
+      var boxId;
+
       if ( attrName === "type" ) {
-        if ( ( /text|password|email|tel|number|url|search/ ).test( newVal ) ) {
-          this.type = newVal;
+        if ( ( /text|password|email|tel|number|url|search/ ).test( newValue ) ) {
+          this.type = newValue;
         } else {
           this.type = "text";
+        }
+      }
+
+      if ( attrName === "invalid-primary" || attrName === "invalid-confirm" ) {
+        console.log( "saw %s change, %o, %o", attrName, oldValue, newValue );
+        boxId = attrName.split( "-" )[ 1 ] + "-box";
+
+        if ( newValue == null ) {
+          // remove
+          this.$[ boxId ].classList.remove( "invalid" );
+        } else {
+          // add
+          this.$[ boxId ].classList.add( "invalid" );
         }
       }
     }

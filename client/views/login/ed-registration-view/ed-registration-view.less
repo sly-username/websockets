@@ -1,7 +1,6 @@
 @import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
-@import "../../../styles/ed/alignments.mixin.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 
 * {
@@ -20,7 +19,6 @@
   .logoFormHeader();
   width: 100%;
   height: 45vh;
-  overflow: auto;
 }
 
 .ed-registration-body {
@@ -28,7 +26,6 @@
   text-align: center;
   width: 100%;
   min-height: 55vh;
-  overflow-y: scroll;
   .password-req-text {
     .edType( heading-S );
     color: @originalTeal;
@@ -36,17 +33,21 @@
   }
 }
 
-ed-form-input {
+ed-form-input, ed-paired-input {
   width: 95%;
   height: 8vh;
   margin: 0 2% 1vh;
 }
 
+ed-paired-input {
+  height: 16vh;
+}
+
 .error-messages {
-  .edType( heading-XXS );
+  .edType( heading-S );
+  color: @lightGrey1;
   text-align: center;
-  color: @originalTeal;
-  margin-bottom: 4%
+  margin: 0 10px
 }
 
 #registration-submit {
@@ -55,7 +56,5 @@ ed-form-input {
 
 #sign-up-button {
   .edSecondaryButton();
-  margin: 4% auto 0;
-  padding: 2% 0;
   text-decoration: none;
 }

@@ -1,73 +1,36 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
-#primaryBox, #confirmBox {
+:host {
   display: block;
 }
 
-#error {
-  color: @originalTeal;
-  font-size: 1.7rem;
+:host(:focus) {
+  outline: none;
 }
 
-.ed-paired-input-primary-wrapper, .ed-paired-input-confirm-wrapper {
-  display: block;
-  width: 95%;
-  height: 50px;
-  max-height: 80px;
-  max-width: 59.6rem;
-  margin: 1% auto 2%;
-  text-align: center;
-  background-color: @darkPurple3;
-  box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
-  label {
-    display: block;
-    float: left;
-    height: 100%;
-    width: 10%;
-    margin-left: 2%;
-    padding: 0;
-    overflow: auto;
-  }
-  input {
-    .edType( heading-L );
-    height: 100%;
-    width: 88%;
-    color: @originalWhite;
-    float: left;
-    background: transparent;
-    border: 0;
-    outline: 0;
-    .input-placeholder( { color: @originalGrey } );
-  }
-  &.invalid-field {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
+.container {
+  .flexContainer( column nowrap; space-between; center; stretch; );
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
-ed-icon {
-  /* for svg height and width dimensions must be declared and they work like regular CSS max-width or max-height
-  */
-  width: 72%;
-  height: 90%;
-  margin: 16% auto 0;
-  fill: @originalGrey;
-  float: left;
+ed-form-input {
+  display: inline-block;
+  width: 100%;
+  height: 48%;
 }
 
-:host([invalid-primary]) {
-  .ed-paired-input-primary-wrapper {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
+#primaryBox {
+  .flexOrder( 1 );
+  margin-bottom: 1vh;
 }
 
-:host([invalid-confirm]) {
-  .ed-paired-input-confirm-wrapper {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
+#confirmBox {
+  .flexOrder( 2 );
 }
+
 

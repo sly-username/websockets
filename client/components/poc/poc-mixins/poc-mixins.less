@@ -1,6 +1,6 @@
-@import "mixins/all-prefixes.less";
-@import "ed/buttons.mixin.less";
-@import "ed/colors.vars.less";
+@import "../../../styles/mixins/all-prefixes.less";
+@import "../../../styles/ed/buttons.mixin.less";
+@import "../../../styles/ed/colors.vars.less";
 
 // Animation Tests
 #less-test-animation {
@@ -58,7 +58,8 @@
   background: lightgoldenrodyellow;
   height: 80px;
   width: 70px;
-  .flexItem(@grow: 1; @alignSelf: flex-end);
+  .flexItem( @grow: 1; );
+  .flexAlignSelf( flex-end );
   .flexOrder( 1 );
 }
 #flex-item3 {

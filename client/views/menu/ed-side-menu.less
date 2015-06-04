@@ -5,20 +5,20 @@
 @import "../../styles/mixins/prefixes/transforms.less";
 @import "../../styles/mixins/prefixes/animations.less";
 
-:host([class="show-menu"]) {
-  .animation( slideMenuIn .33s ease-in-out forwards);
-}
-
-:host {
-  position: absolute;
-  float: left;
-  width: 84%;
-  padding-top: 5vh;
-  margin: 0;
-  height: 100vh;
-  background: @originalWhite;
-  .animation( slideMenuOut .33s ease-in-out forwards );
-}
+//:host([class="show-menu"]) {
+//  .animation( slideMenuIn .33s ease-in-out forwards);
+//}
+//
+//:host {
+//  position: absolute;
+//  float: left;
+//  width: 84%;
+//  padding-top: 5vh;
+//  margin: 0;
+//  height: 100vh;
+//  background: @originalWhite;
+//  .animation( slideMenuOut .33s ease-in-out forwards );
+//}
 
 .menu-wrapper {
   .menu-list {
@@ -67,21 +67,21 @@
   }
 }
 
-.keyframes( slideMenuOut, {
-0% {
-  .transform( translateX( 0% ));
-}
-100% {
-  .transform( translateX( -100% ));
-}
-
-});
-
-.keyframes( slideMenuIn, {
-0% {
-  .transform( translateX( -100% ));
-}
-100% {
-  .transform( translateX( 0% ));
-}
-});
+//.keyframes( slideMenuOut, {
+//0% {
+//  .transform( translateX( 0% ));
+//}
+//100% {
+//  .transform( translateX( -100% ));
+//}
+//
+//});
+//
+//.keyframes( slideMenuIn, {
+//0% {
+//  .transform( translateX( -100% ));
+//}
+//100% {
+//  .transform( translateX( 0% ));
+//}
+//});

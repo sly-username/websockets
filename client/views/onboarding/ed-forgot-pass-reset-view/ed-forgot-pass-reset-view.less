@@ -1,44 +1,57 @@
+@import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
 * {
-  font-family: "Ubuntu";
+  font-family: Ubuntu;
 }
 
-.hidden {
-  display: none;
-}
+.hidden();
 
 .forgot-container {
   .mainPicturedBackground();
   height: 100vh;
+  overflow-y: scroll;
 }
 
 .ed-logo-header {
   .logoFormHeader();
+  width: 100%;
+  min-height: 25vh;
 }
+
+.ed-forgot-body {}
 
 .forgot-text {
-  text-align: center;
   .edType( heading-S );
   color: @lightGrey1;
-  margin-bottom: 4%;
+  text-align: center;
+  margin: 2%;
 }
 
-.ed-forgot-body {
-  .error-messages {
-    text-align: center;
-    .edType( heading-S );
-    color: @originalTeal;
-  }
-  .password-req-text {
-    text-align: center;
-    color: @originalTeal;
-    .edType( heading-XS );
-    margin: 1rem 0 .9rem 0;
-  }
+.error-messages {
+  .edType( heading-S );
+  text-align: center;
+  color: @lightGrey1;
+}
+
+ed-form-input, ed-paired-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 2% 1vh;
+}
+
+ed-paired-input {
+  height: 16vh;
+}
+
+.password-req-text {
+  .edType( heading-XS );
+  color: @originalTeal;
+  text-align: center;
+  margin: 2% 0;
 }
 
 #forgot-submit {

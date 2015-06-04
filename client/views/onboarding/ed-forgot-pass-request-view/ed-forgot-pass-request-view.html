@@ -8,21 +8,13 @@
         <ed-icon name="eardish-logo-with-slogan"></ed-icon>
       </div>
       <div class="ed-forgot-body">
-        <div class="forgot-text">
-          <p>Enter your email address that you used to register.</p>
-        </div>
-        <div class="forgot-second-text">
-          <p>We'll send you an email with your username and a link to reset your password.</p>
-        </div>
+        <p class="forgot-text">Enter your email address that you used to register.</p>
+        <p class="forgot-text">We'll send you an email with your username and a link to reset your password.</p>
         <div id="errorServer" class="hidden">Hmmm... we can't seem to find that email address in our system. Please try again!</div>
         <div id="errorEmail" class="hidden">Please enter a valid email address</div>
-        <div id="forgot-form">
-          <ed-form-input class="email" type="email" placeholder="Your Email" icon="envelope"></ed-form-input>
-          <button id="forgot-submit" class="invalid" on-click="{{submitRequest}}">Submit</button>
-        </div>
-        <a id="back-button" type="button" href="#/login">
-          <br />back
-        </a>
+        <ed-form-input class="email" type="email" placeholder="Your Email" icon="envelope"></ed-form-input>
+        <button id="forgot-submit" class="invalid" on-click="{{submitRequest}}">Submit</button>
+        <a id="back-button" type="button" href="#/login">Back</a>
       </div>
     </div>
   </template>
