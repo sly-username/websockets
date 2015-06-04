@@ -38,7 +38,9 @@
   "xwalk_description": "The eardish music discovery platform.",
   "xwalk_hosts": [
     "https://*.eardish.com",
-    "http://*.eardishcorp.com"
+    "http://*.eardishcorp.com",
+    "http://*.cloudfront.net",
+    "https://*.cloudfront.net"
   ],
   "xwalk_permissions": [
     "Geolocation"
