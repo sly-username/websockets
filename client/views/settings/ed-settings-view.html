@@ -11,10 +11,10 @@
       </div>
       <ul class="settings-list">
         <li class="version-title"> Version: <span>1.0.0-RC1</span></li>
-        <li id="Terms-button">Terms &amp; Conditions</li>
-        <li id="About-button">Privacy Policy</li>
-        <li id="Support-button">Support</li>
-        <li id="log-out-button">Log Out</li>
+        <li id="Terms-button" on-tap="{{redirectInAppHandler}}">Terms &amp; Conditions</li>
+        <li id="About-button" on-tap="{{redirectInAppHandler}}">Privacy Policy</li>
+        <li id="Support-button" on-tap="{{redirectInAppHandler}}">Support</li>
+        <li id="log-out-button" on-tap="{{logOutTriggerHandler}}">Log Out</li>
       </ul>
     </div>
   </template>
