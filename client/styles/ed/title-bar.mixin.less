@@ -2,7 +2,7 @@
 @import "../../styles/fonts/edTypeStyles.less";
 @import "../../styles/ed/menu-button.mixin.less";
 
-.edTitleBar() {
+.edTitleBar( no-button ) {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,10 +14,6 @@
   text-transform: uppercase;
   text-align: center;
   z-index: 3;
-   ed-menu-button::shadow {
-    .edMenuButton();
-  }
-
   h1 {
     float: left;
     width: 80%;
@@ -25,6 +21,13 @@
     line-height: 10vh;
     margin: 0 auto;
     pointer-events: none;
+  }
+}
+
+.edTitleBar() {
+  .edTitleBar( no-button );
+  ed-menu-button::shadow {
+    .edMenuButton();
   }
 }
 
