@@ -3,28 +3,31 @@
 @import "../../styles/ed/menu-button.mixin.less";
 
 .edTitleBar() {
-  color: @originalWhite;
-  text-transform: uppercase;
-  border: 0;
-  background-color: @darkPurple2;
-  text-align: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 10vh;
+  border: 0;
+  background-color: @darkPurple2;
+  color: @originalWhite;
+  text-transform: uppercase;
+  text-align: center;
 
-  &, ed-menu-button::shadow {
+   ed-menu-button::shadow {
     .edMenuButton();
   }
 
   h1 {
+    float: left;
+    width: 80%;
     .edType( heading-L );
-    margin: 0;
-    padding: 3%;
+    line-height: 10vh;
+    margin: 0 auto;
     pointer-events: none;
   }
 }
 
 .edContentStyle() {
-  margin-top: 12vh;
+  margin-top: 10vh;
 }

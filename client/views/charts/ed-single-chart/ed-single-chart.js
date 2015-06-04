@@ -104,7 +104,7 @@
       },
       getRankForId: function( id ) {
         if ( this.chartObject != null ) {
-          return this.chartObject.getRankForId( id );
+          return Math.floor( this.chartObject.getRankForId( id ) );
         }
 
         return -1;

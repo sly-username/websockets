@@ -1,17 +1,17 @@
+@import "../../styles/mixins/hidden.less";
 @import "../../styles/ed/title-bar.mixin.less";
 @import "../../styles/ed/colors.vars.less";
 @import "../../styles/ed/buttons.mixin.less";
 
-.hidden {
-  display: none;
-}
+.hidden();
 
 #referral-wrapper {
+  width: 100%;
   height: 100vh;
-  background-color: @darkPurple2;
   margin: 0 auto;
-  max-width: 59.6rem;
   text-align: center;
+  background-color: @darkPurple2;
+  overflow-y: scroll;
   p {
     .edType( heading-XL );
     color: @lightGrey1;
@@ -37,8 +37,14 @@
   }
 }
 
+ed-form-input {
+  width: 95%;
+  height: 8vh;
+  margin: 0 auto 1vh;
+}
+
 #errorEmail {
   text-align: center;
   .edType( heading-XS );
-  color: @originalTeal;
+  color: @lightGrey1;
 }

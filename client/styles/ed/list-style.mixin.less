@@ -6,12 +6,16 @@
   margin: 0;
   list-style-type: none;
   li {
-    .edType( heading-S );
+    .edType( heading-M );
     color: @originalWhite;
     padding: 4vh 6vw;
-    width: 100vw;
+    width: 100%;
     background-color: @darkPurple3;
     border-bottom: 0.2rem solid @darkPurple1;
+    &:last-of-type {
+      // mini player offset
+      margin-bottom: 8vh;
+    }
     &:active, &:hover {
       background-color: @darkPurple1;
     }
