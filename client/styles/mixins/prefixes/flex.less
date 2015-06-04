@@ -52,11 +52,14 @@
    @basis: <number> || auto
    @alignSelf: auto || stretch || center || flex-start || flex-end || baseline
 ***/
-.flexItem( @grow: 0; @shrink: 1; @basis: auto; @alignSelf: auto ) {
+.flexItem( @grow: 0; @shrink: 1; @basis: auto ) {
   -webkit-box-flex+: @grow @shrink @basis;
   -webkit-flex+: @grow @shrink @basis;
   -ms-flex+: @grow @shrink @basis;
   flex+: @grow @shrink @basis;
+}
+
+.flexAlignSelf( @alignSelf: auto ) {
   -webkit-align-self: @alignSelf;
   align-self: @alignSelf;
 }
@@ -77,4 +80,7 @@
   order: @order;
 }
 
-
+.flexGrow( @grow ) {
+  -webkit-flex-grow: @grow;
+  flex-grow: @grow;
+}

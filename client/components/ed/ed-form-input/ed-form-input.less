@@ -1,4 +1,5 @@
 @import "../../../styles/mixins/prefixes/placeholder.less";
+@import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 
@@ -18,54 +19,50 @@
 }
 
 .form-input-container {
-  display: block;
-  width: 95%;
-  // todo we have a height here
-  height: 50px;
-  max-height: 80px;
-  max-width: 59.6rem;
-  margin: 1% auto 2%;
+  .flexContainer( row nowrap; space-around; center; stretch );
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   text-align: center;
   background-color: @darkPurple3;
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
-}
-
-label {
-  display: block;
-  float: left;
-  height: 100%;
-  width: 10%;
-  margin-left: 2%;
-  padding: 0;
-  overflow: auto;
-}
-
-input {
-  .edType( heading-L );
-  color: @originalWhite;
-  float: left;
-  clear: none;
-  background: transparent;
-  border: 0;
-  outline: 0;
-  width: 87%;
-  height: 100%;
-  .input-placeholder( { color: @originalGrey } );
-}
-
-ed-icon {
-/* for svg height and width dimensions may both need to be declared and they work like regular CSS max-width or max-height
-*/
-  width: 72%;
-  height: 90%;
-  margin: 16% auto 0;
-  fill: @originalGrey;
-  float: left;
-}
-
-.form-input-container {
   &.invalid-field {
     background-color: @originalRed;
     border-color: @darkRed1;
   }
+}
+
+label {
+  display: inline-block;
+  .flexOrder( 1 );
+  .flexGrow( 1 );
+  height: 100%;
+  max-width: 10%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 2%;
+  overflow: hidden;
+}
+
+input {
+  display: inline-block;
+  .flexOrder( 2 );
+  .flexGrow( 3 );
+  height: 100%;
+  overflow: auto;
+  .edType( heading-L );
+  color: @originalWhite;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  .input-placeholder( { color: @originalGrey } );
+}
+
+// for svg height and width dimensions may both need to be
+// declared and they work like regular CSS max-width or max-height
+ed-icon {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  fill: @originalGrey;
 }

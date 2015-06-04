@@ -161,7 +161,7 @@
 <script id="reload-tag" type="text/javascript">
   (function( window, document ){
     // Live Reload Script
-    if( ( /^local.eardish|localhost|:5115/g ).test( location.host ) ) {
+    if( ( /.*:5115$/g ).test( location.host ) ) {
       document.write(
           "<script src=\"http://" +
           ( location.host || "localhost" ).split( ":" )[0] +
