@@ -6,26 +6,31 @@
   <template>
     <link rel="stylesheet" href="../ed-profile-fan/ed-profile-fan.css">
     <div class="ed-profile-fan-wrapper">
-      <ed-menu-button></ed-menu-button>
-      <ed-user-ranking top="Completed" bottom="Plays" rank="{{ completedPlays || 0 }}" teal></ed-user-ranking>
-      <ed-user-ranking top="Songs" bottom="Rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
+      <header class="top-bar">
+        <ed-menu-button></ed-menu-button>
+        <ed-user-ranking top="Completed" bottom="Plays" rank="{{ completedPlays || 0 }}" teal></ed-user-ranking>
+        <ed-user-ranking top="Songs" bottom="Rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
+      </header>
       <section class="image-wrapper">
-        <div class="profile-name"> {{ edArtist.displayName }}
+        <div class="profile-name">
+          {{ edArtist.displayName }}
           <span>Artist/Band</span>
         </div>
         <img-placeholder src="{{ edArtist.art.original }}" image="artist"></img-placeholder>
       </section>
       <section class="icon-section">
-        <div class="icon-header">Rewards</div>
-        <hr>
-        <ed-icon name="badge-hrs"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
-        <ed-icon name="badge-empty"></ed-icon>
-        <hr>
+        Rewards
       </section>
+      <hr>
+      <section class="badge-section">
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+        <ed-icon name="badge-empty"></ed-icon>
+      </section>
+      <hr>
       <section class="bio-section">
-        <div class="bio-header">Bio</div>
+        <div class="bio-header">Biography</div>
         <p class="bio-body">
           {{ edArtist.bio || "No Bio" }}
         </p>
