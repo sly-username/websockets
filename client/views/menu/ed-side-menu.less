@@ -21,47 +21,59 @@
 //}
 
 .menu-wrapper {
+  height: 100%;
   .menu-list {
+    width: 100%;
+    height: 80vh;
+    margin-top: 2%;
     a {
-      text-decoration: none;
-      box-sizing: border-box;
-      height: 13vh;
       display: block;
-      .edType( heading-M );
+      float: left;
+      clear: left;
+      height: 12vh;
+      width: 98%;
+      box-sizing: border-box;
+      .edType( heading-L );
       line-height: 3.5;
+      text-decoration: none;
       color: @darkPurple3;
-      border-left: 2.1rem solid transparent;
+      border-left: 1.5rem solid transparent;
       ed-icon {
-        margin-right: 9%;
         float: left;
-        width: 13vw;
+        margin: 0 5%;
+        width: 12vw;
         height: 100%;
         vertical-align: middle;
         fill: @lightGrey1;
       }
-      &:hover, :focus {
+      span {
+        display: inline-block;
+        height: 100%;
+        margin-top: 2%;
+      }
+      &:hover, &:focus, &:active {
         border-left-color: @originalPurple;
       }
     }
   }
   .profile-bar {
-    height: 13vh;
-    width: 75vw;
-    position: absolute;
-    bottom: 17vh;
-    border-left: 2.1rem solid transparent;
+    display: block;
+    width: 95%;
+    height: 10vh;
+    margin-bottom: 8vh;
+    border-left: 1.5rem solid transparent;
     .img-container {
-      height: 100%;
-      width: 25%;
       float: left;
+      height: 18%;
+      width: 18%;
     }
     p {
       float: left;
       padding-left: 5%;
-      .edType( heading-XS );
+      .edType( heading-S );
       color: @darkPurple3;
     }
-    &:hover, :focus {
+    &:hover, &:focus, &:active {
       border-left-color: @originalPurple;
     }
   }
