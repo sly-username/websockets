@@ -65,8 +65,8 @@
         updateReferralCount: function() {
           return userService.getReferrals()
             .then(function( referrals ) {
-              this.referrals = referrals
-            }.bind( this ))
+              this.referrals = referrals;
+            }.bind( this ));
         }
       });
     });
