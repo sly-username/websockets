@@ -3,8 +3,8 @@ var
   edAnalyticsService,
   simData = {},
   lastKnownLocation = {
-    lat: 0,
-    long: 0
+    lat: null,
+    long: null
   },
   updateLocation = function() {
     if ( navigator.geolocation ) {
@@ -81,6 +81,8 @@ export default edAnalyticsService = {
       block.OS = device.platform + " " + device.version;
       block.UUID = device.uuid;
     }
+
+    console.log( "block %o", block );
 
     return block;
   },
