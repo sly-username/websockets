@@ -82,8 +82,6 @@ export default edAnalyticsService = {
       block.UUID = device.uuid;
     }
 
-    console.log( "block %o", block );
-
     return block;
   },
 
