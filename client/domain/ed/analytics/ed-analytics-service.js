@@ -3,8 +3,8 @@ var
   edAnalyticsService,
   simData = {},
   lastKnownLocation = {
-    lat: 0,
-    long: 0
+    lat: null,
+    long: null
   },
   updateLocation = function() {
     if ( navigator.geolocation ) {
