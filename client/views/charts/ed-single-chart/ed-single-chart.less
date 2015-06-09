@@ -20,19 +20,19 @@
   height: 100%;
   width: 100%;
   margin: 0 auto;
-  overflow: hidden;
+  overflow-y: scroll;
 
   .single-header {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 8vh;
+    height: 11vh;
     text-align: center;
     z-index: 2;
     .chart-title-text {
       margin: 0;
-      padding-top: 1%;
+      padding-top: 2%;
       .edType( heading-M );
       white-space: pre;
       font-style: italic;
@@ -69,9 +69,9 @@
   .ranks-badge-wrapper {
     width: 100%;
     height: 100%;
-    margin-top: 10vh;
+    margin-top: 11vh;
     background: @darkPurple3;
-    overflow: hidden;
+    //overflow: hidden;
   }
 
   .badges {
@@ -117,7 +117,7 @@
     margin: 0 0 8vh;
     padding: 0;
     background: @darkPurple3;
-    overflow-y: scroll;
+    //overflow-y: scroll;
     li {
       overflow: auto;
       width: 100%;
