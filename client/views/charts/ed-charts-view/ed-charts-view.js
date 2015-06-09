@@ -13,6 +13,17 @@
         classesRemoveArray.forEach( function( classNumber ) {
           self.singleChartWrapper.classList.remove( classNumber );
           self.singleChartWrapper.classList.add( classAdd );
+
+          if ( currentView === 4 ) {
+            self.arrowLeft.classList.remove( "hidden" );
+            self.arrowRight.classList.add( "hidden" );
+          } else if ( currentView === 1 ) {
+            self.arrowLeft.classList.add( "hidden" );
+            self.arrowRight.classList.remove( "hidden" );
+          } else if ( currentView === 2 || currentView === 3 ) {
+            self.arrowLeft.classList.remove( "hidden" );
+            self.arrowRight.classList.remove( "hidden" );
+          }
         });
       },
       updateChartsViewHandler = function( event ) {
@@ -72,6 +83,8 @@
       /* LIFECYCLE */
       ready: function() {
         this.singleChartWrapper = this.$[ "single-chart-wrapper" ];
+        this.arrowLeft = this.$[ "arrow-left" ];
+        this.arrowRight = this.$[ "arrow-right" ];
 
         this.chartElementsByName = {};
 
@@ -91,6 +104,7 @@
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
 
         this.getEdChartObject();
+        this.arrowLeft.classList.add( "hidden" );
       },
       detached: function() {
         router.removeEventListener( "state-change", this.handler.resetChartView );
