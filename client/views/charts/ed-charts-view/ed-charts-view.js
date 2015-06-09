@@ -15,12 +15,16 @@
           self.singleChartWrapper.classList.add( classAdd );
 
           if ( currentView === 4 ) {
-            self.arrowLeft.classList.remove( "hidden" );
-            self.arrowRight.classList.add( "hidden" );
-          } else if ( currentView === 1 ) {
-            self.arrowLeft.classList.add( "hidden" );
+            //self.arrowLeft.classList.remove( "hidden" );
+            //self.arrowRight.classList.add( "hidden" );
+            //self.arrowLeft.classList.add( "hidden" );
             self.arrowRight.classList.remove( "hidden" );
-          } else if ( currentView === 2 || currentView === 3 ) {
+          } else if ( currentView === 1 ) {
+            //self.arrowLeft.classList.add( "hidden" );
+            //self.arrowRight.classList.remove( "hidden" );
+            self.arrowLeft.classList.remove( "hidden" );
+            //self.arrowRight.classList.add( "hidden" );
+          } else {
             self.arrowLeft.classList.remove( "hidden" );
             self.arrowRight.classList.remove( "hidden" );
           }
