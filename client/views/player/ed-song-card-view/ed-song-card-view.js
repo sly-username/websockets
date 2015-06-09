@@ -10,7 +10,8 @@
       updateTimeHandler,
       playerServiceEventHandler,
       injectStatsHandler,
-      resetRatingHandler;
+      resetRatingHandler,
+      toggleAdMobHandler;
 
     // helpers
     resetRatingHandler = function() {
@@ -108,6 +109,10 @@
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
 
+    toggleAdMobHandler = function( event ) {
+      console.log( "event %o", event );
+    };
+
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
@@ -133,33 +138,31 @@
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this ),
-          resetRating: resetRatingHandler.bind( this )
+          resetRating: resetRatingHandler.bind( this ),
+          toggleAdMob: toggleAdMobHandler.bind( this )
         };
       },
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
+        this.mainPlayerWrapper.addEventListener( "transitionend", this.handler.toggleAdMob );
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
-      attributeChanged: function( attrName, oldValue, newValue ) {
-
-      },
+      // attributeChanged: function( attrName, oldValue, newValue ) {},
       /* open & close methods slide player up & down */
       open: function() {
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
         this.animationWrapper.classList.remove( "player-padding" );
-
         window.AdMob.hideBanner();
       },
       close: function() {
         window.AdMob.showBanner();
-
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
@@ -168,12 +171,10 @@
       /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
         window.AdMob.showBanner();
-
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
         window.AdMob.hideBanner();
-
         this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
         this.animationWrapper.classList.remove( "player-padding" );
