@@ -10,8 +10,7 @@
       updateTimeHandler,
       playerServiceEventHandler,
       injectStatsHandler,
-      resetRatingHandler,
-      toggleAdMobHandler;
+      resetRatingHandler;
 
     // helpers
     resetRatingHandler = function() {
@@ -109,10 +108,6 @@
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
 
-    toggleAdMobHandler = function( event ) {
-      console.log( "event %o", event );
-    };
-
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
       playerService: playerService,
@@ -138,14 +133,12 @@
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this ),
-          resetRating: resetRatingHandler.bind( this ),
-          toggleAdMob: toggleAdMobHandler.bind( this )
+          resetRating: resetRatingHandler.bind( this )
         };
       },
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.mainPlayerWrapper.addEventListener( "transitionend", this.handler.toggleAdMob );
       },
       detached: function() {
         clearInterval( this.intervalId );

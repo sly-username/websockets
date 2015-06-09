@@ -12,15 +12,14 @@ var
     // x: integer,
     // y: integer,
     // overlap: true,
-    isTesting: true, // TODO remove for production
-    autoShow: false
+    isTesting: true // TODO remove for production
   };
 
-if ( /(android)/i.test(navigator.userAgent )) {
+if ( /(android)/i.test( navigator.userAgent )) {
   admobid = {
     banner: "ca-app-pub-6485453766683902/8331842279"
   };
-} else if ( /(ipod|iphone|ipad)/i.test(navigator.userAgent )) {
+} else if ( /(ipod|iphone|ipad)/i.test( navigator.userAgent )) {
   admobid = {
     banner: "ca-app-pub-6485453766683902/8052640677"
   };
@@ -30,7 +29,8 @@ if ( AdMob ) {
   AdMob.setOptions( admobOptions );
 
   AdMob.createBanner({
-    adId: admobid.banner
+    adId: admobid.banner,
+    autoShow: false
   });
 } else {
   console.warn( "AdMob module ran, but AdMob object not ready" );
