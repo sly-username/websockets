@@ -155,10 +155,10 @@
         this.songCardWrapper.classList.remove( "minimized" );
         this.animationWrapper.classList.remove( "player-padding" );
 
-        window.AdMob.hideBanner();
+        //window.AdMob.hideBanner();
       },
       close: function() {
-        window.AdMob.showBanner();
+        //window.AdMob.showBanner();
 
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
@@ -167,12 +167,12 @@
       },
       /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
-        window.AdMob.showBanner();
+        //window.AdMob.showBanner();
 
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
-        window.AdMob.hideBanner();
+        //window.AdMob.hideBanner();
 
         this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
