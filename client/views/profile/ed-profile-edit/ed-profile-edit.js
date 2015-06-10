@@ -27,6 +27,8 @@
         },
         uploadPhotoHandler = function( event ) {
           userService.changeProfileImage( event.target.files[ 0 ]);
+        },
+        backButtonHandler = function( event ) {
         };
 
       polymer( "ed-profile-edit", {
@@ -34,9 +36,11 @@
         ready: function() {
           this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
+          this.goBackButton = this.shadowRoot.getElementById( "edit-back" );
 
           this.handler = {
             nameInput: nameInputHandler.bind( this ),
+            backButton: backButtonHandler.bind( this )
           };
         },
         attached: function() {
@@ -50,10 +54,12 @@
 
           this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
           this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
+          this.goBackButton.addEventListener( "backbutton", this.handler.backButton );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
           this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
+          this.goBackButton.removeEventListener( "backbutton", this.handler.backButton );
         },
         // attributeChanged: function( attrName ) {}
         takePhoto: function() {
@@ -74,10 +80,6 @@
               });
             });
           }
-        },
-        goBack: function( event ) {
-          event.preventDefault();
-          history.back();
         }
       });
     });
