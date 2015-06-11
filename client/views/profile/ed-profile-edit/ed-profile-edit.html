@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="./ed-profile-edit.css">
     <div class="ed-profile-edit-wrapper">
       <div class="edit-title-bar">
-        <button id="edit-back">
+        <button id="edit-back" on-tap="{{goBack}}">
           <ed-icon name="arrow-back"></ed-icon>
         </button>
         <h1>Edit Profile</h1>
@@ -30,7 +30,7 @@
             <label for="choose-photo-input">Choose Existing Photo</label>
             <input id="choose-photo-input" name="choose-photo-input" type="file" accept="image/*">
           </li>
-          <li id="take-photo">
+          <li id="take-photo" on-tap="{{takePhoto}}">
             Take Photo
           </li>
           <li class="music-pref">Music Preferences</li>
