@@ -10,8 +10,9 @@
       createEvent = imported[ 1 ].default,
       currentRating,
       triggerRatingHandler,
+      setArtistLink,
       playerUpdateHandler,
-      minimizePlayerHandler;
+      viewArtistHandler;
 
     // helpers
     triggerRatingHandler = function( event ) {
@@ -38,13 +39,13 @@
 
       if ( event.detail.type === "artistUpdate" ) {
         this.artistName.innerText = playerService.currentStats.currentArtist.displayName;
-        this.artistLink.setAttribute( "href", "#/artist/" + playerService.currentStats.currentArtist.id );
         this.artistName.classList.remove( "loading" );
       }
     };
 
-    minimizePlayerHandler = function() {
+    viewArtistHandler = function() {
       this.songCard.close();
+      this.router.go( "/artist/" + playerService.currentStats.currentArtist.id );
     };
 
     polymer( "ed-star-rating", {
@@ -57,18 +58,18 @@
         this.handlers = {
           triggerRating: triggerRatingHandler.bind( this ),
           playerUpdate: playerUpdateHandler.bind( this ),
-          minimizePlayer: minimizePlayerHandler.bind( this )
+          viewArtist: viewArtistHandler.bind( this )
         };
 
         this.inputField = this.shadowRoot.getElementById( "input-field" );
         this.stars = this.$[ "star-field" ].querySelectorAll( "ed-icon" );
-        this.artistLink = this.$[ "artist-link" ];
         this.artistName = this.$[ "artist-name" ];
         this.trackName = this.$[ "track-name" ];
+        this.router = document.querySelector( "app-router" );
       },
       attached: function() {
         this.inputField.addEventListener( "touchstart", this.handlers.triggerRating );
-        this.artistName.addEventListener( "touchstart", this.handlers.minimizePlayer );
+        this.artistName.addEventListener( "touchstart", this.handlers.viewArtist );
         this.songCard = document.getElementById( "song-card" );
         this.songCardWrapper = document.getElementById( "song-card-wrapper" );
         this.mainPlayer = this.songCard.shadowRoot.querySelector( "#main-player-wrapper" );
