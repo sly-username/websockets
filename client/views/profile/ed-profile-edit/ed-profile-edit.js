@@ -27,8 +27,36 @@
         },
         uploadPhotoHandler = function( event ) {
           userService.changeProfileImage( event.target.files[ 0 ]);
+        };
+
+      polymer( "ed-profile-edit", {
+        /* LIFECYCLE */
+        ready: function() {
+          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
+          this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
+
+          this.handler = {
+            nameInput: nameInputHandler.bind( this )
+          };
         },
-        takePhotoHandler = function() {
+        attached: function() {
+          if ( userService.isOpenSession ) {
+            this.edFan = userService.currentProfile;
+          } else {
+            userService.once( "edLogin", function() {
+              this.edFan = userService.currentProfile;
+            }.bind( this ));
+          }
+
+          this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
+          this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
+        },
+        detached: function() {
+          this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
+          this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
+        },
+        // attributeChanged: function( attrName ) {}
+        takePhoto: function() {
           var reader = new FileReader(),
             imageFile;
 
@@ -47,49 +75,9 @@
             });
           }
         },
-        backButtonHandler = function( event ) {
-          event.preventDefault();
-          history.back();
-        };
-
-      polymer( "ed-profile-edit", {
-        /* LIFECYCLE */
-        ready: function() {
-          this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
-
-          this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
-          this.takePhoto = this.shadowRoot.getElementById( "take-photo" );
-          this.goBackButton = this.shadowRoot.getElementById( "edit-back" );
-
-          this.handler = {
-            nameInput: nameInputHandler.bind( this ),
-            takePhoto: takePhotoHandler.bind( this ),
-            backButton: backButtonHandler.bind( this )
-          };
-        },
-        attached: function() {
-          if ( userService.isOpenSession ) {
-            this.edFan = userService.currentProfile;
-          } else {
-            userService.once( "edLogin", function() {
-              this.edFan = userService.currentProfile;
-            }.bind( this ));
-          }
-
-          this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
-
-          this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
-          this.takePhoto.addEventListener( "touchstart", this.handler.takePhoto );
-          this.goBackButton.addEventListener( "click", this.handler.backButton );
-        },
-        detached: function() {
-          this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
-
-          this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
-          this.takePhoto.removeEventListener( "touchstart", this.handler.takePhoto );
-          this.goBackButton.removeEventListener( "click", this.handler.backButton );
-        },
-        attributeChanged: function( attrName ) {}
+        goBack: function() {
+          window.history.back();
+        }
       });
     });
 })( window.Polymer, window.System );

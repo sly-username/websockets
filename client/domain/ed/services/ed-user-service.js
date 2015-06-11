@@ -8,6 +8,7 @@ import edConnectionService from "domain/ed/services/ed-connection-service";
 import EDUser from "domain/ed/objects/EDUser";
 import EDFan from "domain/ed/objects/profile/EDFan";
 import edAnalytics from "domain/ed/analytics/ed-analytics-service";
+import url from "domain/ed/urls";
 
 var
   edUserService = new EventEmitter([ "edLogin", "edLogout" ]),
@@ -220,8 +221,8 @@ edUserService.changeProfileImage = function( image, fileData ) {
           Key: "public/profile/" + currentProfile.id + "/avatar/original/" + imageData.name,
           ContentType: imageData.type,
           Body: image,
-          Bucket: "eardish.dev.images",
-          CopySource: "eardish.dev.images/" + imageData.name
+          Bucket: url.aws.bucket,
+          CopySource: url.aws.bucket + "/" + imageData.name
         }, function( error, data ) {
           if ( error != null ) {
             console.warn( "Issue uploading image to AWS" );
