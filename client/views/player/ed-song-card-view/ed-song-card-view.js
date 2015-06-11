@@ -10,16 +10,17 @@
       updateTimeHandler,
       playerServiceEventHandler,
       injectStatsHandler,
-      resetRatingHandler;
+      resetSongCardHandler,
+      toggleAdMobHandler;
 
     // helpers
-    resetRatingHandler = function() {
+    resetSongCardHandler = function() {
       this.songCompleted = false;
       this.hasRated = false;
-      this.starRating.transformOverlap( -100 );
       this.mainPlayer.setAttribute( "value", "" );
       this.ratingsForm.classList.remove( "show" );
       this.disableText.classList.remove( "hide" );
+      this.starRating.resetRating();
     };
 
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -59,7 +60,6 @@
       }
 
       if ( eventType === "rate" ) {
-        playerService.rateTrack( currentVal );
         this.hasRated = true;
 
         if ( this.songCompleted ) {
@@ -68,6 +68,10 @@
       }
 
       if ( eventType === "skip" ) {
+        console.log( "star rating", this.starRating.currentRating );
+        if ( this.hasRated ) {
+          playerService.rateTrack( this.starRating.currentRating );
+        }
         playerService.skip();
         this.trackName.classList.add( "loading" );
         this.artistName.classList.add( "loading" );
@@ -90,14 +94,14 @@
       }
 
       if ( eventType === "resetSongCard" ) {
-        // TODO refactor to make a full reset for all songcard components
-        this.handler.resetRating();
+        this.handler.resetSongCard();
       }
 
       if ( eventType === "songComplete" ) {
         this.songCompleted = true;
 
         if ( this.hasRated ) {
+          playerService.rateTrack( this.starRating.currentRating );
           playerService.skip();
         }
       }
@@ -107,6 +111,22 @@
       this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
+
+    toggleAdMobHandler = function( action ) {
+      if ( window.AdMob ) {
+        switch ( action ) {
+          case "show":
+            window.AdMob.showBanner();
+            break;
+          case "hide":
+            window.AdMob.hideBanner();
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    // end helpers
 
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
@@ -133,45 +153,29 @@
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this ),
-          resetRating: resetRatingHandler.bind( this )
+          resetSongCard: resetSongCardHandler.bind( this )
         };
       },
       attached: function() {
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
-        this.toggleAdMob = function( action ) {
-          if ( window.AdMob ) {
-            switch ( action ) {
-              case "show":
-                window.AdMob.showBanner();
-                break;
-              case "hide":
-                window.AdMob.hideBanner();
-                break;
-              default:
-                break;
-            }
-          }
-        };
       },
       detached: function() {
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
-      attributeChanged: function( attrName, oldValue, newValue ) {
-
-      },
+      // attributeChanged: function( attrName, oldValue, newValue ) {},
       /* open & close methods slide player up & down */
       open: function() {
-        this.toggleAdMob( "hide" );
+        toggleAdMobHandler( "hide" );
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
         this.animationWrapper.classList.remove( "player-padding" );
       },
       close: function() {
-        this.toggleAdMob( "show" );
+        toggleAdMobHandler( "show" );
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
@@ -179,11 +183,11 @@
       },
       /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
-        this.toggleAdMob( "show" );
+        toggleAdMobHandler( "show" );
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
-        this.toggleAdMob( "hide" );
+        toggleAdMobHandler( "hide" );
         this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
         this.animationWrapper.classList.remove( "player-padding" );

@@ -51,20 +51,22 @@
         }
       }
     }
-    #input-field {
-      height: 13rem;
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      opacity: 0;
-      input {
-        height: 13rem;
-        width: 20%;
-        margin: 0;
-        float: left;
-      }
-    }
+  }
+}
+
+#input-field {
+  height: 13rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  opacity: 0;
+
+  input {
+    height: 13rem;
+    width: 20%;
+    margin: 0;
+    float: left;
   }
 }
 
@@ -80,18 +82,8 @@
         fill: @originalGrey;
       }
     }
-  }
-}
 
-#overlap-field {
-  position: absolute;
-  left: 0;
-  pointer-events: none;
-  .transform(translateX(-100%));
-  .userSelect(none);
-
-  ed-icon {
-    &::shadow {
+    &.selected::shadow {
       svg {
         fill: @originalPurple;
       }
