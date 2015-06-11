@@ -76,7 +76,7 @@
           }
         },
         goBack: function() {
-          navigator.app.backHistory();
+          window.history.back();
         }
       });
     });
