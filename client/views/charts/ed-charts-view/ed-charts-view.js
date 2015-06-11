@@ -9,10 +9,21 @@
       router = document.querySelector( "#root-app-router" ),
       currentView = 1,
       chartNames = [ "most-tracks-rated-fan", "completed-listens-fan", "completed-listens-track", "highest-rated-track" ],
-      updateChartClass = function( classesRemoveArray, classAdd, self ) {
+      updateChartClass = function( classesRemoveArray, classAdd, self, eventType ) {
         classesRemoveArray.forEach( function( classNumber ) {
           self.singleChartWrapper.classList.remove( classNumber );
           self.singleChartWrapper.classList.add( classAdd );
+
+          if ( currentView === 3 && eventType === "moveRight" ) {
+            self.arrowLeft.classList.remove( "hidden" );
+            self.arrowRight.classList.add( "hidden" );
+          } else if ( currentView === 2 && eventType === "moveLeft" ) {
+            self.arrowLeft.classList.add( "hidden" );
+            self.arrowRight.classList.remove( "hidden" );
+          } else {
+            self.arrowLeft.classList.remove( "hidden" );
+            self.arrowRight.classList.remove( "hidden" );
+          }
         });
       },
       updateChartsViewHandler = function( event ) {
@@ -25,7 +36,7 @@
               currentView = 1;
               break;
             case 2:
-              updateChartClass( [ "two", "three", "four" ], "one", this );
+              updateChartClass( [ "two", "three", "four" ], "one", this, eventType );
               currentView = 1;
               break;
             case 3:
@@ -52,7 +63,7 @@
               currentView = 3;
               break;
             case 3:
-              updateChartClass( [ "one", "two", "three" ], "four", this );
+              updateChartClass( [ "one", "two", "three" ], "four", this, eventType );
               currentView = 4;
               break;
             case 4:
@@ -72,6 +83,8 @@
       /* LIFECYCLE */
       ready: function() {
         this.singleChartWrapper = this.$[ "single-chart-wrapper" ];
+        this.arrowLeft = this.$[ "arrow-left" ];
+        this.arrowRight = this.$[ "arrow-right" ];
 
         this.chartElementsByName = {};
 
@@ -91,6 +104,7 @@
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
 
         this.getEdChartObject();
+        this.arrowLeft.classList.add( "hidden" );
       },
       detached: function() {
         router.removeEventListener( "state-change", this.handler.resetChartView );
