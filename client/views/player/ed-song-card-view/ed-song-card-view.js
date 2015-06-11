@@ -17,7 +17,10 @@
     resetSongCardHandler = function() {
       this.songCompleted = false;
       this.hasRated = false;
+      this.trackName.classList.add( "loading" );
+      this.artistName.classList.add( "loading" );
       this.mainPlayer.setAttribute( "value", "" );
+      this.mainPlayer.setAttribute( "max", "0" );
       this.ratingsForm.classList.remove( "show" );
       this.disableText.classList.remove( "hide" );
       this.starRating.resetRating();
@@ -68,13 +71,11 @@
       }
 
       if ( eventType === "skip" ) {
-        console.log( "star rating", this.starRating.currentRating );
         if ( this.hasRated ) {
           playerService.rateTrack( this.starRating.currentRating );
         }
+
         playerService.skip();
-        this.trackName.classList.add( "loading" );
-        this.artistName.classList.add( "loading" );
       }
 
       if ( eventType === "showRatings" ) {

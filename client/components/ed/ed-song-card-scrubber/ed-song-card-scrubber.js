@@ -201,8 +201,10 @@
         }
 
         if ( this.value === this.max ) {
-          this.handler.disableScrubber();
-          this.dispatchEvent( createUpdateEvent( "songComplete" ));
+          if ( !this.complete ) {
+            this.handler.disableScrubber();
+            this.dispatchEvent( createUpdateEvent( "songComplete" ));
+          }
         } else {
           this.handler.enableScrubber();
         }
