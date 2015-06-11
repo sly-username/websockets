@@ -75,8 +75,8 @@
         //this.shadowScrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
         //this.shadowScrubber.style.animation = "rotateScrubber " + this.max + "s linear";
 
-        this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-        this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+        this.front.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circFront / 360 - this.circFront * 1.25  + "%";
+        this.mid.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circMid / 360 - this.circMid * 1.25 + "%";
 
         //this.front.style.webkitAnimation = "dashoffsetFill " + this.max + "s linear";
         //this.mid.style.animation = "dashoffsetFill " + this.max + "s linear";
@@ -101,10 +101,13 @@
       },
       initScrubberHandler = function() {
         // calculates the circumference of circles
-        this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
-        this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
+        this.circFront = 2.01 * Math.PI * parseInt( this.front.getAttribute( "r" ), 10 );
+        this.circMid = 2.01 * Math.PI * parseInt( this.mid.getAttribute( "r" ), 10 );
+
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
+        this.front.style[ "stroke-dashoffset" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+        this.mid.style[ "stroke-dashoffset" ] = this.circMid + "%";
       },
       enableScrubberHandler = function() {
         this.complete = false;
