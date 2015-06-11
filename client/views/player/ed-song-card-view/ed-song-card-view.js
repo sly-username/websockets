@@ -99,12 +99,14 @@
       }
 
       if ( eventType === "songComplete" ) {
-        this.songCompleted = true;
-
         if ( this.hasRated ) {
           playerService.rateTrack( this.starRating.currentRating );
           playerService.skip();
+        } else {
+          this.mainPlayer.disableScrubber();
         }
+
+        this.songCompleted = true;
       }
     };
 

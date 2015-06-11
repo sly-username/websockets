@@ -114,20 +114,13 @@
         this.playBtn.disabled = false;
         this.playIcon.style.opacity = 1;
       },
-      disableScrubberHandler = function() {
-        this.complete = true;
-        this.setAttribute( "complete", "" );
-        this.scrubber.style.opacity = 0;
-        this.shadowScrubber.style.opacity = 0;
-        this.playBtn.disabled = true;
-        this.playIcon.style.opacity = 0.02;
-      },
       mouseOutHandler = function() {
         this.mouseDown = false;
       };
 
     polymer( "ed-song-card-scrubber", {
       complete: false,
+      disabled: false,
       ready: function() {
         // selectors
         this.svg = this.shadowRoot.getElementById( "svg-circle" );
@@ -144,7 +137,6 @@
           initScrubber: initScrubberHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
           enableScrubber: enableScrubberHandler.bind( this ),
-          disableScrubber: disableScrubberHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
@@ -202,7 +194,7 @@
 
         if ( this.value === this.max ) {
           if ( !this.complete ) {
-            this.handler.disableScrubber();
+            this.complete = true;
             this.dispatchEvent( createUpdateEvent( "songComplete" ));
           }
         } else {
@@ -212,6 +204,14 @@
         if ( Math.floor( this.value ) > 29 ) {
           this.dispatchEvent( createUpdateEvent( "showRatings" ));
         }
+      },
+      disableScrubber: function() {
+        this.disabled = true;
+        this.setAttribute( "complete", "" );
+        this.scrubber.style.opacity = 0;
+        this.shadowScrubber.style.opacity = 0;
+        this.playBtn.disabled = true;
+        this.playIcon.style.opacity = 0.02;
       }
     });
   });
