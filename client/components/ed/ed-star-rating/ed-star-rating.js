@@ -65,7 +65,7 @@
         this.stars = this.$[ "star-field" ].querySelectorAll( "ed-icon" );
         this.artistName = this.$[ "artist-name" ];
         this.trackName = this.$[ "track-name" ];
-        this.router = document.querySelector( "app-router" );
+        this.router = document.getElementById( "root-app-router" );
       },
       attached: function() {
         this.inputField.addEventListener( "touchstart", this.handlers.triggerRating );
