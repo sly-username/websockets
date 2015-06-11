@@ -25,11 +25,11 @@
           };
         },
         attached: function() {
-          this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
+          this.emailInput.addEventListener( "focus", this.handlers.cleanup, true );
           this.referrals = userService.referralsRemaining;
         },
         detached: function() {
-          this.emailInput.removeEventListener( "blur", this.handlers.cleanup );
+          this.emailInput.removeEventListener( "focus", this.handlers.cleanup );
         },
         get validEmail() {
           return this.emailInput.validity.valid && emailRegexPattern.test( this.emailInput.value );
