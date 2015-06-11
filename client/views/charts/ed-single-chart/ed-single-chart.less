@@ -14,7 +14,7 @@
   height: 100%;
   width: 100%;
   margin: 0 auto;
-  overflow-y: scroll;
+  overflow: hidden;
 
   .single-header {
     position: absolute;
@@ -65,6 +65,7 @@
     height: 100%;
     margin-top: 11vh;
     background: @darkPurple3;
+    overflow: hidden;
   }
 
   .badges {
@@ -106,9 +107,11 @@
   .rankings {
     list-style-type: none;
     width: 100%;
-    margin: 0 0 8vh;
+    height: 30vh;
+    margin: 1vh 0 4vh;
     padding: 0;
     background: @darkPurple3;
+    overflow-y: scroll;
     li {
       .flexContainer( row; flex-start; stretch; stretch );
       overflow: auto;
