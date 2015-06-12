@@ -9,6 +9,7 @@
       playerService = imported[ 0 ].default,
       createEvent = imported[ 1 ].default,
       scrubStartValue,
+      inSkipEvent = false,
       createUpdateEvent = function( name, detail ) {
         detail = detail || {};
         detail.name = name;
@@ -93,6 +94,7 @@
         this.$["song-timer"].innerText = playerService.formattedDisplayTime;
       },
       skipSongHandler = function() {
+        inSkipEvent = true;
         this.dispatchEvent( createUpdateEvent( "skip" ));
         this.handler.resetScrubber();
       },
@@ -100,6 +102,7 @@
         var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
         if ( eventType === "play" ) {
+          inSkipEvent = false;
           this.playIcon.setAttribute( "name", "pause" );
         }
 
@@ -151,7 +154,7 @@
         this.playIcon = this.shadowRoot.getElementById( "play-icon" );
         this.skipBtn = this.shadowRoot.getElementById( "skip-btn" );
 
-        // event Handler
+        // event handler
         this.handler = {
           initScrubber: initScrubberHandler.bind( this ),
           resetScrubber: resetScrubberHandler.bind( this ),
@@ -211,7 +214,7 @@
         playerService.emitter.off( "playerUpdate", this.handler.playerServiceEvent );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
-        if ( attrName === "value" ) {
+        if ( attrName === "value" && !inSkipEvent ) {
           this.handler.updateScrub();
         }
 
