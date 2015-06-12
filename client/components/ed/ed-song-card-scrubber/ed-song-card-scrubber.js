@@ -75,8 +75,8 @@
         //this.shadowScrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
         //this.shadowScrubber.style.animation = "rotateScrubber " + this.max + "s linear";
 
-        this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-        this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * ( degPercent - 90 ) * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+        this.front.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circFront / 360 - this.circFront * 1.25  + "%";
+        this.mid.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circMid / 360 - this.circMid * 1.25 + "%";
 
         //this.front.style.webkitAnimation = "dashoffsetFill " + this.max + "s linear";
         //this.mid.style.animation = "dashoffsetFill " + this.max + "s linear";
@@ -101,10 +101,13 @@
       },
       initScrubberHandler = function() {
         // calculates the circumference of circles
-        this.circFront = ( 2.01 * Math.PI * ( parseInt( this.front.getAttribute( "r" ), 10 )));
-        this.circMid = ( 2.01 * Math.PI * ( parseInt( this.mid.getAttribute( "r" ), 10 )));
+        this.circFront = 2.01 * Math.PI * parseInt( this.front.getAttribute( "r" ), 10 );
+        this.circMid = 2.01 * Math.PI * parseInt( this.mid.getAttribute( "r" ), 10 );
+
         this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
+        this.front.style[ "stroke-dashoffset" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+        this.mid.style[ "stroke-dashoffset" ] = this.circMid + "%";
       },
       enableScrubberHandler = function() {
         this.complete = false;
@@ -114,20 +117,13 @@
         this.playBtn.disabled = false;
         this.playIcon.style.opacity = 1;
       },
-      disableScrubberHandler = function() {
-        this.complete = true;
-        this.setAttribute( "complete", "" );
-        this.scrubber.style.opacity = 0;
-        this.shadowScrubber.style.opacity = 0;
-        this.playBtn.disabled = true;
-        this.playIcon.style.opacity = 0.02;
-      },
       mouseOutHandler = function() {
         this.mouseDown = false;
       };
 
     polymer( "ed-song-card-scrubber", {
       complete: false,
+      disabled: false,
       ready: function() {
         // selectors
         this.svg = this.shadowRoot.getElementById( "svg-circle" );
@@ -144,7 +140,6 @@
           initScrubber: initScrubberHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
           enableScrubber: enableScrubberHandler.bind( this ),
-          disableScrubber: disableScrubberHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
           triggerMove: triggerMoveHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
@@ -201,8 +196,10 @@
         }
 
         if ( this.value === this.max ) {
-          this.handler.disableScrubber();
-          this.dispatchEvent( createUpdateEvent( "songComplete" ));
+          if ( !this.complete ) {
+            this.complete = true;
+            this.dispatchEvent( createUpdateEvent( "songComplete" ));
+          }
         } else {
           this.handler.enableScrubber();
         }
@@ -210,6 +207,14 @@
         if ( Math.floor( this.value ) > 29 ) {
           this.dispatchEvent( createUpdateEvent( "showRatings" ));
         }
+      },
+      disableScrubber: function() {
+        this.disabled = true;
+        this.setAttribute( "complete", "" );
+        this.scrubber.style.opacity = 0;
+        this.shadowScrubber.style.opacity = 0;
+        this.playBtn.disabled = true;
+        this.playIcon.style.opacity = 0.02;
       }
     });
   });

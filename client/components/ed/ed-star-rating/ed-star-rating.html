@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="./ed-star-rating.css">
     <div id="dynamic-details" class="loading-track loading-artist">
       <p id="track-name" class="track-title"></p>
-      <a id="artist-link" href=""><p id="artist-name" class="artist-name"></p></a>
+      <p id="artist-name" class="artist-name"></p>
     </div>
     <p class="rate-song">RATE SONG:</p>
     <div id="disable-text">
@@ -15,25 +15,18 @@
       <form id="rating-form">
         <fieldset class="rating">
           <div id="input-field">
-            <input id="rate1" type="radio" name="rating" value="1">
-            <input id="rate2" type="radio" name="rating" value="2">
-            <input id="rate3" type="radio" name="rating" value="3">
-            <input id="rate4" type="radio" name="rating" value="4">
-            <input id="rate5" type="radio" name="rating" value="5">
+            <input type="radio" name="rating" value="1">
+            <input type="radio" name="rating" value="2">
+            <input type="radio" name="rating" value="3">
+            <input type="radio" name="rating" value="4">
+            <input type="radio" name="rating" value="5">
           </div>
           <div id="star-field">
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-          </div>
-          <div id="overlap-field">
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
-            <ed-icon name="star"></ed-icon>
+            <ed-icon name="star" id="star-1"></ed-icon>
+            <ed-icon name="star" id="star-2"></ed-icon>
+            <ed-icon name="star" id="star-3"></ed-icon>
+            <ed-icon name="star" id="star-4"></ed-icon>
+            <ed-icon name="star" id="star-5"></ed-icon>
           </div>
         </fieldset>
       </form>
