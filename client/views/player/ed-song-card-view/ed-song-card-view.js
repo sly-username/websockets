@@ -40,8 +40,11 @@
     };
 
     playerServiceEventHandler = function( event ) {
-      var eventType = event.detail.name,
-        currentVal = event.detail.currentVal;
+      var
+        eventType = event.detail.name,
+        currentVal = event.detail.currentVal,
+        startValue = event.detail.startValue,
+        endValue = event.detail.endValue;
 
       if ( eventType === "pause" || eventType === "stop" ) {
         playerService.pause();
@@ -58,8 +61,12 @@
         this.handler.injectStats();
       }
 
-      if ( eventType === "scrubStart" ) {
+      if ( eventType === "scrub" ) {
         this.handler.updateTime( currentVal, true );
+      }
+
+      if ( eventType === "scrubEnd" ) {
+        //this.handler.updateTime( currentVal, true );
       }
 
       if ( eventType === "rate" ) {
@@ -99,8 +106,9 @@
       }
 
       if ( eventType === "songComplete" ) {
+        clearInterval( this.intervalId );
+
         if ( this.hasRated ) {
-          clearInterval( this.intervalId );
           playerService.rateTrack( this.starRating.currentRating );
           playerService.skip();
         } else {
