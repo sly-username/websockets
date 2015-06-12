@@ -63,6 +63,10 @@
         this.handler.updateTime( currentVal, true );
       }
 
+      if ( eventType === "scrubEnd" ) {
+        this.handler.updateTime();
+      }
+
       if ( eventType === "rate" ) {
         this.hasRated = true;
 

@@ -55,7 +55,7 @@
           this.front.style["stroke-dashoffset"] = -1 * angle * this.circFront / 360 - this.circFront * 1.25 + "%";
           this.mid.style["stroke-dashoffset"] = -1 * angle * this.circMid / 360 - this.circMid * 1.25 + "%";
 
-          this.dispatchEvent( createUpdateEvent( "scrubMove", { currentVal: this.currentVal } ) );
+          this.dispatchEvent( createUpdateEvent( "scrubMove", { currentVal: this.currentVal }));
           this.handler.updateScrub();
         }
       },
@@ -65,6 +65,8 @@
         if ( scrubStartValue && this.currentVal && scrubStartValue !== this.currentVal ) {
           playerService.scrubEnd( scrubStartValue, this.currentVal );
         }
+
+        this.dispatchEvent( createUpdateEvent( "scrubEnd", { currentVal: this.currentVal }));
       },
       updateScrubHandler = function() {
         var degPercent = parseInt( this.value / this.max * 360, 10 ),
