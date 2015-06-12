@@ -116,6 +116,7 @@
       },
       enableScrubberHandler = function() {
         this.complete = false;
+        this.disabled = false;
         this.removeAttribute( "complete" );
         this.scrubber.style.opacity = 1;
         this.shadowScrubber.style.opacity = .4;

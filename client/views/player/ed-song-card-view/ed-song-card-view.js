@@ -99,8 +99,9 @@
       }
 
       if ( eventType === "songComplete" ) {
+        clearInterval( this.intervalId );
+
         if ( this.hasRated ) {
-          clearInterval( this.intervalId );
           playerService.rateTrack( this.starRating.currentRating );
           playerService.skip();
         } else {
