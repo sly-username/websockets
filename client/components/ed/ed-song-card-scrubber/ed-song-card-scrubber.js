@@ -119,6 +119,7 @@
       },
       resetScrubberHandler = function() {
         this.value = 0;
+        this.$["song-timer"].innerText = "00:00/00:00";
         this.handler.updateScrub();
       },
       enableScrubberHandler = function() {
