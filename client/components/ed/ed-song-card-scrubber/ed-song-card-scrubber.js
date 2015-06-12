@@ -215,6 +215,18 @@
         this.shadowScrubber.style.opacity = 0;
         this.playBtn.disabled = true;
         this.playIcon.style.opacity = 0.02;
+      },
+      resetScrubber: function() {
+        // calculates the circumference of circles
+        //this.circFront = 2.01 * Math.PI * parseInt( this.front.getAttribute( "r" ), 10 );
+        //this.circMid = 2.01 * Math.PI * parseInt( this.mid.getAttribute( "r" ), 10 );
+        this.value = 0;
+        this.handler.updateScrub();
+
+        //this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
+        //this.front.style[ "stroke-dashoffset" ] = this.circFront + "%";
+        //this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
+        //this.mid.style[ "stroke-dashoffset" ] = this.circMid + "%";
       }
     });
   });

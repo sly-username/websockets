@@ -1,11 +1,11 @@
 export default {
   get path() {
-    return "ws://apidev.eardishcorp.com";
+    return "ws://apiqa.eardish.com";
   },
 
   get aws() {
     return {
-      bucket: "eardish.dev.images"
+      bucket: "eardish.qa.images"
     }
   }
 }

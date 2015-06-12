@@ -75,6 +75,7 @@
           playerService.rateTrack( this.starRating.currentRating );
         }
 
+        this.mainPlayer.resetScrubber();
         playerService.skip();
       }
 
@@ -89,9 +90,7 @@
       }
 
       if ( eventType === "showMainPlayer" ) {
-        this.miniPlayerWrapper.classList.remove( "show-mini" );
-        this.mainPlayerWrapper.classList.remove( "hide-main" );
-        this.songCardWrapper.classList.remove( "minimized" );
+        this.open();
       }
 
       if ( eventType === "resetSongCard" ) {
