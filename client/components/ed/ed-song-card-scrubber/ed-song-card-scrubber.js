@@ -84,6 +84,7 @@
         this.$["song-timer"].innerText = playerService.formattedDisplayTime;
       },
       skipSongHandler = function() {
+        this.handler.resetScrubber();
         this.dispatchEvent( createUpdateEvent( "skip" ));
       },
       playerServiceEventHandler = function( event ) {
@@ -108,6 +109,10 @@
         this.front.style[ "stroke-dashoffset" ] = this.circFront + "%";
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
         this.mid.style[ "stroke-dashoffset" ] = this.circMid + "%";
+      },
+      resetScrubberHandler = function() {
+        this.value = 0;
+        this.handler.updateScrub();
       },
       enableScrubberHandler = function() {
         this.complete = false;
@@ -138,6 +143,7 @@
         // event Handler
         this.handler = {
           initScrubber: initScrubberHandler.bind( this ),
+          resetScrubber: resetScrubberHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
           enableScrubber: enableScrubberHandler.bind( this ),
           scrubFire: scrubFireHandler.bind( this ),
@@ -215,18 +221,6 @@
         this.shadowScrubber.style.opacity = 0;
         this.playBtn.disabled = true;
         this.playIcon.style.opacity = 0.02;
-      },
-      resetScrubber: function() {
-        // calculates the circumference of circles
-        //this.circFront = 2.01 * Math.PI * parseInt( this.front.getAttribute( "r" ), 10 );
-        //this.circMid = 2.01 * Math.PI * parseInt( this.mid.getAttribute( "r" ), 10 );
-        this.value = 0;
-        this.handler.updateScrub();
-
-        //this.front.style[ "stroke-dasharray" ] = this.circFront + "%";
-        //this.front.style[ "stroke-dashoffset" ] = this.circFront + "%";
-        //this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
-        //this.mid.style[ "stroke-dashoffset" ] = this.circMid + "%";
       }
     });
   });
