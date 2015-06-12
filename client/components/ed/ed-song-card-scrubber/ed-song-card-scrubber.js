@@ -66,33 +66,6 @@
           playerService.scrubEnd( scrubStartValue, this.currentVal );
         }
       },
-      triggerMoveHandler = function( event ) {
-        var angle,
-          radians;
-
-        if ( this.mouseDown ) {
-          if ( event.touches ) {
-            radians = Math.atan2( event.touches[ 0 ].pageX - this.scrubCenter[ 0 ], event.touches[ 0 ].pageY - this.scrubCenter[ 1 ] );
-          } else {
-            radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
-          }
-
-          angle = radians * ( 180 / Math.PI ) * -1 + 90;
-          this.currentVal = ( angle + 90 ) * this.max / 360;
-
-          this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
-          this.scrubber.style.transform = "rotate(" + angle + "deg)";
-
-          this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
-          this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
-
-          this.front.style[ "stroke-dashoffset" ] = -1 * angle * this.circFront / 360 - this.circFront * 1.25 + "%";
-          this.mid.style[ "stroke-dashoffset" ] = -1 * angle * this.circMid / 360 - this.circMid * 1.25 + "%";
-
-          this.dispatchEvent( createUpdateEvent( "scrubMove", { currentVal: this.currentVal }));
-          this.handler.updateScrub();
-        }
-      },
       updateScrubHandler = function() {
         var degPercent = parseInt( this.value / this.max * 360, 10 ),
           rotation = "rotate(" + ( degPercent - 90 ) + "deg)";
