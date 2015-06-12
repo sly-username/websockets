@@ -116,7 +116,7 @@
     };
 
     toggleAdMobHandler = function( action ) {
-      if ( window.AdMob ) {
+      if ( window.AdMob && window.AdMob.showBanner && window.AdMob.hideBanner ) {
         switch ( action ) {
           case "show":
             window.AdMob.showBanner();
