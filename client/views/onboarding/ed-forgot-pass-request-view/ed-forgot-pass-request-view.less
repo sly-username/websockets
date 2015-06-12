@@ -23,6 +23,7 @@
   .logoFormHeader();
   width: 100%;
   flex: 1;
+  overflow-y: auto;
 }
 
 .ed-forgot-body {
@@ -33,19 +34,12 @@
   .edType( heading-S );
   color: @lightGrey1;
   text-align: center;
-  margin: 2%;
 }
 
 #errorEmail, #errorServer {
-  .edType( heading-S );
+  .edType(heading-S);
   color: @lightGrey1;
   text-align: center;
-}
-
-ed-form-input {
-  margin: 9vh auto;
-  height: 11vh;
-  min-height: 55px;
 }
 
 #forgot-submit {
