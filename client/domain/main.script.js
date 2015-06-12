@@ -25,7 +25,6 @@
     ])
       .then( imports => {
         var
-          loginData,
           // destructing the default imports to their associated name
           [
             dataService,
@@ -84,33 +83,6 @@
 
         // need to init manually to ensure event binding
         router.init();
-
-        if ( localStorage ) {
-          loginData = localStorage.getItem( "edLoginInfo" );
-
-          if ( loginData ) {
-            loginData = JSON.parse( loginData );
-
-            if ( loginData.password && loginData.email ) {
-              userService.login( loginData.email, loginData.password )
-                .then(function() {
-                  if ( userService.hasOnboarded ) {
-                    router.go( "/discover", {
-                      replace: true
-                    });
-                  } else {
-                    router.go( "/onboarding/like", {
-                      replace: true
-                    });
-                  }
-                })
-                .catch(function() {
-                  localStorage.removeItem( "edLoginInfo" );
-                  router.go( "/login" );
-                });
-            }
-          }
-        }
       })
       .catch( error => {
         console.error( "Problem in main script: " + error.message );

@@ -18,7 +18,9 @@ var
   hasOnboarded = false,
   sessionAuthJSON = null,
   loggedInDate = null,
-  referralsRemaining;
+  referralsRemaining,
+  saveCredentialsInLocalStorage,
+  clearCredentialsFromLocalStorage;
 
 Object.defineProperties( edUserService, {
   currentProfile: {
@@ -77,6 +79,18 @@ Object.defineProperties( edUserService, {
     }
   }
 });
+
+saveCredentialsInLocalStorage = function( credentialMap ) {
+  if ( localStorage ) {
+    localStorage.setItem( "edLoginInfo", JSON.stringify( credentialMap ));
+  }
+};
+
+clearCredentialsFromLocalStorage = function() {
+  if ( localStorage ) {
+    localStorage.removeItem( "edLoginInfo" );
+  }
+};
 
 // todo remove
 window.edUserService = edUserService;
@@ -138,9 +152,7 @@ edUserService.login = function( email, password ) {
       );
 
       // save for login on app restart
-      if ( localStorage ) {
-        localStorage.setItem( "edLoginInfo", JSON.stringify( json.auth ));
-      }
+      saveCredentialsInLocalStorage( json.auth );
 
       return edUserService.getReferrals()
         .then(function() {
@@ -169,13 +181,37 @@ edUserService.login = function( email, password ) {
 };
 
 /**
+ * @method restoreSession
+ */
+edUserService.restoreSession = function() {
+  var
+    localStorage = window.localStorage,
+    loginData;
+
+  if ( localStorage ) {
+    loginData = localStorage.getItem( "edLoginInfo" );
+
+    if ( loginData ) {
+      loginData = JSON.parse( loginData );
+
+      if ( loginData.password && loginData.email ) {
+        return edUserService.login( loginData.email, loginData.password )
+          .catch(function( error ) {
+            clearCredentialsFromLocalStorage();
+          });
+      }
+    }
+  }
+
+  return Promise.reject( new Error( "Could not restore Session" ));
+};
+
+/**
  * @method logout
  */
 edUserService.logout = function() {
   // Don't allow auto login on app restart
-  if ( localStorage ) {
-    localStorage.removeItem( "edLoginInfo" );
-  }
+  clearCredentialsFromLocalStorage();
 
   edUserService.dispatch( createEvent( "edLogout", {
     detail: {
