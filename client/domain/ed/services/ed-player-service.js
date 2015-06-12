@@ -346,17 +346,18 @@ export default edPlayerService = {
     return true;
   },
 
-  scrubTo: function( value, scrubEnd ) {
-    var scrubFrom = currentTrack.currentTime;
-    audio.currentTime = value;
-
+  scrubTo: function( value ) {
     hasScrubbed = true;
+    audio.currentTime = value;
+    return audio.currentTime;
+  },
 
-    if ( scrubEnd ) {
-      edAnalyticsService.send( "scrub", {
+  scrubEnd: function( start, end ) {
+    if ( currentTrack ) {
+      return edAnalyticsService.send( "scrub", {
         trackId: currentTrack.id,
-        timeStart: scrubFrom,
-        timeEnd: value
+        timeStart: start,
+        timeEnd: end
       });
     }
   },

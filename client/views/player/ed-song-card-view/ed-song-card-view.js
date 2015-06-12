@@ -59,13 +59,8 @@
         this.handler.injectStats();
       }
 
-      if ( eventType === "scrub" ) {
+      if ( eventType === "scrubMove" ) {
         this.handler.updateTime( currentVal, true );
-      }
-
-      if ( eventType === "scrubEnd" ) {
-        playerService.scrubTo( currentVal, true );
-        //this.handler.updateTime( currentVal, true );
       }
 
       if ( eventType === "rate" ) {
@@ -154,11 +149,8 @@
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
-        this.trackName = this.$[ "star-rating" ].shadowRoot.querySelector( "#track-name" );
-        this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
-        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
-        this.disableText = this.$[ "star-rating" ].shadowRoot.getElementById( "disable-text" );
-
+      },
+      attached: function() {
         // Event Handler
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
@@ -166,8 +158,7 @@
           injectStats: injectStatsHandler.bind( this ),
           resetSongCard: resetSongCardHandler.bind( this )
         };
-      },
-      attached: function() {
+
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
@@ -175,6 +166,12 @@
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
+      },
+      domReady: function() {
+        this.trackName = this.starRating.shadowRoot.querySelector( "#track-name" );
+        this.artistName = this.starRating.shadowRoot.querySelector( "#artist-name" );
+        this.ratingsForm = this.starRating.shadowRoot.getElementById( "rating-form-wrapper" );
+        this.disableText = this.starRating.shadowRoot.getElementById( "disable-text" );
       },
       // attributeChanged: function( attrName, oldValue, newValue ) {},
       /* open & close methods slide player up & down */
