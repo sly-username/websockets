@@ -13,17 +13,21 @@
           var router = document.getElementById( "root-app-router" );
 
           // MAKE THEM ONBOARD!
-          if ( !edUserService.hasOnboarded ) {
+          if ( !edUserService.hasOnboarded && router ) {
             router.go( "/onboarding/like", {
               replace: true
             });
           }
         })
         .catch(function( error ) {
+          var router = document.getElementById( "root-app-router" );
+
+          if ( router ) {
+            router.go( "/login" );
+          }
+
           console.warn( "Issue trying to restore session: " + error.message );
           console.error( error.stack );
-
-          router.go( "/login" );
         });
     });
 })();
