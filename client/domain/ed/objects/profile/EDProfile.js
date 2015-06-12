@@ -2,6 +2,7 @@
 
 import define from "domain/ed/define-properties";
 import EDModel from "domain/ed/objects/EDModel";
+import EDBadge from "domain/ed/objects/EDBadge";
 
 export default class EDProfile extends EDModel {
   static get MODEL_TYPE() {
@@ -9,6 +10,9 @@ export default class EDProfile extends EDModel {
   }
 
   constructor( args ) {
+
+    args.badges = args.badges.map( badge => new EDBadge( badge ));
+
     super( args );
 
     define.enumReadOnly( this, [
@@ -27,7 +31,7 @@ export default class EDProfile extends EDModel {
       "art",
       "address",
       "socialLinks",
-      "badgesEarned"
+      "badges"
     ], args );
   }
 
