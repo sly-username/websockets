@@ -42,9 +42,7 @@
     playerServiceEventHandler = function( event ) {
       var
         eventType = event.detail.name,
-        currentVal = event.detail.currentVal,
-        startValue = event.detail.startValue,
-        endValue = event.detail.endValue;
+        currentVal = event.detail.currentVal;
 
       if ( eventType === "pause" || eventType === "stop" ) {
         playerService.pause();
@@ -66,6 +64,7 @@
       }
 
       if ( eventType === "scrubEnd" ) {
+        playerService.scrubTo( currentVal, true );
         //this.handler.updateTime( currentVal, true );
       }
 
