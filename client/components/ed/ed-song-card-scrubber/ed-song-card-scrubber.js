@@ -30,7 +30,10 @@
       scrubFireHandler = function() {
         this.mouseDown = false;
 
-        this.dispatchEvent( createUpdateEvent( "scrubEnd" ));
+        this.dispatchEvent( createUpdateEvent( "scrubEnd", {
+          startValue: null,
+          endValue: this.currentVal
+        }));
       },
       triggerMoveHandler = function( event ) {
         var angle,
@@ -52,10 +55,10 @@
           this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
           this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
 
-          this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-          this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+          this.front.style[ "stroke-dashoffset" ] = ((( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 )) + "%";
+          this.mid.style[ "stroke-dashoffset" ] = ((( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 )) + "%";
 
-          this.dispatchEvent( createUpdateEvent( "scrubStart", { currentVal: this.currentVal }));
+          this.dispatchEvent( createUpdateEvent( "scrub", { currentVal: this.currentVal }));
           this.handler.updateScrub();
         }
       },
