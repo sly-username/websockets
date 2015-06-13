@@ -31,7 +31,6 @@
           };
         },
         attached: function() {
-          this.emailInput.focus();
           this.emailInput.addEventListener( "blur", this.handlers.cleanup, true );
           this.emailInput.addEventListener( "keyup", this.handlers.goSubmit );
         },

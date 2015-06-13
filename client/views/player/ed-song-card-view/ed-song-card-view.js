@@ -40,7 +40,8 @@
     };
 
     playerServiceEventHandler = function( event ) {
-      var eventType = event.detail.name,
+      var
+        eventType = event.detail.name,
         currentVal = event.detail.currentVal;
 
       if ( eventType === "pause" || eventType === "stop" ) {
@@ -58,8 +59,12 @@
         this.handler.injectStats();
       }
 
-      if ( eventType === "scrubStart" ) {
+      if ( eventType === "scrubMove" ) {
         this.handler.updateTime( currentVal, true );
+      }
+
+      if ( eventType === "scrubEnd" ) {
+        this.handler.updateTime( currentVal );
       }
 
       if ( eventType === "rate" ) {
@@ -71,6 +76,8 @@
       }
 
       if ( eventType === "skip" ) {
+        clearInterval( this.intervalId );
+
         if ( this.hasRated ) {
           playerService.rateTrack( this.starRating.currentRating );
         }
@@ -89,9 +96,7 @@
       }
 
       if ( eventType === "showMainPlayer" ) {
-        this.miniPlayerWrapper.classList.remove( "show-mini" );
-        this.mainPlayerWrapper.classList.remove( "hide-main" );
-        this.songCardWrapper.classList.remove( "minimized" );
+        this.open();
       }
 
       if ( eventType === "resetSongCard" ) {
@@ -99,6 +104,8 @@
       }
 
       if ( eventType === "songComplete" ) {
+        clearInterval( this.intervalId );
+
         if ( this.hasRated ) {
           playerService.rateTrack( this.starRating.currentRating );
           playerService.skip();
@@ -146,11 +153,8 @@
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
-        this.trackName = this.$[ "star-rating" ].shadowRoot.querySelector( "#track-name" );
-        this.artistName = this.$[ "star-rating" ].shadowRoot.querySelector( "#artist-name" );
-        this.ratingsForm = this.$[ "star-rating" ].shadowRoot.getElementById( "rating-form-wrapper" );
-        this.disableText = this.$[ "star-rating" ].shadowRoot.getElementById( "disable-text" );
-
+      },
+      attached: function() {
         // Event Handler
         this.handler = {
           updateTime: updateTimeHandler.bind( this ),
@@ -158,8 +162,7 @@
           injectStats: injectStatsHandler.bind( this ),
           resetSongCard: resetSongCardHandler.bind( this )
         };
-      },
-      attached: function() {
+
         // bind events
         this.addEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
       },
@@ -167,6 +170,12 @@
         clearInterval( this.intervalId );
 
         this.removeEventListener( "scrubberUpdate", this.handler.playerServiceEvent );
+      },
+      domReady: function() {
+        this.trackName = this.starRating.shadowRoot.querySelector( "#track-name" );
+        this.artistName = this.starRating.shadowRoot.querySelector( "#artist-name" );
+        this.ratingsForm = this.starRating.shadowRoot.getElementById( "rating-form-wrapper" );
+        this.disableText = this.starRating.shadowRoot.getElementById( "disable-text" );
       },
       // attributeChanged: function( attrName, oldValue, newValue ) {},
       /* open & close methods slide player up & down */

@@ -1,3 +1,4 @@
+@import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/mixins/hidden.less";
 @import "../../../styles/ed/buttons.mixin.less";
 @import "../../../styles/ed/colors.vars.less";
@@ -12,6 +13,7 @@
 .hidden();
 
 .forgot-container {
+  .flexContainer( column; flex-start; stretch; stretch );
   .mainPicturedBackground();
   height: 100vh;
   overflow-y: scroll;
@@ -20,7 +22,8 @@
 .ed-logo-header {
   .logoFormHeader();
   width: 100%;
-  height: 45vh;
+  .flexItem( 1, 0 );
+  overflow-y: auto;
 }
 
 .ed-forgot-body {
@@ -31,26 +34,21 @@
   .edType( heading-S );
   color: @lightGrey1;
   text-align: center;
-  margin: 2%;
 }
 
 #errorEmail, #errorServer {
-  .edType( heading-S );
+  .edType(heading-S);
   color: @lightGrey1;
   text-align: center;
 }
 
-ed-form-input {
-  width: 95%;
-  height: 8vh;
-  margin: 0 auto 1vh;
-}
-
 #forgot-submit {
   .edPrimaryButton();
+  margin-top: 9%;
 }
 
 #back-button {
   .edPrimaryButton( @backgroundColor: @darkPurple3; @activeColor: @darkPurple1; );
   text-decoration: none;
+  padding: 7%;
 }
