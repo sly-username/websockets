@@ -24,7 +24,7 @@
   left: 0;
   bottom: 100%;
   pointer-events: all;
-  transition: all .7s;
+  transition: all .45s;
   .transform( translate3d( 0, 0, 0 ));
 
   &.close {
@@ -38,11 +38,14 @@
   z-index: 2;
   pointer-events: all;
   background: @darkPurple2;
-  transition: all .7s;
+  transition: all .45s, opacity 0s;
+  opacity: 1;
   .transform( translate3d( 0, 0, 0 ));
 
   &.close {
+    transition: all .45s, opacity 0s .45s;
     .transform( translate3d( 0, 100vh, 0 ));
+    opacity: 0;
   }
 }
 
