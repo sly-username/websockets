@@ -21,7 +21,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 11vh;
+    height: 9vh;
     text-align: center;
     z-index: 2;
     .chart-title-text {
@@ -38,11 +38,6 @@
       line-height: 65%;
       white-space: pre;
     }
-    .direction-divs {
-      position: absolute;
-      width: 33%;
-      height: 100%;
-    }
     header {
       position: relative;
       width: 100%;
@@ -50,14 +45,6 @@
       background: @lightPurple1;
       color: @originalWhite;
     }
-  }
-
-  #move-left {
-    left: 0;
-  }
-
-  #move-right {
-    right: 0;
   }
 
   .ranks-badge-wrapper {
@@ -73,6 +60,17 @@
     text-align: center;
     background-color: @originalPurple;
     padding-bottom: 2%;
+    .direction-divs {
+      position: absolute;
+      width: 33%;
+      height: 33%;
+    }
+    #move-left {
+      left: 0;
+    }
+    #move-right {
+      right: 0;
+    }
     .time-left {
       .edType( heading-XS );
       white-space: pre;
@@ -107,8 +105,8 @@
   .rankings {
     list-style-type: none;
     width: 100%;
-    height: 30vh;
-    margin: 1vh 0 4vh;
+    height: 37vh;
+    margin: 1vh 0;
     padding: 0;
     background: @darkPurple3;
     overflow-y: scroll;
