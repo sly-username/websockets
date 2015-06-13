@@ -6,7 +6,7 @@
       rgba(0,0,0,0.8)),
       url({{image}}) no-repeat center; background-size: cover;">
         <p id="song-timer"></p>
-        <template if="{{complete}}">
+        <template if="{{disabled}}">
           <p id="rate-request">Please rate this track
             <span>to go to the next song</span>
             <ed-icon name="arrow-short"></ed-icon>
@@ -24,7 +24,7 @@
         </svg>
         <!-- the below needs to be replaced with ed-icon once its fixed -->
         <button id="play-btn">
-          <ed-icon id="play-icon" name="play"></ed-icon>
+          <ed-icon id="play-icon" name="pause"></ed-icon>
         </button>
         <button id="skip-btn">
           <span>skip</span>

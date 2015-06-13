@@ -7,46 +7,67 @@
   ]).then(function( imported ) {
       var
         dataService = imported[ 0 ].default,
-        userService = imported[ 1 ].default,
-        modelObserver = function( changes ) {
-          if ( changes.some(function( change ) { return change.name === "ed-id"; }) ) {
-            this.updateProfileModel();
-          }
-        };
+        userService = imported[ 1 ].default;
 
       polymer( "ed-profile-artist", {
+        // roll your own reflection...
+        get edId() {
+          return this.getAttribute( "ed-id" );
+        },
+        set edId( value ) {
+          this.setAttribute( "ed-id", value );
+          return value;
+        },
         /* LIFECYCLE */
-        ready: function() {
-          // Get first model
-          this.handlers = {
-            modelObserver: modelObserver.bind( this )
-          };
-        },
+//        ready: function() {},
         attached: function() {
+          this.badgeEdIcons = Array.prototype.slice.call( this.shadowRoot.querySelectorAll( ".badge-section > ed-icon" ));
+
+          // force model update
           this.updateProfileModel();
-          Object.observe( this, this.handlers.modelObserver );
+
+          // update stats
+          userService.getStats()
+            .then(function( response ) {
+              this.songsRated = response.ratedTracks;
+              this.yourRank = response.completedListens;
+            }.bind( this ));
         },
-        detached: function() {
-          Object.unobserve( this, this.handlers.modelObserver );
-        },
-        updateProfileModel: function() {
-          if ( this[ "ed-id" ] ) {
-            dataService.getArtistById( this[ "ed-id" ] )
-              .then(function( edArtist ) {
-                this.edArtist = edArtist;
-                console.log( "profile artist got: %o", edArtist );
-              }.bind( this ));
-            userService.getStats()
-              .then(function( response ) {
-                this.songsRated = response.ratedTracks;
-                this.yourRank = response.completedListens;
-              }.bind( this ));
-          }
-        },
+//        detached: function() {},
         attributeChanged: function( attrName ) {
           if ( attrName === "ed-id" ) {
             this.updateProfileModel();
           }
+        },
+        updateProfileModel: function() {
+          if ( this.edId != null ) {
+            // get profile
+            dataService.getArtistById( this.edId )
+              .then(function( edArtist ) {
+                this.edArtist = edArtist;
+                this.updateBadges();
+                console.log( "profile artist got: %o", edArtist );
+              }.bind( this ));
+          }
+        },
+        updateBadges: function() {
+          // todo counts
+          this.badgeEdIcons.forEach(function( edIcon, index ) {
+            var edBadge;
+
+            if ( edBadge = this.edArtist.badges[ index ]) {
+              edIcon.setAttribute( "name", edBadge.iconName );
+
+              if ( edBadge.count ) {
+                edIcon.setAttribute( "count", edBadge.count );
+              } else {
+                edIcon.removeAttribute( "count" );
+              }
+            } else {
+              edIcon.setAttribute( "name", "badge-empty" );
+              edIcon.removeAttribute( "count" );
+            }
+          }, this );
         }
       });
     });

@@ -16,6 +16,12 @@
     background-color: @originalRed;
     border-color: @darkRed1;
   }
+  input {
+    .input-placeholder( { color: @originalWhite } );
+  }
+  ed-icon {
+    fill: @originalWhite;
+  }
 }
 
 .form-input-container {
@@ -26,10 +32,6 @@
   text-align: center;
   background-color: @darkPurple3;
   box-shadow: .4rem .4rem 0 0 fade(@darkPurple3, 75%) inset;
-  &.invalid-field {
-    background-color: @originalRed;
-    border-color: @darkRed1;
-  }
 }
 
 label {

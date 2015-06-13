@@ -49,7 +49,7 @@ trackEndedHandler = function() {
 rateCurrentlyPlaying = function( number ) {
   if ( number != null && currentTrack ) {
     return currentTrack.rate( number )
-      .then(function( response ) {
+      .then( response => {
         edAnalyticsService.send( "rate", {
           trackId: currentTrack.id,
           timecode: audio.currentTime,

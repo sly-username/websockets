@@ -10,16 +10,20 @@
       updateTimeHandler,
       playerServiceEventHandler,
       injectStatsHandler,
-      resetRatingHandler;
+      resetSongCardHandler,
+      toggleAdMobHandler;
 
     // helpers
-    resetRatingHandler = function() {
+    resetSongCardHandler = function() {
       this.songCompleted = false;
       this.hasRated = false;
-      this.starRating.transformOverlap( -100 );
+      this.trackName.classList.add( "loading" );
+      this.artistName.classList.add( "loading" );
       this.mainPlayer.setAttribute( "value", "" );
+      this.mainPlayer.setAttribute( "max", "0" );
       this.ratingsForm.classList.remove( "show" );
       this.disableText.classList.remove( "hide" );
+      this.starRating.resetRating();
     };
 
     updateTimeHandler = function( tempValue, isScrubbing ) {
@@ -59,7 +63,6 @@
       }
 
       if ( eventType === "rate" ) {
-        playerService.rateTrack( currentVal );
         this.hasRated = true;
 
         if ( this.songCompleted ) {
@@ -68,9 +71,11 @@
       }
 
       if ( eventType === "skip" ) {
+        if ( this.hasRated ) {
+          playerService.rateTrack( this.starRating.currentRating );
+        }
+
         playerService.skip();
-        this.trackName.classList.add( "loading" );
-        this.artistName.classList.add( "loading" );
       }
 
       if ( eventType === "showRatings" ) {
@@ -90,16 +95,18 @@
       }
 
       if ( eventType === "resetSongCard" ) {
-        // TODO refactor to make a full reset for all songcard components
-        this.handler.resetRating();
+        this.handler.resetSongCard();
       }
 
       if ( eventType === "songComplete" ) {
-        this.songCompleted = true;
-
         if ( this.hasRated ) {
+          playerService.rateTrack( this.starRating.currentRating );
           playerService.skip();
+        } else {
+          this.mainPlayer.disableScrubber();
         }
+
+        this.songCompleted = true;
       }
     };
 
@@ -107,6 +114,22 @@
       this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
       this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
     };
+
+    toggleAdMobHandler = function( action ) {
+      if ( window.AdMob && window.AdMob.showBanner && window.AdMob.hideBanner ) {
+        switch ( action ) {
+          case "show":
+            window.AdMob.showBanner();
+            break;
+          case "hide":
+            window.AdMob.hideBanner();
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    // end helpers
 
     polymer( "ed-song-card-view", {
       /* LIFECYCLE */
@@ -133,7 +156,7 @@
           updateTime: updateTimeHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
           injectStats: injectStatsHandler.bind( this ),
-          resetRating: resetRatingHandler.bind( this )
+          resetSongCard: resetSongCardHandler.bind( this )
         };
       },
       attached: function() {
@@ -148,14 +171,14 @@
       // attributeChanged: function( attrName, oldValue, newValue ) {},
       /* open & close methods slide player up & down */
       open: function() {
+        toggleAdMobHandler( "hide" );
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
         this.animationWrapper.classList.remove( "player-padding" );
-        window.AdMob.hideBanner();
       },
       close: function() {
-        window.AdMob.showBanner();
+        toggleAdMobHandler( "show" );
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
@@ -163,11 +186,11 @@
       },
       /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
-        window.AdMob.showBanner();
+        toggleAdMobHandler( "show" );
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
-        window.AdMob.hideBanner();
+        toggleAdMobHandler( "hide" );
         this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
         this.animationWrapper.classList.remove( "player-padding" );

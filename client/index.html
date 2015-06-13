@@ -12,12 +12,21 @@
       document.head.appendChild( base );
 
       window.polymerReadyPromise = new Promise(function( resolve, reject ) {
+        var timeoutId;
+
         document.addEventListener("polymer-ready", function( event ) {
-          console.log( "saw early polymer ready on window %o", event );
+          window.clearTimeout( timeoutId );
+
+          console.log( "saw polymer ready on window %o", event );
           resolve( event );
         });
+
+        timeoutId = window.setTimeout(function(){
+          reject( new Error( "Polymer Took more than a five minuets to get set up" ));
+        }, 5000 );
       });
 
+      // todo add reject via timeout like above
       window.deviceReadyPromise = new Promise(function( resolve, reject ) {
         document.addEventListener( "deviceready", function( event ) {
           console.log( "saw device ready %o", event );
@@ -54,6 +63,8 @@
   <script src="vendor/system.js"></script>
   <link rel="import" href="vendor/app-router.html" />
 
+  <script src="domain/load.script.js"></script>
+
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
 </head>
@@ -68,6 +79,7 @@
     (function(){
       // TODO component this
       var here = document.getElementById("splash-screen");
+
       here.addEventListener( "transitionend", function( event ) {
         here.hidden = true;
       });
@@ -94,8 +106,8 @@
 
     <!-- PROFILE -->
     <app-route path="/profile/edit" element="ed-profile-edit"></app-route>
-    <app-route path="/artist/:ed-id" element="ed-profile-artist" onUrlChange="updateModel"></app-route>
-    <app-route path="/fan/:ed-id" element="ed-profile-fan" onUrlChange="updateModel"></app-route>
+    <app-route path="/artist/:edId" element="ed-profile-artist" onUrlChange="updateModel"></app-route>
+    <app-route path="/fan/:edId" element="ed-profile-fan" onUrlChange="updateModel"></app-route>
 
     <!-- RETRIEVE PASSWORD -->
     <app-route path="/forgot-pass/**" element="ed-forgot-pass-view"></app-route>
