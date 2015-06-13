@@ -64,7 +64,6 @@
       }
 
       if ( eventType === "scrubEnd" ) {
-        console.log( "scrub ended?" );
         this.handler.updateTime( currentVal );
       }
 
