@@ -64,7 +64,7 @@
       }
 
       if ( eventType === "scrubEnd" ) {
-        this.handler.updateTime();
+        this.handler.updateTime( currentVal );
       }
 
       if ( eventType === "rate" ) {

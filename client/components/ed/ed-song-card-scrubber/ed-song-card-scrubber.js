@@ -76,22 +76,13 @@
         this.scrubber.style.webkitTransform = rotation;
         this.scrubber.style.transform = rotation;
 
-        //this.scrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
-        //this.scrubber.style.animation = "rotateScrubber " + this.max + "s linear";
-
         this.shadowScrubber.style.webkitTransform = rotation;
         this.shadowScrubber.style.transform = rotation;
-
-        //this.shadowScrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
-        //this.shadowScrubber.style.animation = "rotateScrubber " + this.max + "s linear";
 
         this.front.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circFront / 360 - this.circFront * 1.25  + "%";
         this.mid.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circMid / 360 - this.circMid * 1.25 + "%";
 
-        //this.front.style.webkitAnimation = "dashoffsetFill " + this.max + "s linear";
-        //this.mid.style.animation = "dashoffsetFill " + this.max + "s linear";
-
-        this.$["song-timer"].innerText = playerService.formattedDisplayTime;
+        this.timer.innerText = playerService.formattedDisplayTime;
       },
       skipSongHandler = function() {
         inSkipEvent = true;
@@ -124,7 +115,7 @@
       },
       resetScrubberHandler = function() {
         this.value = 0;
-        this.$["song-timer"].innerText = "00:00/00:00";
+        this.timer.innerText = "00:00/00:00";
         this.handler.updateScrub();
       },
       enableScrubberHandler = function() {
@@ -153,6 +144,7 @@
         this.playBtn = this.shadowRoot.getElementById( "play-btn" );
         this.playIcon = this.shadowRoot.getElementById( "play-icon" );
         this.skipBtn = this.shadowRoot.getElementById( "skip-btn" );
+        this.timer = this.$[ "song-timer" ];
 
         // event handler
         this.handler = {
