@@ -72,8 +72,6 @@
         };
       },
       attached: function() {
-        this.resetCode.focus();
-
         this.formContainer.addEventListener( "blur", this.handlers.cleanUp, true );
         this.submitButton.addEventListener( "click", this.handlers.submitCheck );
         this.pairedInput.addEventListener( "keyup", this.handlers.goSubmit );
