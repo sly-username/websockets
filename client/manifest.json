@@ -37,6 +37,7 @@
   "xwalk_version": "0.1.0",
   "xwalk_description": "The eardish music discovery platform.",
   "xwalk_hosts": [
+    "http://*.eardish.com",
     "https://*.eardish.com",
     "http://*.eardishcorp.com",
     "http://*.cloudfront.net",
