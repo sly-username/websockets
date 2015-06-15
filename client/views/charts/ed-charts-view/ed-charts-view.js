@@ -34,7 +34,6 @@
       },
       updateChartsViewHandler = function( event ) {
         var eventType = event.detail.name;
-        console.log( currentView, eventType );
         if ( eventType === "moveLeft" ) {
           switch ( currentView ) {
             case 1:
