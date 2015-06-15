@@ -347,16 +347,19 @@ export default edPlayerService = {
   },
 
   scrubTo: function( value ) {
-    var scrubFrom = currentTrack.currentTime;
-    audio.currentTime = value;
-
     hasScrubbed = true;
+    audio.currentTime = value;
+    return audio.currentTime;
+  },
 
-    edAnalyticsService.send( "scrub", {
-      trackId: currentTrack.id,
-      timeStart: scrubFrom,
-      timeEnd: value
-    });
+  scrubEnd: function( start, end ) {
+    if ( currentTrack ) {
+      return edAnalyticsService.send( "scrub", {
+        trackId: currentTrack.id,
+        timeStart: start,
+        timeEnd: end
+      });
+    }
   },
 
   enqueue: function( ids ) {

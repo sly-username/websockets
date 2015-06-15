@@ -8,6 +8,8 @@
     var
       playerService = imported[ 0 ].default,
       createEvent = imported[ 1 ].default,
+      scrubStartValue,
+      inSkipEvent = false,
       createUpdateEvent = function( name, detail ) {
         detail = detail || {};
         detail.name = name;
@@ -27,24 +29,23 @@
           this.svgBox.top + top + this.svgBox.height / 2
         ];
       },
-      scrubFireHandler = function() {
-        this.mouseDown = false;
-
-        this.dispatchEvent( createUpdateEvent( "scrubEnd" ));
+      onScrubStartHandler = function() {
+        this.currentVal = this.value;
+        scrubStartValue = this.value;
       },
-      triggerMoveHandler = function( event ) {
+      onScrubMoveHandler = function() {
         var angle,
           radians;
 
         if ( this.mouseDown ) {
           if ( event.touches ) {
-            radians = Math.atan2( event.touches[ 0 ].pageX - this.scrubCenter[ 0 ], event.touches[ 0 ].pageY - this.scrubCenter[ 1 ] );
+            radians = Math.atan2( event.touches[0].pageX - this.scrubCenter[0], event.touches[0].pageY - this.scrubCenter[1] );
           } else {
-            radians = Math.atan2( event.pageX - this.scrubCenter[ 0 ], event.pageY - this.scrubCenter[ 1 ] );
+            radians = Math.atan2( event.pageX - this.scrubCenter[0], event.pageY - this.scrubCenter[1] );
           }
 
-          angle = ( radians * ( 180 / Math.PI ) * -1 ) + 90;
-          this.currentVal = ( ( ( angle + 90 ) * this.max ) / 360 );
+          angle = radians * ( 180 / Math.PI ) * -1 + 90;
+          this.currentVal = ( angle + 90 ) * this.max / 360;
 
           this.scrubber.style.webkitTransform = "rotate(" + angle + "deg)";
           this.scrubber.style.transform = "rotate(" + angle + "deg)";
@@ -52,12 +53,21 @@
           this.shadowScrubber.style.webkitTransform = "rotate(" + angle + "deg)";
           this.shadowScrubber.style.transform = "rotate(" + angle + "deg)";
 
-          this.front.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circFront ) / 360 ) - ( this.circFront * 1.25 ) ) + "%";
-          this.mid.style[ "stroke-dashoffset" ] = ( ( ( -1 * angle * this.circMid ) / 360 ) - ( this.circMid * 1.25 ) ) + "%";
+          this.front.style["stroke-dashoffset"] = -1 * angle * this.circFront / 360 - this.circFront * 1.25 + "%";
+          this.mid.style["stroke-dashoffset"] = -1 * angle * this.circMid / 360 - this.circMid * 1.25 + "%";
 
-          this.dispatchEvent( createUpdateEvent( "scrubStart", { currentVal: this.currentVal }));
+          this.dispatchEvent( createUpdateEvent( "scrubMove", { currentVal: this.currentVal }));
           this.handler.updateScrub();
         }
+      },
+      onScrubEndHandler = function() {
+        this.mouseDown = false;
+
+        if ( scrubStartValue && this.currentVal && scrubStartValue !== this.currentVal ) {
+          playerService.scrubEnd( scrubStartValue, this.currentVal );
+        }
+
+        this.dispatchEvent( createUpdateEvent( "scrubEnd", { currentVal: this.currentVal }));
       },
       updateScrubHandler = function() {
         var degPercent = parseInt( this.value / this.max * 360, 10 ),
@@ -66,30 +76,24 @@
         this.scrubber.style.webkitTransform = rotation;
         this.scrubber.style.transform = rotation;
 
-        //this.scrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
-        //this.scrubber.style.animation = "rotateScrubber " + this.max + "s linear";
-
         this.shadowScrubber.style.webkitTransform = rotation;
         this.shadowScrubber.style.transform = rotation;
-
-        //this.shadowScrubber.style.webkitAnimation = "rotateScrubber " + this.max + "s linear";
-        //this.shadowScrubber.style.animation = "rotateScrubber " + this.max + "s linear";
 
         this.front.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circFront / 360 - this.circFront * 1.25  + "%";
         this.mid.style[ "stroke-dashoffset" ] = -1 * ( degPercent - 90 ) * this.circMid / 360 - this.circMid * 1.25 + "%";
 
-        //this.front.style.webkitAnimation = "dashoffsetFill " + this.max + "s linear";
-        //this.mid.style.animation = "dashoffsetFill " + this.max + "s linear";
-
-        this.$["song-timer"].innerText = playerService.formattedDisplayTime;
+        this.timer.innerText = playerService.formattedDisplayTime;
       },
       skipSongHandler = function() {
+        inSkipEvent = true;
         this.dispatchEvent( createUpdateEvent( "skip" ));
+        this.handler.resetScrubber();
       },
       playerServiceEventHandler = function( event ) {
         var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
         if ( eventType === "play" ) {
+          inSkipEvent = false;
           this.playIcon.setAttribute( "name", "pause" );
         }
 
@@ -109,8 +113,14 @@
         this.mid.style[ "stroke-dasharray" ] = this.circMid + "%";
         this.mid.style[ "stroke-dashoffset" ] = this.circMid + "%";
       },
+      resetScrubberHandler = function() {
+        this.value = 0;
+        this.timer.innerText = "00:00/00:00";
+        this.handler.updateScrub();
+      },
       enableScrubberHandler = function() {
         this.complete = false;
+        this.disabled = false;
         this.removeAttribute( "complete" );
         this.scrubber.style.opacity = 1;
         this.shadowScrubber.style.opacity = .4;
@@ -134,14 +144,17 @@
         this.playBtn = this.shadowRoot.getElementById( "play-btn" );
         this.playIcon = this.shadowRoot.getElementById( "play-icon" );
         this.skipBtn = this.shadowRoot.getElementById( "skip-btn" );
+        this.timer = this.$[ "song-timer" ];
 
-        // event Handler
+        // event handler
         this.handler = {
           initScrubber: initScrubberHandler.bind( this ),
+          resetScrubber: resetScrubberHandler.bind( this ),
           updateCenter: updateCenterHandler.bind( this ),
           enableScrubber: enableScrubberHandler.bind( this ),
-          scrubFire: scrubFireHandler.bind( this ),
-          triggerMove: triggerMoveHandler.bind( this ),
+          scrubStart: onScrubStartHandler.bind( this ),
+          scrubMove: onScrubMoveHandler.bind( this ),
+          scrubEnd: onScrubEndHandler.bind( this ),
           updateScrub: updateScrubHandler.bind( this ),
           skipSong: skipSongHandler.bind( this ),
           playerServiceEvent: playerServiceEventHandler.bind( this ),
@@ -164,8 +177,9 @@
         this.playBtn.addEventListener( "touchstart", this.handler.playerServiceEvent );
         this.scrubber.addEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "touchstart", this.handler.updateCenter );
-        this.addEventListener( "touchend", this.handler.scrubFire );
-        this.addEventListener( "touchmove", this.handler.triggerMove );
+        this.addEventListener( "touchstart", this.handler.scrubStart );
+        this.addEventListener( "touchmove", this.handler.scrubMove );
+        this.addEventListener( "touchend", this.handler.scrubEnd );
 
         // bind player updates through the service
         playerService.emitter.on( "playerUpdate", this.handler.playerServiceEvent );
@@ -185,13 +199,14 @@
         this.playBtn.removeEventListener( "touchstart", this.handler.playerServiceEvent );
         this.scrubber.removeEventListener( "touchstart", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "touchstart", this.handler.updateCenter );
-        this.removeEventListener( "touchend", this.handler.scrubFire );
-        this.removeEventListener( "touchmove", this.handler.triggerMove );
+        this.removeEventListener( "touchstart", this.handler.scrubStart );
+        this.removeEventListener( "touchmove", this.handler.scrubMove );
+        this.removeEventListener( "touchend", this.handler.scrubEnd );
 
         playerService.emitter.off( "playerUpdate", this.handler.playerServiceEvent );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
-        if ( attrName === "value" ) {
+        if ( attrName === "value" && !inSkipEvent ) {
           this.handler.updateScrub();
         }
 

@@ -22,8 +22,13 @@
         });
 
         timeoutId = window.setTimeout(function(){
-          reject( new Error( "Polymer Took more than a five minutes to get set up" ));
-        }, 5000 );
+          console.error(( new Error( "Polymer Took more than a five minutes to get set up" )).stack );
+
+          // fake some event data
+          resolve({
+            type: "polymer-ready"
+          });
+        }, 300000 );
       });
 
       // todo add reject via timeout like above
@@ -38,6 +43,7 @@
   <title>eardish</title>
   <link rel="shortcut icon" href="assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src *; connect-src *; object-src 'self'; media-src *; frame-src 'self';" />
 
   <!-- Global Styles -->
   <link rel="stylesheet" href="styles/main.css" />
