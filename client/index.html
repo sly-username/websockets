@@ -22,8 +22,13 @@
         });
 
         timeoutId = window.setTimeout(function(){
-          reject( new Error( "Polymer Took more than a five minutes to get set up" ));
-        }, 5000 );
+          console.error(( new Error( "Polymer Took more than a five minutes to get set up" )).stack );
+
+          // fake some event data
+          resolve({
+            type: "polymer-ready"
+          });
+        }, 300000 );
       });
 
       // todo add reject via timeout like above
