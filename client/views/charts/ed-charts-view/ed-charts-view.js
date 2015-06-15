@@ -15,25 +15,30 @@
           self.singleChartWrapper.classList.add( classAdd );
 
           if ( currentView === 3 && eventType === "moveRight" ) {
-            self.arrowLeft.classList.remove( "hidden" );
-            self.arrowRight.classList.add( "hidden" );
+            self.arrowRight.classList.add( "hideArrow" );
+            self.arrowRight.classList.remove( "reappearArrow" );
+            self.arrowLeft.classList.add( "reappearArrow" );
           } else if ( currentView === 2 && eventType === "moveLeft" ) {
-            self.arrowLeft.classList.add( "hidden" );
-            self.arrowRight.classList.remove( "hidden" );
+            self.arrowLeft.classList.add( "hideArrow" );
+            self.arrowLeft.classList.remove( "reappearArrow" );
+            self.arrowRight.classList.add( "reappearArrow" );
           } else if ( currentView === 1 && eventType === "moveLeft" ) {
-            self.arrowLeft.classList.add( "hidden" );
-            self.arrowRight.classList.remove( "hidden" );
+            self.arrowLeft.classList.add( "hideArrow" );
+            self.arrowRight.classList.remove( "reappearArrow" );
           } else if ( currentView === 4 && eventType === "moveRight" ) {
-            self.arrowLeft.classList.remove( "hidden" );
-            self.arrowRight.classList.add( "hidden" );
+            self.arrowLeft.classList.remove( "reappearArrow" );
+            self.arrowRight.classList.add( "hideArrow" );
           } else {
-            self.arrowLeft.classList.remove( "hidden" );
-            self.arrowRight.classList.remove( "hidden" );
+            self.arrowLeft.classList.add( "reappearArrow" );
+            self.arrowRight.classList.add( "reappearArrow" );
+            self.arrowLeft.classList.remove( "hideArrow" );
+            self.arrowRight.classList.remove( "hideArrow" );
           }
         });
       },
       updateChartsViewHandler = function( event ) {
         var eventType = event.detail.name;
+
         if ( eventType === "moveLeft" ) {
           switch ( currentView ) {
             case 1:
@@ -109,7 +114,7 @@
         this.addEventListener( "chartsUpdate", this.handler.updateChartView );
 
         this.getEdChartObject();
-        this.arrowLeft.classList.add( "hidden" );
+        this.arrowLeft.classList.add( "hideArrow" );
       },
       detached: function() {
         router.removeEventListener( "state-change", this.handler.resetChartView );
