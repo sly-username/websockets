@@ -25,8 +25,8 @@
               }.bind( this ));
           }
         },
-        uploadPhotoHandler = function( event ) {
-          userService.changeProfileImage( event.target.files[ 0 ]);
+        choosePhotoHandler = function( event ) {
+          userService.changeProfileImage( event.target.files[ 0 ] );
         };
 
       polymer( "ed-profile-edit", {
@@ -49,11 +49,11 @@
           }
 
           this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
-          this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
+          this.choosePhoto.addEventListener( "change", choosePhotoHandler );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
-          this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
+          this.choosePhoto.removeEventListener( "change", choosePhotoHandler );
         },
         // attributeChanged: function( attrName ) {}
         takePhoto: function() {
@@ -64,7 +64,7 @@
             userService.changeProfileImage( event.target.result, imageFile );
           };
 
-          if ( Camera ) {
+          if ( window.Camera ) {
             navigator.camera.getPicture(function( url ) {
               window.resolveLocalFileSystemURL( url, function( fileObj ) {
                 fileObj.file(function( data ) {
@@ -75,7 +75,8 @@
             });
           }
         },
-        goBack: function() {
+        goBack: function( event ) {
+          event.preventDefault();
           window.history.back();
         }
       });
