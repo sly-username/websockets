@@ -17,11 +17,9 @@
           if ( currentView === 3 && eventType === "moveRight" ) {
             self.arrowRight.classList.add( "hideArrow" );
             self.arrowRight.classList.remove( "reappearArrow" );
-            self.arrowLeft.classList.add( "reappearArrow" );
           } else if ( currentView === 2 && eventType === "moveLeft" ) {
             self.arrowLeft.classList.add( "hideArrow" );
             self.arrowLeft.classList.remove( "reappearArrow" );
-            self.arrowRight.classList.add( "reappearArrow" );
           } else if ( currentView === 1 && eventType === "moveLeft" ) {
             self.arrowLeft.classList.add( "hideArrow" );
             self.arrowRight.classList.remove( "reappearArrow" );
@@ -31,8 +29,6 @@
           } else {
             self.arrowLeft.classList.add( "reappearArrow" );
             self.arrowRight.classList.add( "reappearArrow" );
-            self.arrowLeft.classList.remove( "hideArrow" );
-            self.arrowRight.classList.remove( "hideArrow" );
           }
         });
       },
