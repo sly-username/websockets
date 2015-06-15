@@ -20,6 +20,12 @@
           } else if ( currentView === 2 && eventType === "moveLeft" ) {
             self.arrowLeft.classList.add( "hidden" );
             self.arrowRight.classList.remove( "hidden" );
+          } else if ( currentView === 1 && eventType === "moveLeft" ) {
+            self.arrowLeft.classList.add( "hidden" );
+            self.arrowRight.classList.remove( "hidden" );
+          } else if ( currentView === 4 && eventType === "moveRight" ) {
+            self.arrowLeft.classList.remove( "hidden" );
+            self.arrowRight.classList.add( "hidden" );
           } else {
             self.arrowLeft.classList.remove( "hidden" );
             self.arrowRight.classList.remove( "hidden" );
@@ -28,11 +34,11 @@
       },
       updateChartsViewHandler = function( event ) {
         var eventType = event.detail.name;
-
+        console.log( currentView, eventType );
         if ( eventType === "moveLeft" ) {
           switch ( currentView ) {
             case 1:
-              updateChartClass( [ "two", "three", "four" ], "one", this );
+              updateChartClass( [ "two", "three", "four" ], "one", this, eventType );
               currentView = 1;
               break;
             case 2:
@@ -40,11 +46,11 @@
               currentView = 1;
               break;
             case 3:
-              updateChartClass( [ "one", "three", "four" ], "two", this );
+              updateChartClass( [ "one", "three", "four" ], "two", this, eventType );
               currentView = 2;
               break;
             case 4:
-              updateChartClass( [ "one", "two", "four" ], "three", this );
+              updateChartClass( [ "one", "two", "four" ], "three", this, eventType );
               currentView = 3;
               break;
             default:
@@ -55,11 +61,11 @@
         if ( eventType === "moveRight" ) {
           switch ( currentView ) {
             case 1:
-              updateChartClass( [ "one", "three", "four" ], "two", this );
+              updateChartClass( [ "one", "three", "four" ], "two", this, eventType );
               currentView = 2;
               break;
             case 2:
-              updateChartClass( [ "one", "two", "four" ], "three", this );
+              updateChartClass( [ "one", "two", "four" ], "three", this, eventType );
               currentView = 3;
               break;
             case 3:
@@ -67,7 +73,7 @@
               currentView = 4;
               break;
             case 4:
-              updateChartClass( [ "one", "two", "four" ], "four", this );
+              updateChartClass( [ "one", "two", "four" ], "four", this, eventType );
               currentView = 4;
               break;
             default:
