@@ -213,7 +213,7 @@
         }
 
         if ( this.value === this.max ) {
-          if ( !this.complete ) {
+          if ( !this.complete && this.value > 0 ) {
             this.complete = true;
             this.dispatchEvent( createUpdateEvent( "songComplete" ));
           }
