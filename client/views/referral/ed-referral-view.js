@@ -41,7 +41,7 @@
           if ( !this.validEmail ) {
             this.emailInput.classList.add( "invalid" );
             this.emailError.classList.remove( "hidden" );
-            this.logo.scrollIntoView();
+            // todo .scrollIntoView();
             return;
           }
 
@@ -57,7 +57,7 @@
             }.bind( this ))
             .catch( function() {
               console.log( "referral request did not go through" );
-              //this.logo.scrollIntoView();
+              // todo .scrollIntoView();
             }, this );
         },
         updateReferralCount: function() {
