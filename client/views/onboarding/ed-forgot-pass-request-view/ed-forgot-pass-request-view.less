@@ -4,7 +4,7 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/ed/backgrounds.mixin.less";
 @import "../../../styles/fonts/edTypeStyles.less";
-
+@import "../../../styles/ed/error-text.mixin.less";
 
 * {
   font-family: Ubuntu;
@@ -36,10 +36,8 @@
   text-align: center;
 }
 
-#errorEmail, #errorServer {
-  .edType(heading-S);
-  color: @lightGrey1;
-  text-align: center;
+.error-messages {
+  .edErrorText();
 }
 
 #forgot-submit {
