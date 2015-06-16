@@ -29,6 +29,8 @@
           } else {
             self.arrowLeft.classList.add( "reappearArrow" );
             self.arrowRight.classList.add( "reappearArrow" );
+            self.arrowLeft.classList.remove( "hideArrow" );
+            self.arrowRight.classList.remove( "hideArrow" );
           }
         });
       },
