@@ -26,7 +26,14 @@
           }
         },
         choosePhotoHandler = function( event ) {
-          userService.changeProfileImage( event.target.files[ 0 ] );
+          return userService.changeProfileImage( event.target.files[ 0 ] )
+            .then(function( edJson ) {
+              return userService.editProfile({ artId: edJson.data.artId })
+                .then(function( edProfile ) {
+                  this.edFan = edProfile;
+                  return edProfile;
+                }.bind( this ));
+            }.bind( this ));
         };
 
       polymer( "ed-profile-edit", {
@@ -61,7 +68,13 @@
             imageFile;
 
           reader.onloadend = function( event ) {
-            userService.changeProfileImage( event.target.result, imageFile );
+            return userService.changeProfileImage( event.target.result, imageFile )
+              .then(function( artId ) {
+                console.log( "artId", artId );
+                //return userService.editProfile({
+                //  artId: artId
+                //});
+              });
           };
 
           if ( window.Camera ) {
