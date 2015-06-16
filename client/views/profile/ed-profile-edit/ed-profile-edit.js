@@ -28,12 +28,10 @@
         choosePhotoHandler = function( event ) {
           return userService.changeProfileImage( event.target.files[ 0 ] )
             .then(function( edJson ) {
-              return userService.editProfile({ artId: edJson.data.artId })
-                .then(function( edProfile ) {
-                  this.edFan = edProfile;
-                  return edProfile;
-                }.bind( this ));
-            }.bind( this ));
+              return userService.editProfile({
+                artId: edJson.data.artId
+              });
+            });
         };
 
       polymer( "ed-profile-edit", {
@@ -69,11 +67,10 @@
 
           reader.onloadend = function( event ) {
             return userService.changeProfileImage( event.target.result, imageFile )
-              .then(function( artId ) {
-                console.log( "artId", artId );
-                //return userService.editProfile({
-                //  artId: artId
-                //});
+              .then(function( edJson ) {
+                return userService.editProfile({
+                  artId: edJson.data.artId
+                });
               });
           };
 
