@@ -60,6 +60,7 @@ export default class EDBadge extends EDModel {
 
   constructor( args ) {
 
+    args.type = args.type || EDBadge.MODEL_TYPE;
     args.name = args.name || idToName( args.id );
     args.iconName = args.iconName || idToIconName( args.id );
 

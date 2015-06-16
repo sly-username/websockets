@@ -3,16 +3,14 @@ var
   AdMob = window.AdMob,
   admobid = {},
   admobOptions = {
-    // adSize: 'SMART_BANNER',
-    // width: integer,
-    // height: integer,
+    adSize: 'SMART_BANNER',
     position: AdMob.AD_POSITION.TOP_CENTER,
     // offsetTopBar: true, //iOS7+
     // bgColor: 'black',
     // x: integer,
     // y: integer,
     // overlap: true,
-    isTesting: true // TODO remove for production
+//    isTesting: true // TODO remove for production
   };
 
 if ( /(android)/i.test( navigator.userAgent )) {

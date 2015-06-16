@@ -21,21 +21,21 @@
             triggerMenu: triggerMenuHandler.bind( this )
           };
 
-          if ( userService.isOpenSession ) {
-            this.edFan = userService.currentProfile;
-          }
           userService.on( "edLogin", function() {
             this.edFan = userService.currentProfile;
           }.bind( this ) );
         },
         attached: function() {
           this.router.addEventListener( "activate-route-end", this.handlers.triggerMenu );
+
+          if ( userService.isOpenSession ) {
+            this.edFan = userService.currentProfile;
+          }
         },
         detached: function() {
           this.router.removeEventListener( "activate-route-end", this.handlers.triggerMenu );
-        },
-        attributeChanged: function( attrName ) {
         }
+//        attributeChanged: function( attrName ) {}
       });
     });
 })( window.Polymer, window.System );
