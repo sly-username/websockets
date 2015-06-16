@@ -33,7 +33,7 @@
           userService.getStats()
             .then(function( response ) {
               this.songsRated = response.ratedTracks;
-              this.yourRank = response.completedListens;
+              this.completedPlays = response.completedListens;
             }.bind( this ));
         },
 //        detached: function() {},
