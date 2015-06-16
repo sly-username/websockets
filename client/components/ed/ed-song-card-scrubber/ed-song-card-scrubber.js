@@ -90,18 +90,20 @@
         this.handler.resetScrubber();
       },
       playerServiceEventHandler = function( event ) {
-        var eventType = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
+        var eventName = event.detail.type != null ? event.detail.type : this.playIcon.getAttribute( "name" );
 
-        if ( eventType === "play" ) {
-          inSkipEvent = false;
-          this.playIcon.setAttribute( "name", "pause" );
+        switch ( eventName ) {
+          case "play":
+            this.playIcon.setAttribute( "name", "pause" );
+            break;
+          case "pause":
+            this.playIcon.setAttribute( "name", "play" );
+            break;
+          default:
+            break;
         }
 
-        if ( eventType === "pause" ) {
-          this.playIcon.setAttribute( "name", "play" );
-        }
-
-        this.dispatchEvent( createUpdateEvent( eventType ));
+        this.dispatchEvent( createUpdateEvent( eventName ));
       },
       initScrubberHandler = function() {
         // calculates the circumference of circles
@@ -169,8 +171,8 @@
         this.scrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.addEventListener( "mousedown", this.handler.updateCenter );
         this.skipBtn.addEventListener( "touchstart", this.handler.skipSong );
-        this.addEventListener( "mouseup", this.handler.scrubFire );
-        this.addEventListener( "mousemove", this.handler.triggerMove );
+        this.addEventListener( "mouseup", this.handler.scrubStart );
+        this.addEventListener( "mousemove", this.handler.scrubMove );
         this.addEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events
@@ -191,8 +193,8 @@
         this.scrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.shadowScrubber.removeEventListener( "mousedown", this.handler.updateCenter );
         this.skipBtn.removeEventListener( "touchstart", this.handler.skipSong );
-        this.removeEventListener( "mouseup", this.handler.scrubFire );
-        this.removeEventListener( "mousemove", this.handler.triggerMove );
+        this.removeEventListener( "mouseup", this.handler.scrubStart );
+        this.removeEventListener( "mousemove", this.handler.scrubMove );
         this.removeEventListener( "mouseout", this.handler.mouseOut );
 
         // touch events

@@ -275,14 +275,14 @@ export default edPlayerService = {
       .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
-            type: "play"
+            type: "resetSongCard"
           }
         }));
       })
       .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
-            type: "resetSongCard"
+            type: "play"
           }
         }));
       });
@@ -298,6 +298,8 @@ export default edPlayerService = {
             type: "play"
           }
         }));
+      } else {
+        return this.pause();
       }
       return true;
     }
