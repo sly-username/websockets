@@ -5,10 +5,12 @@
     .then(function( imported ) {
       var
         userService = imported.default,
-        triggerMenuHandler = function() {
+        triggerMenuHandler = function( event ) {
           if ( this.edMenu.classList.contains( "show-menu" ) ) {
             this.edMenu.classList.remove( "show-menu" );
           }
+
+          this.setActive( event.detail.path );
         };
 
       polymer( "ed-side-menu", {
@@ -16,6 +18,7 @@
         ready: function() {
           this.edMenu = document.getElementById( "side-menu" );
           this.router = document.getElementById( "root-app-router" );
+
           // handlers
           this.handlers = {
             triggerMenu: triggerMenuHandler.bind( this )
@@ -34,8 +37,22 @@
         },
         detached: function() {
           this.router.removeEventListener( "activate-route-end", this.handlers.triggerMenu );
-        }
+        },
 //        attributeChanged: function( attrName ) {}
+        setActive: function( path ) {
+          if ( this.routeAnchors == null ) {
+            this.routeAnchors = Array.prototype.slice.call( this.shadowRoot.querySelectorAll( "ar-anchor"), 0 );
+          }
+
+          this.routeAnchors.forEach(function( anchor ) {
+            if ( anchor.getAttribute( "route" ) === path ) {
+              anchor.classList.add( "active" );
+              return;
+            }
+
+            anchor.classList.remove( "active" );
+          });
+        }
       });
     });
 })( window.Polymer, window.System );
