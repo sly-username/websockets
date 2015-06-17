@@ -24,7 +24,7 @@ export default edDiscoverService = {
     }
 
     data = {
-      id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
+      id: edUserService.isOpenSession ? edUserService.currentUserId : null,
       genreId: tempGenreId,
       count: 100
     };
@@ -42,7 +42,7 @@ export default edDiscoverService = {
 
   getTracksForProfileBlend() {
     var data = {
-      id: edUserService.isOpenSession ? edUserService.currentProfile.id : null,
+      id: edUserService.isOpenSession ? edUserService.currentUserId : null,
       count: 100
     };
 
@@ -70,14 +70,14 @@ export default edDiscoverService = {
   setCurrentProfileBlend( genresLiked, genresDisliked ) {
     return edConnectionService.request( "profile/blend/set", 10, {
       data: {
-        id: edUserService.currentProfile.id,
+        id: edUserService.currentUserId,
         genresLiked,
         genresDisliked
       }
     })
       .then(() => {
         currentProfileBlend = {
-          id: edUserService.currentProfile.id,
+          id: edUserService.currentUserId,
           genresLiked,
           genresDisliked
         };
