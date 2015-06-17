@@ -38,27 +38,35 @@
   z-index: 2;
   pointer-events: all;
   background: @darkPurple2;
-  transition: all .45s, opacity 0s;
+  transition: -webkit-transform .45s, transform .45s, opacity 0s;
   opacity: 1;
   .transform( translate3d( 0, 0, 0 ));
 
   &.close {
-    transition: all .45s, opacity 0s .45s;
+    transition: -webkit-transform .45s, transform .45s, opacity 0s .45s;
     .transform( translate3d( 0, 100vh, 0 ));
     opacity: 0;
   }
 }
 
 #user-ranking {
-  margin-bottom: 4%;
+  margin: 0 auto;
+  width: 91%;
+
+  .rankings-container {
+    float: right;
+    height: 13vh;
+    line-height: 13vh;
+  }
 }
 
 #minify-button {
-  width: 15%;
+  width: 13%;
   height: 13vh;
   background: transparent;
   border: none;
   outline: none;
+  padding: 0.7rem;
 }
 
 #minify-icon {

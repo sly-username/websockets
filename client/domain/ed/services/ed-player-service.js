@@ -44,6 +44,8 @@ trackEndedHandler = function() {
       trackId: currentTrack.id
     });
   }
+
+  hasScrubbed = false;
 };
 
 rateCurrentlyPlaying = function( number ) {
@@ -383,6 +385,7 @@ export default edPlayerService = {
     }
 
     currentIndex += 1;
+    hasScrubbed = false;
 
     if ( tracksCollection.ids.length === currentIndex ) {
       return this.startMusicDiscovery( "profileBlend" );
