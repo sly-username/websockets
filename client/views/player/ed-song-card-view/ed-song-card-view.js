@@ -29,6 +29,8 @@
     updateTimeHandler = function( tempValue, isScrubbing ) {
       var currentValue;
 
+      console.log( "timer update?" );
+
       if ( isScrubbing ) {
         currentValue = playerService.scrubTo( tempValue );
       } else {

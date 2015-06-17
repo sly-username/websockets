@@ -94,6 +94,7 @@
 
         switch ( eventName ) {
           case "play":
+            inSkipEvent = false;
             this.playIcon.setAttribute( "name", "pause" );
             break;
           case "pause":
