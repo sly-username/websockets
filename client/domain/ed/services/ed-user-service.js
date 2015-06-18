@@ -275,7 +275,12 @@ edUserService.changeProfileImage = function( image, fileData ) {
             }
           };
 
-          return resolve( edConnectionService.request( "profile/art/create", 10, json ));
+          return resolve(
+            edConnectionService.request( "profile/art/create", 10, json )
+              .then(() => {
+                return edDataService.getProfileById( currentProfile.id, 10, true );
+              })
+          );
         }); // end S3 callback
       })
       .catch(function( error ) {

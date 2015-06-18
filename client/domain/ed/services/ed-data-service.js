@@ -159,7 +159,7 @@ loadGenres();
 
 /* Start Service Functions */
 // Main function for getting data object from server
-dataService.getByTypeAndId = function( type, id, priority=10 ) {
+dataService.getByTypeAndId = function( type, id, priority=10, force=false ) {
 //  console.log( "getByTypeAndId %o", arguments );
   var
     route,
@@ -172,7 +172,7 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
 
   route = getQueryRouteForType( type );
 
-  if ( lru.has( id ) ) {
+  if ( force === false && lru.has( id ) ) {
     console.log( `id: ${id} already found in lru: %o`, lru );
     return Promise.resolve( lru.get( id ) );
   }
@@ -215,24 +215,24 @@ dataService.getByTypeAndId = function( type, id, priority=10 ) {
 };
 
 // Alias Functions
-dataService.getProfileById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDProfile.MODEL_TYPE, id, priority );
+dataService.getProfileById = function( id, priority=10, force=false ) {
+  return dataService.getByTypeAndId( EDProfile.MODEL_TYPE, id, priority, force );
 };
 
-dataService.getArtistById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDArtist.MODEL_TYPE, id, priority );
+dataService.getArtistById = function( id, priority=10, force=false ) {
+  return dataService.getByTypeAndId( EDArtist.MODEL_TYPE, id, priority, force );
 };
 
-dataService.getFanById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDFan.MODEL_TYPE, id, priority );
+dataService.getFanById = function( id, priority=10, force=false ) {
+  return dataService.getByTypeAndId( EDFan.MODEL_TYPE, id, priority, force );
 };
 
-dataService.getTrackById = function( id, priority=10 ) {
-  return dataService.getByTypeAndId( EDTrack.MODEL_TYPE, id, priority );
+dataService.getTrackById = function( id, priority=10, force=false ) {
+  return dataService.getByTypeAndId( EDTrack.MODEL_TYPE, id, priority, force );
 };
 
-dataService.getGenreById = function( id, priority=10 ) {
-  if ( lruMap.genre.has( id ) ) {
+dataService.getGenreById = function( id, priority=10, force=false ) {
+  if ( force === false && lruMap.genre.has( id ) ) {
     return Promise.resolve( lruMap.genre.get( id ) );
   }
 
