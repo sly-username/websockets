@@ -6,6 +6,7 @@
   ]).then(function( imported ) {
       var
         userService = imported[ 0 ].default,
+        profileImage,
         updateProfileName = function( nameKey, nameValue ) {
           var nameData = {};
           nameData[ nameKey ] = nameValue;
@@ -27,11 +28,11 @@
         },
         choosePhotoHandler = function( event ) {
           return userService.changeProfileImage( event.target.files[ 0 ] )
-            .then(function( edJson ) {
-              return userService.editProfile({
-                artId: edJson.data.artId
-              });
-            });
+            .then(function( edProfile ) {
+              this.edFan = edProfile;
+              // TODO figure out why polymer isnt updating data binding
+              profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
+            }.bind( this ));
         };
 
       polymer( "ed-profile-edit", {
@@ -39,6 +40,7 @@
         ready: function() {
           this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
+          profileImage = this.shadowRoot.getElementById( "profile-image" );
 
           this.handler = {
             nameInput: nameInputHandler.bind( this )
@@ -47,9 +49,11 @@
         attached: function() {
           if ( userService.isOpenSession ) {
             this.edFan = userService.currentProfile;
+            profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
           } else {
             userService.once( "edLogin", function() {
               this.edFan = userService.currentProfile;
+              profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
             }.bind( this ));
           }
 
@@ -67,11 +71,10 @@
 
           reader.onloadend = function( event ) {
             return userService.changeProfileImage( event.target.result, imageFile )
-              .then(function( edJson ) {
-                return userService.editProfile({
-                  artId: edJson.data.artId
-                });
-              });
+              .then(function( edProfile ) {
+                this.edFan = edProfile;
+                return edProfile;
+              }.bind( this ));
           };
 
           if ( window.Camera ) {
