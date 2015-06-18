@@ -23,8 +23,9 @@
       polymer( "ed-registration-view", {
         /* LIFECYCLE */
         ready: function() {
+          this.logo = this.shadowRoot.querySelector( ".ed-logo-header" );
           this.submitButton = this.shadowRoot.querySelector( "#registration-submit" );
-          this.registrationBodyDiv = this.shadowRoot.querySelector( ".ed-registration-body" );
+          this.registrationBody = this.shadowRoot.querySelector( ".ed-registration-body" );
 
           // ed-form-inputs
           this.formInputs = {
@@ -57,11 +58,11 @@
           };
         },
         attached: function() {
-          this.registrationBodyDiv.addEventListener( "blur", this.handlers.cleanup, true );
+          this.registrationBody.addEventListener( "blur", this.handlers.cleanup, true );
           this.formInputs.inviteCode.addEventListener( "keyup", this.handlers.goSubmit );
         },
         detached: function() {
-          this.registrationBodyDiv.removeEventListener( "blur", this.handlers.cleanup );
+          this.registrationBody.removeEventListener( "blur", this.handlers.cleanup );
           this.formInputs.inviteCode.removeEventListener( "keyup", this.handlers.goSubmit );
         },
 
@@ -156,7 +157,7 @@
 
           if ( !this.canSubmit ) {
             this.postEarlyErrors();
-            window.scrollTo( 0, 0 );
+            this.logo.scrollIntoView();
             return;
           }
 
@@ -186,7 +187,7 @@
                   this.formInputs.email.classList.add( "invalid" );
                 }
               }, this );
-              window.scrollTo( 0, 0 );
+              this.logo.scrollIntoView();
               return error;
             }.bind( this ));
         }

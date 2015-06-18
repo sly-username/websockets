@@ -23,6 +23,7 @@
       polymer( "ed-login-view", {
         /* LIFECYCLE */
         ready: function() {
+          this.logo = this.shadowRoot.querySelector( ".ed-logo-header" );
           this.submitButton = this.shadowRoot.querySelector( "#login-submit" );
           this.loginBody = this.shadowRoot.querySelector( ".ed-login-body" );
           this.errorServer = this.shadowRoot.querySelector( "#errorServer" );
@@ -98,7 +99,7 @@
 
           if ( !this.canSubmit ) {
             this.postEarlyErrors();
-            window.scrollTo( 0, 0 );
+            this.logo.scrollIntoView();
             return;
           }
 
@@ -116,9 +117,9 @@
             }.bind( this ))
             .catch( function( error ) {
               errorServer.classList.remove( "hidden" );
-              window.scrollTo( 0, 0 );
+              this.logo.scrollIntoView();
               return error;
-            });
+            }, this );
         }
       });
     });
