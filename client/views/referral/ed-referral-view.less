@@ -2,6 +2,7 @@
 @import "../../styles/ed/title-bar.mixin.less";
 @import "../../styles/ed/colors.vars.less";
 @import "../../styles/ed/buttons.mixin.less";
+@import "../../styles/ed/error-text.mixin.less";
 
 .hidden();
 
@@ -47,7 +48,5 @@ ed-form-input {
 }
 
 #errorEmail {
-  text-align: center;
-  .edType( heading-XS );
-  color: @lightGrey1;
+  .edErrorText();
 }
