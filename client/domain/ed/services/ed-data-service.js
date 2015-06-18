@@ -231,6 +231,7 @@ dataService.getTrackById = function( id, priority=10, force=false ) {
   return dataService.getByTypeAndId( EDTrack.MODEL_TYPE, id, priority, force );
 };
 
+// Genre Functions
 dataService.getGenreById = function( id, priority=10, force=false ) {
   if ( force === false && lruMap.genre.has( id ) ) {
     return Promise.resolve( lruMap.genre.get( id ) );
@@ -251,6 +252,60 @@ dataService.getAllGenres = function() {
   });
 };
 
+// Observing functions
+// Note about "acceptList":
+//    if it is anything but an array it will get overwritten, so
+//    passing in null to the observe function will cause the default
+//    param set by the observable to be used
+dataService.observeProfile = function( id, callback, acceptList=null ) {
+  if ( id == null ) {
+    throw new TypeError( "ID Must be a valid number or string to be observed" );
+  }
+
+  if ( typeof callback !== "function" ) {
+    throw new TypeError( "Callback must exist and be of type 'function'" );
+  }
+
+  lruMap.profile.observe( id, callback, acceptList );
+};
+
+dataService.unobserveProfile = function( id, callback ) {
+  if ( id == null ) {
+    throw new TypeError( "ID Must be a valid number or string to be observed" );
+  }
+
+  if ( typeof callback !== "function" ) {
+    throw new TypeError( "Callback must exist and be of type 'function'" );
+  }
+
+  lruMap.profile.unobserve( id, callback );
+};
+
+dataService.observeMedia = function( id, callback, acceptList=null ) {
+  if ( id == null ) {
+    throw new TypeError( "ID Must be a valid number or string to be observed" );
+  }
+
+  if ( typeof callback !== "function" ) {
+    throw new TypeError( "Callback must exist and be of type 'function'" );
+  }
+
+  lruMap.media.observe( id, callback, acceptList );
+};
+
+dataService.unobserveMedia = function( id, callback ) {
+  if ( id == null ) {
+    throw new TypeError( "ID Must be a valid number or string to be observed" );
+  }
+
+  if ( typeof callback !== "function" ) {
+    throw new TypeError( "Callback must exist and be of type 'function'" );
+  }
+
+  lruMap.media.unobserve( id, callback );
+};
+
+// Client side updating of indexedDB databases
 export var updateModel = function( edJson ) {
   var
     oldModel,
@@ -267,7 +322,12 @@ export var updateModel = function( edJson ) {
   return pdb.objects.get( newModel.id )
     .then( retrievedModel => {
       oldModel = retrievedModel;
-      return pdb.objects.put( newModel );
+//      console.log( "old: %o, new: %o", oldModel, newModel );
+//      console.log( "assigned: %o", Object.assign( oldModel, newModel ));
+
+      // TODO remove this, SS needs to have consistent returns for profile/get and profile/edit
+      // merge missing properties
+      return pdb.objects.put( Object.assign( oldModel, newModel ));
     })
     .catch( error => {
       console.log( "Error adding model update to DB: " + pdb.name );
