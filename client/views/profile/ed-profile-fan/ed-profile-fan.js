@@ -32,8 +32,8 @@
           // update stats
           userService.getStats()
             .then(function( response ) {
-              this.songsRated = response.ratedTracks;
-              this.yourRank = response.completedListens;
+              this.$[ "songs-rated" ].setAttribute( "rank", response.ratedTracks );
+              this.$[ "complete-listens" ].setAttribute( "rank", response.completedListens );
             }.bind( this ));
         },
 //        detached: function() {},
