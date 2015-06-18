@@ -18,6 +18,9 @@ var
   hasOnboarded = false,
   sessionAuthJSON = null,
   loggedInDate = null,
+  currentProfileObserver,
+  setUpObserver,
+  teardownObserver,
   referralsRemaining,
   saveCredentialsInLocalStorage,
   clearCredentialsFromLocalStorage;
@@ -79,6 +82,40 @@ Object.defineProperties( edUserService, {
     }
   }
 });
+
+// to watch for changes to current logged in profile
+currentProfileObserver = function( changeList ) {
+  changeList.forEach( change => {
+    if ( change.type === "set" && ( currentProfile == null || currentProfile.id == change.object.id )) {
+      currentProfile = change.object;
+    }
+
+    /* TODO Maybe?
+    if ( change.type === "remove" ) {
+      // force current profile back into the lru?
+    }
+    */
+  });
+};
+
+setUpObserver = function( id ) {
+  try {
+    edDataService.observeProfile( id, currentProfileObserver, [ "set" ]);
+  } catch ( error ) {
+    console.warn( "Error setting up profile observer in user service" );
+    console.error( error.stack );
+  }
+};
+
+teardownObserver = function( id ) {
+  try {
+    edDataService.unobserveProfile( id, currentProfileObserver );
+  } catch ( error ) {
+    console.warn( "Error tearing down profile observer in user service" );
+    console.error( error.stack );
+  }
+};
+
 
 saveCredentialsInLocalStorage = function( credentialMap ) {
   if ( localStorage ) {
@@ -154,6 +191,9 @@ edUserService.login = function( email, password ) {
       // save for login on app restart
       saveCredentialsInLocalStorage( json.auth );
 
+      // observe for changes
+      setUpObserver( edProfile.id );
+
       return edUserService.getReferrals()
         .then(function() {
           // analytics
@@ -164,17 +204,22 @@ edUserService.login = function( email, password ) {
           return currentProfile;
         })
         .catch( error => {
-          console.warn( "Error with referral or analytics login during user-service login: " + error.message );
+          console.warn( "Error with referral or analytics:login during user-service login: " + error.message );
           console.error( error.stack );
           return currentProfile;
         });
     })
     .catch( error => {
+      if ( currentProfile != null && "id" in currentProfile ) {
+        teardownObserver( currentProfile.id );
+      }
+
       currentProfile = null;
       currentUserId = null;
       isOpenSession = false;
       hasOnboarded = false;
       referralsRemaining = 0;
+
       console.warn( "this person was unable to login: " + error.message );
       console.error( error.stack );
     });
@@ -223,6 +268,10 @@ edUserService.logout = function() {
   edAnalytics.send( "logout", {
     time: ( new Date() ).toISOString()
   });
+
+  if ( currentProfile != null && "id" in currentProfile ) {
+    teardownObserver( currentProfile.id );
+  }
 
   currentProfile = null;
   currentUserId = null;
@@ -453,6 +502,29 @@ edUserService.editProfile = function( args ) {
       console.error( error.stack );
       throw error;
     });
+};
+
+/**
+ * @method observeCurrentProfile
+ */
+edUserService.observeCurrentProfile = function( callback, acceptList=null ) {
+  if ( currentProfile == null || !( "id" in currentProfile ) ) {
+    throw new TypeError( "Current Profile is not set, can not observe something that doesn't exist" );
+  }
+
+  edDataService.observeProfile( currentProfile.id, callback, acceptList );
+};
+
+/**
+ * @method unobserveCurrentProfile
+ * @param callback
+ */
+edUserService.unobserveCurrentProfile = function( callback ) {
+  if ( currentProfile == null || !( "id" in currentProfile ) ) {
+    throw new TypeError( "Current Profile is not set, can not unobserve something that doesn't exist" );
+  }
+
+  edDataService.unobserveProfile( currentProfile.id, callback );
 };
 
 /**

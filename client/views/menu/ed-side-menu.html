@@ -1,32 +1,33 @@
-<link rel="import" href="../../components/ui/img-placeholder/img-placeholder.html"/>
-<link rel="import" href="../../components/ed/ed-icon/ed-icon.html"/>
+<link rel="import" href="../../components/ui/img-placeholder/img-placeholder.html" />
+<link rel="import" href="../../components/ed/ed-icon/ed-icon.html" />
+<link rel="import" href="../../components/ed/ar-anchor/ar-anchor.html" />
 
 <polymer-element name="ed-side-menu" attributes="ed-id hide">
   <template>
     <link rel="stylesheet" href="./ed-side-menu.css">
     <div class="menu-wrapper">
       <nav class="menu-list">
-        <a id="discover-button" href="#/discover">
+        <ar-anchor id="discover-button" route="/discover" class="active">
           <ed-icon name="discover"></ed-icon>
           <span>Discover</span>
-        </a>
-        <a id="charts-button" href="#/charts">
+        </ar-anchor>
+        <ar-anchor id="charts-button" route="/charts">
           <ed-icon name="charts"></ed-icon>
           <span>Charts</span>
-        </a>
-        <a id="invite-button" href="#/referral">
+        </ar-anchor>
+        <ar-anchor id="invite-button" route="/referral">
           <ed-icon name="invite-friends"></ed-icon>
           <span>Invite Friends</span>
-        </a>
-        <a id="settings-button" href="#/settings">
+        </ar-anchor>
+        <ar-anchor id="settings-button" route="/settings">
           <ed-icon name="settings"></ed-icon>
           <span>Settings</span>
-        </a>
+        </ar-anchor>
       </nav>
-      <a class="profile-bar" href="#/fan/{{ edFan.id }}">
+      <ar-anchor class="profile-bar" route="/fan/{{ edFan.id }}">
         <img-placeholder class="img-container" src="{{ edFan.art.phoneLarge }}" image="fan"></img-placeholder>
         <p>{{ edFan.fullName }}</p>
-      </a>
+      </ar-anchor>
     </div>
   </template>
   <script src="ed-side-menu.js"></script>
