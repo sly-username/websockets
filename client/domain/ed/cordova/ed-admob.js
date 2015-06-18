@@ -3,7 +3,7 @@ var
   AdMob = window.AdMob,
   admobid = {},
   admobOptions = {
-    adSize: 'SMART_BANNER',
+//    adSize: 'SMART_BANNER',
     position: AdMob.AD_POSITION.TOP_CENTER,
     // offsetTopBar: true, //iOS7+
     // bgColor: 'black',
