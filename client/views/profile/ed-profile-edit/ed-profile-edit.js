@@ -6,6 +6,7 @@
   ]).then(function( imported ) {
       var
         userService = imported[ 0 ].default,
+        profileImage,
         updateProfileName = function( nameKey, nameValue ) {
           var nameData = {};
           nameData[ nameKey ] = nameValue;
@@ -25,8 +26,13 @@
               }.bind( this ));
           }
         },
-        uploadPhotoHandler = function( event ) {
-          userService.changeProfileImage( event.target.files[ 0 ]);
+        choosePhotoHandler = function( event ) {
+          return userService.changeProfileImage( event.target.files[ 0 ] )
+            .then(function( edProfile ) {
+              this.edFan = edProfile;
+              // TODO figure out why polymer isnt updating data binding
+              profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
+            }.bind( this ));
         };
 
       polymer( "ed-profile-edit", {
@@ -34,6 +40,7 @@
         ready: function() {
           this.nameInputsWrapper = this.shadowRoot.querySelector( ".name-field" );
           this.choosePhoto = this.shadowRoot.getElementById( "choose-photo" );
+          profileImage = this.shadowRoot.getElementById( "profile-image" );
 
           this.handler = {
             nameInput: nameInputHandler.bind( this )
@@ -42,18 +49,20 @@
         attached: function() {
           if ( userService.isOpenSession ) {
             this.edFan = userService.currentProfile;
+            profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
           } else {
             userService.once( "edLogin", function() {
               this.edFan = userService.currentProfile;
+              profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
             }.bind( this ));
           }
 
           this.nameInputsWrapper.addEventListener( "blur", this.handler.nameInput, true );
-          this.choosePhoto.addEventListener( "change", uploadPhotoHandler );
+          this.choosePhoto.addEventListener( "change", choosePhotoHandler );
         },
         detached: function() {
           this.nameInputsWrapper.removeEventListener( "blur", this.handler.nameInput );
-          this.choosePhoto.removeEventListener( "change", uploadPhotoHandler );
+          this.choosePhoto.removeEventListener( "change", choosePhotoHandler );
         },
         // attributeChanged: function( attrName ) {}
         takePhoto: function() {
@@ -61,10 +70,16 @@
             imageFile;
 
           reader.onloadend = function( event ) {
-            userService.changeProfileImage( event.target.result, imageFile );
+            return userService.changeProfileImage( event.target.result, imageFile )
+              .then(function( edProfile ) {
+                this.edFan = edProfile;
+                // TODO figure out why polymer isnt updating data binding
+                profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
+                return edProfile;
+              }.bind( this ));
           };
 
-          if ( Camera ) {
+          if ( window.Camera ) {
             navigator.camera.getPicture(function( url ) {
               window.resolveLocalFileSystemURL( url, function( fileObj ) {
                 fileObj.file(function( data ) {
@@ -75,7 +90,8 @@
             });
           }
         },
-        goBack: function() {
+        goBack: function( event ) {
+          event.preventDefault();
           window.history.back();
         }
       });
