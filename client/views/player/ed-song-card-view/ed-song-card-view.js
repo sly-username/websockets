@@ -50,13 +50,14 @@
       }
 
       if ( eventType === "play" ) {
-        playerService.play();
+        if ( playerService.isPlaying ) {
+          this.intervalId = setInterval( this.handler.updateTime, intervalTime );
+        }
 
-        this.intervalId = setInterval( this.handler.updateTime, intervalTime );
         this.mainPlayer.setAttribute( "image", playerService.currentStats.playing.art.phoneLarge );
         this.miniPlayer.setAttribute( "image", playerService.currentStats.playing.art.phoneLarge );
-
         this.handler.injectStats();
+        playerService.play();
       }
 
       if ( eventType === "scrubMove" ) {
