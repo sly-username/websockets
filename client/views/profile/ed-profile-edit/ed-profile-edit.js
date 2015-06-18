@@ -73,6 +73,8 @@
             return userService.changeProfileImage( event.target.result, imageFile )
               .then(function( edProfile ) {
                 this.edFan = edProfile;
+                // TODO figure out why polymer isnt updating data binding
+                profileImage.setAttribute( "src", this.edFan.art.phoneLarge );
                 return edProfile;
               }.bind( this ));
           };
