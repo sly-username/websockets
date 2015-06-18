@@ -69,6 +69,10 @@
       }
 
       if ( eventType === "rate" ) {
+        if ( !this.hasRated ) {
+          this.songsRated.setAttribute( "rank", parseInt( this.songsRated.getAttribute( "rank" ), 10 ) + 1 );
+        }
+
         this.hasRated = true;
 
         if ( this.songCompleted ) {
@@ -119,8 +123,8 @@
     };
 
     injectStatsHandler = function() {
-      this.$[ "complete-listens" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.completedListens;
-      this.$[ "songs-rated" ].shadowRoot.querySelector( ".rank-box " ).innerText = playerService.userStats.ratedTracks;
+      this.$[ "complete-listens" ].setAttribute( "rank", playerService.userStats.completedListens );
+      this.songsRated.setAttribute( "rank", playerService.userStats.ratedTracks );
     };
 
     toggleAdMobHandler = function( action ) {
@@ -154,6 +158,7 @@
         this.mainPlayerWrapper = this.$[ "main-player-wrapper" ];
         this.miniPlayer = this.$[ "mini-player" ];
         this.miniPlayerWrapper = this.$[ "mini-player-wrapper" ];
+        this.songsRated = this.$[ "songs-rated" ];
       },
       attached: function() {
         // Event Handler
