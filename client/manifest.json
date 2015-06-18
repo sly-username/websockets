@@ -33,7 +33,7 @@
       "type": "image/png"
     }
   ],
-  "xwalk_version": "0.2.0",
+  "xwalk_version": "0.3.0",
   "xwalk_description": "The eardish music discovery platform.",
   "xwalk_hosts": [
     "http://*.eardish.com",
