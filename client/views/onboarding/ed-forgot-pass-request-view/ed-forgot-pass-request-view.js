@@ -18,13 +18,11 @@
       polymer( "ed-forgot-pass-request-view", {
         /* LIFECYCLE */
         ready: function() {
+          this.logo = this.shadowRoot.querySelector( ".ed-logo-header" );
           this.submitButton = this.shadowRoot.querySelector( "#forgot-submit" );
-
           this.emailInput = this.shadowRoot.querySelector( ".email" );
-
           this.serverError = this.shadowRoot.querySelector( "#errorServer" );
           this.emailError = this.shadowRoot.querySelector( "#errorEmail" );
-
           this.handlers = {
             cleanup: cleanupErrorHandler.bind( this ),
             goSubmit: goSubmitHandler.bind( this )
@@ -52,7 +50,7 @@
           if ( !this.validEmail ) {
             this.emailInput.classList.add( "invalid" );
             this.emailError.classList.remove( "hidden" );
-            window.scrollTo( 0, 0 );
+            this.logo.scrollIntoView();
             return;
           }
 
@@ -68,7 +66,8 @@
             }.bind( this ))
             .catch( function() {
               console.log( "password request did not go through" );
-            });
+              this.logo.scrollIntoView();
+            }, this );
         }
       });
     });

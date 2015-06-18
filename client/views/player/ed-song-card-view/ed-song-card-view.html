@@ -19,8 +19,10 @@
           <button id="minify-button" on-tap="{{close}}">
             <ed-icon id="minify-icon" name="arrow-back" rotation="270"></ed-icon>
           </button>
-          <ed-user-ranking id="complete-listens" teal top="Completed" bottom="Plays" rank="0"></ed-user-ranking>
-          <ed-user-ranking id="songs-rated" top="Songs" bottom="Rated" rank="0"></ed-user-ranking>
+          <div class="rankings-container">
+            <ed-user-ranking id="songs-rated" top="Songs" bottom="Rated" rank="0"></ed-user-ranking>
+            <ed-user-ranking id="complete-listens" teal top="Completed" bottom="Plays" rank="0"></ed-user-ranking>
+          </div>
         </section>
         <ed-song-card-scrubber id="main-player" min="0" max="0" value
                                image=""></ed-song-card-scrubber>

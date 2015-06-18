@@ -44,6 +44,8 @@ trackEndedHandler = function() {
       trackId: currentTrack.id
     });
   }
+
+  hasScrubbed = false;
 };
 
 rateCurrentlyPlaying = function( number ) {
@@ -275,14 +277,14 @@ export default edPlayerService = {
       .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
-            type: "play"
+            type: "resetSongCard"
           }
         }));
       })
       .then(() => {
         return this.emitter.dispatch( createEvent( "playerUpdate", {
           detail: {
-            type: "resetSongCard"
+            type: "play"
           }
         }));
       });
@@ -298,6 +300,8 @@ export default edPlayerService = {
             type: "play"
           }
         }));
+      } else {
+        return this.pause();
       }
       return true;
     }
@@ -383,6 +387,7 @@ export default edPlayerService = {
     }
 
     currentIndex += 1;
+    hasScrubbed = false;
 
     if ( tracksCollection.ids.length === currentIndex ) {
       return this.startMusicDiscovery( "profileBlend" );

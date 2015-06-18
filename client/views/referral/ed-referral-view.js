@@ -15,11 +15,8 @@
         referrals: 0,
         ready: function() {
           this.emailInput = this.shadowRoot.querySelector( ".email" );
-
           this.submitButton = this.shadowRoot.querySelector( "#referral-submit" );
-
           this.emailError = this.shadowRoot.querySelector( "#errorEmail" );
-
           this.handlers = {
             cleanup: cleanupErrorHandler.bind( this )
           };
@@ -44,7 +41,7 @@
           if ( !this.validEmail ) {
             this.emailInput.classList.add( "invalid" );
             this.emailError.classList.remove( "hidden" );
-            window.scrollTo( 0, 0 );
+            // todo .scrollIntoView();
             return;
           }
 
@@ -60,7 +57,8 @@
             }.bind( this ))
             .catch( function() {
               console.log( "referral request did not go through" );
-            });
+              // todo .scrollIntoView();
+            }, this );
         },
         updateReferralCount: function() {
           return userService.getReferrals()

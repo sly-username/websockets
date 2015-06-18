@@ -1,12 +1,12 @@
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/ed/colors.vars.less";
 .user-rank {
-  float: right;
-  margin: 3% 4% 0 0;
+  display: inline-block;
+  vertical-align: middle;
   text-transform: uppercase;
   color: @lightGrey1;
   .rank-text {
-    opacity: 0.5;
+    opacity: .5;
     float: left;
     padding: .4rem .6rem;
     .edType( heading-XXS );
@@ -18,10 +18,10 @@
     }
   }
   .rank-box {
-    opacity: 0.5;
+    opacity: .5;
     float: right;
-    padding: 0rem .9rem;
-    border: 0.2rem solid @originalPurple;
+    padding: 0 .9rem;
+    border: .2rem solid @originalPurple;
     .edType( paragraph-S );
     line-height: 135%;
     letter-spacing: -.15rem;
