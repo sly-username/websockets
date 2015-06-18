@@ -21,7 +21,7 @@
         if ( !this.validPassword || !this.validResetCode ) {
           this.postEarlyErrors();
           this.postPasswordEarlyErrors();
-          window.scrollTo( 0, 0 );
+          this.logo.scrollIntoView();
           return;
         }
 
@@ -34,7 +34,7 @@
             // TODO go go error stuff
             this.resetCode.classList.add( "invalid" );
             this.errorDivs.resetCodeError.classList.remove( "hidden" );
-            window.scrollTo( 0, 0 );
+            this.logo.scrollIntoView();
             return error;
           }.bind( this ));
       },
@@ -53,6 +53,7 @@
         return this.resetCode.value !== "";
       },
       ready: function() {
+        this.logo = this.shadowRoot.querySelector( ".ed-logo-header" );
         this.pairedInput = this.shadowRoot.querySelector( "ed-paired-input" );
         this.resetCode = this.shadowRoot.querySelector( ".reset-code" );
         this.formContainer = this.shadowRoot.querySelector( "#forgot-form" );

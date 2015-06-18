@@ -5,10 +5,6 @@
 @import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/ed/title-bar.mixin.less";
 
-* {
-  font-family: Ubuntu;
-}
-
 hr {
   height: 0.5rem;
   border: 0;
@@ -33,12 +29,13 @@ hr {
   .image-wrapper {
     width: 100%;
     overflow: hidden;
+    position: relative;
     .edContentStyle();
   }
   .profile-name {
     position: absolute;
-    right: 0;
-    margin: 2% 2% 0 0;
+    top: 1.5rem;
+    right: 4.5%;
     .edType(heading-XXXL);
     text-align: right;
     text-transform: uppercase;
@@ -54,7 +51,7 @@ hr {
     }
   }
   .icon-section {
-    margin: 4% 3%;
+    margin: 9% 3% 4%;
     .edType( heading-XXS );
     color: @originalTeal;
     text-transform: uppercase;
@@ -69,27 +66,25 @@ hr {
       color: @lightGrey1;
       text-decoration: none;
       ed-icon {
-        float: left;
-        clear: none;
-        width: 2rem;
+        width: 1.7rem;
         height: 2rem;
-        margin: 0 1.5rem 0 0;
+        margin-right: .5rem;
+        vertical-align: middle;
         fill: @lightGrey1;
       }
       span {
-        float: left;
-        clear: none;
-        margin-top: 1%;
+        vertical-align: middle;
       }
     }
   }
   .badge-section {
     .flexContainer( row nowrap; center; stretch; center; );
-    margin: 0 2%;
+    margin: 0 2.5% 2%;
     ed-icon {
       position: relative;
       .flexItem( 1 );
       margin: 0 1%;
+      height: 11vh;
       // has count attribute, name attribute is not "badge-empty" and count is not 1
       &[count]:not([name="badge-empty"]):not([count="1"]) {
         &::after, &:after {
