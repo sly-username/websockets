@@ -393,9 +393,9 @@ export default edPlayerService = {
       return this.startMusicDiscovery( "profileBlend" );
     }
 
-    return updateCurrentIndex( currentIndex )
+    return getTrackAndArtist( tracksCollection, currentIndex )
       .then(() => {
-        return getTrackAndArtist( tracksCollection, currentIndex );
+        return updateCurrentIndex( currentIndex );
       })
       .then(() => {
         return edAnalyticsService.send( "quit", {
@@ -425,9 +425,9 @@ export default edPlayerService = {
   queueTracksAndPlay: function( tracks, show ) {
     this.enqueue( tracks );
 
-    return updateCurrentIndex( currentIndex )
+    return getTrackAndArtist( tracksCollection, currentIndex )
       .then(() => {
-        return getTrackAndArtist( tracksCollection, currentIndex );
+        return updateCurrentIndex( currentIndex );
       })
       .then(() => {
         if ( show ) {
