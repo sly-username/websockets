@@ -93,7 +93,7 @@
 
         switch ( eventName ) {
           case "play":
-            if ( event.type === "playerUpdate" ) {
+            if ( event.type === "playerUpdate" && playerService.isPlaying ) {
               this.isSkipping = false;
             }
             this.playIcon.setAttribute( "name", "pause" );
