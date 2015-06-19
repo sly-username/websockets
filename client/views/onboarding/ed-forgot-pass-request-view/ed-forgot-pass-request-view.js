@@ -56,7 +56,7 @@
 
           userService.requestPasswordReset( this.emailInput.value )
             .then( function( response ) {
-              if ( response !== null && response.status.code === 2 ) {
+              if ( response !== null && response.status.code === 1 ) {
                 this.router.go( "/forgot-pass/reset" );
               } else if ( response !== null && response.status.code === 10 ) {
                 this.emailInput.classList.add( "invalid" );
