@@ -14,7 +14,13 @@
       });
     };
 
-  window.addEventListener( "polymer-ready", function( readyEvent ) {
+  Promise.all([
+    window.polymerReadyPromise,
+    window.deviceReadyPromise
+  ]).then(function( ready ) {
+    console.log( "polymer and device ready!" );
+    console.dir( ready );
+
     Promise.all([
       System.import( "domain/ed/services/ed-data-service" ),
       System.import( "domain/ed/services/ed-connection-service" ),
@@ -35,7 +41,7 @@
             edAdMob
           ] = imports.map( imported => imported.default ),
           songCard = document.getElementById( "song-card" ),
-          router = document.querySelector( "#root-app-router" );
+          router = document.getElementById( "root-app-router" );
 
         // Fires before the app router does anything regarding a route change
         // Check if open session, if not, route back to login page
@@ -82,7 +88,7 @@
         });
 
         // need to init manually to ensure event binding
-        router.init();
+//        router.init();
       })
       .catch( error => {
         console.error( "Problem in main script: " + error.message );
