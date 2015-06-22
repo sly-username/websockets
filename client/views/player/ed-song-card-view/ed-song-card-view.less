@@ -38,12 +38,14 @@
   z-index: 2;
   pointer-events: all;
   background: @darkPurple2;
-  transition: -webkit-transform .45s, transform .45s, opacity 0s;
+  -webkit-transition: -webkit-transform .45s, opacity 0s 0s;
+  transition: transform .45s, opacity 0s 0s;
   opacity: 1;
   .transform( translate3d( 0, 0, 0 ));
 
   &.close {
-    transition: -webkit-transform .45s, transform .45s, opacity 0s .45s;
+    -webkit-transition: -webkit-transform .45s, opacity 0s .45s;
+    transition: transform .45s, opacity 0s .45s;
     .transform( translate3d( 0, 100vh, 0 ));
     opacity: 0;
   }
