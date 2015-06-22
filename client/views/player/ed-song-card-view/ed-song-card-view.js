@@ -81,13 +81,15 @@
       }
 
       if ( eventType === "skip" ) {
-        clearInterval( this.intervalId );
+        if ( !this.mainPlayer.isSkipping ) {
+          clearInterval( this.intervalId );
 
-        if ( this.hasRated ) {
-          playerService.rateTrack( this.starRating.currentRating );
+          if ( this.hasRated ) {
+            playerService.rateTrack( this.starRating.currentRating );
+          }
+
+          playerService.skip();
         }
-
-        playerService.skip();
       }
 
       if ( eventType === "showRatings" ) {
