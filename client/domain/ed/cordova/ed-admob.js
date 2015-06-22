@@ -5,7 +5,7 @@ var
   admobOptions = {
 //    adSize: 'SMART_BANNER',
     position: AdMob.AD_POSITION.TOP_CENTER,
-    // offsetTopBar: true, //iOS7+
+    offsetTopBar: true //iOS7+
     // bgColor: 'black',
     // x: integer,
     // y: integer,
