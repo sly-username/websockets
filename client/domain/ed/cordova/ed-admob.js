@@ -34,7 +34,7 @@ var
       console.warn( "AdMob module ran, but AdMob object not ready" );
     }
   },
-  initAdMob = function() {
+  setAdMobIds = function() {
     if ( /(android)/i.test( navigator.userAgent )) {
       admobid = {
         banner: "ca-app-pub-6485453766683902/8331842279"
@@ -46,7 +46,7 @@ var
     }
   };
 
-initAdMob();
+setAdMobIds();
 
 router.addEventListener( "activate-route-start", function( event ) {
   if ( event.detail.path === "/charts" ) {
