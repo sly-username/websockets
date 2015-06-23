@@ -303,7 +303,7 @@ edUserService.changeProfileImage = function( image, fileData ) {
 
       return new Promise(( resolve, reject ) => {
         s3.upload({
-          Key: "public/profile/" + currentProfile.id + "/avatar/original/" + imageData.name,
+          Key: "public/temp/" + currentProfile.id + "/" + imageData.name,
           ContentType: imageData.type,
           Body: image,
           Bucket: url.aws.bucket,

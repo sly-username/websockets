@@ -1,7 +1,6 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
-@import "../../../styles/mixins/prefixes/user-select";
 
 :host([disable]) {
   #rating-form {
@@ -40,7 +39,6 @@
       float: left;
       text-align: center;
       pointer-events: none;
-      .userSelect(none);
       &::shadow {
         svg {
           width: 50%;
@@ -70,7 +68,6 @@
   position: absolute;
   left: 0;
   pointer-events: none;
-  .userSelect(none);
 
   ed-icon {
     &::shadow {

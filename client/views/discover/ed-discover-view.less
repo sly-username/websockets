@@ -26,8 +26,9 @@
       color: @originalTeal;
       text-transform: uppercase;
       padding: 8vh 0 2vh 6vw;
-      &:active, &:hover, &:focus {
-        background-color: @darkPurple3;
+      // no :hover
+      &.active, &:focus {
+        border-left-color: @darkPurple3;
       }
     }
   }

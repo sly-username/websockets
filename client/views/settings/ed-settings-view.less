@@ -29,8 +29,9 @@
       color: @originalWhite;
     }
     .version-title {
-      &:active, &:hover, &:focus {
-        background-color: @darkPurple3;
+      // no :hover
+      &.active, &:focus {
+        border-left-color: @darkPurple3;
       }
       span {
         float: right;
