@@ -71,6 +71,11 @@
         },
         takePhoto: function() {
           var reader = new FileReader(),
+            cameraOptions = {
+              correctOrientation: true,
+              quality : 75,
+              encodingType: Camera.EncodingType.JPEG
+            },
             imageFile;
 
           reader.onloadend = function( event ) {
@@ -89,7 +94,10 @@
                   reader.readAsArrayBuffer( data );
                 });
               });
-            });
+            }, function( error ) {
+              console.warn( "unable to take photo:" + error.message );
+              console.error( error.stack );
+            }, cameraOptions );
           }
         },
         goBack: function( event ) {
