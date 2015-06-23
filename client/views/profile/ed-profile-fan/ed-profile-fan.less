@@ -4,6 +4,7 @@
 @import "../../../styles/mixins/prefixes/transforms.less";
 @import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/ed/title-bar.mixin.less";
+@import "../../../styles/mixins/prefixes/user-select";
 
 hr {
   height: 0.5rem;
@@ -49,6 +50,9 @@ hr {
       text-transform: none;
       color: @originalTeal;
     }
+  }
+  .artist-name {
+    .userSelect( text );
   }
   .icon-section {
     margin: 9% 3% 4%;

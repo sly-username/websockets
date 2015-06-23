@@ -8,6 +8,8 @@
 @import "ed/backgrounds.mixin.less";
 @import "mixins/prefixes/transforms.less";
 @import "mixins/prefixes/animations.less";
+@import "mixins/prefixes/user-select";
+
 
 html {
   font-size: 62.5%;
@@ -17,6 +19,7 @@ html {
 }
 
 body {
+  .userSelect(none);
   background-color: @darkPurple3;
   .edType( paragrpah-M );
   height: 100%;
