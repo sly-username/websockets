@@ -1,13 +1,11 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
-@import "../../../styles/mixins/prefixes/user-select.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/mixins/prefixes/animations.less";
 
 .responsive-wrapper {
   width: 100%;
   position: relative;
-  .userSelect( none );
   .responsive-container {
     width: 91%;
     margin: 0 auto;
@@ -29,12 +27,10 @@
   right: 0;
   bottom: 16%;
   z-index: 2;
-  .userSelect( none );
   .edType( heading-L );
   span {
     display: block;
     .edType( heading-S );
-    .userSelect( none );
   }
   ed-icon {
     fill: @originalTeal;
@@ -60,7 +56,6 @@
   left: 0;
   right: 0;
   bottom: 8%;
-  .userSelect( none );
   pointer-events: none;
 }
 
@@ -121,7 +116,6 @@
     fill: @originalWhite;
     width: 43%;
     height: 50%;
-    .userSelect( none );
   }
   &:focus {
     outline: none;
