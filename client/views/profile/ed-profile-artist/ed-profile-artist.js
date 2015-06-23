@@ -23,6 +23,10 @@
         attached: function() {
           this.badgeEdIcons = Array.prototype.slice.call( this.shadowRoot.querySelectorAll( ".badge-section > ed-icon" ));
 
+          if ( this.edId ) {
+            this.updateProfileModel();
+          }
+
           // update stats
           userService.getStats()
             .then(function( response ) {
