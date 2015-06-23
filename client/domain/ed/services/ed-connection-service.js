@@ -89,9 +89,11 @@ export default edConnectionService = {
   },
 
   formattedRequest( data ) {
-    return lastRequest = lastRequest.then(() => {
+    var performNextRequest = function() {
       return edSocket.request( data ).then( parseSocketMessage );
-    });
+    };
+
+    return lastRequest = lastRequest.then( performNextRequest, performNextRequest );
   }
 };
 
