@@ -67,7 +67,7 @@
         updateProfileInView: function( edProfile ) {
           this.edFan = edProfile;
           // TODO figure out why polymer isnt updating data binding
-          this.profileImage.setAttribute( "src", edProfile.art.phoneLarge );
+          this.profileImage.setAttribute( "src", edProfile.art.phoneLarge || "" );
         },
         takePhoto: function() {
           var reader = new FileReader(),
