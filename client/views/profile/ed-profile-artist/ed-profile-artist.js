@@ -23,9 +23,6 @@
         attached: function() {
           this.badgeEdIcons = Array.prototype.slice.call( this.shadowRoot.querySelectorAll( ".badge-section > ed-icon" ));
 
-          // force model update
-          this.updateProfileModel();
-
           // update stats
           userService.getStats()
             .then(function( response ) {
@@ -45,6 +42,7 @@
             dataService.getArtistById( this.edId )
               .then(function( edArtist ) {
                 this.edArtist = edArtist;
+                this.injectBoundHTML(  edArtist.bio || "No biography", this.$[ "bio-content" ]);
                 this.updateBadges();
                 console.log( "profile artist got: %o", edArtist );
               }.bind( this ));
