@@ -1,7 +1,7 @@
 {
   "name": "Eardish-Client-App",
   "title": "Eardish Client Application",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "The Client Application for the Eardish Platform",
   "author": "Eardish Corp. <ryan@eardish.com> (https://eardish.com/)",
