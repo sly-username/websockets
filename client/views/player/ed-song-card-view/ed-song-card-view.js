@@ -133,7 +133,9 @@
       if ( window.AdMob && window.AdMob.showBanner && window.AdMob.hideBanner ) {
         switch ( action ) {
           case "show":
-            window.AdMob.showBanner();
+            if (( /\/(charts)/i ).test( window.location.hash )) {
+              window.AdMob.showBanner();
+            }
             break;
           case "hide":
             window.AdMob.hideBanner();
@@ -143,6 +145,7 @@
         }
       }
     };
+
     // end helpers
 
     polymer( "ed-song-card-view", {
@@ -203,11 +206,9 @@
       },
       /* show & hide methods toggle entire song cards display/visibility */
       show: function() {
-        toggleAdMobHandler( "show" );
         this.songCard.classList.remove( "hidden" );
       },
       hide: function() {
-        toggleAdMobHandler( "hide" );
         this.miniPlayerWrapper.classList.remove( "close" );
         this.songCard.classList.add( "hidden" );
         this.animationWrapper.classList.remove( "player-padding" );

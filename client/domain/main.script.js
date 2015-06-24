@@ -65,6 +65,12 @@
           } else {
             songCard.show();
           }
+
+          if ( event.detail.path === "/charts" ) {
+            edAdMob.show();
+          } else {
+            edAdMob.hide();
+          }
         });
 
         // Fires at end of route load and render process, sends analytics "routeRequest" event
