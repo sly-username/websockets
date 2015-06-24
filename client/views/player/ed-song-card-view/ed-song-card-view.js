@@ -133,7 +133,9 @@
       if ( window.AdMob && window.AdMob.showBanner && window.AdMob.hideBanner ) {
         switch ( action ) {
           case "show":
-            window.AdMob.showBanner();
+            if (( /\/(charts)/i ).test( window.location.hash )) {
+              window.AdMob.showBanner();
+            }
             break;
           case "hide":
             window.AdMob.hideBanner();
