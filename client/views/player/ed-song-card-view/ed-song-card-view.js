@@ -10,7 +10,8 @@
       updateTimeHandler,
       playerServiceEventHandler,
       injectStatsHandler,
-      resetSongCardHandler;
+      resetSongCardHandler,
+      toggleAdMobHandler;
 
     // helpers
     resetSongCardHandler = function() {
@@ -128,6 +129,21 @@
       this.songsRated.setAttribute( "rank", playerService.userStats.ratedTracks );
     };
 
+    toggleAdMobHandler = function( action ) {
+      if ( window.AdMob && window.AdMob.showBanner && window.AdMob.hideBanner ) {
+        switch ( action ) {
+          case "show":
+            window.AdMob.showBanner();
+            break;
+          case "hide":
+            window.AdMob.hideBanner();
+            break;
+          default:
+            break;
+        }
+      }
+    };
+
     // end helpers
 
     polymer( "ed-song-card-view", {
@@ -173,12 +189,14 @@
       // attributeChanged: function( attrName, oldValue, newValue ) {},
       /* open & close methods slide player up & down */
       open: function() {
+        toggleAdMobHandler( "hide" );
         this.miniPlayerWrapper.classList.remove( "close" );
         this.mainPlayerWrapper.classList.remove( "close" );
         this.songCardWrapper.classList.remove( "minimized" );
         this.animationWrapper.classList.remove( "player-padding" );
       },
       close: function() {
+        toggleAdMobHandler( "show" );
         this.miniPlayerWrapper.classList.add( "close" );
         this.mainPlayerWrapper.classList.add( "close" );
         this.songCardWrapper.classList.add( "minimized" );
