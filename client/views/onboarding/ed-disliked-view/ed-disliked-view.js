@@ -11,7 +11,9 @@
       bubbleCounter = 0,
       bubbleArray = [],
       triggerBubblesHandler = function( event ) {
-        var self = this;
+        var
+          self = this,
+          goToDiscover = function() { self.router.go( "/discover" ); };
 
         event.preventDefault();
 
@@ -26,13 +28,10 @@
         console.log( "trigger bubbles handler %o, %o", this.likedBubbles, bubbleArray );
         return discoverService.setCurrentProfileBlend( this.likedBubbles, bubbleArray )
           .then(function() {
-            self.mainPlayerWrapper.classList.remove( "hide-main" );
-            self.songCardWrapper.classList.remove( "minimized" );
+            self.songCard.show();
             return playerService.startMusicDiscovery( "profileBlend" );
           })
-          .then(function() {
-            self.router.go( "/discover" );
-          });
+          .then( goToDiscover, goToDiscover );
       },
       // hides bubbles on ready
       hideBubblesHandler = function( event ) {
@@ -90,9 +89,7 @@
         this.inputBubbles     = this.shadowRoot.querySelectorAll( "ed-bubble-select" );
         this.nextBtn          = this.shadowRoot.getElementById( "next-button" );
         this.bubbleContainer  = this.shadowRoot.getElementById( "bubble-container" );
-        this.edPlayer         = document.getElementById( "song-card" );
-        this.songCardWrapper  = this.edPlayer.shadowRoot.getElementById( "song-card-wrapper" );
-        this.mainPlayerWrapper = this.edPlayer.shadowRoot.getElementById( "main-player-wrapper" );
+        this.songCard         = document.getElementById( "song-card" );
         this.likedBubbles     = this.getUrlVar();
         console.log( this.likedBubbles );
         // handlers
