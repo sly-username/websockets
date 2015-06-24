@@ -2,10 +2,11 @@
 
 // 5 min -- 300000
 // 2.5 min -- 150000
+// 1.5 min -- 90000
 
 var
   EDWebSocketTimeoutError,
-  requestTimeout = 150000,
+  requestTimeout = 90000,
   isAuthenticated = Symbol( "isAuthenticated" ),
   token = 0,
   generateToken = function() {
