@@ -3,33 +3,43 @@ var
   AdMob = window.AdMob,
   admobid = {},
   admobOptions = {
-//    adSize: 'SMART_BANNER',
+    // adSize: 'SMART_BANNER',
     position: AdMob.AD_POSITION.TOP_CENTER,
     offsetTopBar: true //iOS7+
     // bgColor: 'black',
     // x: integer,
     // y: integer,
     // overlap: true,
-//    isTesting: true // TODO remove for production
+    // isTesting: true
+  },
+  setAdMobIds = function() {
+    if ( /(android)/i.test( navigator.userAgent )) {
+      admobid = {
+        banner: "ca-app-pub-6485453766683902/8331842279"
+      };
+    } else if ( /(ipod|iphone|ipad)/i.test( navigator.userAgent )) {
+      admobid = {
+        banner: "ca-app-pub-6485453766683902/8052640677"
+      };
+    }
   };
 
-if ( /(android)/i.test( navigator.userAgent )) {
-  admobid = {
-    banner: "ca-app-pub-6485453766683902/8331842279"
-  };
-} else if ( /(ipod|iphone|ipad)/i.test( navigator.userAgent )) {
-  admobid = {
-    banner: "ca-app-pub-6485453766683902/8052640677"
-  };
-}
+setAdMobIds();
 
-if ( AdMob ) {
-  AdMob.setOptions( admobOptions );
+export default {
+  show: function() {
+    if ( AdMob && AdMob.createBanner ) {
+      AdMob.setOptions( admobOptions );
 
-  AdMob.createBanner({
-    adId: admobid.banner,
-    autoShow: false
-  });
-} else {
-  console.warn( "AdMob module ran, but AdMob object not ready" );
+      AdMob.createBanner({
+        adId: admobid.banner,
+        autoShow: true
+      });
+    }
+  },
+  hide: function() {
+    if ( AdMob && AdMob.createBanner ) {
+      AdMob.removeBanner();
+    }
+  }
 }
