@@ -2,7 +2,6 @@
 var
   AdMob = window.AdMob,
   admobid = {},
-  router = router = document.getElementById( "root-app-router" ),
   admobOptions = {
     // adSize: 'SMART_BANNER',
     position: AdMob.AD_POSITION.TOP_CENTER,
@@ -12,27 +11,6 @@ var
     // y: integer,
     // overlap: true,
     // isTesting: true
-  },
-  showAdMob = function( action ) {
-    if ( AdMob && AdMob.createBanner && AdMob.removeBanner ) {
-      switch ( action ) {
-        case true:
-          AdMob.setOptions( admobOptions );
-
-          AdMob.createBanner({
-            adId: admobid.banner,
-            autoShow: true
-          });
-          break;
-        case false:
-          AdMob.removeBanner();
-          break;
-        default:
-          break;
-      }
-    } else {
-      console.warn( "AdMob module ran, but AdMob object not ready" );
-    }
   },
   setAdMobIds = function() {
     if ( /(android)/i.test( navigator.userAgent )) {
@@ -48,10 +26,20 @@ var
 
 setAdMobIds();
 
-router.addEventListener( "activate-route-start", function( event ) {
-  if ( event.detail.path === "/charts" ) {
-    showAdMob( true );
-  } else {
-    showAdMob( false );
+export default {
+  show: function() {
+    if ( AdMob && AdMob.createBanner ) {
+      AdMob.setOptions( admobOptions );
+
+      AdMob.createBanner({
+        adId: admobid.banner,
+        autoShow: true
+      });
+    }
+  },
+  hide: function() {
+    if ( AdMob && AdMob.createBanner ) {
+      AdMob.removeBanner();
+    }
   }
-});
+}
