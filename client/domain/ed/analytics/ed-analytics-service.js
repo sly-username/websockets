@@ -139,12 +139,16 @@ export default edAnalyticsService = {
         event = this.createEvent( ...args );
       }
 
-      edConnectionService.formattedSend({
-        analytics: {
-          common: this.commonBlock,
-          event: event.eventBlock
-        }
-      });
+      if ( edUserService.isOpenSession ) {
+
+        edConnectionService.formattedSend({
+          analytics: {
+            common: this.commonBlock,
+            event: event.eventBlock
+          }
+        });
+
+      }
     } catch ( error ) {
       console.warn( "Suppressing exception on analytics call" );
       console.warn( "Original Message: %s", error.message );
