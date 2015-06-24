@@ -8,11 +8,13 @@
     <div class="ed-profile-fan-wrapper">
       <header class="top-bar">
         <ed-menu-button></ed-menu-button>
-        <ed-user-ranking top="Completed" bottom="Plays" rank="{{ completedPlays || 0 }}" teal></ed-user-ranking>
-        <ed-user-ranking top="Songs" bottom="Rated" rank="{{ songsRated || 0 }}"></ed-user-ranking>
+        <div class="rankings-container">
+          <ed-user-ranking id="songs-rated" top="Songs" bottom="Rated" rank="0"></ed-user-ranking>
+          <ed-user-ranking id="complete-listens" top="Completed" bottom="Plays" rank="0" teal></ed-user-ranking>
+        </div>
       </header>
       <section class="image-wrapper">
-        <div class="profile-name">
+        <div class="profile-name artist-name">
           {{ edArtist.displayName }}
           <span>Artist/Band</span>
         </div>
@@ -31,9 +33,7 @@
       <hr>
       <section class="bio-section">
         <div class="bio-header">Biography</div>
-        <p class="bio-body">
-          {{ edArtist.bio || "No Bio" }}
-        </p>
+        <p id="bio-content" class="bio-body"></p>
       </section>
     </div>
   </template>

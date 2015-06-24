@@ -23,14 +23,15 @@
         attached: function() {
           this.badgeEdIcons = Array.prototype.slice.call( this.shadowRoot.querySelectorAll( ".badge-section > ed-icon" ));
 
-          // force model update
-          this.updateProfileModel();
+          if ( this.edId ) {
+            this.updateProfileModel();
+          }
 
           // update stats
           userService.getStats()
             .then(function( response ) {
-              this.songsRated = response.ratedTracks;
-              this.yourRank = response.completedListens;
+              this.$[ "songs-rated" ].setAttribute( "rank", response.ratedTracks );
+              this.$[ "complete-listens" ].setAttribute( "rank", response.completedListens );
             }.bind( this ));
         },
 //        detached: function() {},
@@ -45,6 +46,7 @@
             dataService.getArtistById( this.edId )
               .then(function( edArtist ) {
                 this.edArtist = edArtist;
+                this.injectBoundHTML(  edArtist.bio || "No biography", this.$[ "bio-content" ]);
                 this.updateBadges();
                 console.log( "profile artist got: %o", edArtist );
               }.bind( this ));

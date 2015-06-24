@@ -257,52 +257,64 @@ dataService.getAllGenres = function() {
 //    if it is anything but an array it will get overwritten, so
 //    passing in null to the observe function will cause the default
 //    param set by the observable to be used
-dataService.observeProfile = function( id, callback, acceptList=null ) {
+dataService.observeByTypeAndId = function( type, id, callback, acceptList=null ) {
+  var lru = getDBAndLRUForType( type ).lru;
+
   if ( id == null ) {
-    throw new TypeError( "ID Must be a valid number or string to be observed" );
+    throw new TypeError( "ID must be a valid number or string to be observed" );
+  }
+
+  if ( type == null ) {
+    throw new TypeError( "Type must be a valid EDModel type to be observed" );
   }
 
   if ( typeof callback !== "function" ) {
     throw new TypeError( "Callback must exist and be of type 'function'" );
   }
 
-  lruMap.profile.observe( id, callback, acceptList );
+  if ( lru == null ) {
+    throw new TypeError( "Could not find proper EDLRUCache for type: " + type + ". Observation is probably not supported for this type." );
+  }
+
+  lru.observe( id, callback, acceptList );
+};
+
+dataService.unobserveByTypeAndId = function( type, id, callback ) {
+  var lru = getDBAndLRUForType( type ).lru;
+
+  if ( id == null ) {
+    throw new TypeError( "ID must be a valid number or string to be unobserved" );
+  }
+
+  if ( type == null ) {
+    throw new TypeError( "Type must be a valid EDModel type to be unobserved" );
+  }
+
+  if ( typeof callback !== "function" ) {
+    throw new TypeError( "Callback must exist and be of type 'function'" );
+  }
+
+  if ( lru == null ) {
+    throw new TypeError( "Could not find proper EDLRUCace for type: " + type + ". Observation is probably not supported for this type." );
+  }
+
+  lru.unobserve( id, callback );
+};
+
+dataService.observeProfile = function( id, callback, acceptList=null ) {
+  dataService.observeByTypeAndId( EDProfile.MODEL_TYPE, id, callback, acceptList );
 };
 
 dataService.unobserveProfile = function( id, callback ) {
-  if ( id == null ) {
-    throw new TypeError( "ID Must be a valid number or string to be observed" );
-  }
-
-  if ( typeof callback !== "function" ) {
-    throw new TypeError( "Callback must exist and be of type 'function'" );
-  }
-
-  lruMap.profile.unobserve( id, callback );
+  dataService.unobserveByTypeAndId( EDProfile.MODEL_TYPE, id, callback );
 };
 
 dataService.observeMedia = function( id, callback, acceptList=null ) {
-  if ( id == null ) {
-    throw new TypeError( "ID Must be a valid number or string to be observed" );
-  }
-
-  if ( typeof callback !== "function" ) {
-    throw new TypeError( "Callback must exist and be of type 'function'" );
-  }
-
-  lruMap.media.observe( id, callback, acceptList );
+  dataService.observeByTypeAndId( EDTrack.MODEL_TYPE, id, callback, acceptList );
 };
 
 dataService.unobserveMedia = function( id, callback ) {
-  if ( id == null ) {
-    throw new TypeError( "ID Must be a valid number or string to be observed" );
-  }
-
-  if ( typeof callback !== "function" ) {
-    throw new TypeError( "Callback must exist and be of type 'function'" );
-  }
-
-  lruMap.media.unobserve( id, callback );
+  dataService.unobserveByTypeAndId( EDTrack.MODEL_TYPE, id, callback );
 };
 
 // Client side updating of indexedDB databases
@@ -327,7 +339,13 @@ export var updateModel = function( edJson ) {
 
       // TODO remove this, SS needs to have consistent returns for profile/get and profile/edit
       // merge missing properties
-      return pdb.objects.put( Object.assign( oldModel, newModel ));
+      Object.keys( oldModel ).forEach(function( prop ) {
+        if ( newModel[ prop ] == null && oldModel[ prop ] != null ) {
+          newModel[ prop ] = oldModel[ prop ];
+        }
+      });
+
+      return pdb.objects.put( newModel );
     })
     .catch( error => {
       console.log( "Error adding model update to DB: " + pdb.name );

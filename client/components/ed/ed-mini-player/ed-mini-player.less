@@ -1,5 +1,4 @@
 @import "../../../styles/ed/colors.vars.less";
-@import "../../../styles/mixins/prefixes/user-select.less";
 @import "../../../styles/mixins/prefixes/animations.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 
@@ -20,7 +19,7 @@
     vertical-align: middle;
 
     h1, h5 {
-      max-width: 84vw;
+      max-width: 60vw;
       overflow-x: hidden;
       text-overflow: ellipsis;
     }
@@ -40,13 +39,14 @@
   border-radius: 50%;
   background: @darkPurple1;
   border: none;
+  padding: 0;
   -webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
+
   ed-icon {
-    width: 70%;
+    width: 40%;
     height: 100%;
     vertical-align: middle;
     fill: @originalWhite;
-    .userSelect(none);
   }
   &:focus {
     outline: none;

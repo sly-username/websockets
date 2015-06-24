@@ -9,7 +9,6 @@
       playerService = imported[ 0 ].default,
       createEvent = imported[ 1 ].default,
       scrubStartValue,
-      inSkipEvent = false,
       createUpdateEvent = function( name, detail ) {
         detail = detail || {};
         detail.name = name;
@@ -85,8 +84,8 @@
         this.timer.innerText = playerService.formattedDisplayTime;
       },
       skipSongHandler = function() {
-        inSkipEvent = true;
         this.dispatchEvent( createUpdateEvent( "skip" ));
+        this.isSkipping = true;
         this.handler.resetScrubber();
       },
       playerServiceEventHandler = function( event ) {
@@ -94,7 +93,9 @@
 
         switch ( eventName ) {
           case "play":
-            inSkipEvent = false;
+            if ( event.type === "playerUpdate" && playerService.isPlaying ) {
+              this.isSkipping = false;
+            }
             this.playIcon.setAttribute( "name", "pause" );
             break;
           case "pause":
@@ -137,6 +138,7 @@
     polymer( "ed-song-card-scrubber", {
       complete: false,
       disabled: false,
+      isSkipping: false,
       ready: function() {
         // selectors
         this.svg = this.shadowRoot.getElementById( "svg-circle" );
@@ -209,7 +211,7 @@
         playerService.emitter.off( "playerUpdate", this.handler.playerServiceEvent );
       },
       attributeChanged: function( attrName, oldVal, newVal ) {
-        if ( attrName === "value" && !inSkipEvent ) {
+        if ( attrName === "value" && !this.isSkipping ) {
           this.handler.updateScrub();
         }
 

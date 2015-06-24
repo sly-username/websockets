@@ -5,18 +5,12 @@
 @import "../../../styles/ed/menu-button.mixin.less";
 @import "../../../styles/ed/list-style.mixin.less";
 
-#edit-form {
-  .edContentStyle();
-  overflow-y: scroll;
-}
-
 .ed-profile-edit-wrapper {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: @darkPurple2;
   margin: 0 auto;
-  position: relative;
-  overflow-x: hidden;
+  overflow-y: scroll;
   .edit-title-bar {
     .edTitleBar( no-button );
     .edMenuButton();
@@ -39,8 +33,8 @@
 
   .image-field {
     padding-top: 1.5rem;
-    border-top: 0.2rem solid #302633;
-    border-bottom: 0.2rem solid #302633;
+    border-top: 0.1rem solid @darkPurple1;
+    border-bottom: 0.1rem solid @darkPurple1;
 
     .image-container {
       width: 20%;
@@ -82,16 +76,19 @@
       text-transform: uppercase;
       padding-top: 4.4rem;
       padding-bottom: 1rem;
-      &:active, &:hover, &:focus {
-        background-color: @darkPurple2;
+      // no :hover
+      &.active, &:focus {
+        border-left-color: @darkPurple2;
       }
     }
   }
 }
 
+#edit-form {
+  .edContentStyle();
+}
+
 #edit-music-button {
-  margin-bottom: 0;
-  border-bottom: 0;
   ed-icon {
     float: right;
     width: 1.8rem;
