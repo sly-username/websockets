@@ -21,7 +21,7 @@
       width: 98%;
       box-sizing: border-box;
       .edType( heading-L );
-      line-height: 3.5;
+      line-height: 15vh;
       text-decoration: none;
       color: @darkPurple3;
       border-left: 1.5rem solid transparent;
@@ -30,13 +30,11 @@
         margin: 0 5%;
         width: 9vw;
         height: 100%;
-        vertical-align: middle;
         fill: @lightGrey1;
       }
       span {
         display: inline-block;
-        height: 100%;
-        margin-top: 2%;
+        vertical-align: middle;
       }
       // no :hover for now, it causes weirdness in iOS
       &.active, &:focus, &:active {
@@ -48,17 +46,21 @@
     display: block;
     width: 95%;
     height: 10vh;
+    line-height: 10vh;
     border-left: 1.5rem solid transparent;
     .img-container {
-      float: left;
+      display: inline-block;
+      vertical-align: middle;
       width: 14%;
-      margin: 3% 0 0 5%;
+      margin-left: 5%;
     }
     p {
-      float: left;
+      display: inline-block;
       padding-left: 5%;
       .edType( heading-S );
       color: @darkPurple3;
+      vertical-align: middle;
+      margin: 0;
     }
     // no :hover for now, it causes weirdness in iOS
     &.active, &:focus, &:active {

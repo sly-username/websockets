@@ -32,12 +32,7 @@
   }
 }
 
-.player-background {
-  width: 100%;
-  margin: 0 auto;
-  background: @darkPurple2;
-  min-height: 100%;
-}
+
 
 #main-player-wrapper {
   min-height: 100%;
@@ -47,7 +42,6 @@
   -webkit-transition: -webkit-transform .45s, opacity 0s 0s;
   transition: transform .45s, opacity 0s 0s;
   opacity: 1;
-  max-width: 59.6rem;
   margin: 0 auto;
   .transform( translate3d( 0, 0, 0 ));
 
@@ -56,6 +50,12 @@
     transition: transform .45s, opacity 0s .45s;
     .transform( translate3d( 0, 100vh, 0 ));
     opacity: 0;
+  }
+
+  .player-background {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 59.6rem;
   }
 }
 
