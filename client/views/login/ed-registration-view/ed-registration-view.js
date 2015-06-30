@@ -42,7 +42,7 @@
             firstName: this.shadowRoot.querySelector( ".errorFirstName" ),
             lastName: this.shadowRoot.querySelector( ".errorLastName" ),
             email: this.shadowRoot.querySelector( "#errorEmail" ),
-            yearOfBirth: this.shadowRoot.querySelector( ".errorYearOfBirth" ),
+            yearOfBirth: this.shadowRoot.querySelector( "#errorYearOfBirth" ),
             zipcode: this.shadowRoot.querySelector( "#errorZipcode" ),
             passwordShort: this.shadowRoot.querySelector( "#errorPasswordShort" ),
             passwordMismatch: this.shadowRoot.querySelector( "#errorPasswordMismatch" ),
