@@ -1,3 +1,5 @@
+/*jshint strict: false*/
+
 import EDTrack from "domain/ed/objects/media/EDTrack";
 import EDCollection from "domain/ed/storage/EDCollection";
 
