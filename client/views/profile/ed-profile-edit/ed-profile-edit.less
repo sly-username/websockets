@@ -65,7 +65,9 @@
       background-color: @darkPurple2;
       color: @lightGrey1;
       padding: 2.3rem 2rem;
-
+      &.active, &:focus {
+        background-color: @darkPurple2;
+      }
       input {
         display: none;
       }
@@ -77,9 +79,9 @@
       padding-top: 4.4rem;
       padding-bottom: 1rem;
       // no :hover
-      &:active {
-        border-left-color: @darkPurple2;
-      }
+      //&.active, &:focus {
+      //  border-left-color: @darkPurple2;
+      //}
     }
   }
 }
