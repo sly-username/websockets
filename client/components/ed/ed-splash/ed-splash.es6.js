@@ -39,7 +39,5 @@
 //    console.log( "constructor %o", EDSplash );
 //    console.log( "constructor.proto %o", EDSplash.prototype );
 //    console.log( "instance %o", new EDSplash() );
-
-    window.EDSplash = EDSplash;
   });
 })( window.webComponentsReadyPromise, document._currentScript.ownerDocument || document.currentScript.ownerDocument );
