@@ -101,18 +101,20 @@
         // need to init manually to ensure event binding
 //        router.init();
 
-        if ( userService.isOpenSession ) {
-          if ( userService.hasOnboarded ) {
-            router.go( "/discover" );
+        window.edLoadScriptPromise.then(function() {
+          if ( userService.isOpenSession ) {
+            if ( userService.hasOnboarded ) {
+              router.go( "/discover" );
+            } else {
+              router.go( "/onboarding/like" );
+            }
           } else {
-            router.go( "/onboarding/like" );
+            router.go( "/login" );
           }
-        } else {
-          router.go( "/login" );
-        }
 
-        // remove splash screen!
-        hideSplashScreen();
+          // remove splash screen!
+          hideSplashScreen();
+        });
       })
       .catch( error => {
         console.error( "Problem in main script: " + error.message );
