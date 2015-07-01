@@ -1,6 +1,7 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/mixins/prefixes/animations.less";
 @import "../../../styles/fonts/edTypeStyles.less";
+@import "../../../styles/ed/ellipsis-overflow.mixin.less";
 
 #mini-player-container {
   width: 100vw;
@@ -20,8 +21,7 @@
 
     h1, h5 {
       max-width: 60vw;
-      overflow-x: hidden;
-      text-overflow: ellipsis;
+      .edEllipsisOverflow();
     }
   }
   .responsive-btn-wrapper {
