@@ -39,34 +39,6 @@ body {
   }
 }
 
-#splash-screen {
-  position: absolute;
-  .mainPicturedBackground( "../" );
-  background-color: @originalPurple;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  opacity: 0;
-  z-index: 5;
-  transition: opacity ease-in 0.2s;
-  svg {
-    width: 94%;
-    padding: 0 3%;
-    fill: @originalWhite;
-    opacity: 0;
-    transition: inherit;
-  }
-  body[unresolved] & {
-    display: block;
-    opacity: 1;
-    svg {
-      opacity: 1;
-    }
-  }
-}
-
 ed-side-menu {
   position: absolute;
   height: 98%;

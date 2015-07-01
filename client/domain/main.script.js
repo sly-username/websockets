@@ -12,6 +12,11 @@
       return hidePlayerRoutes.some( hideRoute => {
         return hideRoute === route;
       });
+    },
+    hideSplashScreen = function() {
+      window.setTimeout(function() {
+        document.querySelector( "#splash-screen" ).hide();
+      }, 750);
     };
 
   Promise.all([
@@ -95,10 +100,26 @@
 
         // need to init manually to ensure event binding
 //        router.init();
+
+        if ( userService.isOpenSession ) {
+          if ( userService.hasOnboarded ) {
+            router.go( "/discover" );
+          } else {
+            router.go( "/onboarding/like" );
+          }
+        } else {
+          router.go( "/login" );
+        }
+
+        // remove splash screen!
+        hideSplashScreen();
       })
       .catch( error => {
         console.error( "Problem in main script: " + error.message );
         console.error( error.stack );
+
+        // remove splash screen!
+        hideSplashScreen();
       });
   });
 })( window, window.Promise );

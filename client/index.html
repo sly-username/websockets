@@ -11,6 +11,33 @@
       base.setAttribute( "href", baseUrl );
       document.head.appendChild( base );
 
+      // Device ready promise
+      window.deviceReadyPromise = new Promise(function( resolve, reject ) {
+        var timeoutId;
+
+        // if no "cordova" resolve this now
+        if ( !(/^file:/gi).test( window.location.protocol ) ) {
+          resolve( true );
+          return;
+        }
+
+        document.addEventListener( "deviceready", function( event ) {
+          window.clearTimeout( timeoutId );
+
+          console.log( "saw device ready %o", event );
+          resolve( event );
+        }, false );
+
+        timeoutId = window.setTimeout(function() {
+          console.error(( new Error( "Device Ready took more than five minutes to get set up" )).stack );
+
+          // fake some event data
+          resolve({
+            type: "deviceready"
+          });
+        }, 300000 );
+      });
+
       // Polymer ready promise
       window.polymerReadyPromise = new Promise(function( resolve, reject ) {
         var timeoutId;
@@ -32,24 +59,18 @@
         }, 300000 );
       });
 
-      // Device ready promise
-      // todo add reject via timeout like above
-      window.deviceReadyPromise = new Promise(function( resolve, reject ) {
+      window.webComponentsReadyPromise = new Promise(function( resolve, reject ) {
         var timeoutId;
 
-        document.addEventListener( "deviceready", function( event ) {
+        document.addEventListener( "WebComponentsReady", function( event ) {
           window.clearTimeout( timeoutId );
-
-          console.log( "saw device ready %o", event );
+          console.log( "webCompready" );
           resolve( event );
-        }, false );
+        });
 
         timeoutId = window.setTimeout(function() {
-          console.error(( new Error( "Device Ready took more than five minutes to get set up" )).stack );
-
-          // fake some event data
           resolve({
-            type: "deviceready"
+            type: "WebComponentsReady"
           });
         }, 300000 );
       });
@@ -84,29 +105,16 @@
   <script src="vendor/system.js"></script>
   <link rel="import" href="vendor/app-router.html" />
 
-  <script src="domain/load.script.js"></script>
+  <script src="domain/load.script.js" async></script>
 
   <!-- Eardish Views -->
   <link rel="import" href="views/views.html" />
+  <link rel="import" href="components/ed/ed-splash/ed-splash.html" />
 </head>
 
 <body unresolved>
 
-<section id="splash-screen">
-  <svg>
-    <use xlink:href="assets/icons/svg.svg#eardish-logo-with-slogan"></use>
-  </svg>
-  <script>
-    (function(){
-      // TODO component this
-      var here = document.getElementById("splash-screen");
-
-      here.addEventListener( "transitionend", function( event ) {
-        here.hidden = true;
-      });
-    })();
-  </script>
-</section>
+<ed-splash id="splash-screen"></ed-splash>
 
 <ed-side-menu id="side-menu"></ed-side-menu>
 
