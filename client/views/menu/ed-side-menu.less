@@ -37,7 +37,7 @@
         vertical-align: middle;
       }
       // no :hover for now, it causes weirdness in iOS
-      &.active, &:focus, &:active {
+      &.active, &:focus {
         //border-left-color: @originalPurple;
       }
     }
@@ -59,6 +59,7 @@
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
+      width: 75%;
       padding-left: 5%;
       .edType( heading-S );
       color: @darkPurple3;
