@@ -11,9 +11,10 @@
       </div>
       <div class="ed-registration-body">
         <section class="error-messages">
-          <div id="errorMissing" class="hidden errorFirstName errorLastName errorYearOfBirth"><span>*</span> All fields are required</div>
+          <div id="errorMissing" class="hidden errorFirstName errorLastName"><span>*</span> All fields are required</div>
           <div id="errorEmail" class="hidden"><span>*</span> Please enter a valid email address</div>
           <div id="errorZipcode" class="hidden"><span>*</span> Please provide a 5-digit zip code</div>
+          <div id="errorYearOfBirth" class="hidden"><span>*</span> Please enter a valid birth year</div>
           <div id="errorPasswordShort" class="hidden"><span>*</span> Your password needs to be at least 8 characters</div>
           <div id="errorPasswordMismatch" class="hidden"><span>*</span> Your passwords don't match, please try again</div>
           <div id="errorEmailTaken" class="hidden"><span>*</span> That email address is already in use</div>
@@ -45,7 +46,7 @@
                        icon="birthday"
                        required>
         </ed-form-input>
-        <ed-form-input type="text"
+        <ed-form-input type="tel"
                        class="zipcode"
                        placeholder="Zip Code"
                        icon="zip"

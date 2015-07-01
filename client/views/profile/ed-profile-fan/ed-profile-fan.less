@@ -41,7 +41,7 @@ hr {
     text-align: right;
     text-transform: uppercase;
     color: @originalWhite;
-    z-index: 1;
+    z-index: 3;
     span {
       display: block;
       .edType( heading-S );
@@ -53,6 +53,20 @@ hr {
   }
   .artist-name {
     .userSelect( text );
+  }
+  .image-gradient:after {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,.8)), color-stop(19%,rgba(0,0,0,0)));
+    background: -webkit-linear-gradient(top, rgba(0,0,0,.8) 0%,rgba(0,0,0,0) 19%);
+    background: -o-linear-gradient(top, rgba(0,0,0,.8) 0%,rgba(0,0,0,0.65) 19%);
+    background: -ms-linear-gradient(top, rgba(0,0,0,.8) 0%,rgba(0,0,0,0) 19%);
+    background: linear-gradient(to bottom, rgba(0,0,0,.8) 0%,rgba(0,0,0,0) 19%);
   }
   .icon-section {
     margin: 9% 3% 4%;
