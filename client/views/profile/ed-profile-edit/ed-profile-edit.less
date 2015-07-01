@@ -62,10 +62,11 @@
       color: @lightGrey1;
     }
     li {
-      background-color: @darkPurple2;
       color: @lightGrey1;
       padding: 2.3rem 2rem;
-
+      &:active {
+        background-color: @darkPurple3;
+      }
       input {
         display: none;
       }
@@ -76,10 +77,6 @@
       text-transform: uppercase;
       padding-top: 4.4rem;
       padding-bottom: 1rem;
-      // no :hover
-      &.active, &:focus {
-        border-left-color: @darkPurple2;
-      }
     }
   }
 }
