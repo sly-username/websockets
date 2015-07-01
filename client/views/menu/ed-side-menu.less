@@ -4,6 +4,7 @@
 @import "../../styles/ed/alignments.mixin.less";
 @import "../../styles/mixins/prefixes/transforms.less";
 @import "../../styles/mixins/prefixes/animations.less";
+@import "../../styles/ed/ellipsis-overflow.mixin.less";
 
 // Note: ed-side-menu styles are in main.less
 
@@ -55,6 +56,7 @@
       margin-left: 5%;
     }
     p {
+      .edEllipsisOverflow();
       display: inline-block;
       padding-left: 5%;
       .edType( heading-S );
