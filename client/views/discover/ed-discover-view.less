@@ -19,6 +19,9 @@
 
     li {
       width: auto;
+      &:active {
+        background-color: @darkPurple3;
+      }
     }
 
     .genre-title {
@@ -28,7 +31,7 @@
       padding: 8vh 0 2vh 6vw;
       // no :hover
       &:active, &:focus {
-        border-left-color: @darkPurple3;
+        background-color: @darkPurple3;
       }
     }
   }
