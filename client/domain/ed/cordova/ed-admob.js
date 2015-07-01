@@ -2,16 +2,7 @@
 var
   AdMob = window.AdMob,
   admobid = {},
-  admobOptions = {
-    // adSize: 'SMART_BANNER',
-    position: AdMob.AD_POSITION.TOP_CENTER,
-    offsetTopBar: true //iOS7+
-    // bgColor: 'black',
-    // x: integer,
-    // y: integer,
-    // overlap: true,
-    // isTesting: true
-  },
+  admobOptions,
   setAdMobIds = function() {
     if ( /(android)/i.test( navigator.userAgent )) {
       admobid = {
@@ -23,6 +14,21 @@ var
       };
     }
   };
+
+try {
+  admobOptions = {
+    // adSize: 'SMART_BANNER',
+    position: AdMob.AD_POSITION.TOP_CENTER,
+    offsetTopBar: true //iOS7+
+    // bgColor: 'black',
+    // x: integer,
+    // y: integer,
+    // overlap: true,
+    // isTesting: true
+  };
+} catch ( error ) {
+  console.warn( "AdMob isn't supported" );
+}
 
 setAdMobIds();
 

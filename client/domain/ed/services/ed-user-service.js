@@ -243,6 +243,7 @@ edUserService.restoreSession = function() {
         return edUserService.login( loginData.email, loginData.password )
           .catch(function( error ) {
             clearCredentialsFromLocalStorage();
+            throw error;
           });
       }
     }

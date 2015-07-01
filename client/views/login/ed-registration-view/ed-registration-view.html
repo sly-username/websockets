@@ -1,6 +1,7 @@
-<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html"/>
-<link rel="import" href="../../../components/ed/ed-form-input/ed-form-input.html"/>
-<link rel="import" href="../../../components/ed/ed-paired-input/ed-paired-input.html"/>
+<link rel="import" href="../../../components/ed/ar-anchor/ar-anchor.html" />
+<link rel="import" href="../../../components/ed/ed-icon/ed-icon.html" />
+<link rel="import" href="../../../components/ed/ed-form-input/ed-form-input.html" />
+<link rel="import" href="../../../components/ed/ed-paired-input/ed-paired-input.html" />
 
 <polymer-element name="ed-registration-view" attributes="">
   <template>
@@ -67,11 +68,11 @@
         <button id="registration-submit" class="invalid" on-click="{{submitForm}}">
           Sign Up
         </button>
-        <a id="sign-up-button" type="button" href="#/login">
+        <ar-anchor id="sign-up-button" type="button" route="/login">
           <span class="small-text">Have an account already?</span>
           <br />
           Login Here
-        </a>
+        </ar-anchor>
       </div>
     </div>
   </template>
