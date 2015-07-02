@@ -389,7 +389,7 @@ export default edPlayerService = {
     currentIndex += 1;
     hasScrubbed = false;
 
-    if ( tracksCollection.ids.length === currentIndex ) {
+    if ( currentIndex === tracksCollection.ids.length - 2 ) {
       return this.startMusicDiscovery( "profileBlend" );
     }
 
