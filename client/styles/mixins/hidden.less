@@ -1,22 +1,36 @@
 
+.customHidden( @rules ) {
+  &.hidden, &.hide, &[hidden] {
+    @rules();
+  }
+}
+
+// display only
 .hidden(display) {
-  &.hidden, &.hide, &[hidden] {
+  .customHidden({
     display: none;
-  }
+  });
 }
+
+// visibility only
 .hidden(visibility) {
-  &.hidden, &.hide, &[hidden] {
+  .customHidden({
     visibility: hidden;
-  }
+  });
 }
+
+// opacity only
 .hidden(opacity) {
-  &.hidden, &.hide, &[hidden] {
+  .customHidden({
     opacity: 0;
-  }
+  });
 }
+
+// default
 .hidden() {
-  &.hidden, &.hide, &[hidden] {
+  .customHidden({
     display: none;
     visibility: hidden;
-  }
+  });
 }
+

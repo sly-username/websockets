@@ -1,40 +1,18 @@
 (function() {
-  var edUserService;
-
-  Promise.all([
+  window.edLoadScriptPromise =
     System.import( "domain/ed/services/ed-user-service" )
-  ])
-    .then(function( imported ) {
-      edUserService = imported[ 0 ].default;
+      .then(function( imported ) {
+        return imported.default.restoreSession();
+      })
+      .then(function( edProfile ) {
+        console.log( "Session Restored!" );
+        return edProfile;
+      })
+      .catch(function( error ) {
+        console.warn( "Issue trying to restore session: " + error.message );
 
-      return edUserService.restoreSession();
-    })
-    .then(function() {
-      console.log( "Session Restored!" );
-
-      return Promise.race([
-        polymerReadyPromise,
-        deviceReadyPromise
-      ]);
-    })
-    .then(function() {
-      var router = document.getElementById( "root-app-router" );
-
-      // MAKE THEM ONBOARD!
-      if ( !edUserService.hasOnboarded && router ) {
-        router.go( "/onboarding/like", {
-          replace: true
-        });
-      }
-    })
-    .catch(function( error ) {
-      var router = document.getElementById( "root-app-router" );
-
-      if ( router ) {
-        router.go( "/login" );
-      }
-
-      console.warn( "Issue trying to restore session: " + error.message );
-      console.error( error.stack );
-    });
+        if ( !(/could not restore session/gi).test( error.message )) {
+          console.error( error.stack );
+        }
+      });
 })();

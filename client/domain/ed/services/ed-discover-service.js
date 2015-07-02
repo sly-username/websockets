@@ -1,3 +1,5 @@
+/*jshint strict: false*/
+
 import edConnectionService from "domain/ed/services/ed-connection-service";
 import edUserService from "domain/ed/services/ed-user-service";
 import EDGenre from "domain/ed/objects/EDGenre";

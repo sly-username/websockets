@@ -149,7 +149,7 @@ loadGenres = function() {
 
       throw new TypeError( "genre/list resolved with error status code" );
     })
-    .catch( function( error ) {
+    .catch(function( error ) {
       console.warn( "There was a problem getting the list of genres" );
       console.error( error.stack );
     });
@@ -173,7 +173,7 @@ dataService.getByTypeAndId = function( type, id, priority=10, force=false ) {
   route = getQueryRouteForType( type );
 
   if ( force === false && lru.has( id ) ) {
-    console.log( `id: ${id} already found in lru: %o`, lru );
+//    console.log( `id: ${id} already found in lru: %o`, lru );
     return Promise.resolve( lru.get( id ) );
   }
 
@@ -184,7 +184,7 @@ dataService.getByTypeAndId = function( type, id, priority=10, force=false ) {
   return dbsReadyPromise.then(
     dbsLoaded => {
       if ( pdb == null ) {
-        console.log( "pdb was not ready when getByType was called, re-setting pdb" );
+//        console.log( "pdb was not ready when getByType was called, re-setting pdb" );
         pdb = getDBAndLRUForType( type ).pdb;
       }
 
@@ -203,8 +203,8 @@ dataService.getByTypeAndId = function( type, id, priority=10, force=false ) {
       return pdb.objects.put( edJson.data );
     })
     .then(function( dbResponse ) {
-      console.log( "db response %o, original id %o", dbResponse, id );
-      console.log( "looking up in lru %o", lru.get( dbResponse ) );
+//      console.log( "db response %o, original id %o", dbResponse, id );
+//      console.log( "looking up in lru %o", lru.get( dbResponse ) );
       return lru.get( dbResponse );
     })
     .catch(function( error ) {
