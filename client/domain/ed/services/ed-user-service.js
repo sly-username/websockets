@@ -307,8 +307,8 @@ edUserService.changeProfileImage = function( image, fileData ) {
           Key: "public/temp/" + currentProfile.id + "/" + imageData.name,
           ContentType: imageData.type,
           Body: image,
-          Bucket: url.aws.bucket,
-          CopySource: url.aws.bucket + "/" + imageData.name
+          Bucket: edJson.data.bucketName,
+          CopySource: edJson.data.bucketName + "/" + imageData.name
         }, function( error, data ) {
           if ( error != null ) {
             console.warn( "Issue uploading image to AWS" );
