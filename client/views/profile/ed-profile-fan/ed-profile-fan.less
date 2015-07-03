@@ -5,6 +5,7 @@
 @import "../../../styles/mixins/prefixes/flex.less";
 @import "../../../styles/ed/title-bar.mixin.less";
 @import "../../../styles/mixins/prefixes/user-select";
+@import "../../../styles/ed/ellipsis-overflow.mixin.less";
 
 hr {
   height: 0.5rem;
@@ -34,9 +35,11 @@ hr {
     .edContentStyle();
   }
   .profile-name {
+    .edEllipsisOverflow();
+    height: 16%;
+    width: 98%;
     position: absolute;
     top: 1.5rem;
-    right: 4.5%;
     .edType(heading-XXXL);
     text-align: right;
     text-transform: uppercase;
