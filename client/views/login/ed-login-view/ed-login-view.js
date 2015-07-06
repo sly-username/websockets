@@ -6,7 +6,7 @@
       var
         userService = imported.default,
         emailRegexPattern = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/,
-        passwordRegexPattern = /^\w{8,}/,
+        passwordRegexPattern = /^.{8,}/,
         inputPropertyNameToValidGetter = function( inputName ) {
           var name = inputName[ 0 ].toUpperCase() + inputName.slice( 1 );
           return "valid" + name;
