@@ -392,7 +392,7 @@ export default edPlayerService = {
     currentIndex += 1;
     hasScrubbed = false;
 
-    if ( currentIndex === tracksCollection.ids.length - 2 ) {
+    if ( currentIndex === tracksCollection.length - 2 ) {
       edDiscoverService.getDiscoverTrackList( currentlyDiscovering ).then( trackIds => {
         this.enqueue( trackIds );
       });
