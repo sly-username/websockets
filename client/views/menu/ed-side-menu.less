@@ -37,14 +37,15 @@
         vertical-align: middle;
       }
       // no :hover for now, it causes weirdness in iOS
-      &.active, &:focus, &:active {
+      &.active, &:focus {
         //border-left-color: @originalPurple;
       }
     }
   }
   .profile-bar {
+    white-space: nowrap;
     display: block;
-    width: 95%;
+    width: 90%;
     height: 10vh;
     line-height: 10vh;
     border-left: 1.5rem solid transparent;
@@ -56,6 +57,9 @@
     }
     p {
       display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 75%;
       padding-left: 5%;
       .edType( heading-S );
       color: @darkPurple3;

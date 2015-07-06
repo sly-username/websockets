@@ -1,6 +1,7 @@
 @import "../../../styles/ed/colors.vars.less";
 @import "../../../styles/fonts/edTypeStyles.less";
 @import "../../../styles/mixins/prefixes/transforms.less";
+@import "../../../styles/ed/ellipsis-overflow.mixin.less";
 
 :host([disable]) {
   #rating-form {
@@ -111,13 +112,11 @@
 
 .track-title {
   .edType( heading-L );
+  .edEllipsisOverflow();
   opacity: 1;
   transition: opacity .3s;
-  text-overflow: ellipsis;
-  overflow: hidden;
   width: 90%;
   margin: 1rem auto .3rem;
-  white-space: nowrap;
 
   &.loading {
     opacity: 0;
@@ -125,11 +124,13 @@
 }
 .artist-name {
   .edType( heading-XS );
+  .edEllipsisOverflow();
   opacity: 1;
   text-align: center;
   transition: opacity .3s;
   color: @lightGrey1;
-  margin: 0 0 1rem;
+  margin: 2%;
+  width: 96%;
 
   &.loading {
     opacity: 0;
