@@ -83,7 +83,7 @@
           return zipcodeRegexPattern.test( this.formInputs.zipcode.value );
         },
         get validPassword() {
-          return ( /^.{8,}/ ).test( this.formInputs.password.value );
+          return this.formInputs.password.isValid;
         },
         get validInviteCode() {
           return this.formInputs.inviteCode.value !== "";
