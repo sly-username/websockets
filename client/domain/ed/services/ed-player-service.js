@@ -27,7 +27,8 @@ var
   updateCurrentIndex,
   getTrackAndArtist,
   userService,
-  importUserService;
+  importUserService,
+  currentlyDiscovering;
 
 // helpers
 hasScrubbedHandler = function( event ) {
@@ -390,7 +391,9 @@ export default edPlayerService = {
     hasScrubbed = false;
 
     if ( currentIndex === tracksCollection.ids.length - 2 ) {
-      return this.startMusicDiscovery( "profileBlend" );
+      edDiscoverService.getDiscoverTrackList( currentlyDiscovering ).then( trackIds => {
+        this.enqueue( trackIds );
+      });
     }
 
     return getTrackAndArtist( tracksCollection, currentIndex )
@@ -441,6 +444,8 @@ export default edPlayerService = {
   },
 
   startMusicDiscovery: function( type ) {
+    currentlyDiscovering = type;
+
     return edDiscoverService.getDiscoverTrackList( type )
       .then( trackIds => {
         tracksCollection = new EDCollection( EDTrack.MODEL_TYPE, trackIds );
