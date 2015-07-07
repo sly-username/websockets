@@ -46,7 +46,8 @@
             edAdMob
           ] = imports.map( imported => imported.default ),
           songCard = document.getElementById( "song-card" ),
-          router = document.getElementById( "root-app-router" );
+          router = document.getElementById( "root-app-router" ),
+          resumePlayback;
 
         // Fires before the app router does anything regarding a route change
         // Check if open session, if not, route back to login page
@@ -115,6 +116,17 @@
           // remove splash screen!
           hideSplashScreen();
         });
+
+        // bind to cordova events to listen for app background/foreground states
+        document.addEventListener( "pause", function() {
+          resumePlayback = playerService.currentStats.state;
+        }, false );
+
+        document.addEventListener( "resume", function() {
+          if ( resumePlayback && playerService.isPaused ) {
+            playerService.play();
+          }
+        }, false );
       })
       .catch( error => {
         console.error( "Problem in main script: " + error.message );

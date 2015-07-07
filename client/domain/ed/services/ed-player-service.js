@@ -21,6 +21,7 @@ var
   hasScrubbed = false,
   completedListens = null,
   ratedTracks = null,
+  currentlyPlaying = false,
   edPlayerService,
   tracksCollection,
   hasScrubbedHandler,
@@ -145,6 +146,7 @@ export default edPlayerService = {
   get currentStats() {
     return {
       playing: currentTrack,
+      isPlaying: currentlyPlaying,
       time: this.formattedTime,
       hours: this.currentHours,
       minutes: this.currentMinutes,
@@ -267,6 +269,8 @@ export default edPlayerService = {
         audio.src = response.data.url;
         audio.play();
 
+        currentlyPlaying = true;
+
         return edTrack;
       })
       .catch( error => {
@@ -303,6 +307,8 @@ export default edPlayerService = {
             type: "play"
           }
         }));
+
+        currentlyPlaying = true;
       } else {
         return this.pause();
       }
@@ -325,6 +331,8 @@ export default edPlayerService = {
         }
       }));
 
+      currentlyPlaying = false;
+
       edAnalyticsService.send( "pause", {
         trackId: currentTrack.id,
         timecode: audio.currentTime
@@ -343,6 +351,8 @@ export default edPlayerService = {
       audio.removeAttribute( "src" );
       currentTrack = null;
     }
+
+    currentlyPlaying = false;
 
     edAnalyticsService.send( "quit", {
       trackId,
