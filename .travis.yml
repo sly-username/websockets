@@ -12,10 +12,9 @@ install:
 before_script:
 - npm run jscs ; npm run lint ; echo "all good"
 after_script:
-- npm install -g codeclimate-test-reporter coveralls
+- npm install -g codeclimate-test-reporter
 - sed -i -e "s/SF:.\//SF:build\/www\//g" ./build/coverage/chromium/lcov.info
 - cat ./build/coverage/chromium/lcov.info | codeclimate
-- cat ./build/coverage/chromium/lcov.info | coveralls
 - npm install -g david && david
 notifications:
   hipchat:
